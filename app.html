@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sol Client</title>
+		<link rel="stylesheet" href="style.css"/>
+	</head>
+	<body>
+		<div class="login invisible">
+			<h1 class="title">Log In</h1>
+			<h2 class="subtitle">To play the game, you need to log in.</h2>
+			<br/>
+			<br/>
+			<div class="login-box">
+				<button class="button login-button microsoft-login-button">Microsoft Account</button>
+				<button class="button login-button mojang-login-button">Mojang Account</button>
+			</div>
+		</div>
+		<div class="mojang-login invisible">
+			<button class="button back-button back-to-login-button">◀</button>
+			<h1 class="title">Log In</h1>
+			<br/>
+			<br/>
+			<div class="login-box">
+				<label for="username" class="label">Email</label>
+				<input id="username" class="input" type="username" spellcheck="false" autocomplete="off"></input>
+				<label for="username" class="label">Password</label>
+				<input id="password" class="input" type="password"></input>
+				<br/>
+			</div>
+			<span class="error-message"></span>
+			<button class="button play-button login-button-mojang">Log In</button>
+		</div>
+		<div class="main invisible">
+			<h1 class="title">Sol Client</h1>
+			<button class="button account-button"></button>
+			<div class="tabs">
+				<button>About</button>
+				<div class="sep"></div>
+				<button>Settings</button>
+			</div>
+			<br/>
+			<div class="description">
+				<p>Sol Client is a new Minecraft Client designed to be simple and lightweight, yet not lacking in features.</p>
+				<br/>
+				<a class="open-in-browser" href="https://discord.gg/QFDGDhcFqu">Join Discord Server</a>
+			</div>
+			<div class="button-box">
+				<button class="button play-button" id="launch-button">Play</button>
+			</div>
+		</div>
+	</body>
+</html>

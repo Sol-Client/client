@@ -1,0 +1,221 @@
+@font-face {
+	font-family: Raleway-Regular;
+	src: url("raleway/Raleway-Regular.ttf");
+}
+
+@font-face {
+	font-family: Roboto-Regular;
+	src: url("roboto/Roboto-Regular.ttf");
+}
+
+.input {
+	display: block;
+	border: solid rgb(80, 80, 80);
+	border-radius: 5px;
+	background-color: black;
+	color: white;
+	outline: none;
+}
+
+.button {
+	color: white;
+}
+
+.back-button {
+	background-color: rgb(0, 150, 255);
+	border: solid rgba(0, 100, 205);
+	border-radius: 5px;
+	width: 50px;
+	height: 50px;
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	font-size: 2em;
+	transition: background 0.2s, border-color 0.2s;
+}
+
+.back-button:hover {
+	background-color: rgb(40, 190, 255);
+	border: solid rgba(0, 140, 245);
+}
+
+.back-button:active {
+	background-color: rgb(0, 100, 185);
+	border: solid rgba(0, 50, 155);
+}
+
+.title {
+	font-family: Raleway-Regular;
+	text-align: center;
+	font-size: 3em;
+}
+
+.subtitle {
+	font-family: Raleway-Regular;
+	text-align: center;
+	font-size: 2em;
+}
+
+.account-button {
+	position: fixed;
+	top: 15px;
+	right: 15px;
+	background: rgba(255, 150, 0);
+	border: solid rgba(205, 100, 0);
+	border-radius: 5px;
+	color: black;
+	transition: background 0.2s, border-color 0.2s;
+}
+
+.account-button:hover {
+	background: rgba(255, 180, 30);
+	border: solid rgba(235, 130, 0);
+}
+
+.account-button:active {
+	background: rgba(225, 120, 0);
+	border: solid rgba(175, 70, 0);
+}
+
+.play-button {
+	position: fixed;
+	left: calc(50% - 125px);
+	bottom: 50px;
+}
+
+.play-button, .login-button {
+	background: rgb(0, 100, 0);
+	border: solid rgb(0, 60, 0);
+	border-radius: 5px;
+	width: 250px;
+	height: 100px;
+	font-size: 2.5em;
+	transition: background 0.2s, border-color 0.2s;
+}
+
+.play-button:hover, .login-button:hover {
+	background: rgb(0, 120, 0);
+	border: solid rgb(0, 80, 0);
+}
+
+.play-button:active, .login-button:active {
+	background: rgb(0, 80, 0);
+	border: solid rgb(0, 40, 0);
+}
+
+.play-button:disabled, .login-button:disabled {
+	background: rgb(80, 80, 80);
+	border: solid rgb(40, 40, 40);
+}
+
+.login-button {
+	width: 350px;
+	display: block;
+	font-size: 2em;
+}
+
+.login-box {
+	margin-left: auto;
+	margin-right: auto;
+	display: table;
+}
+
+.login-box .button {
+	margin-bottom: 10px;
+}
+
+.login-box .input {
+	font-size: 1.3em;
+	background: rgb(0, 0, 0);
+	border: solid rgb(40, 40, 40);
+	border-radius: 5px;
+	width: 350px;
+	height: 30px;
+	transition: background 0.2s, border-color 0.2s;
+	margin-bottom: 30px;
+	padding: 5px;
+}
+
+.label {
+	display: block;
+	font-size: 1.5em;
+}
+
+.discord-widget {
+	position: fixed;
+	top: 150px;
+	left: calc(50% - 175px);
+}
+
+a:link {
+	color: rgb(0, 150, 255);
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+a:link:hover, a:link:focus, a:link:active {
+	color: white;
+	text-decoration: underline;
+}
+
+.tabs {
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+	height: 20px;
+}
+
+.tabs button {
+	display: inline;
+	background: none;
+	border: none;
+	height: 100%;
+	color: white;
+	transition: background 0.2s;
+	border-radius: 5px;
+}
+
+.tabs button:hover {
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.tabs button:active {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.tabs .sep {
+	display: inline-block;
+	width: 1px;
+	height: 15px;
+	position: relative;
+	top: 3px;
+	background-color: white;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.description {
+	margin-left: 20px;
+}
+
+.error-message {
+	font-size: 1.5em;
+	color: rgb(255, 85, 85);
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+body {
+	background-color: rgb(30, 30, 30);
+	color: white;
+	user-select: none;
+}
+
+body, button, input {
+	font-family: Roboto;
+}
+
+.invisible {
+	display: none;
+}

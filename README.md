@@ -1,4 +1,7 @@
 # SolClient
+
+<a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?label=Discord%20Server&logo=discord&style=social"></img></a>
+
 Simple and lightweight Minecraft client for 1.8.9 (and in future, newer versions).
 
 In October 2020, I decided to start working on my own Minecraft client, and nearly a year later, I've finally got somewhere.

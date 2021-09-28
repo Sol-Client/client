@@ -19,6 +19,8 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 
 [Holso](https://github.com/Holso) / [IceDracon](https://mine.ly/IceDracon.2): Helped create Discord and came up with the name (and some other stuff).
 
+[Hyperium](https://github.com/HyperiumClient/Hyperium): Some rendering and launching code.
+
 ## Features
 - Most features from Lunar.
 - Hypixel Additions (pop-up events, better channel switcher (shows channel name in chat box).

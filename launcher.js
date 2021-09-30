@@ -393,7 +393,7 @@ class Version {
 	}
 
 	static getNatives(version) {
-		return Version.getPath(version) + "/natives";
+		return Version.getPath(version) + "/" + version.id + "-natives";
 	}
 
 	static downloadJar(version) {

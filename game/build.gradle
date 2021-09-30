@@ -76,6 +76,12 @@ mixin {
 	add sourceSets.main, "mixin.solclient.refmap.json"
 }
 
+runClient {
+	outputs.upToDateWhen {
+		false
+	}
+}
+
 jar {
 	manifest {
 		attributes(

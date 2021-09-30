@@ -32,6 +32,8 @@ public abstract class MixinMinecraft implements AccessMinecraft {
 
     @Shadow private TextureManager renderEngine;
 
+    @Shadow public abstract void updateDisplay();
+
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiMainMenu;<init>()V"))
     public void init(CallbackInfo callback) {
         Client.INSTANCE.init();
@@ -90,11 +92,125 @@ public abstract class MixinMinecraft implements AccessMinecraft {
             }
         }
 
-
         return dWheel;
     }
 
+    // region Splash Screen Rendering
 
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/resources/SkinManager;<init>(Lnet/minecraft/client/renderer/texture/TextureManager;Ljava/io/File;Lcom/mojang/authlib/minecraft/MinecraftSessionService;)V"))
+    public void splashSkinManager(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/chunk/storage/AnvilSaveConverter;<init>(Ljava/io/File;)V"))
+    public void splashSaveLoader(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/audio/SoundHandler;<init>(Lnet/minecraft/client/resources/IResourceManager;Lnet/minecraft/client/settings/GameSettings;)V"))
+    public void splashSoundHandler(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/audio/MusicTicker;<init>(Lnet/minecraft/client/Minecraft;)V"))
+    public void splashMusicTicker(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/FontRenderer;<init>(Lnet/minecraft/client/settings/GameSettings;Lnet/minecraft/util/ResourceLocation;Lnet/minecraft/client/renderer/texture/TextureManager;Z)V"))
+    public void splashFontRenderer(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/util/MouseHelper;<init>()V"))
+    public void splashMouseHelper(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/texture/TextureMap;<init>(Ljava/lang/String;)V"))
+    public void splashTextureMap(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/resources/model/ModelManager;<init>(Lnet/minecraft/client/renderer/texture/TextureMap;)V"))
+    public void splashModelManager(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/entity/RenderItem;<init>(Lnet/minecraft/client/renderer/texture/TextureManager;Lnet/minecraft/client/resources/model/ModelManager;)V"))
+    public void splashRenderItem(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/entity/RenderManager;<init>(Lnet/minecraft/client/renderer/texture/TextureManager;Lnet/minecraft/client/renderer/entity/RenderItem;)V"))
+    public void splashRenderManager(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/ItemRenderer;<init>(Lnet/minecraft/client/Minecraft;)V"))
+    public void splashItemRenderer(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/EntityRenderer;<init>(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/resources/IResourceManager;)V"))
+    public void splashEntityRenderer(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/BlockRendererDispatcher;<init>(Lnet/minecraft/client/renderer/BlockModelShapes;Lnet/minecraft/client/settings/GameSettings;)V"))
+    public void splashBlockRenderDispatcher(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/RenderGlobal;<init>(Lnet/minecraft/client/Minecraft;)V"))
+    public void splashRenderGlobal(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/achievement/GuiAchievement;<init>(Lnet/minecraft/client/Minecraft;)V"))
+    public void splashGuiAchivement(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/particle/EffectRenderer;<init>(Lnet/minecraft/world/World;Lnet/minecraft/client/renderer/texture/TextureManager;)V"))
+    public void splashEffectRenderer(CallbackInfo callback) {
+        draw();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/GuiIngame;<init>(Lnet/minecraft/client/Minecraft;)V"))
+    public void splashGuiIngame(CallbackInfo callback) {
+        draw();
+    }
+
+    @SneakyThrows
+    private void draw() {
+        drawSplashScreen(renderEngine);
+    }
+
+    @Inject(method = "drawSplashScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;" +
+            "updateDisplay()V", shift = At.Shift.BEFORE))
+    public void drawProgress(TextureManager textureManagerInstance, CallbackInfo callback) {
+        SplashScreen.INSTANCE.draw();
+    }
+
+    // endregion
 
     @Override
     @Accessor

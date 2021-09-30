@@ -13,7 +13,7 @@ public class SplashScreen {
     public static final SplashScreen INSTANCE = new SplashScreen();
     private Minecraft mc = Minecraft.getMinecraft();
     private int stage;
-    private int stages = 19;
+    private int stages = 18;
 
     public void reset() {
         stage = 0;
@@ -38,6 +38,7 @@ public class SplashScreen {
                 resolution.getScaledHeight() * factor, bg);
         Gui.drawRect(0, resolution.getScaledHeight() * factor - 30,
                 resolution.getScaledWidth() * factor / stages * stage, resolution.getScaledHeight() * factor, fg);
+        System.out.println(stage);
         stage++;
     }
 

@@ -1,0 +1,126 @@
+package me.mcblueparrot.client.mixin.client;
+
+import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.events.*;
+import me.mcblueparrot.client.util.access.AccessMinecraft;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.client.shader.ShaderGroup;
+import net.minecraft.entity.Entity;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+@Mixin(EntityRenderer.class)
+public class MixinEntityRenderer {
+
+    @Shadow private Minecraft mc;
+
+    @Redirect(method = "updateLightmap", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;gammaSetting:F"))
+    public float overrideGamma(GameSettings settings) {
+        return Client.INSTANCE.bus.post(new GammaEvent(settings.gammaSetting)).gamma;
+    }
+
+    @Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/shader/Framebuffer;bindFramebuffer(Z)V"))
+    public void addShaders(Framebuffer framebuffer, boolean viewport) {
+        for(ShaderGroup group : Client.INSTANCE.bus.post(new PostProcessingEvent(PostProcessingEvent.Type.RENDER))
+                .groups) {
+            GlStateManager.matrixMode(5890);
+            GlStateManager.pushMatrix();
+            GlStateManager.loadIdentity();
+            group.loadShaderGroup(AccessMinecraft.getInstance().getTimer().renderPartialTicks);
+            GlStateManager.popMatrix();
+        }
+        framebuffer.bindFramebuffer(viewport);
+    }
+
+    @Inject(method = "updateShaderGroupSize", at = @At("RETURN"))
+    public void updateShaders(int width, int height, CallbackInfo callback) {
+        if(OpenGlHelper.shadersSupported) {
+            for (ShaderGroup group : Client.INSTANCE.bus.post(new PostProcessingEvent(PostProcessingEvent.Type.UPDATE))
+                    .groups) {
+                group.createBindFramebuffers(width, height);
+            }
+        }
+    }
+
+    private static float rotationYaw;
+    private static float prevRotationYaw;
+    private static float rotationPitch;
+    private static float prevRotationPitch;
+
+    @Inject(method = "orientCamera", at = @At("HEAD"))
+    public void orientCamera(float partialTicks, CallbackInfo callback) {
+        rotationYaw = mc.getRenderViewEntity().rotationYaw;
+        prevRotationYaw = mc.getRenderViewEntity().prevRotationYaw;
+        rotationPitch = mc.getRenderViewEntity().rotationPitch;
+        prevRotationPitch = mc.getRenderViewEntity().prevRotationPitch;
+
+        CameraRotateEvent event = Client.INSTANCE.bus.post(new CameraRotateEvent(rotationYaw, rotationPitch));
+        rotationYaw = event.yaw;
+        rotationPitch = event.pitch;
+
+        event = Client.INSTANCE.bus.post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch));
+        prevRotationYaw = event.yaw;
+        prevRotationPitch = event.pitch;
+    }
+
+    @Redirect(method = "orientCamera", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;rotationYaw:F"))
+    public float getRotationYaw(Entity entity) {
+        return rotationYaw;
+    }
+
+    @Redirect(method = "orientCamera", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;prevRotationYaw:F"))
+    public float getPrevRotationYaw(Entity entity) {
+        return prevRotationYaw;
+    }
+
+    @Redirect(method = "orientCamera", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;" +
+            "rotationPitch:F"))
+    public float getRotationPitch(Entity entity) {
+        return rotationPitch;
+    }
+
+    @Redirect(method = "orientCamera", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;" +
+            "prevRotationPitch:F"))
+    public float getPrevRotationPitch(Entity entity) {
+        return prevRotationPitch;
+    }
+
+    @Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;setAngles(FF)V"))
+    public void lookinAround(EntityPlayerSP entityPlayerSP, float yaw, float pitch) {
+        PlayerHeadRotateEvent event = new PlayerHeadRotateEvent(yaw, pitch);
+        Client.INSTANCE.bus.post(event);
+        yaw = event.yaw;
+        pitch = event.pitch;
+        if(!event.cancelled) {
+            entityPlayerSP.setAngles(yaw, pitch);
+        }
+    }
+
+    @Inject(method = "getFOVModifier", at = @At("RETURN"), cancellable = true)
+    public void getFov(float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Float> callback) {
+        callback.setReturnValue(Client.INSTANCE.bus.post(new FovEvent(callback.getReturnValue(), partialTicks)).fov);
+    }
+
+    @Redirect(method = "renderWorldPass", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/entity/Entity;isInsideOfMaterial(Lnet/minecraft/block/material/Material;)Z"))
+    public boolean overrideBlockHighlight(Entity entity, Material materialIn) {
+        if(Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
+                AccessMinecraft.getInstance().getTimer().renderPartialTicks)).cancelled) {
+            return false;
+        }
+        return entity.isInsideOfMaterial(materialIn);
+    }
+
+}

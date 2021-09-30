@@ -1,0 +1,87 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://files.minecraftforge.net/maven"
+		}
+		maven {
+			url "https://jitpack.io"
+		}
+		maven {
+			url "https://repo.spongepowered.org/maven"
+		}
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
+		classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
+	}
+}
+
+apply plugin: "net.minecraftforge.gradle.tweaker-client"
+apply plugin: "org.spongepowered.mixin"
+apply plugin: "java"
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+def launchWrapperTweakClass = "me.mcblueparrot.client.tweak.Tweaker"
+
+minecraft {
+	version = "1.8.9"
+	tweakClass = launchWrapperTweakClass
+	mappings = "stable_22"
+	runDir = "run"
+	makeObfSourceJar = false
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		url "https://libraries.minecraft.net"
+	}
+	maven {
+		url "https://repo.spongepowered.org/maven"
+	}
+	maven {
+		url "https://repo.codemc.io/repository/maven-public"
+	}
+	maven {
+		url "https://repo.hypixel.net/repository/Hypixel"
+	}
+}
+
+dependencies {
+	compileOnly "org.projectlombok:lombok:1.18.20"
+	annotationProcessor "org.projectlombok:lombok:1.18.20"
+	implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+		exclude module: "launchwrapper"
+		exclude module: "guava"
+		exclude module: "gson"
+		exclude module: "commons-io"
+	}
+	runtime "org.spongepowered:mixin:0.7.11-SNAPSHOT"
+	implementation "org.slick2d:slick2d-core:1.0.2"
+	runtime "org.slick2d:slick2d-core:1.0.2"
+	implementation "com.logisticscraft:occlusionculling:0.0.5-SNAPSHOT"
+	runtime "com.logisticscraft:occlusionculling:0.0.5-SNAPSHOT"
+	implementation "net.hypixel:hypixel-api-core:4.0"
+	runtime "net.hypixel:hypixel-api-core:4.0"
+}
+
+mixin {
+	defaultObfuscationEnv notch
+	add sourceSets.main, "mixin.solclient.refmap.json"
+}
+
+jar {
+	manifest {
+		attributes(
+				"FMLAT": "solclient_at.cfg",
+				"TweakClass": launchWrapperTweakClass,
+				"TweakOrder": "0"
+		)
+	}
+}

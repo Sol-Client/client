@@ -17,7 +17,7 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 ## Credits
 [TheKodeToad](https://github.com/TheKodeToad) / [mcblueparrot](https://mine.ly/mcblueparrot.1): Programmer.
 
-[Holso](https://github.com/Holso) / [IceDracon](https://mine.ly/IceDracon.2): Helped create Discord and came up with the name (and some other stuff).
+[Holso](https://github.com/Holso) / [GreenDracon](https://mine.ly/IceDracon.1): Helped create Discord and came up with the name (and some other stuff).
 
 [Hyperium](https://github.com/HyperiumClient/Hyperium): Some rendering and launching code.
 

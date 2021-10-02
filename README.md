@@ -5,10 +5,12 @@
 Simple and lightweight Minecraft client for 1.8.9 (and in future, newer versions).
 
 ## Why?
-I know there are too many new clients, but they are usually closed-source, and may contain malicious code.
+There are many Minecraft clients, but they are usually closed-source, and may contain malicious code.
+
+There may be mod loaders like Forge and Fabric, which are perfectly good for some people, but do not have the same integration and ease-of-use, such as automatic updates, and consistancy between versions.
 
 ## Safety
-I open sourced this client because not enough clients are open-source (even OptiFine is closed-source).
+I open sourced this client because not enough clients are open source (even OptiFine is closed source).
 
 If you are suspicous, you can easily look through all the code.
 
@@ -17,9 +19,19 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 ## Credits
 [TheKodeToad](https://github.com/TheKodeToad) / [mcblueparrot](https://mine.ly/mcblueparrot.1): Programmer.
 
-[Holso](https://github.com/Holso) / [GreenDracon](https://mine.ly/IceDracon.1): Helped create Discord and came up with the name (and some other stuff).
+[Holso](https://github.com/Holso) / [GreenDracon](https://mine.ly/IceDracon.1): Helped create Discord, came up with the name and tested the client.
+
+[sp614x](https://github.com/sp614x): OptiFine mod.
+
+[Sk1er LLC](https://github.com/Sk1erLLC): Mod inspiration.
 
 [Hyperium](https://github.com/HyperiumClient/Hyperium): Some rendering and launching code.
+
+[Eric Golde](https://www.youtube.com/c/egold555): My older private client followed his tutorials.
+
+[tr7zw](https://github.com/tr7zw/EntityCulling): Original EntityCulling mod. A ported version is used in this client.
+
+[OrangeMarshall](https://namemc.com/profile/OrangeMarshall.1): Original 1.7 Animations.
 
 ## Features
 - Most features from Lunar.

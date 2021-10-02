@@ -1,6 +1,6 @@
 # SolClient
 
-<a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?label=Discord%20Server&logo=discord&style=social"></img></a>
+<a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?labelColor=5662F6&color=36393F&label=Discord&logo=discord&logoColor=white&style=flat-square"/></a>
 
 Simple and lightweight Minecraft client for 1.8.9 (and in future, newer versions).
 
@@ -10,7 +10,7 @@ I know there are too many new clients, but they are usually closed-source, and m
 ## Safety
 I open sourced this client because not enough clients are open-source (even OptiFine is closed-source).
 
-If you are suspicous, you can easily look through all the code, and if you want to use part of the code in your mod, it is fine as long as you follow [the license](LICENSE).
+If you are suspicous, you can easily look through all the code.
 
 This client has been tested by multiple people on Hypixel, and it disables disallowed mods automatically.
 

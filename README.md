@@ -5,7 +5,7 @@
 Simple and lightweight Minecraft client for 1.8.9 (and in future, newer versions).
 
 ## Why?
-There are many Minecraft clients, but they are usually closed-source, and may contain malicious code.
+There are many Minecraft clients, but they are usually closed source, and may contain malicious code.
 
 There may be mod loaders like Forge and Fabric, which are perfectly good for some people, but do not have the same integration and ease-of-use, such as automatic updates, and consistancy between versions.
 

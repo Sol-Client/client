@@ -1,4 +1,4 @@
-# SolClient
+# Sol Client
 
 <a href="https://github.com/TheKodeToad/SolClient/actions/workflows/build_launcher.yml"><img src="https://github.com/TheKodeToad/SolClient/actions/workflows/build_launcher.yml/badge.svg"/></a>&nbsp;
 <a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?labelColor=5662F6&color=555555&label=Discord&logo=discord&logoColor=white"/></a>

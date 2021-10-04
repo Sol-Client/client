@@ -75,13 +75,16 @@ window.addEventListener("DOMContentLoaded", () => {
 			playButton.innerText = "...";
 			var valid = await launcher.account.getService().validate(launcher.account);
 			if(!valid) {
-				if(!(await launcher.account.getService().refresh(launcher.account))) {
+				var result = await launcher.account.getService().refresh(launcher.account);
+				if(!result) {
 					main.style.display = "none";
 					login.style.display = "block";
 					playButton.innerText = "Play";
 					launching = false;
+					return;
 				}
-				return;
+				launcher.account = result;
+				fs.writeFileSync(Utils.accountFile, JSON.stringify(launcher.account));
 			}
 			launcher.launch(() => {
 				playButton.innerText = "Play";

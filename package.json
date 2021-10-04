@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "Launcher for Sol Client.",
   "main": "main.js",
+  "electronPackagerConfig": {
+    "executableName": "sol-client-launcher"
+  }
   "scripts": {
     "start": "electron-forge start",
     "buildClient": "cd game && ./gradlew build && cd ..",

@@ -19,7 +19,7 @@
         "executableName": "sol-client-launcher"
       },
     }
-  }
+  },
   "build": {
     "appId": "sol-client-launcher",
     "win": {

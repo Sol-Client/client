@@ -4,9 +4,6 @@
   "version": "1.0.0",
   "description": "Launcher for Sol Client.",
   "main": "main.js",
-  "packagerConfig": {
-    "executableName": "sol-client-launcher"
-  },
   "scripts": {
     "start": "electron-forge start",
     "buildClient": "cd game && ./gradlew build && cd ..",
@@ -16,6 +13,13 @@
     "buildCiWin": "cd game && gradlew setupDevWorkspace && gradlew build && cd .. && npm run buildWinInstaller",
     "buildCiDeb": "cd game && ./gradlew setupDevWorkspace && ./gradlew build && cd .. && npm run make"
   },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "executableName": "sol-client-launcher"
+      },
+    }
+  }
   "build": {
     "appId": "sol-client-launcher",
     "win": {

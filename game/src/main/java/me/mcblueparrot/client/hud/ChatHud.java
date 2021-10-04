@@ -128,19 +128,16 @@ public class ChatHud extends Hud {
     @EventHandler
     public void onChatRender(ChatRenderEvent event) {
         event.cancelled = true;
-        if (visibility != ChatVisibility.HIDDEN)
-        {
+        if(visibility != ChatVisibility.HIDDEN) {
             AccessGuiNewChat accessor = ((AccessGuiNewChat) event.chat);
-            int i = event.chat.getLineCount();
-            boolean flag = false;
+            int linesCount = event.chat.getLineCount();
+            boolean open = false;
             int j = 0;
-            int k = accessor.getDrawnChatLines().size();
+            int drawnLinesCount = accessor.getDrawnChatLines().size();
 
-            if (k > 0)
-            {
-                if (event.chat.getChatOpen())
-                {
-                    flag = true;
+            if(drawnLinesCount > 0) {
+                if(event.chat.getChatOpen()) {
+                    open = true;
                 }
 
                 float f1 = getScale();
@@ -149,42 +146,37 @@ public class ChatHud extends Hud {
                 GlStateManager.translate(2.0F, 20.0F, 0.0F);
                 GlStateManager.scale(f1, f1, 1.0F);
 
-                for (int i1 = 0; i1 + accessor.getScrollPos() < accessor.getDrawnChatLines().size() && i1 < i; ++i1)
-                {
-                    ChatLine chatline = (ChatLine)accessor.getDrawnChatLines().get(i1 + accessor.getScrollPos());
+                for(int i = 0; i + accessor.getScrollPos() < accessor.getDrawnChatLines().size() && i < linesCount; ++i) {
+                    ChatLine chatline = (ChatLine)accessor.getDrawnChatLines().get(i + accessor.getScrollPos());
 
-                    if (chatline != null)
-                    {
-                        int j1 = event.updateCounter - chatline.getUpdatedCounter();
+                    if(chatline != null) {
+                        int update = event.updateCounter - chatline.getUpdatedCounter();
 
-                        if (j1 < 200 || flag)
-                        {
-                            double d0 = (double)j1 / 200.0D;
-                            d0 = 1.0D - d0;
-                            d0 = d0 * 10.0D;
-                            d0 = MathHelper.clamp_double(d0, 0.0D, 1.0D);
-                            d0 = d0 * d0;
+                        if(update < 200 || open) {
+                            double percent = (double) update / 200.0D;
+                            percent = 1.0D - percent;
+                            percent = percent * 10.0D;
+                            percent = MathHelper.clamp_double(percent, 0.0D, 1.0D);
+                            percent = percent * percent;
 
-                            if (flag)
-                            {
-                                d0 = 1;
+                            if(open) {
+                                percent = 1;
                             }
 
                             ++j;
 
-                            if (d0 > 0.05F)
-                            {
+                            if(percent > 0.05F) {
                                 int i2 = 0;
-                                int j2 = -i1 * 9;
+                                int j2 = -i * 9;
                                 if(background) {
                                     Gui.drawRect(i2 - 2, j2 - 9, i2 + l + 4, j2,
-                                            backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * d0)).getValue());
+                                            backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * percent)).getValue());
                                 }
-                                String s = chatline.getChatComponent().getFormattedText();
+                                String formattedText = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                this.mc.fontRendererObj.drawString(colours ? s :
-                                        EnumChatFormatting.getTextWithoutFormattingCodes(s), (float)i2, (float)(j2 - 8),
-                                        textColour.withAlpha((int) (textColour.getAlpha() * d0)).getValue(), shadow);
+                                this.mc.fontRendererObj.drawString(colours ? formattedText :
+                                        EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float)i2, (float)(j2 - 8),
+                                        textColour.withAlpha((int) (textColour.getAlpha() * percent)).getValue(), shadow);
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();
                             }
@@ -192,17 +184,15 @@ public class ChatHud extends Hud {
                     }
                 }
 
-                if (flag)
-                {
+                if(open) {
                     int k2 = this.mc.fontRendererObj.FONT_HEIGHT;
                     GlStateManager.translate(-3.0F, 0.0F, 0.0F);
-                    int l2 = k * k2 + k;
+                    int l2 = drawnLinesCount * k2 + drawnLinesCount;
                     int i3 = j * k2 + j;
-                    int j3 = accessor.getScrollPos() * i3 / k;
+                    int j3 = accessor.getScrollPos() * i3 / drawnLinesCount;
                     int k1 = i3 * i3 / l2;
 
-                    if (l2 != i3)
-                    {
+                    if(l2 != i3) {
                         int k3 = j3 > 0 ? 170 : 96;
                         int l3 = accessor.getIsScrolled() ? 13382451 : 3355562;
                         Gui.drawRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
@@ -236,13 +226,18 @@ public class ChatHud extends Hud {
     public class SymbolsButton implements ChatButton {
 
         @Override
+        public int getPriority() {
+            return getIndex();
+        }
+
+        @Override
         public int getPopupWidth() {
             return 77;
         }
 
         @Override
         public int getPopupHeight() {
-            return getSymbolTable().length * 13 - 2;
+            return getSymbolTable().length * 13 - 1;
         }
 
         @Override
@@ -263,9 +258,7 @@ public class ChatHud extends Hud {
                 for(char character : characters) {
                     Rectangle characterBounds = new Rectangle(x, y, 12, 12);
                     boolean selected = character != 0 && characterBounds.contains(mouseX, mouseY);
-                    Utils.drawRectangle(characterBounds,
-                            selected ? new Colour(255, 255, 255, 128)
-                                    : new Colour(0, 0, 0, 128));
+                    Utils.drawRectangle(characterBounds, selected ? Colour.WHITE_128 : Colour.BLACK_128);
                     if(character != 0) {
                         font.drawString(character + "",
                                 x + (13 / 2) - (font.getCharWidth(character) / 2),

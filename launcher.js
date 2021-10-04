@@ -6,7 +6,6 @@ const unzipper = require("unzipper");
 const childProcess = require("child_process");
 const auth = require("./auth");
 const yggdrasil = auth.YggdrasilAuthService.instance;
-const Patcher = require("./patcher.js");
 const axios = require("axios");
 const tar = require("tar");
 
@@ -47,7 +46,7 @@ class Utils {
 	static assetsDirectory;
 	static assetObjectsDirectory;
 	static gameDirectory;
-	static version = "beta-3.0";
+	static version = require("./package.json").version;
 
 	static getMinecraftDirectory() {
 		Utils.minecraftDirectory = os.homedir();
@@ -109,6 +108,19 @@ class Utils {
 		return new Promise((resolve) => resolve(true));
 	}
 
+	static getOptiFine() {
+		return new Promise((resolve) => {
+			axios.get("https://optifine.net/adloadx?f=OptiFine_1.8.9_HD_U_M5.jar")
+				.then((response) => {
+					var link = "https://optifine.net/downloadx?f=" +
+							response.data.substring(response.data
+									.indexOf("<a href='downloadx?f=")
+									 		+ "<a href='downloadx?f=".length, response.data.indexOf("' onclick='onDownload()'>"))
+					resolve(link);
+				});
+		});
+	}
+
 }
 
 Utils.getMinecraftDirectory();
@@ -121,7 +133,6 @@ class Launcher {
 	launch(callback) {
 		Manifest.getManifest((manifest) => {
 			Manifest.getVersion(manifest, "1.8.9", async(version) => {
-				version.id = "SolClient-" + Utils.version + "-" + version.id;
 				var jars = [];
 				var versionFolder = Version.getPath(version);
 				var versionJar = Version.getJar(version);
@@ -152,6 +163,33 @@ class Launcher {
 							url: "https://repo.hypixel.net/repository/Hypixel/net/hypixel/hypixel-api-core/4.0/hypixel-api-core-4.0.jar",
 							path: "net/hypixel/hypixel-api-core/4.0/hypixel-api-core-4.0.jar",
 							size: 76463
+						}
+					}
+				});
+				version.libraries.push({
+					downloads: {
+						artifact: {
+							url: "https://repo.spongepowered.org/repository/maven-public/org/spongepowered/mixin/0.7.11-SNAPSHOT/mixin-0.7.11-20180703.121122-1.jar",
+							path: "org/spongepowered/mixin/0.7.11-SNAPSHOT/mixin-0.7.11-20180703.121122-1.jar",
+							size: 1017668
+						}
+					}
+				});
+				version.libraries.push({
+					downloads: {
+						artifact: {
+							url: "https://libraries.minecraft.net/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar",
+							path: "net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar",
+							size: 32999
+						}
+					}
+				});
+				version.libraries.push({
+					downloads: {
+						artifact: {
+							url: "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-debug-all/5.2/asm-debug-all-5.2.jar",
+							path: "org/ow2/asm/asm-debug-all/5.2/asm-debug-all-5.2.jar",
+							size: 387903
 						}
 					}
 				});
@@ -188,16 +226,6 @@ class Launcher {
 							}
 						}
 					}
-				}
-
-				var optifineSize = 2585014;
-
-				if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
-					await Library.download({
-							url: await Patcher.getOptiFine(),
-							size: optifineSize,
-							path: optifineRelative
-						});
 				}
 
 				for(var object of Object.values((await Version.getAssetIndex(version)).objects)) {
@@ -274,13 +302,31 @@ class Launcher {
 					classpath += classpathSeparator;
 				}
 
-				classpath += await Patcher.patch(java, Version.getJar(version),
-						optifine, Version.getPath(version) + "/" + version.id +
-						"-patched.jar", classpathSeparator);
+				classpath += Version.getJar(version);
+
+				classpath += classpathSeparator;
+
+				classpath += path.join(__dirname, "game/build/libs/game.jar");
+
+				classpath += classpathSeparator;
+
+				var optifineSize = 2585014;
+
+				if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
+					await Library.download({
+							url: await Utils.getOptiFine(),
+							size: optifineSize,
+							path: optifineRelative
+						});
+				}
+
+				classpath += optifine;
+
+				console.log(classpath);
 
 				args.push(classpath);
 
-				args.push("net.minecraft.client.main.Main");
+				args.push("net.minecraft.launchwrapper.Launch");
 
 				args.push("--version");
 				args.push("SolClient");
@@ -313,9 +359,17 @@ class Launcher {
 				args.push("--gameDir");
 				args.push(Utils.gameDirectory);
 
+				args.push("--tweakClass");
+				args.push("me.mcblueparrot.client.tweak.Tweaker");
+
+				args.push("--tweakClass");
+				args.push("optifine.OptiFineTweaker");
+
 				var process = childProcess.spawn(java, args, { cwd: Utils.minecraftDirectory });
 
-				process.stdout.on("data", (data) => {}); // Don't know why you need this.
+				process.stdout.on("data", (data) => console.log(data.toString("utf-8"))); // Don't know why you need this.
+				process.stderr.on("data", (data) => console.error(data.toString("utf-8"))); // Don't know why you need this.
+
 
 				callback();
 			});

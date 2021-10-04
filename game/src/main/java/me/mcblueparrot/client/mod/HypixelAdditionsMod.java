@@ -6,6 +6,7 @@
 
 package me.mcblueparrot.client.mod;
 
+import me.mcblueparrot.client.DetectedServer;
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Rectangle;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import me.mcblueparrot.client.ChatChannelSystem;
 import me.mcblueparrot.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.ServerChangeEvent;
-import me.mcblueparrot.client.events.ChatMessageEvent;
+import me.mcblueparrot.client.events.ReceiveChatMessageEvent;
 import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.RenderEvent;
 import me.mcblueparrot.client.events.SoundPlayEvent;
@@ -50,8 +51,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
-
-import javax.swing.*;
 
 public class HypixelAdditionsMod extends Mod {
 
@@ -171,7 +170,7 @@ public class HypixelAdditionsMod extends Mod {
 
     public static boolean isHypixel() {
 //        return true; // For testing purposes
-        return Client.INSTANCE.detectedServer == Client.DetectedServer.HYPIXEL;
+        return Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL;
     }
 
     public static boolean isEffective() {
@@ -236,8 +235,8 @@ public class HypixelAdditionsMod extends Mod {
                 @Override
                 public void initGui() {
                     super.initGui();
-                    buttonList.add(new GuiButton(0, width / 2 - 102, height / 6 + 96, 100, 20, "Confirm"));
-                    buttonList.add(new GuiButton(1, width / 2 + 2, height / 6 + 96, 100, 20, "Deny"));
+                    buttonList.add(new GuiButton(0, width / 2 - 102, height / 6 + 156, 100, 20, "Confirm"));
+                    buttonList.add(new GuiButton(1, width / 2 + 2, height / 6 + 156, 100, 20, "Deny"));
                 }
 
                 @Override
@@ -296,7 +295,7 @@ public class HypixelAdditionsMod extends Mod {
     }
 
     @EventHandler
-    public void onMessage(ChatMessageEvent event) {
+    public void onMessage(ReceiveChatMessageEvent event) {
         if(!isHypixel()) {
             return;
         }
@@ -416,24 +415,23 @@ public class HypixelAdditionsMod extends Mod {
         }
 
         if(isLobby()) {
-            String name = event.sound.getSoundLocation().getResourcePath();
-            if(name.startsWith("mob")
-                    || name.equals("random.orb")
-                    || name.equals("random.pop")
-                    || name.equals("random.levelup")
-                    || name.equals("game.tnt.primed")
-                    || name.equals("random.explode")
-                    || name.equals("mob.chicken.plop")
-                    || name.startsWith("note")
-                    || name.equals("random.click")
-                    || name.startsWith("fireworks")
-                    || name.equals("fire.fire")
-                    || name.equals("random.bow")) {
+            if(event.soundName.startsWith("mob")
+                    || event.soundName.equals("random.orb")
+                    || event.soundName.equals("random.pop")
+                    || event.soundName.equals("random.levelup")
+                    || event.soundName.equals("game.tnt.primed")
+                    || event.soundName.equals("random.explode")
+                    || event.soundName.equals("mob.chicken.plop")
+                    || event.soundName.startsWith("note")
+                    || event.soundName.equals("random.click")
+                    || event.soundName.startsWith("fireworks")
+                    || event.soundName.equals("fire.fire")
+                    || event.soundName.equals("random.bow")) {
                 event.volume *= lobbySoundsVolume / 100F;
             }
         }
         else {
-            if(isHousing() && event.category == SoundCategory.RECORDS) {
+            if(isHousing() && event.soundName.startsWith("note")) {
                 event.volume *= housingMusicVolume / 100F;
             }
         }
@@ -465,7 +463,7 @@ public class HypixelAdditionsMod extends Mod {
         }
     }
 
-    public static enum RequestType {
+    public enum RequestType {
         // Taken from https://github.com/Sk1erLLC/PopupEvents/blob/master/src/main/resources/remoteresources/chat_regex.json
         FRIEND("Friend request from ((\\[.+] )?(\\S{1,16})).*",
                 "Friend request from %3$s.",

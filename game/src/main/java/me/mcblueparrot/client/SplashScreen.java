@@ -31,14 +31,10 @@ public class SplashScreen {
         int bg = new Colour(0, 0, 0).getValue();
         int fg = new Colour(255, 50, 50).getValue();
         int factor = resolution.getScaleFactor();
-//        if(Display.wasResized()) {
-//            resolution.update(mc);
-//        }
         Gui.drawRect(0, resolution.getScaledHeight() * factor - 30, resolution.getScaledWidth() * factor,
                 resolution.getScaledHeight() * factor, bg);
         Gui.drawRect(0, resolution.getScaledHeight() * factor - 30,
                 resolution.getScaledWidth() * factor / stages * stage, resolution.getScaledHeight() * factor, fg);
-        System.out.println(stage);
         stage++;
     }
 

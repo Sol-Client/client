@@ -71,6 +71,8 @@ public class ScoreboardMod extends Mod {
 
     @EventHandler
     public void onScoreboardRender(ScoreboardRenderEvent event) {
+		event.cancelled = true;
+
         Scoreboard scoreboard = event.objective.getScoreboard();
         Collection<Score> collection = scoreboard.getSortedScores(event.objective);
         List<Score> list = Lists.newArrayList(Iterables.filter(collection, p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#")));

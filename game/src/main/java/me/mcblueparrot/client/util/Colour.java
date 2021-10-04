@@ -15,6 +15,8 @@ public class Colour {
     public static Colour BLACK = new Colour(0, 0, 0);
     public static Colour RED = new Colour(255, 0, 0);
     public static Colour BLUE = new Colour(0, 150, 255);
+    public static Colour WHITE_128 = WHITE.withAlpha(128);
+    public static Colour BLACK_128 = BLACK.withAlpha(128);
 
     public Colour(int value) {
         this.value = value;

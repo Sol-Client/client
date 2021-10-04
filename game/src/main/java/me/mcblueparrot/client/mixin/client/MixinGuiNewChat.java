@@ -5,7 +5,9 @@ import me.mcblueparrot.client.events.ChatRenderEvent;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.GuiNewChat;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,5 +36,17 @@ public abstract class MixinGuiNewChat implements AccessGuiNewChat {
     @Override
     @Accessor
     public abstract int getScrollPos();
+
+    @Override
+    public void clearChat() {
+        drawnChatLines.clear();
+        chatLines.clear();
+    }
+
+    @Shadow @Final
+    private List<ChatLine> drawnChatLines;
+
+    @Shadow @Final
+    private List<ChatLine> chatLines;
 
 }

@@ -5,6 +5,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,12 @@ public class AsmTransformer {
         reader.accept(clazz, 0);
 
         for(ClassNodeTransformer transformer : applicable) {
-            transformer.apply(clazz);
+            try {
+                transformer.apply(clazz);
+            }
+            catch(IOException error) {
+                throw new IllegalStateException("Could not transform class " + name, error);
+            }
         }
 
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);

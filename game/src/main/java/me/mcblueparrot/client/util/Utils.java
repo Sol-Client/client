@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
 
 import lombok.experimental.UtilityClass;
 import me.mcblueparrot.client.mod.ArabicNumeralsMod;
@@ -31,6 +32,12 @@ import net.minecraft.util.ResourceLocation;
 
 @UtilityClass
 public class Utils {
+
+    public Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
+
+    private static int getStringWidth(String text) {
+        return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
+    }
 
     public JsonObject getGraph(URL url, String query) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

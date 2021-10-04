@@ -1,18 +1,36 @@
 {
   "name": "sol-client-launcher",
+  "productName": "Sol Client",
   "version": "1.0.0",
   "description": "Launcher for Sol Client.",
   "main": "main.js",
   "scripts": {
-    "start": "cd patcher && ./gradlew build && cd .. && electron-forge start",
-    "buildClient": "cd ../mcpoptifine && bash generate_patches.sh && cd ../Sol\\ Client\\ Launcher",
+    "start": "electron-forge start",
+    "buildClient": "cd game && ./gradlew build && cd ..",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "buildWinInstaller": "electron-builder",
+    "buildCiWin": "cd game && ./gradlew setupDevWorkspace && ./gradlew build && cd .. && npm run buildWinInstaller",
+    "buildCiDeb": "cd game && ./gradlew setupDevWorkspace && ./gradlew build && cd .. && npm run make"
+  },
+  "build": {
+    "appId": "sol-client-launcher",
+    "win": {
+      "target": [ "nsis" ],
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "uninstallDisplayName": "Sol Client",
+      "license": "LICENSE",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "author": "mcblueparrot",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.4",
+    "electron-builder": "^22.11.7",
     "electron-squirrel-startup": "^1.0.0",
     "msmc": "^2.2.2",
     "tar": "^6.1.11",

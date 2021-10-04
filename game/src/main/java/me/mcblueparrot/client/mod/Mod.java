@@ -128,4 +128,8 @@ public abstract class Mod {
         setEnabled(true);
     }
 
+    public int getIndex() {
+        return Client.INSTANCE.getMods().indexOf(this);
+    }
+
 }

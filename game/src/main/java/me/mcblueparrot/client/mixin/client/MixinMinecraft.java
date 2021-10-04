@@ -2,17 +2,27 @@ package me.mcblueparrot.client.mixin.client;
 
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.ServerChangeEvent;
 import me.mcblueparrot.client.SplashScreen;
 import me.mcblueparrot.client.events.*;
+import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundManager;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.achievement.GuiAchievement;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.Timer;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -21,18 +31,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.security.Key;
 import java.util.ConcurrentModificationException;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements AccessMinecraft {
 
-    @Shadow public GuiScreen currentScreen;
-
-    @Shadow protected abstract void drawSplashScreen(TextureManager textureManagerInstance) throws LWJGLException;
-
-    @Shadow private TextureManager renderEngine;
-
-    @Shadow public abstract void updateDisplay();
+    private boolean debugPressed;
+    private boolean cancelDebug;
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiMainMenu;<init>()V"))
     public void init(CallbackInfo callback) {
@@ -94,6 +100,37 @@ public abstract class MixinMinecraft implements AccessMinecraft {
 
         return dWheel;
     }
+
+    @Redirect(method = "createDisplay",
+            at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"))
+    public void overrideTitle(String oldTitle) {
+        Display.setTitle(Client.NAME + " on " + oldTitle);
+    }
+
+    @Inject(method = "setServerData", at = @At("HEAD"))
+    public void onDisconnect(ServerData serverDataIn, CallbackInfo callback) {
+        if(serverDataIn == null) {
+            Client.INSTANCE.onServerChange(null);
+        }
+    }
+
+    @Override
+    @Accessor
+    public abstract boolean isRunning();
+
+    @Override
+    @Accessor
+    public abstract Timer getTimer();
+
+
+    @Shadow
+    public GuiScreen currentScreen;
+
+    @Shadow
+    protected abstract void drawSplashScreen(TextureManager textureManagerInstance) throws LWJGLException;
+
+    @Shadow
+    private TextureManager renderEngine;
 
     // region Splash Screen Rendering
 
@@ -212,12 +249,96 @@ public abstract class MixinMinecraft implements AccessMinecraft {
 
     // endregion
 
-    @Override
-    @Accessor
-    public abstract boolean isRunning();
+    // region Better F3
+    // Backport 1.9 F3 fixes
 
-    @Override
-    @Accessor
-    public abstract Timer getTimer();
+    @Redirect(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;" +
+            "showDebugInfo:Z",
+            ordinal = 1))
+    public void preventDefaultF3(GameSettings settings, boolean f3) {
+    }
+
+    @Inject(method = "dispatchKeypresses", at = @At(value = "HEAD"))
+    public void updateF3(CallbackInfo callback) {
+        boolean debugPressed = Keyboard.isKeyDown(61);
+        if(this.debugPressed && !debugPressed) {
+            if(cancelDebug) {
+                cancelDebug = false;
+            }
+            else {
+                gameSettings.showDebugInfo = !gameSettings.showDebugInfo;
+            }
+        }
+        this.debugPressed = debugPressed;
+    }
+
+    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;" +
+            "clearChatMessages()V"))
+    public void betterClearMessages(GuiNewChat guiNewChat) {
+        ((AccessGuiNewChat) guiNewChat).clearChat();
+        cancelDebug = true;
+    }
+
+    @Inject(method = "runTick",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;refreshResources()V"))
+    public void betterRefreshResources(CallbackInfo callback) {
+        cancelDebug = true;
+    }
+
+    @Inject(method = "runTick",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;setOptionValue(Lnet/minecraft/client/settings/GameSettings$Options;I)V"))
+    public void betterRenderDistance(CallbackInfo callback) {
+        cancelDebug = true;
+    }
+
+    @Inject(method = "runTick",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;loadRenderers()V"))
+    public void betterLoadRenderers(CallbackInfo callback) {
+        cancelDebug = true;
+    }
+
+    @Inject(method = "runTick",
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/client/settings/GameSettings;saveOptions()V"))
+    public void betterTootipsAndPauseOnLostFocus(CallbackInfo callback) {
+        cancelDebug = true;
+    }
+
+    @Inject(method = "runTick",
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/client/renderer/entity/RenderManager;setDebugBoundingBox(Z)V"))
+    public void betterHitboxes(CallbackInfo callback) {
+        cancelDebug = true;
+    }
+
+    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyBindState(IZ)V"))
+    public void nextKey(int keyCode, boolean pressed) {
+        if(pressed && debugPressed) {
+            if(Keyboard.getEventKey() == 32
+                    || Keyboard.getEventKey() == 31
+                    || Keyboard.getEventKey() == 20
+                    || Keyboard.getEventKey() == 33
+                    || Keyboard.getEventKey() == 30
+                    || Keyboard.getEventKey() == 35
+                    || Keyboard.getEventKey() == 48
+                    || Keyboard.getEventKey() == 25) {
+                return;
+            }
+        }
+
+        KeyBinding.setKeyBindState(keyCode, pressed);
+    }
+
+    // endregion
+
+
+    @Shadow
+    public String debug;
+
+    @Shadow
+    public GuiAchievement guiAchievement;
+
+    @Shadow
+    public GameSettings gameSettings;
 
 }

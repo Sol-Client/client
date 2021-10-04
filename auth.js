@@ -46,7 +46,12 @@ class MicrosoftAuthService extends AuthService {
 
 	refresh(account) {
 		return new Promise((resolve) => {
-			resolve(msmc.refresh(this.toMsmc(account), () => {}, {client_id: "00000000402b5328"}));
+		    var result = msmc.refresh(this.toMsmc(account), () => {}, {client_id: "00000000402b5328"});
+			if(result.type != "Success") {
+			    resolve(null);
+			    return;
+			}
+			resolve(authenticate(result));
 		});
 	}
 

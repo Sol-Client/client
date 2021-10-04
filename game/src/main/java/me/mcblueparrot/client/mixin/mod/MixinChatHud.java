@@ -1,6 +1,7 @@
 package me.mcblueparrot.client.mixin.mod;
 
 import me.mcblueparrot.client.hud.ChatHud;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiUtilRenderComponents;
 import net.minecraft.client.settings.GameSettings;
@@ -61,6 +62,18 @@ public class MixinChatHud {
             if(ChatHud.enabled) {
                 callback.setReturnValue(input);
             }
+        }
+
+    }
+
+    @Mixin(GuiChat.class)
+    public static class MixinGuiChat {
+
+        public boolean canBeForceClosed() {
+            if(ChatHud.enabled) {
+                return !ChatHud.instance.preventClose;
+            }
+            return true;
         }
 
     }

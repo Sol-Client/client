@@ -22,17 +22,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityRenderer.class)
-public class MixinEntityRenderer {
-
-    @Shadow private Minecraft mc;
+public abstract class MixinEntityRenderer {
 
     @Redirect(method = "updateLightmap", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;gammaSetting:F"))
     public float overrideGamma(GameSettings settings) {
         return Client.INSTANCE.bus.post(new GammaEvent(settings.gammaSetting)).gamma;
     }
 
-    @Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/shader/Framebuffer;bindFramebuffer(Z)V"))
-    public void addShaders(Framebuffer framebuffer, boolean viewport) {
+    @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/shader" +
+            "/Framebuffer;bindFramebuffer(Z)V", shift = At.Shift.BEFORE))
+    public void addShaders(float partialTicks, long nanoTime, CallbackInfo callback) {
         for(ShaderGroup group : Client.INSTANCE.bus.post(new PostProcessingEvent(PostProcessingEvent.Type.RENDER))
                 .groups) {
             GlStateManager.matrixMode(5890);
@@ -41,7 +40,6 @@ public class MixinEntityRenderer {
             group.loadShaderGroup(AccessMinecraft.getInstance().getTimer().renderPartialTicks);
             GlStateManager.popMatrix();
         }
-        framebuffer.bindFramebuffer(viewport);
     }
 
     @Inject(method = "updateShaderGroupSize", at = @At("RETURN"))
@@ -53,6 +51,8 @@ public class MixinEntityRenderer {
             }
         }
     }
+
+    // region Rotate Camera Event
 
     private static float rotationYaw;
     private static float prevRotationYaw;
@@ -97,6 +97,8 @@ public class MixinEntityRenderer {
         return prevRotationPitch;
     }
 
+    // endregion
+
     @Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;setAngles(FF)V"))
     public void lookinAround(EntityPlayerSP entityPlayerSP, float yaw, float pitch) {
         PlayerHeadRotateEvent event = new PlayerHeadRotateEvent(yaw, pitch);
@@ -113,14 +115,46 @@ public class MixinEntityRenderer {
         callback.setReturnValue(Client.INSTANCE.bus.post(new FovEvent(callback.getReturnValue(), partialTicks)).fov);
     }
 
+    // region Block Highlight
+
+    @Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer" +
+            "/EntityRenderer;isDrawBlockOutline()Z"))
+    public boolean overrideCanDraw(EntityRenderer renderer) {
+        return true;
+    }
+
     @Redirect(method = "renderWorldPass", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/entity/Entity;isInsideOfMaterial(Lnet/minecraft/block/material/Material;)Z"))
-    public boolean overrideBlockHighlight(Entity entity, Material materialIn) {
-        if(Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
+            target = "Lnet/minecraft/entity/Entity;isInsideOfMaterial(Lnet/minecraft/block/material/Material;)Z",
+            ordinal = 0))
+    public boolean overrideWetBlockHighlight(Entity entity, Material materialIn) {
+        boolean maybeWould = entity.isInsideOfMaterial(materialIn);
+        boolean would = maybeWould && isDrawBlockOutline();
+        if(maybeWould && Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
                 AccessMinecraft.getInstance().getTimer().renderPartialTicks)).cancelled) {
             return false;
         }
-        return entity.isInsideOfMaterial(materialIn);
+        return would;
     }
+
+    @Redirect(method = "renderWorldPass", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/entity/Entity;isInsideOfMaterial(Lnet/minecraft/block/material/Material;)Z",
+            ordinal = 1))
+    public boolean overrideBlockHighlight(Entity entity, Material materialIn) {
+        boolean totallyWouldNot = entity.isInsideOfMaterial(materialIn);
+        boolean wouldNot = totallyWouldNot || !isDrawBlockOutline();
+        if(!totallyWouldNot && Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
+                AccessMinecraft.getInstance().getTimer().renderPartialTicks)).cancelled) {
+            return true;
+        }
+        return wouldNot;
+    }
+
+    // endregion
+
+    @Shadow
+    private Minecraft mc;
+
+    @Shadow
+    protected abstract boolean isDrawBlockOutline();
 
 }

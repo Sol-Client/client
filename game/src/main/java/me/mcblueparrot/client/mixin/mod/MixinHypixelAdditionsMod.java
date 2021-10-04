@@ -24,7 +24,8 @@ public class MixinHypixelAdditionsMod {
         }
 
         @Inject(method = "renderOffsetLivingLabel", at = @At("RETURN"))
-        public void renderLevelhead(AbstractClientPlayer entityIn, double x, double y, double z, String str, float p_177069_9_, double p_177069_10_, CallbackInfo ci) {
+        public void renderLevelhead(AbstractClientPlayer entityIn, double x, double y, double z, String str,
+                                    float p_177069_9_, double p_177069_10_, CallbackInfo callback) {
             if(HypixelAdditionsMod.isEffective()) {
                 String levelhead = HypixelAdditionsMod.instance.getLevelhead(entityIn.getUniqueID());
                 if(levelhead != null) {
@@ -33,7 +34,7 @@ public class MixinHypixelAdditionsMod {
                             EnumChatFormatting.AQUA + "Level: " + EnumChatFormatting.YELLOW + levelhead,
                             x,
                             y + ((double) ((float)this.getFontRendererFromRenderManager().FONT_HEIGHT
-                                    * 1.15F * p_177069_9_) * 2),
+                                    * 1.15F * p_177069_9_)),
                             z,
                             64
                     );

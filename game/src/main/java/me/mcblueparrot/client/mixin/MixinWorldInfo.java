@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.mixin.client;
+package me.mcblueparrot.client.mixin;
 
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.events.TimeEvent;

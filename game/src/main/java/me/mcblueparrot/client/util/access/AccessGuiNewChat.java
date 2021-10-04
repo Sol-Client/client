@@ -15,4 +15,6 @@ public interface AccessGuiNewChat {
 
     int getScrollPos();
 
+    void clearChat();
+
 }

@@ -5,9 +5,6 @@ buildscript {
 			url "https://files.minecraftforge.net/maven"
 		}
 		maven {
-			url "https://jitpack.io"
-		}
-		maven {
 			url "https://repo.spongepowered.org/maven"
 		}
 		maven {
@@ -53,27 +50,30 @@ repositories {
 	}
 }
 
+configurations {
+	dependency
+	implementation.extendsFrom(dependency)
+	runtime.extendsFrom(dependency)
+}
+
 dependencies {
 	compileOnly "org.projectlombok:lombok:1.18.20"
 	annotationProcessor "org.projectlombok:lombok:1.18.20"
-	implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+	annotationProcessor "org.spongepowered:mixin:0.7.11-SNAPSHOT"
+	dependency("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
 		exclude module: "launchwrapper"
 		exclude module: "guava"
 		exclude module: "gson"
 		exclude module: "commons-io"
 	}
-	runtime "org.spongepowered:mixin:0.7.11-SNAPSHOT"
-	implementation "org.slick2d:slick2d-core:1.0.2"
-	runtime "org.slick2d:slick2d-core:1.0.2"
-	implementation "com.logisticscraft:occlusionculling:0.0.5-SNAPSHOT"
-	runtime "com.logisticscraft:occlusionculling:0.0.5-SNAPSHOT"
-	implementation "net.hypixel:hypixel-api-core:4.0"
-	runtime "net.hypixel:hypixel-api-core:4.0"
+	dependency "org.slick2d:slick2d-core:1.0.2"
+	dependency "com.logisticscraft:occlusionculling:0.0.5-SNAPSHOT"
+	dependency "net.hypixel:hypixel-api-core:4.0"
 }
 
 mixin {
 	defaultObfuscationEnv notch
-	add sourceSets.main, "mixin.solclient.refmap.json"
+	add sourceSets.main, "mixins.solclient.refmap.json"
 }
 
 runClient {
@@ -83,11 +83,13 @@ runClient {
 }
 
 jar {
+	dependsOn configurations.compile
 	manifest {
 		attributes(
-				"FMLAT": "solclient_at.cfg",
+				"MixinConfigs": "mixins.solclient.json",
 				"TweakClass": launchWrapperTweakClass,
-				"TweakOrder": "0"
+				"TweakOrder": "0",
+				"Manifest-Version": "1.0"
 		)
 	}
 }

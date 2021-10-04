@@ -1,11 +1,18 @@
 package me.mcblueparrot.client.util.access;
 
-import net.minecraft.client.gui.GuiChat;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
+import me.mcblueparrot.client.ui.ChatButton;
+import me.mcblueparrot.client.util.Utils;
 
 public interface AccessGuiChat {
 
     void type(char typedChar, int keyCode);
+
+    ChatButton getSelectedChatButton();
+
+    void setSelectedChatButton(ChatButton button);
+
+    static AccessGuiChat getInstance() {
+        return (AccessGuiChat) Utils.getChatGui();
+    }
 
 }

@@ -59,21 +59,17 @@ public class BlockSelectionMod extends Mod {
         Entity entity = this.mc.getRenderViewEntity();
         boolean result = entity instanceof EntityPlayer && !this.mc.gameSettings.hideGUI;
 
-        if (result && !((EntityPlayer)entity).capabilities.allowEdit && !persistant)
-        {
+        if (result && !((EntityPlayer)entity).capabilities.allowEdit && !persistant) {
             ItemStack itemstack = ((EntityPlayer)entity).getCurrentEquippedItem();
 
-            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-            {
+            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 BlockPos blockpos = this.mc.objectMouseOver.getBlockPos();
                 Block block = this.mc.theWorld.getBlockState(blockpos).getBlock();
 
-                if (this.mc.playerController.getCurrentGameType() == WorldSettings.GameType.SPECTATOR)
-                {
+                if (this.mc.playerController.getCurrentGameType() == WorldSettings.GameType.SPECTATOR) {
                     result = block.hasTileEntity() && this.mc.theWorld.getTileEntity(blockpos) instanceof IInventory;
                 }
-                else
-                {
+                else {
                     result = itemstack != null && (itemstack.canDestroy(block) || itemstack.canPlaceOn(block));
                 }
             }

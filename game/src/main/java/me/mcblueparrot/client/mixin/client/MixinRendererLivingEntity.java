@@ -11,10 +11,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(RendererLivingEntity.class)
 public class MixinRendererLivingEntity<T extends EntityLivingBase> {
 
-    private static float r;
-    private static float g;
-    private static float b;
-    private static float a;
+    private static float red;
+    private static float green;
+    private static float blue;
+    private static float alpha;
 
     @Inject(method = "setBrightness", at = @At("HEAD"))
     public void initHitColour(T entitylivingbaseIn, float partialTicks, boolean combineTextures,
@@ -22,30 +22,30 @@ public class MixinRendererLivingEntity<T extends EntityLivingBase> {
         HitOverlayEvent event = new HitOverlayEvent(1, 0, 0, 0.3F);
         Client.INSTANCE.bus.post(event);
 
-        r = event.r;
-        g = event.g;
-        b = event.b;
-        a = event.a;
+        red = event.r;
+        green = event.g;
+        blue = event.b;
+        alpha = event.a;
     }
 
     @ModifyConstant(method = "setBrightness", constant = @Constant(floatValue = 1, ordinal = 0))
     public float overrideHitColourR(float original) {
-        return r;
+        return red;
     }
 
     @ModifyConstant(method = "setBrightness", constant = @Constant(floatValue = 0, ordinal = 0))
     public float overrideHitColourG(float original) {
-        return g;
+        return green;
     }
 
     @ModifyConstant(method = "setBrightness", constant = @Constant(floatValue = 0, ordinal = 1))
     public float overrideHitColourB(float original) {
-        return b;
+        return blue;
     }
 
     @ModifyConstant(method = "setBrightness", constant = @Constant(floatValue = 0.3F, ordinal = 0))
     public float overrideHitColourA(float original) {
-        return a;
+        return alpha;
     }
 
 }

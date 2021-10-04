@@ -1,3 +1,5 @@
+> :warning: In development. There is not currently a full release.
+
 # Sol Client
 
 <a href="https://github.com/TheKodeToad/SolClient/actions/workflows/build_launcher.yml"><img src="https://github.com/TheKodeToad/SolClient/actions/workflows/build_launcher.yml/badge.svg"/></a>&nbsp;

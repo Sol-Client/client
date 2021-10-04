@@ -17,7 +17,7 @@
     "forge": {
       "packagerConfig": {
         "executableName": "sol-client-launcher"
-      },
+      }
     }
   },
   "build": {

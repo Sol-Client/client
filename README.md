@@ -3,10 +3,10 @@
 # Sol Client
 
 
+<a href="https://github.com/TheKodeToad/SolClient/actions/workflows/build_launcher.yml"><img src="https://github.com/TheKodeToad/SolClient/actions/workflows/build_launcher.yml/badge.svg"/></a>&nbsp;
 <img src="https://img.shields.io/badge/You%20Didn't-Ask%20for%20This-blue"/>&nbsp;
 <img src="https://img.shields.io/badge/Minecraft-1.8.9-brightgreen"/>&nbsp;
-<a href="https://github.com/TheKodeToad/SolClient/actions/workflows/build_launcher.yml"><img src="https://github.com/TheKodeToad/SolClient/actions/workflows/build_launcher.yml/badge.svg"/></a>&nbsp;
-<a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?labelColor=5662F6&color=555555&label=Discord&logo=discord&logoColor=white"/></a>
+<a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?color=5662F6&label=Discord&logo=discord&logoColor=white"/></a>
 
 Simple and lightweight Minecraft client for 1.8.9 (and in future, newer versions).
 

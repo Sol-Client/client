@@ -50,17 +50,36 @@ Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1
 
 ## Build Instructions
 
-### Setup
+### Launcher
+
+Setup:
 ```sh
 npm i
 ```
 
-### Start Launcher
+Start Launcher:
 ```sh
 npm run start
 ```
 
-### Build Executable
+Build Executable:
 ```sh
 npm run make
+```
+
+### Game
+
+Move into folder:
+```sh
+cd game
+```
+
+Setup:
+```sh
+./gradlew setupDecompWorkspace
+```
+
+Build JAR:
+```sh
+./gradlew build
 ```

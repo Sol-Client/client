@@ -36,8 +36,8 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          C:\Users\runneradmin\.gradle\caches
-          C:\Users\runneradmin\.gradle\wrapper
+          %userprofile%\.gradle\caches
+          %userprofile%\.gradle\wrapper
         key: "gradle"
     - name: Set Up Node.js
       uses: actions/setup-node@v2

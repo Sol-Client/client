@@ -3,9 +3,9 @@
 cd game
 
 echo Setting up CI Workspace...
-gradlew setupCIWorkspace
+call gradlew.bat setupCIWorkspace
 echo Building game...
-gradlew build
+call gradlew.bat build
 cd ..
 
 echo Packaging launcher...

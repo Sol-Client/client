@@ -15,14 +15,14 @@ jobs:
       with:
         node-version: 16.x
         cache: "npm"
+    - run: mkdir -p dist/installers
     - run: npm ci
     - run: npm run buildLinux
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
         name: Sol Client Setup.deb
-        path: |
-          dist/installers/*.deb
+        path: dist/installers/*.deb
   windows:
     runs-on: windows-latest
 
@@ -33,6 +33,9 @@ jobs:
       with:
         node-version: 16.x
         cache: "npm"
+    - run: mkdir -p dist/installers
+    - name: Remove incompatible packages
+      run: npm r electron-installer-debian
     - run: npm ci
     - run: npm run buildWindows
     - name: Upload Artifact

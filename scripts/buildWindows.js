@@ -5,7 +5,7 @@ async function build() {
 	console.log("Building installer...");
 	try {
 		await electronInstaller.createWindowsInstaller({
-			appDirectory: "dist\sol-client-launcher-x64",
+			appDirectory: "dist",
 			outDirectory: "dist\installers",
 			authors: "mcblueparrot",
 			exe: "Sol Client Setup.exe"

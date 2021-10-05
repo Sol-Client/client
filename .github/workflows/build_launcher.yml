@@ -16,7 +16,7 @@ jobs:
         node-version: 16.x
         cache: "npm"
     - run: npm ci
-    - run: npm run buildDeb
+    - run: npm run buildLinux
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:

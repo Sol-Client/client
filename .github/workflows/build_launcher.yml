@@ -33,7 +33,7 @@ jobs:
       with:
         node-version: 16.x
         cache: "npm"
-    - run: mkdir -p dist/installers
+    - run: mkdir -p dist/installers && mkdir -p dist/sol-client-launcher-x64/
     - name: Remove incompatible packages
       run: npm r electron-installer-debian
     - run: npm ci

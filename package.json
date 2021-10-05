@@ -8,7 +8,7 @@
     "start": "electron .",
     "buildClient": "cd game && ./gradlew build && cd ..",
     "buildWinInstaller": "electron-builder",
-    "buildWindows": "scripts/buildWindows.bat",
+    "buildWindows": "scripts\\buildWindows.bat",
     "buildLinux": "scripts/buildLinux.sh"
   },
   "author": "mcblueparrot",

@@ -8,6 +8,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Cache Gradle Packages
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
     - name: Set Up Node.js
       uses: actions/setup-node@v2
       with:

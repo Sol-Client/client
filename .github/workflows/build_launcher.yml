@@ -15,7 +15,6 @@ jobs:
       with:
         node-version: 16.x
         cache: "npm"
-    - run: mkdir -p dist/installers && mkdir -p dist/sol-client-launcher-x64/
     - run: npm ci
     - run: npm run buildLinux
     - name: Upload Artifact

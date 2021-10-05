@@ -1,3 +1,5 @@
+if(require("electron-squirrel-startup")) return; // If on Windows, handle squirrel-related stuff.
+
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
@@ -367,9 +369,7 @@ class Launcher {
 
 				var process = childProcess.spawn(java, args, { cwd: Utils.minecraftDirectory });
 
-				process.stdout.on("data", (data) => console.log(data.toString("utf-8"))); // Don't know why you need this.
-				process.stderr.on("data", (data) => console.error(data.toString("utf-8"))); // Don't know why you need this.
-
+				process.stdout.on("data", (data) => {}); // Don't know why you need this.
 
 				callback();
 			});

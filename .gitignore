@@ -120,9 +120,8 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-# Electron Forge
-
-**/out/
+# Electron Packager
+dist/
 
 # Eclipse
 

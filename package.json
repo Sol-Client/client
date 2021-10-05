@@ -5,33 +5,11 @@
   "description": "Launcher for Sol Client.",
   "main": "main.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "electron .",
     "buildClient": "cd game && ./gradlew build && cd ..",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
     "buildWinInstaller": "electron-builder",
-    "buildCiWin": "cd game && gradlew setupCIWorkspace && gradlew build && cd .. && npm run buildWinInstaller",
-    "buildCiDeb": "cd game && ./gradlew setupCIWorkspace && ./gradlew build && cd .. && electron-packager ."
-  },
-  "config": {
-    "forge": {
-      "electronPackagerConfig": {
-        "executableName": "sol-client-launcher"
-      }
-    }
-  },
-  "build": {
-    "appId": "sol-client-launcher",
-    "win": {
-      "target": [ "nsis" ],
-      "requestedExecutionLevel": "requireAdministrator"
-    },
-    "nsis": {
-      "uninstallDisplayName": "Sol Client",
-      "license": "LICENSE",
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    }
+    "buildWindows": "scripts/buildWindows.sh",
+    "buildLinux": "scripts/buildLinux.sh"
   },
   "author": "mcblueparrot",
   "license": "MIT",
@@ -49,33 +27,8 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.61",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
     "@electron-forge/maker-zip": "^6.0.0-beta.61",
-    "electron": "^13.4.0"
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "sol_client_launcher"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
-    }
+    "electron": "^13.4.0",
+    "electron-installer-debian": "^3.1.0",
+    "electron-winstaller": "^5.0.0"
   }
 }

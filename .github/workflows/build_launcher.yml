@@ -16,13 +16,13 @@ jobs:
         node-version: 16.x
         cache: "npm"
     - run: npm ci
-    - run: npm run buildCiDeb
+    - run: npm run buildDeb
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
         name: Sol Client Setup.deb
         path: |
-          out/make/deb/x64/*.deb
+          dist/installers/*.deb
   windows:
     runs-on: windows-latest
 
@@ -34,9 +34,9 @@ jobs:
         node-version: 16.x
         cache: "npm"
     - run: npm ci
-    - run: npm run buildCiWin
+    - run: npm run buildWindows
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
         name: Sol Client Setup.exe
-        path: dist/*.exe
+        path: dist/installers/*.exe

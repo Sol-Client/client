@@ -1,21 +1,18 @@
 {
   "name": "sol-client-launcher",
-  "productName": "Sol Client",
   "version": "1.0.0",
   "description": "Launcher for Sol Client.",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron-forge start",
     "buildClient": "cd game && ./gradlew build && cd ..",
-    "buildWinInstaller": "electron-builder",
-    "buildWindows": "scripts\\buildWindows.bat",
-    "buildLinux": "scripts/buildLinux.sh"
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "author": "mcblueparrot",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.4",
-    "electron-builder": "^22.11.7",
     "electron-squirrel-startup": "^1.0.0",
     "msmc": "^2.2.2",
     "tar": "^6.1.11",
@@ -27,8 +24,33 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.61",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
     "@electron-forge/maker-zip": "^6.0.0-beta.61",
-    "electron": "^13.4.0",
-    "electron-installer-debian": "^3.1.0",
-    "electron-winstaller": "^5.0.0"
+    "electron": "^13.4.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "sol_client_launcher"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }

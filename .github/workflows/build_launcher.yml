@@ -16,7 +16,7 @@ jobs:
           ~/.gradle/caches
           ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-      restore-keys: |
+        restore-keys: |
         ${{ runner.os }}-gradle-
     - name: Set Up Node.js
       uses: actions/setup-node@v2

@@ -61,7 +61,7 @@ jobs:
     - name: NPM CI
       run: npm ci
     - name: Build Game
-      run: cd game && gradlew setupCIWorkspace && gradlew build && cd ..
+      run: cd game && call gradlew.bat setupCIWorkspace && call gradlew.bat build && cd ..
     - name: Build Installer
       run: npm run make
     - name: Upload Artifact

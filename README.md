@@ -10,6 +10,11 @@
 
 Simple and lightweight Minecraft client for 1.8.9 (and in future, newer versions).
 
+## Gimme it now!
+First, go to [releases](https://github.com/TheKodeToad/Sol-Client/releases).
+
+Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing.
+
 ## Why?
 There are many Minecraft clients, but they are usually closed source, and may contain malicious code.
 

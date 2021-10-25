@@ -11,6 +11,7 @@
   "author": "mcblueparrot",
   "license": "MIT",
   "dependencies": {
+    "@electron-forge/maker-dmg": "^6.0.0-beta.61",
     "axios": "^0.21.4",
     "electron-squirrel-startup": "^1.0.0",
     "msmc": "^2.2.2",

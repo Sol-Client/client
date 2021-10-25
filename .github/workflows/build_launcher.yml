@@ -34,8 +34,41 @@ jobs:
       with:
         name: Sol Client Launcher (Linux)
         path: out/make/deb/x64/*.deb
+        
   windows:
     runs-on: windows-latest
+
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@v2
+    - name: Gradle Cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          %userprofile%\.gradle\caches
+          %userprofile%\.gradle\wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**\*.gradle*', '**\gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    - name: Set Up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+        cache: "npm"
+    - name: NPM CI
+      run: npm ci
+    - name: Build Game
+      run: cd game && .\gradlew setupCIWorkspace && .\gradlew build && cd ..
+    - name: Build Installer
+      run: npm run make
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2-preview
+      with:
+        name: Sol Client Launcher (Windows)
+        path: out/make/squirrel.windows/x64/*.exe
+        
+  macos:
+    runs-on: macos-latest
 
     steps:
     - name: Git Checkout
@@ -54,16 +87,14 @@ jobs:
       with:
         node-version: 16.x
         cache: "npm"
-    - name: Remove incompatible packages
-      run: npm r electron-installer-debian
     - name: NPM CI
       run: npm ci
     - name: Build Game
-      run: cd game && .\gradlew setupCIWorkspace && .\gradlew build && cd ..
+      run: cd game && ./gradlew setupCIWorkspace && ./gradlew build && cd ..
     - name: Build Installer
       run: npm run make
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
-        name: Sol Client Launcher (Windows)
-        path: out/make/squirrel.windows/x64/*.exe
+        name: Sol Client Launcher (MacOS)
+        path: out/make/dmg/x64/*.dmg

@@ -9,7 +9,6 @@ function createWindow() {
 	window = new BrowserWindow({
 		width: 800,
 		height: 600,
-		resizable: false,
 		webPreferences: {
 			preload: path.join(__dirname, "app.js")
 		}
@@ -17,6 +16,7 @@ function createWindow() {
 
 	window.loadFile("app.html");
 	window.setMenu(null);
+	window.webContents.openDevTools();
 }
 
 ipcMain.on("msa", async(event) => {

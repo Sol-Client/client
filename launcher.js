@@ -284,7 +284,18 @@ class Launcher {
 							}
 
 							java = dest + "/" + response.data[0].release_name
-									+ "-jre/bin/java" + (getOsName() == "windows" ? ".exe" : "");
+									+ "-jre/";
+							switch(getOsName()) {
+								case "linux":
+									java += "bin/java";
+									break;
+								case "windows":
+									java += "bin/java.exe";
+									break;
+								case "osx":
+									java += "Contents/Home/bin/java";
+									break;
+							}
 
 							resolve();
 						});
@@ -293,6 +304,14 @@ class Launcher {
 				var args = [];
 				args.push("-Djava.library.path=" + nativesFolder);
 				args.push("-Dme.mcblueparrot.client.version=" + Utils.version);
+
+				if(getOsName() == "windows") {
+					args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
+				}
+
+				if(getOsName() == "osx") {
+					// args.push("-XstartOnFirstThread");
+				}
 
 				var classpathSeparator = getOsName() == "windows" ? ";" : ":";
 				var classpath = "";
@@ -369,7 +388,9 @@ class Launcher {
 
 				var process = childProcess.spawn(java, args, { cwd: Utils.minecraftDirectory });
 
-				process.stdout.on("data", (data) => {}); // Don't know why you need this.
+				process.stdout.on("data", (data) => console.log(data.toString("UTF-8"))); // Don't know why you need this.
+
+				process.stderr.on("data", (data) => console.error(data.toString("UTF-8"))); // Don't know why you need this.
 
 				callback();
 			});

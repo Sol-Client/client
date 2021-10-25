@@ -6,6 +6,7 @@ const microsoftAuthService = MicrosoftAuthService.instance;
 const yggdrasilAuthService = YggdrasilAuthService.instance;
 const fs = require("fs");
 const msmc = require("msmc");
+const os = require("os");
 
 window.addEventListener("DOMContentLoaded", () => {
 	const playButton = document.getElementById("launch-button");
@@ -97,6 +98,22 @@ window.addEventListener("DOMContentLoaded", () => {
 		mojangLogin.style.display = "none";
 		login.style.display = "block";
 	};
+
+	document.querySelector(".about-tab").onclick = () => switchToTab("description");
+
+	document.querySelector(".settings-tab").onclick = () => switchToTab("settings");
+
+	var memory = document.querySelector(".memory");
+
+	memory.max = os.totalmem() / 1024 / 1024;
+	console.log(memory.max);
+	memory.value = 1024;
+
+	function switchToTab(tab) {
+			document.querySelector(".description").style.display = "none";
+			document.querySelector(".settings").style.display = "none";
+			document.querySelector("." + tab).style.display = "block";
+	}
 
 	const loginButtonMojang = document.querySelector(".login-button-mojang");
 	const emailField = document.getElementById("username");

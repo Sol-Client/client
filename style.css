@@ -148,7 +148,7 @@
 }
 
 a:link {
-	color: rgb(0, 150, 255);
+	color: rgb(255, 180, 0);
 	text-decoration: none;
 	transition: color 0.2s;
 }
@@ -218,4 +218,19 @@ body, button, input {
 
 .invisible {
 	display: none;
+}
+
+input[type="range"] {
+	-webkit-appearance: none;
+	height: 10px;
+	border-radius: 10px;
+	background: rgba(100, 100, 100);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 15px;
+	width: 15px;
+	border-radius: 100%;
+	background: rgba(255, 180, 0);
 }

@@ -133,9 +133,10 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
+        prerelease: false
         title: ${{ fromJson(steps.version.outputs.packageJson).version }}
         files: |
-          *.exe
-          *.deb
-          *.dmg
+          Sol Client Launcher (Linux)/*
+          Sol Client Launcher (MacOS)/*
+          Sol Client Launcher (Windows)/*
       

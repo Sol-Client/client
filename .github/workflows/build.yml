@@ -107,7 +107,7 @@ jobs:
 
     runs-on: ubuntu-latest
   
-    needs: [linux, windows, macos]
+    needs: [ linux, windows, macos ]
     
     steps:
     - name: Git Checkout

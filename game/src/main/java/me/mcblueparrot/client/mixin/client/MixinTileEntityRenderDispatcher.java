@@ -1,12 +1,13 @@
 package me.mcblueparrot.client.mixin.client;
 
-import me.mcblueparrot.client.Cullable;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.tileentity.TileEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import me.mcblueparrot.client.Cullable;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.tileentity.TileEntity;
 
 @Mixin(TileEntityRendererDispatcher.class)
 public class MixinTileEntityRenderDispatcher {

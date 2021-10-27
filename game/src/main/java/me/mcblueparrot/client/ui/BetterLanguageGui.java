@@ -1,19 +1,17 @@
 package me.mcblueparrot.client.ui;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiLanguage;
-import net.minecraft.client.gui.GuiSlot;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.resources.Language;
-import net.minecraft.client.settings.GameSettings;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiLanguage;
+import net.minecraft.client.gui.GuiSlot;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.Language;
 
 public class BetterLanguageGui extends GuiSlot {
 

@@ -7,7 +7,9 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import me.mcblueparrot.client.mod.Mod;
 
@@ -79,7 +81,7 @@ public @interface ConfigOption {
         }
 
         public static List<Cached> get(Mod mod) {
-            List<Cached> result = new ArrayList<ConfigOption.Cached>();
+            List<Cached> result = new ArrayList<Cached>();
             add(mod, mod.getClass(), result);
             return result;
         }

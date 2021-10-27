@@ -1,19 +1,23 @@
 package me.mcblueparrot.client.mixin.client;
 
-import me.mcblueparrot.client.ui.SearchableResourcePackList;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.resources.ResourcePackListEntry;
+import java.io.IOException;
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.transformer.meta.MixinRenamed;
 
-import java.io.IOException;
-import java.util.List;
+import me.mcblueparrot.client.ui.SearchableResourcePackList;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiResourcePackAvailable;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiScreenResourcePacks;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.ResourcePackListEntry;
 
 @Mixin(GuiScreenResourcePacks.class)
 public class MixinGuiScreenResourcePacks extends GuiScreen {

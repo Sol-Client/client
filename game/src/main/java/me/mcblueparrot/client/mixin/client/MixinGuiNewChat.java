@@ -1,10 +1,7 @@
 package me.mcblueparrot.client.mixin.client;
 
-import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.ChatRenderEvent;
-import me.mcblueparrot.client.util.access.AccessGuiNewChat;
-import net.minecraft.client.gui.ChatLine;
-import net.minecraft.client.gui.GuiNewChat;
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,7 +10,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
+import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.events.ChatRenderEvent;
+import me.mcblueparrot.client.util.access.AccessGuiNewChat;
+import net.minecraft.client.gui.ChatLine;
+import net.minecraft.client.gui.GuiNewChat;
 
 @Mixin(GuiNewChat.class)
 public abstract class MixinGuiNewChat implements AccessGuiNewChat {

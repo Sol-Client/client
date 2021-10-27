@@ -1,13 +1,13 @@
 package me.mcblueparrot.client.mixin.mod;
 
-import me.mcblueparrot.client.mod.ShowOwnTagMod;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
-import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import me.mcblueparrot.client.mod.impl.ShowOwnTagMod;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.entity.Entity;
 
 public class MixinShowOwnTagMod {
 

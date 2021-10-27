@@ -1,5 +1,13 @@
 package me.mcblueparrot.client.mixin.client;
 
+import java.util.List;
+
+import org.lwjgl.input.Mouse;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Invoker;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.ui.ChatButton;
 import me.mcblueparrot.client.util.Colour;
@@ -9,13 +17,6 @@ import me.mcblueparrot.client.util.access.AccessGuiChat;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.input.Mouse;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.util.List;
 
 @Mixin(GuiChat.class)
 public abstract class MixinGuiChat extends GuiScreen implements AccessGuiChat {

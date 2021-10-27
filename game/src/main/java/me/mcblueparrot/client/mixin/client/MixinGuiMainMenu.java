@@ -1,11 +1,5 @@
 package me.mcblueparrot.client.mixin.client;
 
-import me.mcblueparrot.client.mod.ModsScreen;
-import me.mcblueparrot.client.ui.BetterLanguageGui;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.resources.LanguageManager;
-import net.minecraft.client.settings.GameSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +7,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
+import me.mcblueparrot.client.ui.ModsScreen;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 
 @Mixin(GuiMainMenu.class)
 public class MixinGuiMainMenu extends GuiScreen {

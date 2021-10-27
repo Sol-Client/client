@@ -2,12 +2,12 @@ package me.mcblueparrot.client.mod;
 
 import java.util.List;
 
-import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.annotations.Expose;
 
+import lombok.Getter;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import net.minecraft.client.Minecraft;

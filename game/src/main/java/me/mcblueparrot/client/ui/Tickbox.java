@@ -2,8 +2,6 @@ package me.mcblueparrot.client.ui;
 
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Rectangle;
-
-
 import me.mcblueparrot.client.util.Utils;
 
 public class Tickbox {

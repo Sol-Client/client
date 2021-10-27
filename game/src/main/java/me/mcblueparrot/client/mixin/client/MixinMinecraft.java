@@ -1,24 +1,7 @@
 package me.mcblueparrot.client.mixin.client;
 
-import lombok.SneakyThrows;
-import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.ServerChangeEvent;
-import me.mcblueparrot.client.SplashScreen;
-import me.mcblueparrot.client.events.*;
-import me.mcblueparrot.client.util.access.AccessGuiNewChat;
-import me.mcblueparrot.client.util.access.AccessMinecraft;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundManager;
-import net.minecraft.client.gui.GuiNewChat;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.achievement.GuiAchievement;
-import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.Timer;
+import java.util.ConcurrentModificationException;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -31,8 +14,27 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.security.Key;
-import java.util.ConcurrentModificationException;
+import lombok.SneakyThrows;
+import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.SplashScreen;
+import me.mcblueparrot.client.events.MouseClickEvent;
+import me.mcblueparrot.client.events.OpenGuiEvent;
+import me.mcblueparrot.client.events.ScrollEvent;
+import me.mcblueparrot.client.events.TickEvent;
+import me.mcblueparrot.client.events.WorldLoadEvent;
+import me.mcblueparrot.client.util.access.AccessGuiNewChat;
+import me.mcblueparrot.client.util.access.AccessMinecraft;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.achievement.GuiAchievement;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.Timer;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements AccessMinecraft {
@@ -331,6 +333,18 @@ public abstract class MixinMinecraft implements AccessMinecraft {
 
     // endregion
 
+    private boolean hadWorld;
+
+    @Inject(method = "loadWorld(Lnet/minecraft/client/multiplayer/WorldClient;Ljava/lang/String;)V", at = @At("RETURN"))
+    public void onWorldLoad(WorldClient world, String loadingText, CallbackInfo callback) {
+    	if(world == null && hadWorld) {
+            hadWorld = false;
+    	}
+    	else if(world != null && !hadWorld) {
+    	    hadWorld = true;
+    	    Client.INSTANCE.onServerChange(currentServerData);
+    	}
+    }
 
     @Shadow
     public String debug;
@@ -340,5 +354,8 @@ public abstract class MixinMinecraft implements AccessMinecraft {
 
     @Shadow
     public GameSettings gameSettings;
+
+    @Shadow
+    public ServerData currentServerData;
 
 }

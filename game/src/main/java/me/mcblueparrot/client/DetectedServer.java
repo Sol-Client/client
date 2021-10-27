@@ -1,13 +1,13 @@
 package me.mcblueparrot.client;
 
-import me.mcblueparrot.client.mod.Mod;
-import net.minecraft.client.multiplayer.ServerData;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import me.mcblueparrot.client.mod.Mod;
+import net.minecraft.client.multiplayer.ServerData;
 
 public enum DetectedServer {
     HYPIXEL("([A-z]+\\.)?hypixel\\.net(:[0-9]+)?",

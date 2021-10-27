@@ -1,9 +1,6 @@
 package me.mcblueparrot.client.events;
 
 import lombok.AllArgsConstructor;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.SoundCategory;
-import net.minecraft.util.ResourceLocation;
 
 @AllArgsConstructor
 public class SoundPlayEvent {

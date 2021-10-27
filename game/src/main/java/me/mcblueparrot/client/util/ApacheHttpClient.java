@@ -27,8 +27,12 @@
 
 package me.mcblueparrot.client.util;
 
-import net.hypixel.api.http.HypixelHttpClient;
-import net.hypixel.api.http.HypixelHttpResponse;
+import java.io.IOException;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -36,15 +40,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import me.mcblueparrot.client.Client;
-
-import java.io.IOException;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import net.hypixel.api.http.HypixelHttpClient;
+import net.hypixel.api.http.HypixelHttpResponse;
 
 public class ApacheHttpClient implements HypixelHttpClient {
 

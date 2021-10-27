@@ -1,9 +1,10 @@
 package me.mcblueparrot.client.util;
 
-import com.google.gson.annotations.Expose;
-import lombok.*;
+import java.awt.Color;
 
-import java.awt.*;
+import com.google.gson.annotations.Expose;
+
+import lombok.Getter;
 
 public class Colour {
 

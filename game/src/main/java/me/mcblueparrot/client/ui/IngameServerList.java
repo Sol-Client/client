@@ -1,11 +1,7 @@
 package me.mcblueparrot.client.ui;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiScreenServerList;
-
-import java.io.IOException;
 
 public class IngameServerList extends GuiMultiplayer {
 

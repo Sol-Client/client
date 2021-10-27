@@ -1,7 +1,7 @@
 /*
  * TODO: Digital Lego with HD font?
  * TODO: With an additional library that hasn't been maintained in years?
- * TODO: Stealing a large amount of code from Hyperium?
+ * TODO: "Borrowing" a large amount of code from Hyperium?
  *
  * Modified from original (https://github.com/HyperiumClient/Hyperium/blob/master/src/main/java/cc/hyperium/utils/HyperiumFontRenderer.java).
  * Depends on Slick2D (http://slick.ninjacave.com/).
@@ -29,9 +29,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.lwjgl.opengl.GL11;

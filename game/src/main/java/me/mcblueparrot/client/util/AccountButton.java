@@ -1,4 +1,4 @@
-//package me.mcblueparrot.client.util;
+package me.mcblueparrot.client.util;//package me.mcblueparrot.client.util;
 //
 //import java.util.UUID;
 //

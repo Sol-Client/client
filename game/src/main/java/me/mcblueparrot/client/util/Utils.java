@@ -9,24 +9,22 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 
-import lombok.experimental.UtilityClass;
-import me.mcblueparrot.client.mod.ArabicNumeralsMod;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.StatCollector;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 

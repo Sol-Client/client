@@ -1,12 +1,9 @@
 package me.mcblueparrot.client;
 
 import me.mcblueparrot.client.util.Colour;
-
-import net.minecraft.client.gui.ScaledResolution;
-import org.lwjgl.opengl.Display;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 
 public class SplashScreen {
 

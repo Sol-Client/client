@@ -1,17 +1,18 @@
 package me.mcblueparrot.client.mixin.client;
 
-import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.SoundPlayEvent;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.util.ResourceLocation;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.events.SoundPlayEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.util.ResourceLocation;
 
 @Mixin(WorldClient.class)
 public class MixinWorldClient {
@@ -38,6 +39,11 @@ public class MixinWorldClient {
                 mc.getSoundHandler().playSound(positionedsoundrecord);
             }
         }
+    }
+
+    @Inject(method = "sendQuittingDisconnectingPacket()V", at = @At("HEAD"))
+    public void handleDisconnect(CallbackInfo callback) {
+        Client.INSTANCE.onDisconnect();
     }
 
 }

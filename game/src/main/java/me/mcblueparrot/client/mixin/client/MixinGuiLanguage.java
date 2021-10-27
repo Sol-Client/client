@@ -1,16 +1,16 @@
 package me.mcblueparrot.client.mixin.client;
 
+import java.io.IOException;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import me.mcblueparrot.client.ui.BetterLanguageGui;
 import net.minecraft.client.gui.GuiLanguage;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.io.IOException;
 
 @Mixin(GuiLanguage.class)
 public class MixinGuiLanguage extends GuiScreen {

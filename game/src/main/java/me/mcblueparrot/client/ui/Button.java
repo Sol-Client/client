@@ -2,7 +2,6 @@ package me.mcblueparrot.client.ui;
 
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Rectangle;
-
 import me.mcblueparrot.client.util.SlickFontRenderer;
 import me.mcblueparrot.client.util.Utils;
 
@@ -17,8 +16,8 @@ public class Button {
     public Button(String text, Rectangle bounds, Colour colour, Colour hoverColour) {
         this.text = text;
         this.bounds = bounds;
-        this.colour = new Colour(colour.getRed(), colour.getGreen(), colour.getBlue(), 200);
-        this.hoverColour = new Colour(hoverColour.getRed(), hoverColour.getGreen(), hoverColour.getBlue(), 200);
+        this.colour = colour.withAlpha(200);
+        this.hoverColour = hoverColour.withAlpha(200);
     }
 
     public void render(int mouseX, int mouseY) {

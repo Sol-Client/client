@@ -3,18 +3,19 @@ package me.mcblueparrot.client;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import me.mcblueparrot.client.events.SendChatMessageEvent;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.command.CommandException;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Keyboard;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,18 +27,56 @@ import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
 import me.mcblueparrot.client.events.EventBus;
 import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.events.SendChatMessageEvent;
 import me.mcblueparrot.client.events.TickEvent;
-import me.mcblueparrot.client.hud.*;
-import me.mcblueparrot.client.mod.*;
+import me.mcblueparrot.client.mod.Mod;
+import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.impl.ArabicNumeralsMod;
+import me.mcblueparrot.client.mod.impl.BetterItemTooltipsMod;
+import me.mcblueparrot.client.mod.impl.BlockSelectionMod;
+import me.mcblueparrot.client.mod.impl.ChunkAnimationMod;
+import me.mcblueparrot.client.mod.impl.HitColourMod;
+import me.mcblueparrot.client.mod.impl.HypixelAdditionsMod;
+import me.mcblueparrot.client.mod.impl.ItemPhysicsMod;
+import me.mcblueparrot.client.mod.impl.MenuBlurMod;
+import me.mcblueparrot.client.mod.impl.MotionBlurMod;
+import me.mcblueparrot.client.mod.impl.NightVisionMod;
+import me.mcblueparrot.client.mod.impl.NumeralPingMod;
+import me.mcblueparrot.client.mod.impl.Old1_7AnimationsMod;
+import me.mcblueparrot.client.mod.impl.ParticlesMod;
+import me.mcblueparrot.client.mod.impl.PerspectiveMod;
+import me.mcblueparrot.client.mod.impl.ScoreboardMod;
+import me.mcblueparrot.client.mod.impl.ShowOwnTagMod;
+import me.mcblueparrot.client.mod.impl.TimeChangerMod;
+import me.mcblueparrot.client.mod.impl.ZoomMod;
+import me.mcblueparrot.client.mod.impl.hud.ArmourHud;
+import me.mcblueparrot.client.mod.impl.hud.ChatHud;
+import me.mcblueparrot.client.mod.impl.hud.ComboCounterHud;
+import me.mcblueparrot.client.mod.impl.hud.CpsHud;
+import me.mcblueparrot.client.mod.impl.hud.CrosshairHud;
+import me.mcblueparrot.client.mod.impl.hud.FpsHud;
+import me.mcblueparrot.client.mod.impl.hud.KeystrokeHud;
+import me.mcblueparrot.client.mod.impl.hud.PingHud;
+import me.mcblueparrot.client.mod.impl.hud.PositionHud;
+import me.mcblueparrot.client.mod.impl.hud.ReachDisplayHud;
+import me.mcblueparrot.client.mod.impl.hud.SpeedHud;
+import me.mcblueparrot.client.mod.impl.hud.StatusEffectsHud;
+import me.mcblueparrot.client.mod.impl.hud.TimerHud;
+import me.mcblueparrot.client.mod.impl.hud.ToggleSprintMod;
 import me.mcblueparrot.client.ui.ChatButton;
+import me.mcblueparrot.client.ui.ModsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.IResource;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
 
 /**
  * Main class for Sol Client.
@@ -101,12 +140,14 @@ public class Client {
         register(new BlockSelectionMod());
         register(new HitColourMod());
         registerKeybind(keyMods);
+        
         try {
             unregisterKeybind((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
         }
-        catch(NoSuchFieldException | IllegalAccessException | ClassCastException error) {
+        catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
             // OptiFine is not enabled.
         }
+        
         organiseHuds();
         LOGGER.info("Loaded " + mods.size() + " mods");
         LOGGER.info("Saving settings...");
@@ -272,13 +313,13 @@ public class Client {
     @EventHandler
     public void onSendMessage(SendChatMessageEvent event) {
         if(event.message.startsWith("/")) {
-            String commandKey = event.message.substring(1, !event.message.contains(" ") ?
-                    event.message.length() : event.message.indexOf(" "));
+            List<String> args = Arrays.asList(event.message.split(" "));
+            String commandKey = args.get(0).substring(1);
             if(commands.containsKey(commandKey)) {
                 try {
-                    String[] args = event.message.split(" ");
-                    commands.get(commandKey).processCommand(mc.thePlayer, Arrays.copyOfRange(args,
-                            1, args.length - 1));
+                    args.remove(0);
+
+                    commands.get(commandKey).processCommand(mc.thePlayer, args.toArray(new String[0]));
                     event.cancelled = true;
                 }
                 catch(CommandException error) {
@@ -302,7 +343,7 @@ public class Client {
         if(keyMods.isPressed()) {
             mc.displayGuiScreen(new ModsScreen(null));
         }
-	}
+    }
 
     public void registerChatButton(ChatButton button) {
         chatButtons.add(button);
@@ -313,28 +354,28 @@ public class Client {
         chatButtons.remove(button);
     }
 
-	public void onServerChange(ServerData data) {
-	    setChatChannelSystem(null);
+    public void onServerChange(ServerData data) {
+        setChatChannelSystem(null);
 
-	    if(data == null) {
-	        detectedServer = null;
-	        return;
-	    }
+        if(data == null) {
+            detectedServer = null;
+            return;
+        }
 
-	    for(DetectedServer server : DetectedServer.values()) {
-	        if(server.matches(data)) {
-	            detectedServer = server;
+        for(DetectedServer server : DetectedServer.values()) {
+            if(server.matches(data)) {
+                detectedServer = server;
                 mods.stream().filter(server::shouldBlockMod).forEach(Mod::block);
-	            break;
-	        }
-	    }
+                break;
+            }
+        }
 
-	    bus.post(new ServerChangeEvent(detectedServer));
+        bus.post(new ServerChangeEvent(detectedServer));
     }
 
-	public void onServerDisconnect() {
-	    mods.forEach(Mod::unblock);
-	}
+    public void onDisconnect() {
+        mods.forEach(Mod::unblock);
+    }
 
     public List<ChatButton> getChatButtons() {
         return chatButtons;

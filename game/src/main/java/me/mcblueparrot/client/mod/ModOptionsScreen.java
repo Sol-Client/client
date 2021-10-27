@@ -1,4 +1,4 @@
-//package me.mcblueparrot.client.mod;
+package me.mcblueparrot.client.mod;//package me.mcblueparrot.client.mod;
 //
 //import java.awt.Color;
 //import java.awt.Rectangle;

@@ -1,6 +1,6 @@
 package me.mcblueparrot.client;
 
-import me.mcblueparrot.client.mod.HypixelAdditionsMod;
+import me.mcblueparrot.client.mod.impl.HypixelAdditionsMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 

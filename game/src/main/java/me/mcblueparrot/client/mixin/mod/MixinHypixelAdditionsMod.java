@@ -1,18 +1,16 @@
 package me.mcblueparrot.client.mixin.mod;
 
-import me.mcblueparrot.client.mod.HypixelAdditionsMod;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderEntity;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumChatFormatting;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import me.mcblueparrot.client.mod.impl.HypixelAdditionsMod;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 public class MixinHypixelAdditionsMod {
 

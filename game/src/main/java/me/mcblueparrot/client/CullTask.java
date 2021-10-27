@@ -31,13 +31,13 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import me.mcblueparrot.client.util.access.AccessMinecraft;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 import com.logisticscraft.occlusionculling.util.Vec3d;
 
+import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

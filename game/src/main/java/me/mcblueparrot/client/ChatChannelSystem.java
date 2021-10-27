@@ -3,7 +3,6 @@ package me.mcblueparrot.client;
 import java.util.List;
 import java.util.Objects;
 
-import com.sun.jna.platform.win32.WinDef;
 import me.mcblueparrot.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
 import me.mcblueparrot.client.ui.ChatButton;
 import me.mcblueparrot.client.util.Colour;
@@ -14,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.network.play.client.C01PacketChatMessage;
-import tv.twitch.chat.Chat;
 
 public abstract class ChatChannelSystem {
 

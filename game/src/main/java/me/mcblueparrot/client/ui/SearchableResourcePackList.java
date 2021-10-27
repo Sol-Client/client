@@ -1,15 +1,14 @@
 package me.mcblueparrot.client.ui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiResourcePackAvailable;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.resources.ResourcePackListEntry;
-import net.minecraft.client.resources.ResourcePackListEntryFound;
-import net.minecraft.util.EnumChatFormatting;
-
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiResourcePackAvailable;
+import net.minecraft.client.resources.ResourcePackListEntry;
+import net.minecraft.client.resources.ResourcePackListEntryFound;
+import net.minecraft.util.EnumChatFormatting;
 
 public class SearchableResourcePackList extends GuiResourcePackAvailable {
 

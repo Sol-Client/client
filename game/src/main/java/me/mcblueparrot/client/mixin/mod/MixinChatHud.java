@@ -1,15 +1,16 @@
 package me.mcblueparrot.client.mixin.mod;
 
-import me.mcblueparrot.client.hud.ChatHud;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiUtilRenderComponents;
-import net.minecraft.client.settings.GameSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import me.mcblueparrot.client.mod.impl.hud.ChatHud;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiUtilRenderComponents;
+import net.minecraft.client.settings.GameSettings;
 
 public class MixinChatHud {
 

@@ -1,12 +1,14 @@
 package me.mcblueparrot.client.mixin.client;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.events.RenderGuiBackgroundEvent;
-import me.mcblueparrot.client.util.access.AccessGuiScreen;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.access.AccessGuiScreen;
 import net.minecraft.client.gui.GuiScreen;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.*;
 
 @Mixin(GuiScreen.class)
 public class MixinGuiScreen implements AccessGuiScreen {

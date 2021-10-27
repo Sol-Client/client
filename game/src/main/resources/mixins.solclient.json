@@ -21,6 +21,7 @@
     "client.MixinGuiNewChat",
     "client.MixinGuiScreen",
     "client.MixinGuiScreenResourcePacks",
+    "client.MixinGuiSlot",
     "client.MixinItemRenderer",
     "client.MixinMinecraft",
     "client.MixinNetHandlerPlayClient",

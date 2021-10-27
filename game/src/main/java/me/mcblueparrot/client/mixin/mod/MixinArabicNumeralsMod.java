@@ -1,19 +1,18 @@
 package me.mcblueparrot.client.mixin.mod;
 
-import me.mcblueparrot.client.mod.ArabicNumeralsMod;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.renderer.InventoryEffectRenderer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.StatCollector;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import me.mcblueparrot.client.mod.impl.ArabicNumeralsMod;
+import net.minecraft.client.renderer.InventoryEffectRenderer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemPotion;
+import net.minecraft.util.StatCollector;
 
 public class MixinArabicNumeralsMod {
 

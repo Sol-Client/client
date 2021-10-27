@@ -1,4 +1,4 @@
-//package me.mcblueparrot.client.util;
+package me.mcblueparrot.client.util;//package me.mcblueparrot.client.util;
 //
 //import java.awt.Rectangle;
 //import java.util.Arrays;

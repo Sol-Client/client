@@ -3,7 +3,7 @@
 # Sol Client
 
 
-<a href="https://github.com/TheKodeToad/Sol-Client/actions/workflows/launcher.yml"><img src="https://img.shields.io/github/workflow/status/TheKodeToad/Sol-Client/launcher?style=for-the-badge&logo=github&logoColor=white"/></a>&nbsp;
+<a href="https://github.com/TheKodeToad/Sol-Client/actions/workflows/build.yml"><img src="https://img.shields.io/github/workflow/status/TheKodeToad/Sol-Client/build?style=for-the-badge&logo=github&logoColor=white"/></a>&nbsp;
 <img src="https://img.shields.io/static/v1?label=you%20didn%27t&message=ask%20for%20this&color=blue&style=for-the-badge"/>&nbsp;
 <img src="https://img.shields.io/static/v1?label=minecraft&message=1.8.9&color=brightgreen&style=for-the-badge"/>&nbsp;
 <a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?color=5662F6&label=discord&logo=discord&logoColor=white&style=for-the-badge"/></a>

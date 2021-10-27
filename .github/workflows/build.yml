@@ -136,7 +136,7 @@ jobs:
         prerelease: false
         title: ${{ fromJson(steps.version.outputs.packageJson).version }}
         files: |
-          Sol Client Launcher (Linux)/*
-          Sol Client Launcher (MacOS)/*
-          Sol Client Launcher (Windows)/*
+          Sol Client Launcher (Linux)/*.deb
+          Sol Client Launcher (MacOS)/*.dmg
+          Sol Client Launcher (Windows)/*.exe
       

@@ -35,7 +35,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
-        name: Sol Client Launcher (Linux)
+        name: Sol-Client-Launcher-Linux
         path: out/make/deb/x64/*.deb
         
   windows:
@@ -67,7 +67,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
-        name: Sol Client Launcher (Windows)
+        name: Sol-Client-Launcher-Windows
         path: out/make/squirrel.windows/x64/*.exe
         
   macos:
@@ -99,7 +99,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
-        name: Sol Client Launcher (MacOS)
+        name: Sol-Client-Launcher-MacOS
         path: out/make/*.dmg
 
   upload:
@@ -136,7 +136,6 @@ jobs:
         prerelease: false
         title: ${{ fromJson(steps.version.outputs.packageJson).version }}
         files: |
-          Sol Client Launcher (Linux)/*.deb
-          Sol Client Launcher (MacOS)/*.dmg
-          Sol Client Launcher (Windows)/*.exe
-      
+          Sol-Client-Launcher-Linux/*.deb
+          Sol-Client-Launcher-Windows/*.exe
+          Sol-Client-Launcher-MacOS/*.dmg

@@ -179,6 +179,10 @@ a:link:hover, a:link:focus, a:link:active {
 	background-color: rgba(255, 255, 255, 0.3);
 }
 
+.selected-tab {
+	text-decoration: underline;
+}
+
 .tabs button:active {
 	background-color: rgba(255, 255, 255, 0.1);
 }
@@ -194,7 +198,7 @@ a:link:hover, a:link:focus, a:link:active {
 	margin-right: 3px;
 }
 
-.description {
+.about {
 	margin-left: 20px;
 }
 
@@ -233,4 +237,18 @@ input[type="range"]::-webkit-slider-thumb {
 	width: 15px;
 	border-radius: 100%;
 	background: rgba(255, 180, 0);
+}
+
+.memory-box {
+	margin-left: auto;
+	margin-right: auto;
+	width: 200px;
+}
+
+.memory-box p {
+	text-align: center;
+}
+
+.memory-box input {
+	width: 100%;
 }

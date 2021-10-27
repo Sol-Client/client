@@ -10,6 +10,7 @@ const auth = require("./auth");
 const yggdrasil = auth.YggdrasilAuthService.instance;
 const axios = require("axios");
 const tar = require("tar");
+const Config = require("./config");
 
 function getOsName() {
 	switch(os.type()) {
@@ -49,6 +50,7 @@ class Utils {
 	static assetObjectsDirectory;
 	static gameDirectory;
 	static version = require("./package.json").version;
+	static configFile;
 
 	static getMinecraftDirectory() {
 		Utils.minecraftDirectory = os.homedir();
@@ -126,6 +128,8 @@ class Utils {
 }
 
 Utils.getMinecraftDirectory();
+Config.init(Utils.minecraftDirectory);
+Config.load();
 
 class Launcher {
 
@@ -305,12 +309,14 @@ class Launcher {
 				args.push("-Djava.library.path=" + nativesFolder);
 				args.push("-Dme.mcblueparrot.client.version=" + Utils.version);
 
+				args.push("-Xmx" + Config.data.maxMemory + "M");
+
 				if(getOsName() == "windows") {
 					args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
 				}
 
 				if(getOsName() == "osx") {
-					// args.push("-XstartOnFirstThread");
+					args.push("-XstartOnFirstThread");
 				}
 
 				var classpathSeparator = getOsName() == "windows" ? ";" : ":";

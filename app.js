@@ -1,4 +1,5 @@
-const {Launcher, Utils} = require("./launcher.js");
+const {Launcher, Utils} = require("./launcher");
+const Config = require("./config");
 const launcher = Launcher.instance;
 const {ipcRenderer, shell} = require("electron");
 const {MicrosoftAuthService, YggdrasilAuthService, Account} = require("./auth");
@@ -99,20 +100,33 @@ window.addEventListener("DOMContentLoaded", () => {
 		login.style.display = "block";
 	};
 
-	document.querySelector(".about-tab").onclick = () => switchToTab("description");
+	document.querySelector(".about-tab").onclick = () => switchToTab("about");
 
 	document.querySelector(".settings-tab").onclick = () => switchToTab("settings");
 
 	var memory = document.querySelector(".memory");
+	var memoryLabel = document.querySelector(".memory-label");
 
 	memory.max = os.totalmem() / 1024 / 1024;
-	console.log(memory.max);
-	memory.value = 1024;
+	memory.value = Config.data.maxMemory;
+
+	function updateMemoryLabel() {
+		memoryLabel.innerText = (memory.value / 1024).toFixed(1) + "GB";
+		Config.data.maxMemory = memory.value;
+		Config.save();
+	}
+
+	memory.oninput = updateMemoryLabel;
+
+	updateMemoryLabel();
 
 	function switchToTab(tab) {
-			document.querySelector(".description").style.display = "none";
+			document.querySelector(".about").style.display = "none";
 			document.querySelector(".settings").style.display = "none";
+			document.querySelector(".about-tab").classList.remove("selected-tab");
+			document.querySelector(".settings-tab").classList.remove("selected-tab");
 			document.querySelector("." + tab).style.display = "block";
+			document.querySelector("." + tab + "-tab").classList.add("selected-tab");
 	}
 
 	const loginButtonMojang = document.querySelector(".login-button-mojang");

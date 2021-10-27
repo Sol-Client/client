@@ -34,18 +34,22 @@
 			<h1 class="title">Sol Client</h1>
 			<button class="button account-button"></button>
 			<div class="tabs">
-				<button class="about-tab">About</button>
+				<button class="about-tab selected-tab">About</button>
 				<div class="sep"></div>
 				<button class="settings-tab">Settings</button>
 			</div>
 			<br/>
-			<div class="description">
+			<div class="about">
 				<p>Sol Client is a new Minecraft Client designed to be simple and lightweight, yet not lacking in features.</p>
 				<br/>
 				<a class="open-in-browser" href="https://discord.gg/QFDGDhcFqu">Join Discord Server</a>
 			</div>
 			<div class="settings invisible">
-				<input type="range" class="memory">
+				<div class="memory-box">
+					<p>Memory</p>
+					<input type="range" class="memory">
+					<p class="memory-label"></p>
+				</div>
 			</div>
 			<div class="button-box">
 				<button class="button play-button" id="launch-button">Play</button>

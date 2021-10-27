@@ -57,15 +57,15 @@ class Utils {
 		Utils.legacyDirectory = os.homedir();
 		switch (getOsName()) {
 			case "linux":
-				Utils.minecraftDirectory += "/.config/SolClient";
+				Utils.minecraftDirectory += "/.config/Sol Client";
 				Utils.legacyDirectory += "/.config/parrotclient";
 				break;
 			case "osx":
-				Utils.minecraftDirectory += "/Library/Application Support/SolClient";
+				Utils.minecraftDirectory += "/Library/Application Support/Sol Client";
 				Utils.legacyDirectory += "/Library/Application Support/parrotclient";
 				break;
 			case "windows":
-				Utils.minecraftDirectory += "/AppData/Roaming/SolClient";
+				Utils.minecraftDirectory += "/AppData/Roaming/Sol Client";
 				Utils.legacyDirectory += "/AppData/Roaming/parrotclient";
 				break;
 		}

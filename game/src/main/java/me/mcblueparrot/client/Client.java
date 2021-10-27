@@ -140,14 +140,14 @@ public class Client {
         register(new BlockSelectionMod());
         register(new HitColourMod());
         registerKeybind(keyMods);
-        
+
         try {
             unregisterKeybind((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
         }
         catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
             // OptiFine is not enabled.
         }
-        
+
         organiseHuds();
         LOGGER.info("Loaded " + mods.size() + " mods");
         LOGGER.info("Saving settings...");
@@ -313,7 +313,7 @@ public class Client {
     @EventHandler
     public void onSendMessage(SendChatMessageEvent event) {
         if(event.message.startsWith("/")) {
-            List<String> args = Arrays.asList(event.message.split(" "));
+            List<String> args = new ArrayList<>(Arrays.asList(event.message.split(" ")));
             String commandKey = args.get(0).substring(1);
             if(commands.containsKey(commandKey)) {
                 try {

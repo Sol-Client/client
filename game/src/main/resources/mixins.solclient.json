@@ -33,6 +33,7 @@
     "client.MixinSimpleReloadableResourceManager",
     "client.MixinTileEntityRenderDispatcher",
     "client.MixinWorldClient",
+    "client.MixinGuiContainer",
     "mod.MixinArabicNumeralsMod$MixinEnchantment",
     "mod.MixinArabicNumeralsMod$MixinInventoryEffectRenderer",
     "mod.MixinArabicNumeralsMod$MixinItemPotion",

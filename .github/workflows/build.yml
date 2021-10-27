@@ -103,7 +103,7 @@ jobs:
         path: out/make/*.dmg
 
   upload:
-    if: "startsWith(github.event.head_commit.message, '[Create Release] ')"
+    if: "startsWith(github.event.head_commit.message, '[create release] ')"
 
     runs-on: ubuntu-latest
   

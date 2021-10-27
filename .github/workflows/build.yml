@@ -1,6 +1,9 @@
-name: build launcher
+name: build
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   linux:
@@ -98,3 +101,37 @@ jobs:
       with:
         name: Sol Client Launcher (MacOS)
         path: out/make/*.dmg
+
+  upload:
+    if: startsWith(github.event.head_commit.message, "[Create Release] ")
+
+    runs-on: ubuntu-latest
+  
+    needs: [linux, windows, macos]
+    
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@v2
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2
+    - name: Retrieve Version
+      run: |
+          content=`cat ./package.json`
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          echo "::set-output name=packageJson::$content"
+      id: version
+    - name: Create a Release
+      uses: marvinpinto/action-automatic-releases@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        title: ${{ fromJson(steps.version.outputs.packageJson).version }}
+        files: |
+          *.exe
+          *.deb
+          *.dmg
+      

@@ -356,7 +356,7 @@ class Launcher {
 				args.push("net.minecraft.launchwrapper.Launch");
 
 				args.push("--version");
-				args.push("SolClient");
+				args.push("Sol Client");
 
 				args.push("--username");
 				args.push(this.account.username);

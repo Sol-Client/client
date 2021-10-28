@@ -1,4 +1,5 @@
-const {Launcher, Utils} = require("./launcher");
+const Launcher = require("./launcher");
+const Utils = require("./utils");
 const Config = require("./config");
 const launcher = Launcher.instance;
 const {ipcRenderer, shell} = require("electron");
@@ -8,6 +9,10 @@ const yggdrasilAuthService = YggdrasilAuthService.instance;
 const fs = require("fs");
 const msmc = require("msmc");
 const os = require("os");
+
+Utils.init();
+Config.init(Utils.minecraftDirectory);
+Config.load();
 
 window.addEventListener("DOMContentLoaded", () => {
 	const playButton = document.getElementById("launch-button");
@@ -61,7 +66,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		login.style.display = "none";
 		main.style.display = "block";
 		fs.writeFileSync(Utils.accountFile, JSON.stringify(account));
-		document.querySelector(".account-button").innerText = "🗘 " + account.username;
+		document.querySelector(".account-button").innerText = "🗘" + account.username;
 	})
 
 	mojangLoginButton.onclick = () => {
@@ -113,10 +118,10 @@ window.addEventListener("DOMContentLoaded", () => {
 	function updateMemoryLabel() {
 		memoryLabel.innerText = (memory.value / 1024).toFixed(1) + "GB";
 		Config.data.maxMemory = memory.value;
-		Config.save();
 	}
 
 	memory.oninput = updateMemoryLabel;
+	memory.onchange = Config.save;
 
 	updateMemoryLabel();
 

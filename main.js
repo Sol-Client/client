@@ -1,8 +1,18 @@
 if(require("electron-squirrel-startup")) return;
 
+const Updater = require("./updater");
+const Utils = require("./utils");
+
+Utils.init();
+
+if(!require("electron-is-dev") && Utils.getOsName() == "windows" && Updater.update(os.type())) {
+	return;
+}
+
 const {app, BrowserWindow, ipcMain} = require("electron");
 const path = require("path");
 const msmc = require("msmc");
+
 var window;
 
 function createWindow() {
@@ -16,10 +26,11 @@ function createWindow() {
 
 	window.loadFile("app.html");
 	window.setMenu(null);
+	window.webContents.openDevTools();
 }
 
 ipcMain.on("msa", async(event) => {
-	msmc.fastLaunch("electron", (update) => {})
+	msmc.fastLaunch("electron", () => {})
 			.then((result) => {
 		event.sender.send("msa", JSON.stringify(result));
 	});

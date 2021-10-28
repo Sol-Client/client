@@ -24,7 +24,8 @@ public class MixinGuiScreenResourcePacks extends GuiScreen {
 
     private GuiTextField searchField;
 
-    @Redirect(method = "initGui", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z",
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Redirect(method = "initGui", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z",
             ordinal = 1))
     public <E> boolean moveApplyButton(List list, E e) {
         GuiButton button = (GuiButton) e;
@@ -32,7 +33,8 @@ public class MixinGuiScreenResourcePacks extends GuiScreen {
                 "Apply"));
     }
 
-    @Redirect(method = "initGui", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z",
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Redirect(method = "initGui", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z",
             ordinal = 0))
     public <E> boolean moveOpenButton(List list, E e) {
         GuiButton button = (GuiButton) e;

@@ -9,10 +9,6 @@ class AuthService {
 
 }
 
-class AuthKey {
-
-}
-
 class YggdrasilAuthKey {
 
 	constructor(username, password) {

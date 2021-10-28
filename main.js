@@ -5,7 +5,7 @@ const Utils = require("./utils");
 
 Utils.init();
 
-if(!require("electron-is-dev") && Utils.getOsName() == "windows" && Updater.update(os.type())) {
+if(!require("electron-is-dev") && Utils.getOsName() == "windows" && Updater.update()) {
 	return;
 }
 

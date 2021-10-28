@@ -132,7 +132,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
+        automatic_release_tag: ${{ fromJson(steps.version.outputs.packageJson).version }}
         prerelease: false
         title: ${{ fromJson(steps.version.outputs.packageJson).version }}
         files: |

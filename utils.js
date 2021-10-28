@@ -33,9 +33,17 @@ class Utils {
 				break;
 		}
 
-		if(fs.existsSync(Utils.legacyDirectory) && !fs.existsSync(Utils.minecraftDirectory)) {
-			fs.renameSync(Utils.legacyDirectory, Utils.minecraftDirectory);
-			fs.unlinkSync(Utils.minecraftDirectory + "/account.json");
+		try {
+			if(fs.existsSync(Utils.legacyDirectory) && !fs.existsSync(Utils.minecraftDirectory)) {
+				fs.renameSync(Utils.legacyDirectory, Utils.minecraftDirectory);
+				fs.unlinkSync(Utils.minecraftDirectory + "/account.json");
+			}
+		}
+		catch(error) {
+		}
+
+		if(!fs.existsSync(Utils.minecraftDirectory)) {
+			fs.mkdirSync(Utils.minecraftDirectory, { recursive: true });
 		}
 
 		Utils.librariesDirectory = Utils.minecraftDirectory + "/libraries";

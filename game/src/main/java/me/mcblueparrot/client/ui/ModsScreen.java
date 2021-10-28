@@ -265,7 +265,7 @@ public class ModsScreen extends GuiScreen {
 
                     if(selectedColour == option) {
                         colourSelectBox = new Rectangle(rectangle.getX(), rectangle.getY() + rectangle.getHeight() + 1, 300,
-                                120);
+                                100);
                         if(!colourSelectBox.contains(mouseX, mouseY) && !rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
                             newSelectedColour = null;
                         }

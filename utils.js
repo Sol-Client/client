@@ -42,16 +42,16 @@ class Utils {
 		catch(error) {
 		}
 
-		if(!fs.existsSync(Utils.minecraftDirectory)) {
-			fs.mkdirSync(Utils.minecraftDirectory, { recursive: true });
-		}
-
 		Utils.librariesDirectory = Utils.minecraftDirectory + "/libraries";
 		Utils.versionsDirectory = Utils.minecraftDirectory + "/versions";
 		Utils.assetsDirectory = Utils.minecraftDirectory + "/assets";
 		Utils.assetObjectsDirectory = Utils.assetsDirectory + "/objects";
 		Utils.accountFile = Utils.minecraftDirectory + "/account.json";
 		Utils.gameDirectory = Utils.minecraftDirectory + "/minecraft";
+
+		if(!fs.existsSync(Utils.gameDirectory)) {
+			fs.mkdirSync(Utils.gameDirectory, { recursive: true });
+		}
 	}
 
 	static isAlreadyDownloaded(file, size) {

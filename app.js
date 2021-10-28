@@ -109,6 +109,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	document.querySelector(".settings-tab").onclick = () => switchToTab("settings");
 
+	document.querySelector(".minecraft-folder").onclick = () => shell.openPath(Utils.gameDirectory);
+
 	var memory = document.querySelector(".memory");
 	var memoryLabel = document.querySelector(".memory-label");
 

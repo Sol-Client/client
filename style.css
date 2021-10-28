@@ -237,6 +237,11 @@ input[type="range"]::-webkit-slider-thumb {
 	width: 15px;
 	border-radius: 100%;
 	background: rgba(255, 180, 0);
+	transition: background 0.2s;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+	background: rgba(255, 220, 60);
 }
 
 .memory-box {
@@ -251,4 +256,29 @@ input[type="range"]::-webkit-slider-thumb {
 
 .memory-box input {
 	width: 100%;
+}
+
+.button-generic {
+	background: rgba(255, 180, 0);
+	border: solid rgba(215, 140, 0);
+	border-radius: 5px;
+	color: black;
+	transition: background 0.2s, border-color 0.2s;
+	padding: 5px;
+}
+
+.button-generic:hover {
+	background: rgba(255, 220, 60);
+	border: solid rgba(255, 180, 0);
+}
+
+.button-generic:active {
+	background: rgba(215, 140, 0);
+	border: solid rgba(175, 100, 0);
+}
+
+.button-centred {
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
 }

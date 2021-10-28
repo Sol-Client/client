@@ -26,7 +26,6 @@ function createWindow() {
 
 	window.loadFile("app.html");
 	window.setMenu(null);
-	window.webContents.openDevTools();
 }
 
 ipcMain.on("msa", async(event) => {

@@ -6,7 +6,6 @@
 
 package me.mcblueparrot.client.mod.impl;
 
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
@@ -41,8 +40,6 @@ import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Rectangle;
 import me.mcblueparrot.client.util.Utils;
 import net.hypixel.api.HypixelAPI;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -50,9 +47,13 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 public class HypixelAdditionsMod extends Mod {
 
@@ -221,39 +222,10 @@ public class HypixelAdditionsMod extends Mod {
         }
 
         if(isEffective() && apiKey == null) {
-            GuiScreen previous = mc.currentScreen;
-            mc.displayGuiScreen(new GuiScreen() {
-
-                @Override
-                public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-                    drawDefaultBackground();
-                    drawCenteredString(this.fontRendererObj, "Confirm API Key Renewal", this.width / 2, 110, -1);
-                    drawCenteredString(this.fontRendererObj, "Hypixel Additions needs your API Key.", this.width / 2, 125, 0xAAAAAA);
-                    drawCenteredString(this.fontRendererObj, "If you do not understand or care, pressing \"Confirm\" is fine.", this.width / 2, 140, 0xAAAAAA);
-                    super.drawScreen(mouseX, mouseY, partialTicks);
-                }
-
-                @Override
-                public void initGui() {
-                    super.initGui();
-                    buttonList.add(new GuiButton(0, width / 2 - 102, height / 6 + 156, 100, 20, "Confirm"));
-                    buttonList.add(new GuiButton(1, width / 2 + 2, height / 6 + 156, 100, 20, "Deny"));
-                }
-
-                @Override
-                protected void actionPerformed(GuiButton button) throws IOException {
-                    super.actionPerformed(button);
-                    if(button.id == 0) {
-                        mc.thePlayer.sendChatMessage("/api new");
-                    }
-                    mc.displayGuiScreen(previous);
-                }
-
-                public boolean canBeForceClosed() {
-                    return false;
-                }
-
-            });
+            IChatComponent component = new ChatComponentText("Could not find API key (required for levelhead). Click here or run /api new.");
+            component.setChatStyle(new ChatStyle()
+                    .setColor(EnumChatFormatting.RED)
+                    .setChatClickEvent(new ClickEvent(Action.RUN_COMMAND, "/api new")));
         }
     }
 

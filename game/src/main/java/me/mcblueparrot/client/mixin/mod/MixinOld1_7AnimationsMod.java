@@ -47,7 +47,9 @@ public abstract class MixinOld1_7AnimationsMod {
         @Inject(method = "renderHand", at = @At(value = "HEAD"))
         public void forceSwing(float partialTicks, int xOffset, CallbackInfo callback) {
             if(mc.thePlayer != null && Old1_7AnimationsMod.enabled && Old1_7AnimationsMod.instance.useAndMine
+                    && mc.objectMouseOver != null
                     && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
+                    && mc.thePlayer != null
                     && mc.gameSettings.keyBindAttack.isKeyDown() && mc.gameSettings.keyBindUseItem.isKeyDown()
                     && mc.thePlayer.getItemInUseCount() > 0 && (!mc.thePlayer.isSwingInProgress
                     || mc.thePlayer.swingProgressInt >= ((AccessEntityLivingBase) mc.thePlayer).accessArmSwingAnimationEnd()

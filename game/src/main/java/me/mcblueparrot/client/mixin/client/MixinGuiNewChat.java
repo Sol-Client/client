@@ -15,6 +15,7 @@ import me.mcblueparrot.client.events.ChatRenderEvent;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.util.IChatComponent;
 
 @Mixin(GuiNewChat.class)
 public abstract class MixinGuiNewChat implements AccessGuiNewChat {
@@ -26,6 +27,13 @@ public abstract class MixinGuiNewChat implements AccessGuiNewChat {
         }
     }
 
+    @Inject(at = @At("HEAD"), cancellable = true, method = "printChatMessage(Lnet/minecraft/util/IChatComponent;)V")
+    public void allowNullMessage(IChatComponent component, CallbackInfo callback) {
+    	if(component == null) {
+    		callback.cancel();
+    	}
+    }
+    
     @Override
     @Accessor
     public abstract List<ChatLine> getDrawnChatLines();

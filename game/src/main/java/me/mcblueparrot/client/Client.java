@@ -215,9 +215,11 @@ public class Client {
         }
     }
 
-    public boolean load() {
+    @SuppressWarnings("deprecation")
+	public boolean load() {
         try {
             if(DATA_FILE.exists()) {
+            	// 1.8 uses old libraries, so this warning cannot be easily fixed.
                 data = new JsonParser().parse(FileUtils.readFileToString(DATA_FILE)).getAsJsonObject();
             }
             else {
@@ -312,15 +314,18 @@ public class Client {
 
     @EventHandler
     public void onSendMessage(SendChatMessageEvent event) {
+    	// TODO tab completion
+
         if(event.message.startsWith("/")) {
             List<String> args = new ArrayList<>(Arrays.asList(event.message.split(" ")));
             String commandKey = args.get(0).substring(1);
             if(commands.containsKey(commandKey)) {
+            	event.cancelled = true;
+            	
                 try {
                     args.remove(0);
 
                     commands.get(commandKey).processCommand(mc.thePlayer, args.toArray(new String[0]));
-                    event.cancelled = true;
                 }
                 catch(CommandException error) {
                     mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(EnumChatFormatting.RED + error.getMessage()));

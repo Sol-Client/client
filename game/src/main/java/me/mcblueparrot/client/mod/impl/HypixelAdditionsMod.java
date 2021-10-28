@@ -516,7 +516,7 @@ public class HypixelAdditionsMod extends Mod {
                 }
                 return;
             }
-            throw new WrongUsageException(getCommandUsage(sender), new Object[0]);
+            throw new WrongUsageException("Usage: " + getCommandUsage(sender), new Object[0]);
         }
 
         @Override
@@ -565,7 +565,7 @@ public class HypixelAdditionsMod extends Mod {
                 system.setChannel(ChatChannelSystem.getPrivateChannel(args[1]));
             }
             else {
-                throw new WrongUsageException(getCommandUsage(sender));
+                throw new WrongUsageException("Usage: " + getCommandUsage(sender));
             }
             sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Chat Channel: " + system.getChannelName()));
         }

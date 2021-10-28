@@ -1,6 +1,7 @@
 const os = require("os");
 const fs = require("fs");
 const path = require("path");
+const https = require("https");
 
 class Utils {
 
@@ -64,8 +65,10 @@ class Utils {
 						resolve(result);
 						return;
 					}
-					response.pipe(fs.createWriteStream(file));
+					var stream = fs.createWriteStream(file);
+					response.pipe(stream);
 					response.on("end", () => {
+						stream.close();
 						resolve(true);
 					});
 				});
@@ -97,7 +100,7 @@ class Utils {
 				return "windows";
 		}
 	}
-	
+
 	static getJdkOsName() {
 		switch(os.type()) {
 			case "Linux":

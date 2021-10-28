@@ -1,31 +1,38 @@
 const axios = require("axios").default;
 const Utils = require("./utils");
 const childProcess = require("child_process");
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 class Updater {
 
-	static async update() {
-		console.log("Checking for update...");
+	static update() {
+		return new Promise(async(resolve) => {
+			console.log("Checking for update...");
 
-		var latestRelease = await axios.get("https://api.github.com/repos/TheKodeToad/Sol-Client/releases/latest");
+			var latestRelease = (await axios.get("https://api.github.com/repos/TheKodeToad/Sol-Client/releases/latest")).data;
 
-		if(latestRelease.name != require("./package.json").version) {
-			console.log("Installing update...");
+			if(latestRelease.name != require("./package.json").version) {
+				console.log("Installing update...");
 
-			var selectedAsset;
-			for(var asset of latestRelease.assets) {
-				if(asset.name.endsWith(".exe")) {
-					selectedAsset = asset;
+				var selectedAsset;
+				for(var asset of latestRelease.assets) {
+					if(asset.name.endsWith(".exe")) {
+						selectedAsset = asset;
+					}
 				}
-			}
 
-			var file = Utils.minecraftDirectory + "/" + selectedAsset.name;
-			Utils.download(selectedAsset.url, file);
-			childProcess.execFileSync(file);
-			return true;
-		}
-		console.log("No updates found");
-		return false;
+				var file = Utils.minecraftDirectory + "/" + selectedAsset.name;
+				await Utils.download(selectedAsset.browser_download_url, file);
+
+				await sleep(1000);
+
+				childProcess.execFileSync(file);
+				resolve(true);
+				return;
+			}
+			console.log("No updates found");
+			resolve(false);
+		});
 	}
 
 }

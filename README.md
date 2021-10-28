@@ -10,7 +10,7 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/TheKodeToad/Sol-Client/total?label=Downloads&style=for-the-badge)&nbsp;
 ![Too many badges](https://img.shields.io/static/v1?label=Too%20Many&message=Badges&color=gold&style=for-the-badge)&nbsp;
 ![This is getting out of control](https://img.shields.io/static/v1?label=This%20Is&message=Getting%20Out%20Of%20Control&color=important&style=for-the-badge)&nbsp;
-![Okay, this is the last one](https://img.shields.io/static/v1?label=Okay&message=This%20is%20the%20last%20one&color=red&style=for-the-badge)
+![Okay, this is the last one](https://img.shields.io/static/v1?label=Okay&message=This%20is%20the%20last%20one&color=red&style=for-the-badge)&nbsp;
 ![I lied](https://img.shields.io/static/v1?label=That%20was%20a&message=Lie&color=blue&style=for-the-badge)
 
 Simple and lightweight Minecraft client for 1.8.9 (and in future, newer versions).
@@ -35,7 +35,7 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 ## Credits
 [TheKodeToad](https://github.com/TheKodeToad) / [mcblueparrot](https://mine.ly/mcblueparrot.1): Programmer.
 
-[Holso](https://github.com/Holso) / [GreenDracon](https://mine.ly/IceDracon.1): Helped create Discord, came up with the name and tested the client.
+[Holso](https://github.com/Holso) / [Chonnos](https://mine.ly/Chonnos.1): Helped create Discord, came up with the name (and changed his own one many times) and tested the client.
 
 [sp614x](https://github.com/sp614x): OptiFine mod.
 

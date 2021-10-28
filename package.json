@@ -1,6 +1,6 @@
 {
   "name": "sol-client-launcher",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Launcher for Sol Client.",
   "main": "main.js",
   "scripts": {

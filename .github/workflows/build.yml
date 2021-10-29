@@ -26,6 +26,11 @@ jobs:
       with:
         node-version: 16.x
         cache: "npm"
+    - name: Setup JDK
+      uses: actions/setup-java@v2
+      with:
+      distribution: temurin
+      java-version: 8
     - name: NPM CI
       run: npm ci
     - name: Build Game
@@ -58,6 +63,11 @@ jobs:
       with:
         node-version: 16.x
         cache: "npm"
+    - name: Setup JDK
+      uses: actions/setup-java@v2
+      with:
+      distribution: temurin
+      java-version: 8
     - name: NPM CI
       run: npm ci
     - name: Build Game
@@ -90,6 +100,11 @@ jobs:
       with:
         node-version: 16.x
         cache: "npm"
+    - name: Setup JDK
+      uses: actions/setup-java@v2
+      with:
+      distribution: temurin
+      java-version: 8
     - name: NPM CI
       run: npm ci
     - name: Build Game

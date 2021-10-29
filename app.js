@@ -111,6 +111,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	document.querySelector(".minecraft-folder").onclick = () => shell.openPath(Utils.gameDirectory);
 
+	document.querySelector(".devtools").onclick = () => ipcRenderer.send("devtools");
+
 	var memory = document.querySelector(".memory");
 	var memoryLabel = document.querySelector(".memory-label");
 

@@ -36,6 +36,8 @@ async function run() {
 		});
 	});
 
+	ipcMain.on("devtools", (event) => window.webContents.openDevTools());
+
 	app.whenReady().then(() => {
 		createWindow();
 

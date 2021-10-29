@@ -53,8 +53,10 @@ jobs:
         cache: "npm"
     - name: NPM CI
       run: npm ci
-    - name: Download Artifacts
+    - name: Download Game
       uses: actions/download-artifact@v2
+    - name: Relocate Game
+      run: mkdir -p game/build/libs && mv Game/game.jar game/build/libs 
     - name: Build Installer
       run: npm run make
     - name: Upload Artifact (Linux)

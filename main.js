@@ -20,6 +20,7 @@ async function run() {
 		window = new BrowserWindow({
 			width: 800,
 			height: 600,
+			icon: __dirname + "/assets/icon.png",
 			webPreferences: {
 				preload: path.join(__dirname, "app.js")
 			}

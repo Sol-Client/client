@@ -1,6 +1,6 @@
 {
   "name": "Sol Client",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Launcher for Sol Client.",
   "main": "main.js",
   "scripts": {
@@ -30,7 +30,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "assets/icon.png"
+        "icon": "assets/icon"
       },
       "makers": [
         {

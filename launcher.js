@@ -114,7 +114,12 @@ class Launcher {
 					}
 				}
 
-				for(var object of Object.values((await Version.getAssetIndex(version)).objects)) {
+				var assetIndex = await Version.getAssetIndex(version);
+				assetIndex.id = version.assetIndex.id;
+
+				AssetIndex.save(assetIndex);
+
+				for(var object of Object.values(assetIndex.objects)) {
 					await AssetIndex.download(object);
 				}
 
@@ -402,6 +407,20 @@ class AssetIndex {
 
 	static getFilePath(object) {
 		return Utils.assetObjectsDirectory + "/" + AssetIndex.getBasePath(object);
+	}
+
+	static getIndexPath(index) {
+		return Utils.assetIndexesDirectory + "/" + index.id + ".json";
+	}
+
+	static save(index) {
+		var indexPath = AssetIndex.getIndexPath(index);
+
+		if(!fs.existsSync(path.dirname(indexPath))) {
+			fs.mkdirSync(path.dirname(indexPath), { recursive: true });
+		}
+
+		return fs.writeFileSync(indexPath, JSON.stringify(index));
 	}
 
 	static getUrl(object) {

@@ -2,6 +2,8 @@ const os = require("os");
 const fs = require("fs");
 const path = require("path");
 const https = require("https");
+const http = require("http");
+const axios = require("axios");
 
 class Utils {
 
@@ -11,6 +13,7 @@ class Utils {
 	static versionsDirectory;
 	static assetsDirectory;
 	static assetObjectsDirectory;
+	static assetIndexesDirectory;
 	static gameDirectory;
 	static version = require("./package.json").version;
 	static configFile;
@@ -46,6 +49,7 @@ class Utils {
 		Utils.versionsDirectory = Utils.minecraftDirectory + "/versions";
 		Utils.assetsDirectory = Utils.minecraftDirectory + "/assets";
 		Utils.assetObjectsDirectory = Utils.assetsDirectory + "/objects";
+		Utils.assetIndexesDirectory = Utils.assetsDirectory + "/indexes";
 		Utils.accountFile = Utils.minecraftDirectory + "/account.json";
 		Utils.gameDirectory = Utils.minecraftDirectory + "/minecraft";
 
@@ -62,9 +66,10 @@ class Utils {
 		if(!fs.existsSync(path.dirname(file))) {
 			fs.mkdirSync(path.dirname(file), { recursive: true });
 		}
+
 		if(!Utils.isAlreadyDownloaded(file, size)) {
 			return new Promise((resolve) => {
-				https.get(url, async(response) => {
+				(url.startsWith("https://") ? https : http).get(url, async(response) => {
 					if(response.code == 404) {
 						resolve(false);
 					}
@@ -123,3 +128,4 @@ class Utils {
 }
 
 module.exports = Utils;
+

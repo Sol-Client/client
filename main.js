@@ -10,7 +10,7 @@ async function run() {
 		return;
 	}
 
-	const {app, BrowserWindow, ipcMain} = require("electron");
+	const {app, BrowserWindow, ipcMain, dialog} = require("electron");
 	const path = require("path");
 	const msmc = require("msmc");
 
@@ -39,12 +39,27 @@ async function run() {
 
 	ipcMain.on("devtools", (event) => window.webContents.openDevTools());
 
+	ipcMain.on("quit", (event, result) => {
+		if(result) {
+			app.quit();
+		}
+		else {
+			if(dialog.showMessageBoxSync(window, {
+						title: "Quit Launcher?",
+						message: "If you quit, the game will be closed.",
+						type: "question",
+						buttons: [
+							"Don't quit",
+							"Quit game and launcher"
+						]
+					}) == 1) {
+				event.sender.send("quitGame");
+			}
+		}
+	});
+
 	app.whenReady().then(() => {
 		createWindow();
-
-		app.on("window-all-closed", function() {
-			app.quit(); // Don't implement Apple's worst feature
-		});
 	});
 }
 

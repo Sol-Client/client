@@ -15,6 +15,7 @@ class Launcher {
 
 	static instance = new Launcher();
 	account = null;
+	games = [];
 
 	launch(callback) {
 		Manifest.getManifest((manifest) => {
@@ -286,10 +287,14 @@ class Launcher {
 				}
 
 				var process = childProcess.spawn(java, args, { cwd: Utils.minecraftDirectory });
+				this.games.push(process);
 
 				process.stdout.on("data", (data) => console.log(data.toString("UTF-8"))); // Don't know why you need this.
+				process.stderr.on("data", (data) => console.error(data.toString("UTF-8")));
 
-				process.stderr.on("data", (data) => console.error(data.toString("UTF-8"))); // Don't know why you need this.
+				process.on("exit", () => {
+					this.games.splice(this.games.indexOf(process), 1);
+				});
 
 				callback();
 			});

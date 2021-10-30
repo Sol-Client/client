@@ -14,6 +14,20 @@ Utils.init();
 Config.init(Utils.minecraftDirectory);
 Config.load();
 
+window.onbeforeunload = (event) => {
+	ipcRenderer.send("quit", launcher.games.length < 1);
+	if(launcher.games.length > 0) {
+		event.returnValue = false;
+	}
+};
+
+ipcRenderer.on("quitGame", (event) => {
+	for(game of launcher.games) {
+		game.kill();
+	}
+	ipcRenderer.send("quit", true);
+});
+
 window.addEventListener("DOMContentLoaded", () => {
 	const playButton = document.getElementById("launch-button");
 	const microsoftLoginButton = document.querySelector(".microsoft-login-button");

@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.Cullable;
 import me.mcblueparrot.client.events.CameraRotateEvent;
+import me.mcblueparrot.client.util.access.AccessRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.Render;
@@ -23,10 +24,12 @@ import net.minecraft.world.World;
 @Mixin(RenderManager.class)
 public abstract class MixinRenderManager {
 
+    @SuppressWarnings("unchecked")
     @Inject(method = "doRenderEntity", at = @At("HEAD"), cancellable = true)
     public void cullEntity(Entity entity, double x, double y, double z, float entityYaw, float partialTicks,
                            boolean hideDebugBox, CallbackInfoReturnable<Boolean> callback) {
         if(((Cullable) entity).isCulled()) {
+            ((AccessRender<Entity>) getEntityRenderObject(entity)).doRenderName(entity, x, y, z);
             callback.setReturnValue(renderEngine == null);
         }
     }

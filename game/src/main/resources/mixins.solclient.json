@@ -35,6 +35,7 @@
     "client.MixinWorldClient",
     "client.MixinGuiContainer",
     "client.MixinScreenshotHelper",
+    "client.MixinRender",
     "mod.MixinArabicNumeralsMod$MixinEnchantment",
     "mod.MixinArabicNumeralsMod$MixinInventoryEffectRenderer",
     "mod.MixinArabicNumeralsMod$MixinItemPotion",

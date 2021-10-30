@@ -52,10 +52,12 @@ public abstract class MixinGuiNewChat implements AccessGuiNewChat {
         chatLines.clear();
     }
 
-    @Shadow @Final
+    @Shadow
+    @Final
     private List<ChatLine> drawnChatLines;
 
-    @Shadow @Final
+    @Shadow
+    @Final
     private List<ChatLine> chatLines;
 
 }

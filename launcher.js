@@ -25,6 +25,7 @@ class Launcher {
 				var nativesFolder = Version.getNatives(version);
 				var optifineRelative = "net/optifine/optifine/1.8.9_HD_U_M5/optifine-1.8.9_HD_U_M5.jar";
 				var optifine = Utils.librariesDirectory + "/" + optifineRelative;
+
 				version.libraries.push({
 					downloads: {
 						artifact: {
@@ -34,6 +35,7 @@ class Launcher {
 						}
 					}
 				});
+
 				version.libraries.push({
 					downloads: {
 						artifact: {
@@ -43,6 +45,7 @@ class Launcher {
 						},
 					}
 				});
+
 				version.libraries.push({
 					downloads: {
 						artifact: {
@@ -52,6 +55,7 @@ class Launcher {
 						}
 					}
 				});
+
 				version.libraries.push({
 					downloads: {
 						artifact: {
@@ -61,6 +65,7 @@ class Launcher {
 						}
 					}
 				});
+
 				version.libraries.push({
 					downloads: {
 						artifact: {
@@ -70,6 +75,7 @@ class Launcher {
 						}
 					}
 				});
+
 				version.libraries.push({
 					downloads: {
 						artifact: {
@@ -79,14 +85,17 @@ class Launcher {
 						}
 					}
 				});
+
 				for(var library of version.libraries) {
 					if(!Library.isApplicable(library.rules)) {
 						continue;
 					}
+
 					if(library.downloads.artifact != null) {
 						await Library.download(library.downloads.artifact);
 						jars.push(Library.getPath(library.downloads.artifact));
 					}
+
 					if(library.natives != null) {
 						var nativeName = library.natives[Utils.getOsName()];
 						if(nativeName != null) {
@@ -95,6 +104,7 @@ class Launcher {
 								await Library.download(download);
 								var zip = fs.createReadStream(Library.getPath(download))
 									.pipe(unzipper.Parse({ forceStream: true }));
+
 								for await(const entry of zip) {
 									const fileName = entry.path;
 
@@ -106,6 +116,7 @@ class Launcher {
 										if(!fs.existsSync(path.dirname(destination))) {
 											fs.mkdirSync(path.dirname(destination), { recursive: true });
 										}
+
 	 									await entry.pipe(fs.createWriteStream(nativesFolder + "/" + fileName));
 									}
 								}
@@ -215,26 +226,21 @@ class Launcher {
 				}
 
 				classpath += Version.getJar(version);
-
 				classpath += classpathSeparator;
-
 				classpath += path.join(__dirname, "game/build/libs/game.jar");
-
 				classpath += classpathSeparator;
 
-				var optifineSize = 2585014;
-
-				if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
-					await Library.download({
-							url: await Utils.getOptiFine(),
-							size: optifineSize,
-							path: optifineRelative
-						});
+				if(Config.data.optifine) {
+					var optifineSize = 2585014;
+					if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
+						await Library.download({
+								url: await Utils.getOptiFine(),
+								size: optifineSize,
+								path: optifineRelative
+							});
+					}
+					classpath += optifine;
 				}
-
-				classpath += optifine;
-
-				console.log(classpath);
 
 				args.push(classpath);
 
@@ -274,8 +280,10 @@ class Launcher {
 				args.push("--tweakClass");
 				args.push("me.mcblueparrot.client.tweak.Tweaker");
 
-				args.push("--tweakClass");
-				args.push("optifine.OptiFineTweaker");
+				if(Config.data.optifine) {
+					args.push("--tweakClass");
+					args.push("optifine.OptiFineTweaker");
+				}
 
 				var process = childProcess.spawn(java, args, { cwd: Utils.minecraftDirectory });
 

@@ -58,7 +58,6 @@ public class CullTask implements Runnable {
     private final Minecraft mc = Minecraft.getMinecraft();
     private final int sleepDelay = 10;
     private final int hitboxLimit = 15;
-    private final Block[] uncullable = new Block[] { Blocks.beacon };
     public long lastTime = 0;
 
     // reused preallocated vars

@@ -277,7 +277,15 @@ input[type="range"]:hover::-webkit-slider-thumb {
 	border: solid rgba(175, 100, 0);
 }
 
-.button-centred {
+.spaced-15 {
+	margin-left: 15px;
+}
+
+.spaced-5 {
+	margin-left: 5px;
+}
+
+.centred {
 	display: table;
 	margin-left: auto;
 	margin-right: auto;

@@ -3,7 +3,8 @@ const fs = require("fs");
 class Config {
 
 	static data = {
-		maxMemory: 2048
+		maxMemory: 2048,
+		optifine: true
 	};
 	static file;
 

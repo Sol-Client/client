@@ -3,12 +3,14 @@ package me.mcblueparrot.client.ui;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.List;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo.Map;
 
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
@@ -23,6 +25,7 @@ import me.mcblueparrot.client.util.Utils;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 

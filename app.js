@@ -66,7 +66,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		login.style.display = "none";
 		main.style.display = "block";
 		fs.writeFileSync(Utils.accountFile, JSON.stringify(account));
-		document.querySelector(".account-button").innerText = "🗘" + account.username;
+		document.querySelector(".account-button").innerText = "🗘 " + account.username;
 	})
 
 	mojangLoginButton.onclick = () => {
@@ -119,8 +119,15 @@ window.addEventListener("DOMContentLoaded", () => {
 	memory.max = os.totalmem() / 1024 / 1024;
 	memory.value = Config.data.maxMemory;
 
+	var optifine = document.querySelector(".optifine");
+	optifine.checked = Config.data.optifine;
+	optifine.onchange = () => {
+		Config.data.optifine = optifine.checked;
+		Config.save();
+	}
+
 	function updateMemoryLabel() {
-		memoryLabel.innerText = (memory.value / 1024).toFixed(1) + "GB";
+		memoryLabel.innerText = (memory.value / 1024).toFixed(1) + " GB";
 		Config.data.maxMemory = memory.value;
 	}
 

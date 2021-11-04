@@ -13,7 +13,7 @@
 ![Okay, this is the last one](https://img.shields.io/static/v1?label=Okay&message=This%20is%20the%20last%20one&color=red&style=for-the-badge)&nbsp;
 ![I lied](https://img.shields.io/static/v1?label=That%20was%20a&message=Lie&color=blue&style=for-the-badge)
 
-Simple and lightweight Minecraft client for 1.8.9 (and in future, newer versions).
+Simple and easy to use Minecraft client for 1.8.9 (and in future, newer versions).
 
 ## Gimme it now!
 First, go to [releases](https://github.com/TheKodeToad/Sol-Client/releases).

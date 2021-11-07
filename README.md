@@ -26,9 +26,6 @@ If you are suspicous, you can look at the code.
 
 This client has been tested by multiple people on Hypixel, and it disables disallowed mods automatically.
 
-## Bugs
-
-
 ## Credits
 [TheKodeToad](https://github.com/TheKodeToad) / [mcblueparrot](https://mine.ly/mcblueparrot.1): Programmer.
 

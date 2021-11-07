@@ -1,5 +1,3 @@
-> :warning: In development. There is not currently a full release.
-
 # Sol Client
 
 
@@ -8,10 +6,6 @@
 <img src="https://img.shields.io/static/v1?label=minecraft&message=1.8.9&color=brightgreen&style=for-the-badge"/>&nbsp;
 <a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?color=5662F6&label=discord&logo=discord&logoColor=white&style=for-the-badge"/></a>&nbsp;
 ![GitHub all releases](https://img.shields.io/github/downloads/TheKodeToad/Sol-Client/total?label=Downloads&style=for-the-badge)&nbsp;
-![Too many badges](https://img.shields.io/static/v1?label=Too%20Many&message=Badges&color=gold&style=for-the-badge)&nbsp;
-![This is getting out of control](https://img.shields.io/static/v1?label=This%20Is&message=Getting%20Out%20Of%20Control&color=important&style=for-the-badge)&nbsp;
-![Okay, this is the last one](https://img.shields.io/static/v1?label=Okay&message=This%20is%20the%20last%20one&color=red&style=for-the-badge)&nbsp;
-![I lied](https://img.shields.io/static/v1?label=That%20was%20a&message=Lie&color=blue&style=for-the-badge)
 
 Simple and easy to use Minecraft client for 1.8.9 (and in future, newer versions).
 
@@ -26,11 +20,14 @@ There are many Minecraft clients, but they are usually closed source, and may co
 There may be mod loaders like Forge and Fabric, which are perfectly good, but are not as simple and easy to use.
 
 ## Safety
-I open sourced this client because not enough clients are open source (even OptiFine is closed source).
+I made the code for this client available, because not enough clients are open source (even OptiFine is closed source).
 
-If you are suspicous, you can easily look through all the code.
+If you are suspicous, you can look at the code.
 
 This client has been tested by multiple people on Hypixel, and it disables disallowed mods automatically.
+
+## Bugs
+
 
 ## Credits
 [TheKodeToad](https://github.com/TheKodeToad) / [mcblueparrot](https://mine.ly/mcblueparrot.1): Programmer.
@@ -50,13 +47,19 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 [OrangeMarshall](https://namemc.com/profile/OrangeMarshall.1): Original 1.7 Animations.
 
 ## Features
+
+Here is a list of features that are currently in the client:
+
 - Most features from Lunar.
 - Hypixel Additions (pop-up events, better channel switcher (shows channel name in chat box).
 - Better item tooltips (shows item damage).
-- Symbol picker (and maybe Emoji support?).
+- Symbol picker.
 - OptiFine, downloaded automatically from the official site.
+- Replay Mod (coming soon™)
 
 Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.
+
+If you want to suggest a feature, [create a new issue](https://github.com/TheKodeToad/Sol-Client/issues/new) or [ask on Discord](https://discord.gg/QFDGDhcFqu).
 
 ## Build Instructions
 

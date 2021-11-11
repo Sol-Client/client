@@ -1,5 +1,4 @@
 import me.mcblueparrot.client.gradle.CustomTweakerPlugin
-import net.md_5.specialsource.JarMapping
 import net.md_5.specialsource.SpecialSource
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
@@ -7,10 +6,6 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.commons.Remapper
 import org.objectweb.asm.commons.RemappingClassAdapter
 import org.objectweb.asm.tree.ClassNode
-
-import net.minecraftforge.gradle.user.tweakers.ClientTweaker
-import net.minecraftforge.gradle.user.ReobfMappingType
-import net.minecraftforge.gradle.user.ReobfTaskFactory
 
 import java.nio.file.Files
 import java.util.zip.ZipEntry
@@ -139,20 +134,6 @@ if(!replayModRuntimeJar1.exists()) {
 
 static def process(File inputFile, File outputFile, Map<String, String> methods, Map<String, String> fields,
 				   File fixSrg) {
-//	if(classes != null) {
-//		classes.forEach({ String key, String value ->
-//			println "Class: " + key + " → " + value
-//		})
-//
-//		fields.forEach({ String key, String value ->
-//			println "Field: " + key + " → " + value
-//		})
-//
-//		methods.forEach({ String key, String value ->
-//			println "Method: " + key + " → " + value
-//		})
-//	}
-
 	def zip = new ZipFile(inputFile)
 	def fileOutput = new FileOutputStream(outputFile)
 	def output = new ZipOutputStream(fileOutput)
@@ -182,24 +163,6 @@ static def process(File inputFile, File outputFile, Map<String, String> methods,
 			entryInput.close()
 			continue
 		}
-//		else if(entry.getName() == "mixins.replaymod.refmap.json") {
-//			if(!shipped) {
-//				entryInput.close()
-//				continue
-//			}
-//
-//			def obj = new JsonParser().parse(new InputStreamReader(entryInput)).getAsJsonObject()
-//			obj = refRemap(obj, classes, methods, fields)
-//
-//			output.putNextEntry(new ZipEntry(entry.getName()))
-//			output.write(obj.toString().getBytes())
-//			entryInput.close()
-//			output.putNextEntry(new ZipEntry(entry.getName()))
-//			output.write(FileUtils.readFileToString(new File(project.getRootDir(), "mixins.replaymod.refmap.json"),
-//					"UTF-8")
-//					.getBytes("UTF-8"))
-//			continue
-//		}
 
 		if(entry.isDirectory()) continue
 
@@ -270,94 +233,6 @@ static def addReplayModRemapper(def fixBuilder) {
 			"me/mcblueparrot/client/replaymod/SCSettingsRegistry\$SettingKey")
 }
 
-//static def refRemap(obj, classes, methods, fields) {
-//	def out = new JsonObject()
-//
-//	def mappings = new JsonObject()
-//
-//	for(def entry : obj.get("mappings").getAsJsonObject().entrySet()) {
-//		def outEntry = new JsonObject()
-//
-//		for(def mappingEntry : entry.getValue().getAsJsonObject().entrySet()) {
-//			def value = mappingEntry.getValue().getAsString()
-//
-//			if(!value.contains(":")) {
-//				def mappingClass = null
-//				if(!value.startsWith("func_")) {
-//					mappingClass = value.substring(1, value.indexOf(";"))
-//					mappingClass = classes.get(mappingClass)
-//				}
-//
-//				def unmappedMappingMethod = value.substring(value.indexOf(";") + 1)
-//
-//				def mappingMethod = methods.get(unmappedMappingMethod.substring(0, unmappedMappingMethod.indexOf("("))) + "("
-//				if(!value.contains("()")) {
-//					mappingMethod += remapArgs(unmappedMappingMethod.substring(unmappedMappingMethod.indexOf("(") + 1, unmappedMappingMethod.indexOf
-//							(")"))
-//							, classes)
-//				}
-//				mappingMethod += ")"
-//				mappingMethod += remapDescElement(unmappedMappingMethod.substring(unmappedMappingMethod.indexOf
-//						(")") + 1), classes)
-//
-//				outEntry.addProperty(mappingEntry.getKey(), (mappingClass != null ? "L" + mappingClass + ";" : "") +
-//						mappingMethod)
-//			}
-//			else {
-//				outEntry.addProperty(mappingEntry.getKey(), fields.get(value.substring(0, value.indexOf(":"))) + ":"
-//						+ remapDescElement(value.substring(value.indexOf(":") + 1), classes))
-//			}
-//
-//		}
-//
-//		mappings.add(entry.getKey(), outEntry)
-//	}
-//
-//	out.add("mappings", mappings)
-//
-//	return out
-//}
-//
-//static def remapArgs(String args, Map<String, String> classes) {
-//	def result = new StringBuilder()
-//	def className
-//	for(def element : args.getChars()) {
-//		if(className != null) {
-//			if(element == ';') {
-//				result.append("L")
-//				println className.toString()
-//				if(classes.containsKey(className.toString())) {
-//					result.append(classes.get(className.toString()))
-//				}
-//				else {
-//					result.append(className.toString());
-//				}
-//				result.append(";")
-//				className = null
-//			}
-//			else {
-//				className.append(element)
-//			}
-//		}
-//		else if(element == 'L') {
-//			className = new StringBuilder()
-//		}
-//		else {
-//			result.append(element)
-//		}
-//	}
-//	return result.toString()
-//}
-//
-//static def remapDescElement(element, Map<String, String> classes) {
-//	if(element.startsWith("L") && element.endsWith(";")) {
-//		def className = element.substring(1, element.length() - 1)
-//		return "L" + (classes.containsKey(className) ? classes.get(className) : className) + ";"
-//	}
-//
-//	return element;
-//}
-
 def replayModRuntimeJar = new File(libsDir, replayModBase + "-runtime.jar")
 
 if(!replayModRuntimeJar.exists()) {
@@ -389,72 +264,6 @@ if(!replayModShippedJar.exists()) {
 			fixSrgShipped
 	] as String[])
 }
-
-//def replayModShippedJar = new File(libsDir, replayModBase + "-shipped.jar")
-//
-//def replayModShippedJar0 = new File(libsDir, replayModBase + "-shipped0.jar")
-//
-//if(!replayModShippedJar0.exists()) {
-//	SpecialSource.main([
-//			"--in-jar",
-//			replayModJar,
-//			"--out-jar",
-//			replayModShippedJar0,
-//			"--srg-in",
-//			notchToSearge,
-//			"--reverse"
-//	] as String[])
-//}
-//
-//def replayModShippedJar1 = new File(libsDir, replayModBase + "-shipped1.jar")
-//
-//if(!replayModShippedJar1.exists()) {
-//	def mapping = new JarMapping()
-//
-//	def srgReader = new FileReader(joinedSrg)
-//	def srgBufferedReader = new BufferedReader(srgReader)
-//	mapping.loadMappings(srgBufferedReader, null, null, false)
-//	srgBufferedReader.close()
-//	srgReader.close()
-//
-//	Map<String, String> classes = new HashMap<>()
-//	Map<String, String> methods = new HashMap<>()
-//	Map<String, String> fields = new HashMap<>()
-//
-//	mapping.classes.forEach({ String key, String value ->
-//		classes.put(value, key)
-//	})
-//
-//	mapping.methods.forEach({ String key, String value ->
-//		def methodName = key.substring(key.substring(0, key.indexOf(' ')).lastIndexOf("/") + 1, key.indexOf(' ', key
-//				.indexOf
-//				(' ' + 1)))
-//
-//		if(value != methodName) {
-//			methods.put(value, methodName)
-//		}
-//	})
-//
-//	mapping.fields.forEach({ String key, String value ->
-//		def fieldName = key.substring(key.lastIndexOf("/") + 1)
-//		if(value != fieldName) {
-//			fields.put(value, fieldName)
-//		}
-//	})
-//
-//	process(project, replayModShippedJar0, replayModShippedJar1, classes, methods, fields, fixSrgShipped)
-//}
-//
-//if(!replayModShippedJar.exists()) {
-//	SpecialSource.main([
-//			"--in-jar",
-//			replayModShippedJar1,
-//			"--out-jar",
-//			replayModShippedJar,
-//			"--srg-in",
-//			fixSrgShipped
-//	] as String[])
-//}
 
 repositories {
 	mavenCentral()
@@ -497,7 +306,6 @@ dependencies {
 }
 
 mixin {
-//	defaultObfuscationEnv searge
 	add sourceSets.main, "mixins.solclient.refmap.json"
 }
 

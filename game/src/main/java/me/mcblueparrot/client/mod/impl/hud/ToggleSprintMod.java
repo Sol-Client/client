@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.TickEvent;
+import me.mcblueparrot.client.events.PostTickEvent;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.SimpleHud;
@@ -87,7 +87,7 @@ public class ToggleSprintMod extends SimpleHud {
         }
 
         @EventHandler
-        public void tickBinding(TickEvent event) {
+        public void tickBinding(PostTickEvent event) {
             boolean down = super.isKeyDown();
             if(isEnabled()) {
                 if(down) {

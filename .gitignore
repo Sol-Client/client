@@ -200,3 +200,5 @@ game/libs/*
 
 # Electron Forge
 out/
+
+game/replaymod/

@@ -2,7 +2,7 @@ package me.mcblueparrot.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.PpsMonitor;
+import me.mcblueparrot.client.CpsMonitor;
 import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.PlayerHeadRotateEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
@@ -233,18 +233,18 @@ public class KeystrokeHud extends Hud {
             }
             else {
                 if(cps) {
-                    PpsMonitor monitor;
+                    CpsMonitor monitor;
                     if(name.equals("LMB")) {
-                        monitor = PpsMonitor.LMB;
+                        monitor = CpsMonitor.LMB;
                     }
                     else if(name.equals("RMB")) {
-                        monitor = PpsMonitor.RMB;
+                        monitor = CpsMonitor.RMB;
                     }
                     else {
                         monitor = null;
                     }
                     if(monitor != null) {
-                        String cpsText = monitor.getPps() + " CPS";
+                        String cpsText = monitor.getCps() + " CPS";
                         float scale = 0.5F;
 
                         GlStateManager.pushMatrix();

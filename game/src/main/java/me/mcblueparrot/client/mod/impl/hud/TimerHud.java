@@ -11,7 +11,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.TickEvent;
+import me.mcblueparrot.client.events.PostTickEvent;
 import me.mcblueparrot.client.events.WorldLoadEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.Hud;
@@ -127,7 +127,7 @@ public class TimerHud extends Hud {
     }
 
     @EventHandler
-    public void onTick(TickEvent event) {
+    public void onTick(PostTickEvent event) {
         timers.values().forEach(Timer::tick);
     }
 

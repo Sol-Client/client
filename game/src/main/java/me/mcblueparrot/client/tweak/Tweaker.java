@@ -13,12 +13,14 @@ import net.minecraft.launchwrapper.LaunchClassLoader;
 
 public class Tweaker implements ITweaker {
 
+    public static boolean optifine;
     private static List<String> args = new ArrayList<>();
 
     @Override
     public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profile) {
         try {
             Class.forName("optifine.Patcher");
+            optifine = true;
         }
         catch(ClassNotFoundException error) {
             Tweaker.args.addAll(args);
@@ -39,10 +41,24 @@ public class Tweaker implements ITweaker {
 
     @Override
     public void injectIntoClassLoader(LaunchClassLoader classLoader) {
+        System.out.println("injecting");
+        classLoader.registerTransformer("me.mcblueparrot.client.tweak.transformer.ClassTransformer");
+
         MixinBootstrap.init();
 
         Mixins.addConfiguration("mixins.solclient.json");
 
+        // Replay Mod
+        Mixins.addConfiguration("mixins.core.replaymod.json");
+        Mixins.addConfiguration("mixins.recording.replaymod.json");
+        Mixins.addConfiguration("mixins.render.replaymod.json");
+        Mixins.addConfiguration("mixins.render.blend.replaymod.json");
+        Mixins.addConfiguration("mixins.replay.replaymod.json");
+        // Mixins.addConfiguration("mixins.compat.mapwriter.replaymod.json");
+        if(optifine) Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
+        Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
+        Mixins.addConfiguration("mixins.jgui.json");
+        
         MixinEnvironment env = MixinEnvironment.getDefaultEnvironment();
 
         if(env.getObfuscationContext() == null) {

@@ -1,16 +1,13 @@
 package me.mcblueparrot.client.events;
 
+import lombok.RequiredArgsConstructor;
 import net.minecraft.client.gui.GuiNewChat;
 
+@RequiredArgsConstructor
 public class ChatRenderEvent {
 
-    public GuiNewChat chat;
-    public int updateCounter;
+    public final GuiNewChat chat;
+    public final int updateCounter;
     public boolean cancelled;
-
-    public ChatRenderEvent(GuiNewChat chat, int updateCounter) {
-        this.chat = chat;
-        this.updateCounter = updateCounter;
-    }
 
 }

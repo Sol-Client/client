@@ -9,7 +9,7 @@ public interface AccessMinecraft {
 
     boolean isRunning();
 
-    Timer getTimer();
+    Timer getTimerSC();
 
     static AccessMinecraft getInstance() {
         return (AccessMinecraft) Minecraft.getMinecraft();

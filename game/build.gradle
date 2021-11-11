@@ -1,3 +1,22 @@
+import me.mcblueparrot.client.gradle.CustomTweakerPlugin
+import net.md_5.specialsource.JarMapping
+import net.md_5.specialsource.SpecialSource
+import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.commons.Remapper
+import org.objectweb.asm.commons.RemappingClassAdapter
+import org.objectweb.asm.tree.ClassNode
+
+import net.minecraftforge.gradle.user.tweakers.ClientTweaker
+import net.minecraftforge.gradle.user.ReobfMappingType
+import net.minecraftforge.gradle.user.ReobfTaskFactory
+
+import java.nio.file.Files
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
 buildscript {
 	repositories {
 		mavenCentral()
@@ -12,12 +31,11 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
 		classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
 	}
 }
 
-apply plugin: "net.minecraftforge.gradle.tweaker-client"
+apply plugin: CustomTweakerPlugin
 apply plugin: "org.spongepowered.mixin"
 apply plugin: "java"
 
@@ -31,8 +49,412 @@ minecraft {
 	tweakClass = launchWrapperTweakClass
 	mappings = "stable_22"
 	runDir = "run"
+
 	makeObfSourceJar = false
 }
+
+def mcpFolder = new File(System.getProperty("user.home"),
+		".gradle/caches/minecraft/de/oceanlabs/mcp/mcp_stable/22")
+
+def joinedSrg = new File(System.getProperty("user.home"),
+		".gradle/caches/minecraft/de/oceanlabs/mcp/mcp/1.8.9/joined.srg")
+
+static def csvToMap(file) {
+	Map<String, String> methods = new HashMap<>()
+	for(def line : Files.readAllLines(file.toPath())) {
+		methods.put(line.split(",")[0], line.split(",")[1])
+	}
+	return methods
+}
+
+def methodsFile = new File(mcpFolder, "methods.csv");
+def fieldsFile = new File(mcpFolder, "fields.csv");
+
+def srgFolder = new File(mcpFolder, "srgs")
+
+def libsDir = new File(project.getRootDir(), "replaymod")
+
+def replayModBase = "replaymod-1.8.9-2.6.1"
+
+def replayModJar = new File(libsDir, replayModBase + ".jar")
+if(!replayModJar.exists()) {
+	FileUtils.copyURLToFile(new URL("https://minio.replaymod.com/replaymod/" + replayModJar.getName()), replayModJar)
+}
+
+def seargeToMCP = new File(srgFolder, "srg-mcp.srg")
+def notchToSearge = new File(srgFolder, "notch-srg.srg")
+
+def replayModRuntimeJar0 = new File(libsDir, replayModBase + "-runtime0.jar")
+if(!replayModRuntimeJar0.exists()) {
+	SpecialSource.main([
+			"--in-jar",
+			replayModJar,
+			"--out-jar",
+			replayModRuntimeJar0,
+			"--srg-in",
+			seargeToMCP
+	] as String[])
+}
+
+def replayModRuntimeJar1 = new File(libsDir, replayModBase + "-runtime1.jar")
+def fixSrgRuntime = new File(libsDir, "replay-mod-fix-runtime.srg")
+def fixSrgShipped = new File(libsDir, "replay-mod-fix-shipped.srg")
+
+class SeargeSniffer extends Remapper {
+
+	Map<String, String> methods
+	Map<String, String> fields
+	Set<String> fixBuilder
+
+	SeargeSniffer(Set<String> fixBuilder, Map<String, String> methods, Map<String, String> fields) {
+		this.fixBuilder = fixBuilder
+		this.methods = methods
+		this.fields = fields
+	}
+
+	@Override
+	String mapMethodName(String owner, String name, String desc) {
+		if(methods.containsKey(name) && (owner.startsWith("com/replaymod") || owner.startsWith("net/minecraft"))) {
+			fixBuilder.add("MD: " + owner + "/" + name + " " + desc + " " + owner + "/" + methods.get(name) + " " +
+					desc)
+		}
+		return super.mapMethodName(owner, name, desc)
+	}
+
+	@Override
+	String mapFieldName(String owner, String name, String desc) {
+		if(fields.containsKey(name) && (owner.startsWith("com/replaymod") || owner.startsWith("net/minecraft"))) {
+			fixBuilder.add("FD: " + owner + "/" + name + " " + owner + "/" + fields.get(name))
+		}
+		return super.mapFieldName(owner, name, desc)
+	}
+
+}
+
+if(!replayModRuntimeJar1.exists()) {
+	Map<String, String> methods = csvToMap(methodsFile)
+	Map<String, String> fields = csvToMap(fieldsFile)
+	process(replayModRuntimeJar0, replayModRuntimeJar1, methods, fields, fixSrgRuntime)
+}
+
+static def process(File inputFile, File outputFile, Map<String, String> methods, Map<String, String> fields,
+				   File fixSrg) {
+//	if(classes != null) {
+//		classes.forEach({ String key, String value ->
+//			println "Class: " + key + " → " + value
+//		})
+//
+//		fields.forEach({ String key, String value ->
+//			println "Field: " + key + " → " + value
+//		})
+//
+//		methods.forEach({ String key, String value ->
+//			println "Method: " + key + " → " + value
+//		})
+//	}
+
+	def zip = new ZipFile(inputFile)
+	def fileOutput = new FileOutputStream(outputFile)
+	def output = new ZipOutputStream(fileOutput)
+
+	Set<String> fixBuilder = new HashSet<>()
+
+	SeargeSniffer sniffer = new SeargeSniffer(fixBuilder, methods, fields)
+
+	addReplayModRemapper(fixBuilder)
+
+	for(ZipEntry entry : Collections.list(zip.entries())) {
+		InputStream entryInput = zip.getInputStream(entry)
+
+		if(entry.getName() == "mixins.core.replaymod.json"
+				|| entry.getName() == "mixins.compat.mapwriter.replaymod.json"
+				|| entry.getName().startsWith("org/spongepowered/")
+				|| entry.getName() == "com/replaymod/core/ReplayModBackend.class"
+				|| entry.getName() == "com/replaymod/core/SettingsRegistry.class"
+				|| entry.getName() == "com/replaymod/core/SettingsRegistry\$SettingKey.class"
+				|| entry.getName() == "com/replaymod/core/SettingsRegistryBackend.class"
+				|| entry.getName() == "com/replaymod/core/versions/scheduler/SchedulerImpl.class"
+				|| entry.getName() == "com/replaymod/lib/de/johni0702/minecraft/gui/utils/EventRegistrations.class"
+				|| entry.getName() == "com/replaymod/recording/ReplayModRecording.class"
+				|| entry.getName() == "com/replaymod/compat/ReplayModCompat.class"
+				|| entry.getName() == "com/replaymod/core/utils/ModInfoGetter.class"
+				|| (methods != null && entry.getName() == "mixins.replaymod.refmap.json")) {
+			entryInput.close()
+			continue
+		}
+//		else if(entry.getName() == "mixins.replaymod.refmap.json") {
+//			if(!shipped) {
+//				entryInput.close()
+//				continue
+//			}
+//
+//			def obj = new JsonParser().parse(new InputStreamReader(entryInput)).getAsJsonObject()
+//			obj = refRemap(obj, classes, methods, fields)
+//
+//			output.putNextEntry(new ZipEntry(entry.getName()))
+//			output.write(obj.toString().getBytes())
+//			entryInput.close()
+//			output.putNextEntry(new ZipEntry(entry.getName()))
+//			output.write(FileUtils.readFileToString(new File(project.getRootDir(), "mixins.replaymod.refmap.json"),
+//					"UTF-8")
+//					.getBytes("UTF-8"))
+//			continue
+//		}
+
+		if(entry.isDirectory()) continue
+
+		byte[] content = IOUtils.toByteArray(entryInput)
+
+		if(entry.getName().endsWith(".class") && methods != null && fields != null) {
+			def reader = new ClassReader(content)
+			reader.accept(new RemappingClassAdapter(new ClassNode(), sniffer), ClassReader.EXPAND_FRAMES)
+		}
+
+		entryInput.close()
+
+		output.putNextEntry(new ZipEntry(entry.getName()))
+		output.write(content)
+		output.closeEntry()
+	}
+
+	output.close()
+	fileOutput.close()
+	zip.close()
+
+	FileUtils.writeStringToFile(fixSrg, String.join("\n", fixBuilder), "utf-8")
+}
+
+static def addReplayModRemapper(def fixBuilder) {
+	fixBuilder.add("CL: com/replaymod/core/ReplayModBackend me/mcblueparrot/client/replaymod/SCReplayModBackend")
+	fixBuilder.add("CL: com/replaymod/core/SettingsRegistry " +
+			"me/mcblueparrot/client/replaymod/SCSettingsRegistry")
+	fixBuilder.add("CL: com/replaymod/core/versions/scheduler/SchedulerImpl " +
+			"me/mcblueparrot/client/replaymod/SCScheduler")
+	fixBuilder.add("CL: com/replaymod/core/utils/ModInfoGetter " +
+			"me/mcblueparrot/client/replaymod/SCModInfoGetter")
+	fixBuilder.add("CL: com/replaymod/lib/de/johni0702/minecraft/gui/utils/EventRegistrations " +
+			"me/mcblueparrot/client/replaymod/SCEventRegistrations")
+	fixBuilder.add("CL: com/replaymod/recording/ReplayModRecording " +
+			"me/mcblueparrot/client/replaymod/SCReplayModRecording")
+	fixBuilder.add("CL: com/replaymod/compat/ReplayModCompat " +
+			"me/mcblueparrot/client/replaymod/SCReplayModCompat")
+	fixBuilder.add("CL: net/minecraftforge/client/event/GuiScreenEvent\$ActionPerformedEvent\$Pre " +
+			"me/mcblueparrot/client/events/ActionPerformedEvent")
+	fixBuilder.add("CL: net/minecraftforge/fml/client/registry/ClientRegistry " +
+			"me/mcblueparrot/client/replaymod/SCClientRegistry")
+	fixBuilder.add("CL: net/minecraftforge/fml/common/eventhandler/SubscribeEvent " +
+			"me/mcblueparrot/client/events/EventHandler")
+	fixBuilder.add("CL: net/minecraftforge/fml/common/gameevent/PlayerEvent\$ItemPickupEvent " +
+			"me/mcblueparrot/client/events/ItemPickupEvent")
+	fixBuilder.add("CL: net/minecraftforge/event/entity/player/PlayerSleepInBedEvent " +
+			"me/mcblueparrot/client/events/PlayerSleepEvent")
+	fixBuilder.add("CL: net/minecraftforge/client/event/EntityViewRenderEvent\$CameraSetup " +
+			"me/mcblueparrot/client/events/CameraRotateEvent")
+	fixBuilder.add("CL: net/minecraftforge/client/event/RenderGameOverlayEvent\$ElementType " +
+			"me/mcblueparrot/client/events/GameOverlayElement")
+	fixBuilder.add("CL: net/minecraftforge/client/event/RenderGameOverlayEvent\$Pre " +
+			"me/mcblueparrot/client/events/PreGameOverlayRenderEvent")
+	fixBuilder.add("CL: net/minecraftforge/client/event/RenderGameOverlayEvent\$Post " +
+			"me/mcblueparrot/client/events/PostGameOverlayRenderEvent")
+	fixBuilder.add("CL: net/minecraftforge/fml/common/gameevent/TickEvent\$RenderTickEvent " +
+			"me/mcblueparrot/client/events/RenderTickEvent")
+	fixBuilder.add("CL: net/minecraftforge/fml/common/network/internal/FMLProxyPacket " +
+			"me/mcblueparrot/client/util/Stub")
+	fixBuilder.add("CL: net/minecraftforge/client/event/GuiScreenEvent\$MouseInputEvent\$Pre " +
+			"me/mcblueparrot/client/events/PreGuiMouseInputEvent")
+	fixBuilder.add("CL: net/minecraftforge/client/event/GuiScreenEvent\$KeyboardInputEvent\$Pre " +
+			"me/mcblueparrot/client/events/PreGuiKeyboardInputEvent")
+	fixBuilder.add("CL: net/minecraftforge/fml/common/FMLCommonHandler " +
+			"me/mcblueparrot/client/replaymod/SCFMLCommonHandler")
+	fixBuilder.add("CL: com/replaymod/core/SettingsRegistry\$SettingKey " +
+			"me/mcblueparrot/client/replaymod/SCSettingsRegistry\$SettingKey")
+}
+
+//static def refRemap(obj, classes, methods, fields) {
+//	def out = new JsonObject()
+//
+//	def mappings = new JsonObject()
+//
+//	for(def entry : obj.get("mappings").getAsJsonObject().entrySet()) {
+//		def outEntry = new JsonObject()
+//
+//		for(def mappingEntry : entry.getValue().getAsJsonObject().entrySet()) {
+//			def value = mappingEntry.getValue().getAsString()
+//
+//			if(!value.contains(":")) {
+//				def mappingClass = null
+//				if(!value.startsWith("func_")) {
+//					mappingClass = value.substring(1, value.indexOf(";"))
+//					mappingClass = classes.get(mappingClass)
+//				}
+//
+//				def unmappedMappingMethod = value.substring(value.indexOf(";") + 1)
+//
+//				def mappingMethod = methods.get(unmappedMappingMethod.substring(0, unmappedMappingMethod.indexOf("("))) + "("
+//				if(!value.contains("()")) {
+//					mappingMethod += remapArgs(unmappedMappingMethod.substring(unmappedMappingMethod.indexOf("(") + 1, unmappedMappingMethod.indexOf
+//							(")"))
+//							, classes)
+//				}
+//				mappingMethod += ")"
+//				mappingMethod += remapDescElement(unmappedMappingMethod.substring(unmappedMappingMethod.indexOf
+//						(")") + 1), classes)
+//
+//				outEntry.addProperty(mappingEntry.getKey(), (mappingClass != null ? "L" + mappingClass + ";" : "") +
+//						mappingMethod)
+//			}
+//			else {
+//				outEntry.addProperty(mappingEntry.getKey(), fields.get(value.substring(0, value.indexOf(":"))) + ":"
+//						+ remapDescElement(value.substring(value.indexOf(":") + 1), classes))
+//			}
+//
+//		}
+//
+//		mappings.add(entry.getKey(), outEntry)
+//	}
+//
+//	out.add("mappings", mappings)
+//
+//	return out
+//}
+//
+//static def remapArgs(String args, Map<String, String> classes) {
+//	def result = new StringBuilder()
+//	def className
+//	for(def element : args.getChars()) {
+//		if(className != null) {
+//			if(element == ';') {
+//				result.append("L")
+//				println className.toString()
+//				if(classes.containsKey(className.toString())) {
+//					result.append(classes.get(className.toString()))
+//				}
+//				else {
+//					result.append(className.toString());
+//				}
+//				result.append(";")
+//				className = null
+//			}
+//			else {
+//				className.append(element)
+//			}
+//		}
+//		else if(element == 'L') {
+//			className = new StringBuilder()
+//		}
+//		else {
+//			result.append(element)
+//		}
+//	}
+//	return result.toString()
+//}
+//
+//static def remapDescElement(element, Map<String, String> classes) {
+//	if(element.startsWith("L") && element.endsWith(";")) {
+//		def className = element.substring(1, element.length() - 1)
+//		return "L" + (classes.containsKey(className) ? classes.get(className) : className) + ";"
+//	}
+//
+//	return element;
+//}
+
+def replayModRuntimeJar = new File(libsDir, replayModBase + "-runtime.jar")
+
+if(!replayModRuntimeJar.exists()) {
+	SpecialSource.main([
+			"--in-jar",
+			replayModRuntimeJar1,
+			"--out-jar",
+			replayModRuntimeJar,
+			"--srg-in",
+			fixSrgRuntime
+	] as String[])
+}
+
+def replayModShippedJar0 = new File(libsDir, replayModBase + "-shipped0.jar")
+
+if(!replayModShippedJar0.exists()) {
+	process(replayModJar, replayModShippedJar0, null, null, fixSrgShipped)
+}
+
+def replayModShippedJar = new File(libsDir, replayModBase + "-shipped.jar")
+
+if(!replayModShippedJar.exists()) {
+	SpecialSource.main([
+			"--in-jar",
+			replayModShippedJar0,
+			"--out-jar",
+			replayModShippedJar,
+			"--srg-in",
+			fixSrgShipped
+	] as String[])
+}
+
+//def replayModShippedJar = new File(libsDir, replayModBase + "-shipped.jar")
+//
+//def replayModShippedJar0 = new File(libsDir, replayModBase + "-shipped0.jar")
+//
+//if(!replayModShippedJar0.exists()) {
+//	SpecialSource.main([
+//			"--in-jar",
+//			replayModJar,
+//			"--out-jar",
+//			replayModShippedJar0,
+//			"--srg-in",
+//			notchToSearge,
+//			"--reverse"
+//	] as String[])
+//}
+//
+//def replayModShippedJar1 = new File(libsDir, replayModBase + "-shipped1.jar")
+//
+//if(!replayModShippedJar1.exists()) {
+//	def mapping = new JarMapping()
+//
+//	def srgReader = new FileReader(joinedSrg)
+//	def srgBufferedReader = new BufferedReader(srgReader)
+//	mapping.loadMappings(srgBufferedReader, null, null, false)
+//	srgBufferedReader.close()
+//	srgReader.close()
+//
+//	Map<String, String> classes = new HashMap<>()
+//	Map<String, String> methods = new HashMap<>()
+//	Map<String, String> fields = new HashMap<>()
+//
+//	mapping.classes.forEach({ String key, String value ->
+//		classes.put(value, key)
+//	})
+//
+//	mapping.methods.forEach({ String key, String value ->
+//		def methodName = key.substring(key.substring(0, key.indexOf(' ')).lastIndexOf("/") + 1, key.indexOf(' ', key
+//				.indexOf
+//				(' ' + 1)))
+//
+//		if(value != methodName) {
+//			methods.put(value, methodName)
+//		}
+//	})
+//
+//	mapping.fields.forEach({ String key, String value ->
+//		def fieldName = key.substring(key.lastIndexOf("/") + 1)
+//		if(value != fieldName) {
+//			fields.put(value, fieldName)
+//		}
+//	})
+//
+//	process(project, replayModShippedJar0, replayModShippedJar1, classes, methods, fields, fixSrgShipped)
+//}
+//
+//if(!replayModShippedJar.exists()) {
+//	SpecialSource.main([
+//			"--in-jar",
+//			replayModShippedJar1,
+//			"--out-jar",
+//			replayModShippedJar,
+//			"--srg-in",
+//			fixSrgShipped
+//	] as String[])
+//}
 
 repositories {
 	mavenCentral()
@@ -54,6 +476,7 @@ configurations {
 	dependency
 	implementation.extendsFrom(dependency)
 	runtime.extendsFrom(dependency)
+	ship
 }
 
 dependencies {
@@ -69,10 +492,12 @@ dependencies {
 	dependency "org.slick2d:slick2d-core:1.0.2"
 	dependency "com.logisticscraft:occlusionculling:0.0.5-SNAPSHOT"
 	dependency "net.hypixel:hypixel-api-core:4.0"
+	dependency files(replayModRuntimeJar)
+	ship files(replayModShippedJar)
 }
 
 mixin {
-	defaultObfuscationEnv notch
+//	defaultObfuscationEnv searge
 	add sourceSets.main, "mixins.solclient.refmap.json"
 }
 
@@ -91,6 +516,11 @@ jar {
 				"TweakOrder": "0",
 				"Manifest-Version": "1.0"
 		)
+	}
+	from {
+		configurations.ship.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
 	}
 }
 

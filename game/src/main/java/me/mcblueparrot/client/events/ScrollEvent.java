@@ -1,12 +1,11 @@
 package me.mcblueparrot.client.events;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class ScrollEvent {
 
-    public int amount;
+    public final int amount;
     public boolean cancelled;
-
-    public ScrollEvent(int amount) {
-        this.amount = amount;
-    }
 
 }

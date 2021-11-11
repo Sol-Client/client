@@ -7,6 +7,8 @@ package me.mcblueparrot.client.mod.impl;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.replaymod.extras.playeroverview.PlayerOverviewGui;
+import com.replaymod.replay.ReplayModReplay;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.JsonSyntaxException;
@@ -14,7 +16,7 @@ import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.OpenGuiEvent;
+import me.mcblueparrot.client.events.InitialOpenGuiEvent;
 import me.mcblueparrot.client.events.PostProcessingEvent;
 import me.mcblueparrot.client.events.RenderGuiBackgroundEvent;
 import me.mcblueparrot.client.mod.Mod;
@@ -56,13 +58,17 @@ public class MenuBlurMod extends Mod {
     }
 
     @EventHandler
-    public void onOpenGui(OpenGuiEvent event) {
+    public void onOpenGui(InitialOpenGuiEvent event) {
         openTime = System.currentTimeMillis();
     }
 
     @EventHandler
     public void onPostProcessing(PostProcessingEvent event) {
-        if(event.type == PostProcessingEvent.Type.UPDATE || (blur != 0 && (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat)))) {
+        if(event.type == PostProcessingEvent.Type.UPDATE || (blur != 0
+                && (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat)
+                && !(mc.currentScreen.getClass().getName().startsWith("com.replaymod.lib.de.johni0702.minecraft.gui" +
+                ".container." +
+                "AbstractGuiOverlay$") && ReplayModReplay.instance.getReplayHandler() != null && mc.theWorld != null)))) {
             update();
             event.groups.add(group);
         }

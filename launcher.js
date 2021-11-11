@@ -10,6 +10,7 @@ const axios = require("axios");
 const tar = require("tar");
 const Config = require("./config");
 const Utils = require("./utils");
+const temp = require("temp").track();
 
 class Launcher {
 
@@ -202,18 +203,61 @@ class Launcher {
 						});
 				});
 
+				var mapped = versionFolder + "/" + version.id + "-searge.jar";
+
+				if(!fs.existsSync(mapped)) {
+					var tempFolder = temp.mkdirSync("deobf");
+					var specialSource = tempFolder + "SpecialSource.jar";
+					var joinedSrg = tempFolder + "joined.srg";
+					var mcpZip = tempFolder + "mcp.zip";
+
+					await Utils.download("https://repo.maven.apache.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4-shaded.jar", specialSource, 1526537);
+
+					await Utils.download("https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/1.8.9/mcp-1.8.9-srg.zip", mcpZip, 471509);
+
+					var zip = fs.createReadStream(mcpZip).pipe(
+							unzipper.Parse({ forceStream: true }));
+
+					for await(const entry of zip) {
+						const fileName = entry.path;
+
+						if(fileName != "joined.srg") {
+							await entry.autodrain();
+						}
+						else {
+	 						await entry.pipe(fs.createWriteStream(joinedSrg));
+						}
+					}
+
+					await new /*Pinky*/Promise((resolve) => {
+						var process = childProcess.spawn(java, [
+							"-jar",
+							specialSource,
+							"--in-jar",
+							Version.getJar(version),
+							"--out-jar",
+							mapped,
+							"--srg-in",
+							joinedSrg
+						]);
+
+						process.on("exit", resolve);
+
+						process.stdout.on("data", (data) => console.log(data.toString("UTF-8")));
+				process.stderr.on("data", (data) => console.error(data.toString("UTF-8")));
+					});
+				}
+
 				var args = [];
 				args.push("-Djava.library.path=" + nativesFolder);
+
 				args.push("-Dme.mcblueparrot.client.version=" + Utils.version);
+				args.push("-Dmixin.target.mapid=searge");
 
 				args.push("-Xmx" + Config.data.maxMemory + "M");
 
 				if(Utils.getOsName() == "windows") {
 					args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
-				}
-
-				if(Utils.getOsName() == "osx") {
-					args.push("-XstartOnFirstThread");
 				}
 
 				var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";
@@ -226,7 +270,7 @@ class Launcher {
 					classpath += classpathSeparator;
 				}
 
-				classpath += Version.getJar(version);
+				classpath += mapped;
 				classpath += classpathSeparator;
 				classpath += path.join(__dirname, "game/build/libs/game.jar");
 				classpath += classpathSeparator;
@@ -259,9 +303,6 @@ class Launcher {
 				args.push("--accessToken");
 				args.push(this.account.accessToken);
 
-				args.push("--userType");
-				args.push("mojang");
-
 				args.push("--versionType");
 				args.push("release");
 
@@ -289,7 +330,7 @@ class Launcher {
 				var process = childProcess.spawn(java, args, { cwd: Utils.minecraftDirectory });
 				this.games.push(process);
 
-				process.stdout.on("data", (data) => console.log(data.toString("UTF-8"))); // Don't know why you need this.
+				process.stdout.on("data", (data) => console.log(data.toString("UTF-8")));
 				process.stderr.on("data", (data) => console.error(data.toString("UTF-8")));
 
 				process.on("exit", () => {

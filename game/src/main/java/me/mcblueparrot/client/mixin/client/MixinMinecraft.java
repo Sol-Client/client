@@ -1,7 +1,18 @@
 package me.mcblueparrot.client.mixin.client;
 
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.List;
 
+import com.replaymod.core.ReplayMod;
+import com.replaymod.core.versions.MCVer;
+import com.replaymod.replay.InputReplayTimer;
+import com.replaymod.replay.ReplayModReplay;
+import com.replaymod.replay.camera.CameraEntity;
+import me.mcblueparrot.client.events.*;
+import me.mcblueparrot.client.util.Utils;
+import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.entity.Entity;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -17,11 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.SplashScreen;
-import me.mcblueparrot.client.events.MouseClickEvent;
-import me.mcblueparrot.client.events.OpenGuiEvent;
-import me.mcblueparrot.client.events.ScrollEvent;
-import me.mcblueparrot.client.events.TickEvent;
-import me.mcblueparrot.client.events.WorldLoadEvent;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
@@ -36,8 +42,10 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.Timer;
 
+import javax.security.auth.callback.Callback;
+
 @Mixin(Minecraft.class)
-public abstract class MixinMinecraft implements AccessMinecraft {
+public abstract class MixinMinecraft implements AccessMinecraft, MCVer.MinecraftMethodAccessor {
 
     private boolean debugPressed;
     private boolean cancelDebug;
@@ -47,9 +55,14 @@ public abstract class MixinMinecraft implements AccessMinecraft {
         Client.INSTANCE.init();
     }
 
+    @Inject(method = "runTick", at = @At("HEAD"))
+    public void preRunTick(CallbackInfo callback) {
+        Client.INSTANCE.bus.post(new PreTickEvent());
+    }
+
     @Inject(method = "runTick", at = @At("RETURN"))
-    public void runTick(CallbackInfo callback) {
-        Client.INSTANCE.bus.post(new TickEvent());
+    public void postRunTick(CallbackInfo callback) {
+        Client.INSTANCE.bus.post(new PostTickEvent());
     }
 
     @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;next()Z"))
@@ -63,6 +76,24 @@ public abstract class MixinMinecraft implements AccessMinecraft {
         }
 
         return next;
+    }
+
+    @Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer" +
+            "/EntityRenderer;updateCameraAndRender(FJ)V", shift = At.Shift.BEFORE))
+    public void preRenderTick(CallbackInfo callback) {
+        Client.INSTANCE.bus.post(new PreRenderTickEvent());
+    }
+
+    @Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer" +
+            "/EntityRenderer;updateCameraAndRender(FJ)V", shift = At.Shift.AFTER))
+    public void postRenderTick(CallbackInfo callback) {
+        Client.INSTANCE.bus.post(new PostRenderTickEvent());
+    }
+
+    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;" +
+            "isPressed()Z", ordinal = 2))
+    public boolean cancelHotbarSwitch(KeyBinding instance) {
+        return instance.isPressed() && !Utils.isSpectatingEntityInReplay();
     }
 
     /**
@@ -85,8 +116,9 @@ public abstract class MixinMinecraft implements AccessMinecraft {
 
     @Inject(method = "displayGuiScreen", at = @At(value = "HEAD"))
     public void openGui(GuiScreen guiScreenIn, CallbackInfo callback) {
+        Client.INSTANCE.bus.post(new OpenGuiEvent(guiScreenIn));
         if(currentScreen == null && guiScreenIn != null) {
-            Client.INSTANCE.bus.post(new OpenGuiEvent(guiScreenIn));
+            Client.INSTANCE.bus.post(new InitialOpenGuiEvent(guiScreenIn));
         }
     }
 
@@ -96,9 +128,14 @@ public abstract class MixinMinecraft implements AccessMinecraft {
 
         if(dWheel != 0) {
             if(Client.INSTANCE.bus.post(new ScrollEvent(dWheel)).cancelled) {
-                return 0;
+                dWheel = 0;
+            }
+            else if(Utils.isSpectatingEntityInReplay()) {
+                dWheel = 0;
             }
         }
+
+        InputReplayTimer.handleScroll(dWheel);
 
         return dWheel;
     }
@@ -121,9 +158,8 @@ public abstract class MixinMinecraft implements AccessMinecraft {
     public abstract boolean isRunning();
 
     @Override
-    @Accessor
-    public abstract Timer getTimer();
-
+    @Accessor(value = "timer")
+    public abstract Timer getTimerSC();
 
     @Shadow
     public GuiScreen currentScreen;
@@ -346,16 +382,51 @@ public abstract class MixinMinecraft implements AccessMinecraft {
     	}
     }
 
-    @Shadow
-    public String debug;
+    // Fix Replay Mod bug - textures animate too fast.
 
-    @Shadow
-    public GuiAchievement guiAchievement;
+    private boolean earlyBird;
+
+    @Override
+    public void replayModSetEarlyReturnFromRunTick(boolean earlyBird) {
+        this.earlyBird = earlyBird;
+    }
+
+    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/texture/" +
+            "TextureManager;tick()V"))
+    public void cancelTextureTick(TextureManager instance) {
+        if(!earlyBird) {
+            instance.tick();
+        }
+    }
+
+    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiIngame;" +
+            "updateTick()V"))
+    public void cancelHudTick(GuiIngame instance) {
+        if(!earlyBird) {
+            instance.updateTick();
+        }
+    }
+
+    @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventButton()I"))
+    public void forceScroll(CallbackInfo callback) {
+        if(earlyBird) {
+            onScroll();
+        }
+    }
+
+    @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;" +
+            "sendClickBlockToController(Z)V"), cancellable = true)
+    public void doEarlyReturnFromRunTick(CallbackInfo callback) {
+        if(earlyBird) {
+            callback.cancel();
+        }
+    }
+
 
     @Shadow
     public GameSettings gameSettings;
 
     @Shadow
-    public ServerData currentServerData;
+    private ServerData currentServerData;
 
 }

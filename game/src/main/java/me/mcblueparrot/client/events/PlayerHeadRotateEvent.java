@@ -1,14 +1,12 @@
 package me.mcblueparrot.client.events;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class PlayerHeadRotateEvent {
 
-    public float yaw;
-    public float pitch;
+    public final float yaw;
+    public final float pitch;
     public boolean cancelled;
-
-    public PlayerHeadRotateEvent(float yaw, float pitch) {
-        this.yaw = yaw;
-        this.pitch = pitch;
-    }
 
 }

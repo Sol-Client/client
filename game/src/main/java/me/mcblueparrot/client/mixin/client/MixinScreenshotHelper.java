@@ -6,6 +6,7 @@ import java.nio.IntBuffer;
 
 import javax.imageio.ImageIO;
 
+import com.replaymod.replay.ReplayModReplay;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
@@ -56,11 +57,11 @@ public class MixinScreenshotHelper {
             if(OpenGlHelper.isFramebufferEnabled()) {
                 GlStateManager.bindTexture(buffer.framebufferTexture);
                 GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV,
-                        (IntBuffer) pixelBuffer);
+                        pixelBuffer);
             }
             else {
                 GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV,
-                        (IntBuffer) pixelBuffer);
+                        pixelBuffer);
             }
 
             pixelBuffer.get(pixelValues);
@@ -93,7 +94,7 @@ public class MixinScreenshotHelper {
 
             BufferedImage finalImage = image;
             
-            new Thread(() -> {
+            Thread thread = new Thread(() -> {
                 try {
                     ImageIO.write(finalImage, "png", (File) screenshot);
 
@@ -108,7 +109,15 @@ public class MixinScreenshotHelper {
                     logger.warn("Couldn\'t save screenshot", error);
                     Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentTranslation("screenshot.failure", error.getMessage()));
                 }
-            }).start();
+            });
+
+            if(ReplayModReplay.instance.getReplayHandler() != null) {
+                thread.run();
+            }
+            else {
+                thread.start();
+            }
+
             return null;
         }
         catch(Exception exception) {

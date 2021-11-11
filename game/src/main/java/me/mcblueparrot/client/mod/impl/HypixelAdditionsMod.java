@@ -17,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import me.mcblueparrot.client.events.*;
 import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
@@ -26,11 +27,6 @@ import me.mcblueparrot.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.DetectedServer;
 import me.mcblueparrot.client.ServerChangeEvent;
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.ReceiveChatMessageEvent;
-import me.mcblueparrot.client.events.RenderEvent;
-import me.mcblueparrot.client.events.SoundPlayEvent;
-import me.mcblueparrot.client.events.WorldLoadEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
@@ -127,6 +123,8 @@ public class HypixelAdditionsMod extends Mod {
     public HypixelAdditionsMod() {
         super("Hypixel Additions", "hypixel_util", "Various additions to Hypixel.", ModCategory.UTILITY);
         instance = this;
+        Client.INSTANCE.registerKeybind(keyAcceptRequest);
+        Client.INSTANCE.registerKeybind(keyDismissRequest);
     }
 
 
@@ -334,7 +332,9 @@ public class HypixelAdditionsMod extends Mod {
     }
 
     @EventHandler
-    public void onRender(RenderEvent event) {
+    public void onRender(PostGameOverlayRenderEvent event) {
+        if(event.type != GameOverlayElement.ALL) return;
+
         if(request != null) {
             long since = System.currentTimeMillis() - request.time;
             if(since > 10000) {

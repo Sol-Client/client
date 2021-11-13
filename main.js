@@ -27,6 +27,7 @@ async function run() {
 		});
 
 		window.loadFile("app.html");
+		window.webContents.openDevTools();
 		window.setMenu(null);
 	}
 

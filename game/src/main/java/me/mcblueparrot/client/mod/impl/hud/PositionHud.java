@@ -14,9 +14,6 @@ import net.minecraft.util.MathHelper;
 public class PositionHud extends Hud {
 
     private String editString = "XYZ: 000.000 / 00.000 / 000.000";
-    private int editWidth = mc.fontRendererObj.getStringWidth(editString);
-    private int editHeight = mc.fontRendererObj.FONT_HEIGHT;
-    private static final DecimalFormat FORMAT = new DecimalFormat("0.000");
     @Expose
     @ConfigOption("Background")
     private boolean background = true;

@@ -11,15 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.replaymod.core.ReplayMod;
 import me.mcblueparrot.client.events.*;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.impl.*;
-import me.mcblueparrot.client.replaymod.SCReplayModBackend;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -126,10 +120,10 @@ public class Client {
         register(new BlockSelectionMod());
         register(new HitColourMod());
         register(new SCReplayMod());
-        registerKeybind(keyMods);
+        registerKeyBinding(keyMods);
 
         try {
-            unregisterKeybind((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
+            unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
         }
         catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
             // OptiFine is not enabled.
@@ -161,13 +155,13 @@ public class Client {
         cullThread.start();
     }
 
-    public void registerKeybind(KeyBinding keybind) {
-        mc.gameSettings.keyBindings = ArrayUtils.add(mc.gameSettings.keyBindings, keybind);
+    public void registerKeyBinding(KeyBinding keyBinding) {
+        mc.gameSettings.keyBindings = ArrayUtils.add(mc.gameSettings.keyBindings, keyBinding);
     }
 
-    public void unregisterKeybind(KeyBinding keybind) {
-        mc.gameSettings.keyBindings = ArrayUtils.removeElement(mc.gameSettings.keyBindings, keybind);
-        keybind.setKeyCode(0);
+    public void unregisterKeyBinding(KeyBinding keyBinding) {
+        mc.gameSettings.keyBindings = ArrayUtils.removeElement(mc.gameSettings.keyBindings, keyBinding);
+        keyBinding.setKeyCode(0);
     }
 
     private Gson getGson(Mod mod) {
@@ -364,7 +358,7 @@ public class Client {
             }
         }
 
-        bus.post(new ServerChangeEvent(data, detectedServer));
+        bus.post(new ServerConnectEvent(data, detectedServer));
     }
 
     public List<ChatButton> getChatButtons() {

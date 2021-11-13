@@ -49,9 +49,9 @@ public class ZoomMod extends Mod {
 
     public ZoomMod() {
         super("Zoom", "zoom", "Zoom in when pressing a button.", ModCategory.UTILITY);
-        Client.INSTANCE.registerKeybind(key);
-        Client.INSTANCE.registerKeybind(keyZoomOut);
-        Client.INSTANCE.registerKeybind(keyZoomIn);
+        Client.INSTANCE.registerKeyBinding(key);
+        Client.INSTANCE.registerKeyBinding(keyZoomOut);
+        Client.INSTANCE.registerKeyBinding(keyZoomIn);
     }
 
     public void start() {

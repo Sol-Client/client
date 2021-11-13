@@ -2,6 +2,8 @@ package me.mcblueparrot.client.mod;
 
 import java.util.List;
 
+import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.events.PostGameStartEvent;
 import me.mcblueparrot.client.replaymod.SCEventRegistrations;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +36,14 @@ public abstract class Mod {
         mc = Minecraft.getMinecraft();
         logger = LogManager.getLogger();
         enabled = isEnabledByDefault();
+    }
+
+    @EventHandler
+    public void onPostStart(PostGameStartEvent event) {
+        postStart();
+    }
+
+    protected void postStart() {
     }
 
     public void onRegister() {
@@ -70,6 +80,9 @@ public abstract class Mod {
             setEnabled((boolean) value);
         }
         return true;
+    }
+
+    public void postOptionChange(String key, Object value) {
     }
 
     public List<ConfigOption.Cached> getOptions() {

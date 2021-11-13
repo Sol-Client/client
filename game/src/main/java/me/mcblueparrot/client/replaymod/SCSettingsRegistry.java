@@ -1,6 +1,7 @@
 package me.mcblueparrot.client.replaymod;
 
 import com.replaymod.core.events.SettingsChangedCallback;
+import com.replaymod.replay.handler.GuiHandler;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.mod.impl.SCReplayMod;
 
@@ -67,7 +68,12 @@ public class SCSettingsRegistry {
                     case "recordSingleplayer":
                         return (T) (Boolean) (SCReplayMod.enabled && mod.recordSingleplayer);
                     case "renameDialog":
-                        return (T) (Boolean) (SCReplayMod.enabled && mod.renameDialog);
+                        return (T) (Boolean) mod.renameDialog;
+                }
+                break;
+            case "render":
+                if(key.getKey().equals("frameTimeFromWorldTime")) {
+                    return (T) (Boolean) SCReplayMod.instance.frameTimeFromWorldTime;
                 }
                 break;
             case "replay":
@@ -84,6 +90,8 @@ public class SCSettingsRegistry {
                         return (T) (Boolean) mod.showChat;
                     case "showServerIPs":
                         return (T) (Boolean) mod.showServerIPs;
+                    case "mainMenuButton":
+                        return (T) "DEFAULT";
                 }
                 break;
             case "simplepathing":
@@ -101,9 +109,27 @@ public class SCSettingsRegistry {
                         }
                         break;
                     case "pathpreview":
-                        return (T) (Boolean) mod.pathPreview;
+                        return (T) (Boolean) mod.showPathPreview;
                     case "timelineLength":
                         return (T) (Integer) mod.timelineLength;
+                }
+            case "advanced":
+                switch(key.getKey()) {
+                    case "askForOpenEye":
+                        return (T) Boolean.FALSE; // Sorry, ReplayMod devs, but you would receive crashes from Sol
+                                                  // Client.
+                    case "cachePath":
+                        return (T) "./.replay_cache/";
+                    case "fullBrightness":
+                        return (T) "replaymod.gui.settings.fullbrightness.gamma";
+                    case "recordingPath":
+                        return (T) "./replay_recordings/";
+                    case "renderPath":
+                        return (T) "./replay_videos/";
+                    case "skipPostRenderGui":
+                        return (T) (Boolean) mod.skipPostRenderGui;
+                    case "skipPostScreenshotGui":
+                        return (T) (Boolean) mod.skipPostScreenshotGui;
                 }
         }
         return (T) settings.get(key);
@@ -135,7 +161,7 @@ public class SCSettingsRegistry {
                         if(SCReplayMod.enabled) mod.recordSingleplayer = (Boolean) value;
                         break;
                     case "renameDialog":
-                        if(SCReplayMod.enabled) mod.renameDialog = (Boolean) value;
+                        mod.renameDialog = (Boolean) value;
                         break;
                 }
                 break;
@@ -178,13 +204,22 @@ public class SCSettingsRegistry {
                         }
                         break;
                     case "pathpreview":
-                        mod.pathPreview = (Boolean) value;
+                        mod.showPathPreview = (Boolean) value;
                         break;
                     case "timelineLength":
                         mod.timelineLength = (Integer) value;
                         break;
                 }
                 break;
+            case "advanced":
+                switch(key.getKey()) {
+                    case "skipPostRenderGui":
+                        mod.skipPostRenderGui = (Boolean) value;
+                        break;
+                    case "skipPostScreenshotGui":
+                        mod.skipPostScreenshotGui = (Boolean) value;
+                        break;
+                }
         }
         SettingsChangedCallback.EVENT.invoker().onSettingsChanged(this, key);
     }

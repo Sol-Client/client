@@ -1,6 +1,7 @@
 package me.mcblueparrot.client.mixin.client;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import me.mcblueparrot.client.events.*;
 import me.mcblueparrot.client.util.Utils;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.entity.Entity;
+import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -22,9 +24,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.SplashScreen;
@@ -41,6 +40,8 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.Timer;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.security.auth.callback.Callback;
 
@@ -50,9 +51,17 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
     private boolean debugPressed;
     private boolean cancelDebug;
 
-    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiMainMenu;<init>()V"))
+    @Inject(method = "startGame", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/Minecraft;initStream()V", shift = At.Shift.AFTER))
     public void init(CallbackInfo callback) {
         Client.INSTANCE.init();
+        gameSettings.loadOptions();
+    }
+
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiMainMenu;<init>()V"))
+    public void postStart(CallbackInfo callback) {
+        Client.INSTANCE.bus.post(new PostGameStartEvent());
     }
 
     @Inject(method = "runTick", at = @At("HEAD"))
@@ -133,9 +142,10 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
             else if(Utils.isSpectatingEntityInReplay()) {
                 dWheel = 0;
             }
+            else {
+                InputReplayTimer.handleScroll(dWheel / Math.abs(dWheel) /* convert to -1/0/1 */);
+            }
         }
-
-        InputReplayTimer.handleScroll(dWheel);
 
         return dWheel;
     }
@@ -146,7 +156,7 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
         Display.setTitle(Client.NAME + " on " + oldTitle);
     }
 
-    @Inject(method = "setServerData", at = @At("HEAD"))
+    @Inject(method = "setServerData", at = @At("TAIL"))
     public void onDisconnect(ServerData serverDataIn, CallbackInfo callback) {
         if(serverDataIn == null) {
             Client.INSTANCE.onServerChange(null);
@@ -373,13 +383,13 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 
     @Inject(method = "loadWorld(Lnet/minecraft/client/multiplayer/WorldClient;Ljava/lang/String;)V", at = @At("RETURN"))
     public void onWorldLoad(WorldClient world, String loadingText, CallbackInfo callback) {
-    	if(world == null && hadWorld) {
+        if(world == null && hadWorld) {
             hadWorld = false;
-    	}
-    	else if(world != null && !hadWorld) {
-    	    hadWorld = true;
-    	    Client.INSTANCE.onServerChange(currentServerData);
-    	}
+        }
+        else if(world != null && !hadWorld) {
+            hadWorld = true;
+            Client.INSTANCE.onServerChange(currentServerData);
+        }
     }
 
     // Fix Replay Mod bug - textures animate too fast.
@@ -421,7 +431,6 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
             callback.cancel();
         }
     }
-
 
     @Shadow
     public GameSettings gameSettings;

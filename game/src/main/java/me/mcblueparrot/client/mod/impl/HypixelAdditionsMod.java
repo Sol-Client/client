@@ -26,7 +26,7 @@ import me.mcblueparrot.client.ChatChannelSystem;
 import me.mcblueparrot.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.DetectedServer;
-import me.mcblueparrot.client.ServerChangeEvent;
+import me.mcblueparrot.client.ServerConnectEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
@@ -123,8 +123,8 @@ public class HypixelAdditionsMod extends Mod {
     public HypixelAdditionsMod() {
         super("Hypixel Additions", "hypixel_util", "Various additions to Hypixel.", ModCategory.UTILITY);
         instance = this;
-        Client.INSTANCE.registerKeybind(keyAcceptRequest);
-        Client.INSTANCE.registerKeybind(keyDismissRequest);
+        Client.INSTANCE.registerKeyBinding(keyAcceptRequest);
+        Client.INSTANCE.registerKeyBinding(keyDismissRequest);
     }
 
 
@@ -255,7 +255,7 @@ public class HypixelAdditionsMod extends Mod {
     }
 
     @EventHandler
-    public void onServerChange(ServerChangeEvent event) {
+    public void onServerChange(ServerConnectEvent event) {
         updateState();
     }
 

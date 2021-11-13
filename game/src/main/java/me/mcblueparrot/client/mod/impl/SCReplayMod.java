@@ -2,16 +2,19 @@ package me.mcblueparrot.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 import com.replaymod.core.ReplayMod;
-import com.replaymod.replay.ReplayModReplay;
+import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.OpenGuiScreenCallback;
 import lombok.AllArgsConstructor;
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.ServerChangeEvent;
+import me.mcblueparrot.client.ServerConnectEvent;
 import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.events.OpenGuiEvent;
+import me.mcblueparrot.client.events.WorldLoadEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.replaymod.SCReplayModBackend;
-import me.mcblueparrot.client.replaymod.SCSettingsRegistry;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.WorldClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.List;
 public class SCReplayMod extends Mod {
 
     public static boolean enabled;
+    public static Boolean deferedState;
     public static SCReplayMod instance;
 
     @Expose
@@ -59,22 +63,23 @@ public class SCReplayMod extends Mod {
     public SCInterpolatorType defaultInterpolator = SCInterpolatorType.CATMULL;
     @Expose
     @ConfigOption("Show Server IPs")
-    public boolean showServerIPs = false;
+    public boolean showServerIPs = true;
     @Expose
-    public boolean automaticPostProcessing;
+    public boolean automaticPostProcessing = true;
     @Expose
     public boolean autoSync = true;
     @Expose
-    public boolean pathPreview = true;
-    @Expose
     public int timelineLength = 1800;
+    @Expose
+    public boolean frameTimeFromWorldTime;
+    @Expose
+    public boolean skipPostRenderGui;
+    public boolean skipPostScreenshotGui;
 
     private List<Object> unregisterOnDisable = new ArrayList<>();
     private List<Object> registerOnEnable = new ArrayList<>();
 
     private SCReplayModBackend backend;
-
-    private Boolean deferedState;
 
     public SCReplayMod() {
         super("Replay Mod", "replay", "Record, replay and share your gaming experience.", ModCategory.UTILITY);
@@ -92,8 +97,12 @@ public class SCReplayMod extends Mod {
 
     @Override
     public boolean onOptionChange(String key, Object value) {
-        updateSettings();
         return super.onOptionChange(key, value);
+    }
+
+    @Override
+    public void postOptionChange(String key, Object value) {
+        updateSettings();
     }
 
     @Override
@@ -101,7 +110,7 @@ public class SCReplayMod extends Mod {
         super.onEnable();
         deferedState = Boolean.TRUE;
 
-        if(mc.theWorld == null) updateState();
+        updateState(mc.theWorld);
     }
 
     @Override
@@ -109,22 +118,22 @@ public class SCReplayMod extends Mod {
         super.onDisable();
         deferedState = Boolean.FALSE;
 
-        if(mc.theWorld == null) updateState();
+        updateState(mc.theWorld);
     }
 
     public class ServerListener {
 
         @EventHandler
-        public void onServerQuit(ServerChangeEvent event) {
-            if(event.data == null) {
-                updateState();
-            }
+        public void onWorldLoad(WorldLoadEvent event) {
+            updateState(event.world);
         }
 
     }
 
-    private void updateState() {
-        if(deferedState != null && deferedState != enabled) {
+    private void updateState(WorldClient world) {
+        updateSettings();
+
+        if(world == null && deferedState != null && deferedState != enabled) {
             enabled = deferedState;
             if(deferedState) {
                 for(Object event : registerOnEnable) {
@@ -132,6 +141,8 @@ public class SCReplayMod extends Mod {
                     unregisterOnDisable.add(event);
                 }
                 registerOnEnable.clear();
+
+                OpenGuiScreenCallback.EVENT.invoker().openGuiScreen(mc.currentScreen);
             }
             else {
                 for(Object event : unregisterOnDisable) {
@@ -140,8 +151,16 @@ public class SCReplayMod extends Mod {
                 }
                 unregisterOnDisable.clear();
             }
-            updateSettings();
+            deferedState = null;
         }
+    }
+
+    @Override
+    public String getDescription() {
+        if(deferedState != null && deferedState != enabled) {
+            return super.getDescription() + " Log out to " + (deferedState ? "enable" : "disable") + ".";
+        }
+        return super.getDescription();
     }
 
     public void addEvent(Object event) {

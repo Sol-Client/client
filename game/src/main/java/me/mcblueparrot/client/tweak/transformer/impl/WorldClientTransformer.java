@@ -10,7 +10,7 @@ public class WorldClientTransformer implements ClassNodeTransformer {
 
     @Override
     public boolean test(String name) {
-        return name.equals("net/minecraft/client/multiplayer/WorldClient") || name.equals("bdb");
+        return name.equals("net/minecraft/client/multiplayer/WorldClient");
     }
 
     @Override

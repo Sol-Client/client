@@ -9,7 +9,7 @@ import net.minecraft.client.settings.KeyBinding;
 public class SCClientRegistry {
 
     public static void registerKeyBinding(KeyBinding keyBinding) {
-        Client.INSTANCE.registerKeybind(keyBinding);
+        Client.INSTANCE.registerKeyBinding(keyBinding);
     }
 
 }

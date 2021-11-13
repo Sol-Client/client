@@ -11,6 +11,7 @@
   "author": "mcblueparrot",
   "license": "MIT",
   "dependencies": {
+    "archiver": "^5.3.0",
     "axios": "^0.21.4",
     "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",

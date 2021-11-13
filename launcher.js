@@ -10,7 +10,7 @@ const axios = require("axios");
 const tar = require("tar");
 const Config = require("./config");
 const Utils = require("./utils");
-const temp = require("temp").track();
+const Patcher = require("./patcher");
 
 class Launcher {
 
@@ -203,49 +203,33 @@ class Launcher {
 						});
 				});
 
-				var mapped = versionFolder + "/" + version.id + "-searge.jar";
+				var versionToAdd;
 
-				if(!fs.existsSync(mapped)) {
-					var tempFolder = temp.mkdirSync("deobf");
-					var specialSource = tempFolder + "SpecialSource.jar";
-					var joinedSrg = tempFolder + "joined.srg";
-					var mcpZip = tempFolder + "mcp.zip";
-
-					await Utils.download("https://repo.maven.apache.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4-shaded.jar", specialSource, 1526537);
-
-					await Utils.download("https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/1.8.9/mcp-1.8.9-srg.zip", mcpZip, 471509);
-
-					var zip = fs.createReadStream(mcpZip).pipe(
-							unzipper.Parse({ forceStream: true }));
-
-					for await(const entry of zip) {
-						const fileName = entry.path;
-
-						if(fileName != "joined.srg") {
-							await entry.autodrain();
-						}
-						else {
-	 						await entry.pipe(fs.createWriteStream(joinedSrg));
-						}
+				if(Config.data.optifine) {
+					var optifinePatchedJar = versionFolder + "/" + version.id + "-patched-optifine.jar";
+					var optifineSize = 2585014;
+					if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
+						await Library.download({
+								url: await Utils.getOptiFine(),
+								size: optifineSize,
+								path: optifineRelative
+							});
 					}
 
-					await new /*Pinky*/Promise((resolve) => {
-						var process = childProcess.spawn(java, [
-							"-jar",
-							specialSource,
-							"--in-jar",
-							Version.getJar(version),
-							"--out-jar",
-							mapped,
-							"--srg-in",
-							joinedSrg
-						]);
+					if(!fs.existsSync(optifinePatchedJar)) {
+						fs.renameSync(await Patcher.patch(java, versionJar, optifine), optifinePatchedJar);
+					}
 
-						process.on("exit", resolve);
+					versionToAdd = optifinePatchedJar;
+				}
+				else {
+					var mappedJar = versionFolder + "/" + version.id + "-searge.jar";
 
-						process.stdout.on("data", (data) => console.log(data.toString("UTF-8")));
-				process.stderr.on("data", (data) => console.error(data.toString("UTF-8")));
-					});
+					if(!fs.existsSync(mappedJar)) {
+						fs.renameSync(Patcher.patch(java, versionJar), mappedJar);
+					}
+
+					versionToAdd = mappedJar;
 				}
 
 				var args = [];
@@ -270,22 +254,10 @@ class Launcher {
 					classpath += classpathSeparator;
 				}
 
-				classpath += mapped;
+				classpath += versionToAdd;
 				classpath += classpathSeparator;
 				classpath += path.join(__dirname, "game/build/libs/game.jar");
 				classpath += classpathSeparator;
-
-				if(Config.data.optifine) {
-					var optifineSize = 2585014;
-					if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
-						await Library.download({
-								url: await Utils.getOptiFine(),
-								size: optifineSize,
-								path: optifineRelative
-							});
-					}
-					classpath += optifine;
-				}
 
 				args.push(classpath);
 
@@ -322,12 +294,7 @@ class Launcher {
 				args.push("--tweakClass");
 				args.push("me.mcblueparrot.client.tweak.Tweaker");
 
-				if(Config.data.optifine) {
-					args.push("--tweakClass");
-					args.push("optifine.OptiFineTweaker");
-				}
-
-				var process = childProcess.spawn(java, args, { cwd: Utils.minecraftDirectory });
+				var process = childProcess.spawn(java, args, { cwd: Utils.gameDirectory });
 				this.games.push(process);
 
 				process.stdout.on("data", (data) => console.log(data.toString("UTF-8")));

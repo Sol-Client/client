@@ -1,3 +1,4 @@
+import com.google.gson.JsonParser
 import me.mcblueparrot.client.gradle.CustomTweakerPlugin
 import net.md_5.specialsource.SpecialSource
 import org.apache.commons.io.FileUtils
@@ -51,9 +52,6 @@ minecraft {
 def mcpFolder = new File(System.getProperty("user.home"),
 		".gradle/caches/minecraft/de/oceanlabs/mcp/mcp_stable/22")
 
-def joinedSrg = new File(System.getProperty("user.home"),
-		".gradle/caches/minecraft/de/oceanlabs/mcp/mcp/1.8.9/joined.srg")
-
 static def csvToMap(file) {
 	Map<String, String> methods = new HashMap<>()
 	for(def line : Files.readAllLines(file.toPath())) {
@@ -77,7 +75,6 @@ if(!replayModJar.exists()) {
 }
 
 def seargeToMCP = new File(srgFolder, "srg-mcp.srg")
-def notchToSearge = new File(srgFolder, "notch-srg.srg")
 
 def replayModRuntimeJar0 = new File(libsDir, replayModBase + "-runtime0.jar")
 if(!replayModRuntimeJar0.exists()) {
@@ -229,6 +226,8 @@ static def addReplayModRemapper(def fixBuilder) {
 			"me/mcblueparrot/client/events/PreGuiKeyboardInputEvent")
 	fixBuilder.add("CL: net/minecraftforge/fml/common/FMLCommonHandler " +
 			"me/mcblueparrot/client/replaymod/SCFMLCommonHandler")
+	fixBuilder.add("CL: net/minecraftforge/client/ForgeHooksClient " +
+			"me/mcblueparrot/client/replaymod/SCForgeHooksClient")
 	fixBuilder.add("CL: com/replaymod/core/SettingsRegistry\$SettingKey " +
 			"me/mcblueparrot/client/replaymod/SCSettingsRegistry\$SettingKey")
 }
@@ -264,6 +263,49 @@ if(!replayModShippedJar.exists()) {
 			fixSrgShipped
 	] as String[])
 }
+
+task cleanRefmap() {
+	doLast {
+		def tmpJar = new File(getTemporaryDir(), "tmp.jar")
+
+		def zip = new ZipFile(jar.archivePath)
+		def fileOutput = new FileOutputStream(tmpJar)
+		def output = new ZipOutputStream(fileOutput)
+
+		for(ZipEntry entry : Collections.list(zip.entries())) {
+			InputStream entryInput = zip.getInputStream(entry)
+
+			if(entry.getName() == "mixins.solclient.refmap.json") {
+				def obj = new JsonParser().parse(new InputStreamReader(entryInput)).getAsJsonObject()
+				obj.remove("data")
+
+				output.putNextEntry(new ZipEntry(entry.getName()))
+				output.write(obj.toString().getBytes())
+				output.close()
+				continue
+			}
+
+			if(entry.isDirectory()) continue
+
+			byte[] content = IOUtils.toByteArray(entryInput)
+
+			entryInput.close()
+
+			output.putNextEntry(new ZipEntry(entry.getName()))
+			output.write(content)
+			output.closeEntry()
+		}
+
+		output.close()
+		fileOutput.close()
+		zip.close()
+
+		jar.archivePath.delete()
+		tmpJar.renameTo(jar.archivePath)
+	}
+}
+
+jar.finalizedBy tasks.cleanRefmap
 
 repositories {
 	mavenCentral()

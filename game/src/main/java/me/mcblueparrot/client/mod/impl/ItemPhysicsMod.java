@@ -72,7 +72,7 @@ public class ItemPhysicsMod extends Mod {
                     if(((AccessEntity) event.entity).getIsInWeb()) {
                         divisor *= 10;
                     }
-                    data.rotation += ((double) since) / ((double) divisor) * (rotationSpeed / 100D);
+                    data.rotation += ((float) since) / ((float) divisor) * (rotationSpeed / 100F);
                 }
                 else if(data.rotation != 0) {
                     data.rotation = 0;
@@ -117,7 +117,7 @@ public class ItemPhysicsMod extends Mod {
     public static class ItemData {
 
         public long lastUpdate;
-        public int rotation;
+        public float rotation;
 
         public ItemData(long lastUpdate) {
             this.lastUpdate = lastUpdate;

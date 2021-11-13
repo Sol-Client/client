@@ -22,6 +22,11 @@ public class ToggleSprintMod extends SimpleHud {
     public ToggleSprintMod() {
         super("Toggle Sprint", "toggle_sprint", "Toggle the sprint key.");
         category = ModCategory.UTILITY;
+    }
+
+    @Override
+    protected void postStart() {
+        super.postStart();
         mc.gameSettings.keyBindSprint = new SprintKeyBind("key.sprint", 29,
                 "key.categories.movement");
     }

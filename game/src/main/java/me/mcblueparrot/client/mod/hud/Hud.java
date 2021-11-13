@@ -31,8 +31,13 @@ public abstract class Hud extends Mod {
 
     public Hud(String name, String id, String description) {
         super(name, id, description, ModCategory.HUD);
-        this.font = mc.fontRendererObj;
         this.position = getDefaultPosition();
+    }
+
+    @Override
+    protected void postStart() {
+        super.postStart();
+        this.font = mc.fontRendererObj;
     }
 
     protected float getScale() {

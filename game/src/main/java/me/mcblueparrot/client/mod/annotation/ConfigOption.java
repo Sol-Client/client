@@ -66,6 +66,7 @@ public @interface ConfigOption {
                 if(!value.equals(field.get(mod))) {
                     if(mod.onOptionChange(field.getName(), value)) {
                         field.set(mod, value);
+                        mod.postOptionChange(field.getName(), value);
                     }
                 }
             }

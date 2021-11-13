@@ -32,7 +32,7 @@ public class PerspectiveMod extends Mod {
 
     public PerspectiveMod() {
         super("Freelook", "perspective", "Unlock the camera rotation.", ModCategory.UTILITY);
-        Client.INSTANCE.registerKeybind(key);
+        Client.INSTANCE.registerKeyBinding(key);
     }
 
     @EventHandler

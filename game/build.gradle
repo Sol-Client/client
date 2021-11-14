@@ -60,75 +60,6 @@ static def csvToMap(file) {
 	return methods
 }
 
-def methodsFile = new File(mcpFolder, "methods.csv");
-def fieldsFile = new File(mcpFolder, "fields.csv");
-
-def srgFolder = new File(mcpFolder, "srgs")
-
-def libsDir = new File(project.getRootDir(), "replaymod")
-
-def replayModBase = "replaymod-1.8.9-2.6.1"
-
-def replayModJar = new File(libsDir, replayModBase + ".jar")
-if(!replayModJar.exists()) {
-	FileUtils.copyURLToFile(new URL("https://minio.replaymod.com/replaymod/" + replayModJar.getName()), replayModJar)
-}
-
-def seargeToMCP = new File(srgFolder, "srg-mcp.srg")
-
-def replayModRuntimeJar0 = new File(libsDir, replayModBase + "-runtime0.jar")
-if(!replayModRuntimeJar0.exists()) {
-	SpecialSource.main([
-			"--in-jar",
-			replayModJar,
-			"--out-jar",
-			replayModRuntimeJar0,
-			"--srg-in",
-			seargeToMCP
-	] as String[])
-}
-
-def replayModRuntimeJar1 = new File(libsDir, replayModBase + "-runtime1.jar")
-def fixSrgRuntime = new File(libsDir, "replay-mod-fix-runtime.srg")
-def fixSrgShipped = new File(libsDir, "replay-mod-fix-shipped.srg")
-
-class SeargeSniffer extends Remapper {
-
-	Map<String, String> methods
-	Map<String, String> fields
-	Set<String> fixBuilder
-
-	SeargeSniffer(Set<String> fixBuilder, Map<String, String> methods, Map<String, String> fields) {
-		this.fixBuilder = fixBuilder
-		this.methods = methods
-		this.fields = fields
-	}
-
-	@Override
-	String mapMethodName(String owner, String name, String desc) {
-		if(methods.containsKey(name) && (owner.startsWith("com/replaymod") || owner.startsWith("net/minecraft"))) {
-			fixBuilder.add("MD: " + owner + "/" + name + " " + desc + " " + owner + "/" + methods.get(name) + " " +
-					desc)
-		}
-		return super.mapMethodName(owner, name, desc)
-	}
-
-	@Override
-	String mapFieldName(String owner, String name, String desc) {
-		if(fields.containsKey(name) && (owner.startsWith("com/replaymod") || owner.startsWith("net/minecraft"))) {
-			fixBuilder.add("FD: " + owner + "/" + name + " " + owner + "/" + fields.get(name))
-		}
-		return super.mapFieldName(owner, name, desc)
-	}
-
-}
-
-if(!replayModRuntimeJar1.exists()) {
-	Map<String, String> methods = csvToMap(methodsFile)
-	Map<String, String> fields = csvToMap(fieldsFile)
-	process(replayModRuntimeJar0, replayModRuntimeJar1, methods, fields, fixSrgRuntime)
-}
-
 static def process(File inputFile, File outputFile, Map<String, String> methods, Map<String, String> fields,
 				   File fixSrg) {
 	def zip = new ZipFile(inputFile)
@@ -232,36 +163,111 @@ static def addReplayModRemapper(def fixBuilder) {
 			"me/mcblueparrot/client/replaymod/SCSettingsRegistry\$SettingKey")
 }
 
-def replayModRuntimeJar = new File(libsDir, replayModBase + "-runtime.jar")
+class SeargeSniffer extends Remapper {
 
-if(!replayModRuntimeJar.exists()) {
-	SpecialSource.main([
-			"--in-jar",
-			replayModRuntimeJar1,
-			"--out-jar",
-			replayModRuntimeJar,
-			"--srg-in",
-			fixSrgRuntime
-	] as String[])
+	Map<String, String> methods
+	Map<String, String> fields
+	Set<String> fixBuilder
+
+	SeargeSniffer(Set<String> fixBuilder, Map<String, String> methods, Map<String, String> fields) {
+		this.fixBuilder = fixBuilder
+		this.methods = methods
+		this.fields = fields
+	}
+
+	@Override
+	String mapMethodName(String owner, String name, String desc) {
+		if(methods.containsKey(name) && (owner.startsWith("com/replaymod") || owner.startsWith("net/minecraft"))) {
+			fixBuilder.add("MD: " + owner + "/" + name + " " + desc + " " + owner + "/" + methods.get(name) + " " +
+					desc)
+		}
+		return super.mapMethodName(owner, name, desc)
+	}
+
+	@Override
+	String mapFieldName(String owner, String name, String desc) {
+		if(fields.containsKey(name) && (owner.startsWith("com/replaymod") || owner.startsWith("net/minecraft"))) {
+			fixBuilder.add("FD: " + owner + "/" + name + " " + owner + "/" + fields.get(name))
+		}
+		return super.mapFieldName(owner, name, desc)
+	}
+
 }
 
-def replayModShippedJar0 = new File(libsDir, replayModBase + "-shipped0.jar")
+def workspaceReady = mcpFolder.exists()
+def replayModRuntimeJar
+def replayModShippedJar
 
-if(!replayModShippedJar0.exists()) {
-	process(replayModJar, replayModShippedJar0, null, null, fixSrgShipped)
-}
+if(workspaceReady) {
+	def methodsFile = new File(mcpFolder, "methods.csv");
+	def fieldsFile = new File(mcpFolder, "fields.csv");
 
-def replayModShippedJar = new File(libsDir, replayModBase + "-shipped.jar")
+	def srgFolder = new File(mcpFolder, "srgs")
 
-if(!replayModShippedJar.exists()) {
-	SpecialSource.main([
-			"--in-jar",
-			replayModShippedJar0,
-			"--out-jar",
-			replayModShippedJar,
-			"--srg-in",
-			fixSrgShipped
-	] as String[])
+	def libsDir = new File(project.getRootDir(), "replaymod")
+
+	def replayModBase = "replaymod-1.8.9-2.6.1"
+
+	def replayModJar = new File(libsDir, replayModBase + ".jar")
+	if(!replayModJar.exists()) {
+		FileUtils.copyURLToFile(new URL("https://minio.replaymod.com/replaymod/" + replayModJar.getName()), replayModJar)
+	}
+
+	def seargeToMCP = new File(srgFolder, "srg-mcp.srg")
+
+	def replayModRuntimeJar0 = new File(libsDir, replayModBase + "-runtime0.jar")
+	if(!replayModRuntimeJar0.exists()) {
+		SpecialSource.main([
+				"--in-jar",
+				replayModJar,
+				"--out-jar",
+				replayModRuntimeJar0,
+				"--srg-in",
+				seargeToMCP
+		] as String[])
+	}
+
+	def replayModRuntimeJar1 = new File(libsDir, replayModBase + "-runtime1.jar")
+	def fixSrgRuntime = new File(libsDir, "replay-mod-fix-runtime.srg")
+	def fixSrgShipped = new File(libsDir, "replay-mod-fix-shipped.srg")
+
+	if(!replayModRuntimeJar1.exists()) {
+		Map<String, String> methods = csvToMap(methodsFile)
+		Map<String, String> fields = csvToMap(fieldsFile)
+		process(replayModRuntimeJar0, replayModRuntimeJar1, methods, fields, fixSrgRuntime)
+	}
+
+	replayModRuntimeJar = new File(libsDir, replayModBase + "-runtime.jar")
+
+	if(!replayModRuntimeJar.exists()) {
+		SpecialSource.main([
+				"--in-jar",
+				replayModRuntimeJar1,
+				"--out-jar",
+				replayModRuntimeJar,
+				"--srg-in",
+				fixSrgRuntime
+		] as String[])
+	}
+
+	def replayModShippedJar0 = new File(libsDir, replayModBase + "-shipped0.jar")
+
+	if(!replayModShippedJar0.exists()) {
+		process(replayModJar, replayModShippedJar0, null, null, fixSrgShipped)
+	}
+
+	replayModShippedJar = new File(libsDir, replayModBase + "-shipped.jar")
+
+	if(!replayModShippedJar.exists()) {
+		SpecialSource.main([
+				"--in-jar",
+				replayModShippedJar0,
+				"--out-jar",
+				replayModShippedJar,
+				"--srg-in",
+				fixSrgShipped
+		] as String[])
+	}
 }
 
 task cleanRefmap() {
@@ -343,8 +349,10 @@ dependencies {
 	dependency "org.slick2d:slick2d-core:1.0.2"
 	dependency "com.logisticscraft:occlusionculling:0.0.5-SNAPSHOT"
 	dependency "net.hypixel:hypixel-api-core:4.0"
-	dependency files(replayModRuntimeJar)
-	ship files(replayModShippedJar)
+	if(workspaceReady) {
+		dependency files(replayModRuntimeJar)
+		ship files(replayModShippedJar)
+	}
 }
 
 mixin {

@@ -1,7 +1,7 @@
 {
   "name": "Sol Client",
   "version": "1.1.0",
-  "description": "Launcher for Sol Client.",
+  "description": "Simple and easy to use Minecraft client.",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -43,7 +43,15 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "options": {
+              "icon": "assets/icon.png",
+              "categories": [ "Game" ],
+              "section": "games"
+              "productName": "Sol Client",
+              "maintainer": "mcblueparrot"
+            }
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",

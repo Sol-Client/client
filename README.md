@@ -54,7 +54,7 @@ Here is a list of features that are currently in the client:
 - Better item tooltips (shows item damage).
 - Symbol picker.
 - OptiFine, downloaded automatically from the official site.
-- Replay Mod.
+- Replay Mod. You will need to install FFmpeg yourself.
 
 Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.
 

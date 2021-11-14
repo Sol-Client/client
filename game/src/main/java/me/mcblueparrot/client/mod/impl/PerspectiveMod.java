@@ -1,14 +1,11 @@
 package me.mcblueparrot.client.mod.impl;
 
+import me.mcblueparrot.client.events.*;
 import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.CameraRotateEvent;
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.PlayerHeadRotateEvent;
-import me.mcblueparrot.client.events.TickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
@@ -35,11 +32,11 @@ public class PerspectiveMod extends Mod {
 
     public PerspectiveMod() {
         super("Freelook", "perspective", "Unlock the camera rotation.", ModCategory.UTILITY);
-        Client.INSTANCE.registerKeybind(key);
+        Client.INSTANCE.registerKeyBinding(key);
     }
 
     @EventHandler
-    public void onTick(TickEvent event) {
+    public void onTick(PreTickEvent event) {
         if(key.isKeyDown()) {
             if(!hasStarted()) {
                 start();

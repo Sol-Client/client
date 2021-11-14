@@ -16,8 +16,6 @@ import net.minecraft.util.EnumParticleTypes;
 
 public class ParticlesMod extends Mod {
 
-//    public static ParticlesMod instance;
-//    public static boolean enabled;
     @Expose
     @ConfigOption("Multiplier")
     @Slider(min = 1, max = 10, step = 1)
@@ -37,7 +35,6 @@ public class ParticlesMod extends Mod {
 
     public ParticlesMod() {
         super("Particles", "particles", "Change attack particles.", ModCategory.VISUAL);
-//        instance = this;
     }
 
     @EventHandler

@@ -28,11 +28,11 @@ public class MixinActiveRenderInfo {
         rotationPitch = entityplayerIn.rotationPitch;
         prevRotationPitch = entityplayerIn.prevRotationPitch;
 
-        CameraRotateEvent event = Client.INSTANCE.bus.post(new CameraRotateEvent(rotationYaw, rotationPitch));
+        CameraRotateEvent event = Client.INSTANCE.bus.post(new CameraRotateEvent(rotationYaw, rotationPitch, 0));
         rotationYaw = event.yaw;
         rotationPitch = event.pitch;
 
-        event = Client.INSTANCE.bus.post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch));
+        event = Client.INSTANCE.bus.post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch, 0));
         prevRotationYaw = event.yaw;
         prevRotationPitch = event.pitch;
     }

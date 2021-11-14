@@ -9,6 +9,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 
+import com.replaymod.replay.ReplayModReplay;
+import com.replaymod.replay.camera.CameraEntity;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -245,4 +247,8 @@ public class Utils {
         GlStateManager.enableTexture2D();
     }
 
+    public boolean isSpectatingEntityInReplay() {
+        return ReplayModReplay.instance.getReplayHandler() != null
+                && !(Minecraft.getMinecraft().getRenderViewEntity() instanceof CameraEntity);
+    }
 }

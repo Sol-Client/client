@@ -1,13 +1,12 @@
 package me.mcblueparrot.client.events;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class CameraRotateEvent {
 
     public float yaw;
     public float pitch;
-
-    public CameraRotateEvent(float yaw, float pitch) {
-        this.yaw = yaw;
-        this.pitch = pitch;
-    }
+    public float roll;
 
 }

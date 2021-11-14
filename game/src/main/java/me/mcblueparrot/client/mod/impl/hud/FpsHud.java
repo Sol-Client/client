@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.TickEvent;
+import me.mcblueparrot.client.events.PostTickEvent;
 import me.mcblueparrot.client.mod.hud.SimpleHud;
 import net.minecraft.client.Minecraft;
 
@@ -18,7 +18,7 @@ public class FpsHud extends SimpleHud {
     }
 
     @EventHandler
-    public void onTick(TickEvent event) {
+    public void onTick(PostTickEvent event) {
         int actualFPS = Minecraft.getDebugFPS();
         if(actualFPS > counter) {
             counter += Math.max(((actualFPS - counter) / 2), 1);

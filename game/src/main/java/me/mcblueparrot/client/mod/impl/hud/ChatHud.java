@@ -98,13 +98,13 @@ public class ChatHud extends Hud {
     }
 
     @Override
-    public void onOptionChange(String key, Object value) {
-        super.onOptionChange(key, value);
+    public boolean onOptionChange(String key, Object value) {
         if(key.equals("closedHeight") || key.equals("openHeight")
                 || key.equals("width") || key.equals("enabled")
                 || key.equals("scale")) {
             mc.ingameGUI.getChatGUI().refreshChat();
         }
+        return super.onOptionChange(key, value);
     }
 
     @Override

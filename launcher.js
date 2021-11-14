@@ -10,6 +10,7 @@ const axios = require("axios");
 const tar = require("tar");
 const Config = require("./config");
 const Utils = require("./utils");
+const Patcher = require("./patcher");
 
 class Launcher {
 
@@ -202,18 +203,45 @@ class Launcher {
 						});
 				});
 
+				var versionToAdd;
+
+				if(Config.data.optifine) {
+					var optifinePatchedJar = versionFolder + "/" + version.id + "-patched-optifine.jar";
+					var optifineSize = 2585014;
+					if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
+						await Library.download({
+								url: await Utils.getOptiFine(),
+								size: optifineSize,
+								path: optifineRelative
+							});
+					}
+
+					if(!fs.existsSync(optifinePatchedJar)) {
+						fs.renameSync(await Patcher.patch(java, versionJar, optifine), optifinePatchedJar);
+					}
+
+					versionToAdd = optifinePatchedJar;
+				}
+				else {
+					var mappedJar = versionFolder + "/" + version.id + "-searge.jar";
+
+					if(!fs.existsSync(mappedJar)) {
+						fs.renameSync(Patcher.patch(java, versionJar), mappedJar);
+					}
+
+					versionToAdd = mappedJar;
+				}
+
 				var args = [];
 				args.push("-Djava.library.path=" + nativesFolder);
+
 				args.push("-Dme.mcblueparrot.client.version=" + Utils.version);
+				args.push("-Dmixin.target.mapid=searge");
 
 				args.push("-Xmx" + Config.data.maxMemory + "M");
 
 				if(Utils.getOsName() == "windows") {
 					args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
-				}
-
-				if(Utils.getOsName() == "osx") {
-					args.push("-XstartOnFirstThread");
 				}
 
 				var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";
@@ -226,22 +254,10 @@ class Launcher {
 					classpath += classpathSeparator;
 				}
 
-				classpath += Version.getJar(version);
+				classpath += versionToAdd;
 				classpath += classpathSeparator;
 				classpath += path.join(__dirname, "game/build/libs/game.jar");
 				classpath += classpathSeparator;
-
-				if(Config.data.optifine) {
-					var optifineSize = 2585014;
-					if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
-						await Library.download({
-								url: await Utils.getOptiFine(),
-								size: optifineSize,
-								path: optifineRelative
-							});
-					}
-					classpath += optifine;
-				}
 
 				args.push(classpath);
 
@@ -258,9 +274,6 @@ class Launcher {
 
 				args.push("--accessToken");
 				args.push(this.account.accessToken);
-
-				args.push("--userType");
-				args.push("mojang");
 
 				args.push("--versionType");
 				args.push("release");
@@ -281,15 +294,10 @@ class Launcher {
 				args.push("--tweakClass");
 				args.push("me.mcblueparrot.client.tweak.Tweaker");
 
-				if(Config.data.optifine) {
-					args.push("--tweakClass");
-					args.push("optifine.OptiFineTweaker");
-				}
-
-				var process = childProcess.spawn(java, args, { cwd: Utils.minecraftDirectory });
+				var process = childProcess.spawn(java, args, { cwd: Utils.gameDirectory });
 				this.games.push(process);
 
-				process.stdout.on("data", (data) => console.log(data.toString("UTF-8"))); // Don't know why you need this.
+				process.stdout.on("data", (data) => console.log(data.toString("UTF-8")));
 				process.stderr.on("data", (data) => console.error(data.toString("UTF-8")));
 
 				process.on("exit", () => {

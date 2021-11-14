@@ -2,7 +2,7 @@ package me.mcblueparrot.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.PpsMonitor;
+import me.mcblueparrot.client.CpsMonitor;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.SimpleHud;
 import me.mcblueparrot.client.util.Colour;
@@ -26,8 +26,8 @@ public class CpsHud extends SimpleHud {
         super.render(position, editMode);
         if(rmb) {
             float x = position.getX() + (getBounds(position).getWidth() / 2F)
-                    - ((font.getStringWidth(PpsMonitor.LMB.getPps() + " | " + PpsMonitor.RMB.getPps() + " CPS")) / 2F);
-            x = font.drawString(PpsMonitor.LMB.getPps() + " ", x,
+                    - ((font.getStringWidth(CpsMonitor.LMB.getCps() + " | " + CpsMonitor.RMB.getCps() + " CPS")) / 2F);
+            x = font.drawString(CpsMonitor.LMB.getCps() + " ", x,
                     position.getY() + (getBounds(position).getHeight() / 2F) - (font.FONT_HEIGHT / 2F),
                     textColour.getValue(),
                     shadow);
@@ -37,14 +37,14 @@ public class CpsHud extends SimpleHud {
 
             if(shadow) x--;
 
-            x = font.drawString(" " + PpsMonitor.RMB.getPps() + " CPS", x, position.getY() + textYOffset,
+            x = font.drawString(" " + CpsMonitor.RMB.getCps() + " CPS", x, position.getY() + textYOffset,
                     textColour.getValue(), shadow);
         }
     }
 
     @Override
     public String getText(boolean editMode) {
-        return rmb ? "" : PpsMonitor.LMB.getPps() + " CPS";
+        return rmb ? "" : CpsMonitor.LMB.getCps() + " CPS";
     }
 
 }

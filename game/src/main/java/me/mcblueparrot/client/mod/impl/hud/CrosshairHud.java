@@ -1,10 +1,11 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
+import me.mcblueparrot.client.events.GameOverlayElement;
+import me.mcblueparrot.client.events.PreGameOverlayRenderEvent;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.events.CrosshairRenderEvent;
 import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.Hud;
@@ -19,7 +20,8 @@ import net.minecraft.world.WorldSettings.GameType;
 
 public class CrosshairHud extends Hud {
 
-    public static final ResourceLocation CLIENT_CROSSHAIRS = new ResourceLocation("textures/gui/client_crosshairs.png");
+    private static final ResourceLocation CLIENT_CROSSHAIRS = new ResourceLocation("textures/gui" +
+            "/sol_client_crosshairs.png");
 
     @Expose
     @ConfigOption("Style")
@@ -51,46 +53,53 @@ public class CrosshairHud extends Hud {
     }
 
     @EventHandler
-    public void onCrosshairRender(CrosshairRenderEvent event) {
-        event.cancelled = true;
-        if((!debug && mc.gameSettings.showDebugInfo) ||
-                (!spectatorAlways && mc.playerController.getCurrentGameType() == GameType.SPECTATOR && mc.objectMouseOver.typeOfHit != MovingObjectType.ENTITY) ||
-                (!thirdPerson && mc.gameSettings.thirdPersonView != 0)) {
-            return;
-        }
-        ScaledResolution resolution = new ScaledResolution(mc);
-        int x = (int) (resolution.getScaledWidth() / getScale() / 2 - 7);
-        int y = (int) (resolution.getScaledHeight() / getScale() / 2 - 7);
+    public void onCrosshairRender(PreGameOverlayRenderEvent event) {
+        if(event.type == GameOverlayElement.CROSSHAIRS) {
+            event.cancelled = true;
+            if ((!debug && mc.gameSettings.showDebugInfo) ||
+                    (!spectatorAlways && mc.playerController.getCurrentGameType() == GameType.SPECTATOR && mc.objectMouseOver.typeOfHit != MovingObjectType.ENTITY) ||
+                    (!thirdPerson && mc.gameSettings.thirdPersonView != 0)) {
+                return;
+            }
+            ScaledResolution resolution = new ScaledResolution(mc);
+            int x = (int) (resolution.getScaledWidth() / getScale() / 2 - 7);
+            int y = (int) (resolution.getScaledHeight() / getScale() / 2 - 7);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(getScale(), getScale(), getScale());
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(getScale(), getScale(), getScale());
 
-        Utils.glColour(crosshairColour);
+            Utils.glColour(crosshairColour);
 
-        if(highlightEntities && mc.objectMouseOver.entityHit != null && !(mc.objectMouseOver.entityHit.isInvisible()
-                || mc.objectMouseOver.entityHit.isInvisibleToPlayer(mc.thePlayer))) {
-            Utils.glColour(entityColour);
-        }
-        else if(blending) {
-            GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
+            GlStateManager.enableBlend();
             GlStateManager.enableAlpha();
-        }
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 
-        if(type == Type.DEFAULT) {
-            Utils.drawTexture(x, y, 0, 0, 16, 16, 0);
-        }
-        else {
-            mc.getTextureManager().bindTexture(CLIENT_CROSSHAIRS);
-            int v = (type.ordinal() - 2) * 16;
-            Utils.drawTexture(x, y, 0, v, 16, 16, 0);
-            mc.getTextureManager().bindTexture(Gui.icons);
-        }
-        GL11.glColor4f(1, 1, 1, 1);
+            if(highlightEntities && mc.objectMouseOver.entityHit != null && !(mc.objectMouseOver.entityHit.isInvisible()
+                    || mc.objectMouseOver.entityHit.isInvisibleToPlayer(mc.thePlayer))) {
+                Utils.glColour(entityColour);
+            }
+            else if(blending) {
+                GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
+                GlStateManager.enableAlpha();
+            }
 
-        GlStateManager.popMatrix();
+            if (type == Type.DEFAULT) {
+                mc.getTextureManager().bindTexture(Gui.icons);
+                Utils.drawTexture(x, y, 0, 0, 16, 16, 0);
+            }
+            else {
+                mc.getTextureManager().bindTexture(CLIENT_CROSSHAIRS);
+                int v = (type.ordinal() - 2) * 16;
+                Utils.drawTexture(x, y, 0, v, 16, 16, 0);
+                mc.getTextureManager().bindTexture(Gui.icons);
+            }
+            GL11.glColor4f(1, 1, 1, 1);
+
+            GlStateManager.popMatrix();
+        }
     }
 
-    public enum Type {
+    enum Type {
         DEFAULT("Default"),
         NONE("None"),
         DOT("Dot"),
@@ -105,7 +114,7 @@ public class CrosshairHud extends Hud {
 
         private String name;
 
-        private Type(String name) {
+        Type(String name) {
             this.name = name;
         }
 

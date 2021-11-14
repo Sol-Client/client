@@ -28,19 +28,12 @@ public @interface ConfigOption {
     class Cached {
 
         public Mod mod;
-        private Method changeMethod;
         public String name;
         public Field field;
         public int priority;
 
         public Cached(Mod mod, ConfigOption option, Field field) {
             this.mod = mod;
-            try {
-                this.changeMethod = Mod.class.getMethod("onOptionChange", String.class, Object.class);
-            }
-            catch(NoSuchMethodException | SecurityException error) {
-                throw new IllegalStateException(error);
-            }
             if(option != null) {
                 name = option.value();
             }
@@ -71,11 +64,13 @@ public @interface ConfigOption {
         public void setValue(Object value) {
             try {
                 if(!value.equals(field.get(mod))) {
-                    changeMethod.invoke(mod, field.getName(), value);
-                    field.set(mod, value);
+                    if(mod.onOptionChange(field.getName(), value)) {
+                        field.set(mod, value);
+                        mod.postOptionChange(field.getName(), value);
+                    }
                 }
             }
-            catch(IllegalArgumentException | IllegalAccessException | InvocationTargetException error) {
+            catch(IllegalArgumentException | IllegalAccessException error) {
                 throw new IllegalStateException(error);
             }
         }

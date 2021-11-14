@@ -189,6 +189,8 @@ dist/
 
 # Minecraft
 game/run/
+# For symlinks
+game/run
 game/libs/*
 
 # JetBrains IDEs
@@ -200,3 +202,5 @@ game/libs/*
 
 # Electron Forge
 out/
+
+game/replaymod/

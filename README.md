@@ -39,9 +39,11 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 
 [Eric Golde](https://www.youtube.com/c/egold555): My older private client followed his tutorials.
 
-[tr7zw](https://github.com/tr7zw/EntityCulling): Original EntityCulling mod. A ported version is used in this client.
+[tr7zw](https://github.com/tr7zw/EntityCulling): Original EntityCulling mod. A modified version is used in this client.
 
 [OrangeMarshall](https://namemc.com/profile/OrangeMarshall.1): Original 1.7 Animations.
+
+[Johni0702](https://github.com/Johni0702) and [CrushedPixel](https://github.com/CrushedPixel): Replay Mod. Again, a modified version is used in this client.
 
 ## Features
 
@@ -52,7 +54,7 @@ Here is a list of features that are currently in the client:
 - Better item tooltips (shows item damage).
 - Symbol picker.
 - OptiFine, downloaded automatically from the official site.
-- Replay Mod (coming soon™)
+- Replay Mod.
 
 Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.
 

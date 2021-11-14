@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.asm;
+package me.mcblueparrot.client.tweak.transformer;
 
 import java.io.IOException;
 

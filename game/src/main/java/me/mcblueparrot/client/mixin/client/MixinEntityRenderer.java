@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.mixin.client;
 
+import me.mcblueparrot.client.util.Utils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -42,7 +43,7 @@ public abstract class MixinEntityRenderer {
             GlStateManager.matrixMode(5890);
             GlStateManager.pushMatrix();
             GlStateManager.loadIdentity();
-            group.loadShaderGroup(AccessMinecraft.getInstance().getTimer().renderPartialTicks);
+            group.loadShaderGroup(AccessMinecraft.getInstance().getTimerSC().renderPartialTicks);
             GlStateManager.popMatrix();
         }
     }
@@ -70,14 +71,17 @@ public abstract class MixinEntityRenderer {
         prevRotationYaw = mc.getRenderViewEntity().prevRotationYaw;
         rotationPitch = mc.getRenderViewEntity().rotationPitch;
         prevRotationPitch = mc.getRenderViewEntity().prevRotationPitch;
+        float roll = 0;
 
-        CameraRotateEvent event = Client.INSTANCE.bus.post(new CameraRotateEvent(rotationYaw, rotationPitch));
+        CameraRotateEvent event = Client.INSTANCE.bus.post(new CameraRotateEvent(rotationYaw, rotationPitch, roll));
         rotationYaw = event.yaw;
         rotationPitch = event.pitch;
+        roll = event.roll;
 
-        event = Client.INSTANCE.bus.post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch));
+        event = Client.INSTANCE.bus.post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch, roll));
         prevRotationYaw = event.yaw;
         prevRotationPitch = event.pitch;
+        GlStateManager.rotate(event.roll, 0, 0, 1);
     }
 
     @Redirect(method = "orientCamera", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;rotationYaw:F"))
@@ -110,7 +114,7 @@ public abstract class MixinEntityRenderer {
         Client.INSTANCE.bus.post(event);
         yaw = event.yaw;
         pitch = event.pitch;
-        if(!event.cancelled) {
+        if(!event.cancelled && !Utils.isSpectatingEntityInReplay()) {
             entityPlayerSP.setAngles(yaw, pitch);
         }
     }
@@ -135,7 +139,7 @@ public abstract class MixinEntityRenderer {
         boolean maybeWould = entity.isInsideOfMaterial(materialIn);
         boolean would = maybeWould && isDrawBlockOutline();
         if(maybeWould && Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
-                AccessMinecraft.getInstance().getTimer().renderPartialTicks)).cancelled) {
+                AccessMinecraft.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
             return false;
         }
         return would;
@@ -148,7 +152,7 @@ public abstract class MixinEntityRenderer {
         boolean totallyWouldNot = entity.isInsideOfMaterial(materialIn);
         boolean wouldNot = totallyWouldNot || !isDrawBlockOutline();
         if(!totallyWouldNot && Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
-                AccessMinecraft.getInstance().getTimer().renderPartialTicks)).cancelled) {
+                AccessMinecraft.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
             return true;
         }
         return wouldNot;

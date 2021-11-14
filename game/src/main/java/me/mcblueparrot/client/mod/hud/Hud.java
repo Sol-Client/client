@@ -2,8 +2,11 @@ package me.mcblueparrot.client.mod.hud;
 
 import com.google.gson.annotations.Expose;
 
+import com.replaymod.replay.ReplayModReplay;
+import com.replaymod.replay.events.RenderHotbarCallback;
 import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.RenderEvent;
+import me.mcblueparrot.client.events.GameOverlayElement;
+import me.mcblueparrot.client.events.PostGameOverlayRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
@@ -13,6 +16,8 @@ import me.mcblueparrot.client.util.Position;
 import me.mcblueparrot.client.util.Rectangle;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+
+import java.lang.annotation.ElementType;
 
 public abstract class Hud extends Mod {
 
@@ -26,8 +31,13 @@ public abstract class Hud extends Mod {
 
     public Hud(String name, String id, String description) {
         super(name, id, description, ModCategory.HUD);
-        this.font = mc.fontRendererObj;
         this.position = getDefaultPosition();
+    }
+
+    @Override
+    protected void postStart() {
+        super.postStart();
+        this.font = mc.fontRendererObj;
     }
 
     protected float getScale() {
@@ -71,6 +81,9 @@ public abstract class Hud extends Mod {
     }
 
     public void render(boolean editMode) {
+        // Don't render HUD in replay.
+        if(ReplayModReplay.instance.getReplayHandler() != null) return;
+
         GlStateManager.pushMatrix();
         GlStateManager.scale(getScale(), getScale(), getScale());
         render(getDividedPosition(), editMode);
@@ -78,8 +91,10 @@ public abstract class Hud extends Mod {
     }
 
     @EventHandler
-    public void onRender(RenderEvent event) {
-        render(mc.currentScreen instanceof MoveHudsScreen);
+    public void onRender(PostGameOverlayRenderEvent event) {
+        if(event.type == GameOverlayElement.ALL) {
+            render(mc.currentScreen instanceof MoveHudsScreen);
+        }
     }
 
     public void render(Position position, boolean editMode) {}

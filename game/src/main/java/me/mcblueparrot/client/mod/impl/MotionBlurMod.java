@@ -24,8 +24,6 @@ import net.minecraft.util.ResourceLocation;
 
 public class MotionBlurMod extends Mod {
 
-//    public static boolean enabled;
-//    public static MotionBlurMod instance;
     public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/motion_blur.json");
     @Expose
     @ConfigOption("Blur")
@@ -41,7 +39,6 @@ public class MotionBlurMod extends Mod {
     public MotionBlurMod() {
         super("Motion Blur", "motion_blur", "Smooth motion blur effect.", ModCategory.VISUAL);
         Client.INSTANCE.addResource(RESOURCE_LOCATION, new MotionBlurShader());
-//        instance = this;
     }
 
     public void update() {
@@ -80,12 +77,6 @@ public class MotionBlurMod extends Mod {
         super.onEnable();
         group = null;
     }
-
-//    @Override
-//    public void onEnabledChange(boolean enabled) {
-//        super.onEnabledChange(enabled);
-//        MotionBlurMod.enabled = enabled;
-//    }
 
     public class MotionBlurShader implements IResource {
 
@@ -131,41 +122,6 @@ public class MotionBlurMod extends Mod {
                     "        }" +
                     "    ]" +
                     "}", blur, blur, blur));
-//            return IOUtils.toInputStream(String.format("{" +
-//                    "    \"targets\": [" +
-//                    "        \"swap\"," +
-//                    "        \"previous\"" +
-//                    "    ]," +
-//                    "    \"passes\": [" +
-//                    "        {" +
-//                    "            \"name\": \"phosphor\"," +
-//                    "            \"intarget\": \"minecraft:main\"," +
-//                    "            \"outtarget\": \"swap\"," +
-//                    "            \"auxtargets\": [" +
-//                    "                {" +
-//                    "                    \"name\": \"PrevSampler\"," +
-//                    "                    \"id\": \"previous\"" +
-//                    "                }" +
-//                    "            ]," +
-//                    "            \"uniforms\": [" +
-//                    "                {" +
-//                    "                    \"name\": \"Phosphor\"," +
-//                    "                    \"values\": [ %s, %s, %s ]" +
-//                    "                }" +
-//                    "            ]" +
-//                    "        }," +
-//                    "        {" +
-//                    "            \"name\": \"blit\"," +
-//                    "            \"intarget\": \"swap\"," +
-//                    "            \"outtarget\": \"previous\"" +
-//                    "        }," +
-//                    "        {" +
-//                    "            \"name\": \"blit\"," +
-//                    "            \"intarget\": \"swap\"," +
-//                    "            \"outtarget\": \"minecraft:main\"" +
-//                    "        }" +
-//                    "    ]" +
-//                    "}", blur, blur, blur));
         }
 
         @Override

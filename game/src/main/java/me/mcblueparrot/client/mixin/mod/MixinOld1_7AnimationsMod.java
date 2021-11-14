@@ -33,7 +33,8 @@ public abstract class MixinOld1_7AnimationsMod {
         public void allowUseAndSwing(ItemRenderer itemRenderer, float equipProgress, float swingProgress) {
             transformFirstPersonItem(equipProgress,
                     swingProgress == 0.0F && Old1_7AnimationsMod.enabled && Old1_7AnimationsMod.instance.useAndMine ?
-                    mc.thePlayer.getSwingProgress(AccessMinecraft.getInstance().getTimer().renderPartialTicks) : swingProgress);
+                    mc.thePlayer.getSwingProgress(AccessMinecraft.getInstance().getTimerSC().renderPartialTicks) :
+                            swingProgress);
         }
 
     }

@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import me.mcblueparrot.client.events.*;
+import me.mcblueparrot.client.mod.Mod;
+import me.mcblueparrot.client.mod.impl.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -25,30 +28,7 @@ import com.google.gson.JsonParser;
 import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
-import me.mcblueparrot.client.events.EventBus;
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.SendChatMessageEvent;
-import me.mcblueparrot.client.events.TickEvent;
-import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.hud.Hud;
-import me.mcblueparrot.client.mod.impl.ArabicNumeralsMod;
-import me.mcblueparrot.client.mod.impl.BetterItemTooltipsMod;
-import me.mcblueparrot.client.mod.impl.BlockSelectionMod;
-import me.mcblueparrot.client.mod.impl.ChunkAnimationMod;
-import me.mcblueparrot.client.mod.impl.HitColourMod;
-import me.mcblueparrot.client.mod.impl.HypixelAdditionsMod;
-import me.mcblueparrot.client.mod.impl.ItemPhysicsMod;
-import me.mcblueparrot.client.mod.impl.MenuBlurMod;
-import me.mcblueparrot.client.mod.impl.MotionBlurMod;
-import me.mcblueparrot.client.mod.impl.NightVisionMod;
-import me.mcblueparrot.client.mod.impl.NumeralPingMod;
-import me.mcblueparrot.client.mod.impl.Old1_7AnimationsMod;
-import me.mcblueparrot.client.mod.impl.ParticlesMod;
-import me.mcblueparrot.client.mod.impl.PerspectiveMod;
-import me.mcblueparrot.client.mod.impl.ScoreboardMod;
-import me.mcblueparrot.client.mod.impl.ShowOwnTagMod;
-import me.mcblueparrot.client.mod.impl.TimeChangerMod;
-import me.mcblueparrot.client.mod.impl.ZoomMod;
 import me.mcblueparrot.client.mod.impl.hud.ArmourHud;
 import me.mcblueparrot.client.mod.impl.hud.ChatHud;
 import me.mcblueparrot.client.mod.impl.hud.ComboCounterHud;
@@ -103,7 +83,7 @@ public class Client {
     public void init() {
         LOGGER.info("Initialising...");
         bus.register(this);
-        PpsMonitor.forceInit();
+        CpsMonitor.forceInit();
         LOGGER.info("Loading settings...");
         load();
         LOGGER.info("Loading mods...");
@@ -139,10 +119,11 @@ public class Client {
         register(new BetterItemTooltipsMod());
         register(new BlockSelectionMod());
         register(new HitColourMod());
-        registerKeybind(keyMods);
+        register(new SCReplayMod());
+        registerKeyBinding(keyMods);
 
         try {
-            unregisterKeybind((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
+            unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
         }
         catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
             // OptiFine is not enabled.
@@ -174,13 +155,13 @@ public class Client {
         cullThread.start();
     }
 
-    public void registerKeybind(KeyBinding keybind) {
-        mc.gameSettings.keyBindings = ArrayUtils.add(mc.gameSettings.keyBindings, keybind);
+    public void registerKeyBinding(KeyBinding keyBinding) {
+        mc.gameSettings.keyBindings = ArrayUtils.add(mc.gameSettings.keyBindings, keyBinding);
     }
 
-    public void unregisterKeybind(KeyBinding keybind) {
-        mc.gameSettings.keyBindings = ArrayUtils.removeElement(mc.gameSettings.keyBindings, keybind);
-        keybind.setKeyCode(0);
+    public void unregisterKeyBinding(KeyBinding keyBinding) {
+        mc.gameSettings.keyBindings = ArrayUtils.removeElement(mc.gameSettings.keyBindings, keyBinding);
+        keyBinding.setKeyCode(0);
     }
 
     private Gson getGson(Mod mod) {
@@ -344,7 +325,7 @@ public class Client {
     }
 
     @EventHandler
-    public void onTick(TickEvent event) {
+    public void onTick(PreTickEvent event) {
         if(keyMods.isPressed()) {
             mc.displayGuiScreen(new ModsScreen(null));
         }
@@ -364,22 +345,20 @@ public class Client {
 
         if(data == null) {
             detectedServer = null;
-            return;
+            mods.forEach(Mod::unblock);
         }
 
-        for(DetectedServer server : DetectedServer.values()) {
-            if(server.matches(data)) {
-                detectedServer = server;
-                mods.stream().filter(server::shouldBlockMod).forEach(Mod::block);
-                break;
+        if(data != null) {
+            for(DetectedServer server : DetectedServer.values()) {
+                if(server.matches(data)) {
+                    detectedServer = server;
+                    mods.stream().filter(server::shouldBlockMod).forEach(Mod::block);
+                    break;
+                }
             }
         }
 
-        bus.post(new ServerChangeEvent(detectedServer));
-    }
-
-    public void onDisconnect() {
-        mods.forEach(Mod::unblock);
+        bus.post(new ServerConnectEvent(data, detectedServer));
     }
 
     public List<ChatButton> getChatButtons() {

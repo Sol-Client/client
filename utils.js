@@ -59,7 +59,7 @@ class Utils {
 	}
 
 	static isAlreadyDownloaded(file, size) {
-		return fs.existsSync(file) && fs.statSync(file).size == size;
+		return fs.existsSync(file) && (size == -1 || fs.statSync(file).size == size);
 	}
 
 	static download(url, file, size) {

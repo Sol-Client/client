@@ -1,16 +1,12 @@
 package me.mcblueparrot.client.mod.impl;
 
+import me.mcblueparrot.client.events.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.FovEvent;
-import me.mcblueparrot.client.events.MouseClickEvent;
-import me.mcblueparrot.client.events.ScrollEvent;
-import me.mcblueparrot.client.events.TickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
@@ -53,9 +49,9 @@ public class ZoomMod extends Mod {
 
     public ZoomMod() {
         super("Zoom", "zoom", "Zoom in when pressing a button.", ModCategory.UTILITY);
-        Client.INSTANCE.registerKeybind(key);
-        Client.INSTANCE.registerKeybind(keyZoomOut);
-        Client.INSTANCE.registerKeybind(keyZoomIn);
+        Client.INSTANCE.registerKeyBinding(key);
+        Client.INSTANCE.registerKeyBinding(keyZoomOut);
+        Client.INSTANCE.registerKeyBinding(keyZoomIn);
     }
 
     public void start() {
@@ -77,7 +73,7 @@ public class ZoomMod extends Mod {
     }
 
     @EventHandler
-    public void onTick(TickEvent event) {
+    public void onTick(PreTickEvent event) {
         if(key.isKeyDown()) {
             if(!active) {
                 start();
@@ -94,6 +90,10 @@ public class ZoomMod extends Mod {
                 zoomIn();
             }
         }
+    }
+
+    @EventHandler
+    public void postTick(PostTickEvent event) {
         if(smooth) {
             lastAnimatedFactor = animatedFactor;
 

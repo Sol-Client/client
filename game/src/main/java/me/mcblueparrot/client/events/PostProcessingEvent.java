@@ -3,16 +3,14 @@ package me.mcblueparrot.client.events;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import net.minecraft.client.shader.ShaderGroup;
 
+@RequiredArgsConstructor
 public class PostProcessingEvent {
 
-    public Type type;
+    public final Type type;
     public List<ShaderGroup> groups = new ArrayList<>();
-
-    public PostProcessingEvent(Type type) {
-        this.type = type;
-    }
 
     public enum Type {
         RENDER,

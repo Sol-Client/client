@@ -41,9 +41,4 @@ public class MixinWorldClient {
         }
     }
 
-    @Inject(method = "sendQuittingDisconnectingPacket()V", at = @At("HEAD"))
-    public void handleDisconnect(CallbackInfo callback) {
-        Client.INSTANCE.onDisconnect();
-    }
-
 }

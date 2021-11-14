@@ -12,12 +12,12 @@ public class Colour {
     @Expose
     private int value;
 
-    public static Colour WHITE = new Colour(255, 255, 255);
-    public static Colour BLACK = new Colour(0, 0, 0);
-    public static Colour RED = new Colour(255, 0, 0);
-    public static Colour BLUE = new Colour(0, 150, 255);
-    public static Colour WHITE_128 = WHITE.withAlpha(128);
-    public static Colour BLACK_128 = BLACK.withAlpha(128);
+    public static final Colour WHITE = new Colour(255, 255, 255);
+    public static final Colour BLACK = new Colour(0, 0, 0);
+    public static final Colour RED = new Colour(255, 0, 0);
+    public static final Colour BLUE = new Colour(0, 150, 255);
+    public static final Colour WHITE_128 = WHITE.withAlpha(128);
+    public static final Colour BLACK_128 = BLACK.withAlpha(128);
 
     public Colour(int value) {
         this.value = value;

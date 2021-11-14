@@ -1,12 +1,11 @@
 package me.mcblueparrot.client.events;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class MouseClickEvent {
 
-    public int button;
+    public final int button;
     public boolean cancelled;
-
-    public MouseClickEvent(int button) {
-        this.button = button;
-    }
 
 }

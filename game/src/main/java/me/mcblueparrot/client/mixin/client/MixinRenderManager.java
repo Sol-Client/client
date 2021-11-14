@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.mixin.client;
 
+import com.replaymod.replay.camera.CameraEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,6 +29,10 @@ public abstract class MixinRenderManager {
     @Inject(method = "doRenderEntity", at = @At("HEAD"), cancellable = true)
     public void cullEntity(Entity entity, double x, double y, double z, float entityYaw, float partialTicks,
                            boolean hideDebugBox, CallbackInfoReturnable<Boolean> callback) {
+        if(entity instanceof CameraEntity) {
+            callback.setReturnValue(renderEngine == null);
+        }
+
         if(((Cullable) entity).isCulled()) {
             ((AccessRender<Entity>) getEntityRenderObject(entity)).doRenderName(entity, x, y, z);
             callback.setReturnValue(renderEngine == null);
@@ -49,11 +54,11 @@ public abstract class MixinRenderManager {
         rotationPitch = Minecraft.getMinecraft().getRenderViewEntity().rotationPitch;
         prevRotationPitch = Minecraft.getMinecraft().getRenderViewEntity().prevRotationPitch;
 
-        CameraRotateEvent event = Client.INSTANCE.bus.post(new CameraRotateEvent(rotationYaw, rotationPitch));
+        CameraRotateEvent event = Client.INSTANCE.bus.post(new CameraRotateEvent(rotationYaw, rotationPitch, 0));
         rotationYaw = event.yaw;
         rotationPitch = event.pitch;
 
-        event = Client.INSTANCE.bus.post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch));
+        event = Client.INSTANCE.bus.post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch, 0));
         prevRotationYaw = event.yaw;
         prevRotationPitch = event.pitch;
     }

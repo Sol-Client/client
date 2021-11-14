@@ -2,6 +2,9 @@ package me.mcblueparrot.client.mod;
 
 import java.util.List;
 
+import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.events.PostGameStartEvent;
+import me.mcblueparrot.client.replaymod.SCEventRegistrations;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,6 +38,14 @@ public abstract class Mod {
         enabled = isEnabledByDefault();
     }
 
+    @EventHandler
+    public void onPostStart(PostGameStartEvent event) {
+        postStart();
+    }
+
+    protected void postStart() {
+    }
+
     public void onRegister() {
         if(this.enabled) {
             onEnable();
@@ -61,10 +72,17 @@ public abstract class Mod {
         return false;
     }
 
-    public void onOptionChange(String key, Object value) {
+    public boolean onOptionChange(String key, Object value) {
         if(key.equals("enabled")) {
+            if(isLocked()) {
+                return false;
+            }
             setEnabled((boolean) value);
         }
+        return true;
+    }
+
+    public void postOptionChange(String key, Object value) {
     }
 
     public List<ConfigOption.Cached> getOptions() {
@@ -76,9 +94,9 @@ public abstract class Mod {
     }
 
     public void setEnabled(boolean enabled) {
-        if(blocked) {
-            return;
-        }
+        if(blocked) return;
+        if(isLocked()) return;
+
         if(enabled != this.enabled) {
             if(enabled) {
                 onEnable();
@@ -130,6 +148,14 @@ public abstract class Mod {
 
     public int getIndex() {
         return Client.INSTANCE.getMods().indexOf(this);
+    }
+
+    public boolean isLocked() {
+        return false;
+    }
+
+    public String getLockMessage() {
+        return " Locked.";
     }
 
 }

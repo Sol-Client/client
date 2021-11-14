@@ -1,17 +1,14 @@
 package me.mcblueparrot.client.events;
 
+import lombok.RequiredArgsConstructor;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.scoreboard.ScoreObjective;
 
+@RequiredArgsConstructor
 public class ScoreboardRenderEvent {
 
+    public final ScoreObjective objective;
+    public final ScaledResolution scaledRes;
     public boolean cancelled;
-    public ScoreObjective objective;
-    public ScaledResolution scaledRes;
-
-    public ScoreboardRenderEvent(ScoreObjective objective, ScaledResolution scaledRes) {
-        this.objective = objective;
-        this.scaledRes = scaledRes;
-    }
 
 }

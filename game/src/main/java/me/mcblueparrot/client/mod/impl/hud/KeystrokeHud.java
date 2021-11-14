@@ -2,9 +2,10 @@ package me.mcblueparrot.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.PpsMonitor;
+import me.mcblueparrot.client.CpsMonitor;
 import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.PlayerHeadRotateEvent;
+import me.mcblueparrot.client.events.PostGameStartEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.Hud;
 import me.mcblueparrot.client.util.Colour;
@@ -67,16 +68,22 @@ public class KeystrokeHud extends Hud {
     private float mouseY;
     private long lastMouseUpdate;
 
-    private Keystroke w = new Keystroke(mc.gameSettings.keyBindForward, "W", 18, 17, 17),
-                      a = new Keystroke(mc.gameSettings.keyBindLeft, "A", 0, 17, 17),
-                      s = new Keystroke(mc.gameSettings.keyBindBack, "S", 18, 17, 17),
-                      d = new Keystroke(mc.gameSettings.keyBindRight, "D", 36, 17, 17),
-                      lmb = new Keystroke(mc.gameSettings.keyBindAttack, "LMB", 0, 26, 17),
-                      rmb = new Keystroke(mc.gameSettings.keyBindUseItem, "RMB", 27, 26, 17),
-                      space = new Keystroke(mc.gameSettings.keyBindJump, "Space", 0, 53, 8);
+    private Keystroke w, a, s, d, lmb, rmb, space;
 
     public KeystrokeHud() {
         super("Keystrokes", "keystrokes", "Display the currently held keys.");
+    }
+
+    @Override
+    public void postStart() {
+        super.postStart();
+        w = new Keystroke(mc.gameSettings.keyBindForward, "W", 18, 17, 17);
+        a = new Keystroke(mc.gameSettings.keyBindLeft, "A", 0, 17, 17);
+        s = new Keystroke(mc.gameSettings.keyBindBack, "S", 18, 17, 17);
+        d = new Keystroke(mc.gameSettings.keyBindRight, "D", 36, 17, 17);
+        lmb = new Keystroke(mc.gameSettings.keyBindAttack, "LMB", 0, 26, 17);
+        rmb = new Keystroke(mc.gameSettings.keyBindUseItem, "RMB", 27, 26, 17);
+        space = new Keystroke(mc.gameSettings.keyBindJump, "Space", 0, 53, 8);
     }
 
     @Override
@@ -233,18 +240,18 @@ public class KeystrokeHud extends Hud {
             }
             else {
                 if(cps) {
-                    PpsMonitor monitor;
+                    CpsMonitor monitor;
                     if(name.equals("LMB")) {
-                        monitor = PpsMonitor.LMB;
+                        monitor = CpsMonitor.LMB;
                     }
                     else if(name.equals("RMB")) {
-                        monitor = PpsMonitor.RMB;
+                        monitor = CpsMonitor.RMB;
                     }
                     else {
                         monitor = null;
                     }
                     if(monitor != null) {
-                        String cpsText = monitor.getPps() + " CPS";
+                        String cpsText = monitor.getCps() + " CPS";
                         float scale = 0.5F;
 
                         GlStateManager.pushMatrix();

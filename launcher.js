@@ -226,7 +226,7 @@ class Launcher {
 					var mappedJar = versionFolder + "/" + version.id + "-searge.jar";
 
 					if(!fs.existsSync(mappedJar)) {
-						fs.renameSync(Patcher.patch(java, versionJar), mappedJar);
+						fs.renameSync(await Patcher.patch(java, versionJar), mappedJar);
 					}
 
 					versionToAdd = mappedJar;

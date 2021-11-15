@@ -40,7 +40,7 @@ public abstract class SimpleHud extends Hud {
 
     @Override
     public void render(Position position, boolean editMode) {
-        String text = getText(editMode);
+        String text = getText(editMode);    
         if(text != null) {
             if(background) {
                 getBounds(position).fill(backgroundColour);

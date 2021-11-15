@@ -3,6 +3,7 @@ package me.mcblueparrot.client.mixin.client;
 import me.mcblueparrot.client.events.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -54,6 +55,7 @@ public class MixinGuiScreen implements AccessGuiScreen {
 
     @Inject(method = "drawScreen", at = @At("RETURN"))
     public void postGuiRender(int mouseX, int mouseY, float partialTicks, CallbackInfo callback) {
+        GlStateManager.color(1, 1, 1, 1); // Prevent colour from leaking
         Client.INSTANCE.bus.post(new PostGuiRenderEvent(partialTicks));
     }
 

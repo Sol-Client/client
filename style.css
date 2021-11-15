@@ -19,29 +19,33 @@
 
 .button {
 	color: white;
+	transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+	border: none;
+	padding: 10px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	cursor: pointer;
 }
 
 .back-button {
 	background-color: rgb(0, 150, 255);
-	border: solid rgba(0, 100, 205);
-	border-radius: 5px;
+	border-radius: 100px;
 	width: 50px;
 	height: 50px;
 	position: fixed;
 	top: 10px;
 	left: 10px;
 	font-size: 2em;
-	transition: background 0.2s, border-color 0.2s;
+	box-shadow: 0 0 20px rgb(0, 150, 255);
+	cursor: pointer;
 }
 
 .back-button:hover {
 	background-color: rgb(40, 190, 255);
-	border: solid rgba(0, 140, 245);
 }
 
 .back-button:active {
 	background-color: rgb(0, 100, 185);
-	border: solid rgba(0, 50, 155);
 }
 
 .title {
@@ -61,20 +65,20 @@
 	top: 15px;
 	right: 15px;
 	background: rgba(255, 150, 0);
-	border: solid rgba(205, 100, 0);
 	border-radius: 5px;
 	color: black;
-	transition: background 0.2s, border-color 0.2s;
+	padding: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	box-shadow: 0 0 10px rgba(255, 150, 0);
 }
 
 .account-button:hover {
 	background: rgba(255, 180, 30);
-	border: solid rgba(235, 130, 0);
 }
 
 .account-button:active {
 	background: rgba(225, 120, 0);
-	border: solid rgba(175, 70, 0);
 }
 
 .play-button {
@@ -85,27 +89,23 @@
 
 .play-button, .login-button {
 	background: rgb(0, 100, 0);
-	border: solid rgb(0, 60, 0);
 	border-radius: 5px;
 	width: 250px;
 	height: 100px;
 	font-size: 2.5em;
-	transition: background 0.2s, border-color 0.2s;
+	box-shadow: 0 0 20px rgb(0, 100, 0);
 }
 
 .play-button:hover, .login-button:hover {
 	background: rgb(0, 120, 0);
-	border: solid rgb(0, 80, 0);
 }
 
 .play-button:active, .login-button:active {
 	background: rgb(0, 80, 0);
-	border: solid rgb(0, 40, 0);
 }
 
 .play-button:disabled, .login-button:disabled {
 	background: rgb(80, 80, 80);
-	border: solid rgb(40, 40, 40);
 }
 
 .login-button {
@@ -131,7 +131,6 @@
 	border-radius: 5px;
 	width: 350px;
 	height: 30px;
-	transition: background 0.2s, border-color 0.2s;
 	margin-bottom: 30px;
 	padding: 5px;
 }
@@ -172,7 +171,8 @@ a:link:hover, a:link:focus, a:link:active {
 	height: 100%;
 	color: white;
 	transition: background 0.2s;
-	border-radius: 5px;
+	border-radius: 100px;
+	cursor: pointer;
 }
 
 .tabs button:hover {
@@ -224,11 +224,16 @@ body, button, input {
 	display: none;
 }
 
+input[type="checkbox"] {
+	cursor: pointer;
+}
+
 input[type="range"] {
 	-webkit-appearance: none;
 	height: 10px;
 	border-radius: 10px;
 	background: rgba(100, 100, 100);
+	cursor: pointer;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -238,6 +243,7 @@ input[type="range"]::-webkit-slider-thumb {
 	border-radius: 100%;
 	background: rgba(255, 180, 0);
 	transition: background 0.2s;
+	box-shadow: 0 0 5px rgba(255, 180, 0);
 }
 
 input[type="range"]:hover::-webkit-slider-thumb {
@@ -260,21 +266,17 @@ input[type="range"]:hover::-webkit-slider-thumb {
 
 .button-generic {
 	background: rgba(255, 180, 0);
-	border: solid rgba(215, 140, 0);
 	border-radius: 5px;
 	color: black;
-	transition: background 0.2s, border-color 0.2s;
-	padding: 5px;
+	box-shadow: 0 0 10px rgba(255, 180, 0);
 }
 
 .button-generic:hover {
 	background: rgba(255, 220, 60);
-	border: solid rgba(255, 180, 0);
 }
 
 .button-generic:active {
 	background: rgba(215, 140, 0);
-	border: solid rgba(175, 100, 0);
 }
 
 .spaced-15 {

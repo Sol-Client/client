@@ -25,6 +25,7 @@ ipcRenderer.on("quitGame", (event) => {
 	for(game of launcher.games) {
 		game.kill();
 	}
+	launcher.games = [];
 	ipcRenderer.send("quit", true);
 });
 

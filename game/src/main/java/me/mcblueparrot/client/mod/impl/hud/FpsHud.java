@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 public class FpsHud extends SimpleHud {
 
     public int counter;
-    private List<Long> frames = new ArrayList<Long>();
 
     public FpsHud() {
         super("FPS", "fps", "Display the FPS (frames per second).");

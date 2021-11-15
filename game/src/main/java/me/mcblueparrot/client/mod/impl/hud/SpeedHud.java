@@ -21,7 +21,8 @@ public class SpeedHud extends SimpleHud {
         else {
             double distTraveledLastTickX = mc.thePlayer.posX - mc.thePlayer.prevPosX;
             double distTraveledLastTickZ = mc.thePlayer.posZ - mc.thePlayer.prevPosZ;
-            double currentSpeed = MathHelper.sqrt_double(distTraveledLastTickX * distTraveledLastTickX + distTraveledLastTickZ * distTraveledLastTickZ);
+            double currentSpeed = MathHelper.sqrt_double(distTraveledLastTickX * distTraveledLastTickX
+                    + distTraveledLastTickZ * distTraveledLastTickZ);
             return FORMAT.format(currentSpeed / 0.05F) + " m/s";
         }
     }

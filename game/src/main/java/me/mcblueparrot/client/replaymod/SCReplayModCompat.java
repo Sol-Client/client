@@ -24,12 +24,15 @@ package me.mcblueparrot.client.replaymod;
 import com.replaymod.compat.optifine.DisableFastRender;
 import com.replaymod.compat.shaders.ShaderBeginRender;
 import com.replaymod.core.Module;
+import me.mcblueparrot.client.tweak.Tweaker;
 
 public class SCReplayModCompat implements Module {
 
     public void initClient() {
-        new ShaderBeginRender().register();
-        new DisableFastRender().register();
+        if(Tweaker.optiFine) {
+            new ShaderBeginRender().register();
+            new DisableFastRender().register();
+        }
     }
 
 }

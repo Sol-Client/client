@@ -29,7 +29,7 @@ import net.minecraft.client.renderer.chunk.RenderChunk;
 // Read this class for long enough and the world "chunk" will lose meaning.
 public class ChunkAnimationMod extends Mod {
 
-    private Map<RenderChunk, Data> chunks = new WeakHashMap<RenderChunk, Data>();
+    private Map<RenderChunk, Data> chunks = new WeakHashMap<>();
     @Expose
     @ConfigOption("Duration")
     @Slider(min = 0, max = 5, step = 0.5F)
@@ -79,15 +79,6 @@ public class ChunkAnimationMod extends Mod {
 
     }
 
-    public void cycleAnimation() {
-        int ordinal = animation.ordinal();
-        ordinal++;
-        if(ordinal > EasingFunction.values().length - 1) {
-            ordinal = 0;
-        }
-        animation = EasingFunction.values()[ordinal];
-    }
-
     public enum EasingFunction {
         LINEAR("Linear"),
         QUAD("Quad"),
@@ -103,7 +94,7 @@ public class ChunkAnimationMod extends Mod {
 
         private String name;
 
-        private EasingFunction(String name) {
+        EasingFunction(String name) {
             this.name = name;
         }
 

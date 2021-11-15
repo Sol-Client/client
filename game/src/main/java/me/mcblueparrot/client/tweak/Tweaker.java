@@ -54,11 +54,9 @@ public class Tweaker implements ITweaker {
         Mixins.addConfiguration("mixins.render.replaymod.json");
         Mixins.addConfiguration("mixins.render.blend.replaymod.json");
         Mixins.addConfiguration("mixins.replay.replaymod.json");
-        // Mixins.addConfiguration("mixins.compat.mapwriter.replaymod.json");
-        Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
+        if(optiFine) Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
         Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
-        Mixins.addConfiguration("mixins.jgui.json");
-        
+
         MixinEnvironment env = MixinEnvironment.getDefaultEnvironment();
 
         if(env.getObfuscationContext() == null) {

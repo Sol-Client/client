@@ -74,7 +74,7 @@ public class CrosshairHud extends Hud {
             GlStateManager.enableAlpha();
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 
-            if(highlightEntities && mc.objectMouseOver.entityHit != null && !(mc.objectMouseOver.entityHit.isInvisible()
+            if(highlightEntities && mc.objectMouseOver != null && mc.objectMouseOver.entityHit != null && !(mc.objectMouseOver.entityHit.isInvisible()
                     || mc.objectMouseOver.entityHit.isInvisibleToPlayer(mc.thePlayer))) {
                 Utils.glColour(entityColour);
             }

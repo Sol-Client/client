@@ -294,6 +294,11 @@ public class Client {
     }
 
     @EventHandler
+    public void onPostStart(PostGameStartEvent event) {
+        mods.forEach(Mod::postStart);
+    }
+
+    @EventHandler
     public void onSendMessage(SendChatMessageEvent event) {
     	// TODO tab completion
 

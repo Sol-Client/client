@@ -35,7 +35,7 @@ public abstract class Hud extends Mod {
     }
 
     @Override
-    protected void postStart() {
+    public void postStart() {
         super.postStart();
         this.font = mc.fontRendererObj;
     }

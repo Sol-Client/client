@@ -38,12 +38,7 @@ public abstract class Mod {
         enabled = isEnabledByDefault();
     }
 
-    @EventHandler
-    public void onPostStart(PostGameStartEvent event) {
-        postStart();
-    }
-
-    protected void postStart() {
+    public void postStart() {
     }
 
     public void onRegister() {

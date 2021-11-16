@@ -53,8 +53,8 @@ Here is a list of features that are currently in the client:
 - Hypixel Additions (pop-up events, better channel switcher (shows channel name in chat box).
 - Better item tooltips (shows item damage).
 - Symbol picker.
-- OptiFine, downloaded automatically from the official site.
-- Replay Mod. You will need to install FFmpeg yourself.
+- OptiFine, downloaded automatically from the official site. If there is a problem with this, open an issue.
+- Replay Mod. You will need to install FFmpeg yourself. If there is a problem with using the same name and logo, again, open an issue.
 
 Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.
 

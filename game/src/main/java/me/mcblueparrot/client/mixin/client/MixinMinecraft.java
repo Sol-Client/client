@@ -20,6 +20,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
@@ -97,6 +98,14 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
             "/EntityRenderer;updateCameraAndRender(FJ)V", shift = At.Shift.AFTER))
     public void postRenderTick(CallbackInfo callback) {
         Client.INSTANCE.bus.post(new PostRenderTickEvent());
+    }
+
+    @Overwrite
+    public int getLimitFramerate() {
+        if(theWorld == null || !Display.isActive()) {
+            return 30; // Only limit framerate to 30. This means there is no noticable lag spike.
+        }
+        return gameSettings.limitFramerate;
     }
 
     @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;" +
@@ -437,5 +446,8 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 
     @Shadow
     private ServerData currentServerData;
+    
+    @Shadow
+    public WorldClient theWorld;
 
 }

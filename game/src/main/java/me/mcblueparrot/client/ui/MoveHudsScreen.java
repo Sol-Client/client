@@ -124,7 +124,7 @@ public class MoveHudsScreen extends GuiScreen {
 
             Rectangle bounds = hud.getMultipliedBounds();
             if(bounds != null) {
-                bounds.stroke(new Colour(255, 180, 0));
+                bounds.stroke(SolClientMod.instance.uiColour);
             }
         }
 

@@ -2,6 +2,7 @@ package me.mcblueparrot.client.ui;
 
 import java.io.IOException;
 
+import me.mcblueparrot.client.mod.impl.SolClientMod;
 import org.lwjgl.input.Mouse;
 
 import me.mcblueparrot.client.Client;
@@ -19,7 +20,6 @@ public class MoveHudsScreen extends GuiScreen {
     private GuiScreen title;
     private Hud movingHud;
     private Position moveOffset;
-    private boolean wasRightClick;
     private boolean wasMouseDown;
     private boolean mouseDown;
 
@@ -44,6 +44,21 @@ public class MoveHudsScreen extends GuiScreen {
         if(mouseButton == 0) {
             mouseDown = true;
         }
+
+        if(mouseButton == 1) {
+            for(Hud hud : Client.INSTANCE.getHuds()) {
+                if(hud.isEnabled() && hud.isVisible() && hud.getMultipliedBounds() != null && hud.getMultipliedBounds()
+                        .contains(mouseX, mouseY)) {
+                    if(previous instanceof ModsScreen) {
+                        Utils.playClickSound();
+
+                        ((ModsScreen) previous).switchMod(hud);
+
+                        Minecraft.getMinecraft().displayGuiScreen(previous);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -57,12 +72,14 @@ public class MoveHudsScreen extends GuiScreen {
     @Override
     public void setWorldAndResolution(Minecraft mc, int width, int height) {
         super.setWorldAndResolution(mc, width, height);
+
         if(title != null) title.setWorldAndResolution(mc, width, height);
     }
 
     @Override
     public void updateScreen() {
         super.updateScreen();
+
         if(title != null) title.updateScreen();
     }
 
@@ -71,6 +88,7 @@ public class MoveHudsScreen extends GuiScreen {
         if(title != null) {
             title.drawScreen(0, 0, partialTicks);
         }
+
         Hud selectedHud = getSelectedHud(mouseX, mouseY);
         if(Mouse.isButtonDown(0)) {
             if(movingHud == null) {
@@ -81,17 +99,17 @@ public class MoveHudsScreen extends GuiScreen {
                 }
             }
             else {
-                movingHud.setPosition(new Position(mouseX + moveOffset.getX(), mouseY + moveOffset.getY()
-                ));
+                movingHud.setPosition(new Position(mouseX + moveOffset.getX(), mouseY + moveOffset.getY()));
             }
         }
         else {
             movingHud = null;
         }
 
-        Button button = new Button("Done", new Rectangle(width / 2 - 50, height - 60, 100, 20), new Colour(0, 100, 0),
+        Button button = new Button(SolClientMod.getFont(), "Done", new Rectangle(width / 2 - 50, height - 60, 100, 20), new Colour(0, 100, 0),
                 new Colour(20, 120, 20));
         button.render(mouseX, mouseY);
+
         if(button.contains(mouseX, mouseY) && !wasMouseDown && mouseDown) {
             Utils.playClickSound();
             mc.displayGuiScreen(previous);
@@ -99,6 +117,7 @@ public class MoveHudsScreen extends GuiScreen {
 
         for(Hud hud : Client.INSTANCE.getHuds()) {
             if(!(hud.isEnabled() && hud.isVisible())) continue;
+
             if(mc.theWorld == null) {
                 hud.render(true);
             }

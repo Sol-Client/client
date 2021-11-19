@@ -10,6 +10,10 @@ import me.mcblueparrot.client.Client;
  */
 public enum ModCategory {
     /**
+     * Mod appears before all others.
+     */
+    NONE(null),
+    /**
      * HUD widgets.
      */
     HUD("HUD"),

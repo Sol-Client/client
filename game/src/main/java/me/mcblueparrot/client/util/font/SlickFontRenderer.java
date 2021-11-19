@@ -23,15 +23,15 @@
  *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.mcblueparrot.client.util;
+package me.mcblueparrot.client.util.font;
 
-import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import me.mcblueparrot.client.util.Colour;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -43,7 +43,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StringUtils;
 
-public class SlickFontRenderer {
+public class SlickFontRenderer implements Font {
     private static final Pattern COLOR_CODE_PATTERN = Pattern.compile("§[0123456789abcdefklmnor]");
     private final int[] colorCodes = {
         0x000000,
@@ -69,7 +69,7 @@ public class SlickFontRenderer {
     private String name;
     private float size;
 
-    public static final SlickFontRenderer DEFAULT = new SlickFontRenderer("/Roboto-Regular.ttf", Font.PLAIN, 16);
+    public static final SlickFontRenderer DEFAULT = new SlickFontRenderer("/Roboto-Regular.ttf", java.awt.Font.PLAIN, 16);
 
     public SlickFontRenderer(String path, float fontStyle, float fontSize) {
         name = path;
@@ -92,19 +92,11 @@ public class SlickFontRenderer {
         this.antiAliasingFactor = resolution.getScaleFactor();
     }
 
-    private Font getFontFromInput(String path) throws IOException, FontFormatException {
-        return Font.createFont(Font.TRUETYPE_FONT, SlickFontRenderer.class.getResourceAsStream(path));
+    private java.awt.Font getFontFromInput(String path) throws IOException, FontFormatException {
+        return java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, SlickFontRenderer.class.getResourceAsStream(path));
     }
 
-    public void drawStringScaled(String text, int givenX, int givenY, int color, double givenScale) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(givenX, givenY, 0);
-        GL11.glScaled(givenScale, givenScale, givenScale);
-        drawString(text, 0, 0, color);
-        GL11.glPopMatrix();
-    }
-
-    public int drawString(String text, float x, float y, int color) {
+    public int renderString(String text, float x, float y, int colour) {
         if(text == null) return 0;
 
         ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
@@ -129,13 +121,13 @@ public class SlickFontRenderer {
         x *= antiAliasingFactor;
         y *= antiAliasingFactor;
         float originalX = x;
-        float red = (float) (color >> 16 & 255) / 255.0F;
-        float green = (float) (color >> 8 & 255) / 255.0F;
-        float blue = (float) (color & 255) / 255.0F;
-        float alpha = (float) (color >> 24 & 255) / 255.0F;
+        float red = (float) (colour >> 16 & 255) / 255.0F;
+        float green = (float) (colour >> 8 & 255) / 255.0F;
+        float blue = (float) (colour & 255) / 255.0F;
+        float alpha = (float) (colour >> 24 & 255) / 255.0F;
         GlStateManager.color(red, green, blue, alpha);
 
-        int currentColor = color;
+        int currentColour = colour;
 
         char[] characters = text.toCharArray();
 
@@ -150,11 +142,11 @@ public class SlickFontRenderer {
             for(String s2 : s.split("\n")) {
                 for(String s3 : s2.split("\r")) {
 
-                    unicodeFont.drawString(x, y, s3, new org.newdawn.slick.Color(currentColor));
+                    unicodeFont.drawString(x, y, s3, new org.newdawn.slick.Color(currentColour));
                     x += unicodeFont.getWidth(s3);
 
                     index += s3.length();
-                    if(index  < characters.length && characters[index ] == '\r') {
+                    if(index < characters.length && characters[index] == '\r') {
                         x = originalX;
                         index++;
                     }
@@ -165,19 +157,19 @@ public class SlickFontRenderer {
                     index++;
                 }
             }
-            if (index < characters.length) {
+            if(index < characters.length) {
                 char colorCode = characters[index];
                 if(colorCode == '§') {
                     char colorChar = characters[index + 1];
                     int codeIndex = ("0123456789" +
                         "abcdef").indexOf(colorChar);
                     if(codeIndex < 0) {
-                        if (colorChar == 'r') {
-                            currentColor = color;
+                        if(colorChar == 'r') {
+                            currentColour = colour;
                         }
                     }
                     else {
-                        currentColor = colorCodes[codeIndex];
+                        currentColour = colorCodes[codeIndex];
                     }
                     index += 2;
                 }
@@ -190,35 +182,18 @@ public class SlickFontRenderer {
         return (int) x;
     }
 
-    public int drawStringWithShadow(String text, float x, float y, int color) {
-        drawString(StringUtils.stripControlCodes(text), x + 0.5F, y + 0.5F, 0x000000);
-        return drawString(text, x, y, color);
+    public int renderStringWithShadow(String text, float x, float y, int color) {
+        renderString(StringUtils.stripControlCodes(text), x + 0.5F, y + 0.5F, 0x000000);
+        return renderString(text, x, y, color);
     }
 
-    public void drawCenteredString(String text, float x, float y, int color) {
-        drawString(text, x - ((int) getWidth(text) >> 1), y, color);
-    }
-
-    /**
-     * Draw Centered Text Scaled
-     *
-     * @param text       - Given Text String
-     * @param givenX     - Given X Position
-     * @param givenY     - Given Y Position
-     * @param color      - Given Color (HEX)
-     * @param givenScale - Given Scale
-     */
-    public void drawCenteredTextScaled(String text, int givenX, int givenY, int color, double givenScale) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(givenX, givenY, 0);
-        GL11.glScaled(givenScale, givenScale, givenScale);
-        drawCenteredString(text, 0, 0, color);
-        GL11.glPopMatrix();
+    public void renderCenteredString(String text, float x, float y, int color) {
+        renderString(text, x - ((int) getWidth(text) >> 1), y, color);
     }
 
     public void drawCenteredStringWithShadow(String text, float x, float y, int color) {
-        drawCenteredString(StringUtils.stripControlCodes(text), x + 0.5F, y + 0.5F, color);
-        drawCenteredString(text, x, y, color);
+        renderCenteredString(StringUtils.stripControlCodes(text), x + 0.5F, y + 0.5F, color);
+        renderCenteredString(text, x, y, color);
     }
 
     public float getAscent() {
@@ -242,7 +217,7 @@ public class SlickFontRenderer {
     }
 
     public void drawSplitString(ArrayList<String> lines, int x, int y, int color) {
-        drawString(
+        renderString(
             String.join("\n\r", lines),
             x,
             y,

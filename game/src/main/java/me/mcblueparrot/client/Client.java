@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
 import me.mcblueparrot.client.events.*;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.impl.*;
@@ -66,7 +67,9 @@ public class Client {
     private Minecraft mc = Minecraft.getMinecraft();
     public static final Client INSTANCE = new Client();
     private JsonObject data;
+    @Getter
     private List<Mod> mods = new ArrayList<Mod>();
+    @Getter
     private List<Hud> huds = new ArrayList<Hud>();
     private final Logger LOGGER = LogManager.getLogger();
     private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json");
@@ -87,6 +90,7 @@ public class Client {
         LOGGER.info("Loading settings...");
         load();
         LOGGER.info("Loading mods...");
+        register(new SolClientMod());
         register(new FpsHud());
         register(new PositionHud());
         register(new KeystrokeHud());
@@ -177,14 +181,6 @@ public class Client {
             });
         }
         return builder.excludeFieldsWithoutExposeAnnotation().create();
-    }
-
-    public List<Mod> getMods() {
-        return mods;
-    }
-
-    public List<Hud> getHuds() {
-        return huds;
     }
 
     private void organiseHuds() {

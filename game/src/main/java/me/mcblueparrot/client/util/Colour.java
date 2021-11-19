@@ -5,6 +5,7 @@ import java.awt.Color;
 import com.google.gson.annotations.Expose;
 
 import lombok.Getter;
+import net.minecraft.util.MathHelper;
 
 public class Colour {
 
@@ -92,4 +93,15 @@ public class Colour {
         return new int[] {getRed(), getGreen(), getBlue(), getAlpha()};
     }
 
+    public Colour multiply(float factor) {
+        return new Colour(clamp((int) (getRed() * factor)), clamp((int) (getGreen() * factor)), clamp((int) (getBlue() * factor)), getAlpha());
+    }
+
+    private int clamp(int channel) {
+        return MathHelper.clamp_int(channel, 0, 255);
+    }
+
+    public Colour add(int amount) {
+        return new Colour(clamp(getRed() + amount), clamp(getGreen() + amount), clamp(getBlue() + amount), getAlpha());
+    }
 }

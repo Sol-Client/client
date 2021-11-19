@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.ui;
 
+import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Rectangle;
 import me.mcblueparrot.client.util.Utils;
@@ -15,11 +16,12 @@ public class Tickbox {
     }
 
     public void render(int mouseX, int mouseY, boolean hovered) {
-        bounds.stroke(hovered ? new Colour(255, 220, 60) : new Colour(255, 180, 0));
+        Colour boxColour = hovered ? SolClientMod.instance.uiHover : SolClientMod.instance.uiColour;
+
+        bounds.stroke(boxColour);
         if(value) {
             Utils.drawRectangle(new Rectangle(bounds.getX() + 2, bounds.getY() + 2, bounds.getWidth() - 4,
-                    bounds.getHeight() - 4),
-                    hovered ? new Colour(255, 220, 60) : new Colour(255, 180, 0));
+                    bounds.getHeight() - 4), boxColour);
         }
     }
 

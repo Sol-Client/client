@@ -1,9 +1,13 @@
 package me.mcblueparrot.client.mixin.client;
 
 import me.mcblueparrot.client.events.*;
+import me.mcblueparrot.client.mod.impl.SolClientMod;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,6 +25,8 @@ import java.util.List;
 
 @Mixin(GuiScreen.class)
 public class MixinGuiScreen implements AccessGuiScreen {
+
+    @Shadow protected Minecraft mc;
 
     public boolean canBeForceClosed() {
         return true;
@@ -57,6 +63,15 @@ public class MixinGuiScreen implements AccessGuiScreen {
     public void postGuiRender(int mouseX, int mouseY, float partialTicks, CallbackInfo callback) {
         GlStateManager.color(1, 1, 1, 1); // Prevent colour from leaking
         Client.INSTANCE.bus.post(new PostGuiRenderEvent(partialTicks));
+
+        if(SolClientMod.instance.logoInInventory && (Object) this instanceof GuiContainer) {
+            GlStateManager.enableBlend();
+
+            mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_logo_with_text_" +
+                            Utils.getTextureScale() + ".png"));
+
+            Gui.drawModalRectWithCustomSizedTexture(width - 140, height - 40, 0, 0, 128, 32, 128, 32);
+        }
     }
 
     @Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;" +
@@ -77,5 +92,11 @@ public class MixinGuiScreen implements AccessGuiScreen {
     
     @Shadow
     protected List<GuiButton> buttonList;
+
+    @Shadow
+    public int width;
+
+    @Shadow
+    public int height;
 
 }

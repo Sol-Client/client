@@ -157,7 +157,7 @@ public class SCReplayMod extends Mod {
 
     @Override
     public String getDescription() {
-        if(deferedState != null && deferedState != enabled) {
+        if(deferedState != null && deferedState != enabled && SolClientMod.instance.fancyFont) {
             return super.getDescription() + " Log out to " + (deferedState ? "enable" : "disable") + ".";
         }
         return super.getDescription();

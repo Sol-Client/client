@@ -150,7 +150,7 @@ public abstract class Mod {
     }
 
     public String getLockMessage() {
-        return " Locked.";
+        return "";
     }
 
 }

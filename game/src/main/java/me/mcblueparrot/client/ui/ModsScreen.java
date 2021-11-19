@@ -4,14 +4,17 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.impl.ConfigOnlyMod;
+import me.mcblueparrot.client.mod.impl.SolClientMod;
+import me.mcblueparrot.client.util.font.Font;
+import me.mcblueparrot.client.util.font.SlickFontRenderer;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo.Map;
 
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
@@ -21,12 +24,10 @@ import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Rectangle;
-import me.mcblueparrot.client.util.SlickFontRenderer;
 import me.mcblueparrot.client.util.Utils;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
@@ -40,10 +41,12 @@ public class ModsScreen extends GuiScreen {
     private GuiScreen previous;
     private boolean wasMouseDown;
     private boolean mouseDown;
+    private boolean wasRightClickDown;
+    private boolean rightClickDown;
     private boolean openedWithMod;
     private Mod selectedMod;
     private ConfigOption.Cached selectedColour;
-    private SlickFontRenderer font = SlickFontRenderer.DEFAULT;
+    private Font font = SolClientMod.getFont();
 
     public ModsScreen(GuiScreen previous, Mod mod) {
         this.previous = previous;
@@ -58,8 +61,13 @@ public class ModsScreen extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+
         if(mouseButton == 0) {
             mouseDown = true;
+        }
+
+        if(mouseButton == 1) {
+            rightClickDown = true;
         }
     }
 
@@ -68,6 +76,10 @@ public class ModsScreen extends GuiScreen {
         super.mouseReleased(mouseX, mouseY, state);
         if(state == 0) {
             mouseDown = false;
+        }
+
+        if(state == 1) {
+            rightClickDown = false;
         }
     }
 
@@ -106,14 +118,21 @@ public class ModsScreen extends GuiScreen {
         else {
             drawWorldBackground(0);
         }
+
+        boolean slickFont = font instanceof SlickFontRenderer;
+        int sweetSpot = slickFont ? 5 : 6;
+
         String title = "Mods";
+
         if(selectedMod != null) {
             title = selectedMod.getName();
         }
-        font.drawString(title, (width / 2) - (font.getWidth(title) / 2), 15,
+
+        font.renderString(title, (width / 2) - (font.getWidth(title) / 2), 15,
                 -1);
 
         int y = 30;
+
         Mod newSelected = selectedMod;
         ConfigOption.Cached newSelectedColour = selectedColour;
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
@@ -126,8 +145,11 @@ public class ModsScreen extends GuiScreen {
         if(selectedMod == null) {
             for(ModCategory category : ModCategory.values()) {
                 String categoryTitle = category.toString();
-                font.drawString(categoryTitle, width / 2 - font.getWidth(categoryTitle) / 2, y - amountScrolled, -1);
-                y += 15;
+                if(categoryTitle != null) {
+                    font.renderString(categoryTitle, width / 2 - font.getWidth(categoryTitle) / 2, y - amountScrolled, -1);
+                    y += 15;
+                }
+
                 for(Mod mod : category.getMods()) {
                     Rectangle rectangle = new Rectangle(width / 2 - 150, y - amountScrolled, 300, 30);
                     boolean containsMouse = rectangle.contains(mouseX, mouseY) && region.contains(mouseX, mouseY);
@@ -135,21 +157,24 @@ public class ModsScreen extends GuiScreen {
                     Colour fill = new Colour(0, 0, 0, 150);
                     Colour outline;
                     String description = mod.getDescription();
-                    if(mod.isBlocked() || mod.isLocked()) {
+                    if(mod.isBlocked()) {
                         if(containsMouse) {
                             outline = new Colour(255, 80, 80);
                         }
                         else {
                             outline = new Colour(255, 0, 0);
                         }
-                        description += mod.isBlocked() ? " Blocked by current server." : mod.getLockMessage();
+                        description += " Blocked by current server.";
                     }
                     else if(mod.isEnabled()) {
                         if(containsMouse) {
-                            outline = new Colour(255, 220, 60);
+                            outline = SolClientMod.instance.uiHover;
                         }
                         else {
-                            outline = new Colour(255, 180, 0);
+                            outline = SolClientMod.instance.uiColour;
+                        }
+                        if(mod.isLocked()) {
+                            description += mod.getLockMessage();
                         }
                     }
                     else {
@@ -165,41 +190,49 @@ public class ModsScreen extends GuiScreen {
                         GlStateManager.enableBlend();
                         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
                         GL11.glColor3ub((byte) 200, (byte) 200, (byte) 200);
-                        mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_mod_settings.png"));
+                        mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_" +
+                                "settings_" + Utils.getTextureScale() +".png"));
                         boolean hasSettings = mod.getOptions().size() > 1 && !mod.isBlocked();
                         Rectangle modSettingsBounds = new Rectangle(rectangle.getX() + rectangle.getWidth() - 20,
                                 rectangle.getY() + 7,
                                 16,
                                 16);
+                        boolean mouseInSettings = mod.isLocked() || modSettingsBounds.contains(mouseX, mouseY);
+
                         if(hasSettings) {
-                            if(modSettingsBounds.contains(mouseX, mouseY)) {
+                            if(mouseInSettings) {
                                 GlStateManager.color(1F, 1F, 1F);
                             }
 
-                            drawModalRectWithCustomSizedTexture(modSettingsBounds.getX(), modSettingsBounds.getY(), 0, 0
-                                    , 16
-                                    , 16
-                                    , 16, 16);
+                            drawModalRectWithCustomSizedTexture(modSettingsBounds.getX(), modSettingsBounds.getY(),
+                                    0, 0, 16, 16, 16, 16);
                         }
-                        if(mouseDown && !wasMouseDown && mouseInList) {
-                            Utils.playClickSound();
-                            if(modSettingsBounds.contains(mouseX, mouseY) && hasSettings) {
-                                newSelected = mod;
-                            }
-                            else if(mod.isBlocked()) {
-                                URI blockedModPage;
-                                if((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
-                                    Desktop.getDesktop().browse(blockedModPage);
+
+                        if(mouseInList) {
+                            if(mouseDown && !wasMouseDown) {
+                                Utils.playClickSound();
+                                if(mouseInSettings && hasSettings) {
+                                    newSelected = mod;
+                                }
+                                else if (mod.isBlocked()) {
+                                    URI blockedModPage;
+                                    if ((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
+                                        Desktop.getDesktop().browse(blockedModPage);
+                                    }
+                                }
+                                else {
+                                    mod.toggle();
                                 }
                             }
-                            else {
-                                mod.toggle();
+                            else if(rightClickDown && !wasRightClickDown) {
+                                Utils.playClickSound();
+                                newSelected = mod;
                             }
                         }
                     }
                     rectangle.stroke(outline);
-                    font.drawString(mod.getName(), rectangle.getX() + 6, rectangle.getY() + 4, -1);
-                    font.drawString(description, rectangle.getX() + 6, rectangle.getY() + 15, 8421504);
+                    font.renderString(mod.getName(), rectangle.getX() + 6, rectangle.getY() + 4 + (slickFont ? 0 : 1), -1);
+                    font.renderString(description, rectangle.getX() + 6, rectangle.getY() + 16, 8421504);
 
                     y += rectangle.getHeight() + 5;
                 }
@@ -210,9 +243,14 @@ public class ModsScreen extends GuiScreen {
             int x = 10;
             Rectangle colourSelectBox = null;
             for(ConfigOption.Cached option : selectedMod.getOptions()) {
+                if(selectedMod instanceof ConfigOnlyMod && option.field.getName().equals("enabled")) {
+                    continue;
+                }
+
                 Rectangle rectangle = new Rectangle(width / 2 - 150, y - amountScrolled, 300, 21);
                 Utils.drawRectangle(rectangle, new Colour(0, 0, 0, 150));
-                font.drawString(option.name, rectangle.getX() + 5, rectangle.getY() + 5, -1);
+                font.renderString(option.name, rectangle.getX() + sweetSpot, rectangle.getY() + sweetSpot, -1);
+
                 if(option.getType() == boolean.class) {
                     Tickbox box = new Tickbox(rectangle.getX() + rectangle.getWidth() - 18, rectangle.getY() + 3,
                             (boolean) option.getValue());
@@ -231,8 +269,8 @@ public class ModsScreen extends GuiScreen {
                         valueColour = Colour.WHITE;
                     }
 
-                    font.drawString(valueName, rectangle.getX() + rectangle.getWidth() - 5 - font.getWidth(valueName),
-                            rectangle.getY() + 5,
+                    font.renderString(valueName, rectangle.getX() + rectangle.getWidth() - 5 - font.getWidth(valueName),
+                            rectangle.getY() + sweetSpot,
                             valueColour.getValue());
                     if(rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown && mouseInList) {
                         int ordinal = ((Enum<?>) option.getValue()).ordinal();
@@ -307,7 +345,7 @@ public class ModsScreen extends GuiScreen {
                     String valueText = new DecimalFormat("0.##").format(option.getValue());
 
                     if(slider.showValue()) {
-                        font.drawString(valueText, sliderBox.getX() - font.getWidth(valueText) - 4, sliderScrubber.getY(),
+                        font.renderString(valueText, sliderBox.getX() - font.getWidth(valueText) - 4, sliderScrubber.getY() + (slickFont ? 0 : 1),
                                 sliderColour.getValue());
                     }
 
@@ -347,6 +385,7 @@ public class ModsScreen extends GuiScreen {
                     int componentValue = selectedColour.getComponents()[componentIndex];
                     Rectangle componentBox = new Rectangle(colourSelectBox.getX() + 34,
                             colourSelectBox.getY() + 19 + (20 * componentIndex), 255, 10);
+
                     if (new Rectangle(colourSelectBox.getX(), componentBox.getY(), colourSelectBox.getWidth(),
                             componentBox.getHeight()).contains(mouseX, mouseY) && mouseDown && mouseInList) {
                         int clickedPosition = MathHelper.clamp_int(mouseX - componentBox.getX(), 0, 255);
@@ -372,7 +411,7 @@ public class ModsScreen extends GuiScreen {
                         case 3:
                             name = "Alpha";
                     }
-                    font.drawString(name, componentBox.getX() - font.getWidth(name) - 5, componentBox.getY() - 1, -1);
+                    font.renderString(name, componentBox.getX() - font.getWidth(name) - 5 + (slickFont ? 0 : 3), componentBox.getY() - (slickFont ? 1 : 0), -1);
                     if(componentIndex == 3) {
                         Utils.drawRectangle(componentBox, Colour.BLACK);
                     }
@@ -393,9 +432,9 @@ public class ModsScreen extends GuiScreen {
                         }
                         if(colour == componentValue) {
                             renderColour = Colour.WHITE;
-                            font.drawString(Integer.toString(colour),
+                            font.renderString(Integer.toString(colour),
                                     componentBox.getX() + colour - (font.getWidth(Integer.toString(colour)) / 2),
-                                    componentBox.getY() + 9, 0x777777);
+                                    componentBox.getY() + 9 + (slickFont ? 0 : 2), 0x777777);
                         }
                         Utils.drawRectangle(
                                 new Rectangle(componentBox.getX() + colour,
@@ -404,7 +443,7 @@ public class ModsScreen extends GuiScreen {
                     }
                 }
 
-                font.drawString("Select Colour (RGBA)",
+                font.renderString("Select Colour (RGBA)",
                         colourSelectBox.getX() + (colourSelectBox.getWidth() / 2) - (font.getWidth("Select Colour " +
                                 "(RGBA)") / 2),
                         colourSelectBox.getY() + 5, -1);
@@ -420,25 +459,9 @@ public class ModsScreen extends GuiScreen {
         }
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
-
-
-//            try {
-//                GlStateManager.enableBlend();
-//                GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-//                ResourceLocation resource = new ResourceLocation("mods/" + mod.getId() + ".png");
-//                mc.getResourceManager().getResource(resource);
-//                mc.getTextureManager().bindTexture(resource);
-//                GlStateManager.color(0.247058824F, 0.247058824F, 0.247058824F, 1);
-//                drawModalRectWithCustomSizedTexture(rectangle.getX() + 6, rectangle.getY() + 3, 0, 0, 75, 75, 75, 75);
-//                GlStateManager.color(1, 1, 1, 1);
-//                drawModalRectWithCustomSizedTexture(rectangle.getX() + 5, rectangle.getY() + 2, 0, 0, 75, 75, 75, 75);
-//            }
-//            catch(IOException error) {
-////                error.printStackTrace();
-//            }
         drawHorizontalLine(0, width, 29, 0xFF000000);
         drawHorizontalLine(0, width, height - 31, 0xFF000000);
-        Button done = new Button("Done", new Rectangle(openedWithMod ? width / 2 - 50 : width / 2 - 103, height - 25, 100, 20), new Colour(0, 100, 0),
+        Button done = new Button(font, "Done", new Rectangle(openedWithMod ? width / 2 - 50 : width / 2 - 103, height - 25, 100, 20), new Colour(0, 100, 0),
                 new Colour(20, 120, 20));
         done.render(mouseX, mouseY);
 
@@ -458,7 +481,7 @@ public class ModsScreen extends GuiScreen {
         }
 
         if(!openedWithMod) {
-            Button edit = new Button("HUD Editor", new Rectangle(width / 2 + 3, height - 25, 100, 20), new Colour(255, 100, 0),
+            Button edit = new Button(font, "HUD Editor", new Rectangle(width / 2 + 3, height - 25, 100, 20), new Colour(255, 100, 0),
                     new Colour(255, 130, 30));
             edit.render(mouseX, mouseY);
             if(edit.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
@@ -468,6 +491,7 @@ public class ModsScreen extends GuiScreen {
         }
 
         wasMouseDown = mouseDown;
+        wasRightClickDown = rightClickDown;
 
         maxScrolling = (y) - (height);
         if(maxScrolling < 0) {
@@ -501,7 +525,17 @@ public class ModsScreen extends GuiScreen {
         Client.INSTANCE.save();
     }
 
-//    @Override
+    public void updateFont() {
+        font = SolClientMod.getFont();
+    }
+
+    public void switchMod(Mod mod) {
+        mouseDown = false;
+        wasMouseDown = false;
+        selectedMod = mod;
+    }
+
+    //    @Override
 //    public void updateScreen() {
 //        super.updateScreen();
 //        if(previous instanceof GuiMainMenu) {

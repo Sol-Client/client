@@ -13,6 +13,7 @@
     "client.MixinChunkRenderContainer",
     "client.MixinEntityPlayerSP",
     "client.MixinEntityRenderer",
+    "client.MixinFontRendererCompat",
     "client.MixinGameSettings",
     "client.MixinGuiChat",
     "client.MixinGuiContainer",

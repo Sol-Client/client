@@ -251,4 +251,14 @@ public class Utils {
         return ReplayModReplay.instance.getReplayHandler() != null
                 && !(Minecraft.getMinecraft().getRenderViewEntity() instanceof CameraEntity);
     }
+
+    public static String getTextureScale() {
+        ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
+
+        if(resolution.getScaleFactor() > 0 && resolution.getScaleFactor() < 5) {
+            return resolution.getScaleFactor() + "x";
+        }
+
+        return "4x";
+    }
 }

@@ -110,11 +110,10 @@ public class CustomTweakerPlugin extends ClientTweaker {
                 out = new String(data);
             }
             else {
-                project.getLogger().error("Etag download for " + strUrl + " failed with code " + con.getResponseCode()
+                project.getLogger().warn("Etag download for " + strUrl + " failed with code " + con.getResponseCode()
                         + ". Mappings may be outdated.");
 
-                // Sol Client - Use potentially older local version.
-                return Resources.toString(getClass().getResource("/McpMappings.json"), StandardCharsets.UTF_8);
+                return fallbackGetWithEtag(strUrl);
             }
 
             con.disconnect();
@@ -133,6 +132,23 @@ public class CustomTweakerPlugin extends ClientTweaker {
                 Throwables.propagate(e);
             }
         }
+
+        try {
+            return fallbackGetWithEtag(strUrl);
+        }
+        catch(Exception error) {
+            throw new RuntimeException(error);
+        }
+    }
+
+    private String fallbackGetWithEtag(String strUrl) {
+        try {
+            if ("http://export.mcpbot.bspk.rs/versions.json".equals(strUrl)) {
+                // Sol Client - Use potentially older local version.
+                return Resources.toString(getClass().getResource("/McpMappings.json"), StandardCharsets.UTF_8);
+            }
+        }
+        catch(IOException error) {}
 
         throw new RuntimeException("Unable to obtain url (" + strUrl + ") with etag!");
     }

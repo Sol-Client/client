@@ -82,7 +82,7 @@ public abstract class Hud extends Mod {
 
     public void render(boolean editMode) {
         // Don't render HUD in replay.
-        if(ReplayModReplay.instance.getReplayHandler() != null) return;
+        if(!(editMode || ReplayModReplay.instance.getReplayHandler() == null)) return;
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(getScale(), getScale(), getScale());

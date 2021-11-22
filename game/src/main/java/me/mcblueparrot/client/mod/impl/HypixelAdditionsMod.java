@@ -169,7 +169,7 @@ public class HypixelAdditionsMod extends Mod {
     }
 
     public static boolean isHypixel() {
-//        return true; // For testing purposes
+//        return true; // Uncomment for testing purposes
         return Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL;
     }
 
@@ -220,10 +220,12 @@ public class HypixelAdditionsMod extends Mod {
         }
 
         if(isEffective() && apiKey == null) {
-            IChatComponent component = new ChatComponentText("Could not find API key (required for levelhead). Click here or run /api new.");
+            IChatComponent component = new ChatComponentText("Could not find API key (required for Levelhead). Click here or run /api new.");
             component.setChatStyle(new ChatStyle()
                     .setColor(EnumChatFormatting.RED)
                     .setChatClickEvent(new ClickEvent(Action.RUN_COMMAND, "/api new")));
+
+            mc.ingameGUI.getChatGUI().printChatMessage(component);
         }
     }
 

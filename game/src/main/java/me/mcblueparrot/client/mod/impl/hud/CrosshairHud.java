@@ -110,7 +110,8 @@ public class CrosshairHud extends Hud {
         CIRCLE("Circle"),
         CIRCLE_DOT("Circle Dot"),
         FOUR_ANGLED("4 Angled"),
-        FOUR_ANGLED_DOT("4 Angled Dot");
+        FOUR_ANGLED_DOT("4 Angled Dot"),
+        TRIANGLE("Triangle");
 
         private String name;
 

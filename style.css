@@ -8,6 +8,12 @@
 	src: url("roboto/Roboto-Regular.ttf");
 }
 
+:root {
+	--primary-colour: rgb(255, 180, 0);
+	--primary-colour-lighter: rgba(255, 220, 60);
+	--primary-colour-darker: rgba(215, 140, 0);
+}
+
 .input {
 	display: block;
 	border: solid rgb(80, 80, 80);
@@ -50,8 +56,14 @@
 
 .title {
 	font-family: Raleway-Regular;
-	text-align: center;
 	font-size: 3em;
+}
+
+.title, .centred-text {
+	text-align: center;
+}
+
+.title, h1, h2, h3, h4, h5, h6 {
 	font-weight: normal;
 }
 
@@ -148,7 +160,7 @@
 }
 
 a:link {
-	color: rgb(255, 180, 0);
+	color: var(--primary-colour);
 	text-decoration: none;
 	transition: color 0.2s;
 }
@@ -199,8 +211,8 @@ a:link:hover, a:link:focus, a:link:active {
 	margin-right: 3px;
 }
 
-.about {
-	margin-left: 20px;
+.about-text {
+	margin-left: 30px;
 }
 
 .error-message {
@@ -215,6 +227,7 @@ body {
 	background-color: rgb(30, 30, 30);
 	color: white;
 	user-select: none;
+	margin: 0;
 }
 
 body, button, input {
@@ -242,13 +255,13 @@ input[type="range"]::-webkit-slider-thumb {
 	height: 15px;
 	width: 15px;
 	border-radius: 100%;
-	background: rgba(255, 180, 0);
+	background: var(--primary-colour);
 	transition: background 0.2s;
-	box-shadow: 0 0 5px rgba(255, 180, 0);
+	box-shadow: 0 0 5px var(--primary-colour);
 }
 
 input[type="range"]:hover::-webkit-slider-thumb {
-	background: rgba(255, 220, 60);
+	background: var(--primary-colour-lighter);
 }
 
 .memory-box {
@@ -266,18 +279,18 @@ input[type="range"]:hover::-webkit-slider-thumb {
 }
 
 .button-generic {
-	background: rgba(255, 180, 0);
+	background: var(--primary-colour);
 	border-radius: 5px;
 	color: black;
-	box-shadow: 0 0 10px rgba(255, 180, 0);
+	box-shadow: 0 0 10px var(--primary-colour);
 }
 
 .button-generic:hover {
-	background: rgba(255, 220, 60);
+	background: var(--primary-colour-lighter);
 }
 
 .button-generic:active {
-	background: rgba(215, 140, 0);
+	background: var(--primary-colour-darker);
 }
 
 .spaced-15 {
@@ -292,4 +305,35 @@ input[type="range"]:hover::-webkit-slider-thumb {
 	display: table;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.server {
+	cursor: pointer;
+}
+
+.server:not(:last-child) {
+	margin-right: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+	transition: width 0.2s;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--primary-colour);
+  border-radius: 10px;
+	transition: background 0.2s; /* FIXME: Super cool transition not working */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-colour-lighter);
+}
+
+#text1476 {
+	font-family: Raleway;
 }

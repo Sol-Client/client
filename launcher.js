@@ -18,7 +18,7 @@ class Launcher {
 	account = null;
 	games = [];
 
-	launch(callback) {
+	launch(callback, server) {
 		Manifest.getManifest((manifest) => {
 			Manifest.getVersion(manifest, "1.8.9", async(version) => {
 				var jars = [];
@@ -271,6 +271,11 @@ class Launcher {
 
 				args.push("--uuid");
 				args.push(this.account.uuid);
+
+				if(server) {
+					args.push("--server");
+					args.push(server);
+				}
 
 				args.push("--accessToken");
 				args.push(this.account.accessToken);

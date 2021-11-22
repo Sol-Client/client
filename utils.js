@@ -15,6 +15,7 @@ class Utils {
 	static assetObjectsDirectory;
 	static assetIndexesDirectory;
 	static gameDirectory;
+	static serversFile;
 	static version = require("./package.json").version;
 	static configFile;
 
@@ -52,6 +53,7 @@ class Utils {
 		Utils.assetIndexesDirectory = Utils.assetsDirectory + "/indexes";
 		Utils.accountFile = Utils.minecraftDirectory + "/account.json";
 		Utils.gameDirectory = Utils.minecraftDirectory + "/minecraft";
+		Utils.serversFile = Utils.gameDirectory + "/servers.dat";
 
 		if(!fs.existsSync(Utils.gameDirectory)) {
 			fs.mkdirSync(Utils.gameDirectory, { recursive: true });
@@ -128,4 +130,3 @@ class Utils {
 }
 
 module.exports = Utils;
-

@@ -342,6 +342,9 @@ public class Client {
     }
 
     public void onServerChange(ServerData data) {
+        Thread.dumpStack();
+        System.out.println(data);
+
         setChatChannelSystem(null);
 
         if(data == null) {

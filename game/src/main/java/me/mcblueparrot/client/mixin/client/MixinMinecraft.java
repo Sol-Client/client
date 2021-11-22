@@ -12,7 +12,9 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 import me.mcblueparrot.client.events.*;
 import me.mcblueparrot.client.util.Utils;
-import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.multiplayer.GuiConnecting;
+import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.entity.Entity;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.LWJGLException;
@@ -31,8 +33,6 @@ import me.mcblueparrot.client.SplashScreen;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiNewChat;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.achievement.GuiAchievement;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -49,6 +49,9 @@ import javax.security.auth.callback.Callback;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements AccessMinecraft, MCVer.MinecraftMethodAccessor {
 
+    @Shadow public abstract void displayGuiScreen(GuiScreen guiScreenIn);
+
+    @Shadow private String serverName;
     private boolean debugPressed;
     private boolean cancelDebug;
 
@@ -100,6 +103,9 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
         Client.INSTANCE.bus.post(new PostRenderTickEvent());
     }
 
+    /**
+     * @author TheKodeToad
+     */
     @Overwrite
     public int getLimitFramerate() {
         if(theWorld == null || !Display.isActive()) {
@@ -399,6 +405,23 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
             hadWorld = true;
             Client.INSTANCE.onServerChange(currentServerData);
         }
+    }
+
+    @Redirect(method = "startGame", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;serverName:Ljava/lang/String;"))
+    public String joinServer(Minecraft instance) {
+        return null;
+    }
+
+    @Redirect(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;" +
+            "displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V", ordinal = 1))
+    public void display(Minecraft instance, GuiScreen screen) {
+        if(serverName != null && serverName.startsWith("§sc§")) {
+            ServerList list = new ServerList((Minecraft) (Object) this);
+            instance.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(screen), (Minecraft) (Object) this,
+                    list.getServerData(Integer.parseInt(serverName.substring(4)))));
+            return;
+        }
+        instance.displayGuiScreen(screen);
     }
 
     // Fix Replay Mod bug - textures animate too fast.

@@ -16,6 +16,7 @@
     "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "msmc": "^2.2.2",
+    "nbt": "^0.8.1",
     "tar": "^6.1.11",
     "temp": "^0.9.4",
     "unzipper": "^0.10.11"
@@ -46,7 +47,9 @@
           "config": {
             "options": {
               "icon": "assets/icon.png",
-              "categories": [ "Game" ],
+              "categories": [
+                "Game"
+              ],
               "section": "games",
               "productName": "Sol Client",
               "maintainer": "mcblueparrot"

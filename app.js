@@ -9,6 +9,7 @@ const yggdrasilAuthService = YggdrasilAuthService.instance;
 const fs = require("fs");
 const msmc = require("msmc");
 const os = require("os");
+const nbt = require("nbt");
 
 Utils.init();
 Config.init(Utils.minecraftDirectory);
@@ -91,7 +92,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		}
 	};
 
-	playButton.onclick = async() => {
+	async function play(server) {
 		if(!launching) {
 			launching = true;
 			playButton.innerText = "...";
@@ -111,9 +112,11 @@ window.addEventListener("DOMContentLoaded", () => {
 			launcher.launch(() => {
 				playButton.innerText = "Play";
 				launching = false;
-			});
+			}, server);
 		}
-	};
+	}
+
+	playButton.onclick = () => play();
 
 	document.querySelector(".back-to-login-button").onclick = () => {
 		mojangLogin.style.display = "none";
@@ -127,6 +130,46 @@ window.addEventListener("DOMContentLoaded", () => {
 	document.querySelector(".minecraft-folder").onclick = () => shell.openPath(Utils.gameDirectory);
 
 	document.querySelector(".devtools").onclick = () => ipcRenderer.send("devtools");
+
+	var serversList = document.querySelector(".quick-servers");
+	var serversFile = Utils.serversFile;
+	var serverText = document.querySelector(".quick-join-text");
+
+	if(fs.existsSync(serversFile)) {
+		nbt.parse(fs.readFileSync(serversFile), (error, data) => {
+			if(error) {
+				throw error;
+			}
+
+			var servers = data.value.servers.value.value;
+
+			for(var i = 0; i < servers.length && i < 5; i++) {
+				 // first time I've ever needed to use the let keyword
+				let server = servers[i];
+				let serverIndex = i;
+
+				let serverElement = document.createElement("span");
+
+				serverElement.onmouseenter = () => {
+					serverText.innerText = server.name.value;
+				};
+
+				serverElement.onmouseout = () => {
+					serverText.innerText = "Play Server";
+				};
+
+				serverElement.onclick = () => {
+					play("§sc§" + serverIndex);
+				}
+
+				serverElement.classList.add("server");
+				serverElement.innerHTML = `
+					${server.icon ? `<img src="data:image/png;base64,${server.icon.value}"/>` : `<img src="unknown_server.svg"/>`}`;
+
+				serversList.appendChild(serverElement);
+			}
+		});
+	}
 
 	var memory = document.querySelector(".memory");
 	var memoryLabel = document.querySelector(".memory-label");
@@ -154,6 +197,9 @@ window.addEventListener("DOMContentLoaded", () => {
 	function switchToTab(tab) {
 			document.querySelector(".about").style.display = "none";
 			document.querySelector(".settings").style.display = "none";
+
+			playButton.style.display = null;
+
 			document.querySelector(".about-tab").classList.remove("selected-tab");
 			document.querySelector(".settings-tab").classList.remove("selected-tab");
 			document.querySelector("." + tab).style.display = "block";

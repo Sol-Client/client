@@ -18,6 +18,7 @@ void main() {
     float totalStrength = 0.0;
     float totalAlpha = 0.0;
     float totalSamples = 0.0;
+
     for(float r = -transformedRadius; r <= transformedRadius; r += 1.0) {
         vec4 sample = texture2D(DiffuseSampler, texCoord + oneTexel * r * BlurDir);
 
@@ -30,5 +31,6 @@ void main() {
         totalStrength = totalStrength + strength;
         blurred = blurred + sample;
     }
+
     gl_FragColor = vec4(blurred.rgb / (transformedRadius * 2.0 + 1.0), totalAlpha);
 }

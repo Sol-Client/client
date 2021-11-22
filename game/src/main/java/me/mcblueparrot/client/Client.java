@@ -108,6 +108,7 @@ public class Client {
         register(new NightVisionMod());
         register(new MotionBlurMod());
         register(new MenuBlurMod());
+        register(new ColourSaturationMod());
         register(new ChunkAnimationMod());
         register(new PerspectiveMod());
         register(new ToggleSprintMod());

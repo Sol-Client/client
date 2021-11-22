@@ -1,13 +1,7 @@
 package me.mcblueparrot.client.mod.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
-
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
-
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.PostProcessingEvent;
@@ -21,45 +15,51 @@ import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.client.shader.ShaderUniform;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.io.IOUtils;
 
-public class MotionBlurMod extends Mod {
+import java.io.IOException;
+import java.io.InputStream;
 
-    public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/motion_blur.json");
+public class ColourSaturationMod extends Mod {
+
+    public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/" +
+            "color_convolve.json");
     @Expose
-    @ConfigOption("Blur")
-    @Slider(min = 0, max = 0.99F, step = 0.01F)
-    private float blur = 0.5f;
+    @ConfigOption("Saturation")
+    @Slider(min = 0, max = 2F, step = 0.1F)
+    private float saturation = 1f;
     private ShaderGroup group;
-    private float groupBlur;
+    private float groupSaturation;
 
     public ShaderGroup getGroup() {
         return group;
     }
 
-    public MotionBlurMod() {
-        super("Motion Blur", "motion_blur", "Smooth motion blur effect.", ModCategory.VISUAL);
-        Client.INSTANCE.addResource(RESOURCE_LOCATION, new MotionBlurShader());
+    public ColourSaturationMod() {
+        super("Colour Saturation", "colour_saturation", "Change the saturation of ingame colours.",
+                ModCategory.VISUAL);
+        Client.INSTANCE.addResource(RESOURCE_LOCATION, new SaturationShader());
     }
 
     public void update() {
         if(group == null) {
-            groupBlur = blur;
+            groupSaturation = saturation;
             try {
                 group = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), RESOURCE_LOCATION);
                 group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
             }
             catch(JsonSyntaxException | IOException error) {
-                logger.error("Could not load motion blur", error);
+                logger.error("Could not load saturation shader", error);
             }
         }
-        if(groupBlur != blur) {
+        if(groupSaturation != saturation) {
             ((AccessShaderGroup) group).getListShaders().forEach((shader) -> {
-                ShaderUniform blendFactor = shader.getShaderManager().getShaderUniform("BlendFactor");
-                if(blendFactor != null) {
-                    blendFactor.set(blur);
+                ShaderUniform saturationUniform = shader.getShaderManager().getShaderUniform("Saturation");
+                if(saturationUniform != null) {
+                    saturationUniform.set(saturation);
                 }
             });
-            groupBlur = blur;
+            groupSaturation = saturation;
         }
     }
 
@@ -75,7 +75,7 @@ public class MotionBlurMod extends Mod {
         group = null;
     }
 
-    public class MotionBlurShader implements IResource {
+    public class SaturationShader implements IResource {
 
         @Override
         public ResourceLocation getResourceLocation() {
@@ -91,7 +91,7 @@ public class MotionBlurMod extends Mod {
                     "    ]," +
                     "    \"passes\": [" +
                     "        {" +
-                    "            \"name\": \"motion_blur\"," +
+                    "            \"name\": \"color_convolve\"," +
                     "            \"intarget\": \"minecraft:main\"," +
                     "            \"outtarget\": \"swap\"," +
                     "            \"auxtargets\": [" +
@@ -102,7 +102,7 @@ public class MotionBlurMod extends Mod {
                     "            ]," +
                     "            \"uniforms\": [" +
                     "                {" +
-                    "                    \"name\": \"BlendFactor\"," +
+                    "                    \"name\": \"Saturation\"," +
                     "                    \"values\": [ %s ]" +
                     "                }" +
                     "            ]" +
@@ -118,7 +118,7 @@ public class MotionBlurMod extends Mod {
                     "            \"outtarget\": \"minecraft:main\"" +
                     "        }" +
                     "    ]" +
-                    "}", blur, blur, blur));
+                    "}", saturation, saturation, saturation));
         }
 
         @Override

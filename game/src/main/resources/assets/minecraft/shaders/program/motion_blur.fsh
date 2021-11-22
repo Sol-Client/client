@@ -11,7 +11,7 @@ uniform vec2 InSize;
 uniform float BlendFactor = 0.7;
 
 void main() {
-	// Copied the three letters (mix), but that's all I needed to create motion blur.
+	// Copied three letters from a stackoverflow question (mix), but that's all I needed to create motion blur.
 	// https://stackoverflow.com/questions/37913286/glsl-motion-blur-post-processing-2-textures-going-to-the-shader-are-the-same
 
 	gl_FragColor = mix(texture2D(DiffuseSampler, texCoord), texture2D(PrevSampler, texCoord), BlendFactor);

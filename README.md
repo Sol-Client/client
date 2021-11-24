@@ -59,13 +59,24 @@ Here are the main features that are currently in the client:
 - 1.7 animations.
 - Item physics.
 - Hypixel Additions.
-- Better item tooltips (show item damage ).
-- Symbol picker.
 - OptiFine, downloaded automatically from the official site.
 
-Selling points (features not in Lunar Client):
+Selling points (features not in Lunar Client, that are in this one):
 - Replay Mod. You will need to install FFmpeg yourself.
 - Quick Play Mod. Allows you to quickly join games at the press of a button (by default, "M"). The key opens a menu where you can search for games, navigating through them using the arrow keys. If you type nothing, you can see recent games and a categorised list of all games.
+- Customisable launcher servers - automatically detected from the game, with no pinned servers.
+- Better item tooltips - show item damage and more.
+- Symbol picker (happy ☺, sad ☹, and best of all: ☃ the snowman).
+- Chat channel display.
+- Pop-up events (pop-up friend request, etc.).
+- Customisable font and colour scheme.
+- Turning off the inventory logo.
+- Crosshair mod that doesn't look out of place (pixelated).
+- Speedometer.
+- Chunk animater (not sure if many people use this one).
+- Less useless mods (apart from the previous one).
+- Bedwars timers.
+There are probably more, but this list is long enough.
 
 Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.
 

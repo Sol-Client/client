@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.mixin.mod;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.spongepowered.asm.mixin.Final;
@@ -30,7 +31,6 @@ public class MixinBetterItemTooltipsMod {
                 mc.mcProfiler.startSection("selectedItemName");
 
                 if(remainingHighlightTicks > 0 && highlightingItemStack != null) {
-
                     List<String> lines = highlightingItemStack.getTooltip(mc.thePlayer, false);
 
                     int y = scaledRes.getScaledHeight() - 59;
@@ -43,7 +43,7 @@ public class MixinBetterItemTooltipsMod {
                         y += 14;
                     }
 
-                    int opacity = (int)((float) this.remainingHighlightTicks * 256.0F / 10.0F);
+                    int opacity = (int)(this.remainingHighlightTicks * 256.0F / 10.0F);
                     opacity = Math.min(opacity, 255);
 
                     if(opacity > 0) {
@@ -52,7 +52,7 @@ public class MixinBetterItemTooltipsMod {
                         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
                         for(String line : lines) {
                             int x = (scaledRes.getScaledWidth() - getFontRenderer().getStringWidth(line)) / 2;
-                            getFontRenderer().drawStringWithShadow(line, (float) x, (float) y,
+                            getFontRenderer().drawStringWithShadow(line, x, y,
                                     16777215 + (opacity << 24));
                             y += height;
                         }

@@ -45,6 +45,7 @@ minecraft {
 	tweakClass = launchWrapperTweakClass
 	mappings = "stable_22"
 	runDir = "run"
+	clientJvmArgs = ["-Xmx1G"]
 
 	makeObfSourceJar = false
 }

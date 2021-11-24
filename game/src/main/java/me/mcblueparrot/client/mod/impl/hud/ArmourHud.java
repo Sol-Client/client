@@ -50,6 +50,7 @@ public class ArmourHud extends Hud {
     @Override
     public void render(Position position, boolean editMode) {
         RenderHelper.enableGUIStandardItemLighting();
+
         if(mc.thePlayer != null && !editMode) {
             EntityPlayerSP player = mc.thePlayer;
             if(armour) {
@@ -70,8 +71,10 @@ public class ArmourHud extends Hud {
                 renderStack(LEGGINGS, position.getX(), position.getY() + 30);
                 renderStack(BOOTS, position.getX(), position.getY() + 45);
             }
+
             if(hand) renderStack(HAND, position.getX(), position.getY() + (armour ? 60 : 0));
         }
+
         RenderHelper.disableStandardItemLighting();
     }
 
@@ -87,7 +90,7 @@ public class ArmourHud extends Hud {
                     text = Integer.toString(stack.getMaxDamage() - stack.getItemDamage());
                     break;
                 case PERCENTAGE:
-                    text = ((int) (((double) stack.getMaxDamage() - stack.getItemDamage()) / ((double) stack.getMaxDamage()) * 100)) + "%";
+                    text = ((int) (((double) stack.getMaxDamage() - stack.getItemDamage()) / (stack.getMaxDamage()) * 100)) + "%";
                     break;
                 default:
                     text = "Invalid mode";

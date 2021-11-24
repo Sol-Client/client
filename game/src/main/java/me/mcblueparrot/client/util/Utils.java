@@ -1,22 +1,26 @@
 package me.mcblueparrot.client.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 
-import com.replaymod.replay.ReplayModReplay;
-import com.replaymod.replay.camera.CameraEntity;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.replaymod.replay.ReplayModReplay;
+import com.replaymod.replay.camera.CameraEntity;
 
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -127,7 +131,7 @@ public class Utils {
     }
 
     public int blendInt(int start, int end, float percent) {
-        return Math.round(start + (((float) (end - start)) * percent));
+        return Math.round(start + ((end - start) * percent));
     }
 
     public void scissor(Rectangle rectangle) {
@@ -140,13 +144,9 @@ public class Utils {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
     }
 
-    public URL checkedParse(String url) {
-        try {
-            return new URL(url);
-        }
-        catch(MalformedURLException error) {
-            throw new IllegalStateException(error);
-        }
+    @SneakyThrows
+    public URL sneakyParse(String url) {
+        return new URL(url);
     }
 
     /*
@@ -210,24 +210,24 @@ public class Utils {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(x, y + height, zLevel).tex(((float) (textureX) * xMultiplier),
-                (double)((float)(textureY + height) * yMultiplier)).endVertex();
-        worldrenderer.pos(x + width, (double)(y + height), (double) zLevel).tex((double)((float)(textureX + width) * xMultiplier), (double)((float)(textureY + height) * yMultiplier)).endVertex();
-        worldrenderer.pos(x + width, (double)(y + 0), (double) zLevel).tex((double)((float)(textureX + width) * xMultiplier), (double)((float)(textureY + 0) * yMultiplier)).endVertex();
-        worldrenderer.pos(x, y, zLevel).tex(((float) (textureX) * xMultiplier),
-                ((float) (textureY + 0) * yMultiplier)).endVertex();
+        worldrenderer.pos(x, y + height, zLevel).tex(((textureX) * xMultiplier),
+                (textureY + height) * yMultiplier).endVertex();
+        worldrenderer.pos(x + width, y + height, zLevel).tex((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).endVertex();
+        worldrenderer.pos(x + width, y + 0, zLevel).tex((textureX + width) * xMultiplier, (textureY + 0) * yMultiplier).endVertex();
+        worldrenderer.pos(x, y, zLevel).tex(((textureX) * xMultiplier),
+                ((textureY + 0) * yMultiplier)).endVertex();
         tessellator.draw();
     }
 
     public static void drawGradientRect(int left, int top, int right, int bottom, int startColour, int endColour) {
-        float alpha1 = (float)(startColour >> 24 & 255) / 255.0F;
-        float red1 = (float)(startColour >> 16 & 255) / 255.0F;
-        float green1 = (float)(startColour >> 8 & 255) / 255.0F;
-        float blue1 = (float)(startColour & 255) / 255.0F;
-        float alpha2 = (float)(endColour >> 24 & 255) / 255.0F;
-        float red2 = (float)(endColour >> 16 & 255) / 255.0F;
-        float green2 = (float)(endColour >> 8 & 255) / 255.0F;
-        float blue2 = (float)(endColour & 255) / 255.0F;
+        float alpha1 = (startColour >> 24 & 255) / 255.0F;
+        float red1 = (startColour >> 16 & 255) / 255.0F;
+        float green1 = (startColour >> 8 & 255) / 255.0F;
+        float blue1 = (startColour & 255) / 255.0F;
+        float alpha2 = (endColour >> 24 & 255) / 255.0F;
+        float red2 = (endColour >> 16 & 255) / 255.0F;
+        float green2 = (endColour >> 8 & 255) / 255.0F;
+        float blue2 = (endColour & 255) / 255.0F;
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
@@ -236,10 +236,10 @@ public class Utils {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        worldrenderer.pos((double)right, (double)top, 0).color(red1, green1, blue1, alpha1).endVertex();
-        worldrenderer.pos((double)left, (double)top, 0).color(red1, green1, blue1, alpha1).endVertex();
-        worldrenderer.pos((double)left, (double)bottom, 0).color(red2, green2, blue2, alpha2).endVertex();
-        worldrenderer.pos((double)right, (double)bottom, 0).color(red2, green2, blue2, alpha2).endVertex();
+        worldrenderer.pos(right, top, 0).color(red1, green1, blue1, alpha1).endVertex();
+        worldrenderer.pos(left, top, 0).color(red1, green1, blue1, alpha1).endVertex();
+        worldrenderer.pos(left, bottom, 0).color(red2, green2, blue2, alpha2).endVertex();
+        worldrenderer.pos(right, bottom, 0).color(red2, green2, blue2, alpha2).endVertex();
         tessellator.draw();
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
@@ -261,4 +261,22 @@ public class Utils {
 
         return "4x";
     }
+
+    public static String urlToString(URL url) throws IOException {
+        URLConnection connection = url.openConnection();
+        connection.addRequestProperty("User-Agent", System.getProperty("http.agent")); // Force consistent behaviour
+
+        InputStream in = connection.getInputStream();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        StringBuilder result = new StringBuilder();
+
+        String line;
+        while((line = reader.readLine()) != null) {
+            result.append(line).append("\n");
+        }
+
+        return result.toString();
+    }
+
 }

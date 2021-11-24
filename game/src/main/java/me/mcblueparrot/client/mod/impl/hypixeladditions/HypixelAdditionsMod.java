@@ -1,10 +1,8 @@
 /**
- * Some of these options are based on the ideas of Sk1er LLC's mods.
+ * Many of these options are based on the ideas of Sk1er LLC's mods.
  */
 
-// TODO packages instead of inner classes
-
-package me.mcblueparrot.client.mod.impl;
+package me.mcblueparrot.client.mod.impl.hypixeladditions;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -22,8 +20,6 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.ChatChannelSystem;
-import me.mcblueparrot.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.DetectedServer;
 import me.mcblueparrot.client.ServerConnectEvent;
@@ -31,6 +27,9 @@ import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
+import me.mcblueparrot.client.mod.impl.hypixeladditions.commands.ChatChannelCommand;
+import me.mcblueparrot.client.mod.impl.hypixeladditions.commands.VisitHousingCommand;
+import me.mcblueparrot.client.mod.impl.hypixeladditions.request.Request;
 import me.mcblueparrot.client.util.ApacheHttpClient;
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Rectangle;
@@ -39,10 +38,6 @@ import net.hypixel.api.HypixelAPI;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.item.ItemStack;
@@ -185,7 +180,7 @@ public class HypixelAdditionsMod extends Mod {
     private void updateState() {
         if(Client.INSTANCE.getCommand("visithousing") == null) {
             if(isEffective()) {
-                Client.INSTANCE.registerCommand("visithousing", new VisitHousingCommand());
+                Client.INSTANCE.registerCommand("visithousing", new VisitHousingCommand(this));
             }
         }
         else {
@@ -199,7 +194,7 @@ public class HypixelAdditionsMod extends Mod {
                 if(mc.thePlayer != null) {
                     mc.thePlayer.sendChatMessage("/chat a");
                 }
-                Client.INSTANCE.registerCommand("chat", new ChatCommand());
+                Client.INSTANCE.registerCommand("chat", new ChatChannelCommand(this));
             }
         }
         else {
@@ -410,171 +405,6 @@ public class HypixelAdditionsMod extends Mod {
                 event.volume *= housingMusicVolume / 100F;
             }
         }
-    }
-
-    public static class Request {
-
-        public String message;
-        public String command;
-        public long time;
-
-        public static Request fromMessage(String message) {
-            for(RequestType type : RequestType.values()) {
-                Matcher matcher = type.pattern.matcher(message);
-                if(matcher.matches()) {
-                    Object[] groups = new String[matcher.groupCount()];
-
-                    for(int i = 1; i <= matcher.groupCount(); i++) {
-                        groups[i - 1] = matcher.group(i);
-                    }
-
-                    Request request = new Request();
-                    request.message = String.format(type.message, groups);
-                    request.command = String.format(type.command, groups);
-                    return request;
-                }
-            }
-            return null;
-        }
-    }
-
-    public enum RequestType {
-        // Taken from https://github.com/Sk1erLLC/PopupEvents/blob/master/src/main/resources/remoteresources/chat_regex.json
-        FRIEND("Friend request from ((\\[.+] )?(\\S{1,16})).*",
-                "Friend request from %3$s.",
-                "/friend accept %3$s"),
-        PARTY("(?:\\[.*] )?(\\S{1,16}) has invited you to join (?:their|(?:\\[.*] ?)?\\w{1,16}'s)? party!",
-                "Party invite from %s.",
-                "/party accept %s"),
-        DUEL("(\\[.*] )?(\\S{1,16}) has invited you to (\\S+) Duels!",
-                "%3$s duel request from %2$s.",
-                "/duel accept %s"),
-        GUILD("Click here to accept or type (\\/guild accept (\\w+))!",
-                "Guild request from %2$s.",
-                "%s"),
-        GUILD_PARTY("(\\?[.*] )?(\\S{1,16}) has invited all members of (\\S+) to their party!",
-                "Guild party invite from %2$s for %3$s.",
-                "/party accept %2$s");
-
-        private Pattern pattern;
-        private String message;
-        private String command;
-
-        RequestType(String regex, String message, String command) {
-            pattern = Pattern.compile(regex);
-            this.message = message;
-            this.command = command;
-        }
-
-    }
-
-    public class VisitHousingCommand extends CommandBase {
-
-        @Override
-        public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-            if(args.length == 1) {
-                if(isHousing()) {
-                    mc.thePlayer.sendChatMessage("/visit " + args[0]);
-                }
-                else {
-                    mc.thePlayer.sendChatMessage("/lobby housing");
-                    new Thread(() -> {
-                        try {
-                            Thread.sleep(300);
-                        }
-                        catch(InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        mc.thePlayer.sendChatMessage("/visit " + args[0]);
-                    }).start();
-                }
-                return;
-            }
-            throw new WrongUsageException("Usage: " + getCommandUsage(sender), new Object[0]);
-        }
-
-        @Override
-        public String getCommandUsage(ICommandSender sender) {
-            return "/visithousing <player>";
-        }
-
-        @Override
-        public List<String> getCommandAliases() {
-            return Arrays.asList("housing");
-        }
-
-        @Override
-        public String getCommandName() {
-            return null;
-        }
-
-    }
-
-    public static class ChatCommand extends CommandBase {
-
-        @Override
-        public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-            ChatChannelSystem system = Client.INSTANCE.getChatChannelSystem();
-            if(args.length == 1) {
-                if(args[0].equals("c") || args[0].equals("coop") || args[0].equals("co-op") || args[0].equals("skyblock_coop") || args[0].equals("skyblock_co-op")) {
-                    system.setChannel(HypixelChatChannels.COOP);
-                }
-                else if(args[0].equals("a") || args[0].equals("all")) {
-                    system.setChannel(ChatChannelSystem.ALL);
-                }
-                else if(args[0].equals("p") || args[0].equals("party")) {
-                    system.setChannel(HypixelChatChannels.PARTY);
-                }
-                else if(args[0].equals("o") || args[0].equals("officer") || args[0].equals("officers") || args[0].equals("guild_officer") || args[0].equals("guild_officers")) {
-                    system.setChannel(HypixelChatChannels.OFFICER);
-                }
-                else if(args[0].equals("g") || args[0].equals("guild")) {
-                    system.setChannel(HypixelChatChannels.GUILD);
-                }
-                else {
-                    throw new WrongUsageException(getCommandUsage(sender));
-                }
-            }
-            else if(args.length == 2 && (args[0].equals("2") || args[0].equals("t") || args[0].equals("to"))) {
-                system.setChannel(ChatChannelSystem.getPrivateChannel(args[1]));
-            }
-            else {
-                throw new WrongUsageException("Usage: " + getCommandUsage(sender));
-            }
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Chat Channel: " + system.getChannelName()));
-        }
-
-        @Override
-        public String getCommandUsage(ICommandSender sender) {
-            return "/chat (all|party|guild|officer|coop)";
-        }
-
-        @Override
-        public List<String> getCommandAliases() {
-            return Arrays.asList("channel");
-        }
-
-        @Override
-        public String getCommandName() {
-            return null;
-        }
-
-    }
-
-    public static class HypixelChatChannels extends ChatChannelSystem {
-
-        public static final ChatChannel PARTY = new DefaultChatChannel("Party", "pchat");
-        public static final ChatChannel GUILD = new DefaultChatChannel("Guild", "gchat");
-        public static final ChatChannel OFFICER = new DefaultChatChannel("Guild Officer", "ochat");
-        public static final ChatChannel COOP = new DefaultChatChannel("Skyblock Co-op", "coopchat");
-
-        private static final List<ChatChannel> CHANNELS = Arrays.asList(ALL, PARTY, GUILD, OFFICER, COOP);
-
-        @Override
-        public List<ChatChannel> getChannels() {
-            return CHANNELS;
-        }
-
     }
 
 }

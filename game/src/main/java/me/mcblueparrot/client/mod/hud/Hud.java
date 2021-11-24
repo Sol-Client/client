@@ -103,6 +103,6 @@ public abstract class Hud extends Mod {
         Rectangle bounds = getMultipliedBounds();
         return bounds != null && bounds.contains(mouseX, mouseY);
     }
-
+    
 }
 

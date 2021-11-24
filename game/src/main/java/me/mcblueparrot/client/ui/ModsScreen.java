@@ -104,7 +104,7 @@ public class ModsScreen extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
-        if(keyCode == Client.INSTANCE.keyMods.getKeyCode() && previous == null) {
+        if(keyCode == Client.INSTANCE.modsKey.getKeyCode() && previous == null) {
             mc.displayGuiScreen(null);
         }
     }
@@ -135,6 +135,7 @@ public class ModsScreen extends GuiScreen {
 
         Mod newSelected = selectedMod;
         ConfigOption.Cached newSelectedColour = selectedColour;
+
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         Rectangle region = new Rectangle(0, 30, width, height - 60);
         Utils.scissor(region);
@@ -191,7 +192,7 @@ public class ModsScreen extends GuiScreen {
                         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
                         GL11.glColor3ub((byte) 200, (byte) 200, (byte) 200);
                         mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_" +
-                                "settings_" + Utils.getTextureScale() +".png"));
+                                "settings_" + Utils.getTextureScale() + ".png"));
                         boolean hasSettings = mod.getOptions().size() > 1 && !mod.isBlocked();
                         Rectangle modSettingsBounds = new Rectangle(rectangle.getX() + rectangle.getWidth() - 20,
                                 rectangle.getY() + 7,
@@ -240,7 +241,6 @@ public class ModsScreen extends GuiScreen {
             y += 31;
         }
         else {
-            int x = 10;
             Rectangle colourSelectBox = null;
             for(ConfigOption.Cached option : selectedMod.getOptions()) {
                 if(selectedMod instanceof ConfigOnlyMod && option.field.getName().equals("enabled")) {

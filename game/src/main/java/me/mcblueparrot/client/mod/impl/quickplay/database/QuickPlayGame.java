@@ -148,12 +148,21 @@ public class QuickPlayGame implements QuickPlayOption {
 
     @Override
     public String getText() {
+        if(modes.size() == 1) {
+            return name;
+        }
+
         return name + " >";
     }
 
     @Override
     public void onClick(QuickPlayPalette palette, QuickPlayMod mod) {
-        palette.selectGame(this);
+        if(modes.size() == 1) {
+            modes.values().stream().findFirst().get().onClick(palette, mod);
+        }
+        else {
+            palette.selectGame(this);
+        }
     }
 
     @Override

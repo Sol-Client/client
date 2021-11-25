@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -120,42 +121,42 @@ public class Client {
 
         LOGGER.info("Loading mods...");
 
-        register(new SolClientMod());
-        register(new FpsHud());
-        register(new PositionHud());
-        register(new KeystrokeHud());
-        register(new CpsHud());
-        register(new PingHud());
-        register(new SpeedHud());
-        register(new ReachDisplayHud());
-        register(new ComboCounterHud());
-        register(new StatusEffectsHud());
-        register(new ArmourHud());
-        register(new TimerHud());
-        register(new ChatHud());
-        register(new CrosshairHud());
-        register(new ScoreboardMod());
-        register(new NightVisionMod());
-        register(new MotionBlurMod());
-        register(new MenuBlurMod());
-        register(new ColourSaturationMod());
-        register(new ChunkAnimationMod());
-        register(new PerspectiveMod());
-        register(new ToggleSprintMod());
-        register(new Old1_7AnimationsMod());
-        register(new ItemPhysicsMod());
-        register(new ZoomMod());
-        register(new ParticlesMod());
-        register(new TimeChangerMod());
-        register(new HypixelAdditionsMod());
-        register(new ArabicNumeralsMod());
-        register(new NumeralPingMod());
-        register(new ShowOwnTagMod());
-        register(new BetterItemTooltipsMod());
-        register(new BlockSelectionMod());
-        register(new HitColourMod());
-        register(new SCReplayMod());
-        register(new QuickPlayMod());
+        register(SolClientMod::new);
+        register(FpsHud::new);
+        register(PositionHud::new);
+        register(KeystrokeHud::new);
+        register(CpsHud::new);
+        register(PingHud::new);
+        register(SpeedHud::new);
+        register(ReachDisplayHud::new);
+        register(ComboCounterHud::new);
+        register(StatusEffectsHud::new);
+        register(ArmourHud::new);
+        register(TimerHud::new);
+        register(ChatHud::new);
+        register(CrosshairHud::new);
+        register(ScoreboardMod::new);
+        register(NightVisionMod::new);
+        register(MotionBlurMod::new);
+        register(MenuBlurMod::new);
+        register(ColourSaturationMod::new);
+        register(ChunkAnimationMod::new);
+        register(PerspectiveMod::new);
+        register(ToggleSprintMod::new);
+        register(Old1_7AnimationsMod::new);
+        register(ItemPhysicsMod::new);
+        register(ZoomMod::new);
+        register(ParticlesMod::new);
+        register(TimeChangerMod::new);
+        register(HypixelAdditionsMod::new);
+        register(ArabicNumeralsMod::new);
+        register(NumeralPingMod::new);
+        register(ShowOwnTagMod::new);
+        register(BetterItemTooltipsMod::new);
+        register(BlockSelectionMod::new);
+        register(HitColourMod::new);
+        register(SCReplayMod::new);
+        register(QuickPlayMod::new);
 
         registerKeyBinding(modsKey);
 
@@ -257,8 +258,10 @@ public class Client {
         }
     }
 
-    private void register(Mod mod) {
+    private void register(Supplier<Mod> modInitialiser) {
         try {
+            Mod mod = modInitialiser.get();
+
             if(data.has(mod.getId())) {
                 mods.add(getGson(mod).fromJson(data.get(mod.getId()), mod.getClass()));
             }
@@ -269,7 +272,7 @@ public class Client {
             mod.onRegister();
         }
         catch(Throwable error) {
-            LOGGER.error("Could not register mod " + mod.getName(), error);
+            LOGGER.error("Could not register mod", error);
         }
     }
 

@@ -36,6 +36,9 @@ public class QuickPlayGameMode implements QuickPlayOption {
 
     @Override
     public String getText() {
+        if(parent.getModes().size() == 1) {
+            return parent.getName();
+        }
         return parent.getName() + " - " + name;
     }
 

@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,15 @@ public class QuickPlayPalette extends GuiScreen {
     private int selectedIndex;
     private boolean inAllGames;
     private QuickPlayGame currentGame;
+    private int maxScrolling;
     private int scroll;
+    private boolean mouseDown;
+    private boolean wasMouseDown;
+    private int lastMouseX = -1;
+    private int lastMouseY = -1;
+    private int recentGamesScroll;
+    private int allGamesScroll;
+    private int nextScroll = -1;
 
     @Override
     public void initGui() {
@@ -75,7 +84,7 @@ public class QuickPlayPalette extends GuiScreen {
 
         int y = 0;
 
-        y -= scroll;
+        scroll = MathHelper.clamp_int(scroll, 0, maxScrolling);
 
         List<QuickPlayOption> options = getGames();
 
@@ -90,17 +99,23 @@ public class QuickPlayPalette extends GuiScreen {
         for(int i = 0; i < options.size(); i++) {
             QuickPlayOption game = options.get(i);
 
-            Rectangle gameBounds = base.offset(0, y);
+            Rectangle gameBounds = base.offset(0, y - scroll);
+
+            boolean containsMouse = gameBounds.contains(mouseX, mouseY)
+                    && entriesBox.contains(mouseX, mouseY);
 
             if(selectedIndex == i) {
                 gameBounds.fill(new Colour(60, 60, 60));
 
-                if(gameBounds.getY() < base.getY()) {
-                    scroll -= gameBounds.getHeight();
+                if(containsMouse && mouseDown && !wasMouseDown) {
+                    game.onClick(this, mod);
                 }
-                else if(gameBounds.getY() + gameBounds.getHeight() > entriesBox.getEndY()) {
-                    scroll += gameBounds.getHeight();
-                }
+            }
+
+            if((lastMouseX != mouseX || lastMouseY != mouseY) && lastMouseX != -1
+                    && lastMouseY != -1 &&
+                    containsMouse) {
+                selectedIndex = i;
             }
 
             if(game.getIcon() != null) {
@@ -115,7 +130,20 @@ public class QuickPlayPalette extends GuiScreen {
             y += gameBounds.getHeight();
         }
 
+
+        maxScrolling = Math.max(0, y - entriesBox.getHeight());
+
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
+
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
+
+        wasMouseDown = mouseDown;
+
+        if(nextScroll != -1) {
+            scroll = nextScroll;
+            nextScroll = -1;
+        }
     }
 
     private List<QuickPlayOption> getGames() {
@@ -162,15 +190,22 @@ public class QuickPlayPalette extends GuiScreen {
             inAllGames = false;
         }
         else if(typedChar == 8 && !query.isEmpty()) {
-            query = query.substring(0, query.length() - 1);
+            if(GuiScreen.isCtrlKeyDown()) {
+                query = "";
+            }
+            else {
+                query = query.substring(0, query.length() - 1);
+            }
         }
 
         if(keyCode == Keyboard.KEY_DOWN) {
             selectedIndex++;
+            scroll += 20;
             clampIndex();
         }
         else if(keyCode == Keyboard.KEY_UP) {
             selectedIndex--;
+            scroll -= 20;
             clampIndex();
         }
         else if(keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_RIGHT) {
@@ -181,7 +216,46 @@ public class QuickPlayPalette extends GuiScreen {
         }
     }
 
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+
+        if(mouseButton == 0) {
+            mouseDown = true;
+            lastMouseX = lastMouseY = 0;
+        }
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        super.mouseReleased(mouseX, mouseY, state);
+
+        if(state == 0) {
+            mouseDown = false;
+        }
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+
+        int dWheel = Mouse.getEventDWheel();
+
+        if(dWheel != 0) {
+            if(dWheel > 0) {
+                dWheel = -1;
+            }
+            else if(dWheel < 0) {
+                dWheel = 1;
+            }
+
+            scroll += 20 * dWheel;
+            lastMouseX = lastMouseY = 0;
+        }
+    }
+
     public void openAllGames() {
+        recentGamesScroll = scroll;
         inAllGames = true;
         currentGame = null;
         scroll = 0;
@@ -192,14 +266,23 @@ public class QuickPlayPalette extends GuiScreen {
         if(currentGame != null) {
             selectedIndex = mod.getGames().indexOf(currentGame) + 1;
             currentGame = null;
+
+            nextScroll = allGamesScroll;
         }
         else if(inAllGames) {
             selectedIndex = mod.getRecentlyPlayed().size();
             inAllGames = false;
+
+            nextScroll = recentGamesScroll;
+        }
+        else {
+            mc.displayGuiScreen(null);
+            return;
         }
     }
 
     public void selectGame(QuickPlayGame game) {
+        allGamesScroll = scroll;
         selectedIndex = 1;
         scroll = 0;
         currentGame = game;

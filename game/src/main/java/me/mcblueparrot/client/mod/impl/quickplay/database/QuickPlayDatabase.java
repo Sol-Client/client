@@ -40,46 +40,6 @@ public class QuickPlayDatabase {
         catch(IOException | JsonSyntaxException error) {
             throw new IllegalStateException(error);
         }
-//        addGames(GameType.ARCADE,
-//                "Blocking Dead",                "arcade_day_one",
-//                "Bounty Hunters",               "arcade_bounty_hunters",
-//                "Capture the Wool",             "arcade_pvp_ctw",
-//                "Creeper Attack",               "arcade_creeper_defense",
-//                "Dragon Wars",                  "arcade_dragon_wars",
-//                "Ender Spleef",                 "arcade_ender_spleef",
-//                "Farm Hunt",                    "arcade_farm_hunt",
-//                "Football",                     "arcade_soccer",
-//                "Galaxy Wars",                  "arcade_starwars",
-//                "Hide and Seek - Party Pooper", "arcade_hide_and_seek_party_pooper",
-//                "Hide and Seek - Prop Hunt",    "arcade_hide_and_seek_prop_hunt",
-//                "Hole in the Wall",             "arcade_hole_in_the_wall",
-//                "Hypixel Says",                 "arcade_simon_says",
-//                "Mini Walls",                   "arcade_mini_walls",
-//                "Party Games",                  "arcade_party_games_1",
-//                "Pixel Painters",               "arcade_pixel_painters",
-//                "Throw Out",                    "arcade_throw_out",
-//                "Zombies: Dead End",            "arcade_zombies_dead_end",
-//                "Zombies: Bad Blood",           "arcade_zombies_bad_blood",
-//                "Zombies: Alien Arcadium",      "arcade_zombies_alien_arcadium",
-//                "Halloween Simulator"
-//        );
     }
-//
-//    private void addGames(GameType type, String... commands) {
-//        List<Game> finalGames = new ArrayList<>();
-//
-//        String name = null;
-//        for(int i = 0; i < commands.length; i++) {
-//            String str = commands[i];
-//            if(i % 2 != 0) {
-//                name = str;
-//            }
-//            else {
-//                finalGames.add(new Game(name, str));
-//            }
-//        }
-//
-//        games.put(type, finalGames);
-//    }
 
 }

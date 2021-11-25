@@ -141,7 +141,7 @@ class Launcher {
 				var java;
 
 				await new Promise((resolve) => {
-					axios.get("https://api.adoptopenjdk.net/v3/assets/feature_releases/8/ga" +
+					axios.get("https://api.adoptium.net/v3/assets/feature_releases/8/ga" +
 							"?release_type=ga" +
 							`&architecture=${os.arch()}` +
 							"&heap_size=normal" +
@@ -153,7 +153,7 @@ class Launcher {
 							"&project=jdk" +
 							"&sort_method=DATE" +
 							"&sort_order=DESC" +
-							"&vendor=adoptopenjdk")
+							"&vendor=eclipse")
 						.then(async(response) => {
 							var jrePackage = response.data[0].binaries[0].package;
 							var name = jrePackage.name;

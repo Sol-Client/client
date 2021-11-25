@@ -1,22 +1,15 @@
 package me.mcblueparrot.client.mixin.client;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ConcurrentModificationException;
-import java.util.List;
 
-import com.replaymod.core.ReplayMod;
 import com.replaymod.core.versions.MCVer;
 import com.replaymod.replay.InputReplayTimer;
-import com.replaymod.replay.ReplayModReplay;
-import com.replaymod.replay.camera.CameraEntity;
 import me.mcblueparrot.client.events.*;
 import me.mcblueparrot.client.util.Utils;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerList;
-import net.minecraft.entity.Entity;
-import org.apache.commons.lang3.ArrayUtils;
+import net.minecraft.client.renderer.EntityRenderer;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -33,7 +26,6 @@ import me.mcblueparrot.client.SplashScreen;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.achievement.GuiAchievement;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EffectRenderer;
@@ -44,10 +36,10 @@ import net.minecraft.util.Timer;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.security.auth.callback.Callback;
-
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements AccessMinecraft, MCVer.MinecraftMethodAccessor {
+
+    @Shadow public EntityRenderer entityRenderer;
 
     @Shadow public abstract void displayGuiScreen(GuiScreen guiScreenIn);
 
@@ -195,6 +187,8 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
     @Shadow
     private TextureManager renderEngine;
 
+    private boolean loading = true;
+
     // region Splash Screen Rendering
 
     @Inject(method = "startGame", at = @At(value = "INVOKE",
@@ -310,6 +304,16 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
         SplashScreen.INSTANCE.draw();
     }
 
+    @Redirect(method = "updateFramebufferSize", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;" +
+            "entityRenderer:Lnet/minecraft/client/renderer/EntityRenderer;"))
+    public EntityRenderer hideEntityRenderer(Minecraft instance) {
+        if(loading) {
+            return null;
+        }
+
+        return instance.entityRenderer;
+    }
+
     // endregion
 
     // region Better F3
@@ -415,6 +419,8 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
     @Redirect(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;" +
             "displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V", ordinal = 1))
     public void display(Minecraft instance, GuiScreen screen) {
+        loading = false;
+
         if(serverName != null && serverName.startsWith("§sc§")) {
             ServerList list = new ServerList((Minecraft) (Object) this);
             instance.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(screen), (Minecraft) (Object) this,

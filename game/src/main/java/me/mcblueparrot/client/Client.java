@@ -1,49 +1,16 @@
 package me.mcblueparrot.client;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.gson.*;
+import com.logisticscraft.occlusionculling.DataProvider;
+import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 import lombok.Getter;
 import me.mcblueparrot.client.events.*;
 import me.mcblueparrot.client.mod.Mod;
-import me.mcblueparrot.client.mod.impl.*;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.InstanceCreator;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.logisticscraft.occlusionculling.DataProvider;
-import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
-
 import me.mcblueparrot.client.mod.hud.Hud;
-import me.mcblueparrot.client.mod.impl.hud.ArmourHud;
-import me.mcblueparrot.client.mod.impl.hud.ChatHud;
-import me.mcblueparrot.client.mod.impl.hud.ComboCounterHud;
-import me.mcblueparrot.client.mod.impl.hud.CpsHud;
-import me.mcblueparrot.client.mod.impl.hud.CrosshairHud;
-import me.mcblueparrot.client.mod.impl.hud.FpsHud;
-import me.mcblueparrot.client.mod.impl.hud.KeystrokeHud;
-import me.mcblueparrot.client.mod.impl.hud.PingHud;
-import me.mcblueparrot.client.mod.impl.hud.PositionHud;
-import me.mcblueparrot.client.mod.impl.hud.ReachDisplayHud;
-import me.mcblueparrot.client.mod.impl.hud.SpeedHud;
-import me.mcblueparrot.client.mod.impl.hud.StatusEffectsHud;
-import me.mcblueparrot.client.mod.impl.hud.TimerHud;
-import me.mcblueparrot.client.mod.impl.hud.ToggleSprintMod;
+import me.mcblueparrot.client.mod.impl.*;
+import me.mcblueparrot.client.mod.impl.hud.*;
+import me.mcblueparrot.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
+import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.ui.ChatButton;
 import me.mcblueparrot.client.ui.ModsScreen;
 import net.minecraft.client.Minecraft;
@@ -58,6 +25,15 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Keyboard;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Main class for Sol Client.
@@ -71,7 +47,7 @@ public class Client {
     private List<Mod> mods = new ArrayList<Mod>();
     @Getter
     private List<Hud> huds = new ArrayList<Hud>();
-    private final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
     private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json");
     public DetectedServer detectedServer;
     public EventBus bus = new EventBus();
@@ -79,17 +55,23 @@ public class Client {
     private Map<String, CommandBase> commands = new HashMap<>();
     private List<ChatButton> chatButtons = new ArrayList<>();
     private ChatChannelSystem chatChannelSystem;
-    public KeyBinding keyMods = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
+    public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
     public static final String VERSION = System.getProperty("me.mcblueparrot.client.version", "DEVELOPMENT TEST");
     public static final String NAME = "Sol Client " + VERSION;
 
     public void init() {
+        System.setProperty("http.agent", "Sol Client/" + VERSION);
+
         LOGGER.info("Initialising...");
         bus.register(this);
+
         CpsMonitor.forceInit();
+
         LOGGER.info("Loading settings...");
         load();
+
         LOGGER.info("Loading mods...");
+
         register(new SolClientMod());
         register(new FpsHud());
         register(new PositionHud());
@@ -125,7 +107,9 @@ public class Client {
         register(new BlockSelectionMod());
         register(new HitColourMod());
         register(new SCReplayMod());
-        registerKeyBinding(keyMods);
+        register(new QuickPlayMod());
+
+        registerKeyBinding(modsKey);
 
         try {
             unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
@@ -134,10 +118,13 @@ public class Client {
             // OptiFine is not enabled.
         }
 
-        organiseHuds();
+        cacheHudList();
+
         LOGGER.info("Loaded " + mods.size() + " mods");
+
         LOGGER.info("Saving settings...");
         save();
+
         LOGGER.info("Starting culling thread...");
         Thread cullThread = new Thread(new CullTask(new OcclusionCullingInstance(128, new DataProvider() {
 
@@ -150,7 +137,7 @@ public class Client {
 
             @Override
             public boolean isOpaqueFullCube(int x, int y, int z) {
-                return world.isBlockNormalCube((new BlockPos(x, y, z)), false);
+                return world.isBlockNormalCube(new BlockPos(x, y, z), false);
             }
 
         })), "Culling Thread");
@@ -172,19 +159,12 @@ public class Client {
     private Gson getGson(Mod mod) {
         GsonBuilder builder = new GsonBuilder();
         if(mod != null) {
-            builder.registerTypeAdapter(mod.getClass(), new InstanceCreator<Mod>() {
-
-                @Override
-                public Mod createInstance(Type type) {
-                    return mod;
-                }
-
-            });
+            builder.registerTypeAdapter(mod.getClass(), (InstanceCreator<Mod>) (type) -> mod);
         }
         return builder.excludeFieldsWithoutExposeAnnotation().create();
     }
 
-    private void organiseHuds() {
+    private void cacheHudList() {
         huds.clear();
         for(Mod mod : mods) {
             if(mod instanceof Hud) {
@@ -230,14 +210,19 @@ public class Client {
     }
 
     private void register(Mod mod) {
-        if(data.has(mod.getId())) {
-            mods.add(getGson(mod).fromJson(data.get(mod.getId()), mod.getClass()));
-        }
-        else {
-            mods.add(mod);
-        }
+        try {
+            if(data.has(mod.getId())) {
+                mods.add(getGson(mod).fromJson(data.get(mod.getId()), mod.getClass()));
+            }
+            else {
+                mods.add(mod);
+            }
 
-        mod.onRegister();
+            mod.onRegister();
+        }
+        catch(Throwable error) {
+            LOGGER.error("Could not register mod " + mod.getName(), error);
+        }
     }
 
     public void addResource(ResourceLocation location, IResource resource) {
@@ -304,7 +289,7 @@ public class Client {
             String commandKey = args.get(0).substring(1);
             if(commands.containsKey(commandKey)) {
             	event.cancelled = true;
-            	
+
                 try {
                     args.remove(0);
 
@@ -328,7 +313,7 @@ public class Client {
 
     @EventHandler
     public void onTick(PreTickEvent event) {
-        if(keyMods.isPressed()) {
+        if(modsKey.isPressed()) {
             mc.displayGuiScreen(new ModsScreen(null));
         }
     }
@@ -343,9 +328,6 @@ public class Client {
     }
 
     public void onServerChange(ServerData data) {
-        Thread.dumpStack();
-        System.out.println(data);
-
         setChatChannelSystem(null);
 
         if(data == null) {

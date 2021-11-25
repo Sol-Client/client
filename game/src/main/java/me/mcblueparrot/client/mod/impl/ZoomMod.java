@@ -19,8 +19,8 @@ public class ZoomMod extends Mod {
     public static boolean enabled;
     public static ZoomMod instance;
     private KeyBinding key = new KeyBinding("Zoom", Keyboard.KEY_C, "Sol Client");
-    private KeyBinding keyZoomOut = new KeyBinding("Zoom Out", Keyboard.KEY_MINUS, "Sol Client");
-    private KeyBinding keyZoomIn = new KeyBinding("Zoom In", Keyboard.KEY_EQUALS, "Sol Client");
+    private KeyBinding zoomOutKey = new KeyBinding("Zoom Out", Keyboard.KEY_MINUS, "Sol Client");
+    private KeyBinding zoomInKey = new KeyBinding("Zoom In", Keyboard.KEY_EQUALS, "Sol Client");
 
     @Expose
     @ConfigOption("Cinematic")
@@ -50,8 +50,8 @@ public class ZoomMod extends Mod {
     public ZoomMod() {
         super("Zoom", "zoom", "Zoom in when pressing a button.", ModCategory.UTILITY);
         Client.INSTANCE.registerKeyBinding(key);
-        Client.INSTANCE.registerKeyBinding(keyZoomOut);
-        Client.INSTANCE.registerKeyBinding(keyZoomIn);
+        Client.INSTANCE.registerKeyBinding(zoomOutKey);
+        Client.INSTANCE.registerKeyBinding(zoomInKey);
     }
 
     public void start() {
@@ -83,10 +83,10 @@ public class ZoomMod extends Mod {
             stop();
         }
         if(active) {
-            if(keyZoomOut.isKeyDown()) {
+            if(zoomOutKey.isKeyDown()) {
                 zoomOut();
             }
-            else if(keyZoomIn.isKeyDown()) {
+            else if(zoomInKey.isKeyDown()) {
                 zoomIn();
             }
         }

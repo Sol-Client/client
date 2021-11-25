@@ -16,7 +16,7 @@ public class Rectangle {
     private int height;
 
     public Rectangle offset(int x, int y) {
-        return new Rectangle(this.x + x, this.y - y, width, height);
+        return new Rectangle(this.x + x, this.y + y, width, height);
     }
 
     public boolean contains(Position position) {
@@ -42,6 +42,14 @@ public class Rectangle {
 
     public Rectangle(int x, int y) {
         this(x, y, 1, 1);
+    }
+
+    public int getEndX() {
+        return y + height;
+    }
+
+    public int getEndY() {
+        return y + height;
     }
 
 }

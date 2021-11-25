@@ -2,11 +2,11 @@ package me.mcblueparrot.client.ui;
 
 import java.io.IOException;
 
-import me.mcblueparrot.client.mod.impl.SolClientMod;
 import org.lwjgl.input.Mouse;
 
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Position;
 import me.mcblueparrot.client.util.Rectangle;

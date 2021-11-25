@@ -21,14 +21,15 @@
 
 package me.mcblueparrot.client.replaymod;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.replaymod.lib.de.johni0702.minecraft.gui.utils.Event;
 import com.replaymod.lib.de.johni0702.minecraft.gui.utils.EventRegistration;
+
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.events.EventBus;
 import me.mcblueparrot.client.mod.impl.SCReplayMod;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SCEventRegistrations {
 

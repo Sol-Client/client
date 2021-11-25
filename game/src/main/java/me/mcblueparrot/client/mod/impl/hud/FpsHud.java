@@ -1,8 +1,5 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.PostTickEvent;
 import me.mcblueparrot.client.mod.hud.SimpleHud;

@@ -1,6 +1,5 @@
 package me.mcblueparrot.client.mixin.client;
 
-import me.mcblueparrot.client.util.Utils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,6 +15,7 @@ import me.mcblueparrot.client.events.FovEvent;
 import me.mcblueparrot.client.events.GammaEvent;
 import me.mcblueparrot.client.events.PlayerHeadRotateEvent;
 import me.mcblueparrot.client.events.PostProcessingEvent;
+import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;

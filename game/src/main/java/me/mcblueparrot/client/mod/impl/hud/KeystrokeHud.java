@@ -5,7 +5,6 @@ import com.google.gson.annotations.Expose;
 import me.mcblueparrot.client.CpsMonitor;
 import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.PlayerHeadRotateEvent;
-import me.mcblueparrot.client.events.PostGameStartEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.Hud;
 import me.mcblueparrot.client.util.Colour;

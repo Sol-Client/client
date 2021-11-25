@@ -1,7 +1,5 @@
 package me.mcblueparrot.client.mod.impl.hypixeladditions.request;
 
-import java.util.regex.Matcher;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

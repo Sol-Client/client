@@ -8,11 +8,6 @@ import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import me.mcblueparrot.client.mod.hud.Hud;
-import me.mcblueparrot.client.mod.impl.ConfigOnlyMod;
-import me.mcblueparrot.client.mod.impl.SolClientMod;
-import me.mcblueparrot.client.util.font.Font;
-import me.mcblueparrot.client.util.font.SlickFontRenderer;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -22,9 +17,13 @@ import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
+import me.mcblueparrot.client.mod.impl.ConfigOnlyMod;
+import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Rectangle;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.font.Font;
+import me.mcblueparrot.client.util.font.SlickFontRenderer;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;

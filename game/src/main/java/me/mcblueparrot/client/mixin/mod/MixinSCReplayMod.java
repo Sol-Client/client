@@ -1,9 +1,22 @@
 package me.mcblueparrot.client.mixin.mod;
 
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import com.replaymod.compat.optifine.OptifineReflection;
 import com.replaymod.core.KeyBindingRegistry;
 import com.replaymod.core.ReplayMod;
-import com.replaymod.core.events.*;
+import com.replaymod.core.events.KeyBindingEventCallback;
+import com.replaymod.core.events.PostRenderWorldCallback;
+import com.replaymod.core.events.PreRenderHandCallback;
 import com.replaymod.core.versions.MCVer;
 import com.replaymod.lib.de.johni0702.minecraft.gui.container.GuiScreen;
 import com.replaymod.lib.de.johni0702.minecraft.gui.element.GuiButton;
@@ -15,7 +28,7 @@ import com.replaymod.replay.camera.ClassicCameraController;
 import com.replaymod.replay.camera.VanillaCameraController;
 import com.replaymod.replay.events.RenderHotbarCallback;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+
 import me.mcblueparrot.client.mod.impl.SCReplayMod;
 import me.mcblueparrot.client.replaymod.SCSettingsRegistry;
 import me.mcblueparrot.client.tweak.Tweaker;
@@ -30,12 +43,6 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class MixinSCReplayMod {
 

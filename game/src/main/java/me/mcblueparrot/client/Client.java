@@ -1,14 +1,71 @@
 package me.mcblueparrot.client;
 
-import com.google.gson.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Keyboard;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
+
 import lombok.Getter;
-import me.mcblueparrot.client.events.*;
+import me.mcblueparrot.client.events.EventBus;
+import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.events.PostGameStartEvent;
+import me.mcblueparrot.client.events.PreTickEvent;
+import me.mcblueparrot.client.events.SendChatMessageEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.hud.Hud;
-import me.mcblueparrot.client.mod.impl.*;
-import me.mcblueparrot.client.mod.impl.hud.*;
+import me.mcblueparrot.client.mod.impl.ArabicNumeralsMod;
+import me.mcblueparrot.client.mod.impl.BetterItemTooltipsMod;
+import me.mcblueparrot.client.mod.impl.BlockSelectionMod;
+import me.mcblueparrot.client.mod.impl.ChunkAnimationMod;
+import me.mcblueparrot.client.mod.impl.ColourSaturationMod;
+import me.mcblueparrot.client.mod.impl.HitColourMod;
+import me.mcblueparrot.client.mod.impl.ItemPhysicsMod;
+import me.mcblueparrot.client.mod.impl.MenuBlurMod;
+import me.mcblueparrot.client.mod.impl.MotionBlurMod;
+import me.mcblueparrot.client.mod.impl.NightVisionMod;
+import me.mcblueparrot.client.mod.impl.NumeralPingMod;
+import me.mcblueparrot.client.mod.impl.Old1_7AnimationsMod;
+import me.mcblueparrot.client.mod.impl.ParticlesMod;
+import me.mcblueparrot.client.mod.impl.PerspectiveMod;
+import me.mcblueparrot.client.mod.impl.SCReplayMod;
+import me.mcblueparrot.client.mod.impl.ScoreboardMod;
+import me.mcblueparrot.client.mod.impl.ShowOwnTagMod;
+import me.mcblueparrot.client.mod.impl.SolClientMod;
+import me.mcblueparrot.client.mod.impl.TimeChangerMod;
+import me.mcblueparrot.client.mod.impl.ZoomMod;
+import me.mcblueparrot.client.mod.impl.hud.ArmourHud;
+import me.mcblueparrot.client.mod.impl.hud.ChatHud;
+import me.mcblueparrot.client.mod.impl.hud.ComboCounterHud;
+import me.mcblueparrot.client.mod.impl.hud.CpsHud;
+import me.mcblueparrot.client.mod.impl.hud.CrosshairHud;
+import me.mcblueparrot.client.mod.impl.hud.FpsHud;
+import me.mcblueparrot.client.mod.impl.hud.KeystrokeHud;
+import me.mcblueparrot.client.mod.impl.hud.PingHud;
+import me.mcblueparrot.client.mod.impl.hud.PositionHud;
+import me.mcblueparrot.client.mod.impl.hud.ReachDisplayHud;
+import me.mcblueparrot.client.mod.impl.hud.SpeedHud;
+import me.mcblueparrot.client.mod.impl.hud.StatusEffectsHud;
+import me.mcblueparrot.client.mod.impl.hud.TimerHud;
+import me.mcblueparrot.client.mod.impl.hud.ToggleSprintMod;
 import me.mcblueparrot.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.ui.ChatButton;
@@ -25,15 +82,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
 
 /**
  * Main class for Sol Client.

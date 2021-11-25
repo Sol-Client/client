@@ -1,6 +1,5 @@
 package me.mcblueparrot.client.mixin.mod;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import org.spongepowered.asm.mixin.Final;

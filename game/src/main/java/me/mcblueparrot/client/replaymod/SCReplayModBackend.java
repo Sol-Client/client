@@ -21,23 +21,33 @@
 
 package me.mcblueparrot.client.replaymod;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import com.replaymod.core.ReplayMod;
 import com.replaymod.core.events.PostRenderCallback;
 import com.replaymod.core.events.PreRenderCallback;
 import com.replaymod.lib.de.johni0702.minecraft.gui.versions.MatrixStack;
-import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.*;
+import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.InitScreenCallback;
+import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.OpenGuiScreenCallback;
+import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.PostRenderScreenCallback;
+import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.PreTickCallback;
+import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.RenderHudCallback;
 import com.replaymod.replay.events.RenderSpectatorCrosshairCallback;
-import me.mcblueparrot.client.events.*;
-import me.mcblueparrot.client.mod.impl.SCReplayMod;
+
+import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.events.GameOverlayElement;
+import me.mcblueparrot.client.events.OpenGuiEvent;
+import me.mcblueparrot.client.events.PostGuiInitEvent;
+import me.mcblueparrot.client.events.PostGuiRenderEvent;
+import me.mcblueparrot.client.events.PostRenderTickEvent;
+import me.mcblueparrot.client.events.PreGameOverlayRenderEvent;
+import me.mcblueparrot.client.events.PreGuiInitEvent;
+import me.mcblueparrot.client.events.PreRenderTickEvent;
+import me.mcblueparrot.client.events.PreTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class SCReplayModBackend extends SCEventRegistrations {
 

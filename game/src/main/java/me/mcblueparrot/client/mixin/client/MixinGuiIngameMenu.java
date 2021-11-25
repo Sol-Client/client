@@ -1,19 +1,18 @@
 
 package me.mcblueparrot.client.mixin.client;
 
-import com.replaymod.replay.ReplayModReplay;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.replaymod.replay.ReplayModReplay;
 
 import me.mcblueparrot.client.ui.IngameServerList;
 import me.mcblueparrot.client.ui.ModsScreen;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiScreen;
-
-import java.util.stream.Collectors;
 
 @Mixin(GuiIngameMenu.class)
 public class MixinGuiIngameMenu extends GuiScreen {

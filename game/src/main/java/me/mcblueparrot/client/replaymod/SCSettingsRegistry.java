@@ -1,13 +1,16 @@
 package me.mcblueparrot.client.replaymod;
 
-import com.replaymod.core.events.SettingsChangedCallback;
-import com.replaymod.replay.handler.GuiHandler;
-import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.mod.impl.SCReplayMod;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
+import com.replaymod.core.events.SettingsChangedCallback;
+
+import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.mod.impl.SCReplayMod;
 
 public class SCSettingsRegistry {
     private final Map<SettingKey<?>, Object> settings = Collections.synchronizedMap(new LinkedHashMap<>());

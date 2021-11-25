@@ -21,19 +21,21 @@
 
 package me.mcblueparrot.client.replaymod;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.replaymod.core.KeyBindingRegistry;
 import com.replaymod.core.Module;
 import com.replaymod.core.ReplayMod;
+import com.replaymod.recording.Setting;
 import com.replaymod.recording.handler.ConnectionEventHandler;
 import com.replaymod.recording.handler.GuiHandler;
 import com.replaymod.recording.mixin.NetworkManagerAccessor;
 import com.replaymod.recording.packet.PacketListener;
+
 import io.netty.channel.Channel;
 import me.mcblueparrot.client.Client;
 import net.minecraft.network.NetworkManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import com.replaymod.recording.Setting;
 
 public class SCReplayModRecording implements Module {
     private static final Logger LOGGER = LogManager.getLogger();

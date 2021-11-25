@@ -2,16 +2,22 @@ package me.mcblueparrot.client.events;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.replaymod.replaystudio.lib.viaversion.libs.kyori.adventure.util.Nag;
-import me.mcblueparrot.client.util.ThreadSafetyIssue;
-import net.minecraft.client.Minecraft;
+import javax.annotation.concurrent.NotThreadSafe;
+
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.concurrent.NotThreadSafe;
+import net.minecraft.client.Minecraft;
 
 /**
  * Event bus system focused on performance.

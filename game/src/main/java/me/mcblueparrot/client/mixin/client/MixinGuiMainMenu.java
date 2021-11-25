@@ -1,18 +1,5 @@
 package me.mcblueparrot.client.mixin.client;
 
-import com.replaymod.core.gui.GuiReplayButton;
-import com.replaymod.core.versions.MCVer;
-import com.replaymod.lib.de.johni0702.minecraft.gui.container.VanillaGuiScreen;
-import com.replaymod.lib.de.johni0702.minecraft.gui.element.GuiElement;
-import com.replaymod.lib.de.johni0702.minecraft.gui.element.GuiTooltip;
-import com.replaymod.lib.de.johni0702.minecraft.gui.layout.CustomLayout;
-import com.replaymod.lib.de.johni0702.minecraft.gui.layout.LayoutData;
-import com.replaymod.lib.de.johni0702.minecraft.gui.utils.lwjgl.Point;
-import com.replaymod.replay.ReplayModReplay;
-import com.replaymod.replay.Setting;
-import com.replaymod.replay.gui.screen.GuiReplayViewer;
-import com.replaymod.replay.handler.GuiHandler;
-import me.mcblueparrot.client.ui.ReplayButton;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,12 +7,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.replaymod.replay.ReplayModReplay;
+import com.replaymod.replay.gui.screen.GuiReplayViewer;
+
 import me.mcblueparrot.client.ui.ModsScreen;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
-
-import java.util.Optional;
 
 @Mixin(GuiMainMenu.class)
 public class MixinGuiMainMenu extends GuiScreen {

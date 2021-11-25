@@ -15,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import me.mcblueparrot.client.events.*;
 import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
@@ -23,6 +22,12 @@ import com.google.gson.annotations.Expose;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.DetectedServer;
 import me.mcblueparrot.client.ServerConnectEvent;
+import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.events.GameOverlayElement;
+import me.mcblueparrot.client.events.PostGameOverlayRenderEvent;
+import me.mcblueparrot.client.events.ReceiveChatMessageEvent;
+import me.mcblueparrot.client.events.SoundPlayEvent;
+import me.mcblueparrot.client.events.WorldLoadEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;

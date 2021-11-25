@@ -1,12 +1,12 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
-import me.mcblueparrot.client.events.GameOverlayElement;
-import me.mcblueparrot.client.events.PreGameOverlayRenderEvent;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.events.GameOverlayElement;
+import me.mcblueparrot.client.events.PreGameOverlayRenderEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.Hud;
 import me.mcblueparrot.client.util.Colour;

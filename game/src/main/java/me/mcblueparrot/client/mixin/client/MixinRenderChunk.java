@@ -1,6 +1,5 @@
 package me.mcblueparrot.client.mixin.client;
 
-import net.minecraft.client.renderer.vertex.VertexBuffer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -10,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.events.RenderChunkPositionEvent;
 import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.util.BlockPos;
 
 @Mixin(RenderChunk.class)

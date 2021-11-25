@@ -1,11 +1,8 @@
 package me.mcblueparrot.client.mod.impl.quickplay.database;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

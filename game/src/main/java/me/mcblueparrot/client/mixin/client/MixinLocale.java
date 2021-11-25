@@ -1,16 +1,17 @@
 package me.mcblueparrot.client.mixin.client;
 
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.Locale;
-import net.minecraft.util.ResourceLocation;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.Locale;
+import net.minecraft.util.ResourceLocation;
 
 @Mixin(Locale.class)
 public abstract class MixinLocale {

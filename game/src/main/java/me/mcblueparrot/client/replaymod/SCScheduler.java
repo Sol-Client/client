@@ -21,9 +21,16 @@
 
 package me.mcblueparrot.client.replaymod;
 
+import java.util.Queue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import com.google.common.util.concurrent.ListenableFutureTask;
 import com.replaymod.core.mixin.MinecraftAccessor;
 import com.replaymod.core.versions.scheduler.Scheduler;
+
 import lombok.AllArgsConstructor;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.events.EventBus;
@@ -31,12 +38,6 @@ import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.PreRenderTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ReportedException;
-
-import java.util.Queue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class SCScheduler implements Scheduler {
     private static final Minecraft mc = Minecraft.getMinecraft();

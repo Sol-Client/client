@@ -1,9 +1,8 @@
 package me.mcblueparrot.client.mod.hud;
 
 import com.google.gson.annotations.Expose;
-
 import com.replaymod.replay.ReplayModReplay;
-import com.replaymod.replay.events.RenderHotbarCallback;
+
 import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.GameOverlayElement;
 import me.mcblueparrot.client.events.PostGameOverlayRenderEvent;
@@ -16,8 +15,6 @@ import me.mcblueparrot.client.util.Position;
 import me.mcblueparrot.client.util.Rectangle;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-
-import java.lang.annotation.ElementType;
 
 public abstract class Hud extends Mod {
 

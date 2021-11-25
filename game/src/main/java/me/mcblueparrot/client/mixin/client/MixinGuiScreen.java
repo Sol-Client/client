@@ -1,27 +1,33 @@
 package me.mcblueparrot.client.mixin.client;
 
-import me.mcblueparrot.client.events.*;
-import me.mcblueparrot.client.mod.impl.SolClientMod;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
+import java.io.IOException;
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.util.Utils;
-import me.mcblueparrot.client.util.access.AccessGuiScreen;
-import net.minecraft.client.gui.GuiScreen;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.io.IOException;
-import java.util.List;
+import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.events.ActionPerformedEvent;
+import me.mcblueparrot.client.events.PostGuiInitEvent;
+import me.mcblueparrot.client.events.PostGuiRenderEvent;
+import me.mcblueparrot.client.events.PreGuiInitEvent;
+import me.mcblueparrot.client.events.PreGuiKeyboardInputEvent;
+import me.mcblueparrot.client.events.PreGuiMouseInputEvent;
+import me.mcblueparrot.client.events.RenderGuiBackgroundEvent;
+import me.mcblueparrot.client.mod.impl.SolClientMod;
+import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.access.AccessGuiScreen;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 
 @Mixin(GuiScreen.class)
 public class MixinGuiScreen implements AccessGuiScreen {

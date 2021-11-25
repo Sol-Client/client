@@ -1,7 +1,5 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
-import java.text.DecimalFormat;
-
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.mod.annotation.ConfigOption;

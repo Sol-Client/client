@@ -1,12 +1,13 @@
 package me.mcblueparrot.client.mixin.client;
 
-import me.mcblueparrot.client.util.font.Font;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
+import java.util.function.IntSupplier;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.function.IntSupplier;
+import me.mcblueparrot.client.util.font.Font;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 
 @Mixin(FontRenderer.class)
 public abstract class MixinFontRendererCompat implements Font {

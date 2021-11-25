@@ -76,6 +76,7 @@ Selling points (features not in Lunar Client, that are in this one):
 - Chunk animator (not sure if many people use this one).
 - Less useless mods (apart from the previous one).
 - Bedwars timers.
+
 There are probably more, but this list is long enough.
 
 Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.

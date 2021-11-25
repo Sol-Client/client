@@ -27,7 +27,6 @@ public abstract class SimpleHud extends Hud {
     @Expose
     @ConfigOption("Text Shadow")
     protected boolean shadow = true;
-    protected float textYOffset = 3.5F;
 
     public SimpleHud(String name, String id, String description) {
         super(name, id, description);
@@ -50,7 +49,7 @@ public abstract class SimpleHud extends Hud {
             }
             font.drawString(text,
                     position.getX() + (getBounds(position).getWidth() / 2F) - (font.getStringWidth(text) / 2F),
-                    position.getY() + textYOffset, textColour.getValue(), shadow);
+                    position.getY() + 4, textColour.getValue(), shadow);
         }
     }
 

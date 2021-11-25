@@ -110,10 +110,6 @@ public class KeystrokeHud extends Hud {
 
     @Override
     public void render(Position position, boolean editMode) {
-        int heightOffset = font.FONT_HEIGHT / 2;
-
-        int offset = 0;
-
         int x = position.getX();
         int y = position.getY();
 
@@ -125,6 +121,7 @@ public class KeystrokeHud extends Hud {
             d.render(x, y);
             y += 18;
         }
+
         if(mouseMovement) {
             if(background) {
                 GuiScreen.drawRect(x, y, x + space.width, y + 34, backgroundColour.getValue());
@@ -139,7 +136,8 @@ public class KeystrokeHud extends Hud {
             Utils.drawRectangle(new Rectangle(x + space.width / 2, y + (34 / 2) - 1, 1, 2), textColour);
 
             if(shadow) Utils.drawCircle(x + space.width / 2 + mouseX + 1, y + (34 / 2) + mouseY + 1, 4,
-                    (textColour.getValue() & 16579836) >> 2 | textColour.getValue() & -16777216);
+                    textColour.getShadowValue());
+
             Utils.drawCircle(x + space.width / 2F + mouseX, y + (34F / 2F) + mouseY, 4, textColour.getValue());
 
             y += 35;
@@ -230,12 +228,13 @@ public class KeystrokeHud extends Hud {
                         Utils.blendColor(borderColourPressed.getValue(), borderColour.getValue(), progress));
             }
 
-            int fgColor = Utils.blendColor(textColourPressed.getValue(), textColour.getValue(), progress);
+            int fgColour = Utils.blendColor(textColourPressed.getValue(), textColour.getValue(), progress);
             String name = this.name;
             if(name.equals("Space")) {
-                GuiScreen.drawRect(x + 10, y + 3, x + width - 10, y + 4, fgColor);
+                GuiScreen.drawRect(x + 10, y + 3, x + width - 10, y + 4, fgColour);
+
                 if(shadow) {
-                    GuiScreen.drawRect(x + 11, y + 4, x + width - 9, y + 5, (fgColor & 16579836) >> 2 | fgColor & -16777216);
+                    GuiScreen.drawRect(x + 11, y + 4, x + width - 9, y + 5, Utils.getShadowColour(fgColour));
                 }
             }
             else {
@@ -259,7 +258,7 @@ public class KeystrokeHud extends Hud {
 
                         font.drawString(cpsText,
                                 (x / scale) + (width / 2F / scale) - (font.getStringWidth(cpsText) / 2F),
-                                (y + height - (mc.fontRendererObj.FONT_HEIGHT * scale)) / scale - 3, fgColor, shadow);
+                                (y + height - (mc.fontRendererObj.FONT_HEIGHT * scale)) / scale - 3, fgColour, shadow);
 
                         GlStateManager.popMatrix();
 
@@ -268,7 +267,7 @@ public class KeystrokeHud extends Hud {
 
                 }
                 y += 1;
-                font.drawString(name, x + (width / 2F) - (font.getStringWidth(name) / 2F), y + (height / 2F) - (font.FONT_HEIGHT / 2F), fgColor, shadow);
+                font.drawString(name, x + (width / 2F) - (font.getStringWidth(name) / 2F), y + (height / 2F) - (font.FONT_HEIGHT / 2F), fgColour, shadow);
             }
             wasDown = down;
         }

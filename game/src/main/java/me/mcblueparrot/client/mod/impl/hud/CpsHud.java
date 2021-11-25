@@ -7,6 +7,7 @@ import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.SimpleHud;
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Position;
+import me.mcblueparrot.client.util.Utils;
 
 public class CpsHud extends SimpleHud {
 
@@ -25,20 +26,29 @@ public class CpsHud extends SimpleHud {
     public void render(Position position, boolean editMode) {
         super.render(position, editMode);
         if(rmb) {
-            float x = position.getX() + (getBounds(position).getWidth() / 2F)
-                    - ((font.getStringWidth(CpsMonitor.LMB.getCps() + " | " + CpsMonitor.RMB.getCps() + " CPS")) / 2F);
-            x = font.drawString(CpsMonitor.LMB.getCps() + " ", x,
-                    position.getY() + (getBounds(position).getHeight() / 2F) - (font.FONT_HEIGHT / 2F),
-                    textColour.getValue(),
-                    shadow);
+            int width = font.getStringWidth(CpsMonitor.LMB.getCps() + " | " + CpsMonitor.RMB.getCps() + " CPS") - 2;
 
-            if(shadow) x--;
-            x = font.drawString("|", x, position.getY() + textYOffset, separatorColour.getValue(), shadow);
+            int x = position.getX() + (53 / 2) - (width / 2);
+            int y = position.getY() + 4;
 
+            x = font.drawString(Integer.toString(CpsMonitor.LMB.getCps()), x, y, textColour.getValue(), shadow);
+
+            x--;
             if(shadow) x--;
 
-            x = font.drawString(" " + CpsMonitor.RMB.getCps() + " CPS", x, position.getY() + textYOffset,
-                    textColour.getValue(), shadow);
+            x += font.getCharWidth(' ');
+
+            Utils.drawVerticalLine(x, y - 1, y + 7, separatorColour.getValue());
+
+            if(shadow) {
+                Utils.drawVerticalLine(x + 1, y, y + 8, separatorColour.getShadowValue());
+            }
+
+            x += 1;
+
+            x += font.getCharWidth(' ');
+
+            font.drawString(CpsMonitor.RMB.getCps() + " CPS", x, y, textColour.getValue(), shadow);
         }
     }
 

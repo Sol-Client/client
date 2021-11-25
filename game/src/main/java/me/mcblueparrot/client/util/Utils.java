@@ -75,7 +75,7 @@ public class Utils {
         GL11.glColor4ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue(), (byte) color.getAlpha());
     }
 
-    private void drawHorizontalLine(int startX, int endX, int y, int colour) {
+    public void drawHorizontalLine(int startX, int endX, int y, int colour) {
         if(endX < startX) {
             int i = startX;
             startX = endX;
@@ -85,7 +85,7 @@ public class Utils {
         GuiScreen.drawRect(startX, y, endX + 1, y + 1, colour);
     }
 
-    private void drawVerticalLine(int x, int startY, int endY, int colour) {
+    public void drawVerticalLine(int x, int startY, int endY, int colour) {
         if(endY < startY) {
             int i = startY;
             startY = endY;
@@ -277,6 +277,10 @@ public class Utils {
         }
 
         return result.toString();
+    }
+
+    public static int getShadowColour(int value) {
+        return (value & 16579836) >> 2 | value & -16777216;
     }
 
 }

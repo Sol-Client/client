@@ -104,4 +104,13 @@ public class Colour {
     public Colour add(int amount) {
         return new Colour(clamp(getRed() + amount), clamp(getGreen() + amount), clamp(getBlue() + amount), getAlpha());
     }
+
+    public int getShadowValue() {
+        return Utils.getShadowColour(getValue());
+    }
+
+    public Colour getShadow() {
+        return new Colour(getShadowValue());
+    }
+
 }

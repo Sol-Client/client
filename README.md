@@ -73,7 +73,7 @@ Selling points (features not in Lunar Client, that are in this one):
 - Turning off the inventory logo.
 - Crosshair mod that doesn't look out of place (pixelated).
 - Speedometer.
-- Chunk animater (not sure if many people use this one).
+- Chunk animator (not sure if many people use this one).
 - Less useless mods (apart from the previous one).
 - Bedwars timers.
 There are probably more, but this list is long enough.

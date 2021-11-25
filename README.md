@@ -45,7 +45,7 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 
 [Johni0702](https://github.com/Johni0702) and [CrushedPixel](https://github.com/CrushedPixel): Replay Mod. Again, a modified version is used in this client.
 
-[robere2] (https://github.com/robere2) QuickPlay Mod servers. The mod itself is coded from scratch.
+[robere2](https://github.com/robere2) QuickPlay Mod servers. The mod itself is coded from scratch.
 
 ## Features
 

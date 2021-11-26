@@ -97,14 +97,22 @@ public class Client {
     @Getter
     private List<Hud> huds = new ArrayList<Hud>();
     private static final Logger LOGGER = LogManager.getLogger();
-    private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json");
+
+    private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "sol_client_mods.json");
+    private final File LEGACY_DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json");
+
     public DetectedServer detectedServer;
+
     public EventBus bus = new EventBus();
+
     private Map<ResourceLocation, IResource> resources = new HashMap<>();
     private Map<String, CommandBase> commands = new HashMap<>();
     private List<ChatButton> chatButtons = new ArrayList<>();
+
     private ChatChannelSystem chatChannelSystem;
+
     public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
+
     public static final String VERSION = System.getProperty("me.mcblueparrot.client.version", "DEVELOPMENT TEST");
     public static final String NAME = "Sol Client " + VERSION;
 
@@ -117,6 +125,11 @@ public class Client {
         CpsMonitor.forceInit();
 
         LOGGER.info("Loading settings...");
+
+        if(!DATA_FILE.exists() && LEGACY_DATA_FILE.exists()) {
+            LEGACY_DATA_FILE.renameTo(DATA_FILE);
+        }
+
         load();
 
         LOGGER.info("Loading mods...");

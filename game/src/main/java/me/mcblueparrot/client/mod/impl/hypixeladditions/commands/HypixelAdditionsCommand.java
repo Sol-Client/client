@@ -8,7 +8,7 @@ import net.minecraft.command.CommandBase;
 @RequiredArgsConstructor
 public abstract class HypixelAdditionsCommand extends CommandBase {
 
-    protected final HypixelAdditionsMod mod;
-    protected Minecraft mc = Minecraft.getMinecraft();
-    
+	protected final HypixelAdditionsMod mod;
+	protected Minecraft mc = Minecraft.getMinecraft();
+	
 }

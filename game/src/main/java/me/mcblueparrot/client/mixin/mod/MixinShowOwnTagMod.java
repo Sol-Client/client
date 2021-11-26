@@ -11,18 +11,18 @@ import net.minecraft.entity.Entity;
 
 public class MixinShowOwnTagMod {
 
-    @Mixin(RendererLivingEntity.class)
-    public static class MixinRendererLivingEntity {
+	@Mixin(RendererLivingEntity.class)
+	public static class MixinRendererLivingEntity {
 
-        @Redirect(method = "canRenderName", at = @At(value = "FIELD",
-                target = "Lnet/minecraft/client/renderer/entity/RenderManager;livingPlayer:Lnet/minecraft/entity/Entity;"))
-        public Entity renderOwnName(RenderManager manager) {
-            if(ShowOwnTagMod.enabled) {
-                return null;
-            }
-            return manager.livingPlayer;
-        }
+		@Redirect(method = "canRenderName", at = @At(value = "FIELD",
+				target = "Lnet/minecraft/client/renderer/entity/RenderManager;livingPlayer:Lnet/minecraft/entity/Entity;"))
+		public Entity renderOwnName(RenderManager manager) {
+			if(ShowOwnTagMod.enabled) {
+				return null;
+			}
+			return manager.livingPlayer;
+		}
 
-    }
+	}
 
 }

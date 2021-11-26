@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CommandHotkey {
 
-    public int key;
+	public int key;
 
-    public String action;
-    
+	public String action;
+	
 }

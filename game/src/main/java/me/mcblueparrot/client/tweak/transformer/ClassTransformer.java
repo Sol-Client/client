@@ -17,42 +17,42 @@ import net.minecraft.launchwrapper.IClassTransformer;
 
 public class ClassTransformer implements IClassTransformer {
 
-    private List<ClassNodeTransformer> transformers = new ArrayList<>();
+	private List<ClassNodeTransformer> transformers = new ArrayList<>();
 
-    public ClassTransformer() {
-        register(new GuiButtonTransformer());
-        register(new GuiScreenTransformer());
-        register(new WorldClientTransformer());
-        register(new MinecraftTransformer());
-    }
+	public ClassTransformer() {
+		register(new GuiButtonTransformer());
+		register(new GuiScreenTransformer());
+		register(new WorldClientTransformer());
+		register(new MinecraftTransformer());
+	}
 
-    @Override
-    public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        List<ClassNodeTransformer> applicable =
-                transformers.stream().filter((transformers) -> transformers.test(name.replace(".", "/"))).collect(Collectors.toList());
+	@Override
+	public byte[] transform(String name, String transformedName, byte[] basicClass) {
+		List<ClassNodeTransformer> applicable =
+				transformers.stream().filter((transformers) -> transformers.test(name.replace(".", "/"))).collect(Collectors.toList());
 
-        if(applicable.isEmpty()) return basicClass;
+		if(applicable.isEmpty()) return basicClass;
 
-        ClassReader reader = new ClassReader(basicClass);
-        ClassNode clazz = new ClassNode();
-        reader.accept(clazz, 0);
+		ClassReader reader = new ClassReader(basicClass);
+		ClassNode clazz = new ClassNode();
+		reader.accept(clazz, 0);
 
-        for(ClassNodeTransformer transformer : applicable) {
-            try {
-                transformer.apply(clazz);
-            }
-            catch(IOException error) {
-                throw new IllegalStateException("Could not transform class " + name, error);
-            }
-        }
+		for(ClassNodeTransformer transformer : applicable) {
+			try {
+				transformer.apply(clazz);
+			}
+			catch(IOException error) {
+				throw new IllegalStateException("Could not transform class " + name, error);
+			}
+		}
 
-        ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-        clazz.accept(writer);
-        return writer.toByteArray();
-    }
+		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+		clazz.accept(writer);
+		return writer.toByteArray();
+	}
 
-    public void register(ClassNodeTransformer transformer) {
-        transformers.add(transformer);
-    }
+	public void register(ClassNodeTransformer transformer) {
+		transformers.add(transformer);
+	}
 
 }

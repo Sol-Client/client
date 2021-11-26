@@ -4,12 +4,12 @@ import me.mcblueparrot.client.annotation.semantic.ForgeCompat;
 
 public class PreGuiKeyboardInputEvent {
 
-    public boolean cancelled;
+	public boolean cancelled;
 
-    @Deprecated
-    @ForgeCompat
-    public void setCanceled(boolean cancelled) {
-        this.cancelled = cancelled;
-    }
+	@Deprecated
+	@ForgeCompat
+	public void setCanceled(boolean cancelled) {
+		this.cancelled = cancelled;
+	}
 
 }

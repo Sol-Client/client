@@ -9,12 +9,12 @@ import net.minecraft.client.shader.ShaderGroup;
 @RequiredArgsConstructor
 public class PostProcessingEvent {
 
-    public final Type type;
-    public List<ShaderGroup> groups = new ArrayList<>();
+	public final Type type;
+	public List<ShaderGroup> groups = new ArrayList<>();
 
-    public enum Type {
-        RENDER,
-        UPDATE
-    }
+	public enum Type {
+		RENDER,
+		UPDATE
+	}
 
 }

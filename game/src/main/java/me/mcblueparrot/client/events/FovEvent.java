@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class FovEvent {
 
-    public float fov;
-    public float partialTicks;
+	public float fov;
+	public float partialTicks;
 
 }

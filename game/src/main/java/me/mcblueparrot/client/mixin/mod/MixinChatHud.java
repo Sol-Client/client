@@ -14,69 +14,69 @@ import net.minecraft.client.settings.GameSettings;
 
 public class MixinChatHud {
 
-    @Mixin(GuiScreen.class)
-    public static class MixinGuiScreen {
+	@Mixin(GuiScreen.class)
+	public static class MixinGuiScreen {
 
-        @Redirect(method = "handleComponentClick",
-                at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;chatLinks:Z"))
-        public boolean overrideChatLinks(GameSettings settings) {
-            if(ChatHud.enabled) {
-                return ChatHud.instance.links;
-            }
+		@Redirect(method = "handleComponentClick",
+				at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;chatLinks:Z"))
+		public boolean overrideChatLinks(GameSettings settings) {
+			if(ChatHud.enabled) {
+				return ChatHud.instance.links;
+			}
 
-            return settings.chatLinks;
-        }
+			return settings.chatLinks;
+		}
 
-        @Redirect(method = "handleComponentClick",
-                at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;chatLinksPrompt:Z"))
-        public boolean overrideChatLinksPrompt(GameSettings settings) {
-            if(ChatHud.enabled) {
-                return ChatHud.instance.promptLinks;
-            }
+		@Redirect(method = "handleComponentClick",
+				at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;chatLinksPrompt:Z"))
+		public boolean overrideChatLinksPrompt(GameSettings settings) {
+			if(ChatHud.enabled) {
+				return ChatHud.instance.promptLinks;
+			}
 
-            return settings.chatLinks;
-        }
+			return settings.chatLinks;
+		}
 
-    }
+	}
 
-    @Mixin(GameSettings.class)
-    public static class MixinGameSettings {
+	@Mixin(GameSettings.class)
+	public static class MixinGameSettings {
 
-        @Redirect(method = "sendSettingsToServer",
-                at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;chatColours:Z"))
-        public boolean overrideChatColours(GameSettings settings) {
-            if(ChatHud.enabled) {
-                return ChatHud.instance.colours;
-            }
+		@Redirect(method = "sendSettingsToServer",
+				at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;chatColours:Z"))
+		public boolean overrideChatColours(GameSettings settings) {
+			if(ChatHud.enabled) {
+				return ChatHud.instance.colours;
+			}
 
-            return settings.chatColours;
-        }
+			return settings.chatColours;
+		}
 
-    }
+	}
 
-    @Mixin(GuiUtilRenderComponents.class)
-    public static class MixinGuiUtilRenderComponents {
+	@Mixin(GuiUtilRenderComponents.class)
+	public static class MixinGuiUtilRenderComponents {
 
-        @Inject(method = "func_178909_a", at = @At("HEAD"), cancellable = true)
-        private static void overrideChatColours(String input, boolean defaultValue,
-                                           CallbackInfoReturnable<String> callback) {
-            if(ChatHud.enabled) {
-                callback.setReturnValue(input);
-            }
-        }
+		@Inject(method = "func_178909_a", at = @At("HEAD"), cancellable = true)
+		private static void overrideChatColours(String input, boolean defaultValue,
+										   CallbackInfoReturnable<String> callback) {
+			if(ChatHud.enabled) {
+				callback.setReturnValue(input);
+			}
+		}
 
-    }
+	}
 
-    @Mixin(GuiChat.class)
-    public static class MixinGuiChat {
+	@Mixin(GuiChat.class)
+	public static class MixinGuiChat {
 
-        public boolean canBeForceClosed() {
-            if(ChatHud.enabled) {
-                return !ChatHud.instance.preventClose;
-            }
-            return true;
-        }
+		public boolean canBeForceClosed() {
+			if(ChatHud.enabled) {
+				return !ChatHud.instance.preventClose;
+			}
+			return true;
+		}
 
-    }
+	}
 
 }

@@ -5,6 +5,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GammaEvent {
 
-    public float gamma;
+	public float gamma;
 
 }

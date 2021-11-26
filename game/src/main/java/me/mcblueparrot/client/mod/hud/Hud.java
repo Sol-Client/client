@@ -18,88 +18,88 @@ import net.minecraft.client.renderer.GlStateManager;
 
 public abstract class Hud extends Mod {
 
-    @Expose
-    private HudPosition position;
-    @Expose
-    @ConfigOption(value = "Scale", priority = 1)
-    @Slider(min = 50, max = 150, step = 1)
-    public float scale = 100;
-    protected FontRenderer font;
+	@Expose
+	private HudPosition position;
+	@Expose
+	@ConfigOption(value = "Scale", priority = 1)
+	@Slider(min = 50, max = 150, step = 1)
+	public float scale = 100;
+	protected FontRenderer font;
 
-    public Hud(String name, String id, String description) {
-        super(name, id, description, ModCategory.HUD);
-        this.position = getDefaultPosition();
-    }
+	public Hud(String name, String id, String description) {
+		super(name, id, description, ModCategory.HUD);
+		this.position = getDefaultPosition();
+	}
 
-    @Override
-    public void postStart() {
-        super.postStart();
-        this.font = mc.fontRendererObj;
-    }
+	@Override
+	public void postStart() {
+		super.postStart();
+		this.font = mc.fontRendererObj;
+	}
 
-    protected float getScale() {
-        return scale / 100;
-    }
+	protected float getScale() {
+		return scale / 100;
+	}
 
-    public Position getPosition() {
-        return position.toAbsolute();
-    }
+	public Position getPosition() {
+		return position.toAbsolute();
+	}
 
-    public Position getDividedPosition() {
-        return new Position((int) (getPosition().getX() / getScale()), (int) (getPosition().getY() / getScale()));
-    }
+	public Position getDividedPosition() {
+		return new Position((int) (getPosition().getX() / getScale()), (int) (getPosition().getY() / getScale()));
+	}
 
-    public HudPosition getDefaultPosition() {
-        return new HudPosition(0, 0);
-    }
+	public HudPosition getDefaultPosition() {
+		return new HudPosition(0, 0);
+	}
 
-    public void setPosition(Position position) {
-        this.position = HudPosition.fromAbsolute(position);
-    }
+	public void setPosition(Position position) {
+		this.position = HudPosition.fromAbsolute(position);
+	}
 
-    public boolean isVisible() {
-        return true;
-    }
+	public boolean isVisible() {
+		return true;
+	}
 
-    public Rectangle getBounds() {
-        return getBounds(getPosition());
-    }
+	public Rectangle getBounds() {
+		return getBounds(getPosition());
+	}
 
-    public Rectangle getBounds(Position position) {
-        return null;
-    }
+	public Rectangle getBounds(Position position) {
+		return null;
+	}
 
-    public Rectangle getMultipliedBounds() {
-        Rectangle rectangle = getBounds(getPosition());
-        if(rectangle == null) {
-            return null;
-        }
-        return rectangle.multiply(getScale());
-    }
+	public Rectangle getMultipliedBounds() {
+		Rectangle rectangle = getBounds(getPosition());
+		if(rectangle == null) {
+			return null;
+		}
+		return rectangle.multiply(getScale());
+	}
 
-    public void render(boolean editMode) {
-        // Don't render HUD in replay.
-        if(!(editMode || ReplayModReplay.instance.getReplayHandler() == null)) return;
+	public void render(boolean editMode) {
+		// Don't render HUD in replay.
+		if(!(editMode || ReplayModReplay.instance.getReplayHandler() == null)) return;
 
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(getScale(), getScale(), getScale());
-        render(getDividedPosition(), editMode);
-        GlStateManager.popMatrix();
-    }
+		GlStateManager.pushMatrix();
+		GlStateManager.scale(getScale(), getScale(), getScale());
+		render(getDividedPosition(), editMode);
+		GlStateManager.popMatrix();
+	}
 
-    @EventHandler
-    public void onRender(PostGameOverlayRenderEvent event) {
-        if(event.type == GameOverlayElement.ALL) {
-            render(mc.currentScreen instanceof MoveHudsScreen);
-        }
-    }
+	@EventHandler
+	public void onRender(PostGameOverlayRenderEvent event) {
+		if(event.type == GameOverlayElement.ALL) {
+			render(mc.currentScreen instanceof MoveHudsScreen);
+		}
+	}
 
-    public void render(Position position, boolean editMode) {}
+	public void render(Position position, boolean editMode) {}
 
-    public boolean isSelected(int mouseX, int mouseY) {
-        Rectangle bounds = getMultipliedBounds();
-        return bounds != null && bounds.contains(mouseX, mouseY);
-    }
-    
+	public boolean isSelected(int mouseX, int mouseY) {
+		Rectangle bounds = getMultipliedBounds();
+		return bounds != null && bounds.contains(mouseX, mouseY);
+	}
+	
 }
 

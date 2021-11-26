@@ -6,6 +6,6 @@ import net.minecraft.client.gui.GuiScreen;
 @AllArgsConstructor
 public class InitialOpenGuiEvent {
 
-    public GuiScreen screen;
+	public GuiScreen screen;
 
 }

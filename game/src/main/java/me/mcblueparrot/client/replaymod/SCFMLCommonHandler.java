@@ -6,18 +6,18 @@ import me.mcblueparrot.client.annotation.semantic.ForgeCompat;
 @ForgeCompat
 public class SCFMLCommonHandler {
 
-    private static final SCFMLCommonHandler INSTANCE = new SCFMLCommonHandler();
+	private static final SCFMLCommonHandler INSTANCE = new SCFMLCommonHandler();
 
-    public static SCFMLCommonHandler instance() {
-        return INSTANCE;
-    }
+	public static SCFMLCommonHandler instance() {
+		return INSTANCE;
+	}
 
-    public void onRenderTickStart(float partialTicks) {
-        // Stub
-    }
+	public void onRenderTickStart(float partialTicks) {
+		// Stub
+	}
 
-    public void onRenderTickEnd(float partialTicks) {
-        // Stub
-    }
+	public void onRenderTickEnd(float partialTicks) {
+		// Stub
+	}
 
 }

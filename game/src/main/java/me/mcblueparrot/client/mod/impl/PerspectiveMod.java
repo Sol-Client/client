@@ -15,110 +15,110 @@ import net.minecraft.util.MathHelper;
 
 public class PerspectiveMod extends Mod {
 
-    private KeyBinding key = new KeyBinding("Freelook", Keyboard.KEY_V, "Sol Client");
-    private float yaw;
-    private float pitch;
-    private int previousPerspective;
-    private boolean active;
-    @Expose
-    @ConfigOption("Perspective")
-    private Perspective perspective = Perspective.THIRD_PERSON_BACK;
-    @Expose
-    @ConfigOption("Vertically Invert")
-    private boolean invertPitch;
-    @Expose
-    @ConfigOption("Horizontally Invert")
-    private boolean invertYaw;
+	private KeyBinding key = new KeyBinding("Freelook", Keyboard.KEY_V, "Sol Client");
+	private float yaw;
+	private float pitch;
+	private int previousPerspective;
+	private boolean active;
+	@Expose
+	@ConfigOption("Perspective")
+	private Perspective perspective = Perspective.THIRD_PERSON_BACK;
+	@Expose
+	@ConfigOption("Vertically Invert")
+	private boolean invertPitch;
+	@Expose
+	@ConfigOption("Horizontally Invert")
+	private boolean invertYaw;
 
-    public PerspectiveMod() {
-        super("Freelook", "perspective", "Unlock the camera rotation.", ModCategory.UTILITY);
-        Client.INSTANCE.registerKeyBinding(key);
-    }
+	public PerspectiveMod() {
+		super("Freelook", "perspective", "Unlock the camera rotation.", ModCategory.UTILITY);
+		Client.INSTANCE.registerKeyBinding(key);
+	}
 
-    @EventHandler
-    public void onTick(PreTickEvent event) {
-        if(key.isKeyDown()) {
-            if(!hasStarted()) {
-                start();
-            }
-        }
-        else {
-            if(hasStarted()) {
-                stop();
-            }
-        }
-    }
+	@EventHandler
+	public void onTick(PreTickEvent event) {
+		if(key.isKeyDown()) {
+			if(!hasStarted()) {
+				start();
+			}
+		}
+		else {
+			if(hasStarted()) {
+				stop();
+			}
+		}
+	}
 
-    public boolean hasStarted() {
-        return active;
-    }
+	public boolean hasStarted() {
+		return active;
+	}
 
-    public void start() {
-        active = true;
-        previousPerspective = mc.gameSettings.thirdPersonView;
-        mc.gameSettings.thirdPersonView = perspective.ordinal();
-        Entity renderView = mc.getRenderViewEntity();
-        yaw = renderView.rotationYaw;
-        pitch = renderView.rotationPitch;
-    }
+	public void start() {
+		active = true;
+		previousPerspective = mc.gameSettings.thirdPersonView;
+		mc.gameSettings.thirdPersonView = perspective.ordinal();
+		Entity renderView = mc.getRenderViewEntity();
+		yaw = renderView.rotationYaw;
+		pitch = renderView.rotationPitch;
+	}
 
-    public void stop() {
-        active = false;
-        mc.gameSettings.thirdPersonView = previousPerspective;
-        mc.renderGlobal.setDisplayListEntitiesDirty();
-    }
+	public void stop() {
+		active = false;
+		mc.gameSettings.thirdPersonView = previousPerspective;
+		mc.renderGlobal.setDisplayListEntitiesDirty();
+	}
 
-    public float getYaw() {
-        return yaw;
-    }
+	public float getYaw() {
+		return yaw;
+	}
 
-    public float getPitch() {
-        return pitch;
-    }
+	public float getPitch() {
+		return pitch;
+	}
 
-    @EventHandler
-    public void setAngles(CameraRotateEvent event) {
-        if(active) {
-            event.yaw = yaw;
-            event.pitch = pitch;
-        }
-    }
+	@EventHandler
+	public void setAngles(CameraRotateEvent event) {
+		if(active) {
+			event.yaw = yaw;
+			event.pitch = pitch;
+		}
+	}
 
-    @EventHandler
-    public void setAngles(PlayerHeadRotateEvent event) {
-        if(active) {
-            float yaw = event.yaw;
-            float pitch = event.pitch;
-            event.cancelled = true;
-            if(!invertPitch) pitch = -pitch;
-            if(invertYaw) yaw = -yaw;
-            this.yaw += yaw * 0.15F;
-            this.pitch = MathHelper.clamp_float(this.pitch + (pitch * 0.15F), -90, 90);
-            mc.renderGlobal.setDisplayListEntitiesDirty();
-        }
-    }
+	@EventHandler
+	public void setAngles(PlayerHeadRotateEvent event) {
+		if(active) {
+			float yaw = event.yaw;
+			float pitch = event.pitch;
+			event.cancelled = true;
+			if(!invertPitch) pitch = -pitch;
+			if(invertYaw) yaw = -yaw;
+			this.yaw += yaw * 0.15F;
+			this.pitch = MathHelper.clamp_float(this.pitch + (pitch * 0.15F), -90, 90);
+			mc.renderGlobal.setDisplayListEntitiesDirty();
+		}
+	}
 
-    @Override
-    public boolean isEnabledByDefault() {
-        return true;
-    }
+	@Override
+	public boolean isEnabledByDefault() {
+		return true;
+	}
 
-    public enum Perspective {
-        FIRST_PERSON("First"),
-        THIRD_PERSON_BACK("Third Back"),
-        THIRD_PERSON_FRONT("Third Front");
+	public enum Perspective {
+		FIRST_PERSON("First"),
+		THIRD_PERSON_BACK("Third Back"),
+		THIRD_PERSON_FRONT("Third Front");
 
-        private String name;
+		private String name;
 
-        private Perspective(String name) {
-            this.name = name;
-        }
+		private Perspective(String name) {
+			this.name = name;
+		}
 
-        @Override
-        public String toString() {
-            return name;
-        }
+		@Override
+		public String toString() {
+			return name;
+		}
 
-    }
+	}
 
 }

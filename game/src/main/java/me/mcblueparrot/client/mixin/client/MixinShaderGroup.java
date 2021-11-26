@@ -13,8 +13,8 @@ import net.minecraft.client.shader.ShaderGroup;
 public abstract class MixinShaderGroup implements AccessShaderGroup {
 
 
-    @Override
-    @Accessor
-    public abstract List<Shader> getListShaders();
+	@Override
+	@Accessor
+	public abstract List<Shader> getListShaders();
 
 }

@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.RenderGlobal;
 @ForgeCompat
 public class SCForgeHooksClient {
 
-    public static boolean renderFirstPersonHand(RenderGlobal context, float partialTicks, int renderPass) {
-        return false; // Always render hand
-    }
+	public static boolean renderFirstPersonHand(RenderGlobal context, float partialTicks, int renderPass) {
+		return false; // Always render hand
+	}
 
 }

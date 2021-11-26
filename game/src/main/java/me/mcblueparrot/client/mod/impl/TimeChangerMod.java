@@ -11,18 +11,18 @@ import me.mcblueparrot.client.mod.annotation.Slider;
 
 public class TimeChangerMod extends Mod {
 
-    @Expose
-    @ConfigOption("Time")
-    @Slider(min = 0, max = 24000, step = 1, showValue = false)
-    public float time = 1000;
+	@Expose
+	@ConfigOption("Time")
+	@Slider(min = 0, max = 24000, step = 1, showValue = false)
+	public float time = 1000;
 
-    public TimeChangerMod() {
-        super("Time Changer", "time_changer", "Change the visual time.", ModCategory.VISUAL);
-    }
+	public TimeChangerMod() {
+		super("Time Changer", "time_changer", "Change the visual time.", ModCategory.VISUAL);
+	}
 
-    @EventHandler
-    public void onTime(TimeEvent event) {
-        event.time = (long) time;
-    }
+	@EventHandler
+	public void onTime(TimeEvent event) {
+		event.time = (long) time;
+	}
 
 }

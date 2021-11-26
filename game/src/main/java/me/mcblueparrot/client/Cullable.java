@@ -2,9 +2,9 @@ package me.mcblueparrot.client;
 
 public interface Cullable {
 
-    boolean isCulled();
+	boolean isCulled();
 
-    void setCulled(boolean culled);
+	void setCulled(boolean culled);
 
 
 }

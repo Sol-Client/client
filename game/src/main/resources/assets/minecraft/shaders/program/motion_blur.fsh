@@ -16,5 +16,5 @@ void main() {
 
 	gl_FragColor = mix(texture2D(DiffuseSampler, texCoord), texture2D(PrevSampler, texCoord), BlendFactor);
 
-    gl_FragColor.w = 1.0;
+	gl_FragColor.w = 1.0;
 }

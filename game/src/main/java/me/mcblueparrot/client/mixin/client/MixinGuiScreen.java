@@ -32,77 +32,77 @@ import net.minecraft.util.ResourceLocation;
 @Mixin(GuiScreen.class)
 public class MixinGuiScreen implements AccessGuiScreen {
 
-    @Shadow protected Minecraft mc;
+	@Shadow protected Minecraft mc;
 
-    public boolean canBeForceClosed() {
-        return true;
-    }
+	public boolean canBeForceClosed() {
+		return true;
+	}
 
-    @Redirect(method = "drawWorldBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawGradientRect(IIIIII)V"))
-    public void getTopColour(GuiScreen guiScreen, int left, int top, int right, int bottom, int startColor,
-                           int endColor) {
-        if(!Client.INSTANCE.bus.post(new RenderGuiBackgroundEvent()).cancelled) {
-            Utils.drawGradientRect(left, top, right, bottom, startColor, endColor);
-        }
-        else {
-            Utils.drawGradientRect(left, top, right, bottom, 0, 0);
-        }
-    }
+	@Redirect(method = "drawWorldBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawGradientRect(IIIIII)V"))
+	public void getTopColour(GuiScreen guiScreen, int left, int top, int right, int bottom, int startColor,
+						   int endColor) {
+		if(!Client.INSTANCE.bus.post(new RenderGuiBackgroundEvent()).cancelled) {
+			Utils.drawGradientRect(left, top, right, bottom, startColor, endColor);
+		}
+		else {
+			Utils.drawGradientRect(left, top, right, bottom, 0, 0);
+		}
+	}
 
-    @Redirect(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;mousePressed(Lnet/minecraft/client/Minecraft;II)Z"))
-    public boolean onActionPerformed(GuiButton instance, Minecraft mc, int mouseX, int mouseY) {
-        return instance.mousePressed(mc,
-                mouseX,
-                mouseY) && !Client.INSTANCE.bus.post(new ActionPerformedEvent((GuiScreen) (Object) this, instance)).cancelled;
-    }
+	@Redirect(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;mousePressed(Lnet/minecraft/client/Minecraft;II)Z"))
+	public boolean onActionPerformed(GuiButton instance, Minecraft mc, int mouseX, int mouseY) {
+		return instance.mousePressed(mc,
+				mouseX,
+				mouseY) && !Client.INSTANCE.bus.post(new ActionPerformedEvent((GuiScreen) (Object) this, instance)).cancelled;
+	}
 
-    @Redirect(method = "setWorldAndResolution", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui" +
-            "/GuiScreen;initGui()V"))
-    public void guiInit(GuiScreen instance) {
-        if(!Client.INSTANCE.bus.post(new PreGuiInitEvent(instance)).cancelled) {
-            instance.initGui();
-            Client.INSTANCE.bus.post(new PostGuiInitEvent(instance, buttonList));
-        }
-    }
+	@Redirect(method = "setWorldAndResolution", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui" +
+			"/GuiScreen;initGui()V"))
+	public void guiInit(GuiScreen instance) {
+		if(!Client.INSTANCE.bus.post(new PreGuiInitEvent(instance)).cancelled) {
+			instance.initGui();
+			Client.INSTANCE.bus.post(new PostGuiInitEvent(instance, buttonList));
+		}
+	}
 
-    @Inject(method = "drawScreen", at = @At("RETURN"))
-    public void postGuiRender(int mouseX, int mouseY, float partialTicks, CallbackInfo callback) {
-        GlStateManager.color(1, 1, 1, 1); // Prevent colour from leaking
-        Client.INSTANCE.bus.post(new PostGuiRenderEvent(partialTicks));
+	@Inject(method = "drawScreen", at = @At("RETURN"))
+	public void postGuiRender(int mouseX, int mouseY, float partialTicks, CallbackInfo callback) {
+		GlStateManager.color(1, 1, 1, 1); // Prevent colour from leaking
+		Client.INSTANCE.bus.post(new PostGuiRenderEvent(partialTicks));
 
-        if(SolClientMod.instance.logoInInventory && (Object) this instanceof GuiContainer) {
-            GlStateManager.enableBlend();
+		if(SolClientMod.instance.logoInInventory && (Object) this instanceof GuiContainer) {
+			GlStateManager.enableBlend();
 
-            mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_logo_with_text_" +
-                            Utils.getTextureScale() + ".png"));
+			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_logo_with_text_" +
+							Utils.getTextureScale() + ".png"));
 
-            Gui.drawModalRectWithCustomSizedTexture(width - 140, height - 40, 0, 0, 128, 32, 128, 32);
-        }
-    }
+			Gui.drawModalRectWithCustomSizedTexture(width - 140, height - 40, 0, 0, 128, 32, 128, 32);
+		}
+	}
 
-    @Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;" +
-            "handleMouseInput()V"))
-    public void handleMouseInput(GuiScreen instance) throws IOException {
-        if(!Client.INSTANCE.bus.post(new PreGuiMouseInputEvent()).cancelled) {
-            instance.handleMouseInput();
-        }
-    }
+	@Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;" +
+			"handleMouseInput()V"))
+	public void handleMouseInput(GuiScreen instance) throws IOException {
+		if(!Client.INSTANCE.bus.post(new PreGuiMouseInputEvent()).cancelled) {
+			instance.handleMouseInput();
+		}
+	}
 
-    @Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;" +
-            "handleKeyboardInput()V"))
-    public void handleKeyboardInput(GuiScreen instance) throws IOException {
-        if(!Client.INSTANCE.bus.post(new PreGuiKeyboardInputEvent()).cancelled) {
-            instance.handleKeyboardInput();
-        }
-    }
-    
-    @Shadow
-    protected List<GuiButton> buttonList;
+	@Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;" +
+			"handleKeyboardInput()V"))
+	public void handleKeyboardInput(GuiScreen instance) throws IOException {
+		if(!Client.INSTANCE.bus.post(new PreGuiKeyboardInputEvent()).cancelled) {
+			instance.handleKeyboardInput();
+		}
+	}
+	
+	@Shadow
+	protected List<GuiButton> buttonList;
 
-    @Shadow
-    public int width;
+	@Shadow
+	public int width;
 
-    @Shadow
-    public int height;
+	@Shadow
+	public int height;
 
 }

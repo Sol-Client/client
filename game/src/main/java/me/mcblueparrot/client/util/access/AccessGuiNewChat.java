@@ -6,12 +6,12 @@ import net.minecraft.client.gui.ChatLine;
 
 public interface AccessGuiNewChat {
 
-    List<ChatLine> getDrawnChatLines();
+	List<ChatLine> getDrawnChatLines();
 
-    boolean getIsScrolled();
+	boolean getIsScrolled();
 
-    int getScrollPos();
+	int getScrollPos();
 
-    void clearChat();
+	void clearChat();
 
 }

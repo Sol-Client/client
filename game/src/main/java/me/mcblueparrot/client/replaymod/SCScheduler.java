@@ -40,75 +40,75 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ReportedException;
 
 public class SCScheduler implements Scheduler {
-    private static final Minecraft mc = Minecraft.getMinecraft();
-    private static final EventBus BUS = Client.INSTANCE.bus;
-    private boolean inRunLater = false;
+	private static final Minecraft mc = Minecraft.getMinecraft();
+	private static final EventBus BUS = Client.INSTANCE.bus;
+	private boolean inRunLater = false;
 
-    public void runSync(Runnable runnable) throws InterruptedException, ExecutionException, TimeoutException {
-        if(mc.isCallingFromMinecraftThread()) {
-            runnable.run();
-        }
-        else {
-            FutureTask<Void> future = new FutureTask<>(runnable, null);
-            runLater(future);
-            future.get(30L, TimeUnit.SECONDS);
-        }
-    }
+	public void runSync(Runnable runnable) throws InterruptedException, ExecutionException, TimeoutException {
+		if(mc.isCallingFromMinecraftThread()) {
+			runnable.run();
+		}
+		else {
+			FutureTask<Void> future = new FutureTask<>(runnable, null);
+			runLater(future);
+			future.get(30L, TimeUnit.SECONDS);
+		}
+	}
 
-    public void runPostStartup(Runnable runnable) {
-        this.runLater(runnable);
-    }
+	public void runPostStartup(Runnable runnable) {
+		this.runLater(runnable);
+	}
 
-    public void runLaterWithoutLock(Runnable runnable) {
-        this.runLater(() -> this.runLaterWithoutLock(runnable), runnable);
-    }
+	public void runLaterWithoutLock(Runnable runnable) {
+		this.runLater(() -> this.runLaterWithoutLock(runnable), runnable);
+	}
 
-    public void runLater(Runnable runnable) {
-        this.runLater(runnable, () -> this.runLater(runnable));
-    }
+	public void runLater(Runnable runnable) {
+		this.runLater(runnable, () -> this.runLater(runnable));
+	}
 
-    private void runLater(Runnable runnable, final Runnable defer) {
-        if(mc.isCallingFromMinecraftThread() && inRunLater) {
-            Client.INSTANCE.bus.register(new TickListener(defer));
-        }
-        else {
-            Queue<FutureTask<?>> tasks = ((MinecraftAccessor) mc).getScheduledTasks();
+	private void runLater(Runnable runnable, final Runnable defer) {
+		if(mc.isCallingFromMinecraftThread() && inRunLater) {
+			Client.INSTANCE.bus.register(new TickListener(defer));
+		}
+		else {
+			Queue<FutureTask<?>> tasks = ((MinecraftAccessor) mc).getScheduledTasks();
 
-            synchronized(tasks) {
-                tasks.add(ListenableFutureTask.create(() -> {
-                    this.inRunLater = true;
+			synchronized(tasks) {
+				tasks.add(ListenableFutureTask.create(() -> {
+					this.inRunLater = true;
 
-                    try {
-                        runnable.run();
-                    }
-                    catch (ReportedException error) {
-                        error.printStackTrace();
-                        System.err.println(error.getCrashReport().getCompleteReport());
-                        mc.crashed(error.getCrashReport());
-                    }
-                    finally {
-                        this.inRunLater = false;
-                    }
-                }, null));
-            }
-        }
-    }
+					try {
+						runnable.run();
+					}
+					catch (ReportedException error) {
+						error.printStackTrace();
+						System.err.println(error.getCrashReport().getCompleteReport());
+						mc.crashed(error.getCrashReport());
+					}
+					finally {
+						this.inRunLater = false;
+					}
+				}, null));
+			}
+		}
+	}
 
-    public void runTasks() {
-    }
+	public void runTasks() {
+	}
 
-    @AllArgsConstructor
-    static class TickListener {
+	@AllArgsConstructor
+	static class TickListener {
 
-        private Runnable defer;
+		private Runnable defer;
 
-        @EventHandler
-        public void onTick(PreRenderTickEvent event) {
-            Client.INSTANCE.bus.unregister(this);
-            defer.run();
-        }
+		@EventHandler
+		public void onTick(PreRenderTickEvent event) {
+			Client.INSTANCE.bus.unregister(this);
+			defer.run();
+		}
 
-    }
+	}
 
 }
 

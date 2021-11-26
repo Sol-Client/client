@@ -19,64 +19,64 @@ import net.minecraft.item.ItemStack;
 
 public class MixinBetterItemTooltipsMod {
 
-    @Mixin(GuiIngame.class)
-    public static abstract class MixinGuiIngame {
+	@Mixin(GuiIngame.class)
+	public static abstract class MixinGuiIngame {
 
-        @Inject(method = "renderSelectedItem", at = @At("HEAD"), cancellable = true)
-        public void drawExtraLines(ScaledResolution scaledRes, CallbackInfo callback) {
-            if(BetterItemTooltipsMod.enabled) {
-                callback.cancel();
+		@Inject(method = "renderSelectedItem", at = @At("HEAD"), cancellable = true)
+		public void drawExtraLines(ScaledResolution scaledRes, CallbackInfo callback) {
+			if(BetterItemTooltipsMod.enabled) {
+				callback.cancel();
 
-                mc.mcProfiler.startSection("selectedItemName");
+				mc.mcProfiler.startSection("selectedItemName");
 
-                if(remainingHighlightTicks > 0 && highlightingItemStack != null) {
-                    List<String> lines = highlightingItemStack.getTooltip(mc.thePlayer, false);
+				if(remainingHighlightTicks > 0 && highlightingItemStack != null) {
+					List<String> lines = highlightingItemStack.getTooltip(mc.thePlayer, false);
 
-                    int y = scaledRes.getScaledHeight() - 59;
+					int y = scaledRes.getScaledHeight() - 59;
 
-                    int height = getFontRenderer().FONT_HEIGHT + 2;
+					int height = getFontRenderer().FONT_HEIGHT + 2;
 
-                    y -= (height * (lines.size() - 1)) - 2;
+					y -= (height * (lines.size() - 1)) - 2;
 
-                    if(!this.mc.playerController.shouldDrawHUD()) {
-                        y += 14;
-                    }
+					if(!this.mc.playerController.shouldDrawHUD()) {
+						y += 14;
+					}
 
-                    int opacity = (int)(this.remainingHighlightTicks * 256.0F / 10.0F);
-                    opacity = Math.min(opacity, 255);
+					int opacity = (int)(this.remainingHighlightTicks * 256.0F / 10.0F);
+					opacity = Math.min(opacity, 255);
 
-                    if(opacity > 0) {
-                        GlStateManager.pushMatrix();
-                        GlStateManager.enableBlend();
-                        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-                        for(String line : lines) {
-                            int x = (scaledRes.getScaledWidth() - getFontRenderer().getStringWidth(line)) / 2;
-                            getFontRenderer().drawStringWithShadow(line, x, y,
-                                    16777215 + (opacity << 24));
-                            y += height;
-                        }
-                        GlStateManager.disableBlend();
-                        GlStateManager.popMatrix();
-                    }
-                }
+					if(opacity > 0) {
+						GlStateManager.pushMatrix();
+						GlStateManager.enableBlend();
+						GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+						for(String line : lines) {
+							int x = (scaledRes.getScaledWidth() - getFontRenderer().getStringWidth(line)) / 2;
+							getFontRenderer().drawStringWithShadow(line, x, y,
+									16777215 + (opacity << 24));
+							y += height;
+						}
+						GlStateManager.disableBlend();
+						GlStateManager.popMatrix();
+					}
+				}
 
-                mc.mcProfiler.endSection();
-            }
-        }
+				mc.mcProfiler.endSection();
+			}
+		}
 
-        @Shadow @Final
-        private Minecraft mc;
+		@Shadow @Final
+		private Minecraft mc;
 
-        @Shadow
-        private int remainingHighlightTicks;
+		@Shadow
+		private int remainingHighlightTicks;
 
-        @Shadow
-        private ItemStack highlightingItemStack;
+		@Shadow
+		private ItemStack highlightingItemStack;
 
-        @Shadow
-        public abstract FontRenderer getFontRenderer();
+		@Shadow
+		public abstract FontRenderer getFontRenderer();
 
 
-    }
+	}
 
 }

@@ -10,8 +10,8 @@ import net.minecraft.tileentity.TileEntity;
 @Mixin(TileEntity.class)
 public class MixinTileEntity implements Cullable {
 
-    @Getter
-    @Setter
-    private boolean culled;
+	@Getter
+	@Setter
+	private boolean culled;
 
 }

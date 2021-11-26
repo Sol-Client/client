@@ -33,28 +33,28 @@ import me.mcblueparrot.client.mod.impl.SCReplayMod;
 
 public class SCEventRegistrations {
 
-    private List<EventRegistration<?>> registrations = new ArrayList<>();
-    private static final EventBus BUS = Client.INSTANCE.bus;
+	private List<EventRegistration<?>> registrations = new ArrayList<>();
+	private static final EventBus BUS = Client.INSTANCE.bus;
 
-    public <T> SCEventRegistrations on(EventRegistration<T> registration) {
-        registrations.add(registration);
-        return this;
-    }
+	public <T> SCEventRegistrations on(EventRegistration<T> registration) {
+		registrations.add(registration);
+		return this;
+	}
 
-    public <T> SCEventRegistrations on(Event<T> event, T listener) {
-        return on(EventRegistration.create(event, listener));
-    }
+	public <T> SCEventRegistrations on(Event<T> event, T listener) {
+		return on(EventRegistration.create(event, listener));
+	}
 
-    public void register() {
-        BUS.register(this);
-        SCReplayMod.instance.addEvent(this);
-        registrations.forEach(EventRegistration::register);
-    }
+	public void register() {
+		BUS.register(this);
+		SCReplayMod.instance.addEvent(this);
+		registrations.forEach(EventRegistration::register);
+	}
 
-    public void unregister() {
-        BUS.unregister(this);
-        SCReplayMod.instance.removeEvent(this);
-        registrations.forEach(EventRegistration::unregister);
-    }
+	public void unregister() {
+		BUS.unregister(this);
+		SCReplayMod.instance.removeEvent(this);
+		registrations.forEach(EventRegistration::unregister);
+	}
 
 }

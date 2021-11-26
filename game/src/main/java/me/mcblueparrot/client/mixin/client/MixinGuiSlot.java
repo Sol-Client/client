@@ -9,9 +9,9 @@ import net.minecraft.client.gui.GuiSlot;
 @Mixin(GuiSlot.class)
 public class MixinGuiSlot {
 
-    @ModifyConstant(method = "handleMouseInput", constant = @Constant(intValue = 2, ordinal = 4))
-    public int getScrollDivisor(int original) {
-        return 1;
-    }
+	@ModifyConstant(method = "handleMouseInput", constant = @Constant(intValue = 2, ordinal = 4))
+	public int getScrollDivisor(int original) {
+		return 1;
+	}
 
 }

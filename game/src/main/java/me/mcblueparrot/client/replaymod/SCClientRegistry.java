@@ -8,8 +8,8 @@ import net.minecraft.client.settings.KeyBinding;
 @ForgeCompat
 public class SCClientRegistry {
 
-    public static void registerKeyBinding(KeyBinding keyBinding) {
-        Client.INSTANCE.registerKeyBinding(keyBinding);
-    }
+	public static void registerKeyBinding(KeyBinding keyBinding) {
+		Client.INSTANCE.registerKeyBinding(keyBinding);
+	}
 
 }

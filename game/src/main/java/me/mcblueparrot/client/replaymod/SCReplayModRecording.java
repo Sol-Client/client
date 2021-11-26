@@ -38,43 +38,43 @@ import me.mcblueparrot.client.Client;
 import net.minecraft.network.NetworkManager;
 
 public class SCReplayModRecording implements Module {
-    private static final Logger LOGGER = LogManager.getLogger();
-    public static SCReplayModRecording instance;
-    private ReplayMod core;
-    private ConnectionEventHandler connectionEventHandler;
+	private static final Logger LOGGER = LogManager.getLogger();
+	public static SCReplayModRecording instance;
+	private ReplayMod core;
+	private ConnectionEventHandler connectionEventHandler;
 
-    public SCReplayModRecording(ReplayMod mod) {
-        instance = this;
-        core = mod;
-        core.getSettingsRegistry().register(Setting.class);
-        Client.INSTANCE.bus.register(this);
-    }
+	public SCReplayModRecording(ReplayMod mod) {
+		instance = this;
+		core = mod;
+		core.getSettingsRegistry().register(Setting.class);
+		Client.INSTANCE.bus.register(this);
+	}
 
-    public void registerKeyBindings(KeyBindingRegistry registry) {
-        registry.registerKeyBinding("replaymod.input.marker", 50, () -> {
-            PacketListener packetListener = connectionEventHandler.getPacketListener();
-            if(packetListener != null) {
-                packetListener.addMarker(null);
-                core.printInfoToChat("replaymod.chat.addedmarker");
-            }
+	public void registerKeyBindings(KeyBindingRegistry registry) {
+		registry.registerKeyBinding("replaymod.input.marker", 50, () -> {
+			PacketListener packetListener = connectionEventHandler.getPacketListener();
+			if(packetListener != null) {
+				packetListener.addMarker(null);
+				core.printInfoToChat("replaymod.chat.addedmarker");
+			}
 
-        }, false);
-    }
+		}, false);
+	}
 
-    public void initClient() {
-        this.connectionEventHandler = new ConnectionEventHandler(LOGGER, this.core);
-        new GuiHandler(this.core).register();
-    }
+	public void initClient() {
+		this.connectionEventHandler = new ConnectionEventHandler(LOGGER, this.core);
+		new GuiHandler(this.core).register();
+	}
 
-    public void initiateRecording(NetworkManager networkManager) {
-        Channel channel = ((NetworkManagerAccessor) networkManager).getChannel();
-        if(channel.pipeline().get("ReplayModReplay_replaySender") == null) {
-            this.connectionEventHandler.onConnectedToServerEvent(networkManager);
-        }
-    }
+	public void initiateRecording(NetworkManager networkManager) {
+		Channel channel = ((NetworkManagerAccessor) networkManager).getChannel();
+		if(channel.pipeline().get("ReplayModReplay_replaySender") == null) {
+			this.connectionEventHandler.onConnectedToServerEvent(networkManager);
+		}
+	}
 
-    public ConnectionEventHandler getConnectionEventHandler() {
-        return this.connectionEventHandler;
-    }
+	public ConnectionEventHandler getConnectionEventHandler() {
+		return this.connectionEventHandler;
+	}
 
 }

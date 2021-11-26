@@ -16,33 +16,33 @@ import net.minecraft.util.ResourceLocation;
 @Mixin(Locale.class)
 public abstract class MixinLocale {
 
-    @Overwrite
-    public synchronized void loadLocaleDataFiles(IResourceManager resourceManager, List<String> languageCodes) {
-        properties.clear();
+	@Overwrite
+	public synchronized void loadLocaleDataFiles(IResourceManager resourceManager, List<String> languageCodes) {
+		properties.clear();
 
-        for(String language : languageCodes) {
-            String vanillaLang = String.format("lang/%s.lang", language);
-            String ofLang = String.format("optifine/lang/%s.lang", language);
+		for(String language : languageCodes) {
+			String vanillaLang = String.format("lang/%s.lang", language);
+			String ofLang = String.format("optifine/lang/%s.lang", language);
 
-            for(String domain : resourceManager.getResourceDomains()) {
-                try {
-                    loadLocaleData(resourceManager.getAllResources(new ResourceLocation(domain, vanillaLang)));
-                    loadLocaleData(resourceManager.getAllResources(new ResourceLocation(domain, ofLang)));
-                }
-                catch(IOException ignored) {
-                }
-            }
-        }
+			for(String domain : resourceManager.getResourceDomains()) {
+				try {
+					loadLocaleData(resourceManager.getAllResources(new ResourceLocation(domain, vanillaLang)));
+					loadLocaleData(resourceManager.getAllResources(new ResourceLocation(domain, ofLang)));
+				}
+				catch(IOException ignored) {
+				}
+			}
+		}
 
-        checkUnicode();
-    }
+		checkUnicode();
+	}
 
-    @Shadow
-    protected abstract void loadLocaleData(List<IResource> resourcesList) throws IOException;
+	@Shadow
+	protected abstract void loadLocaleData(List<IResource> resourcesList) throws IOException;
 
-    @Shadow
-    private Map<String, String> properties;
+	@Shadow
+	private Map<String, String> properties;
 
-    @Shadow protected abstract void checkUnicode();
+	@Shadow protected abstract void checkUnicode();
 
 }

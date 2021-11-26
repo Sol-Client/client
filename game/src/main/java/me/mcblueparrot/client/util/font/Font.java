@@ -21,28 +21,28 @@ import org.lwjgl.opengl.GL11;
  */
 public interface Font {
 
-    default void renderStringScaled(String text, int givenX, int givenY, int colour, double givenScale) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(givenX, givenY, 0);
-        GL11.glScaled(givenScale, givenScale, givenScale);
-        renderString(text, 0, 0, colour);
-        GL11.glPopMatrix();
-    }
+	default void renderStringScaled(String text, int givenX, int givenY, int colour, double givenScale) {
+		GL11.glPushMatrix();
+		GL11.glTranslated(givenX, givenY, 0);
+		GL11.glScaled(givenScale, givenScale, givenScale);
+		renderString(text, 0, 0, colour);
+		GL11.glPopMatrix();
+	}
 
-    int renderString(String text, float x, float y, int colour);
+	int renderString(String text, float x, float y, int colour);
 
-    int renderStringWithShadow(String text, float x, float y, int colour);
+	int renderStringWithShadow(String text, float x, float y, int colour);
 
-    void renderCenteredString(String text, float x, float y, int color);
+	void renderCenteredString(String text, float x, float y, int color);
 
-    default void drawCenteredTextScaled(String text, int givenX, int givenY, int colour, double givenScale) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(givenX, givenY, 0);
-        GL11.glScaled(givenScale, givenScale, givenScale);
-        renderCenteredString(text, 0, 0, colour);
-        GL11.glPopMatrix();
-    }
+	default void drawCenteredTextScaled(String text, int givenX, int givenY, int colour, double givenScale) {
+		GL11.glPushMatrix();
+		GL11.glTranslated(givenX, givenY, 0);
+		GL11.glScaled(givenScale, givenScale, givenScale);
+		renderCenteredString(text, 0, 0, colour);
+		GL11.glPopMatrix();
+	}
 
-    float getWidth(String text);
+	float getWidth(String text);
 
 }

@@ -10,8 +10,8 @@ import net.minecraft.entity.Entity;
 @Mixin(Render.class)
 public abstract class MixinRender<T extends Entity> implements AccessRender<T> {
 
-    @Override
-    @Invoker("renderName")
-    public abstract void doRenderName(T entity, double x, double y, double z);
+	@Override
+	@Invoker("renderName")
+	public abstract void doRenderName(T entity, double x, double y, double z);
 
 }

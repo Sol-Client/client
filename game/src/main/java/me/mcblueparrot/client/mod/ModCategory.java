@@ -9,41 +9,41 @@ import me.mcblueparrot.client.Client;
  * Categories of Sol Client mods.
  */
 public enum ModCategory {
-    /**
-     * Mod appears before all others.
-     */
-    NONE(null),
-    /**
-     * HUD widgets.
-     */
-    HUD("HUD"),
-    /**
-     * Utility mods.
-     */
-    UTILITY("Utility"),
-    /**
-     * Aesthetic/graphical mods.
-     */
-    VISUAL("Visual");
+	/**
+	 * Mod appears before all others.
+	 */
+	NONE(null),
+	/**
+	 * HUD widgets.
+	 */
+	HUD("HUD"),
+	/**
+	 * Utility mods.
+	 */
+	UTILITY("Utility"),
+	/**
+	 * Aesthetic/graphical mods.
+	 */
+	VISUAL("Visual");
 
-    private String name;
-    private List<Mod> mods;
+	private String name;
+	private List<Mod> mods;
 
-    private ModCategory(String name) {
-        this.name = name;
-    }
+	private ModCategory(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public String toString() {
-        return name;
-    }
+	@Override
+	public String toString() {
+		return name;
+	}
 
-    public List<Mod> getMods() {
-        if(mods == null) {
-            return mods = Client.INSTANCE.getMods().stream().filter((mod) -> mod.getCategory() == ModCategory.this)
-                    .collect(Collectors.toList());
-        }
-        return mods;
-    }
+	public List<Mod> getMods() {
+		if(mods == null) {
+			return mods = Client.INSTANCE.getMods().stream().filter((mod) -> mod.getCategory() == ModCategory.this)
+					.collect(Collectors.toList());
+		}
+		return mods;
+	}
 
 }

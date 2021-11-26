@@ -51,88 +51,88 @@ import net.minecraft.client.settings.KeyBinding;
 
 public class SCReplayModBackend extends SCEventRegistrations {
 
-    private final ReplayMod mod = new ReplayMod(this);
+	private final ReplayMod mod = new ReplayMod(this);
 
-    public void init() {
-        new File(Minecraft.getMinecraft().mcDataDir, "config").mkdirs();
-        register();
-        try {
-            Method initModulesMethod = mod.getClass().getDeclaredMethod("initModules");
-            initModulesMethod.setAccessible(true);
-            initModulesMethod.invoke(mod);
-        }
-        catch(NoSuchMethodException | IllegalAccessException error) {
-            throw new Error(error);
-        }
-        catch (InvocationTargetException error) {
-            if(error.getCause() instanceof Error) {
-                throw (Error) error.getCause();
-            }
-            else if(error.getCause() instanceof RuntimeException) {
-                throw (RuntimeException) error.getCause();
-            }
-        }
-        KeyBinding.resetKeyBindingArrayAndHash();
-    }
+	public void init() {
+		new File(Minecraft.getMinecraft().mcDataDir, "config").mkdirs();
+		register();
+		try {
+			Method initModulesMethod = mod.getClass().getDeclaredMethod("initModules");
+			initModulesMethod.setAccessible(true);
+			initModulesMethod.invoke(mod);
+		}
+		catch(NoSuchMethodException | IllegalAccessException error) {
+			throw new Error(error);
+		}
+		catch (InvocationTargetException error) {
+			if(error.getCause() instanceof Error) {
+				throw (Error) error.getCause();
+			}
+			else if(error.getCause() instanceof RuntimeException) {
+				throw (RuntimeException) error.getCause();
+			}
+		}
+		KeyBinding.resetKeyBindingArrayAndHash();
+	}
 
-    public String getVersion() {
-        return "2.6.1";
-    }
+	public String getVersion() {
+		return "2.6.1";
+	}
 
-    public String getMinecraftVersion() {
-        return "1.8.9";
-    }
+	public String getMinecraftVersion() {
+		return "1.8.9";
+	}
 
-    public boolean isModLoaded(String id) {
-        return false;
-    }
+	public boolean isModLoaded(String id) {
+		return false;
+	}
 
-    @EventHandler
-    public void onRenderHud(PreGameOverlayRenderEvent event) {
-        if(!event.cancelled) {
-            if(event.type == GameOverlayElement.ALL) {
-                RenderHudCallback.EVENT.invoker().renderHud(new MatrixStack(), event.partialTicks);
-            }
-            else if(event.type == GameOverlayElement.CROSSHAIRS) {
-                event.cancelled =
-                        RenderSpectatorCrosshairCallback.EVENT.invoker().shouldRenderSpectatorCrosshair() == Boolean.FALSE;
-            }
-        }
-    }
+	@EventHandler
+	public void onRenderHud(PreGameOverlayRenderEvent event) {
+		if(!event.cancelled) {
+			if(event.type == GameOverlayElement.ALL) {
+				RenderHudCallback.EVENT.invoker().renderHud(new MatrixStack(), event.partialTicks);
+			}
+			else if(event.type == GameOverlayElement.CROSSHAIRS) {
+				event.cancelled =
+						RenderSpectatorCrosshairCallback.EVENT.invoker().shouldRenderSpectatorCrosshair() == Boolean.FALSE;
+			}
+		}
+	}
 
-    @EventHandler
-    public void preGuiInit(PreGuiInitEvent event) {
-        InitScreenCallback.Pre.EVENT.invoker().preInitScreen(event.screen);
-    }
+	@EventHandler
+	public void preGuiInit(PreGuiInitEvent event) {
+		InitScreenCallback.Pre.EVENT.invoker().preInitScreen(event.screen);
+	}
 
-    @EventHandler
-    public void onGuiInit(PostGuiInitEvent event) {
-        InitScreenCallback.EVENT.invoker().initScreen(event.screen, event.buttonList);
-    }
+	@EventHandler
+	public void onGuiInit(PostGuiInitEvent event) {
+		InitScreenCallback.EVENT.invoker().initScreen(event.screen, event.buttonList);
+	}
 
-    @EventHandler
-    public void onGuiOpen(OpenGuiEvent event) {
-        OpenGuiScreenCallback.EVENT.invoker().openGuiScreen(event.screen);
-    }
+	@EventHandler
+	public void onGuiOpen(OpenGuiEvent event) {
+		OpenGuiScreenCallback.EVENT.invoker().openGuiScreen(event.screen);
+	}
 
-    @EventHandler
-    public void onGuiRender(PostGuiRenderEvent event) {
-        PostRenderScreenCallback.EVENT.invoker().postRenderScreen(new MatrixStack(), event.partialTicks);
-    }
+	@EventHandler
+	public void onGuiRender(PostGuiRenderEvent event) {
+		PostRenderScreenCallback.EVENT.invoker().postRenderScreen(new MatrixStack(), event.partialTicks);
+	}
 
-    @EventHandler
-    public void tickOverlay(PreTickEvent event) {
-        PreTickCallback.EVENT.invoker().preTick();
-    }
+	@EventHandler
+	public void tickOverlay(PreTickEvent event) {
+		PreTickCallback.EVENT.invoker().preTick();
+	}
 
-    @EventHandler
-    public void onPreRender(PreRenderTickEvent event) {
-        PreRenderCallback.EVENT.invoker().preRender();
-    }
+	@EventHandler
+	public void onPreRender(PreRenderTickEvent event) {
+		PreRenderCallback.EVENT.invoker().preRender();
+	}
 
-    @EventHandler
-    public void onPostRender(PostRenderTickEvent event) {
-        PostRenderCallback.EVENT.invoker().postRender();
-    }
+	@EventHandler
+	public void onPostRender(PostRenderTickEvent event) {
+		PostRenderCallback.EVENT.invoker().postRender();
+	}
 
 }

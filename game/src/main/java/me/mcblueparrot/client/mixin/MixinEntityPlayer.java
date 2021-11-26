@@ -16,16 +16,16 @@ import net.minecraft.util.BlockPos;
 @Mixin(EntityPlayer.class)
 public class MixinEntityPlayer {
 
-    @Inject(method = "attackTargetEntityWithCurrentItem", at = @At("HEAD"))
-    public void attackEntity(Entity entity, CallbackInfo callback) {
-        if(entity.canAttackWithItem()) {
-            Client.INSTANCE.bus.post(new EntityAttackEvent(entity));
-        }
-    }
+	@Inject(method = "attackTargetEntityWithCurrentItem", at = @At("HEAD"))
+	public void attackEntity(Entity entity, CallbackInfo callback) {
+		if(entity.canAttackWithItem()) {
+			Client.INSTANCE.bus.post(new EntityAttackEvent(entity));
+		}
+	}
 
-    @Inject(method = "trySleep", at = @At("HEAD"))
-    public void onSleep(BlockPos pos, CallbackInfoReturnable<EntityPlayer.EnumStatus> callback) {
-        Client.INSTANCE.bus.post(new PlayerSleepEvent((EntityPlayer) (Object) this, pos));
-    }
+	@Inject(method = "trySleep", at = @At("HEAD"))
+	public void onSleep(BlockPos pos, CallbackInfoReturnable<EntityPlayer.EnumStatus> callback) {
+		Client.INSTANCE.bus.post(new PlayerSleepEvent((EntityPlayer) (Object) this, pos));
+	}
 
 }

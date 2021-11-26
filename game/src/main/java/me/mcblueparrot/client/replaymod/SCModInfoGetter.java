@@ -7,8 +7,8 @@ import com.replaymod.replaystudio.data.ModInfo;
 
 public class SCModInfoGetter {
 
-    public static Collection<ModInfo> getInstalledNetworkMods() {
-        return Collections.emptyList();
-    }
+	public static Collection<ModInfo> getInstalledNetworkMods() {
+		return Collections.emptyList();
+	}
 
 }

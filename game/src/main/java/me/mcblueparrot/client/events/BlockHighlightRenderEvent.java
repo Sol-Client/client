@@ -6,8 +6,8 @@ import net.minecraft.util.MovingObjectPosition;
 @RequiredArgsConstructor
 public class BlockHighlightRenderEvent {
 
-    public final MovingObjectPosition movingObjectPosition;
-    public final float partialTicks;
-    public boolean cancelled;
+	public final MovingObjectPosition movingObjectPosition;
+	public final float partialTicks;
+	public boolean cancelled;
 
 }

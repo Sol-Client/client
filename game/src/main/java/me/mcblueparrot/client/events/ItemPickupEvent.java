@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 @AllArgsConstructor
 public class ItemPickupEvent {
 
-    public EntityPlayer player;
-    public EntityItem pickedUp;
+	public EntityPlayer player;
+	public EntityItem pickedUp;
 
 }

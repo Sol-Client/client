@@ -12,11 +12,11 @@ import net.minecraft.entity.Entity;
 @Mixin(Entity.class)
 public abstract class MixinEntity implements Cullable, AccessEntity {
 
-    @Getter
-    @Setter
-    private boolean culled;
+	@Getter
+	@Setter
+	private boolean culled;
 
-    @Accessor
-    public abstract boolean getIsInWeb();
+	@Accessor
+	public abstract boolean getIsInWeb();
 
 }

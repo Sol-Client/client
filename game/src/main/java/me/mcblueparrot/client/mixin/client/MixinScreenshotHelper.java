@@ -31,112 +31,112 @@ import net.minecraft.util.ScreenShotHelper;
 @Mixin(ScreenShotHelper.class)
 public class MixinScreenshotHelper {
 
-    @Overwrite
-    public static IChatComponent saveScreenshot(File gameDirectory, String screenshotName, int width, int height,
-            Framebuffer buffer) {
-        try {
-            File screenshots = new File(gameDirectory, "screenshots");
-            screenshots.mkdir();
+	@Overwrite
+	public static IChatComponent saveScreenshot(File gameDirectory, String screenshotName, int width, int height,
+			Framebuffer buffer) {
+		try {
+			File screenshots = new File(gameDirectory, "screenshots");
+			screenshots.mkdir();
 
-            if(OpenGlHelper.isFramebufferEnabled()) {
-                width = buffer.framebufferTextureWidth;
-                height = buffer.framebufferTextureHeight;
-            }
+			if(OpenGlHelper.isFramebufferEnabled()) {
+				width = buffer.framebufferTextureWidth;
+				height = buffer.framebufferTextureHeight;
+			}
 
-            int pixels = width * height;
+			int pixels = width * height;
 
-            if(pixelBuffer == null || pixelBuffer.capacity() < pixels) {
-                pixelBuffer = BufferUtils.createIntBuffer(pixels);
-                pixelValues = new int[pixels];
-            }
+			if(pixelBuffer == null || pixelBuffer.capacity() < pixels) {
+				pixelBuffer = BufferUtils.createIntBuffer(pixels);
+				pixelValues = new int[pixels];
+			}
 
-            GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
-            GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-            pixelBuffer.clear();
+			GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
+			GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+			pixelBuffer.clear();
 
-            if(OpenGlHelper.isFramebufferEnabled()) {
-                GlStateManager.bindTexture(buffer.framebufferTexture);
-                GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV,
-                        pixelBuffer);
-            }
-            else {
-                GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV,
-                        pixelBuffer);
-            }
+			if(OpenGlHelper.isFramebufferEnabled()) {
+				GlStateManager.bindTexture(buffer.framebufferTexture);
+				GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV,
+						pixelBuffer);
+			}
+			else {
+				GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV,
+						pixelBuffer);
+			}
 
-            pixelBuffer.get(pixelValues);
-            TextureUtil.processPixelValues(pixelValues, width, height);
-            BufferedImage image = null;
+			pixelBuffer.get(pixelValues);
+			TextureUtil.processPixelValues(pixelValues, width, height);
+			BufferedImage image = null;
 
-            if(OpenGlHelper.isFramebufferEnabled()) {
-                image = new BufferedImage(buffer.framebufferWidth, buffer.framebufferHeight, 1);
-                int j = buffer.framebufferTextureHeight - buffer.framebufferHeight;
+			if(OpenGlHelper.isFramebufferEnabled()) {
+				image = new BufferedImage(buffer.framebufferWidth, buffer.framebufferHeight, 1);
+				int j = buffer.framebufferTextureHeight - buffer.framebufferHeight;
 
-                for(int k = j; k < buffer.framebufferTextureHeight; ++k) {
-                    for(int l = 0; l < buffer.framebufferWidth; ++l) {
-                        image.setRGB(l, k - j, pixelValues[k * buffer.framebufferTextureWidth + l]);
-                    }
-                }
-            }
-            else {
-                image = new BufferedImage(width, height, 1);
-                image.setRGB(0, 0, width, height, pixelValues, 0, width);
-            }
+				for(int k = j; k < buffer.framebufferTextureHeight; ++k) {
+					for(int l = 0; l < buffer.framebufferWidth; ++l) {
+						image.setRGB(l, k - j, pixelValues[k * buffer.framebufferTextureWidth + l]);
+					}
+				}
+			}
+			else {
+				image = new BufferedImage(width, height, 1);
+				image.setRGB(0, 0, width, height, pixelValues, 0, width);
+			}
 
-            File screenshot;
+			File screenshot;
 
-            if(screenshotName == null) {
-                screenshot = getTimestampedPNGFileForDirectory(screenshots);
-            }
-            else {
-                screenshot = new File(screenshots, screenshotName);
-            }
+			if(screenshotName == null) {
+				screenshot = getTimestampedPNGFileForDirectory(screenshots);
+			}
+			else {
+				screenshot = new File(screenshots, screenshotName);
+			}
 
-            BufferedImage finalImage = image;
-            
-            Thread thread = new Thread(() -> {
-                try {
-                    ImageIO.write(finalImage, "png", (File) screenshot);
+			BufferedImage finalImage = image;
+			
+			Thread thread = new Thread(() -> {
+				try {
+					ImageIO.write(finalImage, "png", (File) screenshot);
 
-                    IChatComponent text = new ChatComponentText(screenshot.getName());
-                    text.getChatStyle()
-                            .setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshot.getAbsolutePath()));
-                    text.getChatStyle().setUnderlined(true);
+					IChatComponent text = new ChatComponentText(screenshot.getName());
+					text.getChatStyle()
+							.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshot.getAbsolutePath()));
+					text.getChatStyle().setUnderlined(true);
 
-                    Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentTranslation("screenshot.success", text));
-                }
-                catch(Exception error) {
-                    logger.warn("Couldn\'t save screenshot", error);
-                    Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentTranslation("screenshot.failure", error.getMessage()));
-                }
-            });
+					Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentTranslation("screenshot.success", text));
+				}
+				catch(Exception error) {
+					logger.warn("Couldn\'t save screenshot", error);
+					Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentTranslation("screenshot.failure", error.getMessage()));
+				}
+			});
 
-            if(ReplayModReplay.instance.getReplayHandler() != null) {
-                thread.run();
-            }
-            else {
-                thread.start();
-            }
+			if(ReplayModReplay.instance.getReplayHandler() != null) {
+				thread.run();
+			}
+			else {
+				thread.start();
+			}
 
-            return null;
-        }
-        catch(Exception exception) {
-            logger.warn("Couldn\'t save screenshot", exception);
-            return new ChatComponentTranslation("screenshot.failure", exception.getMessage());
-        }
-    }
+			return null;
+		}
+		catch(Exception exception) {
+			logger.warn("Couldn\'t save screenshot", exception);
+			return new ChatComponentTranslation("screenshot.failure", exception.getMessage());
+		}
+	}
 
-    @Shadow
-    private static IntBuffer pixelBuffer;
+	@Shadow
+	private static IntBuffer pixelBuffer;
 
-    @Shadow
-    @Final
-    private static Logger logger;
+	@Shadow
+	@Final
+	private static Logger logger;
 
-    @Shadow
-    private static File getTimestampedPNGFileForDirectory(File gameDirectory) { throw new UnsupportedOperationException(); }
+	@Shadow
+	private static File getTimestampedPNGFileForDirectory(File gameDirectory) { throw new UnsupportedOperationException(); }
 
-    @Shadow
-    private static int[] pixelValues;
+	@Shadow
+	private static int[] pixelValues;
 
 }

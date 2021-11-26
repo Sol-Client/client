@@ -15,14 +15,14 @@ import net.minecraft.util.BlockPos;
 @Mixin(RenderChunk.class)
 public class MixinRenderChunk {
 
-    @Redirect(method = "deleteGlResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/vertex/" +
-            "VertexBuffer;deleteGlBuffers()V"))
-    public void cancelDelete(VertexBuffer instance) {
-    }
+	@Redirect(method = "deleteGlResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/vertex/" +
+			"VertexBuffer;deleteGlBuffers()V"))
+	public void cancelDelete(VertexBuffer instance) {
+	}
 
-    @Inject(method = "setPosition", at = @At("RETURN"))
-    public void setPosition(BlockPos pos, CallbackInfo callback) {
-        Client.INSTANCE.bus.post(new RenderChunkPositionEvent((RenderChunk) (Object) this, pos));
-    }
+	@Inject(method = "setPosition", at = @At("RETURN"))
+	public void setPosition(BlockPos pos, CallbackInfo callback) {
+		Client.INSTANCE.bus.post(new RenderChunkPositionEvent((RenderChunk) (Object) this, pos));
+	}
 
 }

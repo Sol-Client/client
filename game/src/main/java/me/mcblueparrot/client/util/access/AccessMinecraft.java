@@ -7,12 +7,12 @@ import net.minecraft.util.Timer;
 // For some reason you do need a surrogate duck.
 public interface AccessMinecraft {
 
-    boolean isRunning();
+	boolean isRunning();
 
-    Timer getTimerSC();
+	Timer getTimerSC();
 
-    static AccessMinecraft getInstance() {
-        return (AccessMinecraft) Minecraft.getMinecraft();
-    }
+	static AccessMinecraft getInstance() {
+		return (AccessMinecraft) Minecraft.getMinecraft();
+	}
 
 }

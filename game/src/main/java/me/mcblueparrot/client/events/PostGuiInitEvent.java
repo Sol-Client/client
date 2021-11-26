@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 @AllArgsConstructor
 public class PostGuiInitEvent {
 
-    public GuiScreen screen;
-    public final Collection<GuiButton> buttonList;
+	public GuiScreen screen;
+	public final Collection<GuiButton> buttonList;
 
 }

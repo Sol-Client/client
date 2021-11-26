@@ -8,19 +8,19 @@ import java.lang.reflect.Modifier;
 
 public class GuiButtonTransformer implements ClassNodeTransformer {
 
-    @Override
-    public boolean test(String name) {
-        return name.equals("net/minecraft/client/gui/GuiButton");
-    }
+	@Override
+	public boolean test(String name) {
+		return name.equals("net/minecraft/client/gui/GuiButton");
+	}
 
-    @Override
-    public void apply(ClassNode clazz) {
-        for(FieldNode field : clazz.fields) {
-            if(field.name.equals("width") || field.name.equals("field_146120_f")
-                    || field.name.equals("height") || field.name.equals("field_146121_g")) {
-                field.access = (field.access & ~Modifier.PROTECTED) | Modifier.PUBLIC;
-            }
-        }
-    }
+	@Override
+	public void apply(ClassNode clazz) {
+		for(FieldNode field : clazz.fields) {
+			if(field.name.equals("width") || field.name.equals("field_146120_f")
+					|| field.name.equals("height") || field.name.equals("field_146121_g")) {
+				field.access = (field.access & ~Modifier.PROTECTED) | Modifier.PUBLIC;
+			}
+		}
+	}
 
 }

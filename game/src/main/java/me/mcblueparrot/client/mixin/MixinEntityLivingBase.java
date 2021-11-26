@@ -17,14 +17,14 @@ import net.minecraft.entity.player.EntityPlayer;
 @Mixin(EntityLivingBase.class)
 public abstract class MixinEntityLivingBase implements AccessEntityLivingBase {
 
-    @Invoker("getArmSwingAnimationEnd")
-    public abstract int accessArmSwingAnimationEnd();
+	@Invoker("getArmSwingAnimationEnd")
+	public abstract int accessArmSwingAnimationEnd();
 
-    @Inject(method = "onItemPickup", at = @At("HEAD"))
-    public void onItemPickup(Entity entity, int stackSize, CallbackInfo callback) {
-        if(entity instanceof EntityItem && (Object) this instanceof EntityPlayer) {
-            Client.INSTANCE.bus.post(new ItemPickupEvent((EntityPlayer) (Object) this, (EntityItem) entity));
-        }
-    }
+	@Inject(method = "onItemPickup", at = @At("HEAD"))
+	public void onItemPickup(Entity entity, int stackSize, CallbackInfo callback) {
+		if(entity instanceof EntityItem && (Object) this instanceof EntityPlayer) {
+			Client.INSTANCE.bus.post(new ItemPickupEvent((EntityPlayer) (Object) this, (EntityItem) entity));
+		}
+	}
 
 }

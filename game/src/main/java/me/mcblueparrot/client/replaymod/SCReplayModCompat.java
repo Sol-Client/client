@@ -29,11 +29,11 @@ import me.mcblueparrot.client.tweak.Tweaker;
 
 public class SCReplayModCompat implements Module {
 
-    public void initClient() {
-        if(Tweaker.optiFine) {
-            new ShaderBeginRender().register();
-            new DisableFastRender().register();
-        }
-    }
+	public void initClient() {
+		if(Tweaker.optiFine) {
+			new ShaderBeginRender().register();
+			new DisableFastRender().register();
+		}
+	}
 
 }

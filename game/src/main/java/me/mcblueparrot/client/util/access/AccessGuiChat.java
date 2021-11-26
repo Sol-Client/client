@@ -5,14 +5,14 @@ import me.mcblueparrot.client.util.Utils;
 
 public interface AccessGuiChat {
 
-    void type(char typedChar, int keyCode);
+	void type(char typedChar, int keyCode);
 
-    ChatButton getSelectedChatButton();
+	ChatButton getSelectedChatButton();
 
-    void setSelectedChatButton(ChatButton button);
+	void setSelectedChatButton(ChatButton button);
 
-    static AccessGuiChat getInstance() {
-        return (AccessGuiChat) Utils.getChatGui();
-    }
+	static AccessGuiChat getInstance() {
+		return (AccessGuiChat) Utils.getChatGui();
+	}
 
 }

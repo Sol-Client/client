@@ -14,32 +14,32 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class MixinHypixelAdditionsMod {
 
-    @Mixin(RenderPlayer.class)
-    public static abstract class MixinRenderPlayer extends Render<AbstractClientPlayer> {
+	@Mixin(RenderPlayer.class)
+	public static abstract class MixinRenderPlayer extends Render<AbstractClientPlayer> {
 
-        protected MixinRenderPlayer(RenderManager renderManager) {
-            super(renderManager);
-        }
+		protected MixinRenderPlayer(RenderManager renderManager) {
+			super(renderManager);
+		}
 
-        @Inject(method = "renderOffsetLivingLabel", at = @At("RETURN"))
-        public void renderLevelhead(AbstractClientPlayer entityIn, double x, double y, double z, String str,
-                                    float p_177069_9_, double p_177069_10_, CallbackInfo callback) {
-            if(HypixelAdditionsMod.isEffective()) {
-                String levelhead = HypixelAdditionsMod.instance.getLevelhead(entityIn.getUniqueID());
-                if(levelhead != null) {
-                    renderLivingLabel(
-                            entityIn,
-                            EnumChatFormatting.AQUA + "Level: " + EnumChatFormatting.YELLOW + levelhead,
-                            x,
-                            y + ((double) ((float)this.getFontRendererFromRenderManager().FONT_HEIGHT
-                                    * 1.15F * p_177069_9_)),
-                            z,
-                            64
-                    );
-                }
-            }
-        }
+		@Inject(method = "renderOffsetLivingLabel", at = @At("RETURN"))
+		public void renderLevelhead(AbstractClientPlayer entityIn, double x, double y, double z, String str,
+									float p_177069_9_, double p_177069_10_, CallbackInfo callback) {
+			if(HypixelAdditionsMod.isEffective()) {
+				String levelhead = HypixelAdditionsMod.instance.getLevelhead(entityIn.getUniqueID());
+				if(levelhead != null) {
+					renderLivingLabel(
+							entityIn,
+							EnumChatFormatting.AQUA + "Level: " + EnumChatFormatting.YELLOW + levelhead,
+							x,
+							y + ((double) ((float)this.getFontRendererFromRenderManager().FONT_HEIGHT
+									* 1.15F * p_177069_9_)),
+							z,
+							64
+					);
+				}
+			}
+		}
 
-    }
+	}
 
 }

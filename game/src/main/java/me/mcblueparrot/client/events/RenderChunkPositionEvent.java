@@ -7,7 +7,7 @@ import net.minecraft.util.BlockPos;
 @AllArgsConstructor
 public class RenderChunkPositionEvent {
 
-    public RenderChunk chunk;
-    public BlockPos position;
+	public RenderChunk chunk;
+	public BlockPos position;
 
 }

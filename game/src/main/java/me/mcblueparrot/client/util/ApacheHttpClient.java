@@ -45,47 +45,47 @@ import net.hypixel.api.http.HypixelHttpResponse;
 
 public class ApacheHttpClient implements HypixelHttpClient {
 
-    private final UUID apiKey;
-    private final ExecutorService executorService;
-    private final HttpClient httpClient;
+	private final UUID apiKey;
+	private final ExecutorService executorService;
+	private final HttpClient httpClient;
 
-    public ApacheHttpClient(UUID apiKey) {
-        this.apiKey = apiKey;
-        this.executorService = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
-        this.httpClient = HttpClientBuilder.create().setUserAgent(Client.NAME).build();
-    }
+	public ApacheHttpClient(UUID apiKey) {
+		this.apiKey = apiKey;
+		this.executorService = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
+		this.httpClient = HttpClientBuilder.create().setUserAgent(Client.NAME).build();
+	}
 
-    @Override
-    public CompletableFuture<HypixelHttpResponse> makeRequest(String url) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                HttpResponse response = this.httpClient.execute(new HttpGet(url));
-                return new HypixelHttpResponse(response.getStatusLine().getStatusCode(),
-                        EntityUtils.toString(response.getEntity(), "UTF-8"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }, this.executorService);
-    }
+	@Override
+	public CompletableFuture<HypixelHttpResponse> makeRequest(String url) {
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				HttpResponse response = this.httpClient.execute(new HttpGet(url));
+				return new HypixelHttpResponse(response.getStatusLine().getStatusCode(),
+						EntityUtils.toString(response.getEntity(), "UTF-8"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}, this.executorService);
+	}
 
-    @Override
-    public CompletableFuture<HypixelHttpResponse> makeAuthenticatedRequest(String url) {
-        return CompletableFuture.supplyAsync(() -> {
-            HttpGet request = new HttpGet(url);
-            request.addHeader("API-Key", this.apiKey.toString());
-            try {
-                HttpResponse response = this.httpClient.execute(request);
-                return new HypixelHttpResponse(response.getStatusLine().getStatusCode(),
-                        EntityUtils.toString(response.getEntity(), "UTF-8"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }, this.executorService);
-    }
+	@Override
+	public CompletableFuture<HypixelHttpResponse> makeAuthenticatedRequest(String url) {
+		return CompletableFuture.supplyAsync(() -> {
+			HttpGet request = new HttpGet(url);
+			request.addHeader("API-Key", this.apiKey.toString());
+			try {
+				HttpResponse response = this.httpClient.execute(request);
+				return new HypixelHttpResponse(response.getStatusLine().getStatusCode(),
+						EntityUtils.toString(response.getEntity(), "UTF-8"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}, this.executorService);
+	}
 
-    @Override
-    public void shutdown() {
-        this.executorService.shutdown();
-    }
+	@Override
+	public void shutdown() {
+		this.executorService.shutdown();
+	}
 
 }

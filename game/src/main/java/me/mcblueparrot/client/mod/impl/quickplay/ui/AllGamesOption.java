@@ -6,19 +6,19 @@ import net.minecraft.item.ItemStack;
 
 public class AllGamesOption implements QuickPlayOption {
 
-    @Override
-    public String getText() {
-        return "All Games >";
-    }
+	@Override
+	public String getText() {
+		return "All Games >";
+	}
 
-    @Override
-    public void onClick(QuickPlayPalette palette, QuickPlayMod mod) {
-        palette.openAllGames();
-    }
+	@Override
+	public void onClick(QuickPlayPalette palette, QuickPlayMod mod) {
+		palette.openAllGames();
+	}
 
-    @Override
-    public ItemStack getIcon() {
-        return new ItemStack(Items.nether_star);
-    }
+	@Override
+	public ItemStack getIcon() {
+		return new ItemStack(Items.nether_star);
+	}
 
 }

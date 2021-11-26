@@ -14,11 +14,11 @@ import net.minecraft.item.ItemStack;
 @Mixin(ItemRenderer.class)
 public class MixinItemRenderer {
 
-    @Shadow private ItemStack itemToRender;
+	@Shadow private ItemStack itemToRender;
 
-    @Inject(method = "transformFirstPersonItem", at = @At("HEAD"))
-    public void transformFirstPersonItem(float equipProgress, float swingProgress, CallbackInfo callback) {
-        Client.INSTANCE.bus.post(new TransformFirstPersonItemEvent(itemToRender, equipProgress, swingProgress));
-    }
+	@Inject(method = "transformFirstPersonItem", at = @At("HEAD"))
+	public void transformFirstPersonItem(float equipProgress, float swingProgress, CallbackInfo callback) {
+		Client.INSTANCE.bus.post(new TransformFirstPersonItemEvent(itemToRender, equipProgress, swingProgress));
+	}
 
 }

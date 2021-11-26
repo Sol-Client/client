@@ -22,31 +22,31 @@ import net.minecraft.util.ResourceLocation;
 @Mixin(SimpleReloadableResourceManager.class)
 public class MixinSimpleReloadableResourceManager {
 
-    @Inject(method = "getResource", at = @At("HEAD"), cancellable = true)
-    public void getResource(ResourceLocation location, CallbackInfoReturnable<IResource> callback) {
-        if(Client.INSTANCE.getResource(location) != null) {
-            callback.setReturnValue(Client.INSTANCE.getResource(location));
-        }
-    }
+	@Inject(method = "getResource", at = @At("HEAD"), cancellable = true)
+	public void getResource(ResourceLocation location, CallbackInfoReturnable<IResource> callback) {
+		if(Client.INSTANCE.getResource(location) != null) {
+			callback.setReturnValue(Client.INSTANCE.getResource(location));
+		}
+	}
 
-    @Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/" +
-            "SimpleReloadableResourceManager;notifyReloadListeners()V", shift = At.Shift.BEFORE))
-    public void injectDomains(List<IResourcePack> resourcesPacksList, CallbackInfo callback) {
-        for(String domain : new String[] {
-                "replaymod",
-                "jgui"
-        }) {
-            setResourceDomains.add(domain);
-            domainResourceManagers.put(domain, domainResourceManagers.get("minecraft"));
-        }
-    }
+	@Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/" +
+			"SimpleReloadableResourceManager;notifyReloadListeners()V", shift = At.Shift.BEFORE))
+	public void injectDomains(List<IResourcePack> resourcesPacksList, CallbackInfo callback) {
+		for(String domain : new String[] {
+				"replaymod",
+				"jgui"
+		}) {
+			setResourceDomains.add(domain);
+			domainResourceManagers.put(domain, domainResourceManagers.get("minecraft"));
+		}
+	}
 
-    @Final
-    @Shadow
-    private Set<String> setResourceDomains;
+	@Final
+	@Shadow
+	private Set<String> setResourceDomains;
 
-    @Final
-    @Shadow
-    private Map<String, FallbackResourceManager> domainResourceManagers;
+	@Final
+	@Shadow
+	private Map<String, FallbackResourceManager> domainResourceManagers;
 
 }

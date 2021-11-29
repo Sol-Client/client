@@ -1,6 +1,7 @@
-package me.mcblueparrot.client;
+package me.mcblueparrot.client.events;
 
 import lombok.AllArgsConstructor;
+import me.mcblueparrot.client.DetectedServer;
 import net.minecraft.client.multiplayer.ServerData;
 
 @AllArgsConstructor

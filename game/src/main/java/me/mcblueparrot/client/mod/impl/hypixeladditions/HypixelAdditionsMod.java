@@ -21,11 +21,11 @@ import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.DetectedServer;
-import me.mcblueparrot.client.ServerConnectEvent;
 import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.GameOverlayElement;
 import me.mcblueparrot.client.events.PostGameOverlayRenderEvent;
 import me.mcblueparrot.client.events.ReceiveChatMessageEvent;
+import me.mcblueparrot.client.events.ServerConnectEvent;
 import me.mcblueparrot.client.events.SoundPlayEvent;
 import me.mcblueparrot.client.events.WorldLoadEvent;
 import me.mcblueparrot.client.mod.Mod;

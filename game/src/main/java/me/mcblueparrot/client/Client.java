@@ -31,6 +31,7 @@ import me.mcblueparrot.client.events.EventHandler;
 import me.mcblueparrot.client.events.PostGameStartEvent;
 import me.mcblueparrot.client.events.PreTickEvent;
 import me.mcblueparrot.client.events.SendChatMessageEvent;
+import me.mcblueparrot.client.events.ServerConnectEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.hud.Hud;
 import me.mcblueparrot.client.mod.impl.ArabicNumeralsMod;

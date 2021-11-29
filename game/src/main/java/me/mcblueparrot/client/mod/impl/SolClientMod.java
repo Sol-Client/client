@@ -1,6 +1,8 @@
 package me.mcblueparrot.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
+
+import me.mcblueparrot.client.mod.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.ui.ModsScreen;

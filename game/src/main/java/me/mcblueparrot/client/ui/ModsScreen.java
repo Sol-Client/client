@@ -14,11 +14,11 @@ import org.lwjgl.opengl.GL11;
 
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.mod.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
-import me.mcblueparrot.client.mod.impl.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Rectangle;

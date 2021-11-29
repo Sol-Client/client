@@ -7,13 +7,13 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.ScoreboardRenderEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.ScoreboardRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.data.Colour;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScorePlayerTeam;

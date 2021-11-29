@@ -21,6 +21,8 @@ import com.replaymod.replay.camera.CameraEntity;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import me.mcblueparrot.client.util.data.Colour;
+import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiChat;

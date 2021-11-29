@@ -4,13 +4,13 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.events.BlockHighlightRenderEvent;
-import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.BlockHighlightRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
-import me.mcblueparrot.client.util.Colour;
+import me.mcblueparrot.client.util.data.Colour;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.GlStateManager;

@@ -1,12 +1,17 @@
 package me.mcblueparrot.client.mod.impl;
 
-import me.mcblueparrot.client.events.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.event.*;
+import me.mcblueparrot.client.event.impl.FovEvent;
+import me.mcblueparrot.client.event.impl.MouseClickEvent;
+import me.mcblueparrot.client.event.impl.PostTickEvent;
+import me.mcblueparrot.client.event.impl.PreTickEvent;
+import me.mcblueparrot.client.event.impl.ScrollEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;

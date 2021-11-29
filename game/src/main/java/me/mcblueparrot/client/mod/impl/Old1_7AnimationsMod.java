@@ -6,8 +6,8 @@ package me.mcblueparrot.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.TransformFirstPersonItemEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.TransformFirstPersonItemEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;

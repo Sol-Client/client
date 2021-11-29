@@ -10,8 +10,8 @@ import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.DetectedServer;
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.PreTickEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.impl.quickplay.database.QuickPlayDatabase;

@@ -3,9 +3,9 @@ package me.mcblueparrot.client.mod.hud;
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.util.Colour;
-import me.mcblueparrot.client.util.Position;
-import me.mcblueparrot.client.util.Rectangle;
+import me.mcblueparrot.client.util.data.Colour;
+import me.mcblueparrot.client.util.data.Position;
+import me.mcblueparrot.client.util.data.Rectangle;
 
 public abstract class SimpleHud extends Hud {
 

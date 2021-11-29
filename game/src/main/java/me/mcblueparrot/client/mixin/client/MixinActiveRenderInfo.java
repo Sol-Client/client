@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.CameraRotateEvent;
+import me.mcblueparrot.client.event.impl.CameraRotateEvent;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.player.EntityPlayer;
 

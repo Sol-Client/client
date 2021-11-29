@@ -5,9 +5,9 @@ import com.google.gson.annotations.Expose;
 import me.mcblueparrot.client.CpsMonitor;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.SimpleHud;
-import me.mcblueparrot.client.util.Colour;
-import me.mcblueparrot.client.util.Position;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.data.Colour;
+import me.mcblueparrot.client.util.data.Position;
 
 public class CpsHud extends SimpleHud {
 

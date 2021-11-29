@@ -3,9 +3,9 @@ package me.mcblueparrot.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.MouseClickEvent;
-import me.mcblueparrot.client.events.PostTickEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.MouseClickEvent;
+import me.mcblueparrot.client.event.impl.PostTickEvent;
 
 public class CpsMonitor {
 

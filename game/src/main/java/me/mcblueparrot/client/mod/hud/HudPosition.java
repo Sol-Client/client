@@ -2,7 +2,7 @@ package me.mcblueparrot.client.mod.hud;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.util.Position;
+import me.mcblueparrot.client.util.data.Position;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 

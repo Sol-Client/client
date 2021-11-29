@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.ItemEntityRenderEvent;
+import me.mcblueparrot.client.event.impl.ItemEntityRenderEvent;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.item.EntityItem;

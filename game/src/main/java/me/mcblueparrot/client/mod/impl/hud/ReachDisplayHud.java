@@ -2,8 +2,8 @@ package me.mcblueparrot.client.mod.impl.hud;
 
 import java.text.DecimalFormat;
 
-import me.mcblueparrot.client.events.EntityAttackEvent;
-import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.EntityAttackEvent;
 import me.mcblueparrot.client.mod.hud.SimpleHud;
 
 public class ReachDisplayHud extends SimpleHud {

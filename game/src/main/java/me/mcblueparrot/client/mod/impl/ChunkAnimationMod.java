@@ -5,9 +5,9 @@ import java.util.WeakHashMap;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.PreRenderChunkEvent;
-import me.mcblueparrot.client.events.RenderChunkPositionEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.PreRenderChunkEvent;
+import me.mcblueparrot.client.event.impl.RenderChunkPositionEvent;
 import me.mcblueparrot.client.lib.penner.easing.Back;
 import me.mcblueparrot.client.lib.penner.easing.Bounce;
 import me.mcblueparrot.client.lib.penner.easing.Circ;

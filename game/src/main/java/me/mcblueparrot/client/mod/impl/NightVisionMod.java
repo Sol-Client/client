@@ -1,7 +1,7 @@
 package me.mcblueparrot.client.mod.impl;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.GammaEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.GammaEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 

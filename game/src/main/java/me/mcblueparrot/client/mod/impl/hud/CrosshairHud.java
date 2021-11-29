@@ -4,13 +4,13 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.GameOverlayElement;
-import me.mcblueparrot.client.events.PreGameOverlayRenderEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.GameOverlayElement;
+import me.mcblueparrot.client.event.impl.PreGameOverlayRenderEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.Hud;
-import me.mcblueparrot.client.util.Colour;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.data.Colour;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;

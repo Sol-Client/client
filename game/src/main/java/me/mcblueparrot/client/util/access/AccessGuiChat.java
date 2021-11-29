@@ -1,6 +1,6 @@
 package me.mcblueparrot.client.util.access;
 
-import me.mcblueparrot.client.ui.ChatButton;
+import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.util.Utils;
 
 public interface AccessGuiChat {

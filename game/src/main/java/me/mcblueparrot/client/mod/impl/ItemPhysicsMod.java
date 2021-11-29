@@ -8,8 +8,8 @@ package me.mcblueparrot.client.mod.impl;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.ItemEntityRenderEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.ItemEntityRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;

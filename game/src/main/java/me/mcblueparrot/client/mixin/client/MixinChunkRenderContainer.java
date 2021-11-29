@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.PreRenderChunkEvent;
+import me.mcblueparrot.client.event.impl.PreRenderChunkEvent;
 import net.minecraft.client.renderer.ChunkRenderContainer;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 

@@ -1,10 +1,10 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
-import me.mcblueparrot.client.events.EntityAttackEvent;
-import me.mcblueparrot.client.events.EntityDamageEvent;
-import me.mcblueparrot.client.events.EventHandler;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.EntityAttackEvent;
+import me.mcblueparrot.client.event.impl.EntityDamageEvent;
 import me.mcblueparrot.client.mod.hud.SimpleHud;
-import me.mcblueparrot.client.util.Position;
+import me.mcblueparrot.client.util.data.Position;
 
 public class ComboCounterHud extends SimpleHud {
 

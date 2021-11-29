@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.EntityAttackEvent;
-import me.mcblueparrot.client.events.PlayerSleepEvent;
+import me.mcblueparrot.client.event.impl.EntityAttackEvent;
+import me.mcblueparrot.client.event.impl.PlayerSleepEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;

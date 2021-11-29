@@ -9,11 +9,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.ui.ChatButton;
-import me.mcblueparrot.client.util.Colour;
-import me.mcblueparrot.client.util.Rectangle;
+import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiChat;
+import me.mcblueparrot.client.util.data.Colour;
+import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;

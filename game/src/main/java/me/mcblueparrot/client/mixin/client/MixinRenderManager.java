@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.replaymod.replay.camera.CameraEntity;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.Cullable;
-import me.mcblueparrot.client.events.CameraRotateEvent;
+import me.mcblueparrot.client.culling.Cullable;
+import me.mcblueparrot.client.event.impl.CameraRotateEvent;
 import me.mcblueparrot.client.util.access.AccessRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

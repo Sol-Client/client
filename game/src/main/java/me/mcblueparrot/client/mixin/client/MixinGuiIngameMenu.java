@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.replaymod.replay.ReplayModReplay;
 
-import me.mcblueparrot.client.ui.IngameServerList;
-import me.mcblueparrot.client.ui.ModsScreen;
+import me.mcblueparrot.client.ui.screen.IngameServerList;
+import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiScreen;

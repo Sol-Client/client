@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.ChatRenderEvent;
+import me.mcblueparrot.client.event.impl.ChatRenderEvent;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.GuiNewChat;

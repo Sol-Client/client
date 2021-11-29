@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.authlib.GameProfile;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.SendChatMessageEvent;
+import me.mcblueparrot.client.event.impl.SendChatMessageEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;

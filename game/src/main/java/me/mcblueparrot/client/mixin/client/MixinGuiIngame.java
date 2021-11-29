@@ -11,10 +11,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.replaymod.render.hooks.EntityRendererHandler;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.GameOverlayElement;
-import me.mcblueparrot.client.events.PostGameOverlayRenderEvent;
-import me.mcblueparrot.client.events.PreGameOverlayRenderEvent;
-import me.mcblueparrot.client.events.ScoreboardRenderEvent;
+import me.mcblueparrot.client.event.impl.GameOverlayElement;
+import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
+import me.mcblueparrot.client.event.impl.PreGameOverlayRenderEvent;
+import me.mcblueparrot.client.event.impl.ScoreboardRenderEvent;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

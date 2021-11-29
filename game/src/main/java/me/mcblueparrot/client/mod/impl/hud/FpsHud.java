@@ -1,7 +1,7 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.PostTickEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.PostTickEvent;
 import me.mcblueparrot.client.mod.hud.SimpleHud;
 import net.minecraft.client.Minecraft;
 

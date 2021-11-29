@@ -2,12 +2,12 @@ package me.mcblueparrot.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.HitOverlayEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.HitOverlayEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.util.Colour;
+import me.mcblueparrot.client.util.data.Colour;
 
 public class HitColourMod extends Mod {
 

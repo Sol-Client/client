@@ -29,11 +29,11 @@ import com.replaymod.replay.camera.VanillaCameraController;
 import com.replaymod.replay.events.RenderHotbarCallback;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
-import me.mcblueparrot.client.mod.impl.SCReplayMod;
-import me.mcblueparrot.client.replaymod.SCSettingsRegistry;
+import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
+import me.mcblueparrot.client.mod.impl.replay.fix.SCSettingsRegistry;
 import me.mcblueparrot.client.tweak.Tweaker;
-import me.mcblueparrot.client.ui.JGuiPreviousScreen;
-import me.mcblueparrot.client.ui.ModsScreen;
+import me.mcblueparrot.client.ui.screen.JGuiPreviousScreen;
+import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngame;

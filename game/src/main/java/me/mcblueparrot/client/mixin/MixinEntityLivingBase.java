@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.ItemPickupEvent;
+import me.mcblueparrot.client.event.impl.ItemPickupEvent;
 import me.mcblueparrot.client.util.access.AccessEntityLivingBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

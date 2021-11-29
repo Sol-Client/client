@@ -3,16 +3,16 @@ package me.mcblueparrot.client.mod.hud;
 import com.google.gson.annotations.Expose;
 import com.replaymod.replay.ReplayModReplay;
 
-import me.mcblueparrot.client.events.EventHandler;
-import me.mcblueparrot.client.events.GameOverlayElement;
-import me.mcblueparrot.client.events.PostGameOverlayRenderEvent;
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.GameOverlayElement;
+import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
-import me.mcblueparrot.client.ui.MoveHudsScreen;
-import me.mcblueparrot.client.util.Position;
-import me.mcblueparrot.client.util.Rectangle;
+import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
+import me.mcblueparrot.client.util.data.Position;
+import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 

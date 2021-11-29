@@ -9,10 +9,10 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 
-import me.mcblueparrot.client.tweak.transformer.impl.GuiButtonTransformer;
-import me.mcblueparrot.client.tweak.transformer.impl.GuiScreenTransformer;
-import me.mcblueparrot.client.tweak.transformer.impl.MinecraftTransformer;
-import me.mcblueparrot.client.tweak.transformer.impl.WorldClientTransformer;
+import me.mcblueparrot.client.tweak.transformer.impl.TransformerGuiButton;
+import me.mcblueparrot.client.tweak.transformer.impl.TransformerGuiScreen;
+import me.mcblueparrot.client.tweak.transformer.impl.TransformerMinecraft;
+import me.mcblueparrot.client.tweak.transformer.impl.TransformerWorldClient;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 public class ClassTransformer implements IClassTransformer {
@@ -20,10 +20,10 @@ public class ClassTransformer implements IClassTransformer {
 	private List<ClassNodeTransformer> transformers = new ArrayList<>();
 
 	public ClassTransformer() {
-		register(new GuiButtonTransformer());
-		register(new GuiScreenTransformer());
-		register(new WorldClientTransformer());
-		register(new MinecraftTransformer());
+		register(new TransformerGuiButton());
+		register(new TransformerGuiScreen());
+		register(new TransformerWorldClient());
+		register(new TransformerMinecraft());
 	}
 
 	@Override

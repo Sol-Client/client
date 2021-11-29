@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.RenderChunkPositionEvent;
+import me.mcblueparrot.client.event.impl.RenderChunkPositionEvent;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.util.BlockPos;

@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import me.mcblueparrot.client.ui.BetterLanguageGui;
+import me.mcblueparrot.client.ui.screen.BetterLanguageGui;
 import net.minecraft.client.gui.GuiLanguage;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;

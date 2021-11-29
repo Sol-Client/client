@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.EntityDamageEvent;
-import me.mcblueparrot.client.events.ReceiveChatMessageEvent;
+import me.mcblueparrot.client.event.impl.EntityDamageEvent;
+import me.mcblueparrot.client.event.impl.ReceiveChatMessageEvent;
 import me.mcblueparrot.client.util.access.AccessGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;

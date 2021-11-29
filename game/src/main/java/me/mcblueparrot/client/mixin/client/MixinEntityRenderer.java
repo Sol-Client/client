@@ -9,12 +9,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.events.BlockHighlightRenderEvent;
-import me.mcblueparrot.client.events.CameraRotateEvent;
-import me.mcblueparrot.client.events.FovEvent;
-import me.mcblueparrot.client.events.GammaEvent;
-import me.mcblueparrot.client.events.PlayerHeadRotateEvent;
-import me.mcblueparrot.client.events.PostProcessingEvent;
+import me.mcblueparrot.client.event.impl.BlockHighlightRenderEvent;
+import me.mcblueparrot.client.event.impl.CameraRotateEvent;
+import me.mcblueparrot.client.event.impl.FovEvent;
+import me.mcblueparrot.client.event.impl.GammaEvent;
+import me.mcblueparrot.client.event.impl.PlayerHeadRotateEvent;
+import me.mcblueparrot.client.event.impl.PostProcessingEvent;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.block.material.Material;

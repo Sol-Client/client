@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Objects;
 
 import me.mcblueparrot.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
-import me.mcblueparrot.client.ui.ChatButton;
-import me.mcblueparrot.client.util.Colour;
-import me.mcblueparrot.client.util.Rectangle;
+import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiChat;
+import me.mcblueparrot.client.util.data.Colour;
+import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;

@@ -1,7 +1,7 @@
 package me.mcblueparrot.client.mod;
 
 /**
- * Represents a mod that is cannot be disabled.
+ * Represents a mod that cannot be disabled.
  */
 public abstract class ConfigOnlyMod extends Mod {
 

@@ -17,4 +17,6 @@ public @interface Slider {
 
 	boolean showValue() default true;
 
+	String suffix() default "";
+
 }

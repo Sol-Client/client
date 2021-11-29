@@ -96,8 +96,12 @@ public class SlickFontRenderer implements Font {
 		return java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, SlickFontRenderer.class.getResourceAsStream(path));
 	}
 
+	@Override
 	public int renderString(String text, float x, float y, int colour) {
 		if(text == null) return 0;
+
+		x = (int) x;
+		y = (int) y;
 
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 
@@ -121,10 +125,10 @@ public class SlickFontRenderer implements Font {
 		x *= antiAliasingFactor;
 		y *= antiAliasingFactor;
 		float originalX = x;
-		float red = (float) (colour >> 16 & 255) / 255.0F;
-		float green = (float) (colour >> 8 & 255) / 255.0F;
-		float blue = (float) (colour & 255) / 255.0F;
-		float alpha = (float) (colour >> 24 & 255) / 255.0F;
+		float red = (colour >> 16 & 255) / 255.0F;
+		float green = (colour >> 8 & 255) / 255.0F;
+		float blue = (colour & 255) / 255.0F;
+		float alpha = (colour >> 24 & 255) / 255.0F;
 		GlStateManager.color(red, green, blue, alpha);
 
 		int currentColour = colour;
@@ -182,11 +186,13 @@ public class SlickFontRenderer implements Font {
 		return (int) x;
 	}
 
+	@Override
 	public int renderStringWithShadow(String text, float x, float y, int color) {
 		renderString(StringUtils.stripControlCodes(text), x + 0.5F, y + 0.5F, 0x000000);
 		return renderString(text, x, y, color);
 	}
 
+	@Override
 	public void renderCenteredString(String text, float x, float y, int color) {
 		renderString(text, x - ((int) getWidth(text) >> 1), y, color);
 	}
@@ -200,6 +206,7 @@ public class SlickFontRenderer implements Font {
 		return unicodeFont.getAscent();
 	}
 
+	@Override
 	public float getWidth(String text) {
 		return unicodeFont.getWidth(EnumChatFormatting.getTextWithoutFormattingCodes(text)) / antiAliasingFactor;
 	}

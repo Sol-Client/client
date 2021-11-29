@@ -32,7 +32,7 @@ public class ChunkAnimationMod extends Mod {
 	private Map<RenderChunk, Data> chunks = new WeakHashMap<>();
 	@Expose
 	@ConfigOption("Duration")
-	@Slider(min = 0, max = 5, step = 0.5F)
+	@Slider(min = 0, max = 5, step = 0.5F, suffix = "s")
 	private float duration = 1;
 	@Expose
 	@ConfigOption("Function")

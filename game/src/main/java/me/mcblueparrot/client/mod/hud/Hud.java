@@ -22,7 +22,7 @@ public abstract class Hud extends Mod {
 	private HudPosition position;
 	@Expose
 	@ConfigOption(value = "Scale", priority = 1)
-	@Slider(min = 50, max = 150, step = 1)
+	@Slider(min = 50, max = 150, step = 1, suffix = "%")
 	public float scale = 100;
 	protected FontRenderer font;
 
@@ -100,6 +100,6 @@ public abstract class Hud extends Mod {
 		Rectangle bounds = getMultipliedBounds();
 		return bounds != null && bounds.contains(mouseX, mouseY);
 	}
-	
+
 }
 

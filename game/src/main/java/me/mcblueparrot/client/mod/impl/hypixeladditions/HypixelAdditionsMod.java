@@ -60,11 +60,11 @@ public class HypixelAdditionsMod extends Mod {
 	public boolean visitHousingCommand = true;
 	@Expose
 	@ConfigOption("Lobby Sounds Volume")
-	@Slider(min = 0, max = 100, step = 1)
+	@Slider(min = 0, max = 100, step = 1, suffix = "%")
 	public float lobbySoundsVolume = 100;
 	@Expose
 	@ConfigOption("Housing Music Volume")
-	@Slider(min = 0, max = 100, step = 1)
+	@Slider(min = 0, max = 100, step = 1, suffix = "%")
 	public float housingMusicVolume = 100;
 	@Expose
 	@ConfigOption("Pop-up Events")

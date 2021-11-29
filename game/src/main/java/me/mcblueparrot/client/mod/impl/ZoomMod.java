@@ -36,7 +36,7 @@ public class ZoomMod extends Mod {
 	private boolean smooth = true;
 	@Expose
 	@ConfigOption("Factor")
-	@Slider(min = 2, max = 32, step = 1)
+	@Slider(min = 2, max = 32, step = 1, suffix = "x")
 	private float factor = 4;
 	private float currentFactor = 1;
 	private float lastAnimatedFactor = 1;

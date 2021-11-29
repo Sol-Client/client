@@ -43,7 +43,7 @@ public class MenuBlurMod extends Mod {
 	public float blur = 8;
 	@Expose
 	@ConfigOption("Fade Time")
-	@Slider(min = 0, max = 1, step = 0.1F)
+	@Slider(min = 0, max = 1, step = 0.1F, suffix = "s")
 	private float fadeTime = 0.1F;
 	@Expose
 	@ConfigOption("Background Colour")

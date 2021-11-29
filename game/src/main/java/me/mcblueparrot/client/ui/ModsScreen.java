@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.List;
 
 import org.lwjgl.input.Mouse;
@@ -214,7 +215,7 @@ public class ModsScreen extends GuiScreen {
 								if(mouseInSettings && hasSettings) {
 									newSelected = mod;
 								}
-								else if (mod.isBlocked()) {
+								else if(mod.isBlocked()) {
 									URI blockedModPage;
 									if ((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
 										Desktop.getDesktop().browse(blockedModPage);
@@ -224,7 +225,7 @@ public class ModsScreen extends GuiScreen {
 									mod.toggle();
 								}
 							}
-							else if(rightClickDown && !wasRightClickDown) {
+							else if(hasSettings && rightClickDown && !wasRightClickDown) {
 								Utils.playClickSound();
 								newSelected = mod;
 							}
@@ -263,37 +264,89 @@ public class ModsScreen extends GuiScreen {
 				else if(option.getType().isEnum()) {
 					String valueName = option.getValue().toString();
 
+					Method method = option.getType().getMethod("values");
+					method.setAccessible(true); // Why?
+					Enum<?>[] values = (Enum<?>[]) method.invoke(null);
+
 					Colour valueColour = new Colour(200, 200, 200);
 					if(rectangle.contains(mouseX, mouseY)) {
 						valueColour = Colour.WHITE;
 					}
 
-					font.renderString(valueName, rectangle.getX() + rectangle.getWidth() - 5 - font.getWidth(valueName),
+					int maxWidth = 0;
+
+					for(Enum<?> value : values) {
+						if(font.getWidth(value.toString()) > maxWidth) {
+							maxWidth = (int) font.getWidth(value.toString());
+						}
+					}
+
+					Rectangle textarea = new Rectangle(rectangle.getX() + rectangle.getWidth() - maxWidth - 10 - 12, rectangle.getY(), maxWidth + 10, rectangle.getHeight());
+
+					font.renderString(valueName, textarea.getX() + (textarea.getWidth() / 2) - (font.getWidth(valueName) / 2),
 							rectangle.getY() + sweetSpot,
 							valueColour.getValue());
+
+					Rectangle previousBounds = new Rectangle(
+							textarea.getX() - 8,
+							rectangle.getY() + 6, 8, 8);
+
+					boolean previous = GuiScreen.isShiftKeyDown() || previousBounds.contains(mouseX, mouseY);
+
+					GlStateManager.color(1, 1, 1);
+
+					if(!previousBounds.contains(mouseX, mouseY)) {
+						GL11.glColor3ub((byte) 200, (byte) 200, (byte) 200);
+					}
+
+					mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_" +
+							"previous_" + Utils.getTextureScale() + ".png"));
+					drawModalRectWithCustomSizedTexture(previousBounds.getX(), previousBounds.getY(), 0, 0, 8, 8, 8, 8);
+
+					Rectangle nextBounds = new Rectangle(
+							rectangle.getX() + rectangle.getWidth() - 12,
+							rectangle.getY() + 6, 8, 8);
+
+					nextBounds.stroke(new Colour(0, 0, 0, 0)); // Good old OpenGL
+
+					GlStateManager.enableBlend();
+					GlStateManager.color(1, 1, 1);
+
+					if(!nextBounds.contains(mouseX, mouseY)) {
+						GL11.glColor3ub((byte) 200, (byte) 200, (byte) 200);
+					}
+
+					mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_" +
+							"next_" + Utils.getTextureScale() + ".png"));
+					drawModalRectWithCustomSizedTexture(nextBounds.getX(), nextBounds.getY(), 0, 0, 8, 8, 8, 8);
+
 					if(rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown && mouseInList) {
 						int ordinal = ((Enum<?>) option.getValue()).ordinal();
 						try {
-							Method method = option.getType().getMethod("values");
-							method.setAccessible(true); // Why?
-							Enum<?>[] values = (Enum<?>[]) method.invoke(null);
-							if(++ordinal > values.length - 1) {
+							if(previous) {
+								if(--ordinal < 0) {
+									ordinal = values.length - 1;
+								}
+							}
+							else if(++ordinal > values.length - 1) {
 								ordinal = 0;
 							}
+
 							option.setValue(values[ordinal]);
 						}
-						catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException
-								| NoSuchMethodException | SecurityException error) {
+						catch(IllegalArgumentException | SecurityException error) {
 							throw new IllegalStateException(error);
 						}
 						Utils.playClickSound();
 					}
 				}
 				else if(option.getType() == Colour.class) {
+					Colour colourValue = (Colour) option.getValue();
+
 					Rectangle colourBox = new Rectangle(rectangle.getX() + rectangle.getWidth() - 18, rectangle.getY() + 3,
 							15,
 							15);
-					colourBox.fill((Colour) option.getValue());
+					colourBox.fill(colourValue);
 					colourBox.stroke(rectangle.contains(mouseX, mouseY) ? new Colour(120, 120, 120) : new Colour(100,
 							100,
 							100));
@@ -331,9 +384,8 @@ public class ModsScreen extends GuiScreen {
 						sliderColour = Colour.WHITE;
 					}
 
-					Rectangle sliderBox = new Rectangle(rectangle.getX() + rectangle.getWidth() - 109, rectangle.getY() + 9,
-							104,
-							2);
+					Rectangle sliderBox = new Rectangle(rectangle.getX() + rectangle.getWidth() - 109,
+							rectangle.getY() + 9, 104, 2);
 					Utils.drawRectangle(sliderBox, sliderColour);
 
 					float percentage = ((float) option.getValue() - min) / (max - min);
@@ -342,6 +394,10 @@ public class ModsScreen extends GuiScreen {
 					Rectangle sliderScrubber = new Rectangle(px, sliderBox.getY() - 4, 4, 10);
 					Utils.drawRectangle(sliderScrubber, sliderColour);
 					String valueText = new DecimalFormat("0.##").format(option.getValue());
+
+					if(!slider.suffix().isEmpty()) {
+						valueText += slider.suffix();
+					}
 
 					if(slider.showValue()) {
 						font.renderString(valueText, sliderBox.getX() - font.getWidth(valueText) - 4, sliderScrubber.getY() + (slickFont ? 0 : 1),
@@ -362,7 +418,8 @@ public class ModsScreen extends GuiScreen {
 							else {
 								for(float value = min; value < max + step; value += step) {
 									Rectangle bounds =
-											new Rectangle((int) (sliderBox.getX() + ((value - min) / (max - min) * 100)),
+											new Rectangle(
+													(int) (sliderBox.getX() + ((value - min) / (max - min) * 100)),
 													rectangle.getY(), 1000, rectangle.getHeight());
 
 									if(bounds.contains(mouseX, mouseY)) {
@@ -460,8 +517,8 @@ public class ModsScreen extends GuiScreen {
 
 		drawHorizontalLine(0, width, 29, 0xFF000000);
 		drawHorizontalLine(0, width, height - 31, 0xFF000000);
-		Button done = new Button(font, "Done", new Rectangle(openedWithMod ? width / 2 - 50 : width / 2 - 103, height - 25, 100, 20), new Colour(0, 100, 0),
-				new Colour(20, 120, 20));
+		Button done = new Button(font, "Done", new Rectangle(openedWithMod ? width / 2 - 50 : width / 2 - 103, height - 25, 100, 20), new Colour(0, 255, 0),
+				new Colour(150, 255, 150));
 		done.render(mouseX, mouseY);
 
 		if(done.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
@@ -480,8 +537,8 @@ public class ModsScreen extends GuiScreen {
 		}
 
 		if(!openedWithMod) {
-			Button edit = new Button(font, "HUD Editor", new Rectangle(width / 2 + 3, height - 25, 100, 20), new Colour(255, 100, 0),
-					new Colour(255, 130, 30));
+			Button edit = new Button(font, "HUD Editor", new Rectangle(width / 2 + 3, height - 25, 100, 20), new Colour(255, 150, 0),
+					new Colour(255, 190, 40));
 			edit.render(mouseX, mouseY);
 			if(edit.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
 				Utils.playClickSound();
@@ -497,9 +554,6 @@ public class ModsScreen extends GuiScreen {
 			maxScrolling = 0;
 		}
 		amountScrolled = MathHelper.clamp_int(amountScrolled, 0, maxScrolling);
-
-//        Utils.drawRectangle(new Rectangle(width / 2 + 155, amountScrolled, 10, (height - 60) / maxScrolling), Color.WHITE);
-
 
 		if(newSelected != selectedMod) {
 			selectedMod = newSelected;

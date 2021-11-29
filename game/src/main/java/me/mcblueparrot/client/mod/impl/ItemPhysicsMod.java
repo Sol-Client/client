@@ -26,7 +26,7 @@ import net.minecraft.util.MathHelper;
 public class ItemPhysicsMod extends Mod {
 
 	@ConfigOption("Rotation Speed")
-	@Slider(min = 0, max = 100, step = 1)
+	@Slider(min = 0, max = 100, step = 1, suffix = "%")
 	private float rotationSpeed = 100;
 	private Map<EntityItem, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
 																	 // usage is prioritised.
@@ -47,14 +47,14 @@ public class ItemPhysicsMod extends Mod {
 			int clumpSize = getClumpSize(itemstack.stackSize);
 			float f = 0.25F;
 			float f1 =
-					MathHelper.sin(((float)event.entity.getAge() + event.partialTicks) / 10.0F
+					MathHelper.sin((event.entity.getAge() + event.partialTicks) / 10.0F
 							+ event.entity.hoverStart) * 0.1F + 0.1F;
 			float yScale =
 					event.model.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
 			GlStateManager.translate((float) event.x, (float) event.y + 0.1, (float) event.z);
 
 			float hover =
-					(((float) event.entity.getAge() + event.partialTicks) / 20.0F + event.entity.hoverStart)
+					((event.entity.getAge() + event.partialTicks) / 20.0F + event.entity.hoverStart)
 							* (180F / (float)Math.PI);
 
 			long now = System.nanoTime();
@@ -84,8 +84,8 @@ public class ItemPhysicsMod extends Mod {
 			data.lastUpdate = now;
 
 			if(!is3d) {
-				float rotationXAndY = -0.0F * (float)(clumpSize - 1) * 0.5F;
-				float rotationZ = -0.046875F * (float)(clumpSize - 1) * 0.5F;
+				float rotationXAndY = -0.0F * (clumpSize - 1) * 0.5F;
+				float rotationZ = -0.046875F * (clumpSize - 1) * 0.5F;
 				GlStateManager.translate(rotationXAndY, rotationXAndY, rotationZ);
 			}
 

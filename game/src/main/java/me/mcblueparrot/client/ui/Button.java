@@ -6,6 +6,10 @@ import me.mcblueparrot.client.util.Rectangle;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.font.Font;
 import me.mcblueparrot.client.util.font.SlickFontRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 
 @AllArgsConstructor
 public class Button {
@@ -17,8 +21,22 @@ public class Button {
 	private Colour hoverColour;
 
 	public void render(int mouseX, int mouseY) {
-		Utils.drawRectangle(bounds,
-				contains(mouseX, mouseY) ? hoverColour : colour);
+		Colour buttonColour = contains(mouseX, mouseY) ? hoverColour : colour;
+//		if(bounds.getWidth() == 100 && bounds.getHeight() == 20) {
+//			// Use rounded button.
+//			GlStateManager.enableBlend();
+//
+//			Utils.glColour(buttonColour);
+//			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_" +
+//					"button_" + Utils.getTextureScale() + ".png"));
+//			Gui.drawModalRectWithCustomSizedTexture(bounds.getX(), bounds.getY(), 0, 0, 100, 20, 100, 20);
+//		}
+//		else {
+			// Fall back to square button.
+			bounds.fill(Colour.BLACK_128);
+			bounds.stroke(buttonColour);
+//		}
+
 		font.renderString(text, bounds.getX() + (bounds.getWidth() / 2) - (font.getWidth(text) / 2),
 				bounds.getY() + (bounds.getHeight() / 2) + (font instanceof SlickFontRenderer ? 0 : 1) - 5, -1);
 	}

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import me.mcblueparrot.client.mod.impl.BetterItemTooltipsMod;
+import me.mcblueparrot.client.mod.impl.BetterTooltipsMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiIngame;
@@ -17,14 +17,14 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 
-public class MixinBetterItemTooltipsMod {
+public class MixinBetterTooltipsMod {
 
 	@Mixin(GuiIngame.class)
 	public static abstract class MixinGuiIngame {
 
 		@Inject(method = "renderSelectedItem", at = @At("HEAD"), cancellable = true)
 		public void drawExtraLines(ScaledResolution scaledRes, CallbackInfo callback) {
-			if(BetterItemTooltipsMod.enabled) {
+			if(BetterTooltipsMod.enabled) {
 				callback.cancel();
 
 				mc.mcProfiler.startSection("selectedItemName");

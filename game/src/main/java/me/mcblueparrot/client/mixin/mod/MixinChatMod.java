@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiUtilRenderComponents;
 import net.minecraft.client.settings.GameSettings;
 
-public class MixinChatHud {
+public class MixinChatMod {
 
 	@Mixin(GuiScreen.class)
 	public static class MixinGuiScreen {

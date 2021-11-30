@@ -16,7 +16,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
-public class PerspectiveMod extends Mod {
+public class FreelookMod extends Mod {
 
 	private KeyBinding key = new KeyBinding("Freelook", Keyboard.KEY_V, "Sol Client");
 	private float yaw;
@@ -33,7 +33,7 @@ public class PerspectiveMod extends Mod {
 	@ConfigOption("Horizontally Invert")
 	private boolean invertYaw;
 
-	public PerspectiveMod() {
+	public FreelookMod() {
 		super("Freelook", "perspective", "Unlock the camera rotation.", ModCategory.UTILITY);
 		Client.INSTANCE.registerKeyBinding(key);
 	}

@@ -5,11 +5,11 @@ import java.text.DecimalFormat;
 import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import net.minecraft.util.MathHelper;
 
-public class SpeedMod extends SimpleHudMod {
+public class SpeedometerMod extends SimpleHudMod {
 
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
 
-	public SpeedMod() {
+	public SpeedometerMod() {
 		super("Speedometer", "speed", "Display your speed on the HUD.");
 	}
 

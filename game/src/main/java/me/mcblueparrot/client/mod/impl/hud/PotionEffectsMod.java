@@ -19,7 +19,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 
-public class StatusEffectsMod extends HudMod {
+public class PotionEffectsMod extends HudMod {
 
 	private static final int EFFECT_HEIGHT = 33;
 
@@ -42,7 +42,7 @@ public class StatusEffectsMod extends HudMod {
 	@ConfigOption("Duration Colour")
 	private Colour durationColour = new Colour(8355711);
 
-	public StatusEffectsMod() {
+	public PotionEffectsMod() {
 		super("Potion Effects", "statuseffects", "Display your potion effects on the HUD.");
 	}
 

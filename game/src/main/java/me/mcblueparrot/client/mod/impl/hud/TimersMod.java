@@ -28,7 +28,7 @@ import net.minecraft.network.play.server.S3FPacketCustomPayload;
 
 // Based around https://github.com/BadlionClient/BadlionClientTimerAPI.
 // Works with any server that supports Badlion timers.
-public class TimerMod extends HudMod {
+public class TimersMod extends HudMod {
 
 	private static final String CHANNEL_NAME = "badlion:timers";
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("mm:ss");
@@ -52,7 +52,7 @@ public class TimerMod extends HudMod {
 	@ConfigOption("Time Colour")
 	private Colour timeColour = new Colour(8355711);
 
-	public TimerMod() {
+	public TimersMod() {
 		super("Timers", "timers", "Timers for game events.");
 	}
 

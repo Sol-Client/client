@@ -5,9 +5,9 @@ import me.mcblueparrot.client.event.impl.GammaEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 
-public class NightVisionMod extends Mod {
+public class FullbrightMod extends Mod {
 
-	public NightVisionMod() {
+	public FullbrightMod() {
 		super("Fullbright", "nightVision", "Illuminate the entire world.", ModCategory.VISUAL);
 	}
 

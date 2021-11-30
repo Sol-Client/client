@@ -14,7 +14,7 @@ import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemFishingRod;
 
-public class Old1_7AnimationsMod extends Mod {
+public class V1_7VisualsMod extends Mod {
 
 	@Expose
 	@ConfigOption("Use Item while Mining")
@@ -28,10 +28,10 @@ public class Old1_7AnimationsMod extends Mod {
 	@Expose
 	@ConfigOption("Sneaking")
 	public boolean sneaking = true;
-	public static Old1_7AnimationsMod instance;
+	public static V1_7VisualsMod instance;
 	public static boolean enabled;
 
-	public Old1_7AnimationsMod() {
+	public V1_7VisualsMod() {
 		super("1.7 Visuals", "1.7_visuals", "Brings back some of the look-and-feel of 1.7.", ModCategory.VISUAL);
 		instance = this;
 	}

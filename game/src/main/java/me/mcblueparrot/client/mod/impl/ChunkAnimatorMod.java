@@ -27,7 +27,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 
 // Read this class for long enough and the world "chunk" will lose meaning.
-public class ChunkAnimationMod extends Mod {
+public class ChunkAnimatorMod extends Mod {
 
 	private Map<RenderChunk, Data> chunks = new WeakHashMap<>();
 	@Expose
@@ -38,7 +38,7 @@ public class ChunkAnimationMod extends Mod {
 	@ConfigOption("Function")
 	private EasingFunction animation = EasingFunction.SINE;
 
-	public ChunkAnimationMod() {
+	public ChunkAnimatorMod() {
 		super("Chunk Animator", "chunk_animation", "Animate world loading.", ModCategory.VISUAL);
 	}
 

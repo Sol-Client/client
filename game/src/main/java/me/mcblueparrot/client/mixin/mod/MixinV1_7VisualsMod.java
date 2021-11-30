@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import me.mcblueparrot.client.mod.impl.Old1_7AnimationsMod;
+import me.mcblueparrot.client.mod.impl.V1_7VisualsMod;
 import me.mcblueparrot.client.util.access.AccessEntityLivingBase;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
@@ -20,7 +20,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 
-public abstract class MixinOld1_7AnimationsMod {
+public abstract class MixinV1_7VisualsMod {
 
 	@Mixin(ItemRenderer.class)
 	public static abstract class MixinItemRenderer {
@@ -32,7 +32,7 @@ public abstract class MixinOld1_7AnimationsMod {
 		@Redirect(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;transformFirstPersonItem(FF)V"))
 		public void allowUseAndSwing(ItemRenderer itemRenderer, float equipProgress, float swingProgress) {
 			transformFirstPersonItem(equipProgress,
-					swingProgress == 0.0F && Old1_7AnimationsMod.enabled && Old1_7AnimationsMod.instance.useAndMine ?
+					swingProgress == 0.0F && V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine ?
 					mc.thePlayer.getSwingProgress(AccessMinecraft.getInstance().getTimerSC().renderPartialTicks) :
 							swingProgress);
 		}
@@ -47,7 +47,7 @@ public abstract class MixinOld1_7AnimationsMod {
 
 		@Inject(method = "renderHand", at = @At(value = "HEAD"))
 		public void forceSwing(float partialTicks, int xOffset, CallbackInfo callback) {
-			if(mc.thePlayer != null && Old1_7AnimationsMod.enabled && Old1_7AnimationsMod.instance.useAndMine
+			if(mc.thePlayer != null && V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine
 					&& mc.objectMouseOver != null
 					&& mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
 					&& mc.thePlayer != null
@@ -62,7 +62,7 @@ public abstract class MixinOld1_7AnimationsMod {
 
 		@Redirect(method = "orientCamera", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeHeight()F"))
 		public float smoothSneaking(Entity entity) {
-			if(Old1_7AnimationsMod.enabled && Old1_7AnimationsMod.instance.sneaking
+			if(V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking
 					&& entity instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) entity;
 				float height = player.getEyeHeight();
@@ -98,7 +98,7 @@ public abstract class MixinOld1_7AnimationsMod {
 
 		@Inject(method = "shouldCombineTextures", at = @At("HEAD"), cancellable = true)
 		public void oldArmour(CallbackInfoReturnable<Boolean> callback) {
-			if(Old1_7AnimationsMod.enabled && Old1_7AnimationsMod.instance.armourDamage) {
+			if(V1_7VisualsMod.enabled && V1_7VisualsMod.instance.armourDamage) {
 				callback.setReturnValue(true);
 			}
 		}

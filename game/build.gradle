@@ -134,7 +134,7 @@ static def addReplayModRemapper(def fixBuilder) {
 	fixBuilder.add("CL: net/minecraftforge/fml/client/registry/ClientRegistry " +
 			"me/mcblueparrot/client/mod/impl/replay/fix/SCClientRegistry")
 	fixBuilder.add("CL: net/minecraftforge/fml/common/eventhandler/SubscribeEvent " +
-			"me/mcblueparrot/client/event/impl/EventHandler")
+			"me/mcblueparrot/client/event/EventHandler")
 	fixBuilder.add("CL: net/minecraftforge/fml/common/gameevent/PlayerEvent\$ItemPickupEvent " +
 			"me/mcblueparrot/client/event/impl/ItemPickupEvent")
 	fixBuilder.add("CL: net/minecraftforge/event/entity/player/PlayerSleepInBedEvent " +

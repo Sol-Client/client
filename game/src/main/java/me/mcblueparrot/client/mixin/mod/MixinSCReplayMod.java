@@ -119,6 +119,7 @@ public class MixinSCReplayMod {
 		 * @author TheKodeToad
 		 * @reason No comment.
 		 */
+		@Override
 		@Overwrite
 		public void addChatMessage(IChatComponent message) {
 			super.addChatMessage(message);
@@ -136,6 +137,7 @@ public class MixinSCReplayMod {
 					SCReplayMod.instance)));
 		}
 
+		@Override
 		public void display() {
 			if(!SCReplayMod.enabled) {
 				Minecraft.getMinecraft().displayGuiScreen(null);
@@ -173,8 +175,8 @@ public class MixinSCReplayMod {
 	@Mixin(GuiSavingReplay.class)
 	public static class MixinGuiSavingReplay {
 
-		@Redirect(method = "presentRenameDialog", at = @At(value = "INVOKE", target = "Lme/mcblueparrot/client/replaymod" +
-				"/SCSettingsRegistry;get(Lme/mcblueparrot/client/replaymod/SCSettingsRegistry$SettingKey;)" +
+		@Redirect(method = "presentRenameDialog", at = @At(value = "INVOKE", target = "Lme/mcblueparrot/client/mod/impl/replay/fix" +
+				"/SCSettingsRegistry;get(Lme/mcblueparrot/client/mod/impl/replay/fix/SCSettingsRegistry$SettingKey;)" +
 				"Ljava/lang/Object;"), remap = false)
 		public Object saveAnyway(SCSettingsRegistry instance, SCSettingsRegistry.SettingKey settingKey) {
 			return SCReplayMod.instance.renameDialog && SCReplayMod.enabled && !(SCReplayMod.deferedState
@@ -226,5 +228,5 @@ public class MixinSCReplayMod {
 		}
 
 	}
-	
+
 }

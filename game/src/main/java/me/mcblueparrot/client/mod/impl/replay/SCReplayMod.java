@@ -1,15 +1,17 @@
 package me.mcblueparrot.client.mod.impl.replay;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.replaymod.core.ReplayMod;
 import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.OpenGuiScreenCallback;
-import lombok.AllArgsConstructor;
+
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.GameOverlayElement;
-import me.mcblueparrot.client.event.impl.OpenGuiEvent;
 import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
-import me.mcblueparrot.client.event.impl.ServerConnectEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
@@ -21,12 +23,7 @@ import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.mod.impl.replay.fix.SCReplayModBackend;
 import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
 import me.mcblueparrot.client.util.data.Colour;
-import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Sol Client representation of Replay Mod.

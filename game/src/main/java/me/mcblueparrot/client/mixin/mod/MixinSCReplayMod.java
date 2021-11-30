@@ -1,5 +1,7 @@
 package me.mcblueparrot.client.mixin.mod;
 
+import com.replaymod.lib.de.johni0702.minecraft.gui.GuiRenderer;
+import com.replaymod.lib.de.johni0702.minecraft.gui.element.AbstractGuiSlider;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -18,7 +20,6 @@ import com.replaymod.core.events.KeyBindingEventCallback;
 import com.replaymod.core.events.PostRenderWorldCallback;
 import com.replaymod.core.events.PreRenderHandCallback;
 import com.replaymod.core.versions.MCVer;
-import com.replaymod.lib.de.johni0702.minecraft.gui.MinecraftGuiRenderer;
 import com.replaymod.lib.de.johni0702.minecraft.gui.container.GuiScreen;
 import com.replaymod.lib.de.johni0702.minecraft.gui.element.GuiButton;
 import com.replaymod.lib.de.johni0702.minecraft.gui.versions.MatrixStack;
@@ -40,13 +41,10 @@ import me.mcblueparrot.client.ui.screen.JGuiPreviousScreen;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -244,6 +242,9 @@ public class MixinSCReplayMod {
 			RecordingIndicator.guiControls = guiControls;
 		}
 
+		/**
+		 * @author TheKodeToad
+		 */
 		@Overwrite(remap = false)
 		private void renderRecordingIndicator(MatrixStack stack) {
 			// Overwritten by the HUD.
@@ -251,6 +252,17 @@ public class MixinSCReplayMod {
 
 		@Shadow
 		private @Final GuiRecordingControls guiControls;
+
+	}
+
+	@Mixin(AbstractGuiSlider.class)
+	public static class MixinAbstractGuiSlider {
+
+		@Redirect(method = "draw", at = @At(value = "INVOKE",
+				target = "Lcom/replaymod/lib/de/johni0702/minecraft/gui/GuiRenderer;drawCenteredString(IIILjava/lang/String;)I"), remap = false)
+		public int useShadow(GuiRenderer instance, int x, int y, int colour, String text) {
+			return instance.drawCenteredString(x, y, colour, text, true);
+		}
 
 	}
 

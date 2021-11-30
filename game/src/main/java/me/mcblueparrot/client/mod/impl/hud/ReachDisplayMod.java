@@ -4,16 +4,16 @@ import java.text.DecimalFormat;
 
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.EntityAttackEvent;
-import me.mcblueparrot.client.mod.hud.SimpleHud;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 
-public class ReachDisplayHud extends SimpleHud {
+public class ReachDisplayMod extends SimpleHudMod {
 
 	private double distance = 0;
 	private long lastCalculate = -1;
 	private long hitTime = -1;
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 
-	public ReachDisplayHud() {
+	public ReachDisplayMod() {
 		super("Reach Display", "reach_display", "Display your reach when hitting entities.");
 	}
 

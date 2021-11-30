@@ -14,7 +14,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.util.BukkitMaterial;
 import me.mcblueparrot.client.util.data.Alignment;
 import me.mcblueparrot.client.util.data.Colour;
@@ -28,7 +28,7 @@ import net.minecraft.network.play.server.S3FPacketCustomPayload;
 
 // Based around https://github.com/BadlionClient/BadlionClientTimerAPI.
 // Works with any server that supports Badlion timers.
-public class TimerHud extends Hud {
+public class TimerMod extends HudMod {
 
 	private static final String CHANNEL_NAME = "badlion:timers";
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("mm:ss");
@@ -52,7 +52,7 @@ public class TimerHud extends Hud {
 	@ConfigOption("Time Colour")
 	private Colour timeColour = new Colour(8355711);
 
-	public TimerHud() {
+	public TimerMod() {
 		super("Timers", "timers", "Timers for game events.");
 	}
 

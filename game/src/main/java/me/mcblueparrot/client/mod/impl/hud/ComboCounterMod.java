@@ -3,17 +3,17 @@ package me.mcblueparrot.client.mod.impl.hud;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.EntityAttackEvent;
 import me.mcblueparrot.client.event.impl.EntityDamageEvent;
-import me.mcblueparrot.client.mod.hud.SimpleHud;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.util.data.Position;
 
-public class ComboCounterHud extends SimpleHud {
+public class ComboCounterMod extends SimpleHudMod {
 
 	private long hitTime = -1;
 	private int combo;
 	private int possibleTarget;
 	private boolean wasClicking;
 
-	public ComboCounterHud() {
+	public ComboCounterMod() {
 		super("Combo Counter", "combo_counter", "Display the number of subsequent hits.");
 	}
 

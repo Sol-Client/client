@@ -18,9 +18,12 @@ import com.replaymod.core.events.KeyBindingEventCallback;
 import com.replaymod.core.events.PostRenderWorldCallback;
 import com.replaymod.core.events.PreRenderHandCallback;
 import com.replaymod.core.versions.MCVer;
+import com.replaymod.lib.de.johni0702.minecraft.gui.MinecraftGuiRenderer;
 import com.replaymod.lib.de.johni0702.minecraft.gui.container.GuiScreen;
 import com.replaymod.lib.de.johni0702.minecraft.gui.element.GuiButton;
 import com.replaymod.lib.de.johni0702.minecraft.gui.versions.MatrixStack;
+import com.replaymod.recording.gui.GuiRecordingControls;
+import com.replaymod.recording.gui.GuiRecordingOverlay;
 import com.replaymod.recording.gui.GuiSavingReplay;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
@@ -29,6 +32,7 @@ import com.replaymod.replay.camera.VanillaCameraController;
 import com.replaymod.replay.events.RenderHotbarCallback;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
+import me.mcblueparrot.client.mod.impl.replay.RecordingIndicator;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 import me.mcblueparrot.client.mod.impl.replay.fix.SCSettingsRegistry;
 import me.mcblueparrot.client.tweak.Tweaker;
@@ -36,10 +40,13 @@ import me.mcblueparrot.client.ui.screen.JGuiPreviousScreen;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -226,6 +233,24 @@ public class MixinSCReplayMod {
 		private static String getConfigClass(String clazz) {
 			return "net.minecraft.src." + clazz;
 		}
+
+	}
+
+	@Mixin(GuiRecordingOverlay.class)
+	public static class MixinGuiRecordingOverlay {
+
+		@Inject(method = "<init>", at = @At("RETURN"))
+		public void postInit(CallbackInfo callback) {
+			RecordingIndicator.guiControls = guiControls;
+		}
+
+		@Overwrite(remap = false)
+		private void renderRecordingIndicator(MatrixStack stack) {
+			// Overwritten by the HUD.
+		}
+
+		@Shadow
+		private @Final GuiRecordingControls guiControls;
 
 	}
 

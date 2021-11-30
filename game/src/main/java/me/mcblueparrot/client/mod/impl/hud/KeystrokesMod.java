@@ -6,7 +6,7 @@ import me.mcblueparrot.client.CpsMonitor;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PlayerHeadRotateEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.MathHelper;
 
-public class KeystrokeHud extends Hud {
+public class KeystrokesMod extends HudMod {
 
 	@Expose
 	@ConfigOption("Movement")
@@ -69,7 +69,7 @@ public class KeystrokeHud extends Hud {
 
 	private Keystroke w, a, s, d, lmb, rmb, space;
 
-	public KeystrokeHud() {
+	public KeystrokesMod() {
 		super("Keystrokes", "keystrokes", "Display the currently held keys.");
 	}
 

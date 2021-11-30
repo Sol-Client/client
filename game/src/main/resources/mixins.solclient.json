@@ -63,6 +63,7 @@
 		"mod.MixinSCReplayMod$MixinOptifineReflection",
 		"mod.MixinSCReplayMod$MixinReplayMod",
 		"mod.MixinSCReplayMod$MixinVanillaCameraController",
+		"mod.MixinSCReplayMod$MixinGuiRecordingOverlay",
 		"mod.MixinShowOwnTagMod$MixinRendererLivingEntity"
 	],
 	"injectors": {

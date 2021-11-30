@@ -53,11 +53,6 @@ import net.minecraft.util.Timer;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements AccessMinecraft, MCVer.MinecraftMethodAccessor {
 
-	@Shadow public EntityRenderer entityRenderer;
-
-	@Shadow public abstract void displayGuiScreen(GuiScreen guiScreenIn);
-
-	@Shadow private String serverName;
 	private boolean debugPressed;
 	private boolean cancelDebug;
 
@@ -489,8 +484,18 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 
 	@Shadow
 	private ServerData currentServerData;
-	
+
 	@Shadow
 	public WorldClient theWorld;
+
+
+	@Shadow
+	public EntityRenderer entityRenderer;
+
+	@Shadow
+	public abstract void displayGuiScreen(GuiScreen guiScreenIn);
+
+	@Shadow
+	private String serverName;
 
 }

@@ -3,7 +3,7 @@ package me.mcblueparrot.client.mod.impl.hud;
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class ArmourHud extends Hud {
+public class ArmourMod extends HudMod {
 
 	@Expose
 	@ConfigOption("Mode")
@@ -35,7 +35,7 @@ public class ArmourHud extends Hud {
 	private static final ItemStack BOOTS = new ItemStack(Items.iron_boots);
 	private static final ItemStack HAND = new ItemStack(Items.iron_sword);
 
-	public ArmourHud() {
+	public ArmourMod() {
 		super("Equipment", "armour", "Display your armour and equipment.");
 	}
 

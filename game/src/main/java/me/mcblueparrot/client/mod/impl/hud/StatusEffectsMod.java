@@ -6,7 +6,7 @@ import java.util.Collection;
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.mod.impl.ArabicNumeralsMod;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Alignment;
@@ -19,7 +19,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 
-public class StatusEffectsHud extends Hud {
+public class StatusEffectsMod extends HudMod {
 
 	private static final int EFFECT_HEIGHT = 33;
 
@@ -42,7 +42,7 @@ public class StatusEffectsHud extends Hud {
 	@ConfigOption("Duration Colour")
 	private Colour durationColour = new Colour(8355711);
 
-	public StatusEffectsHud() {
+	public StatusEffectsMod() {
 		super("Potion Effects", "statuseffects", "Display your potion effects on the HUD.");
 	}
 

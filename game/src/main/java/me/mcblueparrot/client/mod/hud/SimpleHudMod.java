@@ -7,7 +7,7 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
 
-public abstract class SimpleHud extends Hud {
+public abstract class SimpleHudMod extends HudMod {
 
 	@Expose
 	@ConfigOption("Background")
@@ -28,7 +28,7 @@ public abstract class SimpleHud extends Hud {
 	@ConfigOption("Text Shadow")
 	protected boolean shadow = true;
 
-	public SimpleHud(String name, String id, String description) {
+	public SimpleHudMod(String name, String id, String description) {
 		super(name, id, description);
 	}
 

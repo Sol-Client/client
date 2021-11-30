@@ -51,7 +51,7 @@ public class QuickPlayMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(menuKey.isKeyDown()) {
+		if(menuKey.isKeyDown() && Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL) {
 			mc.displayGuiScreen(new QuickPlayPalette(this));
 		}
 	}

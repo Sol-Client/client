@@ -2,14 +2,14 @@ package me.mcblueparrot.client.mod.impl.hud;
 
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
-import me.mcblueparrot.client.mod.hud.SimpleHud;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import net.minecraft.client.Minecraft;
 
-public class FpsHud extends SimpleHud {
+public class FpsMod extends SimpleHudMod {
 
 	public int counter;
 
-	public FpsHud() {
+	public FpsMod() {
 		super("FPS", "fps", "Display the FPS (frames per second).");
 	}
 

@@ -1,11 +1,11 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
-import me.mcblueparrot.client.mod.hud.SimpleHud;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import net.minecraft.client.network.NetworkPlayerInfo;
 
-public class PingHud extends SimpleHud {
+public class PingMod extends SimpleHudMod {
 
-	public PingHud() {
+	public PingMod() {
 		super("Ping", "ping", "Display the latency to the server.");
 	}
 

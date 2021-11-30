@@ -4,12 +4,12 @@ import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.CpsMonitor;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.mod.hud.SimpleHud;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 
-public class CpsHud extends SimpleHud {
+public class CpsMod extends SimpleHudMod {
 
 	@Expose
 	@ConfigOption("RMB")
@@ -18,7 +18,7 @@ public class CpsHud extends SimpleHud {
 	@ConfigOption("Separator Colour")
 	private Colour separatorColour = new Colour(64, 64, 64);
 
-	public CpsHud() {
+	public CpsMod() {
 		super("CPS", "cps", "Display your CPS (clicks per second).");
 	}
 

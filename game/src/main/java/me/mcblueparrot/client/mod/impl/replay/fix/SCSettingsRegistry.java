@@ -10,6 +10,8 @@ import java.util.Set;
 import com.replaymod.core.events.SettingsChangedCallback;
 
 import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.mod.impl.replay.SCCameraType;
+import me.mcblueparrot.client.mod.impl.replay.SCInterpolatorType;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 
 public class SCSettingsRegistry {
@@ -173,10 +175,10 @@ public class SCSettingsRegistry {
 					case "camera":
 						switch((String) value) {
 							case "replaymod.camera.classic":
-								mod.camera = SCReplayMod.SCCameraType.CLASSIC;
+								mod.camera = SCCameraType.CLASSIC;
 								break;
 							case "replaymod.camera.vanilla":
-								mod.camera = SCReplayMod.SCCameraType.VANILLA_ISH;
+								mod.camera = SCCameraType.VANILLA_ISH;
 								break;
 						}
 						break;
@@ -196,13 +198,13 @@ public class SCSettingsRegistry {
 					case "interpolator":
 						switch((String) value) {
 							case "replaymod.gui.editkeyframe.interpolator.catmullrom.name":
-								mod.defaultInterpolator = SCReplayMod.SCInterpolatorType.CATMULL;
+								mod.defaultInterpolator = SCInterpolatorType.CATMULL;
 								break;
 							case "replaymod.gui.editkeyframe.interpolator.cubic.name":
-								mod.defaultInterpolator = SCReplayMod.SCInterpolatorType.CUBIC;
+								mod.defaultInterpolator = SCInterpolatorType.CUBIC;
 								break;
 							case "replaymod.gui.editkeyframe.interpolator.linear.name":
-								mod.defaultInterpolator = SCReplayMod.SCInterpolatorType.LINEAR;
+								mod.defaultInterpolator = SCInterpolatorType.LINEAR;
 								break;
 						}
 						break;

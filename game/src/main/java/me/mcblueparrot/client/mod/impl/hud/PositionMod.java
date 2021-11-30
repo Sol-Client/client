@@ -3,13 +3,13 @@ package me.mcblueparrot.client.mod.impl.hud;
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.util.MathHelper;
 
-public class PositionHud extends Hud {
+public class PositionMod extends HudMod {
 
 	private String editString = "XYZ: 000.000 / 00.000 / 000.000";
 	@Expose
@@ -46,7 +46,7 @@ public class PositionHud extends Hud {
 	@ConfigOption("Text Shadow")
 	private boolean shadow = true;
 
-	public PositionHud() {
+	public PositionMod() {
 		super("Coordinates", "position", "Display your coordinates.");
 	}
 

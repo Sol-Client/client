@@ -6,18 +6,26 @@ import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.OpenGuiSc
 import lombok.AllArgsConstructor;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.GameOverlayElement;
 import me.mcblueparrot.client.event.impl.OpenGuiEvent;
+import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
 import me.mcblueparrot.client.event.impl.ServerConnectEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Slider;
+import me.mcblueparrot.client.mod.hud.HudElement;
+import me.mcblueparrot.client.mod.hud.HudPosition;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.mod.impl.replay.fix.SCReplayModBackend;
+import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
+import me.mcblueparrot.client.util.data.Colour;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,24 +43,42 @@ public class SCReplayMod extends Mod {
 	@Expose
 	@ConfigOption("Enable Notifications")
 	public boolean enableNotifications = true;
+
 	@Expose
 	@ConfigOption("Record Singleplayer")
 	public boolean recordSingleplayer = true;
 	@Expose
 	@ConfigOption("Record Server")
 	public boolean recordServer = true;
+
 	@Expose
 	@ConfigOption("Recording Indicator")
 	public boolean recordingIndicator = true;
 	@Expose
+	@ConfigOption("Recording Indicator Scale")
+	@Slider(min = 50, max = 150, step = 1, suffix = "%")
+	protected float recordingIndicatorScale = 100;
+	@Expose
+	@ConfigOption("Recording Indicator Text Colour")
+	protected Colour recordingIndicatorTextColour = Colour.WHITE;
+	@Expose
+	@ConfigOption("Recording Indicator Text Shadow")
+	protected boolean recordingIndicatorTextShadow = true;
+	@Expose
+	protected HudPosition recordingIndicatorPosition = new HudPosition(0.1F, 0.1F);
+	private RecordingIndicator recordingIndicatorHud = new RecordingIndicator(this);
+
+	@Expose
 	@ConfigOption("Automatic Recording")
 	public boolean automaticRecording = true;
+
 	@Expose
 	@ConfigOption("Rename Dialog")
 	public boolean renameDialog = true;
 	@Expose
 	@ConfigOption("Show Chat")
 	public boolean showChat = true;
+
 	@Expose
 	@ConfigOption("Camera")
 	public SCCameraType camera = SCCameraType.CLASSIC;
@@ -65,6 +91,7 @@ public class SCReplayMod extends Mod {
 	@Expose
 	@ConfigOption("Show Server IPs")
 	public boolean showServerIPs = true;
+
 	@Expose
 	public boolean automaticPostProcessing = true;
 	@Expose
@@ -73,6 +100,7 @@ public class SCReplayMod extends Mod {
 	public int timelineLength = 1800;
 	@Expose
 	public boolean frameTimeFromWorldTime;
+
 	@Expose
 	public boolean skipPostRenderGui;
 	public boolean skipPostScreenshotGui;
@@ -89,7 +117,12 @@ public class SCReplayMod extends Mod {
 		backend = new SCReplayModBackend();
 		backend.init();
 
-		Client.INSTANCE.bus.register(new ServerListener());
+		Client.INSTANCE.bus.register(new ConstantListener());
+	}
+
+	@Override
+	public List<HudElement> getHudElements() {
+		return Arrays.asList(recordingIndicatorHud);
 	}
 
 	private void updateSettings() {
@@ -122,11 +155,18 @@ public class SCReplayMod extends Mod {
 		updateState(mc.theWorld);
 	}
 
-	public class ServerListener {
+	public class ConstantListener {
 
 		@EventHandler
 		public void onWorldLoad(WorldLoadEvent event) {
 			updateState(event.world);
+		}
+
+		@EventHandler
+		public void onRender(PostGameOverlayRenderEvent event) {
+			if(event.type == GameOverlayElement.ALL && enabled && !isEnabled()) {
+				render(mc.currentScreen instanceof MoveHudsScreen);
+			}
 		}
 
 	}
@@ -177,33 +217,6 @@ public class SCReplayMod extends Mod {
 	public void removeEvent(Object event) {
 		registerOnEnable.remove(event);
 		unregisterOnDisable.remove(event);
-	}
-
-	@AllArgsConstructor
-	public enum SCCameraType {
-		CLASSIC("Classic"),
-		VANILLA_ISH("Vanilla-ish");
-
-		private String name;
-
-		@Override
-		public String toString() {
-			return name;
-		}
-	}
-
-	@AllArgsConstructor
-	public enum SCInterpolatorType {
-		CATMULL("Catmull-Rom Spline"),
-		CUBIC("Cubic Spline"),
-		LINEAR("Linear");
-
-		private String name;
-
-		@Override
-		public String toString() {
-			return name;
-		}
 	}
 
 }

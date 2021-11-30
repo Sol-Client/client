@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import me.mcblueparrot.client.mod.impl.hud.ChatHud;
+import me.mcblueparrot.client.mod.impl.hud.ChatMod;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiUtilRenderComponents;
@@ -20,8 +20,8 @@ public class MixinChatHud {
 		@Redirect(method = "handleComponentClick",
 				at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;chatLinks:Z"))
 		public boolean overrideChatLinks(GameSettings settings) {
-			if(ChatHud.enabled) {
-				return ChatHud.instance.links;
+			if(ChatMod.enabled) {
+				return ChatMod.instance.links;
 			}
 
 			return settings.chatLinks;
@@ -30,8 +30,8 @@ public class MixinChatHud {
 		@Redirect(method = "handleComponentClick",
 				at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;chatLinksPrompt:Z"))
 		public boolean overrideChatLinksPrompt(GameSettings settings) {
-			if(ChatHud.enabled) {
-				return ChatHud.instance.promptLinks;
+			if(ChatMod.enabled) {
+				return ChatMod.instance.promptLinks;
 			}
 
 			return settings.chatLinks;
@@ -45,8 +45,8 @@ public class MixinChatHud {
 		@Redirect(method = "sendSettingsToServer",
 				at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;chatColours:Z"))
 		public boolean overrideChatColours(GameSettings settings) {
-			if(ChatHud.enabled) {
-				return ChatHud.instance.colours;
+			if(ChatMod.enabled) {
+				return ChatMod.instance.colours;
 			}
 
 			return settings.chatColours;
@@ -60,7 +60,7 @@ public class MixinChatHud {
 		@Inject(method = "func_178909_a", at = @At("HEAD"), cancellable = true)
 		private static void overrideChatColours(String input, boolean defaultValue,
 										   CallbackInfoReturnable<String> callback) {
-			if(ChatHud.enabled) {
+			if(ChatMod.enabled) {
 				callback.setReturnValue(input);
 			}
 		}
@@ -71,8 +71,8 @@ public class MixinChatHud {
 	public static class MixinGuiChat {
 
 		public boolean canBeForceClosed() {
-			if(ChatHud.enabled) {
-				return !ChatHud.instance.preventClose;
+			if(ChatMod.enabled) {
+				return !ChatMod.instance.preventClose;
 			}
 			return true;
 		}

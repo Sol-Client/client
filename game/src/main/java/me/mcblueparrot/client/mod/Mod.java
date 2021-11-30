@@ -1,19 +1,26 @@
 package me.mcblueparrot.client.mod;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.annotations.Expose;
+import com.replaymod.replay.ReplayModReplay;
 
 import lombok.Getter;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.GameOverlayElement;
+import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
 import me.mcblueparrot.client.event.impl.PostGameStartEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.hud.HudElement;
 import me.mcblueparrot.client.mod.impl.replay.fix.SCEventRegistrations;
+import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 
 public abstract class Mod {
 
@@ -145,12 +152,29 @@ public abstract class Mod {
 		return Client.INSTANCE.getMods().indexOf(this);
 	}
 
+	public List<HudElement> getHudElements() {
+		return Collections.emptyList();
+	}
+
 	public boolean isLocked() {
 		return false;
 	}
 
 	public String getLockMessage() {
 		return "";
+	}
+
+	public void render(boolean editMode) {
+		for(HudElement element : getHudElements()) {
+			element.render(editMode);
+		}
+	}
+
+	@EventHandler
+	public void onRender(PostGameOverlayRenderEvent event) {
+		if(event.type == GameOverlayElement.ALL) {
+			render(mc.currentScreen instanceof MoveHudsScreen);
+		}
 	}
 
 }

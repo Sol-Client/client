@@ -34,7 +34,8 @@ import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.event.impl.SendChatMessageEvent;
 import me.mcblueparrot.client.event.impl.ServerConnectEvent;
 import me.mcblueparrot.client.mod.Mod;
-import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.hud.HudMod;
+import me.mcblueparrot.client.mod.hud.HudElement;
 import me.mcblueparrot.client.mod.impl.ArabicNumeralsMod;
 import me.mcblueparrot.client.mod.impl.BetterItemTooltipsMod;
 import me.mcblueparrot.client.mod.impl.BlockSelectionMod;
@@ -54,19 +55,19 @@ import me.mcblueparrot.client.mod.impl.ShowOwnTagMod;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.mod.impl.TimeChangerMod;
 import me.mcblueparrot.client.mod.impl.ZoomMod;
-import me.mcblueparrot.client.mod.impl.hud.ArmourHud;
-import me.mcblueparrot.client.mod.impl.hud.ChatHud;
-import me.mcblueparrot.client.mod.impl.hud.ComboCounterHud;
-import me.mcblueparrot.client.mod.impl.hud.CpsHud;
-import me.mcblueparrot.client.mod.impl.hud.CrosshairHud;
-import me.mcblueparrot.client.mod.impl.hud.FpsHud;
-import me.mcblueparrot.client.mod.impl.hud.KeystrokeHud;
-import me.mcblueparrot.client.mod.impl.hud.PingHud;
-import me.mcblueparrot.client.mod.impl.hud.PositionHud;
-import me.mcblueparrot.client.mod.impl.hud.ReachDisplayHud;
-import me.mcblueparrot.client.mod.impl.hud.SpeedHud;
-import me.mcblueparrot.client.mod.impl.hud.StatusEffectsHud;
-import me.mcblueparrot.client.mod.impl.hud.TimerHud;
+import me.mcblueparrot.client.mod.impl.hud.ArmourMod;
+import me.mcblueparrot.client.mod.impl.hud.ChatMod;
+import me.mcblueparrot.client.mod.impl.hud.ComboCounterMod;
+import me.mcblueparrot.client.mod.impl.hud.CpsMod;
+import me.mcblueparrot.client.mod.impl.hud.CrosshairMod;
+import me.mcblueparrot.client.mod.impl.hud.FpsMod;
+import me.mcblueparrot.client.mod.impl.hud.KeystrokesMod;
+import me.mcblueparrot.client.mod.impl.hud.PingMod;
+import me.mcblueparrot.client.mod.impl.hud.PositionMod;
+import me.mcblueparrot.client.mod.impl.hud.ReachDisplayMod;
+import me.mcblueparrot.client.mod.impl.hud.SpeedMod;
+import me.mcblueparrot.client.mod.impl.hud.StatusEffectsMod;
+import me.mcblueparrot.client.mod.impl.hud.TimerMod;
 import me.mcblueparrot.client.mod.impl.hud.ToggleSprintMod;
 import me.mcblueparrot.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
@@ -97,7 +98,7 @@ public class Client {
 	@Getter
 	private List<Mod> mods = new ArrayList<Mod>();
 	@Getter
-	private List<Hud> huds = new ArrayList<Hud>();
+	private List<HudElement> huds = new ArrayList<HudElement>();
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "sol_client_mods.json");
@@ -137,19 +138,19 @@ public class Client {
 		LOGGER.info("Loading mods...");
 
 		register(SolClientMod::new);
-		register(FpsHud::new);
-		register(PositionHud::new);
-		register(KeystrokeHud::new);
-		register(CpsHud::new);
-		register(PingHud::new);
-		register(SpeedHud::new);
-		register(ReachDisplayHud::new);
-		register(ComboCounterHud::new);
-		register(StatusEffectsHud::new);
-		register(ArmourHud::new);
-		register(TimerHud::new);
-		register(ChatHud::new);
-		register(CrosshairHud::new);
+		register(FpsMod::new);
+		register(PositionMod::new);
+		register(KeystrokesMod::new);
+		register(CpsMod::new);
+		register(PingMod::new);
+		register(SpeedMod::new);
+		register(ReachDisplayMod::new);
+		register(ComboCounterMod::new);
+		register(StatusEffectsMod::new);
+		register(ArmourMod::new);
+		register(TimerMod::new);
+		register(ChatMod::new);
+		register(CrosshairMod::new);
 		register(ScoreboardMod::new);
 		register(NightVisionMod::new);
 		register(MotionBlurMod::new);
@@ -231,9 +232,7 @@ public class Client {
 	private void cacheHudList() {
 		huds.clear();
 		for(Mod mod : mods) {
-			if(mod instanceof Hud) {
-				huds.add((Hud) mod);
-			}
+			huds.addAll(mod.getHudElements());
 		}
 	}
 

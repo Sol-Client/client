@@ -5,7 +5,8 @@ import java.io.IOException;
 import org.lwjgl.input.Mouse;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.hud.HudMod;
+import me.mcblueparrot.client.mod.hud.HudElement;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.element.Button;
 import me.mcblueparrot.client.util.Utils;
@@ -19,7 +20,7 @@ public class MoveHudsScreen extends GuiScreen {
 
 	private GuiScreen previous;
 	private GuiScreen title;
-	private Hud movingHud;
+	private HudElement movingHud;
 	private Position moveOffset;
 	private boolean wasMouseDown;
 	private boolean mouseDown;
@@ -29,9 +30,10 @@ public class MoveHudsScreen extends GuiScreen {
 		this.title = title;
 	}
 
-	public Hud getSelectedHud(int mouseX, int mouseY) {
-		for(Hud hud : Client.INSTANCE.getHuds()) {
+	public HudElement getSelectedHud(int mouseX, int mouseY) {
+		for(HudElement hud : Client.INSTANCE.getHuds()) {
 			if(!(hud.isEnabled() && hud.isVisible())) continue;
+
 			if(hud.isSelected(mouseX, mouseY)) {
 				return hud;
 			}
@@ -47,13 +49,13 @@ public class MoveHudsScreen extends GuiScreen {
 		}
 
 		if(mouseButton == 1) {
-			for(Hud hud : Client.INSTANCE.getHuds()) {
+			for(HudElement hud : Client.INSTANCE.getHuds()) {
 				if(hud.isEnabled() && hud.isVisible() && hud.getMultipliedBounds() != null && hud.getMultipliedBounds()
 						.contains(mouseX, mouseY)) {
 					if(previous instanceof ModsScreen) {
 						Utils.playClickSound();
 
-						((ModsScreen) previous).switchMod(hud);
+						((ModsScreen) previous).switchMod(hud.getMod());
 
 						Minecraft.getMinecraft().displayGuiScreen(previous);
 					}
@@ -90,7 +92,7 @@ public class MoveHudsScreen extends GuiScreen {
 			title.drawScreen(0, 0, partialTicks);
 		}
 
-		Hud selectedHud = getSelectedHud(mouseX, mouseY);
+		HudElement selectedHud = getSelectedHud(mouseX, mouseY);
 		if(Mouse.isButtonDown(0)) {
 			if(movingHud == null) {
 				if(selectedHud != null) {
@@ -116,7 +118,7 @@ public class MoveHudsScreen extends GuiScreen {
 			mc.displayGuiScreen(previous);
 		}
 
-		for(Hud hud : Client.INSTANCE.getHuds()) {
+		for(HudElement hud : Client.INSTANCE.getHuds()) {
 			if(!(hud.isEnabled() && hud.isVisible())) continue;
 
 			if(mc.theWorld == null) {

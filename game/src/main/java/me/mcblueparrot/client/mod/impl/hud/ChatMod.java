@@ -9,7 +9,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.ChatRenderEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
-import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiChat;
@@ -22,10 +22,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
-public class ChatHud extends Hud {
+public class ChatMod extends HudMod {
 
 	public static boolean enabled;
-	public static ChatHud instance;
+	public static ChatMod instance;
 
 	private static String symbols = "☺☹♡♥◀▶▲▼←→↑↓«»©™‽☕✓✕⚐⚑⚠☆★✮✫☃☄";
 	private static char[][] table;
@@ -92,7 +92,7 @@ public class ChatHud extends Hud {
 
 	public final SymbolsButton symbolsButton = new SymbolsButton();
 
-	public ChatHud() {
+	public ChatMod() {
 		super("Chat", "chat", "Improves and allows you to customise the chat.");
 		instance = this;
 	}

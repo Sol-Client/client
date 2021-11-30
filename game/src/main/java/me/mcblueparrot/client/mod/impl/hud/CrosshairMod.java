@@ -8,7 +8,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.GameOverlayElement;
 import me.mcblueparrot.client.event.impl.PreGameOverlayRenderEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
-import me.mcblueparrot.client.mod.hud.Hud;
+import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
 import net.minecraft.client.gui.Gui;
@@ -18,7 +18,7 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldSettings.GameType;
 
-public class CrosshairHud extends Hud {
+public class CrosshairMod extends HudMod {
 
 	private static final ResourceLocation CLIENT_CROSSHAIRS = new ResourceLocation("textures/gui" +
 			"/sol_client_crosshairs.png");
@@ -48,7 +48,7 @@ public class CrosshairHud extends Hud {
 	@ConfigOption("Entity Colour")
 	private Colour entityColour = Colour.RED;
 
-	public CrosshairHud() {
+	public CrosshairMod() {
 		super("Crosshair", "crosshair", "Customise your crosshair.");
 	}
 

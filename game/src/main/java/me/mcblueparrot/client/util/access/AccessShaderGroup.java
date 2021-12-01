@@ -6,6 +6,6 @@ import net.minecraft.client.shader.Shader;
 
 public interface AccessShaderGroup {
 
-    List<Shader> getListShaders();
+	List<Shader> getListShaders();
 
 }

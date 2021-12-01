@@ -16,48 +16,48 @@ import net.minecraft.util.StatCollector;
 
 public class MixinArabicNumeralsMod {
 
-    @Mixin(Enchantment.class)
-    public static abstract class MixinEnchantment {
+	@Mixin(Enchantment.class)
+	public static abstract class MixinEnchantment {
 
-        @Inject(method = "getTranslatedName", at = @At("HEAD"), cancellable = true)
-        public void overrideName(int level, CallbackInfoReturnable<String> callback) {
-            if(ArabicNumeralsMod.enabled) {
-                callback.setReturnValue(StatCollector.translateToLocal(getName()) + " " + level);
-            }
-        }
+		@Inject(method = "getTranslatedName", at = @At("HEAD"), cancellable = true)
+		public void overrideName(int level, CallbackInfoReturnable<String> callback) {
+			if(ArabicNumeralsMod.enabled) {
+				callback.setReturnValue(StatCollector.translateToLocal(getName()) + " " + level);
+			}
+		}
 
-        @Shadow
-        public abstract String getName();
-        
-    }
+		@Shadow
+		public abstract String getName();
+		
+	}
 
-    @Mixin(InventoryEffectRenderer.class)
-    public static class MixinInventoryEffectRenderer {
+	@Mixin(InventoryEffectRenderer.class)
+	public static class MixinInventoryEffectRenderer {
 
-        @Redirect(method = "drawActivePotionEffects", at = @At(value = "INVOKE",
-                target = "Lnet/minecraft/client/resources/I18n;format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;"))
-        public String overrideLevel(String translateKey, Object[] parameters) {
-            if(ArabicNumeralsMod.enabled && translateKey.startsWith("enchantment.level.")) {
-                return Integer.toString(Integer.parseInt(translateKey.substring(18)) + 1);
-            }
-            return I18n.format(translateKey, parameters);
-        }
+		@Redirect(method = "drawActivePotionEffects", at = @At(value = "INVOKE",
+				target = "Lnet/minecraft/client/resources/I18n;format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;"))
+		public String overrideLevel(String translateKey, Object[] parameters) {
+			if(ArabicNumeralsMod.enabled && translateKey.startsWith("enchantment.level.")) {
+				return Integer.toString(Integer.parseInt(translateKey.substring(18)) + 1);
+			}
+			return I18n.format(translateKey, parameters);
+		}
 
-    }
+	}
 
-    @Mixin(ItemPotion.class)
-    public static class MixinItemPotion {
+	@Mixin(ItemPotion.class)
+	public static class MixinItemPotion {
 
-        @Redirect(method = "addInformation", at = @At(value = "INVOKE",
-                target = "Lnet/minecraft/util/StatCollector;translateToLocal(Ljava/lang/String;)Ljava/lang/String;",
-                ordinal = 1))
-        public String overrideAmplifier(String key) {
-            if(ArabicNumeralsMod.enabled && key.startsWith("potion.potency.")) {
-                return key.substring(15);
-            }
-            return StatCollector.translateToLocal(key);
-        }
+		@Redirect(method = "addInformation", at = @At(value = "INVOKE",
+				target = "Lnet/minecraft/util/StatCollector;translateToLocal(Ljava/lang/String;)Ljava/lang/String;",
+				ordinal = 1))
+		public String overrideAmplifier(String key) {
+			if(ArabicNumeralsMod.enabled && key.startsWith("potion.potency.")) {
+				return key.substring(15);
+			}
+			return StatCollector.translateToLocal(key);
+		}
 
-    }
+	}
 
 }

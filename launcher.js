@@ -11,6 +11,7 @@ const tar = require("tar");
 const Config = require("./config");
 const Utils = require("./utils");
 const Patcher = require("./patcher");
+const { ipcRenderer } = require("electron");
 
 class Launcher {
 
@@ -220,9 +221,11 @@ class Launcher {
 				if(Config.data.optifine) {
 					var optifinePatchedJar = versionFolder + "/" + version.id + "-patched-optifine.jar";
 					var optifineSize = 2585014;
+					var optifineVersion = "1.8.9_HD_U_M5";
+
 					if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
 						await Library.download({
-								url: await Utils.getOptiFine(),
+								url: await Utils.getOptiFine(optifineVersion),
 								size: optifineSize,
 								path: optifineRelative
 							});
@@ -314,10 +317,31 @@ class Launcher {
 				var process = childProcess.spawn(java, args, { cwd: Utils.gameDirectory });
 				this.games.push(process);
 
-				process.stdout.on("data", (data) => console.log(data.toString("UTF-8")));
-				process.stderr.on("data", (data) => console.error(data.toString("UTF-8")));
+				let fullOutput = "";
 
-				process.on("exit", () => {
+				process.stdout.on("data", (data) => {
+					var dataString = data.toString("UTF-8");
+					fullOutput += dataString;
+					console.log("[Game/STDOUT] " + dataString);
+				});
+				process.stderr.on("data", (data) => {
+					var dataString = data.toString("UTF-8");
+					fullOutput += dataString;
+					console.error("[Game/STDERR] " + dataString);
+				});
+
+				process.on("exit", (code) => {
+					if(code != 0) {
+						console.error("Game crashed with exit code " + code);
+						if(optifineVersion) {
+							var optifineName = "OptiFine " + optifineVersion.replace(/_/g, " ");
+						}
+
+						ipcRenderer.send("crash", fullOutput, Utils.latestLog, optifineName);
+					}
+					else {
+						console.log("Game exited with code 0");
+					}
 					this.games.splice(this.games.indexOf(process), 1);
 				});
 

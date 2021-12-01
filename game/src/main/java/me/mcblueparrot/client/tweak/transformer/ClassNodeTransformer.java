@@ -6,8 +6,8 @@ import org.objectweb.asm.tree.ClassNode;
 
 public interface ClassNodeTransformer {
 
-    boolean test(String name);
+	boolean test(String name);
 
-    void apply(ClassNode clazz) throws IOException;
+	void apply(ClassNode clazz) throws IOException;
 
 }

@@ -18,6 +18,7 @@ class Utils {
 	static serversFile;
 	static version = require("./package.json").version;
 	static configFile;
+	static latestLog;
 
 	static init() {
 		Utils.minecraftDirectory = os.homedir();
@@ -54,6 +55,7 @@ class Utils {
 		Utils.accountFile = Utils.minecraftDirectory + "/account.json";
 		Utils.gameDirectory = Utils.minecraftDirectory + "/minecraft";
 		Utils.serversFile = Utils.gameDirectory + "/servers.dat";
+		Utils.latestLog = Utils.gameDirectory + "/logs/latest.log";
 
 		if(!fs.existsSync(Utils.gameDirectory)) {
 			fs.mkdirSync(Utils.gameDirectory, { recursive: true });
@@ -92,9 +94,9 @@ class Utils {
 		return new Promise((resolve) => resolve(true));
 	}
 
-	static getOptiFine() {
+	static getOptiFine(version) {
 		return new Promise((resolve) => {
-			axios.get("https://optifine.net/adloadx?f=OptiFine_1.8.9_HD_U_M5.jar")
+			axios.get("https://optifine.net/adloadx?f=OptiFine_" + version + ".jar")
 				.then((response) => {
 					var link = "https://optifine.net/downloadx?f=" +
 							response.data.substring(response.data

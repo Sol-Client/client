@@ -9,12 +9,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Slider {
 
-    float min();
+	float min();
 
-    float max();
+	float max();
 
-    float step();
+	float step();
 
-    boolean showValue() default true;
+	boolean showValue() default true;
+
+	String suffix() default "";
 
 }

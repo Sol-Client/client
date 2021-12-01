@@ -5,10 +5,10 @@ import net.minecraft.item.ItemStack;
 
 public interface QuickPlayOption {
 
-    String getText();
+	String getText();
 
-    void onClick(QuickPlayPalette palette, QuickPlayMod mod);
+	void onClick(QuickPlayPalette palette, QuickPlayMod mod);
 
-    ItemStack getIcon();
+	ItemStack getIcon();
 
 }

@@ -13,67 +13,67 @@ import net.minecraft.launchwrapper.LaunchClassLoader;
 
 public class Tweaker implements ITweaker {
 
-    public static boolean optiFine;
-    private static List<String> args = new ArrayList<>();
+	public static boolean optiFine;
+	private static List<String> args = new ArrayList<>();
 
-    @Override
-    public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profile) {
-        try {
-            Class.forName("optifine.Patcher");
-            optiFine = true;
-        }
-        catch(ClassNotFoundException ignored) {
-        }
+	@Override
+	public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profile) {
+		try {
+			Class.forName("optifine.Patcher");
+			optiFine = true;
+		}
+		catch(ClassNotFoundException ignored) {
+		}
 
-        Tweaker.args.addAll(args);
-        if(gameDir != null) {
-            Tweaker.args.add("--gameDir");
-            Tweaker.args.add(gameDir.getAbsolutePath());
-        }
-        if(assetsDir != null) {
-            Tweaker.args.add("--assetsDir");
-            Tweaker.args.add(assetsDir.getAbsolutePath());
-        }
-        if(profile != null) {
-            Tweaker.args.add("--version");
-            Tweaker.args.add(profile);
-        }
-    }
+		Tweaker.args.addAll(args);
+		if(gameDir != null) {
+			Tweaker.args.add("--gameDir");
+			Tweaker.args.add(gameDir.getAbsolutePath());
+		}
+		if(assetsDir != null) {
+			Tweaker.args.add("--assetsDir");
+			Tweaker.args.add(assetsDir.getAbsolutePath());
+		}
+		if(profile != null) {
+			Tweaker.args.add("--version");
+			Tweaker.args.add(profile);
+		}
+	}
 
-    @Override
-    public void injectIntoClassLoader(LaunchClassLoader classLoader) {
-        classLoader.registerTransformer("me.mcblueparrot.client.tweak.transformer.ClassTransformer");
+	@Override
+	public void injectIntoClassLoader(LaunchClassLoader classLoader) {
+		classLoader.registerTransformer("me.mcblueparrot.client.tweak.transformer.ClassTransformer");
 
-        MixinBootstrap.init();
+		MixinBootstrap.init();
 
-        Mixins.addConfiguration("mixins.solclient.json");
+		Mixins.addConfiguration("mixins.solclient.json");
 
-        // Replay Mod
-        Mixins.addConfiguration("mixins.core.replaymod.json");
-        Mixins.addConfiguration("mixins.recording.replaymod.json");
-        Mixins.addConfiguration("mixins.render.replaymod.json");
-        Mixins.addConfiguration("mixins.render.blend.replaymod.json");
-        Mixins.addConfiguration("mixins.replay.replaymod.json");
-        if(optiFine) Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
-        Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
+		// Replay Mod
+		Mixins.addConfiguration("mixins.core.replaymod.json");
+		Mixins.addConfiguration("mixins.recording.replaymod.json");
+		Mixins.addConfiguration("mixins.render.replaymod.json");
+		Mixins.addConfiguration("mixins.render.blend.replaymod.json");
+		Mixins.addConfiguration("mixins.replay.replaymod.json");
+		if(optiFine) Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
+		Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
 
-        MixinEnvironment env = MixinEnvironment.getDefaultEnvironment();
+		MixinEnvironment env = MixinEnvironment.getDefaultEnvironment();
 
-        if(env.getObfuscationContext() == null) {
-            env.setObfuscationContext("notch");
-        }
+		if(env.getObfuscationContext() == null) {
+			env.setObfuscationContext("notch");
+		}
 
-        env.setSide(MixinEnvironment.Side.CLIENT);
-    }
+		env.setSide(MixinEnvironment.Side.CLIENT);
+	}
 
-    @Override
-    public String getLaunchTarget() {
-        return "net.minecraft.client.main.Main";
-    }
+	@Override
+	public String getLaunchTarget() {
+		return "net.minecraft.client.main.Main";
+	}
 
-    @Override
-    public String[] getLaunchArguments() {
-        return args.toArray(new String[0]);
-    }
+	@Override
+	public String[] getLaunchArguments() {
+		return args.toArray(new String[0]);
+	}
 
 }

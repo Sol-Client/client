@@ -6,19 +6,19 @@ import net.minecraft.item.ItemStack;
 
 public class BackOption implements QuickPlayOption {
 
-    @Override
-    public String getText() {
-        return "< Back";
-    }
+	@Override
+	public String getText() {
+		return "< Back";
+	}
 
-    @Override
-    public void onClick(QuickPlayPalette palette, QuickPlayMod mod) {
-        palette.back();
-    }
+	@Override
+	public void onClick(QuickPlayPalette palette, QuickPlayMod mod) {
+		palette.back();
+	}
 
-    @Override
-    public ItemStack getIcon() {
-        return new ItemStack(Items.arrow);
-    }
+	@Override
+	public ItemStack getIcon() {
+		return new ItemStack(Items.arrow);
+	}
 
 }

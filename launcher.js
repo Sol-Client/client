@@ -177,7 +177,19 @@ class Launcher {
 									});
 								}
 								else if(name.endsWith(".zip")) {
-									await fs.createReadStream(path).pipe(unzipper.Extract({path: dest}));
+									var zip = fs.createReadStream(path)
+											.pipe(unzipper.Parse({ forceStream: true }));
+
+									for await(const entry of zip) {
+										const fileName = entry.path;
+
+										var destination = dest + "/" + fileName;
+										if(!fs.existsSync(path.dirname(destination))) {
+											fs.mkdirSync(path.dirname(destination), { recursive: true });
+										}
+
+										await entry.pipe(fs.createWriteStream(destination));
+									}
 								}
 
 								fs.closeSync(fs.openSync(doneFile, "w"));

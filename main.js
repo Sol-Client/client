@@ -10,9 +10,10 @@ async function run() {
 		return;
 	}
 
-	const {app, BrowserWindow, ipcMain, dialog} = require("electron");
+	const { app, BrowserWindow, ipcMain, dialog, shell } = require("electron");
 	const path = require("path");
 	const msmc = require("msmc");
+	const hastebin = require("hastebin");
 
 	var window;
 
@@ -37,7 +38,69 @@ async function run() {
 		});
 	});
 
-	ipcMain.on("devtools", (event) => window.webContents.openDevTools());
+	ipcMain.on("crash", async(_event, report, file, optifine) => {
+		var option = dialog.showMessageBoxSync(window, {
+			title: "Game Crashed",
+			message: `The game has crashed.
+You may submit a report on GitHub, so it can be fixed.
+This may include chat messages.
+If you have private messages, try reproducing this issue again.`,
+			type: "question",
+			buttons: [
+				"Do Nothing",
+				"Open log file",
+				"Submit a report"
+			]
+		});
+
+		// Indentation matters.
+		
+		if(option == 1) {
+			shell.openPath(file);
+		}
+		if(option != 2) {
+			return;
+		}
+
+		var crashReportText = "Add any applicable crash reports, making sure not to include any personal information. It is most important that you do not include the session id.";
+		if(report) {
+			report = report.replace(/\[.*\] \[.*\]: \(Session ID is .{3,}\)/gm, "<censored>");
+
+			hasteUrl = await hastebin.createPaste(report, {
+				raw: true,
+				contentType: "text/plain",
+				server: "https://www.toptal.com/developers/hastebin/"
+			});
+			hasteUrl = "https://www.toptal.com/developers/hastebin/" + hasteUrl.substring(hasteUrl.lastIndexOf('/') + 1) + ".txt";
+
+			crashReportText = `<!-- Do not change this unless you need to. -->
+[Game Log on Hastebin](${hasteUrl})`
+		}
+
+		var running = `Running Sol Client v${Utils.version}`;
+
+		if(optifine) {
+			running += " with " + optifine;
+		}
+		running += ".";
+
+		var url = new URL("https://github.com/TheKodeToad/Sol-Client/issues/new/")
+		url.searchParams.set("body", `## Description
+A description of the problem that is occuring.
+## Steps to Reproduce
+1. What did you do...
+2. ...to crash the game?
+## Client Version
+${running}
+## Logs/Crash Report
+${crashReportText}
+`);
+		url.searchParams.set("title", "Short Description")
+		url.searchParams.set("labels", "bug");
+		shell.openExternal(url.toString());
+	})
+
+	ipcMain.on("devtools", () => window.webContents.openDevTools());
 
 	ipcMain.on("quit", (event, result) => {
 		if(result) {

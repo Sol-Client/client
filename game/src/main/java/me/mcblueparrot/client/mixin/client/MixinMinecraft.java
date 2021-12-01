@@ -2,6 +2,7 @@ package me.mcblueparrot.client.mixin.client;
 
 import java.util.ConcurrentModificationException;
 
+import net.minecraft.util.Session;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -55,6 +56,15 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 
 	private boolean debugPressed;
 	private boolean cancelDebug;
+
+	// Don't see the benefit of logging the session ID, apart from for hackers.
+	// I have decompiled dodgy looking Minecraft plugins, and seen code that takes advantage of this.
+	// This is mainly for the crash reporting feature, as I don't want users accounts to be hacked.
+	@Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Session;getSessionID()" +
+			"Ljava/lang/String;"))
+	public String censorSessionId(Session instance) {
+		return "☃︎";
+	}
 
 	@Inject(method = "startGame", at = @At(value = "INVOKE",
 			target = "Lnet/minecraft/client/Minecraft;initStream()V", shift = At.Shift.AFTER))

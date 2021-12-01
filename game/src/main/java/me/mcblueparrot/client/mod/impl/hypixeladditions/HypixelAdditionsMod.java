@@ -69,7 +69,7 @@ public class HypixelAdditionsMod extends Mod {
 	@Expose
 	@ConfigOption("Pop-up Events")
 	private boolean popupEvents = true;
-	// Borrowed (nicked) from https://static.sk1er.club/autogg/regex_triggers_3.json.
+	// Borrowed (nicked) and updated from https://static.sk1er.club/autogg/regex_triggers_3.json.
 	@Expose
 	@ConfigOption("Auto GG")
 	private boolean autogg = true;
@@ -80,14 +80,16 @@ public class HypixelAdditionsMod extends Mod {
 			"^ +Alpha Infected: \\w+ \\(\\d+ infections?\\)$",
 			"^ +Murderer: \\w+ \\(\\d+ Kills?\\)$",
 			"^ +You survived \\d+ rounds!$",
-			"^ +(?:UHC|SkyWars|The Bridge|Sumo|Classic|OP|MegaWalls|Bow|NoDebuff|Blitz|Combo|Bow Spleef) (?:Duel|Doubles|Teams|Deathmatch|2v2v2v2|3v3v3v3)? ?- \\d+:\\d+$",
+			"^ +(((?:UHC|SkyWars|(The )?Bridge|Sumo|Classic|OP|MegaWalls|Bow|NoDebuff|Blitz|Combo|Bow Spleef|Boxing) (?:Duel|Doubles|Teams|Deathmatch|2v2v2v2|3v3v3v3)?)|Hypixel Parkour) ?- \\d+:\\d+$",
 			"^ +They captured all wools!$",
 			"^ +Game over!$",
 			"^ +[\\d\\.]+k?/[\\d\\.]+k? \\w+$",
 			"^ +(?:Criminal|Cop)s won the game!$",
 			"^ +\\[?\\w*\\+*\\]? \\w+ - \\d+ Final Kills$",
 			"^ +Zombies - \\d*:?\\d+:\\d+ \\(Round \\d+\\)$",
-			"^ +. YOUR STATISTICS .$"
+			"^ +. YOUR STATISTICS .$",
+			"^ {36}Winner(s?)$",
+			"^ {21}Bridge CTF [a-zA-Z]+ - \\d\\d:\\d\\d$"
 	).stream().map(Pattern::compile).collect(Collectors.toList());
 	@Expose
 	@ConfigOption("Hide GG")

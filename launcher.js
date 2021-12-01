@@ -158,13 +158,13 @@ class Launcher {
 						.then(async(response) => {
 							var jrePackage = response.data[0].binaries[0].package;
 							var name = jrePackage.name;
-							var path = Utils.minecraftDirectory + "/jre/" + name;
+							var jrePath = Utils.minecraftDirectory + "/jre/" + name;
 							var dest = Utils.minecraftDirectory + "/jre/"
 									+ name.substring(0, name.indexOf("."));
 							var doneFile = dest + "/.done";
 							if(!fs.existsSync(dest + "/.done")) {
 								await Utils.download(jrePackage.link,
-									path, jrePackage.size);
+									jrePath, jrePackage.size);
 
 
 								if(!fs.existsSync(dest)) {
@@ -173,17 +173,29 @@ class Launcher {
 
 								if(name.endsWith(".tar.gz")) {
 									await tar.x({
-										file: path,
+										file: jrePath,
 										C: dest
 									});
 								}
 								else if(name.endsWith(".zip")) {
-									await fs.createReadStream(path).pipe(unzipper.Extract({path: dest}));
+									var zip = fs.createReadStream(jrePath)
+											.pipe(unzipper.Parse({ forceStream: true }));
+
+									for await(const entry of zip) {
+										const fileName = entry.path;
+
+										var destination = dest + "/" + fileName;
+										if(!fs.existsSync(path.dirname(destination))) {
+											fs.mkdirSync(path.dirname(destination), { recursive: true });
+										}
+
+										await entry.pipe(fs.createWriteStream(destination));
+									}
 								}
 
 								fs.closeSync(fs.openSync(doneFile, "w"));
 
-								fs.unlinkSync(path);
+								fs.unlinkSync(jrePath);
 							}
 
 							java = dest + "/" + response.data[0].release_name

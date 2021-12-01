@@ -86,7 +86,7 @@ If you have private messages, try reproducing this issue again.`,
 
 		var url = new URL("https://github.com/TheKodeToad/Sol-Client/issues/new/")
 		url.searchParams.set("body", `## Description
-A description of the problem that is occuring.
+A description of the problem that is occurring.
 ## Steps to Reproduce
 1. What did you do...
 2. ...to crash the game?

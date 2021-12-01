@@ -31,7 +31,7 @@ If you are suspicous, you can sift around the (admittedly large) repository.
 This client has been tested by multiple people on Hypixel, and it disables disallowed mods automatically. There may be some unknown servers, but just disable the correct mods and you should be fine, as all Sol Client mods are designed to not change the behaviour of the player.
 
 ## Credits
-[TheKodeToad](https://github.com/TheKodeToad) / [mcblueparrot](https://mine.ly/mcblueparrot.1): Programmer (programmer+coffee=code, or a more sophisticated programmer+tea=code).
+[TheKodeToad](https://github.com/TheKodeToad) / [mcblueparrot](https://mine.ly/mcblueparrot.1): Programmer (turning tea into code).
 
 [Holso](https://github.com/Holso) / [Draconish](https://mine.ly/Draconish.1): Helped create Discord, came up with the name (and changed his own one many times) and tested the client.
 

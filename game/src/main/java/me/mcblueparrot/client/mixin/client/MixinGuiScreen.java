@@ -3,6 +3,7 @@ package me.mcblueparrot.client.mixin.client;
 import java.io.IOException;
 import java.util.List;
 
+import net.minecraft.client.resources.I18n;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,9 +31,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 @Mixin(GuiScreen.class)
-public class MixinGuiScreen implements AccessGuiScreen {
-
-	@Shadow protected Minecraft mc;
+public abstract class MixinGuiScreen implements AccessGuiScreen {
 
 	public boolean canBeForceClosed() {
 		return true;
@@ -95,7 +94,19 @@ public class MixinGuiScreen implements AccessGuiScreen {
 			instance.handleKeyboardInput();
 		}
 	}
-	
+
+	// Fix options not saving when "esc" is pressed.
+	@Redirect(method = "keyTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen" +
+			"(Lnet/minecraft/client/gui/GuiScreen;)V"))
+	public void saveFirst(Minecraft instance, GuiScreen screen) throws IOException {
+		for(GuiButton button : buttonList) {
+			if(button.displayString.equals(I18n.format("gui.done"))) {
+				actionPerformed(button);
+			}
+		}
+		instance.displayGuiScreen(null);
+	}
+
 	@Shadow
 	protected List<GuiButton> buttonList;
 
@@ -104,5 +115,11 @@ public class MixinGuiScreen implements AccessGuiScreen {
 
 	@Shadow
 	public int height;
+
+	@Shadow
+	protected abstract void actionPerformed(GuiButton button) throws IOException;
+
+	@Shadow
+	protected Minecraft mc;
 
 }

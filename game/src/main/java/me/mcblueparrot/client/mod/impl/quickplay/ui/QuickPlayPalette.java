@@ -209,7 +209,12 @@ public class QuickPlayPalette extends GuiScreen {
 			clampIndex();
 		}
 		else if(keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_RIGHT) {
-			getGames().get(selectedIndex).onClick(this, mod);
+			try {
+				getGames().get(selectedIndex).onClick(this, mod);
+			}
+			catch(IndexOutOfBoundsException ignored) {
+				// Prevent crash in the rare case that the index is desynchronised.
+			}
 		}
 		else if(keyCode == Keyboard.KEY_LEFT) {
 			back();

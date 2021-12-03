@@ -117,6 +117,12 @@ public class MenuBlurMod extends Mod {
 		return Math.min((System.currentTimeMillis() - openTime) / (fadeTime * 1000F), 1);
 	}
 
+	@Override
+	protected void onEnable() {
+		super.onEnable();
+		group = null;
+	}
+
 //    @Override
 //    public void onEnabledChange(boolean enabled) {
 //        super.onEnabledChange(enabled);

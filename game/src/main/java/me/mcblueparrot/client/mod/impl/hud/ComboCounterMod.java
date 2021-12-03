@@ -11,7 +11,6 @@ public class ComboCounterMod extends SimpleHudMod {
 	private long hitTime = -1;
 	private int combo;
 	private int possibleTarget;
-	private boolean wasClicking;
 
 	public ComboCounterMod() {
 		super("Combo Counter", "combo_counter", "Display the number of subsequent hits.");

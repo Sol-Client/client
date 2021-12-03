@@ -1,23 +1,29 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
-import me.mcblueparrot.client.mod.hud.SimpleHudMod;
+import me.mcblueparrot.client.mod.hud.SmoothCounterHudMod;
 import net.minecraft.client.network.NetworkPlayerInfo;
 
-public class PingMod extends SimpleHudMod {
+public class PingMod extends SmoothCounterHudMod {
 
 	public PingMod() {
 		super("Ping", "ping", "Display the latency to the server.");
 	}
 
 	@Override
-	public String getText(boolean editMode) {
-		if(!(editMode || mc.getCurrentServerData() == null)) {
+	public int getIntValue() {
+		if(mc.getCurrentServerData() != null && !mc.isIntegratedServerRunning()) {
 			NetworkPlayerInfo info = mc.thePlayer.sendQueue.getPlayerInfo(mc.thePlayer.getGameProfile().getId());
 			if(info != null) {
-				return info.getResponseTime() + " ms";
+				return info.getResponseTime();
 			}
 		}
-		return "0 ms";
+
+		return 0;
+	}
+
+	@Override
+	public String getSuffix() {
+		return "ms";
 	}
 
 }

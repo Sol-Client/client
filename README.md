@@ -83,8 +83,6 @@ Selling points:
 
 There are probably more, but this list is long enough.
 
-But no cosmetics yet (mainly because I'm not sure whether to sell them or for players to earn them somehow). ☹
-
 Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.
 
 If you want to suggest a feature, [create a new issue](https://github.com/TheKodeToad/Sol-Client/issues/new) or [ask on Discord](https://discord.gg/QFDGDhcFqu).

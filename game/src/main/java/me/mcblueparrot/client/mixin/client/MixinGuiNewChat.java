@@ -2,12 +2,14 @@ package me.mcblueparrot.client.mixin.client;
 
 import java.util.List;
 
+import me.mcblueparrot.client.mod.impl.hud.ChatMod;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.mcblueparrot.client.Client;
@@ -33,7 +35,16 @@ public abstract class MixinGuiNewChat implements AccessGuiNewChat {
 			callback.cancel();
 		}
 	}
-	
+
+	@Redirect(method = "setChatLine", at = @At(value = "INVOKE", target = "Ljava/util/List;size()I"))
+	public int getSize(List instance) {
+		if(ChatMod.enabled && ChatMod.instance.infiniteChat) {
+			return 0;
+		}
+
+		return instance.size();
+	}
+
 	@Override
 	@Accessor
 	public abstract List<ChatLine> getDrawnChatLines();

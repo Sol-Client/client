@@ -58,7 +58,7 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	private boolean cancelDebug;
 
 	// Don't see the benefit of logging the session ID, apart from for hackers.
-	// I have decompiled dodgy looking Minecraft plugins, and seen code that takes advantage of this.
+	// I have decompiled dodgy-looking Minecraft plugins, and seen code that takes advantage of this.
 	// This is mainly for the crash reporting feature, as I don't want users accounts to be hacked.
 	@Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Session;getSessionID()" +
 			"Ljava/lang/String;"))

@@ -30,7 +30,6 @@ public class ChatMod extends HudMod {
 	private static String symbols = "☺☹♡♥◀▶▲▼←→↑↓«»©™‽☕✓✕⚐⚑⚠☆★✮✫☃☄";
 	private static char[][] table;
 
-
 	private static char[][] getSymbolTable() {
 		if(table == null) {
 			table = new char[6][6];
@@ -89,6 +88,9 @@ public class ChatMod extends HudMod {
 	@Expose
 	@ConfigOption("Prevent Force Closing")
 	public boolean preventClose = true;
+	@Expose
+	@ConfigOption("Infinite Chat")
+	public boolean infiniteChat = true;
 
 	public final SymbolsButton symbolsButton = new SymbolsButton();
 

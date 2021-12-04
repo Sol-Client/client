@@ -6,6 +6,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.EntityAttackEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,7 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumParticleTypes;
 
-public class ParticlesMod extends Mod {
+public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Expose
 	@ConfigOption("Multiplier")
@@ -35,6 +36,16 @@ public class ParticlesMod extends Mod {
 
 	public ParticlesMod() {
 		super("Particles", "particles", "Change attack particles.", ModCategory.VISUAL);
+	}
+
+	@Override
+	public void decrement() {
+		multiplier = Math.max(1, multiplier - 1);
+	}
+
+	@Override
+	public void increment() {
+		multiplier = Math.min(10, multiplier + 1);
 	}
 
 	@EventHandler

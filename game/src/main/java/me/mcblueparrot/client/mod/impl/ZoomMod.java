@@ -14,12 +14,13 @@ import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.event.impl.ScrollEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.MathHelper;
 
-public class ZoomMod extends Mod {
+public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static boolean enabled;
 	public static ZoomMod instance;
@@ -198,6 +199,16 @@ public class ZoomMod extends Mod {
 		if(reduceSensitivity) {
 			mc.gameSettings.mouseSensitivity = lastSensitivity * currentFactor;
 		}
+	}
+
+	@Override
+	public void decrement() {
+		factor = Math.max(2, factor - 1);
+	}
+
+	@Override
+	public void increment() {
+		factor = Math.min(32, factor + 1);
 	}
 
 }

@@ -21,13 +21,14 @@ import me.mcblueparrot.client.lib.penner.easing.Quint;
 import me.mcblueparrot.client.lib.penner.easing.Sine;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 
 // Read this class for long enough and the world "chunk" will lose meaning.
-public class ChunkAnimatorMod extends Mod {
+public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
 	private Map<RenderChunk, Data> chunks = new WeakHashMap<>();
 	@Expose
@@ -72,6 +73,17 @@ public class ChunkAnimatorMod extends Mod {
 			chunks.put(event.chunk, data);
 		}
 	}
+
+	@Override
+	public void decrement() {
+		duration = Math.max(0, duration - 0.5F);
+	}
+
+	@Override
+	public void increment() {
+		duration = Math.min(5, duration + 0.5F);
+	}
+
 
 	private static class Data {
 

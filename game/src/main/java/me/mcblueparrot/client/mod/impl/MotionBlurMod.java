@@ -13,6 +13,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PostProcessingEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.access.AccessShaderGroup;
@@ -22,7 +23,7 @@ import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.client.shader.ShaderUniform;
 import net.minecraft.util.ResourceLocation;
 
-public class MotionBlurMod extends Mod {
+public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/motion_blur.json");
 	@Expose
@@ -73,6 +74,16 @@ public class MotionBlurMod extends Mod {
 	protected void onEnable() {
 		super.onEnable();
 		group = null;
+	}
+
+	@Override
+	public void decrement() {
+		blur = Math.max(0, blur - 0.1F);
+	}
+
+	@Override
+	public void increment() {
+		blur = Math.min(1, blur + 0.1F);
 	}
 
 	public class MotionBlurShader implements IResource {

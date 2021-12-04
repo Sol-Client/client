@@ -8,6 +8,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.BlockHighlightRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.data.Colour;
@@ -27,7 +28,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.WorldSettings;
 
-public class BlockSelectionMod extends Mod {
+public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Expose
 	@ConfigOption("Outline")
@@ -194,6 +195,16 @@ public class BlockSelectionMod extends Mod {
 		if(!depth) {
 			GlStateManager.enableDepth();
 		}
+	}
+
+	@Override
+	public void decrement() {
+		outlineWidth = Math.max(1, outlineWidth - 1);
+	}
+
+	@Override
+	public void increment() {
+		outlineWidth = Math.min(10, outlineWidth + 1);
 	}
 
 }

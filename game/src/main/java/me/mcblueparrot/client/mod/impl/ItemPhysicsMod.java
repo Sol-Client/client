@@ -12,6 +12,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.ItemEntityRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.access.AccessEntity;
@@ -23,7 +24,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
-public class ItemPhysicsMod extends Mod {
+public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@ConfigOption("Rotation Speed")
 	@Slider(min = 0, max = 100, step = 1, suffix = "%")
@@ -96,6 +97,16 @@ public class ItemPhysicsMod extends Mod {
 		else {
 			event.result = 0;
 		}
+	}
+
+	@Override
+	public void decrement() {
+		rotationSpeed = Math.max(0, rotationSpeed - 10);
+	}
+
+	@Override
+	public void increment() {
+		rotationSpeed = Math.min(100, rotationSpeed + 10);
 	}
 
 	private int getClumpSize(int size) {

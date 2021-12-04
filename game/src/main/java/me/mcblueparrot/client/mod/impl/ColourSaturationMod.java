@@ -7,6 +7,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PostProcessingEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.access.AccessShaderGroup;
@@ -20,7 +21,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ColourSaturationMod extends Mod {
+public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/" +
 			"color_convolve.json");
@@ -73,6 +74,16 @@ public class ColourSaturationMod extends Mod {
 	protected void onEnable() {
 		super.onEnable();
 		group = null;
+	}
+
+	@Override
+	public void decrement() {
+		saturation = Math.max(0, saturation - 0.1F);
+	}
+
+	@Override
+	public void increment() {
+		saturation = Math.min(2, saturation + 0.1F);
 	}
 
 	public class SaturationShader implements IResource {

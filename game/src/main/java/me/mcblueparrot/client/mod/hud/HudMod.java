@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.data.Position;
@@ -16,7 +17,7 @@ import net.minecraft.client.gui.FontRenderer;
 /**
  * Represents a mod with only a single HUD.
  */
-public abstract class HudMod extends Mod {
+public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 
 	/**
 	 * Represents the single element that this mod contains.
@@ -76,6 +77,16 @@ public abstract class HudMod extends Mod {
 
 	public HudPosition getDefaultPosition() {
 		return new HudPosition(0, 0);
+	}
+
+	@Override
+	public void decrement() {
+		scale = Math.max(50, scale - 10);
+	}
+
+	@Override
+	public void increment() {
+		scale = Math.min(150, scale + 10);
 	}
 
 	class HudModElement extends BaseHudElement {

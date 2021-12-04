@@ -6,10 +6,11 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.TimeEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 
-public class TimeChangerMod extends Mod {
+public class TimeChangerMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Expose
 	@ConfigOption("Time")
@@ -23,6 +24,16 @@ public class TimeChangerMod extends Mod {
 	@EventHandler
 	public void onTime(TimeEvent event) {
 		event.time = (long) time;
+	}
+
+	@Override
+	public void decrement() {
+		time = Math.max(0, time - 1000);
+	}
+
+	@Override
+	public void increment() {
+		time = Math.min(24000, time + 1000);
 	}
 
 }

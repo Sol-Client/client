@@ -7,12 +7,11 @@ package me.mcblueparrot.client.mod.impl;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.replaymod.extras.playeroverview.PlayerOverviewGui;
-import com.replaymod.replay.ReplayModReplay;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
+import com.replaymod.replay.ReplayModReplay;
 
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.EventHandler;
@@ -21,6 +20,7 @@ import me.mcblueparrot.client.event.impl.PostProcessingEvent;
 import me.mcblueparrot.client.event.impl.RenderGuiBackgroundEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.Utils;
@@ -35,7 +35,7 @@ import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.client.shader.ShaderUniform;
 import net.minecraft.util.ResourceLocation;
 
-public class MenuBlurMod extends Mod {
+public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Expose
 	@ConfigOption("Blur")
@@ -123,11 +123,16 @@ public class MenuBlurMod extends Mod {
 		group = null;
 	}
 
-//    @Override
-//    public void onEnabledChange(boolean enabled) {
-//        super.onEnabledChange(enabled);
-//        MenuBlurMod.enabled = enabled;
-//    }
+
+	@Override
+	public void decrement() {
+		blur = Math.max(0, blur - 1);
+	}
+
+	@Override
+	public void increment() {
+		blur = Math.min(100, blur + 1);
+	}
 
 	public class MenuBlurShader implements IResource {
 
@@ -138,61 +143,6 @@ public class MenuBlurMod extends Mod {
 
 		@Override
 		public InputStream getInputStream() {
-//            JsonObject object = new JsonObject();
-//
-//            JsonArray targets = new JsonArray();
-//            targets.add(new JsonPrimitive("swap"));
-//            object.add("targets", targets);
-//
-//            JsonArray passes = new JsonArray();
-//            for(int i = 0; i < 2; i++) {
-//                JsonObject pass = new JsonObject();
-//
-//                pass.addProperty("name", "fast_blur");
-//
-//                if(i % 2 == 0) {
-//                    pass.addProperty("intarget", "minecraft:main");
-//                    pass.addProperty("outtarget", "swap");
-//                }
-//                else {
-//                    pass.addProperty("intarget", "swap");
-//                    pass.addProperty("outtarget", "minecraft:main");
-//                }
-//
-//                JsonArray uniforms = new JsonArray();
-//
-////                JsonObject blurDir = new JsonObject();
-////                blurDir.addProperty("name", "BlurDir");
-////
-////                JsonArray blurDirValues = new JsonArray();
-////                if(i % 2 == 0) {
-////                    blurDirValues.add(new JsonPrimitive(0.1F));
-////                    blurDirValues.add(new JsonPrimitive(0F));
-////                }
-////                else {
-////                    blurDirValues.add(new JsonPrimitive(0F));
-////                    blurDirValues.add(new JsonPrimitive(0.1F));
-////                }
-////                blurDir.add("values", blurDirValues);
-//
-////                uniforms.add(blurDir);
-//
-////                JsonObject blurRadius = new JsonObject();
-////                blurRadius.addProperty("name", "Radius");
-////
-////                JsonArray blurRadiusValues = new JsonArray();
-////                blurRadiusValues.add(new JsonPrimitive(blur));
-////                blurRadius.add("values", blurRadiusValues);
-////
-////                uniforms.add(blurRadius);
-//
-//                pass.add("uniforms", uniforms);
-//
-//                passes.add(pass);
-//            }
-//            object.add("passes", passes);
-//            System.out.println(object);
-//            return IOUtils.toInputStream(object.toString());
 			return IOUtils.toInputStream("{\n" +
 					"    \"targets\": [\n" +
 					"        \"swap\"\n" +

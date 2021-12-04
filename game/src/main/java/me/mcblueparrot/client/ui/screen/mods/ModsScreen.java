@@ -2,13 +2,12 @@ package me.mcblueparrot.client.ui.screen.mods;
 
 import java.awt.Desktop;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -18,10 +17,11 @@ import me.mcblueparrot.client.mod.CachedConfigOption;
 import me.mcblueparrot.client.mod.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.element.Button;
+import me.mcblueparrot.client.ui.element.TextField;
 import me.mcblueparrot.client.ui.element.Tickbox;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
@@ -40,7 +40,6 @@ public class ModsScreen extends GuiScreen {
 	private int amountScrolled = 0;
 	private int previousAmountScrolled;
 	private int maxScrolling;
-	private List<Mod> mods = Client.INSTANCE.getMods();
 	private GuiScreen previous;
 	private boolean wasMouseDown;
 	private boolean mouseDown;
@@ -50,6 +49,7 @@ public class ModsScreen extends GuiScreen {
 	private Mod selectedMod;
 	private CachedConfigOption selectedColour;
 	private Font font = SolClientMod.getFont();
+	private TextField searchField = new TextField("Search", 25, 6, 100, true, () -> amountScrolled = 0);
 
 	public ModsScreen(GuiScreen previous, Mod mod) {
 		this.previous = previous;
@@ -107,8 +107,50 @@ public class ModsScreen extends GuiScreen {
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
+
 		if(keyCode == Client.INSTANCE.modsKey.getKeyCode() && previous == null) {
 			mc.displayGuiScreen(null);
+		}
+		else if(keyCode == Keyboard.KEY_RETURN) {
+			if(selectedMod == null) {
+				if(!searchField.getText().isEmpty()) {
+					List<Mod> mods = ModCategory.ALL.getMods(searchField.getText());
+
+					if(mods.size() == 0) {
+						searchField.setText("");
+						return;
+					}
+					Utils.playClickSound();
+
+
+					Mod mod = mods.get(0);
+
+					if(mod.getOptions().size() == 1) {
+						mod.toggle();
+					}
+					else {
+						selectedMod = mod;
+					}
+				}
+			}
+			else {
+				Utils.playClickSound();
+				selectedMod.toggle();
+			}
+		}
+		else if (selectedMod != null && selectedMod instanceof PrimaryIntegerSettingMod && (keyCode == Keyboard.KEY_MINUS
+				|| keyCode == Keyboard.KEY_EQUALS)) {
+			PrimaryIntegerSettingMod mod = (PrimaryIntegerSettingMod) selectedMod;
+
+			if(keyCode == Keyboard.KEY_MINUS) {
+				mod.decrement();
+			}
+			else {
+				mod.increment();
+			}
+		}
+		else {
+			searchField.keyPressed(keyCode, typedChar);
 		}
 	}
 
@@ -124,6 +166,16 @@ public class ModsScreen extends GuiScreen {
 
 		boolean slickFont = font instanceof SlickFontRenderer;
 		int sweetSpot = slickFont ? 5 : 6;
+
+		GlStateManager.enableBlend();
+		GlStateManager.color(1, 1, 1);
+		mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_" +
+				"search_" + Utils.getTextureScale() + ".png"));
+		drawModalRectWithCustomSizedTexture(6, 5,
+				0, 0, 16, 16, 16, 16);
+
+		searchField.setFont(font);
+		searchField.render(mouseX, mouseY);
 
 		String title = "Mods";
 
@@ -148,13 +200,24 @@ public class ModsScreen extends GuiScreen {
 		y += 5;
 		if(selectedMod == null) {
 			for(ModCategory category : ModCategory.values()) {
+				if(searchField.getText().isEmpty()) {
+					if(category == ModCategory.ALL) {
+						continue;
+					}
+				}
+				else {
+					if(category != ModCategory.ALL) {
+						continue;
+					}
+				}
+
 				String categoryTitle = category.toString();
 				if(categoryTitle != null) {
 					font.renderString(categoryTitle, width / 2 - font.getWidth(categoryTitle) / 2, y - amountScrolled, -1);
 					y += 15;
 				}
 
-				for(Mod mod : category.getMods()) {
+				for(Mod mod : category.getMods(searchField.getText())) {
 					Rectangle rectangle = new Rectangle(width / 2 - 150, y - amountScrolled, 300, 30);
 					boolean containsMouse = rectangle.contains(mouseX, mouseY) && region.contains(mouseX, mouseY);
 
@@ -194,6 +257,7 @@ public class ModsScreen extends GuiScreen {
 						GlStateManager.enableBlend();
 						GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 						GL11.glColor3ub((byte) 200, (byte) 200, (byte) 200);
+
 						mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_" +
 								"settings_" + Utils.getTextureScale() + ".png"));
 						boolean hasSettings = mod.getOptions().size() > 1 && !mod.isBlocked();

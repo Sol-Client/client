@@ -15,8 +15,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.Client;
@@ -24,6 +27,7 @@ import me.mcblueparrot.client.DetectedServer;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.GameOverlayElement;
 import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
+import me.mcblueparrot.client.event.impl.PostTickEvent;
 import me.mcblueparrot.client.event.impl.ReceiveChatMessageEvent;
 import me.mcblueparrot.client.event.impl.ServerConnectEvent;
 import me.mcblueparrot.client.event.impl.SoundPlayEvent;
@@ -52,6 +56,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 public class HypixelAdditionsMod extends Mod {
+
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	private static boolean enabled;
 	public static HypixelAdditionsMod instance;
@@ -103,8 +109,10 @@ public class HypixelAdditionsMod extends Mod {
 	private Pattern apiKeyMessageTrigger = Pattern.compile("Your new API key is (.*)");
 	@Expose
 	@ConfigOption("Auto GL")
-	private boolean autogl = true;
-	private String autoglTrigger = "The game starts in 5 seconds!";
+	private boolean autogl;
+	private String autoglTrigger = "The game starts in 1 second!";
+	private long ticksUntilAutogl = -1;
+	private long ticksUntilLocraw = -1;
 	@Expose
 	@ConfigOption("Hide GL")
 	private boolean hidegl = false;
@@ -121,6 +129,8 @@ public class HypixelAdditionsMod extends Mod {
 	public Request request;
 	private KeyBinding keyAcceptRequest = new KeyBinding("Accept Request", Keyboard.KEY_Y, "Sol Client");
 	private KeyBinding keyDismissRequest = new KeyBinding("Dismiss Request", Keyboard.KEY_N, "Sol Client");
+	private HypixelLocationData locationData;
+	private Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)+\".*\":\".*\"\\}");
 
 	public HypixelAdditionsMod() {
 		super("Hypixel Additions", "hypixel_util", "Various additions to Hypixel.", ModCategory.UTILITY);
@@ -267,12 +277,30 @@ public class HypixelAdditionsMod extends Mod {
 	public void onWorldLoad(WorldLoadEvent event) {
 		donegg = donegl = false;
 		levelCache.clear();
+
+		if(!isHypixel()) {
+			return;
+		}
+
+		locationData = null;
+		ticksUntilLocraw = 20;
 	}
 
 	@EventHandler
 	public void onMessage(ReceiveChatMessageEvent event) {
 		if(!isHypixel()) {
 			return;
+		}
+
+		if(locrawTrigger.matcher(event.message).matches() && locationData == null) {
+			try {
+				event.cancelled = true;
+				locationData = new Gson().fromJson(event.message, HypixelLocationData.class);
+				return;
+			}
+			catch(Throwable error) {
+				LOGGER.warn("Could not detect location", error);
+			}
 		}
 
 		if(event.actionBar && isHousing() && event.message.startsWith("Now playing:")) {
@@ -309,19 +337,14 @@ public class HypixelAdditionsMod extends Mod {
 			}
 		}
 
-		if(autogl && !donegl) {
-			if(event.message.equals(autoglTrigger)) {
-				donegl = true;
-				mc.thePlayer.sendChatMessage("/achat glhf");
-				return;
-			}
+		if(autogl && !donegl && event.message.equals(autoglTrigger)) {
+			ticksUntilAutogl = 20;
+			return;
 		}
 
-		if(hidegl) {
-			if(hideglTrigger.matcher(event.message).matches()) {
-				event.cancelled = true;
-				return;
-			}
+		if(hidegl && hideglTrigger.matcher(event.message).matches()) {
+			event.cancelled = true;
+			return;
 		}
 
 		if(hideChannelMessageTrigger.matcher(event.message).matches()) {
@@ -332,6 +355,27 @@ public class HypixelAdditionsMod extends Mod {
 		Matcher apiKeyMatcher = apiKeyMessageTrigger.matcher(event.message);
 		if(apiKeyMatcher.matches()) {
 			setApiKey(apiKeyMatcher.group(1));
+		}
+	}
+
+	@EventHandler
+	public void onTick(PostTickEvent event) {
+		if(ticksUntilLocraw != -1 && --ticksUntilLocraw == 0) {
+			ticksUntilLocraw = -1;
+
+			mc.thePlayer.sendChatMessage("/locraw");
+		}
+
+		if(ticksUntilAutogl != -1 && --ticksUntilAutogl == 0) {
+			if(locationData != null && "BEDWARS".equals(locationData.getType()) && !("BEDWARS_EIGHT_ONE".equals(locationData.getMode())) || "BEDWARS_CASTLE".equals(locationData.getMode())) {
+				mc.thePlayer.sendChatMessage("/shout glhf");
+				return;
+			}
+
+			donegl = true;
+			mc.thePlayer.sendChatMessage("/achat glhf");
+
+			ticksUntilAutogl = -1;
 		}
 	}
 

@@ -358,6 +358,8 @@ public class ModsScreen extends GuiScreen {
 							textarea.getX() - 8,
 							rectangle.getY() + 6, 8, 8);
 
+					GlStateManager.enableBlend();
+
 					boolean previous = GuiScreen.isShiftKeyDown() || previousBounds.contains(mouseX, mouseY);
 
 					GlStateManager.color(1, 1, 1);

@@ -119,7 +119,7 @@ public class HypixelAdditionsMod extends Mod {
 	private Pattern hideglTrigger = Pattern.compile(".*: [gG](ood )?[lL](uck,? ?)?([hH](ave )?[fF](un)?!?)?");
 	private boolean donegl;
 	@Expose
-	@ConfigOption("Levelhead")
+	@ConfigOption("Level Head")
 	public boolean levelhead;
 	private Map<UUID, String> levelCache = new HashMap<>();
 	@Expose

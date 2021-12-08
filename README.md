@@ -67,7 +67,7 @@ Here are the main features that are currently in the client:
 - Crosshair mod, allowing you to customise your crosshair, while fitting with the vanilla style.  
 
 Selling points:
-- Replay Mod. You will need to install FFmpeg yourself.
+- Replay Mod. You will need to install FFmpeg yourself. This is completely unaffiliated to the original mod by Johni and CrushedPixel. If you encounter any issues, try reproducing them on the official Forge version, and if it happens there, report it on the [ReplayMod GitHub repositority](https://github.com/ReplayMod/ReplayMod). If it only happens on our version, report it here.
 - Quick Play Mod. Allows you to quickly join games at the press of a button (by default, "M"). The key opens a menu where you can search for games, navigating through them using the arrow keys. If you type nothing, you can see recent games and a categorised list of all games.
 - Customisable launcher servers - automatically detected from the game, with no pinned servers.
 - Better item tooltips - show item damage and more.

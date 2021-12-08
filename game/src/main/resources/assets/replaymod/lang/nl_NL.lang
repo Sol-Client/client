@@ -1,0 +1,6 @@
+replaymod.title=Replay Mod
+replaymod.api.invalidlogin=Ongeldige gebruikersnaam of wachtwoord
+replaymod.api.notenoughspace=Niet genoeg opslagruimte over om dit bestand up te loaden. Overweeg Premium te kopen op ReplayMod.com
+replaymod.api.fileduplicate=Dat bestand is al geupload
+replaymod.api.invalidfilename=Bestandsnaam moet tussen 5 en 30 tekens lang zijn
+replaymod.api.usernameexists=Deze gebruikersnaam wordt al gebruikt

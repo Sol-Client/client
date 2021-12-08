@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.mixin.client;
 
+import me.mcblueparrot.client.ui.element.ReplayButton;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,8 +23,7 @@ public class MixinGuiMainMenu extends GuiScreen {
 	public void getModsButton(int x, int y, CallbackInfo callback) {
 		buttonList.remove(realmsButton);
 		buttonList.add(new GuiButton(realmsButton.id, realmsButton.xPosition, realmsButton.yPosition, "Mods"));
-
-//        buttonList.add(new ReplayButton(15, realmsButton.xPosition + 202, realmsButton.yPosition));
+        buttonList.add(new ReplayButton(15, realmsButton.xPosition + 202, realmsButton.yPosition));
 	}
 
 	@Redirect(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiMainMenu;" +

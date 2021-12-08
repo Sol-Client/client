@@ -1,7 +1,12 @@
 package me.mcblueparrot.client.mixin.mod;
 
+import com.replaymod.core.gui.GuiReplayButton;
 import com.replaymod.lib.de.johni0702.minecraft.gui.GuiRenderer;
+import com.replaymod.lib.de.johni0702.minecraft.gui.RenderInfo;
 import com.replaymod.lib.de.johni0702.minecraft.gui.element.AbstractGuiSlider;
+import com.replaymod.lib.de.johni0702.minecraft.gui.utils.lwjgl.ReadableDimension;
+import com.replaymod.replay.handler.GuiHandler;
+import net.minecraft.client.gui.Gui;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -48,6 +53,10 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
+
+import java.util.Collection;
+
+import static com.replaymod.core.gui.GuiReplayButton.ICON;
 
 public class MixinSCReplayMod {
 
@@ -263,6 +272,19 @@ public class MixinSCReplayMod {
 		public int useShadow(GuiRenderer instance, int x, int y, int colour, String text) {
 			return instance.drawCenteredString(x, y, colour, text, true);
 		}
+
+	}
+
+	@Mixin(GuiHandler.class)
+	public static class MixinGuiHandler {
+
+		/**
+		 * @author TheKodeToad
+		 */
+		@Overwrite(remap = false)
+		private void injectIntoMainMenu(net.minecraft.client.gui.GuiScreen guiScreen, Collection<net.minecraft.client
+				.gui.GuiButton> buttonList) {}
+
 
 	}
 

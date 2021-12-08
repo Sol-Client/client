@@ -1,0 +1,4 @@
+replaymod.api.invalidlogin=Dati di accesso non validi forniti
+replaymod.api.notenoughspace=Spazio insufficiente per caricare questo file. Prendi in considerazione l'acquisto di Premium su ReplayMod.com
+replaymod.api.fileduplicate=Questo file è già stato caricato
+replaymod.api.invalidfilename=Il nome del file deve essere compreso tra 5 e 30 caratteri

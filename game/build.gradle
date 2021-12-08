@@ -77,6 +77,10 @@ static def process(File inputFile, File outputFile, Map<String, String> methods,
 
 		if(entry.getName() == "mixins.core.replaymod.json"
 				|| entry.getName() == "mixins.compat.mapwriter.replaymod.json"
+				|| entry.getName() == "assets/replaymod/logo_button.png"
+				|| entry.getName() == "assets/replaymod/logo.jpg"
+				|| entry.getName().startsWith("assets/replaymod/lang/")
+				|| entry.getName() == "default_thumb.jpg"
 				|| entry.getName().startsWith("org/spongepowered/")
 				|| entry.getName() == "com/replaymod/core/ReplayModBackend.class"
 				|| entry.getName() == "com/replaymod/core/SettingsRegistry.class"

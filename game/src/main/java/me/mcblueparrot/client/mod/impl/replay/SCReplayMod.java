@@ -108,7 +108,7 @@ public class SCReplayMod extends Mod {
 	private SCReplayModBackend backend;
 
 	public SCReplayMod() {
-		super("Replay Mod", "replay", "Record, replay and share your gaming experience.", ModCategory.UTILITY);
+		super("Replay", "replay", "Record and replay your gameplay. Modified from the original ReplayMod.", ModCategory.UTILITY);
 		instance = this;
 
 		backend = new SCReplayModBackend();
@@ -191,14 +191,6 @@ public class SCReplayMod extends Mod {
 			}
 			deferedState = null;
 		}
-	}
-
-	@Override
-	public String getDescription() {
-		if(deferedState != null && deferedState != enabled && SolClientMod.instance.fancyFont) {
-			return super.getDescription() + " Log out to " + (deferedState ? "enable" : "disable") + ".";
-		}
-		return super.getDescription();
 	}
 
 	public void addEvent(Object event) {

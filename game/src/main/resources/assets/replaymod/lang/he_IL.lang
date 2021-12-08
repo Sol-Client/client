@@ -1,0 +1,459 @@
+replaymod.title=מוד השידור- החוזר
+
+#Website API translations
+replaymod.api.parammissing=דרוש פרמטר שאינו קיים אצלך: %1$s
+replaymod.api.invalidvalue=ערך לא חוקי עבור פרמטר %1$s - Possible values: %2$s
+replaymod.api.invalidlogin=נתוני התחברות המסופקים אינם חוקיים
+replaymod.api.invalidauthkey=מפתח האימות המסופק אינו חוקי
+replaymod.api.notenoughspace=אין מספיק מקום  בשביל להעלות את הקובץ הזה. רכישת הטבה שקולה בReplayMod.com
+replaymod.api.invalidfile=קובץ זה אינו חוקי
+replaymod.api.fileduplicate=קובץ זה כבר הועלה
+replaymod.api.filenoexist=קובץ זה אינו קיים
+replaymod.api.nopermissions=אין לך הרשאה לגשת לקובץ זה
+replaymod.api.alreadyrated=אתה כבר דירגת את קובץ זה
+replaymod.api.usernoexist=משתמש זה אינו קיים
+replaymod.api.invalidcategory=קטגוריית קובץ אינה חוקית
+replaymod.api.nofilesuploaded=אין קבצים שהועלו
+replaymod.api.toomanyvalues=יותר מדי ערכים %1$s
+replaymod.api.noparameters=לפחות פרמטר אחד נדרש. Parameters: %1$s
+replaymod.api.invalidfilename=שם הקובץ חייב להיות בין 5 עד 30 תווים
+replaymod.api.unknownlang=שפה זו אינה תורגמה
+replaymod.api.zippingerror=התרחשה שגיאה כאשר קיבוץ קובץ השפה
+replaymod.api.usernameexists=שם משתמש זה כבר נלקח
+replaymod.api.mailexists=כתובת דוא"ל זאת כבר מקושרת לחשבון הזה
+replaymod.api.invalidmail=כתובת הדוא"ל אינה חוקית
+replaymod.api.nopermissions=אין לך הרשאה לעשות את זה
+replaymod.api.authfailed=האימות להפעלת שרתי מיינקראפט נכשלה
+replaymod.api.mcuserexists=חשבון מוד השידור- החוזר כבר משויך לחשבון מיינקראפט זה
+replaymod.api.filetoobig=הקובץ שהועלה גדול מדי
+replaymod.api.usernametoolong=שם המשתמש ארוך מדי
+replaymod.api.descriptiontoolong=התיאור ארוך מדי
+replaymod.api.passwordlength=הסיסמא צריכה להיות בין 5 ל -1024 תווים
+replaymod.api.suspended=חשבונך הושעה
+
+#All of the chat messages
+replaymod.chat.recordingstarted=ההקלטה התחילה
+replaymod.chat.recordingfailed=התחלת ההקלטה נכשלה
+
+replaymod.chat.savingthumb=שומר תמונה ממוזערת...
+replaymod.chat.savedthumb=התמונה הממוזערת נשמרה בהצלחה
+replaymod.chat.failedthumb=התמונה הממוזערת לא ניתנת לשמירה
+
+replaymod.chat.addedmarker=סמן האירוע התווסף
+
+#Chat messages displayed in Replay Viewer
+replaymod.chat.morekeyframes=לפחות 2 פוזיציות קי-פריים ו2 זמן קי-פריים דרושים
+replaymod.chat.negativetime=נתיבי מצלמה לא יכולים לנגן זמן אחורה. אנא הצע את הזמן הקרוב לעזרה.
+replaymod.chat.pathstarted=נתיב המצלמה התחילה
+replaymod.chat.pathfinished=נתיב המצלמה הסתיים
+replaymod.chat.pathinterrupted=נתיב המצלמה בוטל
+
+#Replay Categories
+replaymod.category=קטוגוריה
+replaymod.category.survival=השרדות
+replaymod.category.minigame=מיני- גיים
+replaymod.category.build=בנייה
+replaymod.category.misc=אחר
+
+#Common GUI-related strings
+replaymod.gui.replay=שידור חוזר
+replaymod.gui.login=התחבר
+replaymod.gui.logout=התנתק
+replaymod.gui.cancel=בטל
+replaymod.gui.username=שם משתמש
+replaymod.gui.password=סיסמא
+replaymod.gui.back=חזור
+replaymod.gui.duration=אורך
+replaymod.gui.load=טען
+replaymod.gui.download=הורד
+replaymod.gui.like=אהבתי
+replaymod.gui.dislike=לא אהבתי
+replaymod.gui.removelike=תוריד אהבתי
+replaymod.gui.removedislike=תוריד לא אהבתי
+replaymod.gui.save=שמור
+replaymod.gui.upload=העלה
+replaymod.gui.rename=שנה שם
+replaymod.gui.remove=הסר
+replaymod.gui.add=הוסף
+replaymod.gui.start=התחל
+replaymod.gui.end=סיים
+replaymod.gui.delete=מחק
+replaymod.gui.recording=מקליט
+replaymod.gui.speed=מהירות
+replaymod.gui.register=הירשם
+replaymod.gui.mail=כתובת דוא"ל
+replaymod.gui.loading=טוען
+replaymod.gui.pleasewait=חכה בבקשה
+replaymod.gui.render=רנדר
+replaymod.gui.iphidden=אייפי השרת מוסתר
+replaymod.gui.close=סגור
+replaymod.gui.notagain=אל תציג שוב
+
+replaymod.gui.renderdonetitle=הסרטון רונדר
+replaymod.gui.openfolder=פתח תיקיית סרטון
+replaymod.gui.youtubeupload=העלה ליוטיוב
+replaymod.gui.renderdone1=הסרטון שלך הועלה בהצלחה.
+replaymod.gui.renderdone2=איך היית רוצה להמשיך?
+replaymod.gui.videotitle=כותרת
+replaymod.gui.videodescription=תיאור
+replaymod.gui.videotags=תגיות, תגיות, תגיות
+replaymod.gui.videothumbnail=התמונה הממוזערת של הסרטון
+replaymod.gui.videovisibility.private=פרטי
+replaymod.gui.videovisibility.unlisted=לא מוצג ברשימה
+replaymod.gui.videovisibility.public=ציבורי
+replaymod.gui.ytuploadprogress.auth=[1/4] הרשאה
+replaymod.gui.ytuploadprogress.prepare_video=[2/4] הכנת סרטון: %%d%%%%
+replaymod.gui.ytuploadprogress.upload=[3/4] העלאה: %%d%%%%
+replaymod.gui.ytuploadprogress.cleanup=[4/4] ניקוי
+replaymod.gui.ytuploadprogress.done=בוצע: %s
+replaymod.gui.titleempty=הכותרת אינה יכולה להיות ריקה
+replaymod.gui.videothumbnailtoolarge=גודל תמונה ממוזערת עולה על 2 מגה-בייט
+replaymod.gui.videothumbnailformat=התמונה הממוזערת צריכה להיות בפורמט JPEG או PNG
+
+replaymod.gui.original=מקורי
+replaymod.gui.modified=שונה
+
+replaymod.gui.outdated=קיימת גרסה חדשה יותר של "מוד השידור- החוזר" זמינה. בבקשה הורד את זה מreplaymod.com
+
+replaymod.gui.hours=שעות
+replaymod.gui.minutes=דקות
+replaymod.gui.seconds=שניות
+replaymod.gui.milliseconds=אלפיות השנייה
+
+replaymod.gui.pitch=נטה
+replaymod.gui.yaw=סבסב
+replaymod.gui.roll=גלגל
+
+replaymod.gui.unknownerror=שגיאה לא ידועה התרחשה
+
+replaymod.gui.exit=סגור שידור- חוזר
+replaymod.gui.java=נדרש 1.7 Java ומעלה
+replaymod.gui.morereplays=לפחות שידור- חוזר אחד נדרש
+
+replaymod.gui.loggedin=מחובר
+replaymod.gui.loggedout=מנותק
+
+replaymod.gui.mainmenu=תפריט ראשי
+replaymod.gui.settings=הגדרות
+
+#Only change these if it's neccessary
+replaymod.gui.replayviewer=הקלטות השידור- החוזר
+replaymod.gui.replaycenter=מרכז השידור- החוזר
+replaymod.gui.replaysettings=הגדרות השידור- החוזר
+replaymod.gui.replayeditor=עורך השידור- החוזר
+
+#Login GUI
+replaymod.gui.login.title=מתחבר לReplayMod.com
+replaymod.gui.login.logging=מתחבר...
+replaymod.gui.login.incorrect=שם משתמש או סיסמא שגוי
+replaymod.gui.login.connectionerror=לא ניתן להתחבר לReplayMod.com
+
+replaymod.gui.login.skip=דלג
+
+replaymod.gui.register.title=הירשם בReplayMod.com
+replaymod.gui.register.confirmpw=אשר סיסמא
+
+replaymod.gui.register.disclaimer=על ידי רישום חשבון, אתה מסכים לתנאים של השידור- החוזר של שירות: https://replaymod.com/legal/terms
+
+replaymod.gui.register.error.nomatch=סיסמאות לא תואמות
+replaymod.gui.register.error.shortusername=שם המשתמש צריך להיות 5 תווים לפחות
+replaymod.gui.register.error.invalidname=שם המשתמש יכול להכיל אותיות ומספרים בלבד
+replaymod.gui.register.error.shortpw=הסיסמא צריכה להיות לפחות באורך 5 תווים
+replaymod.gui.register.error.longpw=הסיסמה צריכה להיות באורך 1024 תווים לכל היותר
+replaymod.gui.register.error.authfailed=לא ניתן לאמת את חשבון המיינקראפט שלך
+
+#Replay Viewer GUI
+replaymod.gui.viewer.rename.title=שנה את שם השידור
+replaymod.gui.viewer.rename.name=שם השידור החוזר
+replaymod.gui.viewer.replayfolder=פותח תיקיית השידור- החוזר
+replaymod.gui.viewer.noauth=התחבר כדי להעלות שידור חוזר
+replaymod.gui.viewer.alreadyuploaded=השידור החוזר הזה כבר הועלה
+
+replaymod.gui.viewer.delete.linea=אתה בטוח שאתה רוצה למחוק את השידור החוזר הזה?
+replaymod.gui.viewer.delete.failed1=מערכת ההפעלה שלך לא מאפשרת לנו להעביר את השידור החוזר.
+replaymod.gui.viewer.delete.failed2=אין דבר שאנחנו יכולים לעשות בקשר לזה. אתה צריך לעשות את זה בעצמך
+
+#The Replay file name is inserted before the following string, e.g. "Some Replay will be lost forever!..."
+replaymod.gui.viewer.delete.lineb=יאבד לנצח! (זמן רב!)
+
+replaymod.gui.viewer.download.title=הורדת קובץ שידור חוזר...
+replaymod.gui.viewer.download.message=אנא המתן בזמן ש"%1$s" מוריד.
+
+replaymod.gui.viewer.chooser.title=בחר קובץ שידור חוזר
+replaymod.gui.viewer.chooser.message=יש לך גירסא שונה של "%1$s" במחשב שלך. איזה שידור חוזר ברצונך לטעון?
+
+replaymod.gui.login.noacc=עדיין אין לך חשבון?
+
+#Replay Center GUI
+replaymod.gui.center.logoutcallback=האם אתה באמת רוצה להתנתק?
+replaymod.gui.center.top.recent=אחרונים
+replaymod.gui.center.top.best=הטובים ביותר
+replaymod.gui.center.top.downloaded=מורדים
+replaymod.gui.center.top.favorited=מועדפים
+replaymod.gui.center.top.search=חפש
+
+replaymod.gui.center.search.filters=חפש פילטרים
+replaymod.gui.center.search.gametype=סוג משחק
+replaymod.gui.center.search.order=מיין לפי
+replaymod.gui.center.search.order.best=הטובים ביותר
+replaymod.gui.center.search.order.recent=אחרונים
+replaymod.gui.center.search.name=שם שידור חוזר
+replaymod.gui.center.search.server=שם שרת (בלי "שחקן יחיד")
+replaymod.gui.center.search.category=סנן לפי קטגוריה
+replaymod.gui.center.search.version=סנן לפי גירסא
+
+replaymod.gui.center.downloadrequired=הורד את שידור חוזר זה כדי לדרג אותו או לשים אותו במועדפים
+
+replaymod.gui.center.favorite=מועדף
+replaymod.gui.center.unfavorite=לא מועדף
+replaymod.gui.center.favorites=מועדפים
+
+replaymod.gui.center.author= על ידי %1$s%2$s
+
+#Upload GUI
+replaymod.gui.upload.title=העלה קובץ
+replaymod.gui.upload.start=התחל העלה
+replaymod.gui.upload.cancel=בטל העלאה
+replaymod.gui.upload.tagshint=תגיות מופרדות בפסיק
+replaymod.gui.upload.namehint=כותרת השידור
+replaymod.gui.upload.descriptionhint=תיאור
+replaymod.gui.upload.uploading=מעלה...
+replaymod.gui.upload.success=הקובץ הועלה בהצלחה
+replaymod.gui.upload.canceled=העלאה בוטלה
+replaymod.gui.upload.hideip=הסתר את אייפי השרת
+replaymod.gui.upload.nothumbnail=חסרה תמונה ממוזערת. אנא צור תמונה ממוזערת של השידור באמצעות מפתח %1$s.
+
+replaymod.gui.upload.error.name.length=שם השידור צריך להיות בין 5 עד 30 תווים
+replaymod.gui.upload.error.name=שם השידור לא יכול להכיל תווים מיוחדים
+replaymod.gui.upload.error.tags=תגיות יכולות להכיל רק אותיות מופרדות באמצעות פסיק
+
+#Replay Editor
+replaymod.gui.editor.replayfile=שם השידור
+
+replaymod.gui.editor.savemode.override=החלף קובץ מקור
+replaymod.gui.editor.savemode.newfile=שמור לקובץ חדש
+
+replaymod.gui.editor.trim.title=סדר שידור
+replaymod.gui.editor.connect.title=קשר שידורים
+replaymod.gui.editor.modify.title=שנה שידור
+
+replaymod.gui.editor.trim.description=מוחק את ההתחלה והסוף של קובץ השידור, רק שומר את השידור בין חותמות הזמן הנתונות
+replaymod.gui.editor.connect.description=מחבר מספר שידורים לפי הסדר שצוין
+replaymod.gui.editor.modify.description=מספק מספר פילטרים בשביל לשנות קבצי שידור
+
+replaymod.gui.editor.progress.title=עורך את קובץ השידור...
+replaymod.gui.editor.progress.pleasewait=אנא המתן בזמן שהשידור נערך
+
+replaymod.gui.editor.progress.status.initializing=מאתחל
+replaymod.gui.editor.progress.status.writing.raw=משכתב שידור...
+replaymod.gui.editor.progress.status.writing.final=כותב את הקובץ לדיסק...
+replaymod.gui.editor.progress.status.finished=העריכה הסתיימה!
+
+replaymod.gui.editor.disclaimer=עורך השידורים הוא תכונה נסיונית ויכול לכלול באגים
+
+#Cancel Replay GUI
+replaymod.gui.cancelrender.title=בטל רינדור
+replaymod.gui.cancelrender.message=אתה בטוח שאתה רוצה לבטל את תהליך הרינדור הנוכחי?
+#Saving Replay GUI
+replaymod.gui.replaysaving.title=שומר את קובץ השידור...
+replaymod.gui.replaysaving.message=אנא המתן בזמן שהשידור האחרון שלך נשמר.
+
+#Player Overview GUI
+replaymod.gui.playeroverview.visible=נראה
+replaymod.gui.playeroverview.hideall=הסתר הכול
+replaymod.gui.playeroverview.showall=תראה הכול
+replaymod.gui.playeroverview.spectate=צפה בשחקן
+replaymod.gui.playeroverview.remembersettings=זכור שחקנים נסתרים
+replaymod.gui.playeroverview.remembersettings.description=שומר את נראות השחקנים בקובץ השידור החוזר
+
+#Replay Mod Settings GUI
+replaymod.gui.settings.title=הגדרות מוד השידור - החוזר
+
+replaymod.gui.settings.interpolation.linear=לינארי
+replaymod.gui.settings.interpolation.cubic=קובייתי
+
+replaymod.gui.settings.bitrate=של הסרטון bitrateקצב ה
+replaymod.gui.settings.framerate=קצב הפריימים של הסרטון
+replaymod.gui.settings.notifications=אפשר התראות
+replaymod.gui.settings.recordserver=הקלט שרת
+replaymod.gui.settings.recordsingleplayer=הקלט שחקן יחיד
+replaymod.gui.settings.indicator=אינדיקטור הקלטה
+replaymod.gui.settings.lighting=תאורה מקיפה
+replaymod.gui.settings.forcechunks=Force Render Chunks
+replaymod.gui.settings.resources=טקסטורות סרבר
+replaymod.gui.settings.interpolation=Path Interpolation
+replaymod.gui.settings.pathpreview=הצג תצוגה מקדימה של הנתיב
+replaymod.gui.settings.keyframecleancallback=הסר את האישור
+replaymod.gui.settings.renderinvisible=רנדר ישויות בלתי נראות
+
+replaymod.gui.settings.warning.linea=WARNING: הגדרות ההקלטה יופעלו
+replaymod.gui.settings.warning.lineb=בפעם הבאה שתצטרף לעולם.
+
+#Replay Mod Keybindings
+replaymod.input.lighting=הפעל\כבה תאורה
+replaymod.input.thumbnail=צלם תמונה
+replaymod.input.playeroverview=סקירה כללית של השחקן
+replaymod.input.clearkeyframes=נקה קי-פריימים
+replaymod.input.synctimeline=סנכרן ציר זמן
+replaymod.input.keyframerepository=פתח קי-פריים קבוע מראש
+replaymod.input.rollclockwise=סובב בכיוון השעון
+replaymod.input.rollcounterclockwise=סובב נגד כיוון השעון
+replaymod.input.resettilt=אפס הטיית מצלמה
+replaymod.input.playpause=השהה\הפעל שידור
+replaymod.input.marker=הוסף סמן אירוע
+replaymod.input.pathpreview=הפעל\כבה תצוגה מקדימה של הנתיב
+replaymod.input.assetmanager=מנהל הנכסים
+replaymod.input.objectmanager=מנהל האובייקטים
+replaymod.input.interpolation=Toggle Interpolation
+
+#Keyframe Presets GUI
+replaymod.gui.keyframerepository.title=Keyframe Repository
+replaymod.gui.keyframerepository.presets=קי-פריימים מוכנים
+replaymod.gui.keyframerepository.positionkeyframes=קי-פריימים של מיקום
+replaymod.gui.keyframerepository.timekeyframes=קי-פריימים של זמן
+replaymod.gui.keyframerepository.savecurrent=שמור את התיב הנוכחי
+
+replaymod.gui.keyframerepository.noentries=No Presets available
+
+replaymod.gui.keyframerepository.preset.defaultname=New Keyframe Preset
+replaymod.gui.keyframerepository.duplicate=This Preset already exists
+
+#Edit Keyframe GUI
+replaymod.gui.editkeyframe.title.pos=ערוך קי-פריים של מיקום
+replaymod.gui.editkeyframe.title.time=ערוך קי-פריים של זמן
+replaymod.gui.editkeyframe.title.marker=ערוך סמן אירוע
+replaymod.gui.editkeyframe.title.spec=ערוך קי-פריים של צופה
+replaymod.gui.editkeyframe.xpos=X מיקום
+replaymod.gui.editkeyframe.ypos=Y מיקום
+replaymod.gui.editkeyframe.zpos=Z מיקום
+replaymod.gui.editkeyframe.campitch=Camera Pitch
+replaymod.gui.editkeyframe.camyaw=סיבוב המצלמה
+replaymod.gui.editkeyframe.camroll=Camera Roll
+replaymod.gui.editkeyframe.timelineposition=מיקום ציר הזמן
+replaymod.gui.editkeyframe.markername=שם סמן הזמן
+replaymod.gui.editkeyframe.timestamp=אינדקס זמן
+
+replaymod.gui.editkeyframe.spec.method=שיטת צפייה
+replaymod.gui.editkeyframe.spec.method.firstperson=גוף ראשון
+replaymod.gui.editkeyframe.spec.method.shoulder=מצלמת כתף
+replaymod.gui.editkeyframe.spec.method.shoulder.distance=מרחק המצלמה
+replaymod.gui.editkeyframe.spec.method.shoulder.pitch=Pitch Offset
+replaymod.gui.editkeyframe.spec.method.shoulder.yaw=זווית הסיבוב
+replaymod.gui.editkeyframe.spec.method.shoulder.smoothness=חלקות הנתיב
+
+#Render Settings GUI
+replaymod.gui.rendersettings.title=הגדרות רינדור
+replaymod.gui.rendersettings.renderer=שיטת רינדור
+
+replaymod.gui.rendersettings.renderer.default=רינדור ברירת מחדל
+replaymod.gui.rendersettings.renderer.tiled=Tiled Rendering
+replaymod.gui.rendersettings.renderer.stereoscopic=רינדור סטריאוסקופי
+replaymod.gui.rendersettings.renderer.cubic=רינדור קובייתי
+replaymod.gui.rendersettings.renderer.equirectangular=Equirectangular Rendering
+replaymod.gui.rendersettings.renderer.ods=ODS רינדור 
+
+replaymod.gui.rendersettings.renderer.default.description=מרנדר את הסרטון ברזולוציה הנתונה. אפשרות הרינדור המהירה ביותר.
+replaymod.gui.rendersettings.renderer.stereoscopic.description= .ששמיש לטכנולוגיות תלת מימד שונות ,מרנדר את הסרטון כסרט תלת מימדי סטריאוסקופי (צד ליד צד)
+replaymod.gui.rendersettings.renderer.cubic.description=(וה-Oculus Rift) מרנדר את הסרטון במראה פנורמי בעל 360 מעלות, בשימוש בהקרנה קובייתית. זה שמיש למספר משקפי מציאות מדומה , for example VR Player.
+replaymod.gui.rendersettings.renderer.equirectangular.description=Renders the video with a 360 degree panoramic view, using Equirectangular Projection. This is usable by YouTube's new 360 degree video function, and several video players (and the Oculus Rift), for example VR Player.
+replaymod.gui.rendersettings.renderer.ods.description=Renders the video with a stereoscopic 3D 360 degree panoramic view, also called VR Video. This is usable by YouTube's new VR video function.
+
+replaymod.gui.rendersettings.customresolution=רזולוצית וידאו
+replaymod.gui.rendersettings.customresolution.warning.cubic=Cubic Rendering requires an aspect ratio of 4:3
+replaymod.gui.rendersettings.customresolution.warning.equirectangular=Equirectangular Rendering requires an aspect ratio of 2:1
+replaymod.gui.rendersettings.customresolution.warning.yuv420=For this preset, the width and height values need to be even numbers
+replaymod.gui.rendersettings.customresolution.warning.ods=ODS Rendering requires an aspect ratio of 1:1
+replaymod.gui.rendersettings.resolution=רזולוצית וידאו
+replaymod.gui.rendersettings.interpolation=Path Interpolation
+replaymod.gui.rendersettings.forcechunks=Force Render Chunks
+replaymod.gui.rendersettings.framerate=קצב הפריימים של הסרטון
+replaymod.gui.rendersettings.quality=איכות הוידאו
+replaymod.gui.rendersettings.chromakey=Chroma Keying
+replaymod.gui.rendersettings.skycolor=צבע השמיים
+replaymod.gui.rendersettings.nametags=Render Name Tags
+replaymod.gui.rendersettings.outputfile= קובץ פלט
+replaymod.gui.rendersettings.360metadata=Inject 360Â° Metadata
+replaymod.gui.rendersettings.360metadata.error=360Â° Metadata can only be added to Equirectangular videos in MP4 format
+
+replaymod.gui.rendersettings.command=פקודה
+replaymod.gui.rendersettings.arguments=Command Line Arguments
+replaymod.gui.rendersettings.ffmpeg.description=אם אתה משתמש מתקדם, you can customize the command line parameters used to export the video. בדוק:, למידע נוסף http://replaymod.com/docs
+
+replaymod.gui.rendersettings.stabilizecamera=יצב מצלמה
+replaymod.gui.rendersettings.exportyoutube=יצא ליוטיוב
+
+replaymod.gui.rendersettings.video=הגדרות וידאו
+replaymod.gui.rendersettings.advanced=הגדרות מתקדמות
+replaymod.gui.rendersettings.commandline=הגדרות שורת פקודה
+
+replaymod.gui.rendersettings.presets=Encoding Presets
+replaymod.gui.rendersettings.presets.mp4.custom=MP4 - Custom Bitrate
+replaymod.gui.rendersettings.presets.mp4.high=MP4 - איכות גבוהה
+replaymod.gui.rendersettings.presets.mp4.default=MP4 - איכות רגילה
+replaymod.gui.rendersettings.presets.mp4.potato=MP4 - איכות גרועה
+replaymod.gui.rendersettings.presets.webm.custom=WEBM - Custom Bitrate
+replaymod.gui.rendersettings.presets.mkv.lossless=MKV - Lossless
+replaymod.gui.rendersettings.presets.png=PNG רצף תמונות
+
+#Rendering GUI
+replaymod.gui.rendering.title=רנדר סרטון
+replaymod.gui.rendering.pause=השהה רינדור
+replaymod.gui.rendering.resume=המשך רינדור
+replaymod.gui.rendering.cancel=בטל רינדור
+replaymod.gui.rendering.cancel.callback=האם אתה בטוח?
+replaymod.gui.rendering.preview=הצג תצוגה מקדימה (הביצועים עשויים לרדת)
+replaymod.gui.rendering.progress=%1$d / %2$d: הפריימים שרונדרו 
+replaymod.gui.rendering.timetaken=זמן רינדור
+replaymod.gui.rendering.timeleft=הזמן שנותר
+
+#Render Errors
+replaymod.gui.rendering.error.title=הרינדור נכשל
+replaymod.gui.rendering.error.optifine=לפני שתרנדר Optifine בבקשה הסר את המוד.
+replaymod.gui.rendering.error.shader.ods= ODS לפני שתרנד סרטוני shaders בבקשה הסר את המוד.
+replaymod.gui.rendering.error.message= בשביל לרנדר סרטון אתה צריך שיהיה מותקן לך ffmpeg  http://ffmpeg.org
+
+#Ingame Menu
+replaymod.gui.ingame.menu.addposkeyframe=הוסף קי-פריים מיקום
+replaymod.gui.ingame.menu.removeposkeyframe=הסר קי-פריים מיקום
+replaymod.gui.ingame.menu.addspeckeyframe=הוסף קי-פריים של צופה
+replaymod.gui.ingame.menu.removespeckeyframe=הסר קי-פריים של צופה
+replaymod.gui.ingame.menu.addtimekeyframe=הוסף קי-פריים של זמן
+replaymod.gui.ingame.menu.removetimekeyframe=הסר קי-פריים של זמן
+replaymod.gui.ingame.menu.pause=הפסק שידור
+replaymod.gui.ingame.menu.unpause=השהה שידור
+replaymod.gui.ingame.menu.renderpath=רנדר נתיב מצלמה
+replaymod.gui.ingame.menu.playpath=הפעל נתיב מצלמה ממיקום העכבר
+replaymod.gui.ingame.menu.playpathfromstart=הפעל את נתיב המצלמה מההתחלה
+replaymod.gui.ingame.menu.pausepath=השהה את נתיב המצלמה
+replaymod.gui.ingame.menu.zoomin=הגדל תצוגה
+replaymod.gui.ingame.menu.zoomout=הקטן תצוגה
+
+replaymod.gui.ingame.unnamedmarker=סמן אירוע חסר שם
+
+#Clear Keyframe Callback
+replaymod.gui.clearcallback.title=לנקות את כל הקי-פריימים?
+replaymod.gui.clearcallback.message=אפשר לבטל את האזכור הזה בהגדרות השידור
+
+#Asset Manager Gui
+replaymod.gui.assets.title=מנהל הנכסים
+replaymod.gui.assets.filechooser=קובץ נכס
+replaymod.gui.assets.defaultname=נכס חדש
+replaymod.gui.assets.emptylist=אין נכסים זמינים
+replaymod.gui.assets.namehint=שם הנכס
+replaymod.gui.assets.changefile=שנה את קובץ הנכס
+replaymod.gui.assets.noselection=לא נבחר נכס
+
+#Object Manager Gui
+replaymod.gui.objects.properties.anchor=נקודת עוגן
+replaymod.gui.objects.properties.position=פוזיצייה
+replaymod.gui.objects.properties.scale=גודל
+replaymod.gui.objects.properties.orientation=כיוון
+replaymod.gui.objects.properties.opacity=עמעום
+replaymod.gui.objects.properties.name=שם אובייקט
+replaymod.gui.objects.empty=שום אובייקטים התווספו
+replaymod.gui.objects.defaultname=אובייקט חדש
+replaymod.gui.objects=אובייקט מותאם אישית
+
+#Errors
+replaymod.error.unknownrestriction1=השידור הזה לא יכול להיות מופעל עם הגרסה הנוכחית שלך.
+replaymod.error.unknownrestriction2=שהוא לא ידוע %s זה ניסה להחיל את.

@@ -47,6 +47,7 @@ public class MixinGuiScreenResourcePacks extends GuiScreen {
 	public void addSearch(CallbackInfo callback) {
 		searchField = new GuiTextField(3, mc.fontRendererObj, width / 2 - 203, height - 47, 198,
 				20);
+		searchField.setFocused(true);
 	}
 
 	@Inject(method = "drawScreen", at = @At("RETURN"))
@@ -64,7 +65,7 @@ public class MixinGuiScreenResourcePacks extends GuiScreen {
 		super.keyTyped(typedChar, keyCode);
 		searchField.textboxKeyTyped(typedChar, keyCode);
 	}
-	
+
 	@Redirect(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui" +
 			"/GuiScreenResourcePacks;drawCenteredString(Lnet/minecraft/client/gui/FontRenderer;Ljava/lang/String;III)" +
 			"V", ordinal = 1))

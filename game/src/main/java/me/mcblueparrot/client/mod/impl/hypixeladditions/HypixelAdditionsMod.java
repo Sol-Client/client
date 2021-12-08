@@ -130,7 +130,7 @@ public class HypixelAdditionsMod extends Mod {
 	private KeyBinding keyAcceptRequest = new KeyBinding("Accept Request", Keyboard.KEY_Y, "Sol Client");
 	private KeyBinding keyDismissRequest = new KeyBinding("Dismiss Request", Keyboard.KEY_N, "Sol Client");
 	private HypixelLocationData locationData;
-	private Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)+\".*\":\".*\"\\}");
+	private Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
 
 	public HypixelAdditionsMod() {
 		super("Hypixel Additions", "hypixel_util", "Various additions to Hypixel.", ModCategory.UTILITY);

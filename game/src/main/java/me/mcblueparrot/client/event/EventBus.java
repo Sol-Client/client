@@ -81,12 +81,14 @@ public class EventBus {
 		try {
 			toRemove.clear();
 			inPost = true;
-			for (MethodData method : handlers.get(event.getClass())) {
+			for(MethodData method : handlers.get(event.getClass())) {
 				try {
 					method.target.invoke(method.instance, event);
-				} catch (IllegalAccessException | IllegalArgumentException error) {
+				}
+				catch(IllegalAccessException | IllegalArgumentException error) {
 					logger.error("Failed to invoke " + method.target.getName() + ":", error);
-				} catch (InvocationTargetException error) {
+				}
+				catch(InvocationTargetException error) {
 					logger.error("Error while executing " + method.target.getName() + ":", error.getCause());
 				}
 			}
@@ -94,7 +96,6 @@ public class EventBus {
 			toRemove.forEach(this::unregister);
 		}
 		catch(ConcurrentModificationException ignored) {
-			// This is how
 		}
 
 		return event;

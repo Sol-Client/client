@@ -1,12 +1,14 @@
 package me.mcblueparrot.client.mixin.mod;
 
-import com.replaymod.core.gui.GuiReplayButton;
 import com.replaymod.lib.de.johni0702.minecraft.gui.GuiRenderer;
-import com.replaymod.lib.de.johni0702.minecraft.gui.RenderInfo;
 import com.replaymod.lib.de.johni0702.minecraft.gui.element.AbstractGuiSlider;
-import com.replaymod.lib.de.johni0702.minecraft.gui.utils.lwjgl.ReadableDimension;
+import com.replaymod.recording.packet.PacketListener;
 import com.replaymod.replay.handler.GuiHandler;
-import net.minecraft.client.gui.Gui;
+import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.event.impl.ReceiveChatMessageEvent;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S02PacketChat;
+import net.minecraft.util.EnumChatFormatting;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -55,8 +57,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 import java.util.Collection;
-
-import static com.replaymod.core.gui.GuiReplayButton.ICON;
 
 public class MixinSCReplayMod {
 
@@ -284,6 +284,24 @@ public class MixinSCReplayMod {
 		@Overwrite(remap = false)
 		private void injectIntoMainMenu(net.minecraft.client.gui.GuiScreen guiScreen, Collection<net.minecraft.client
 				.gui.GuiButton> buttonList) {}
+
+
+	}
+
+	@Mixin(PacketListener.class)
+	public static class MixinPacketListener {
+
+		@Inject(method = "save", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target =
+				"Ljava/lang/System;currentTimeMillis()J"), cancellable = true)
+		public void handleChat(Packet packet, CallbackInfo callback) {
+			if(packet instanceof S02PacketChat) {
+				String messageString = EnumChatFormatting.getTextWithoutFormattingCodes(((S02PacketChat) packet).getChatComponent().getUnformattedText());
+
+				if(Client.INSTANCE.bus.post(new ReceiveChatMessageEvent(((S02PacketChat) packet).getType() == 2, messageString)).cancelled) {
+					callback.cancel();
+				}
+			}
+		}
 
 
 	}

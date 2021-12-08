@@ -292,7 +292,7 @@ public class HypixelAdditionsMod extends Mod {
 			return;
 		}
 
-		if(locrawTrigger.matcher(event.message).matches() && locationData == null) {
+		if(locrawTrigger.matcher(event.message).matches()) {
 			try {
 				event.cancelled = true;
 				locationData = new Gson().fromJson(event.message, HypixelLocationData.class);

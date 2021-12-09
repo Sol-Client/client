@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
+import net.minecraft.client.gui.GuiChat;
 import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
@@ -173,7 +174,7 @@ public class ChatMod extends HudMod {
 					lastAnimatedOffset = 9;
 				}
 
-				if(smooth) {
+				if(smooth && !(event.chat.getChatOpen() && accessor.getScrollPos() > 0)) {
 					float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.partialTicks;
 					GlStateManager.translate(0, calculatedOffset, 0);
 				}
@@ -183,7 +184,6 @@ public class ChatMod extends HudMod {
 
 					if(chatline != null) {
 						int update = event.updateCounter - chatline.getUpdatedCounter();
-
 
 						if(update < 200 || open) {
 							double percent = (double) update / 200.0D;

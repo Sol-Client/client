@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.mixin.mod;
 
+import net.minecraft.client.gui.GuiNewChat;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -78,5 +79,41 @@ public class MixinChatMod {
 		}
 
 	}
+
+	@Mixin(GuiNewChat.class)
+	public static class MixinGuiNewChat {
+
+		@Redirect(method = "getChatWidth", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSetti" +
+				"ngs;chatWidth:F"))
+		public float useCorrectChatWidth(GameSettings instance) {
+			if(ChatMod.enabled) {
+				return ChatMod.instance.width / 320;
+			}
+
+			return instance.chatWidth;
+		}
+
+		@Redirect(method = "getChatHeight", at = @At(value = "FIELD", target =
+				"Lnet/minecraft/client/settings/GameSettings;chatHeightFocused:F"))
+		public float useCorrectOpenChatHeight(GameSettings instance) {
+			if(ChatMod.enabled) {
+				return ChatMod.instance.openHeight / 180;
+			}
+
+			return instance.chatHeightFocused;
+		}
+
+		@Redirect(method = "getChatHeight", at = @At(value = "FIELD", target =
+				"Lnet/minecraft/client/settings/GameSettings;chatHeightUnfocused:F"))
+		public float useCorrectClosedChatHeight(GameSettings instance) {
+			if(ChatMod.enabled) {
+				return ChatMod.instance.closedHeight / 180;
+			}
+
+			return instance.chatHeightFocused;
+		}
+
+	}
+
 
 }

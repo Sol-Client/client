@@ -1,9 +1,9 @@
 {
-	"required": true,
-	"package": "me.mcblueparrot.client.mixin",
-	"compatibilityLevel": "JAVA_8",
-	"refmap": "mixins.solclient.refmap.json",
-	"mixins": [
+  "required": true,
+  "package": "me.mcblueparrot.client.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mixins.solclient.refmap.json",
+  "mixins": [
 		"MixinEntity",
 		"MixinEntityLivingBase",
 		"MixinEntityPlayer",
@@ -45,6 +45,7 @@
 		"mod.MixinBetterTooltipsMod$MixinGuiIngame",
 		"mod.MixinChatMod$MixinGameSettings",
 		"mod.MixinChatMod$MixinGuiChat",
+		"mod.MixinChatMod$MixinGuiNewChat",
 		"mod.MixinChatMod$MixinGuiScreen",
 		"mod.MixinChatMod$MixinGuiUtilRenderComponents",
 		"mod.MixinHypixelAdditionsMod$MixinRenderPlayer",

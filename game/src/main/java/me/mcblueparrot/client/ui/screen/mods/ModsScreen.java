@@ -116,20 +116,17 @@ public class ModsScreen extends GuiScreen {
 				if(!searchField.getText().isEmpty()) {
 					List<Mod> mods = ModCategory.ALL.getMods(searchField.getText());
 
-					if(mods.size() == 0) {
-						searchField.setText("");
-						return;
-					}
 					Utils.playClickSound();
-
 
 					Mod mod = mods.get(0);
 
-					if(mod.getOptions().size() == 1) {
-						mod.toggle();
-					}
-					else {
-						selectedMod = mod;
+					if(!mod.isBlocked()) {
+						if(mod.getOptions().size() == 1) {
+							mod.toggle();
+						}
+						else {
+							selectedMod = mod;
+						}
 					}
 				}
 			}

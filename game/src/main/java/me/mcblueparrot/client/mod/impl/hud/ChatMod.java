@@ -139,7 +139,7 @@ public class ChatMod extends HudMod {
 
 	@EventHandler
 	public void onTick(PostTickEvent event) {
-		if(smooth) {
+		if(smooth && !mc.isGamePaused()) {
 			lastAnimatedOffset = animatedOffset;
 
 			float multiplier = 0.5F;
@@ -185,6 +185,7 @@ public class ChatMod extends HudMod {
 					if(chatline != null) {
 						int update = event.updateCounter - chatline.getUpdatedCounter();
 
+
 						if(update < 200 || open) {
 							double percent = (double) update / 200.0D;
 							percent = 1.0D - percent;
@@ -194,6 +195,12 @@ public class ChatMod extends HudMod {
 
 							if(open) {
 								percent = 1;
+							}
+
+							double percentFG = percent;
+
+							if(smooth && update < 3) {
+								percentFG *= update / 3F;
 							}
 
 							++j;
@@ -207,9 +214,13 @@ public class ChatMod extends HudMod {
 								}
 								String formattedText = chatline.getChatComponent().getFormattedText();
 								GlStateManager.enableBlend();
-								this.mc.fontRendererObj.drawString(colours ? formattedText :
-										EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float) i2, (float) (j2 - 8),
-										textColour.withAlpha((int) (textColour.getAlpha() * percent)).getValue(), shadow);
+
+								if(percentFG > 0.05F) {
+									this.mc.fontRendererObj.drawString(colours ? formattedText :
+											EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float) i2, (float) (j2 - 8),
+											textColour.withAlpha((int) (textColour.getAlpha() * percentFG)).getValue(), shadow);
+								}
+
 								GlStateManager.disableAlpha();
 								GlStateManager.disableBlend();
 							}

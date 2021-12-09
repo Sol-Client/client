@@ -432,7 +432,7 @@ public class ModsScreen extends GuiScreen {
 
 					if(selectedColour == option) {
 						colourSelectBox = new Rectangle(rectangle.getX(), rectangle.getY() + rectangle.getHeight() + 1, 300,
-								100);
+								option.common ? 120 : 100);
 						if(!colourSelectBox.contains(mouseX, mouseY) && !rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown && mouseInList) {
 							newSelectedColour = null;
 						}
@@ -573,13 +573,25 @@ public class ModsScreen extends GuiScreen {
 								"(RGBA)") / 2),
 						colourSelectBox.getY() + 5, -1);
 
-//                Button button = new Button("Apply to All",
-//                        new Rectangle(colourSelectBox.getX() + (colourSelectBox.getWidth() / 2) - 50,
-//                                colourSelectBox.getY() + colourSelectBox.getHeight() - 20, 100, 15),
-//                        new Colour(0, 150
-//                        , 255), new Colour(30, 180
-//                        , 255));
-//                button.render(mouseX, mouseY);
+				if(this.selectedColour.common) {
+					Button applyToAllButton = new Button(font, "Apply to All",
+							new Rectangle(colourSelectBox.getX() + (colourSelectBox.getWidth() / 2) - 50,
+									colourSelectBox.getY() + colourSelectBox.getHeight() - 20, 100, 15),
+							new Colour(0, 150, 255), new Colour(30, 180, 255));
+	                applyToAllButton.render(mouseX, mouseY);
+
+	                if(applyToAllButton.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
+	                	Utils.playClickSound();
+
+	                	for(Mod mod : Client.INSTANCE.getMods()) {
+	                		for(CachedConfigOption option : mod.getOptions()) {
+	                			if(option.name.equals(this.selectedColour.name)) {
+	                				option.setValue(selectedColour);
+	                			}
+	                		}
+	                	}
+	                }
+				}
 			}
 		}
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);

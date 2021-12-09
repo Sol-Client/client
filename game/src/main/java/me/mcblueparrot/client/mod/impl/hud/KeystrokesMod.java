@@ -37,25 +37,25 @@ public class KeystrokesMod extends HudMod {
 	@ConfigOption("Background")
 	public boolean background = true;
 	@Expose
-	@ConfigOption("Background Color")
+	@ConfigOption("Background Colour")
 	private Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
-	@ConfigOption("Background Color (Pressed)")
+	@ConfigOption("Background Colour (Pressed)")
 	private Colour backgroundColourPressed = new Colour(255, 255, 255, 100);
 	@Expose
 	@ConfigOption("Border")
 	public boolean border = false;
 	@Expose
-	@ConfigOption("Border Color")
+	@ConfigOption("Border Colour")
 	private Colour borderColour = Colour.BLACK;
 	@Expose
-	@ConfigOption("Border Color (Pressed)")
+	@ConfigOption("Border Colour (Pressed)")
 	private Colour borderColourPressed = Colour.WHITE;
 	@Expose
-	@ConfigOption("Text Color")
+	@ConfigOption("Text Colour")
 	private Colour textColour = Colour.WHITE;
 	@Expose
-	@ConfigOption("Text Color (Pressed)")
+	@ConfigOption("Text Colour (Pressed)")
 	private Colour textColourPressed = Colour.BLACK;
 	@Expose
 	@ConfigOption("Text Shadow")

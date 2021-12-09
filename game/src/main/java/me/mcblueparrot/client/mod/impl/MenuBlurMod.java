@@ -46,7 +46,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Slider(min = 0, max = 1, step = 0.1F, suffix = "s")
 	private float fadeTime = 0.1F;
 	@Expose
-	@ConfigOption("Background Colour")
+	@ConfigOption("Menu Background")
 	public Colour backgroundColour = new Colour(0, 0, 0, 100);
 	public ShaderGroup group;
 	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/menu_blur.json");

@@ -13,6 +13,7 @@ public class CachedConfigOption {
 	public String name;
 	public Field field;
 	public int priority;
+	public boolean common;
 
 	public CachedConfigOption(Mod mod, ConfigOption option, Field field) {
 		this.mod = mod;
@@ -27,6 +28,14 @@ public class CachedConfigOption {
 
 		if(option != null) {
 			priority = option.priority();
+		}
+
+		switch(name) {
+			case "Background Colour":
+			case "Border Colour":
+			case "Text Colour":
+				common = true;
+				break;
 		}
 	}
 

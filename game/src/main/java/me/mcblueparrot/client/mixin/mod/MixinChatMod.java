@@ -1,6 +1,8 @@
 package me.mcblueparrot.client.mixin.mod;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.entity.player.EntityPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -85,7 +87,7 @@ public class MixinChatMod {
 
 		@Redirect(method = "getChatWidth", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSetti" +
 				"ngs;chatWidth:F"))
-		public float useCorrectChatWidth(GameSettings instance) {
+		public float overrideChatWidth(GameSettings instance) {
 			if(ChatMod.enabled) {
 				return ChatMod.instance.width / 320;
 			}
@@ -95,7 +97,7 @@ public class MixinChatMod {
 
 		@Redirect(method = "getChatHeight", at = @At(value = "FIELD", target =
 				"Lnet/minecraft/client/settings/GameSettings;chatHeightFocused:F"))
-		public float useCorrectOpenChatHeight(GameSettings instance) {
+		public float overrideOpenChatHeight(GameSettings instance) {
 			if(ChatMod.enabled) {
 				return ChatMod.instance.openHeight / 180;
 			}
@@ -105,7 +107,7 @@ public class MixinChatMod {
 
 		@Redirect(method = "getChatHeight", at = @At(value = "FIELD", target =
 				"Lnet/minecraft/client/settings/GameSettings;chatHeightUnfocused:F"))
-		public float useCorrectClosedChatHeight(GameSettings instance) {
+		public float overrideClosedChatHeight(GameSettings instance) {
 			if(ChatMod.enabled) {
 				return ChatMod.instance.closedHeight / 180;
 			}
@@ -115,5 +117,19 @@ public class MixinChatMod {
 
 	}
 
+	@Mixin(Minecraft.class)
+	public static class MixinMinecraft {
+
+		@Redirect(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;" +
+				"chatVisibility:Lnet/minecraft/entity/player/EntityPlayer$EnumChatVisibility;"))
+		public EntityPlayer.EnumChatVisibility overrideChatVisibility(GameSettings instance) {
+			if(ChatMod.enabled) {
+				return EntityPlayer.EnumChatVisibility.FULL; /* Always allow chat to be opened */
+			}
+
+			return instance.chatVisibility;
+		}
+
+	}
 
 }

@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.impl.ChatRenderEvent;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
+import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.util.IChatComponent;
@@ -24,7 +25,8 @@ public abstract class MixinGuiNewChat implements AccessGuiNewChat {
 
 	@Inject(at = @At("HEAD"), cancellable = true, method = "drawChat")
 	public void drawChat(int updateCounter, CallbackInfo callback) {
-		if(Client.INSTANCE.bus.post(new ChatRenderEvent((GuiNewChat) (Object) /* hacks */ this, updateCounter)).cancelled) {
+		if (Client.INSTANCE.bus.post(new ChatRenderEvent((GuiNewChat) (Object) /* hax */ this, updateCounter,
+				AccessMinecraft.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
 			callback.cancel();
 		}
 	}

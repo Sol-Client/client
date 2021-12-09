@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.ChatRenderEvent;
+import me.mcblueparrot.client.event.impl.PostTickEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.hud.HudMod;
@@ -89,8 +90,16 @@ public class ChatMod extends HudMod {
 	@ConfigOption("Prevent Force Closing")
 	public boolean preventClose = true;
 	@Expose
+	@ConfigOption("Smooth Animation")
+	private boolean smooth = true; // Smooth, man!
+	private int offset = 0;
+	private int lastAnimatedOffset;
+	private int animatedOffset;
+	@Expose
 	@ConfigOption("Infinite Chat")
 	public boolean infiniteChat = true;
+
+	private int previousChatSize;
 
 	public final SymbolsButton symbolsButton = new SymbolsButton();
 
@@ -129,10 +138,21 @@ public class ChatMod extends HudMod {
 	}
 
 	@EventHandler
+	public void onTick(PostTickEvent event) {
+		if(smooth) {
+			lastAnimatedOffset = animatedOffset;
+
+			float multiplier = 0.5F;
+			animatedOffset += (offset - animatedOffset) * multiplier;
+		}
+	}
+
+	@EventHandler
 	public void onChatRender(ChatRenderEvent event) {
 		event.cancelled = true;
+		AccessGuiNewChat accessor = ((AccessGuiNewChat) event.chat);
+
 		if(visibility != ChatVisibility.HIDDEN) {
-			AccessGuiNewChat accessor = ((AccessGuiNewChat) event.chat);
 			int linesCount = event.chat.getLineCount();
 			boolean open = false;
 			int j = 0;
@@ -148,6 +168,16 @@ public class ChatMod extends HudMod {
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(2.0F, 20.0F, 0.0F);
 				GlStateManager.scale(f1, f1, 1.0F);
+
+				if(previousChatSize < accessor.getDrawnChatLines().size()) {
+					animatedOffset = 9;
+					lastAnimatedOffset = 9;
+				}
+
+				if(smooth) {
+					float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.partialTicks;
+					GlStateManager.translate(0, calculatedOffset, 0);
+				}
 
 				for(int i = 0; i + accessor.getScrollPos() < accessor.getDrawnChatLines().size() && i < linesCount; ++i) {
 					ChatLine chatline = (ChatLine)accessor.getDrawnChatLines().get(i + accessor.getScrollPos());
@@ -178,7 +208,7 @@ public class ChatMod extends HudMod {
 								String formattedText = chatline.getChatComponent().getFormattedText();
 								GlStateManager.enableBlend();
 								this.mc.fontRendererObj.drawString(colours ? formattedText :
-										EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float)i2, (float)(j2 - 8),
+										EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float) i2, (float) (j2 - 8),
 										textColour.withAlpha((int) (textColour.getAlpha() * percent)).getValue(), shadow);
 								GlStateManager.disableAlpha();
 								GlStateManager.disableBlend();
@@ -206,6 +236,8 @@ public class ChatMod extends HudMod {
 				GlStateManager.popMatrix();
 			}
 		}
+
+		previousChatSize = accessor.getDrawnChatLines().size();
 	}
 
 	public enum ChatVisibility {

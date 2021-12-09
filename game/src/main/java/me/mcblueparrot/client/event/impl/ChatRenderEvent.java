@@ -8,6 +8,7 @@ public class ChatRenderEvent {
 
 	public final GuiNewChat chat;
 	public final int updateCounter;
+	public final float partialTicks;
 	public boolean cancelled;
 
 }

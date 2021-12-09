@@ -1,18 +1,20 @@
 package me.mcblueparrot.client.mixin.mod;
 
+import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import me.mcblueparrot.client.mod.impl.hud.ChatMod;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiUtilRenderComponents;
 import net.minecraft.client.settings.GameSettings;
 
 public class MixinChatMod {
@@ -128,6 +130,36 @@ public class MixinChatMod {
 			}
 
 			return instance.chatVisibility;
+		}
+
+	}
+
+	@Mixin(ScreenChatOptions.class)
+	public static class MixinScreenChatOptions extends GuiScreen {
+
+		@Shadow @Final
+		private GameSettings game_settings;
+
+		@Inject(method = "initGui", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/ScreenChatOptions;" +
+				"field_146401_i:Ljava/lang/String;", shift = At.Shift.AFTER), cancellable = true)
+		public void replaceGui(CallbackInfo callback) {
+			if(ChatMod.enabled) {
+				buttonList.add(new GuiOptionButton(GameSettings.Options.REDUCED_DEBUG_INFO.returnEnumOrdinal(),
+						this.width / 2 - (150 / 2), this.height / 6 + 76,
+						GameSettings.Options.REDUCED_DEBUG_INFO, game_settings.getKeyBinding(GameSettings.Options.REDUCED_DEBUG_INFO)));
+				buttonList.add(new GuiButton(201, this.width / 2 - (150 / 2),
+						this.height / 6 + 98, 150, 20, "More Options..."));
+				buttonList.add(new GuiButton(200, this.width / 2 - (150 / 2),
+						this.height / 6 + 120, 150, 20, I18n.format("gui.done")));
+				callback.cancel();
+			}
+		}
+
+		@Inject(method = "actionPerformed", at = @At("RETURN"))
+		public void actionPerformed(GuiButton button, CallbackInfo callback) {
+			if(button.id == 201) {
+				mc.displayGuiScreen(new ModsScreen(this, ChatMod.instance));
+			}
 		}
 
 	}

@@ -367,7 +367,7 @@ public class HypixelAdditionsMod extends Mod {
 		}
 
 		if(ticksUntilAutogl != -1 && --ticksUntilAutogl == 0) {
-			if(locationData != null && "BEDWARS".equals(locationData.getType()) && !("BEDWARS_EIGHT_ONE".equals(locationData.getMode())) || "BEDWARS_CASTLE".equals(locationData.getMode())) {
+			if(locationData != null && "BEDWARS".equals(locationData.getType()) && !("BEDWARS_EIGHT_ONE".equals(locationData.getMode()) || "BEDWARS_CASTLE".equals(locationData.getMode()))) {
 				mc.thePlayer.sendChatMessage("/shout glhf");
 				return;
 			}

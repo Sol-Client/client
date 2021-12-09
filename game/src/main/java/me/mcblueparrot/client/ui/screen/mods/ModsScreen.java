@@ -118,14 +118,16 @@ public class ModsScreen extends GuiScreen {
 
 					Utils.playClickSound();
 
-					Mod mod = mods.get(0);
+					if(!mods.isEmpty()) {
+						Mod mod = mods.get(0);
 
-					if(!mod.isBlocked()) {
-						if(mod.getOptions().size() == 1) {
-							mod.toggle();
-						}
-						else {
-							selectedMod = mod;
+						if(!mod.isBlocked()) {
+							if(mod.getOptions().size() == 1) {
+								mod.toggle();
+							}
+							else {
+								selectedMod = mod;
+							}
 						}
 					}
 				}

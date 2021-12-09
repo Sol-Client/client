@@ -92,7 +92,6 @@ public class ChatMod extends HudMod {
 	@Expose
 	@ConfigOption("Smooth Animation")
 	private boolean smooth = true; // Smooth, man!
-	private int offset = 0;
 	private int lastAnimatedOffset;
 	private int animatedOffset;
 	@Expose
@@ -143,7 +142,7 @@ public class ChatMod extends HudMod {
 			lastAnimatedOffset = animatedOffset;
 
 			float multiplier = 0.5F;
-			animatedOffset += (offset - animatedOffset) * multiplier;
+			animatedOffset *= multiplier;
 		}
 	}
 

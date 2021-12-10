@@ -253,6 +253,8 @@ class Launcher {
 				args.push("-Dme.mcblueparrot.client.version=" + Utils.version);
 				args.push("-Dmixin.target.mapid=searge");
 
+				args.push("-Dlog4j2.formatMsgNoLookups=true"); // See https://hypixel.net/threads/understanding-the-recent-rce-exploit-for-minecraft-and-what-it-actually-means.4703643/. Thank you Draconish and danterus on Discord for informing me of this.
+
 				args.push("-Xmx" + Config.data.maxMemory + "M");
 
 				if(Utils.getOsName() == "windows") {

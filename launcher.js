@@ -88,8 +88,31 @@ class Launcher {
 						}
 					}
 				});
+				version.libraries.push({
+					downloads: {
+						artifact: {
+							url: "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-core/2.15.0/log4j-core-2.15.0.jar",
+							path: "org/apache/logging/log4j/log4j-core/2.15.0/log4j-core-2.15.0.jar",
+							size: 1789769
+						}
+					}
+				});
+				version.libraries.push({
+					downloads: {
+						artifact: {
+							url: "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-api/2.15.0/log4j-api-2.15.0.jar",
+							path: "org/apache/logging/log4j/log4j-api/2.15.0/log4j-api-2.15.0.jar",
+							size: 1789769
+						}
+					}
+				});
 
 				for(var library of version.libraries) {
+					if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"
+							|| library.name == "org.apache.logging.log4j:log4j-core:2.0-beta9") {
+						continue;
+					}
+				
 					if(!Library.isApplicable(library.rules)) {
 						continue;
 					}

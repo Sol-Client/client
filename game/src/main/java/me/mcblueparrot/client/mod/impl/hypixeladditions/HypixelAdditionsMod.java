@@ -368,10 +368,10 @@ public class HypixelAdditionsMod extends Mod {
 
 		if(ticksUntilAutogl != -1 && --ticksUntilAutogl == 0) {
 			if(locationData != null &&
-					("BEDWARS".equals(locationData.getType()) && !("BEDWARS_EIGHT_ONE".equals(locationData.getMode()) || "BEDWARS_CASTLE".equals(locationData.getMode())))
+					(("BEDWARS".equals(locationData.getType()) && !("BEDWARS_EIGHT_ONE".equals(locationData.getMode()) || "BEDWARS_CASTLE".equals(locationData.getMode())))
 					|| ("DUELS".equals(locationData.getType()) && locationData.getMode() != null && !(locationData.getMode().endsWith("_DUEL") ||
 							locationData.getMode().equals("DUELS_UHC_MEETUP") || locationData.getMode().equals("DUELS_PARKOUR_EIGHT")))
-					|| ("ARCADE").equals(locationData.getType()) && "PVP_CTW".equals(locationData.getMode())
+					|| ("ARCADE".equals(locationData.getType()) && "PVP_CTW".equals(locationData.getMode()))
 					|| ("SURVIVAL_GAMES".equals(locationData.getType()) && "teams_normal".equals(locationData.getMode()))
 					|| ("BUILD_BATTLE".equals(locationData.getType()) && !("BUILD_BATTLE_SOLO_NORMAL".equals(locationData.getMode())
 							|| "BUILD_BATTLE_GUESS_THE_BUILD".equals(locationData.getMode())))
@@ -383,15 +383,16 @@ public class HypixelAdditionsMod extends Mod {
 					|| ("SKYWARS".equals(locationData.getType()) && locationData.getMode() != null &&
 							!(locationData.getMode().startsWith("solo_") || locationData.getMode().startsWith("ranked_")))
 					|| ("TNTGAMES".equals(locationData.getType()) && locationData.getMode().equals("CAPTURE"))
-					|| ("UHC".equals(locationData.getType()) || !"SOLO".equals(locationData.getType()))
+					|| ("UHC".equals(locationData.getType()) && !"SOLO".equals(locationData.getType()))
 					|| ("SPEED_UHC".equals(locationData.getType()) && !"solo_nomal".equals(locationData.getType()))
-					|| "BATTLEGROUND" /* Warlords */ .equals(locationData.getType())) {
+					|| "BATTLEGROUND" /* Warlords */ .equals(locationData.getType()))) {
 				mc.thePlayer.sendChatMessage("/shout glhf");
-				return;
+			}
+			else {
+				mc.thePlayer.sendChatMessage("/achat glhf");
 			}
 
 			donegl = true;
-			mc.thePlayer.sendChatMessage("/achat glhf");
 
 			ticksUntilAutogl = -1;
 		}

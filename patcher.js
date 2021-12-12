@@ -110,10 +110,10 @@ class Patcher {
 			});
 		}
 
-		var mapped = tempFolder + "mapped.jar";
-		var specialSource = tempFolder + "SpecialSource.jar";
-		var joinedSrg = tempFolder + "joined.srg";
-		var mcpZip = tempFolder + "mcp.zip";
+		var mapped = tempFolder + "/mapped.jar";
+		var specialSource = tempFolder + "/SpecialSource.jar";
+		var joinedSrg = tempFolder + "/joined.srg";
+		var mcpZip = tempFolder + "/mcp.zip";
 
 		await Utils.download("https://repo.maven.apache.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4-shaded.jar", specialSource, 1526537);
 

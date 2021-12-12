@@ -14,6 +14,7 @@ import net.minecraft.client.settings.KeyBinding;
 
 public class ToggleSprintMod extends SimpleHudMod {
 
+	private KeyBinding sprintKey;
 	private SprintState sprint;
 	@Expose
 	@ConfigOption("HUD")
@@ -22,13 +23,10 @@ public class ToggleSprintMod extends SimpleHudMod {
 	public ToggleSprintMod() {
 		super("Toggle Sprint", "toggle_sprint", "Toggle the sprint key.");
 		category = ModCategory.UTILITY;
-	}
-
-	@Override
-	public void postStart() {
-		super.postStart();
-		mc.gameSettings.keyBindSprint = new SprintKeyBind("key.sprint", mc.gameSettings.keyBindSprint.getKeyCode(),
+		Client.INSTANCE.unregisterKeyBinding(mc.gameSettings.keyBindSprint);
+		mc.gameSettings.keyBindSprint = new SprintKeyBind("key.sprint", 29,
 				"key.categories.movement");
+		Client.INSTANCE.registerKeyBinding(mc.gameSettings.keyBindSprint);
 	}
 
 	@Override

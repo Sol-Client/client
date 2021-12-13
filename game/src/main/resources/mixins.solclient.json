@@ -52,7 +52,7 @@
 		"mod.MixinChatMod$MixinScreenChatOptions",
 		"mod.MixinChatMod$MixinChatLine",
 		"mod.MixinHypixelAdditionsMod$MixinRenderPlayer",
-		"mod.MixinNumeralPingMod$MixinGuiPlayerTabOverlay",
+		"mod.MixinTabListMod$MixinGuiPlayerTabOverlay",
 		"mod.MixinSCReplayMod$MixinAbstractGuiSlider",
 		"mod.MixinSCReplayMod$MixinCameraEntity",
 		"mod.MixinSCReplayMod$MixinClassicCameraController",

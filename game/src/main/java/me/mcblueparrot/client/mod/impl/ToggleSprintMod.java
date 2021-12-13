@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.mod.impl.hud;
+package me.mcblueparrot.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 

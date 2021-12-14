@@ -1,21 +1,63 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
+import java.net.UnknownHostException;
+
+import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.PostTickEvent;
+import me.mcblueparrot.client.event.impl.ServerConnectEvent;
 import me.mcblueparrot.client.mod.hud.SmoothCounterHudMod;
-import net.minecraft.client.network.NetworkPlayerInfo;
+import me.mcblueparrot.client.util.Utils;
 
 public class PingMod extends SmoothCounterHudMod {
+
+	private int ping;
+	private static final int PING_INTERVAL = 600;
+	private int nextPing;
 
 	public PingMod() {
 		super("Ping", "ping", "Display the latency to the server.");
 	}
 
+	@EventHandler
+	public void onServerConnect(ServerConnectEvent event) {
+		ping = 0;
+		nextPing = 60;
+	}
+
+	@EventHandler
+	public void updatePing(PostTickEvent event) {
+		if(mc.getCurrentServerData() != null && !mc.isIntegratedServerRunning()) {
+			if(nextPing > 0) {
+				nextPing--;
+			}
+			else if(nextPing > -1) {
+				nextPing = -1;
+
+				try {
+					Utils.pingServer(mc.getCurrentServerData().serverIP, (newPing) -> {
+						if(newPing != -1) {
+							if(ping != 0) {
+								ping = (ping * 3 + newPing) / 4;
+							}
+							else {
+								ping = newPing;
+							}
+						}
+					});
+
+					nextPing = PING_INTERVAL;
+				}
+				catch(UnknownHostException error) {
+					logger.warn(error);
+				}
+			}
+		}
+	}
+
 	@Override
 	public int getIntValue() {
-		if(mc.getCurrentServerData() != null && !mc.isIntegratedServerRunning()) {
-			NetworkPlayerInfo info = mc.thePlayer.sendQueue.getPlayerInfo(mc.thePlayer.getGameProfile().getId());
-			if(info != null) {
-				return info.getResponseTime();
-			}
+		if(ping != -1) {
+			return ping;
 		}
 
 		return 0;

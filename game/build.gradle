@@ -353,6 +353,7 @@ dependencies {
 	dependency "org.slick2d:slick2d-core:1.0.2"
 	dependency "com.logisticscraft:occlusionculling:0.0.5-SNAPSHOT"
 	dependency "net.hypixel:hypixel-api-core:4.0"
+	
 	if(workspaceReady) {
 		dependency files(replayModRuntimeJar)
 		ship files(replayModShippedJar)

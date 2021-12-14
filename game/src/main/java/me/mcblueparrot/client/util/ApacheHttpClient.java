@@ -46,12 +46,10 @@ import net.hypixel.api.http.HypixelHttpResponse;
 public class ApacheHttpClient implements HypixelHttpClient {
 
 	private final UUID apiKey;
-	private final ExecutorService executorService;
 	private final HttpClient httpClient;
 
 	public ApacheHttpClient(UUID apiKey) {
 		this.apiKey = apiKey;
-		this.executorService = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 		this.httpClient = HttpClientBuilder.create().setUserAgent(Client.NAME).build();
 	}
 
@@ -62,10 +60,11 @@ public class ApacheHttpClient implements HypixelHttpClient {
 				HttpResponse response = this.httpClient.execute(new HttpGet(url));
 				return new HypixelHttpResponse(response.getStatusLine().getStatusCode(),
 						EntityUtils.toString(response.getEntity(), "UTF-8"));
-			} catch (IOException e) {
+			}
+			catch(IOException e) {
 				throw new RuntimeException(e);
 			}
-		}, this.executorService);
+		}, Utils.MAIN_EXECUTOR);
 	}
 
 	@Override
@@ -80,12 +79,11 @@ public class ApacheHttpClient implements HypixelHttpClient {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		}, this.executorService);
+		}, Utils.MAIN_EXECUTOR);
 	}
 
 	@Override
 	public void shutdown() {
-		this.executorService.shutdown();
 	}
 
 }

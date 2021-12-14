@@ -6,16 +6,25 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntConsumer;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
@@ -28,16 +37,31 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.multiplayer.ServerAddress;
+import net.minecraft.client.network.OldServerPinger;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.network.EnumConnectionState;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.ServerStatusResponse;
+import net.minecraft.network.handshake.client.C00Handshake;
+import net.minecraft.network.status.INetHandlerStatusClient;
+import net.minecraft.network.status.client.C00PacketServerQuery;
+import net.minecraft.network.status.client.C01PacketPing;
+import net.minecraft.network.status.server.S00PacketServerInfo;
+import net.minecraft.network.status.server.S01PacketPong;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 @UtilityClass
 public class Utils {
 
+	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 	public Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
 	private static int getStringWidth(String text) {
@@ -282,6 +306,46 @@ public class Utils {
 
 	public static int getShadowColour(int value) {
 		return (value & 16579836) >> 2 | value & -16777216;
+	}
+
+	public void pingServer(String address, IntConsumer callback) throws UnknownHostException {
+		ServerAddress serverAddress = ServerAddress.fromString(address);
+		NetworkManager networkManager = NetworkManager.createNetworkManagerAndConnect(
+				InetAddress.getByName(serverAddress.getIP()), serverAddress.getPort(), false);
+
+		networkManager.setNetHandler(new INetHandlerStatusClient() {
+
+			private boolean expected = false;
+			private long time = 0L;
+
+			@Override
+			public void handleServerInfo(S00PacketServerInfo packetIn) {
+				if(expected) {
+					networkManager.closeChannel(new ChatComponentText("Received unrequested status"));
+				}
+				else {
+					expected = true;
+					time = Minecraft.getSystemTime();
+					networkManager.sendPacket(new C01PacketPing(this.time));
+				}
+			}
+
+			@Override
+			public void handlePong(S01PacketPong packetIn) {
+				long systemTime = Minecraft.getSystemTime();
+				callback.accept((int) (systemTime - time));
+				networkManager.closeChannel(new ChatComponentText("Finished"));
+			}
+
+			@Override
+			public void onDisconnect(IChatComponent reason) {
+				callback.accept(-1);
+			}
+		});
+
+		networkManager.sendPacket(
+				new C00Handshake(47, serverAddress.getIP(), serverAddress.getPort(), EnumConnectionState.STATUS));
+		networkManager.sendPacket(new C00PacketServerQuery());
 	}
 
 }

@@ -17,11 +17,11 @@ First, go to [releases](https://github.com/TheKodeToad/Sol-Client/releases).
 Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue.
 
 ## Why?
-There are many Minecraft clients, but they are usually closed source, and may contain malicious code. Even the trusted ones often lack important features (mainly Replay Mod), and have an annoying logo in the corner of the screen (don't worry, this can be enabled in this client).
+There are (too) many Minecraft clients, but they are usually closed source, and may contain malicious code. They often are even more locked down than vanilla Minecraft - Lunar Client recently banned any modifications (supposidely a reminder, but that was never mentioned in the TOS), despite it being a modification to Minecraft itself. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
+
+Many clients lack important features, including ReplayMod, and have an annoying logo in the corner of the screen.
 
 There may be mod loaders like Forge and Fabric, which are perfectly good, but are not as simple and easy to use, or maintain.
-
-Actual reason: I was joking about creating a hacked client about a year ago, and my friend suggested that I created a PVP client instead.
 
 ## Safety
 I made the code for this client available, because many clients go to extra lengths to make sure that the code is extremely hidden and obfuscated (including safe ones such as Lunar and Badlion, with the exception of OptiFine). While the biggest clients are much more trusted and tested by the community, they all had to start somewhere. The actual code of the client (that is still around) was first written in January 2021.

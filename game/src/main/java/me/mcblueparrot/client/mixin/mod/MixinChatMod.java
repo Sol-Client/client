@@ -1,5 +1,7 @@
 package me.mcblueparrot.client.mixin.mod;
 
+import me.mcblueparrot.client.mod.impl.hud.chat.ChatAnimationData;
+import me.mcblueparrot.client.mod.impl.hud.chat.ChatMod;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -14,7 +16,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import me.mcblueparrot.client.mod.impl.hud.ChatMod;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.settings.GameSettings;
 
 public class MixinChatMod {
@@ -161,6 +164,19 @@ public class MixinChatMod {
 				mc.displayGuiScreen(new ModsScreen(this, ChatMod.instance));
 			}
 		}
+
+	}
+
+	@Mixin(ChatLine.class)
+	public static class MixinChatLine implements ChatAnimationData {
+
+		@Getter
+		@Setter
+		private float transparency = 1;
+
+		@Getter
+		@Setter
+		private float lastTransparency = 1;
 
 	}
 

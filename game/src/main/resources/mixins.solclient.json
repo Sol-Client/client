@@ -50,6 +50,7 @@
 		"mod.MixinChatMod$MixinGuiUtilRenderComponents",
 		"mod.MixinChatMod$MixinMinecraft",
 		"mod.MixinChatMod$MixinScreenChatOptions",
+		"mod.MixinChatMod$MixinChatLine",
 		"mod.MixinHypixelAdditionsMod$MixinRenderPlayer",
 		"mod.MixinNumeralPingMod$MixinGuiPlayerTabOverlay",
 		"mod.MixinSCReplayMod$MixinAbstractGuiSlider",

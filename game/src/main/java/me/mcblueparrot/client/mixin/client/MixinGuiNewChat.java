@@ -2,7 +2,6 @@ package me.mcblueparrot.client.mixin.client;
 
 import java.util.List;
 
-import me.mcblueparrot.client.mod.impl.hud.ChatMod;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.impl.ChatRenderEvent;
+import me.mcblueparrot.client.mod.impl.hud.chat.ChatMod;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.gui.ChatLine;

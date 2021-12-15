@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.mod.impl.hud;
+package me.mcblueparrot.client.mod.impl.hud.chat;
 
 import net.minecraft.client.gui.GuiChat;
 import org.lwjgl.input.Keyboard;
@@ -93,8 +93,10 @@ public class ChatMod extends HudMod {
 	@Expose
 	@ConfigOption("Smooth Animation")
 	private boolean smooth = true; // Smooth, man!
+	private static final float ANIMATION_MULTIPLIER = 0.5F;
 	private int lastAnimatedOffset;
 	private int animatedOffset;
+
 	@Expose
 	@ConfigOption("Infinite Chat")
 	public boolean infiniteChat = true;
@@ -137,13 +139,19 @@ public class ChatMod extends HudMod {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@EventHandler
 	public void onTick(PostTickEvent event) {
 		if(smooth && !mc.isGamePaused()) {
 			lastAnimatedOffset = animatedOffset;
 
-			float multiplier = 0.5F;
-			animatedOffset *= multiplier;
+			animatedOffset *= ANIMATION_MULTIPLIER;
+
+			for(ChatAnimationData line : (Iterable<ChatAnimationData>) (Object) (((AccessGuiNewChat) mc.ingameGUI
+					.getChatGUI()).getDrawnChatLines())) {
+				line.setLastTransparency(line.getTransparency());
+				line.setTransparency(line.getTransparency() * ANIMATION_MULTIPLIER);
+			}
 		}
 	}
 
@@ -176,14 +184,15 @@ public class ChatMod extends HudMod {
 
 				if(smooth && !(event.chat.getChatOpen() && accessor.getScrollPos() > 0)) {
 					float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.partialTicks;
+
 					GlStateManager.translate(0, calculatedOffset, 0);
 				}
 
 				for(int i = 0; i + accessor.getScrollPos() < accessor.getDrawnChatLines().size() && i < linesCount; ++i) {
-					ChatLine chatline = (ChatLine)accessor.getDrawnChatLines().get(i + accessor.getScrollPos());
+					ChatLine line = (ChatLine)accessor.getDrawnChatLines().get(i + accessor.getScrollPos());
 
-					if(chatline != null) {
-						int update = event.updateCounter - chatline.getUpdatedCounter();
+					if(line != null) {
+						int update = event.updateCounter - line.getUpdatedCounter();
 
 						if(update < 200 || open) {
 							double percent = (double) update / 200.0D;
@@ -198,8 +207,13 @@ public class ChatMod extends HudMod {
 
 							double percentFG = percent;
 
-							if(smooth && update < 3) {
-								percentFG *= update / 3F;
+							if(smooth) {
+								ChatAnimationData data = ((ChatAnimationData) line);
+
+								if(data.getTransparency() != 0) {
+									float calculatedTransparency = data.getLastTransparency() + (data.getTransparency() - data.getLastTransparency()) * event.partialTicks;
+									percentFG *= (1 - calculatedTransparency);
+								}
 							}
 
 							++j;
@@ -211,7 +225,7 @@ public class ChatMod extends HudMod {
 									Gui.drawRect(i2 - 2, j2 - 9, i2 + l + 4, j2,
 											backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * percent)).getValue());
 								}
-								String formattedText = chatline.getChatComponent().getFormattedText();
+								String formattedText = line.getChatComponent().getFormattedText();
 								GlStateManager.enableBlend();
 
 								if(percentFG > 0.05F) {

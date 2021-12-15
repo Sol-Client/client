@@ -1,6 +1,8 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
@@ -33,23 +35,25 @@ public class PingMod extends SmoothCounterHudMod {
 			else if(nextPing > -1) {
 				nextPing = -1;
 
-				try {
-					Utils.pingServer(mc.getCurrentServerData().serverIP, (newPing) -> {
-						if(newPing != -1) {
-							if(ping != 0) {
-								ping = (ping * 3 + newPing) / 4;
+				Utils.MAIN_EXECUTOR.submit(() -> {
+					try {
+						Utils.pingServer(mc.getCurrentServerData().serverIP, (newPing) -> {
+							if(newPing != -1) {
+								if(ping != 0) {
+									ping = (ping * 3 + newPing) / 4;
+								}
+								else {
+									ping = newPing;
+								}
 							}
-							else {
-								ping = newPing;
-							}
-						}
-					});
+						});
+					}
+					catch(UnknownHostException error) {
+						error.printStackTrace();
+					}
+				});
 
-					nextPing = PING_INTERVAL;
-				}
-				catch(UnknownHostException error) {
-					logger.warn(error);
-				}
+				nextPing = PING_INTERVAL;
 			}
 		}
 	}

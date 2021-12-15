@@ -115,6 +115,10 @@ public class QuickPlayGame implements QuickPlayOption {
 				break;
 			case "thePit":
 				itemType = Item.getItemFromBlock(Blocks.dirt);
+				break;
+			case "tournament":
+				itemType = Items.blaze_powder;
+				break;
 		}
 
 		if(itemType != null) {

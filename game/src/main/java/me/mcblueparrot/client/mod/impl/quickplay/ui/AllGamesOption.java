@@ -18,7 +18,7 @@ public class AllGamesOption implements QuickPlayOption {
 
 	@Override
 	public ItemStack getIcon() {
-		return new ItemStack(Items.nether_star);
+		return new ItemStack(Items.compass);
 	}
 
 }

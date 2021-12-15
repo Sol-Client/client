@@ -1,4 +1,3 @@
-const temp = require("temp").track();
 const childProcess = require("child_process");
 const Utils = require("./utils");
 const unzipper = require("unzipper");
@@ -7,8 +6,10 @@ const archiver = require("archiver");
 
 class Patcher {
 
-	static async patch(java, versionJar, optiFine) {
-		var tempFolder = temp.mkdirSync("deobf");
+	static async patch(java, versionFolder, versionJar, outputFile, optiFine) {
+		var tempFolder = versionFolder + "/patch/";
+		
+		fs.mkdirSync(tempFolder);
 
 		var inputJar = versionJar;
 		if(optiFine) {
@@ -47,7 +48,6 @@ class Patcher {
 							continue;
 						}
 
-						console.log("appending " + fileName + "...");
 						optiFinePatchedArchiver.append(await entry.buffer(), { name: entry.path });
 					}
 				}
@@ -55,56 +55,9 @@ class Patcher {
 				await insert(versionJar);
 				await insert(optiFineMod);
 
-				console.log("done");
-
-	//			var vanillaZip = fs.createReadStream(versionJar).pipe(
-	//				unzipper.Parse({ forceStream: true }));
-
-	//			for await(const entry of vanillaZip) {
-	//				const fileName = entry.path;
-
-	//				if(fileName.startsWith("META-INF")) {
-	//					entry.autodrain();
-	//					continue;
-	//				}
-
-	//				console.log(entry.path);
-
-	//				await new Promise(async(resolve) => {
-	//								console.log("doing");
-	//					optiFinePatchedPacker.entry(await entry.buffer(),
-	//							{
-	//								name: fileName
-	//							},
-	//							(error, entry) => {
-	//								console.log("done");
-	//								resolve();
-	//							})
-	//				});
-	//			}
-
-	//			var modZip = fs.createReadStream(optiFineMod).pipe(
-	//				unzipper.Parse({ forceStream: true }));
-
-	//			for await(const entry of modZip) {
-	//				const fileName = entry.path;
-
-	//				await new Promise(async(resolve) => {
-	//					optiFinePatchedPacker.entry(await entry.buffer(),
-	//							{
-	//								name: fileName
-	//							},
-	//							(error, entry) => {
-	//								resolve();
-	//							})
-	//				});
-	//			}
-
 				optiFinePatchedArchiver.on("close", resolve);
 				optiFinePatchedArchiver.on("end", resolve);
 				optiFinePatchedArchiver.on("finish", resolve);
-
-				console.log("finalising...");
 
 				optiFinePatchedArchiver.finalize();
 			});
@@ -150,7 +103,9 @@ class Patcher {
 			process.stdout.on("data", (data) => console.log(data.toString("UTF-8")));
 			process.stderr.on("data", (data) => console.error(data.toString("UTF-8")));
 		});
-		return mapped;
+
+		fs.renameSync(mapped,  outputFile);
+		fs.rmdirSync(tempFolder, { recursive: true });
 	}
 
 }

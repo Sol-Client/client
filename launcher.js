@@ -255,7 +255,7 @@ class Launcher {
 					}
 
 					if(!fs.existsSync(optifinePatchedJar)) {
-						fs.renameSync(await Patcher.patch(java, versionJar, optifine), optifinePatchedJar);
+						await Patcher.patch(java, versionFolder, versionJar, optifinePatchedJar, optifine);
 					}
 
 					versionToAdd = optifinePatchedJar;
@@ -264,7 +264,7 @@ class Launcher {
 					var mappedJar = versionFolder + "/" + version.id + "-searge.jar";
 
 					if(!fs.existsSync(mappedJar)) {
-						fs.renameSync(await Patcher.patch(java, versionJar), mappedJar);
+						await Patcher.patch(java, versionFolder, versionJar, mappedJar);
 					}
 
 					versionToAdd = mappedJar;

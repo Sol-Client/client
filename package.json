@@ -21,7 +21,6 @@
     "msmc": "^2.2.2",
     "nbt": "^0.8.1",
     "tar": "^6.1.11",
-    "temp": "^0.9.4",
     "unzipper": "^0.10.11"
   },
   "devDependencies": {

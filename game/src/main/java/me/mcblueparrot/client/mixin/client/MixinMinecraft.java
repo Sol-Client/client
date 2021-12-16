@@ -2,6 +2,7 @@ package me.mcblueparrot.client.mixin.client;
 
 import java.util.ConcurrentModificationException;
 
+import net.minecraft.client.gui.*;
 import net.minecraft.util.Session;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -36,10 +37,6 @@ import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiNewChat;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
@@ -65,6 +62,21 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	public String censorSessionId(Session instance) {
 		return "☃︎";
 	}
+
+	// Mojang has made some questionable decisions with their code.
+	// https://github.com/Sk1erLLC/Patcher/blob/master/src/main/java/club/sk1er/patcher/mixins/performance/MinecraftMixin_OptimizedWorldSwapping.java
+	@Redirect(method = "loadWorld(Lnet/minecraft/client/multiplayer/WorldClient;Ljava/lang/String;)V",
+			at = @At(value = "INVOKE", target = "Ljava/lang/System;gc()V"))
+	public void noneOfYourGarbage() {
+	}
+
+	@Inject(method = "setIngameNotInFocus", at = @At("HEAD"), cancellable = true)
+	public void skipGrab(CallbackInfo callback) {
+		if(currentScreen instanceof GuiDownloadTerrain) {
+			callback.cancel();
+		}
+	}
+
 
 	@Inject(method = "startGame", at = @At(value = "INVOKE",
 			target = "Lnet/minecraft/client/Minecraft;initStream()V", shift = At.Shift.AFTER))

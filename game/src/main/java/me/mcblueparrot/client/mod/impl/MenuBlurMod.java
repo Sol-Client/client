@@ -7,6 +7,7 @@ package me.mcblueparrot.client.mod.impl;
 import java.io.IOException;
 import java.io.InputStream;
 
+import net.minecraft.client.gui.GuiDownloadTerrain;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.JsonSyntaxException;
@@ -66,6 +67,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	public void onPostProcessing(PostProcessingEvent event) {
 		if(event.type == PostProcessingEvent.Type.UPDATE || (blur != 0
 				&& (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat)
+				&& !(mc.currentScreen instanceof GuiDownloadTerrain)
 				&& !(mc.currentScreen.getClass().getName().startsWith("com.replaymod.lib.de.johni0702.minecraft.gui" +
 				".container." +
 				"AbstractGuiOverlay$") && ReplayModReplay.instance.getReplayHandler() != null && mc.theWorld != null)))) {

@@ -94,7 +94,7 @@ public class MixinChatMod {
 				"ngs;chatWidth:F"))
 		public float overrideChatWidth(GameSettings instance) {
 			if(ChatMod.enabled) {
-				return ChatMod.instance.width / 320;
+				return ChatMod.instance.width / 320F;
 			}
 
 			return instance.chatWidth;
@@ -104,7 +104,7 @@ public class MixinChatMod {
 				"Lnet/minecraft/client/settings/GameSettings;chatHeightFocused:F"))
 		public float overrideOpenChatHeight(GameSettings instance) {
 			if(ChatMod.enabled) {
-				return ChatMod.instance.openHeight / 180;
+				return ChatMod.instance.openHeight / 180F;
 			}
 
 			return instance.chatHeightFocused;
@@ -114,10 +114,20 @@ public class MixinChatMod {
 				"Lnet/minecraft/client/settings/GameSettings;chatHeightUnfocused:F"))
 		public float overrideClosedChatHeight(GameSettings instance) {
 			if(ChatMod.enabled) {
-				return ChatMod.instance.closedHeight / 180;
+				return ChatMod.instance.closedHeight / 180F;
 			}
 
 			return instance.chatHeightFocused;
+		}
+
+		@Redirect(method = "getChatScale", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/" +
+				"GameSettings;chatScale:F"))
+		public float overrideChatScale(GameSettings instance) {
+			if(ChatMod.enabled) {
+				return ChatMod.instance.scale / 100F;
+			}
+
+			return instance.chatScale;
 		}
 
 	}

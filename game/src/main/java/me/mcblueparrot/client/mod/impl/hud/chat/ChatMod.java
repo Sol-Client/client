@@ -125,6 +125,7 @@ public class ChatMod extends HudMod {
 		super.onEnable();
 		enabled = true;
 		Client.INSTANCE.registerChatButton(symbolsButton);
+		mc.ingameGUI.getChatGUI().refreshChat();
 	}
 
 	@Override
@@ -132,6 +133,7 @@ public class ChatMod extends HudMod {
 		super.onDisable();
 		enabled = false;
 		Client.INSTANCE.unregisterChatButton(symbolsButton);
+		mc.ingameGUI.getChatGUI().refreshChat();
 	}
 
 	@Override

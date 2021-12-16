@@ -70,7 +70,8 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	public void noneOfYourGarbage() {
 	}
 
-	@Inject(method = "setIngameNotInFocus", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "setIngameNotInFocus", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/MouseHelper;" +
+			"ungrabMouseCursor()V"), cancellable = true)
 	public void skipGrab(CallbackInfo callback) {
 		if(currentScreen instanceof GuiDownloadTerrain) {
 			callback.cancel();

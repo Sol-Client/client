@@ -44,6 +44,7 @@ import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.hypixel.api.HypixelAPI;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -140,25 +141,36 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 
-	public String getLevelhead(UUID player) {
-		if(!(enabled && levelhead)) {
+	public String getLevelhead(boolean isMainPlayer, String name, UUID id) {
+		if((!(enabled && levelhead))
+				|| (name.contains(EnumChatFormatting.OBFUSCATED.toString()) && !isMainPlayer)
+				|| (name.indexOf('§') == -1 /* probably one of those weird generated players */ )
+				|| (name.contains(" "))) {
 			return null;
 		}
-		if(levelCache.containsKey(player)) {
-			String result = levelCache.get(player);
+
+		if(levelCache.containsKey(id)) {
+			String result = levelCache.get(id);
 			if(result.isEmpty()) {
 				return null;
 			}
 			return result;
 		}
+
 		else if(api != null) {
-			levelCache.put(player, "");
-			api.getPlayerByUuid(player).whenCompleteAsync((response, error) -> {
+			levelCache.put(id, "");
+			api.getPlayerByUuid(id).whenCompleteAsync((response, error) -> {
 				if(!response.isSuccess() || error != null) {
-					levelCache.put(player, "Unknown");
 					return;
 				}
-				levelCache.put(player, Integer.toString((int) response.getPlayer().getNetworkLevel()));
+
+				if(response.getPlayer().exists()) {
+					levelCache.put(id, Integer.toString((int) response.getPlayer().getNetworkLevel()));
+				}
+				else {
+					// At this stage, the player is either nicked, or an NPC, but all NPCs and fake players I've tested do not get to this stage.
+					levelCache.put(id, Integer.toString(Utils.randomInt(180, 280))); // Based on looking at YouTubers' Hypixel levels. It won't actually be the true level, and may not look quite right, but it's more plausible than a Level 1 god bridger. 
+				}
 			});
 		}
 		return null;

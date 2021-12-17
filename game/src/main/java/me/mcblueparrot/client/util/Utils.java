@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.IntConsumer;
 
 import org.apache.commons.io.IOUtils;
@@ -339,6 +340,10 @@ public class Utils {
 		networkManager.sendPacket(
 				new C00Handshake(47, serverAddress.getIP(), serverAddress.getPort(), EnumConnectionState.STATUS));
 		networkManager.sendPacket(new C00PacketServerQuery());
+	}
+
+	public static int randomInt(int from, int to) {
+		return ThreadLocalRandom.current().nextInt(from, to + 1); // https://stackoverflow.com/a/363692
 	}
 
 }

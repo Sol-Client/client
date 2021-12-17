@@ -26,9 +26,8 @@ public class MixinHypixelAdditionsMod {
 		public void renderLevelhead(AbstractClientPlayer entityIn, double x, double y, double z, String str,
 									float p_177069_9_, double p_177069_10_, CallbackInfo callback) {
 			if(HypixelAdditionsMod.isEffective()) {
-				String levelhead = HypixelAdditionsMod.instance.getLevelhead(entityIn.getUniqueID());
-				if (levelhead != null && !(entityIn.getDisplayName().getFormattedText().contains(
-						EnumChatFormatting.OBFUSCATED.toString()) && entityIn != Minecraft.getMinecraft().thePlayer)) {
+				String levelhead = HypixelAdditionsMod.instance.getLevelhead(entityIn == Minecraft.getMinecraft().thePlayer, entityIn.getDisplayName().getFormattedText(), entityIn.getUniqueID());
+				if (levelhead != null) {
 					renderLivingLabel(entityIn,
 							EnumChatFormatting.AQUA + "Level: " + EnumChatFormatting.YELLOW + levelhead, x,
 							y + ((double) ((float) this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F

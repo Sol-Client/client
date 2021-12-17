@@ -144,8 +144,7 @@ public class HypixelAdditionsMod extends Mod {
 	public String getLevelhead(boolean isMainPlayer, String name, UUID id) {
 		if((!(enabled && levelhead))
 				|| (name.contains(EnumChatFormatting.OBFUSCATED.toString()) && !isMainPlayer)
-				|| (name.indexOf('§') == -1 /* probably one of those weird generated players */ )
-				|| (name.contains(" "))) {
+				|| (name.indexOf('§') == -1 /* probably one of those weird generated players */ )) {
 			return null;
 		}
 

@@ -14,10 +14,10 @@ Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versi
 ## Gimme it now!
 First, go to [releases](https://github.com/TheKodeToad/Sol-Client/releases).
 
-Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue.
+Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue. The code is all open source, so don't worry (and if you do, just look through the code (I say, like it's easy)).
 
 ## Why?
-There are (too) many Minecraft clients, but they are usually closed source, and may contain malicious code. They often are even more locked down than vanilla Minecraft - Lunar Client recently banned any modifications (supposidely a reminder, but that was never mentioned in the TOS), despite it being a modification to Minecraft itself. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
+There are (too) many Minecraft clients, but they are usually closed source, and may contain malicious code. They often are even more locked down than vanilla Minecraft - Lunar Client banned all modifications, despite it being a modification to Minecraft itself. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
 
 Many clients lack important features, including ReplayMod, and have an annoying logo in the corner of the screen.
 
@@ -30,7 +30,7 @@ If you are suspicous, you can sift around the (admittedly large) repository.
 
 This client has been tested by multiple people on Hypixel, and it disables disallowed mods automatically. There may be some unknown servers, but just disable the correct mods and you should be fine, as all Sol Client mods are designed to not change the behaviour of the player.
 
-Sol Client is arguably more Hypixel-safe than Lunar Client - Lunar already has a reputation for making changes they probably shouldn't. For example, it has a fly boost mod that isn't disabled, giving players an advantage in build battle (not that I play that game too often), allows you to place blocks while breaking other blocks (1.7 animations, not sure why this is unfair, but it's not possible in vanilla), and the crosshair highlights invisible players.
+Sol Client is arguably more Hypixel-safe than Lunar Client - Lunar already has a reputation for making changes they probably shouldn't. Even in current versions, it has a fly boost mod that isn't disabled, giving players an advantage in build battle (not that I play that game too often), allows you to place blocks while breaking other blocks (1.7 animations, not sure why this is unfair, but it's not possible in vanilla), and the crosshair highlights invisible players. In older versions, there were apparently some other issues relating to the particles mod or something, and the CPS limit (probably because it was designed for their own network). <sup>\[<i><a href="/">citation needed</a></i>\]</sup>
 
 ## Sorry Lunar
 I still think Lunar is a good client, in the same way that Chrome is the most popular browser, but Firefox continues to exist. It just depends what you want from a web browser. I like both browsers, but I personally prefer using Firefox. I also don't want there to be a "Minecraft client monopoly", where there are only two popular Minecraft clients, that are both closed source.

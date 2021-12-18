@@ -91,8 +91,8 @@ class Launcher {
 				version.libraries.push({
 					downloads: {
 						artifact: {
-							url: "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-core/2.15.0/log4j-core-2.15.0.jar",
-							path: "org/apache/logging/log4j/log4j-core/2.15.0/log4j-core-2.15.0.jar",
+							url: "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-core/2.16.0/log4j-core-2.16.0.jar",
+							path: "org/apache/logging/log4j/log4j-core/2.16.0/log4j-core-2.16.0.jar",
 							size: 1789769
 						}
 					}
@@ -100,8 +100,8 @@ class Launcher {
 				version.libraries.push({
 					downloads: {
 						artifact: {
-							url: "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-api/2.15.0/log4j-api-2.15.0.jar",
-							path: "org/apache/logging/log4j/log4j-api/2.15.0/log4j-api-2.15.0.jar",
+							url: "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-api/2.16.0/log4j-api-2.16.0.jar",
+							path: "org/apache/logging/log4j/log4j-api/2.16.0/log4j-api-2.16.0.jar",
 							size: 1789769
 						}
 					}

@@ -46,13 +46,13 @@ public class PingMod extends SmoothCounterHudMod {
 									ping = newPing;
 								}
 							}
-
-							nextPing = PING_INTERVAL;
 						});
 					}
 					catch(UnknownHostException error) {
 						error.printStackTrace();
 					}
+
+					nextPing = PING_INTERVAL;
 				});
 			}
 		}

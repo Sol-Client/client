@@ -19,7 +19,8 @@ public enum RequestType {
 			"%s"),
 	GUILD_PARTY("(\\?[.*] )?(\\S{1,16}) has invited all members of (\\S+) to their party!",
 			"Guild party invite from %2$s for %3$s.",
-			"/party accept %2$s");
+			"/party accept %2$s"),
+	SKYBLOCK_TRADE("\\S{1,16}) has sent you a trade request\\. Click here to accept!$", "Skyblock trade request from %s", "/trade %s");
 
 	private Pattern pattern;
 	private String message;

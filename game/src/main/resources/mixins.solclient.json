@@ -39,8 +39,6 @@
 		"client.MixinSimpleReloadableResourceManager",
 		"client.MixinTileEntityRenderDispatcher",
 		"client.MixinWorldClient",
-		"client.MixinLoadingScreenRenderer",
-		"client.MixinGuiDownloadTerrain",
 		"mod.MixinArabicNumeralsMod$MixinEnchantment",
 		"mod.MixinArabicNumeralsMod$MixinInventoryEffectRenderer",
 		"mod.MixinArabicNumeralsMod$MixinItemPotion",

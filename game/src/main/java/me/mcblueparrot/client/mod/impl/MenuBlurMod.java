@@ -67,7 +67,6 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	public void onPostProcessing(PostProcessingEvent event) {
 		if(event.type == PostProcessingEvent.Type.UPDATE || (blur != 0
 				&& (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat)
-				&& !(mc.currentScreen instanceof GuiDownloadTerrain)
 				&& !(mc.currentScreen.getClass().getName().startsWith("com.replaymod.lib.de.johni0702.minecraft.gui" +
 				".container." +
 				"AbstractGuiOverlay$") && ReplayModReplay.instance.getReplayHandler() != null && mc.theWorld != null)))) {

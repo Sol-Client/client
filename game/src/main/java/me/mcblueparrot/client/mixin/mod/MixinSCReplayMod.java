@@ -297,7 +297,7 @@ public class MixinSCReplayMod {
 			if(packet instanceof S02PacketChat) {
 				String messageString = EnumChatFormatting.getTextWithoutFormattingCodes(((S02PacketChat) packet).getChatComponent().getUnformattedText());
 
-				if(Client.INSTANCE.bus.post(new ReceiveChatMessageEvent(((S02PacketChat) packet).getType() == 2, messageString)).cancelled) {
+				if(Client.INSTANCE.bus.post(new ReceiveChatMessageEvent(((S02PacketChat) packet).getType() == 2, messageString, true)).cancelled) {
 					callback.cancel();
 				}
 			}

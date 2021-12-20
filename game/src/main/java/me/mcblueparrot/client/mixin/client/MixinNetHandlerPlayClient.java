@@ -48,7 +48,7 @@ public class MixinNetHandlerPlayClient {
 			target = "Lnet/minecraft/client/gui/GuiNewChat;printChatMessage(Lnet/minecraft/util/IChatComponent;)V"))
 	public void handleChat(GuiNewChat guiNewChat, IChatComponent chatComponent) {
 		if(!Client.INSTANCE.bus.post(new ReceiveChatMessageEvent(false,
-				EnumChatFormatting.getTextWithoutFormattingCodes(chatComponent.getUnformattedText()))).cancelled) {
+				EnumChatFormatting.getTextWithoutFormattingCodes(chatComponent.getUnformattedText()), false)).cancelled) {
 			guiNewChat.printChatMessage(chatComponent);
 		}
 	}
@@ -57,7 +57,7 @@ public class MixinNetHandlerPlayClient {
 			target = "Lnet/minecraft/client/gui/GuiIngame;setRecordPlaying(Lnet/minecraft/util/IChatComponent;Z)V"))
 	public void handleActionBar(GuiIngame guiIngame, IChatComponent component, boolean isPlaying) {
 		if(!Client.INSTANCE.bus.post(new ReceiveChatMessageEvent(true,
-				EnumChatFormatting.getTextWithoutFormattingCodes(component.getUnformattedText()))).cancelled) {
+				EnumChatFormatting.getTextWithoutFormattingCodes(component.getUnformattedText()), false)).cancelled) {
 			guiIngame.setRecordPlaying(component, isPlaying);
 		}
 	}

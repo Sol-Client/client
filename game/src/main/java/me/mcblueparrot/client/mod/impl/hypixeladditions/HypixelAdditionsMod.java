@@ -168,7 +168,7 @@ public class HypixelAdditionsMod extends Mod {
 				}
 				else {
 					// At this stage, the player is either nicked, or an NPC, but all NPCs and fake players I've tested do not get to this stage.
-					levelCache.put(id, Integer.toString(Utils.randomInt(180, 280))); // Based on looking at YouTubers' Hypixel levels. It won't actually be the true level, and may not look quite right, but it's more plausible than a Level 1 god bridger. 
+					levelCache.put(id, Integer.toString(Utils.randomInt(180, 280))); // Based on looking at YouTubers' Hypixel levels. It won't actually be the true level, and may not look quite right, but it's more plausible than a Level 1 god bridger.
 				}
 			});
 		}
@@ -314,6 +314,30 @@ public class HypixelAdditionsMod extends Mod {
 			}
 		}
 
+		if(hidegg) {
+			for(Pattern pattern : hideggTriggers) {
+				if(pattern.matcher(event.message).matches()) {
+					event.cancelled = true;
+					return;
+				}
+			}
+		}
+
+		if(hidegl && hideglTrigger.matcher(event.message).matches()) {
+			event.cancelled = true;
+			return;
+		}
+
+
+		if(hideChannelMessageTrigger.matcher(event.message).matches()) {
+			event.cancelled = true;
+			return;
+		}
+
+		if(event.replay) {
+			return;
+		}
+
 		if(event.actionBar && isHousing() && event.message.startsWith("Now playing:")) {
 			event.cancelled = true;
 			return;
@@ -339,27 +363,8 @@ public class HypixelAdditionsMod extends Mod {
 			}
 		}
 
-		if(hidegg) {
-			for(Pattern pattern : hideggTriggers) {
-				if(pattern.matcher(event.message).matches()) {
-					event.cancelled = true;
-					return;
-				}
-			}
-		}
-
 		if(autogl && !donegl && event.message.equals(autoglTrigger)) {
 			ticksUntilAutogl = 20;
-			return;
-		}
-
-		if(hidegl && hideglTrigger.matcher(event.message).matches()) {
-			event.cancelled = true;
-			return;
-		}
-
-		if(hideChannelMessageTrigger.matcher(event.message).matches()) {
-			event.cancelled = true;
 			return;
 		}
 

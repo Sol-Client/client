@@ -5,7 +5,7 @@ import me.mcblueparrot.client.mod.ModCategory;
 
 public class ShowOwnTagMod extends Mod {
 
-	// stub implementation
+	// stub mod implementation
 
 	public static boolean enabled;
 

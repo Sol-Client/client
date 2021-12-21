@@ -22,6 +22,8 @@ import org.lwjgl.input.Keyboard;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
+import me.mcblueparrot.client.AutoGGMessage;
+import me.mcblueparrot.client.AutoGLMessage;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.DetectedServer;
 import me.mcblueparrot.client.event.EventHandler;
@@ -44,7 +46,6 @@ import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.hypixel.api.HypixelAPI;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -80,6 +81,9 @@ public class HypixelAdditionsMod extends Mod {
 	@Expose
 	@ConfigOption("Auto GG")
 	private boolean autogg = true;
+	@Expose
+	@ConfigOption("Auto GG Message")
+	private AutoGGMessage autoggMessage = AutoGGMessage.GG;
 	private List<Pattern> autoggTriggers = Arrays.asList(
 			"^ +1st Killer - ?\\[?\\w*\\+*\\]? \\w+ - \\d+(?: Kills?)?$",
 			"^ *1st (?:Place ?)?(?:-|:)? ?\\[?\\w*\\+*\\]? \\w+(?: : \\d+| - \\d+(?: Points?)?| - \\d+(?: x .)?| \\(\\w+ .{1,6}\\) - \\d+ Kills?|: \\d+:\\d+| - \\d+ (?:Zombie )?(?:Kills?|Blocks? Destroyed)| - \\[LINK\\])?$",
@@ -102,8 +106,7 @@ public class HypixelAdditionsMod extends Mod {
 	@ConfigOption("Hide GG")
 	private boolean hidegg = false;
 	private List<Pattern> hideggTriggers = Arrays.asList(
-			".*: [gG]{2}",
-			".*: [gG]ood [gG]ame",
+			".*: (([gG]{2})|([gG]ood [gG]ame))",
 			"\\+\\d* Karma!").stream().map(Pattern::compile).collect(Collectors.toList());
 	private boolean donegg;
 	private Pattern hideChannelMessageTrigger = Pattern.compile("(You are now in the (ALL|PARTY|GUILD|OFFICER) channel|You're already in this channel!)");
@@ -111,6 +114,8 @@ public class HypixelAdditionsMod extends Mod {
 	@Expose
 	@ConfigOption("Auto GL")
 	private boolean autogl;
+	@Expose
+	private AutoGLMessage autoglMessage = AutoGLMessage.GLHF;
 	private String autoglTrigger = "The game starts in 1 second!";
 	private long ticksUntilAutogl = -1;
 	private long ticksUntilLocraw = -1;
@@ -134,7 +139,7 @@ public class HypixelAdditionsMod extends Mod {
 	private Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
 
 	public HypixelAdditionsMod() {
-		super("Hypixel Additions", "hypixel_util", "Various additions to Hypixel.", ModCategory.UTILITY);
+		super("Hypixel Additions", "hypixel_util", "Various improvements to Hypixel.", ModCategory.INTEGRATION);
 		instance = this;
 		Client.INSTANCE.registerKeyBinding(keyAcceptRequest);
 		Client.INSTANCE.registerKeyBinding(keyDismissRequest);
@@ -357,7 +362,7 @@ public class HypixelAdditionsMod extends Mod {
 			for(Pattern pattern : autoggTriggers) {
 				if(pattern.matcher(event.message).matches()) {
 					donegg = true;
-					mc.thePlayer.sendChatMessage("/achat gg");
+					mc.thePlayer.sendChatMessage("/achat " + autoggMessage);
 					return;
 				}
 			}
@@ -402,10 +407,10 @@ public class HypixelAdditionsMod extends Mod {
 					|| ("UHC".equals(locationData.getType()) && !"SOLO".equals(locationData.getType()))
 					|| ("SPEED_UHC".equals(locationData.getType()) && !"solo_nomal".equals(locationData.getType()))
 					|| "BATTLEGROUND" /* Warlords */ .equals(locationData.getType()))) {
-				mc.thePlayer.sendChatMessage("/shout glhf");
+				mc.thePlayer.sendChatMessage("/shout " + autoglMessage);
 			}
 			else {
-				mc.thePlayer.sendChatMessage("/achat glhf");
+				mc.thePlayer.sendChatMessage("/achat " + autoglMessage);
 			}
 
 			donegl = true;

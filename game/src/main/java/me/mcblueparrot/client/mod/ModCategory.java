@@ -29,7 +29,11 @@ public enum ModCategory {
 	/**
 	 * Aesthetic/graphical mods.
 	 */
-	VISUAL("Visual");
+	VISUAL("Visual"),
+	/**
+	 * Server integration mods.
+	 */
+	INTEGRATION("Integration");
 
 	private String name;
 	private List<Mod> mods;

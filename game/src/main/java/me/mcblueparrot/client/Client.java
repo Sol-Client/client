@@ -164,7 +164,6 @@ public class Client {
 		register(ZoomMod::new);
 		register(ParticlesMod::new);
 		register(TimeChangerMod::new);
-		register(HypixelAdditionsMod::new);
 		register(ArabicNumeralsMod::new);
 		register(ShowOwnTagMod::new);
 		register(BetterTooltipsMod::new);
@@ -172,6 +171,7 @@ public class Client {
 		register(HitColourMod::new);
 		register(SCReplayMod::new);
 		register(QuickPlayMod::new);
+		register(HypixelAdditionsMod::new);
 
 		registerKeyBinding(modsKey);
 

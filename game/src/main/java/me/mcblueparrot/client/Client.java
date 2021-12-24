@@ -185,7 +185,7 @@ public class Client {
 
 		cacheHudList();
 
-		LOGGER.info("Loaded " + mods.size() + " mods");
+		LOGGER.info("Loaded {} mods", mods.size());
 
 		LOGGER.info("Saving settings...");
 		save();

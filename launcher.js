@@ -106,10 +106,20 @@ class Launcher {
 						}
 					}
 				});
+				version.libraries.push({
+					downloads: {
+						artifact: {
+							url: "https://libraries.minecraft.net/com/google/code/gson/gson/2.8.8/gson-2.8.8.jar",
+							path: "com/google/code/gson/gson/2.8.8/gson-2.8.8.jar",
+							size: 242047
+						}
+					}
+				})
 
 				for(var library of version.libraries) {
 					if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"
-							|| library.name == "org.apache.logging.log4j:log4j-core:2.0-beta9") {
+							|| library.name == "org.apache.logging.log4j:log4j-core:2.0-beta9"
+							|| library.name == "com.google.code.gson:gson:2.2.4") {
 						continue;
 					}
 				

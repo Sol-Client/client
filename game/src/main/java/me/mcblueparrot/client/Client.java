@@ -26,6 +26,7 @@ import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
 import lombok.Getter;
+import me.mcblueparrot.client.api.ClientApi;
 import me.mcblueparrot.client.config.ConfigVersion;
 import me.mcblueparrot.client.culling.CullTask;
 import me.mcblueparrot.client.event.EventBus;
@@ -61,7 +62,7 @@ import me.mcblueparrot.client.mod.impl.hud.CrosshairMod;
 import me.mcblueparrot.client.mod.impl.hud.FpsMod;
 import me.mcblueparrot.client.mod.impl.hud.KeystrokesMod;
 import me.mcblueparrot.client.mod.impl.hud.PingMod;
-import me.mcblueparrot.client.mod.impl.hud.PositionMod;
+import me.mcblueparrot.client.mod.impl.hud.CoordinatesMod;
 import me.mcblueparrot.client.mod.impl.hud.PotionEffectsMod;
 import me.mcblueparrot.client.mod.impl.hud.ReachDisplayMod;
 import me.mcblueparrot.client.mod.impl.hud.ScoreboardMod;
@@ -97,6 +98,7 @@ public class Client {
 	private JsonObject data;
 	@Getter
 	private List<Mod> mods = new ArrayList<Mod>();
+	private Map<String, Mod> modsById = new HashMap<>();
 	@Getter
 	private List<HudElement> huds = new ArrayList<HudElement>();
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -139,7 +141,7 @@ public class Client {
 
 		register(SolClientMod::new);
 		register(FpsMod::new);
-		register(PositionMod::new);
+		register(CoordinatesMod::new);
 		register(KeystrokesMod::new);
 		register(CpsMod::new);
 		register(PingMod::new);
@@ -210,6 +212,8 @@ public class Client {
 			LOGGER.error("Culling Thread has crashed:", error);
 		});
 		cullThread.start();
+
+		bus.register(new ClientApi());
 	}
 
 	public void registerKeyBinding(KeyBinding keyBinding) {
@@ -278,17 +282,21 @@ public class Client {
 			Mod mod = modInitialiser.get();
 
 			if(data.has(mod.getId())) {
-				mods.add(getGson(mod).fromJson(data.get(mod.getId()), mod.getClass()));
+				getGson(mod).fromJson(data.get(mod.getId()), mod.getClass());
 			}
-			else {
-				mods.add(mod);
-			}
+			mods.add(mod);
+
+			modsById.put(mod.getId(), mod);
 
 			mod.onRegister();
 		}
 		catch(Throwable error) {
 			LOGGER.error("Could not register mod", error);
 		}
+	}
+
+	public Mod getModById(String id) {
+		return modsById.get(id);
 	}
 
 	public void addResource(ResourceLocation location, IResource resource) {

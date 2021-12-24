@@ -9,7 +9,7 @@ import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.util.MathHelper;
 
-public class PositionMod extends HudMod {
+public class CoordinatesMod extends HudMod {
 
 	private String editString = "XYZ: 000.000 / 00.000 / 000.000";
 	@Expose
@@ -46,7 +46,7 @@ public class PositionMod extends HudMod {
 	@ConfigOption("Text Shadow")
 	private boolean shadow = true;
 
-	public PositionMod() {
+	public CoordinatesMod() {
 		super("Coordinates", "coordinates", "Display your coordinates.");
 	}
 

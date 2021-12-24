@@ -1,6 +1,7 @@
 package me.mcblueparrot.client.config;
 
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonObject;
 
@@ -46,9 +47,14 @@ public enum ConfigVersion {
 	 */
 	V1;
 
+	private static final Logger LOGGER = LogManager.getLogger();
+
 	public static JsonObject migrate(JsonObject object) {
-		for(ConfigVersion version : values()) {
-			object = version.attemptTransform(object);
+		for(int i = 0; i < values().length - 1; i++) {
+			ConfigVersion current = values()[i];
+			ConfigVersion ahead = values()[i + 1];
+
+			object = current.attemptTransform(object, ahead.name());
 		}
 
 		return object;
@@ -64,13 +70,15 @@ public enum ConfigVersion {
 	 * @param object The config object.
 	 * @return The migrated config.
 	 */
-	public JsonObject attemptTransform(JsonObject object) {
+	public JsonObject attemptTransform(JsonObject object, String nextVersion) {
 		if(!check(object)) {
 			return object; // Skip to next version.
 		}
 
+		LOGGER.info("Migrating config from {} to {}...", name(), nextVersion);
+
 		object = transformToNext(object);
-		object.addProperty("version", name());
+		object.addProperty("version", nextVersion);
 
 		return object;
 	}

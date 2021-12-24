@@ -34,7 +34,7 @@ public class FreelookMod extends Mod {
 	private boolean invertYaw;
 
 	public FreelookMod() {
-		super("Freelook", "perspective", "Unlock the camera rotation.", ModCategory.UTILITY);
+		super("Freelook", "freelook", "Unlock the camera rotation.", ModCategory.UTILITY);
 		Client.INSTANCE.registerKeyBinding(key);
 	}
 

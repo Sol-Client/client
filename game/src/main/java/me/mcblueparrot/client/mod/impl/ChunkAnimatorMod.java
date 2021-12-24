@@ -40,7 +40,7 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 	private EasingFunction animation = EasingFunction.SINE;
 
 	public ChunkAnimatorMod() {
-		super("Chunk Animator", "chunk_animation", "Animate world loading.", ModCategory.VISUAL);
+		super("Chunk Animator", "chunk_animator", "Animate world loading.", ModCategory.VISUAL);
 	}
 
 	@EventHandler

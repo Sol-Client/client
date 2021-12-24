@@ -8,7 +8,7 @@ import me.mcblueparrot.client.mod.ModCategory;
 public class FullbrightMod extends Mod {
 
 	public FullbrightMod() {
-		super("Fullbright", "nightVision", "Illuminate the entire world.", ModCategory.VISUAL);
+		super("Fullbright", "fullbright", "Illuminate the entire world.", ModCategory.VISUAL);
 	}
 
 	@EventHandler

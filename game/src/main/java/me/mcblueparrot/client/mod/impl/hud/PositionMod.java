@@ -47,7 +47,7 @@ public class PositionMod extends HudMod {
 	private boolean shadow = true;
 
 	public PositionMod() {
-		super("Coordinates", "position", "Display your coordinates.");
+		super("Coordinates", "coordinates", "Display your coordinates.");
 	}
 
 	@Override

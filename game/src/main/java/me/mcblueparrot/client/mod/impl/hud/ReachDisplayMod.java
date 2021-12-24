@@ -9,7 +9,6 @@ import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 public class ReachDisplayMod extends SimpleHudMod {
 
 	private double distance = 0;
-	private long lastCalculate = -1;
 	private long hitTime = -1;
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 

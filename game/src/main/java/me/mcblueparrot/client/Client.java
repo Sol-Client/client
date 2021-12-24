@@ -26,6 +26,7 @@ import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
 import lombok.Getter;
+import me.mcblueparrot.client.config.ConfigVersion;
 import me.mcblueparrot.client.culling.CullTask;
 import me.mcblueparrot.client.event.EventBus;
 import me.mcblueparrot.client.event.EventHandler;
@@ -103,7 +104,7 @@ public class Client {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "sol_client_mods.json");
-	private final File LEGACY_DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json");
+	private final File LEGACY_DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json" /* This was the old name. */ );
 
 	public DetectedServer detectedServer;
 
@@ -243,6 +244,7 @@ public class Client {
 			if(DATA_FILE.exists()) {
 				// 1.8 uses old libraries, so this warning cannot be easily fixed.
 				data = new JsonParser().parse(FileUtils.readFileToString(DATA_FILE)).getAsJsonObject();
+				data = ConfigVersion.migrate(data);
 			}
 			else {
 				data = new JsonObject();

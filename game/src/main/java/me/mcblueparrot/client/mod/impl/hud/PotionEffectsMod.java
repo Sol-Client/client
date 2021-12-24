@@ -43,7 +43,7 @@ public class PotionEffectsMod extends HudMod {
 	private Colour durationColour = new Colour(8355711);
 
 	public PotionEffectsMod() {
-		super("Potion Effects", "statuseffects", "Display your potion effects on the HUD.");
+		super("Potion Effects", "potion_effects", "Display your potion effects on the HUD.");
 	}
 
 	@Override

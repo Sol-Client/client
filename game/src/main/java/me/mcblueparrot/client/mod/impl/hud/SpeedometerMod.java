@@ -10,7 +10,7 @@ public class SpeedometerMod extends SimpleHudMod {
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
 
 	public SpeedometerMod() {
-		super("Speedometer", "speed", "Display your speed on the HUD.");
+		super("Speedometer", "speedometer", "Display your speed on the HUD.");
 	}
 
 	@Override

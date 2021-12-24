@@ -10,9 +10,9 @@ public class ShowOwnTagMod extends Mod {
 	public static boolean enabled;
 
 	public ShowOwnTagMod() {
-		super("Show own Tag", "arabic_numerals", "Show your own nametag.", ModCategory.UTILITY);
+		super("Show own Tag", "show_own_tag", "Show your own nametag.", ModCategory.UTILITY);
 	}
-	
+
 	@Override
 	protected void onEnable() {
 		super.onEnable();

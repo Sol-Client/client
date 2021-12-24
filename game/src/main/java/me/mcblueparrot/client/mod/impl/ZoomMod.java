@@ -48,7 +48,6 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	private float lastAnimatedFactor = 1;
 	private float animatedFactor = 1;
 	private float lastCalculatedAnimatedFactor = 1;
-	private long lastUpdateTime = System.currentTimeMillis();
 	public float lastSensitivity;
 	public boolean wasCinematic;
 	public boolean active;
@@ -62,7 +61,6 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public void start() {
 		active = true;
-		lastUpdateTime = System.currentTimeMillis();
 		lastSensitivity = mc.gameSettings.mouseSensitivity;
 		resetFactor();
 		updateSensitivity();

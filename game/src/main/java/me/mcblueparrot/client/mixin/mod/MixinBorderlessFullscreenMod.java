@@ -53,7 +53,7 @@ public class MixinBorderlessFullscreenMod {
 
 		@Final
 		@Expose
-	    private static Logger logger;
+		private static Logger logger;
 
 		private int previousWidth;
 		private int previousHeight;
@@ -70,6 +70,9 @@ public class MixinBorderlessFullscreenMod {
 
 			if(fullscreen) {
 				System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+
+				previousWidth = displayWidth;
+				previousHeight = displayHeight;
 
 				if(currentScreen != null) {
 					resize(Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight());

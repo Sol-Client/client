@@ -8,7 +8,7 @@ public class BorderlessFullscreenMod extends Mod {
 	public static boolean enabled;
 
 	public BorderlessFullscreenMod() {
-		super("Borderless Fullscreen", "borderless_fullscreen", "Improve borderless fullscreen.", ModCategory.UTILITY);
+		super("Borderless Fullscreen", "borderless_fullscreen", "Improve fullscreen mode.", ModCategory.UTILITY);
 	}
 
 	@Override

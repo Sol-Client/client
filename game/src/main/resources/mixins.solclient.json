@@ -71,8 +71,7 @@
 		"mod.MixinShowOwnTagMod$MixinRendererLivingEntity",
 		"mod.MixinV1_7VisualsMod$MixinEntityRenderer",
 		"mod.MixinV1_7VisualsMod$MixinItemRenderer",
-		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase",
-		"mod.MixinBorderlessFullscreenMod$MixinMinecraft"
+		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase"
 	],
 	"injectors": {
 		"defaultRequire": 1

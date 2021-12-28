@@ -28,7 +28,6 @@ public abstract class Mod {
 	private List<CachedConfigOption> options;
 	private String name, id, description;
 	private boolean blocked;
-	@Getter
 	@Expose
 	@ConfigOption(value = "Enabled", priority = 2)
 	private boolean enabled;
@@ -134,6 +133,10 @@ public abstract class Mod {
 			onEnable();
 		}
 		blocked = false;
+	}
+
+	public boolean isEnabled() {
+		return enabled && !blocked;
 	}
 
 	public void toggle() {

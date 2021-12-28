@@ -281,9 +281,10 @@ public class ModsScreen extends GuiScreen {
 								if(mouseInSettings && hasSettings) {
 									newSelected = mod;
 								}
-								else if(mod.isBlocked()) {
+								else if(mod.isBlocked() && Client.INSTANCE.detectedServer != null) {
 									URI blockedModPage;
-									if ((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
+
+									if((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
 										Desktop.getDesktop().browse(blockedModPage);
 									}
 								}

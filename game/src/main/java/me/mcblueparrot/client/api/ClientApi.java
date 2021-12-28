@@ -1,7 +1,5 @@
 package me.mcblueparrot.client.api;
 
-import java.nio.charset.StandardCharsets;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +19,7 @@ public class ClientApi {
 	@EventHandler
 	public void onCustomPayload(S3FPacketCustomPayload payload) {
 		if(payload.getChannelName().equals("solclient:block_mods")) {
-			String message = new String(payload.getBufferData().array(), StandardCharsets.UTF_8);
+			String message = payload.getBufferData().readStringFromBuffer(32767);
 
 			JsonArray array = new JsonParser().parse(message).getAsJsonArray();
 
@@ -29,6 +27,8 @@ public class ClientApi {
 
 			for(JsonElement element : array) {
 				String modId = element.getAsString();
+
+				System.out.println(modId);
 
 				Mod mod = Client.INSTANCE.getModById(modId);
 

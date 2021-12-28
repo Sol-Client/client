@@ -31,6 +31,8 @@ ipcRenderer.on("quitGame", (event) => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
+	document.getElementsByTagName("title")[0].innerText += " " + Utils.version;
+
 	const playButton = document.getElementById("launch-button");
 	const microsoftLoginButton = document.querySelector(".microsoft-login-button");
 	const mojangLoginButton = document.querySelector(".mojang-login-button");

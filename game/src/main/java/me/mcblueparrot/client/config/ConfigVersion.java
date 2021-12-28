@@ -45,7 +45,22 @@ public enum ConfigVersion {
 	 * Created to migrate mod names.
 	 * Added in 1.5.8.
 	 */
-	V1;
+	V1 {
+
+		@Override
+		protected JsonObject transformToNext(JsonObject object) {
+			JsonObject newObject = object.deepCopy();
+
+			newObject.add("better_tooltips", newObject.remove("better_tootips"));
+
+			return newObject;
+		}
+
+	},
+	/**
+	 * Fixes typo with <code>better_tootips</code>.
+	 */
+	V2;
 
 	private static final Logger LOGGER = LogManager.getLogger();
 

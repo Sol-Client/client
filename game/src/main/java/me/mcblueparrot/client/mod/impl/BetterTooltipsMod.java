@@ -8,7 +8,7 @@ public class BetterTooltipsMod extends Mod {
 	public static boolean enabled;
 
 	public BetterTooltipsMod() {
-		super("Better Tooltips", "better_tootips", "More detailed item tooltips.", ModCategory.UTILITY);
+		super("Better Tooltips", "better_tooltips", "More detailed item tooltips.", ModCategory.UTILITY);
 	}
 
 	@Override

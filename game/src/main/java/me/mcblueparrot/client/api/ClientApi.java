@@ -40,7 +40,7 @@ public class ClientApi {
 					}
 				}
 			}
-			else if(payload.getChannelName().equals("solclient:create_popup")) {
+			else if(payload.getChannelName().equals("solclient:popup")) {
 				JsonObject data = new JsonParser().parse(message).getAsJsonObject();
 
 				String text = data.get("text").getAsString();

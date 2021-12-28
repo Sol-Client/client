@@ -1,9 +1,11 @@
-package me.mcblueparrot.client.mod.impl.hypixeladditions.request;
+package me.mcblueparrot.client.mod.impl.hypixeladditions;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum RequestType {
+import me.mcblueparrot.client.api.Popup;
+
+public enum HypixelPopupType {
 	// Taken from https://github.com/Sk1erLLC/PopupEvents/blob/master/src/main/resources/remoteresources/chat_regex.json
 	FRIEND("Friend request from ((\\[.+] )?(\\S{1,16})).*",
 			"Friend request from %3$s.",
@@ -26,13 +28,13 @@ public enum RequestType {
 	private String message;
 	private String command;
 
-	RequestType(String regex, String message, String command) {
+	HypixelPopupType(String regex, String message, String command) {
 		pattern = Pattern.compile(regex);
 		this.message = message;
 		this.command = command;
 	}
 
-	public Request getRequest(String message) {
+	public Popup getPopup(String message) {
 		Matcher matcher = pattern.matcher(message);
 
 		if(matcher.matches()) {
@@ -42,7 +44,19 @@ public enum RequestType {
 				groups[i - 1] = matcher.group(i);
 			}
 
-			return new Request(String.format(this.message, groups), String.format(command, groups));
+			return new Popup(String.format(this.message, groups), String.format(command, groups));
+		}
+
+		return null;
+	}
+
+	public static Popup popupFromMessage(String message) {
+		for(HypixelPopupType type : HypixelPopupType.values()) {
+			Popup popup = type.getPopup(message);
+
+			if(popup != null) {
+				return popup;
+			}
 		}
 
 		return null;

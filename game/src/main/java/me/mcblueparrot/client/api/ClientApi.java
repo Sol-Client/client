@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import me.mcblueparrot.client.Client;
@@ -18,26 +19,34 @@ public class ClientApi {
 
 	@EventHandler
 	public void onCustomPayload(S3FPacketCustomPayload payload) {
-		if(payload.getChannelName().equals("solclient:block_mods")) {
+		if(payload.getChannelName().startsWith("solclient:")) {
 			String message = payload.getBufferData().readStringFromBuffer(32767);
 
-			JsonArray array = new JsonParser().parse(message).getAsJsonArray();
+			if(payload.getChannelName().equals("solclient:block_mods")) {
+				JsonArray array = new JsonParser().parse(message).getAsJsonArray();
 
-			Client.INSTANCE.getMods().forEach(Mod::unblock);
+				Client.INSTANCE.getMods().forEach(Mod::unblock);
 
-			for(JsonElement element : array) {
-				String modId = element.getAsString();
+				for(JsonElement element : array) {
+					String modId = element.getAsString();
 
-				System.out.println(modId);
+					Mod mod = Client.INSTANCE.getModById(modId);
 
-				Mod mod = Client.INSTANCE.getModById(modId);
-
-				if(mod != null) {
-					mod.block();
+					if(mod != null) {
+						mod.block();
+					}
+					else {
+						LOGGER.warn("Cannot block mod " + modId + ": not found");
+					}
 				}
-				else {
-					LOGGER.warn("Cannot block mod " + modId + ": not found");
-				}
+			}
+			else if(payload.getChannelName().equals("solclient:create_popup")) {
+				JsonObject data = new JsonParser().parse(message).getAsJsonObject();
+
+				String text = data.get("text").getAsString();
+				String command = data.get("command").getAsString();
+
+				Client.INSTANCE.getPopupManager().add(new Popup(text, command));
 			}
 		}
 	}

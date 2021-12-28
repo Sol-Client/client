@@ -27,6 +27,7 @@ import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
 import lombok.Getter;
 import me.mcblueparrot.client.api.ClientApi;
+import me.mcblueparrot.client.api.PopupManager;
 import me.mcblueparrot.client.config.ConfigVersion;
 import me.mcblueparrot.client.culling.CullTask;
 import me.mcblueparrot.client.event.EventBus;
@@ -121,6 +122,9 @@ public class Client {
 	public static final String VERSION = System.getProperty("me.mcblueparrot.client.version", "DEVELOPMENT TEST");
 	public static final String NAME = "Sol Client " + VERSION;
 
+	@Getter
+	private PopupManager popupManager;
+
 	public void init() {
 		System.setProperty("http.agent", "Sol Client/" + VERSION);
 
@@ -214,6 +218,7 @@ public class Client {
 		cullThread.start();
 
 		bus.register(new ClientApi());
+		bus.register(popupManager = new PopupManager());
 	}
 
 	public void registerKeyBinding(KeyBinding keyBinding) {

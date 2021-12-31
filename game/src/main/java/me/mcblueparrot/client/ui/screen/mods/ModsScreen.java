@@ -283,7 +283,7 @@ public class ModsScreen extends GuiScreen {
 								}
 								else if(mod.isBlocked()) {
 									URI blockedModPage;
-									if ((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
+									if((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
 										Desktop.getDesktop().browse(blockedModPage);
 									}
 								}

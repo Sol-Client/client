@@ -284,8 +284,8 @@ public class ModsScreen extends GuiScreen {
 								}
 								else if(mod.isBlocked()) {
 									URI blockedModPage;
-									if ((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
-                                        Sys.openURL(blockedModPage.toString());
+									if((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
+                                        Utils.sendLauncherMessage("openUrl", blockedModPage.toString());
 									}
 								}
 								else {

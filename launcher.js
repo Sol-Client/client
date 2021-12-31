@@ -11,7 +11,7 @@ const tar = require("tar");
 const Config = require("./config");
 const Utils = require("./utils");
 const Patcher = require("./patcher");
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, shell } = require("electron");
 
 class Launcher {
 
@@ -358,6 +358,13 @@ class Launcher {
 					var dataString = data.toString("UTF-8");
 					fullOutput += dataString;
 					console.log("[Game/STDOUT] " + dataString);
+
+                    if (dataString.indexOf("message ") === 0) {
+                        var splitDataString = dataString.split(" ");
+                        if (splitDataString[1] === "openUrl") {
+                            shell.openExternal(splitDataString[2]);
+                        }
+                    }
 				});
 				process.stderr.on("data", (data) => {
 					var dataString = data.toString("UTF-8");

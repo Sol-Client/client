@@ -346,4 +346,8 @@ public class Utils {
 		return ThreadLocalRandom.current().nextInt(from, to + 1); // https://stackoverflow.com/a/363692
 	}
 
+    public static void sendLauncherMessage(String type, String... arguments) {
+        System.out.println("message " + type + " " + String.join(" ", arguments));
+    }
+
 }

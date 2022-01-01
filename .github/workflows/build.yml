@@ -64,7 +64,9 @@ jobs:
       uses: actions/upload-artifact@v2-preview
       with:
         name: Sol-Client-Launcher-Linux
-        path: out/make/deb/x64/*.deb
+        path: |
+          out/make/deb/x64/*.deb
+          out/make/*.AppImage
     - name: Upload Artifact (Windows)
       if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v2-preview
@@ -113,5 +115,6 @@ jobs:
         title: ${{ fromJson(steps.version.outputs.packageJson).version }}
         files: |
           Sol-Client-Launcher-Linux/*.deb
+          Sol-Client-Launcher-Linux/*.AppImage
           Sol-Client-Launcher-Windows/*.exe
           Sol-Client-Launcher-MacOS/*.dmg

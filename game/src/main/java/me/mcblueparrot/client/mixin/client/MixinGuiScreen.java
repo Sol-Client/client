@@ -1,10 +1,12 @@
 package me.mcblueparrot.client.mixin.client;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import net.minecraft.client.resources.I18n;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -105,6 +107,11 @@ public abstract class MixinGuiScreen implements AccessGuiScreen {
 			}
 		}
 		instance.displayGuiScreen(null);
+	}
+
+	@Overwrite
+	private void openWebLink(URI uri) {
+		Utils.sendLauncherMessage("openUrl", uri.toString());
 	}
 
 	@Shadow

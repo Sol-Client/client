@@ -12,6 +12,7 @@ const Config = require("./config");
 const Utils = require("./utils");
 const Patcher = require("./patcher");
 const { ipcRenderer, shell } = require("electron");
+const crypto = require("crypto");
 
 class Launcher {
 
@@ -28,6 +29,7 @@ class Launcher {
 				var nativesFolder = Version.getNatives(version);
 				var optifineRelative = "net/optifine/optifine/1.8.9_HD_U_M5/optifine-1.8.9_HD_U_M5.jar";
 				var optifine = Utils.librariesDirectory + "/" + optifineRelative;
+				var secret = crypto.randomBytes(32).toString("hex");
 
 				version.libraries.push({
 					downloads: {
@@ -284,6 +286,7 @@ class Launcher {
 				args.push("-Djava.library.path=" + nativesFolder);
 
 				args.push("-Dme.mcblueparrot.client.version=" + Utils.version);
+				args.push("-Dme.mcblueparrot.client.secret=" + secret);
 				args.push("-Dmixin.target.mapid=searge");
 
 				args.push("-Dlog4j2.formatMsgNoLookups=true"); // See https://hypixel.net/threads/understanding-the-recent-rce-exploit-for-minecraft-and-what-it-actually-means.4703643/. Thank you Draconish and danterus on Discord for informing me of this.
@@ -357,13 +360,17 @@ class Launcher {
 				process.stdout.on("data", (data) => {
 					var dataString = data.toString("UTF-8");
 					fullOutput += dataString;
-					console.log("[Game/STDOUT] " + dataString);
 
 					if(dataString.indexOf("message ") === 0) {
 						var splitDataString = dataString.split(" ");
-						if(splitDataString[1] === "openUrl") {
-							shell.openExternal(splitDataString[2]);
+						if(splitDataString[1] === secret) {
+							if(splitDataString[2] === "openUrl") {
+								shell.openExternal(splitDataString[3]);
+							}
 						}
+					}
+					else {
+						console.log("[Game/STDOUT] " + dataString);
 					}
 				});
 				process.stderr.on("data", (data) => {

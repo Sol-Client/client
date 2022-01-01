@@ -347,7 +347,7 @@ public class Utils {
 	}
 
 	public static void sendLauncherMessage(String type, String... arguments) {
-		System.out.println("message " + type + " " + String.join(" ", arguments));
+		System.out.println("message " + System.getProperty("me.mcblueparrot.client.secret") + " " + type + " " + String.join(" ", arguments));
 	}
 
 }

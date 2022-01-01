@@ -13,15 +13,11 @@ import de.jcm.discordgamesdk.activity.ActivityType;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.GameQuitEvent;
 import me.mcblueparrot.client.event.impl.OpenGuiEvent;
-import me.mcblueparrot.client.event.impl.PostGameStartEvent;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
-import me.mcblueparrot.client.util.DownloadDiscordNatives;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.world.World;
 
 public class DiscordRPC {
 

@@ -359,12 +359,12 @@ class Launcher {
 					fullOutput += dataString;
 					console.log("[Game/STDOUT] " + dataString);
 
-                    if (dataString.indexOf("message ") === 0) {
-                        var splitDataString = dataString.split(" ");
-                        if (splitDataString[1] === "openUrl") {
-                            shell.openExternal(splitDataString[2]);
-                        }
-                    }
+					if(dataString.indexOf("message ") === 0) {
+						var splitDataString = dataString.split(" ");
+						if(splitDataString[1] === "openUrl") {
+							shell.openExternal(splitDataString[2]);
+						}
+					}
 				});
 				process.stderr.on("data", (data) => {
 					var dataString = data.toString("UTF-8");

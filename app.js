@@ -186,6 +186,13 @@ window.addEventListener("DOMContentLoaded", () => {
 		Config.save();
 	}
 
+	var discord = document.querySelector(".discord");
+	discord.checked = Config.data.discord;
+	discord.onchange = () => {
+		Config.data.discord = discord.checked;
+		Config.save();
+	}
+
 	function updateMemoryLabel() {
 		memoryLabel.innerText = (memory.value / 1024).toFixed(1) + " GB";
 		Config.data.maxMemory = memory.value;

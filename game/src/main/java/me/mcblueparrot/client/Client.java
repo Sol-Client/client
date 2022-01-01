@@ -30,6 +30,7 @@ import me.mcblueparrot.client.api.ClientApi;
 import me.mcblueparrot.client.api.PopupManager;
 import me.mcblueparrot.client.config.ConfigVersion;
 import me.mcblueparrot.client.culling.CullTask;
+import me.mcblueparrot.client.discord.DiscordRPC;
 import me.mcblueparrot.client.event.EventBus;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PostGameStartEvent;
@@ -58,12 +59,12 @@ import me.mcblueparrot.client.mod.impl.V1_7VisualsMod;
 import me.mcblueparrot.client.mod.impl.ZoomMod;
 import me.mcblueparrot.client.mod.impl.hud.ArmourMod;
 import me.mcblueparrot.client.mod.impl.hud.ComboCounterMod;
+import me.mcblueparrot.client.mod.impl.hud.CoordinatesMod;
 import me.mcblueparrot.client.mod.impl.hud.CpsMod;
 import me.mcblueparrot.client.mod.impl.hud.CrosshairMod;
 import me.mcblueparrot.client.mod.impl.hud.FpsMod;
 import me.mcblueparrot.client.mod.impl.hud.KeystrokesMod;
 import me.mcblueparrot.client.mod.impl.hud.PingMod;
-import me.mcblueparrot.client.mod.impl.hud.CoordinatesMod;
 import me.mcblueparrot.client.mod.impl.hud.PotionEffectsMod;
 import me.mcblueparrot.client.mod.impl.hud.ReachDisplayMod;
 import me.mcblueparrot.client.mod.impl.hud.ScoreboardMod;
@@ -219,6 +220,15 @@ public class Client {
 
 		bus.register(new ClientApi());
 		bus.register(popupManager = new PopupManager());
+
+		if(Boolean.getBoolean("me.mcblueparrot.client.discord")) {
+			try {
+				bus.register(new DiscordRPC());
+			}
+			catch(Throwable error) {
+				LOGGER.warn("Could not initialise Discord RPC", error);
+			}
+		}
 	}
 
 	public void registerKeyBinding(KeyBinding keyBinding) {

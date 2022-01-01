@@ -331,6 +331,9 @@ repositories {
 	maven {
 		url "https://repo.hypixel.net/repository/Hypixel"
 	}
+	maven {
+        url "https://jitpack.io"
+	}
 }
 
 configurations {
@@ -358,6 +361,8 @@ dependencies {
 		dependency files(replayModRuntimeJar)
 		ship files(replayModShippedJar)
 	}
+
+	dependency "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
 }
 
 mixin {

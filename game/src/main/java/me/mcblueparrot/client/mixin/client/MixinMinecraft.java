@@ -22,6 +22,7 @@ import com.replaymod.replay.InputReplayTimer;
 
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.event.impl.GameQuitEvent;
 import me.mcblueparrot.client.event.impl.InitialOpenGuiEvent;
 import me.mcblueparrot.client.event.impl.MouseClickEvent;
 import me.mcblueparrot.client.event.impl.OpenGuiEvent;
@@ -491,6 +492,11 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 		if(earlyBird) {
 			callback.cancel();
 		}
+	}
+
+	@Inject(method = "shutdownMinecraftApplet" /* applet? looks like MCP is a bit outdated */, at = @At("HEAD"))
+	public void preShutdown(CallbackInfo callback) {
+		Client.INSTANCE.bus.post(new GameQuitEvent());
 	}
 
 	@Shadow

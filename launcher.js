@@ -29,6 +29,8 @@ class Launcher {
 				var optifineRelative = "net/optifine/optifine/1.8.9_HD_U_M5/optifine-1.8.9_HD_U_M5.jar";
 				var optifine = Utils.librariesDirectory + "/" + optifineRelative;
 
+				fs.rmdirSync(nativesFolder, { recursive: true });
+
 				version.libraries.push({
 					downloads: {
 						artifact: {
@@ -114,7 +116,18 @@ class Launcher {
 							size: 242047
 						}
 					}
-				})
+				});
+				if(Config.data.discord) {
+					version.libraries.push({
+						downloads: {
+							artifact: {
+								url: "https://jitpack.io/com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
+								path: "com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
+								size: 202275
+							}
+						}
+					});
+				}
 
 				for(var library of version.libraries) {
 					if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"
@@ -122,7 +135,7 @@ class Launcher {
 							|| library.name == "com.google.code.gson:gson:2.2.4") {
 						continue;
 					}
-				
+
 					if(!Library.isApplicable(library.rules)) {
 						continue;
 					}
@@ -256,13 +269,11 @@ class Launcher {
 					var optifineSize = 2585014;
 					var optifineVersion = "1.8.9_HD_U_M5";
 
-					if(!Utils.isAlreadyDownloaded(optifine, optifineSize)) {
-						await Library.download({
-								url: await Utils.getOptiFine(optifineVersion),
-								size: optifineSize,
-								path: optifineRelative
-							});
-					}
+					await Library.download({
+							url: await Utils.getOptiFine(optifineVersion),
+							size: optifineSize,
+							path: optifineRelative
+						});
 
 					if(!fs.existsSync(optifinePatchedJar)) {
 						await Patcher.patch(java, versionFolder, versionJar, optifinePatchedJar, optifine);
@@ -280,6 +291,52 @@ class Launcher {
 					versionToAdd = mappedJar;
 				}
 
+				var discordNativeLibrary;
+
+				if(Config.data.discord) {
+					var discordVersion = "2.5.6";
+					var discordPath = `com/discord/game-sdk/${discordVersion}/game-sdk-${discordVersion}.zip`;
+					var discordFile = Utils.librariesDirectory + "/" + discordPath;
+
+					await Library.download({
+							url: "https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip",
+							size: 22808634,
+							path: discordPath
+						});
+
+					var sdkZip = fs.createReadStream(discordFile)
+								.pipe(unzipper.Parse({ forceStream: true }));
+
+					var suffix;
+
+					switch(Utils.getOsName()) {
+						case "windows":
+							suffix = ".dll";
+							break;
+						case "linux":
+							suffix = ".so";
+							break;
+						case "osx":
+							suffix = ".dylib";
+							break;
+					}
+
+					var discordLibraryName = "discord_game_sdk" + suffix;
+					discordNativeLibrary = nativesFolder + "/" + discordLibraryName;
+					var searchPath = "lib/x86_64/" + discordLibraryName;
+
+					for await(const entry of sdkZip) {
+						const fileName = entry.path;
+
+						if(fileName != searchPath) {
+							await entry.autodrain();
+						}
+						else {
+	 						await entry.pipe(fs.createWriteStream(discordNativeLibrary));
+						}
+					}
+				}
+
 				var args = [];
 				args.push("-Djava.library.path=" + nativesFolder);
 
@@ -292,6 +349,11 @@ class Launcher {
 
 				if(Utils.getOsName() == "windows") {
 					args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
+				}
+
+				if(Config.data.discord && discordNativeLibrary) {
+					args.push("-Dme.mcblueparrot.client.discord=true");
+					args.push("-Dme.mcblueparrot.client.discord_lib=" + discordNativeLibrary);
 				}
 
 				var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";

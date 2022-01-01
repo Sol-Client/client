@@ -10,6 +10,7 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.Sys;
 
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
@@ -284,7 +285,7 @@ public class ModsScreen extends GuiScreen {
 								else if(mod.isBlocked()) {
 									URI blockedModPage;
 									if((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
-										Desktop.getDesktop().browse(blockedModPage);
+										Utils.sendLauncherMessage("openUrl", blockedModPage.toString());
 									}
 								}
 								else {

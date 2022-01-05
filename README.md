@@ -40,7 +40,7 @@ I still think Lunar is a good client, in the same way that Chrome is the most po
 ## Credits
 [TheKodeToad](https://github.com/TheKodeToad) / [mcblueparrot](https://mine.ly/mcblueparrot.1): Programmer (turning tea into code).
 
-[Holso](https://github.com/Holso) / [Draconish](https://mine.ly/Draconish.1): Helped create Discord, came up with the name (and changed his own one many times) and tested the client.
+[Holso](https://github.com/Holso) / [Dolfinc](https://mine.ly/Dolfinc.1): Helped create Discord, came up with the name (and changed his own one many times) and tested the client.
 
 [sp614x](https://github.com/sp614x): OptiFine mod.
 

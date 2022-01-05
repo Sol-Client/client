@@ -25,6 +25,7 @@ import com.google.gson.JsonParser;
 import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
+import gg.essential.elementa.WindowScreen;
 import lombok.Getter;
 import me.mcblueparrot.client.api.ClientApi;
 import me.mcblueparrot.client.api.PopupManager;

@@ -94,24 +94,58 @@ public class Utils {
 		GL11.glColor4ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue(), (byte) color.getAlpha());
 	}
 
-	public void drawHorizontalLine(int startX, int endX, int y, int colour) {
+	public void drawHorizontalLine(double startX, double endX, double y, int colour) {
 		if(endX < startX) {
-			int i = startX;
+			double swappy = startX;
 			startX = endX;
-			endX = i;
+			endX = swappy;
 		}
 
-		GuiScreen.drawRect(startX, y, endX + 1, y + 1, colour);
+		drawRect(startX, y, endX + 1, y + 1, colour);
 	}
 
-	public void drawVerticalLine(int x, int startY, int endY, int colour) {
+	public void drawRect(double left, double top, double right, double bottom, int colour) {
+		if(left < right) {
+			double swappy = left;
+            left = right;
+            right = swappy;
+        }
+
+        if(top < bottom) {
+        	double swappy = top;
+            top = bottom;
+            bottom = swappy;
+        }
+
+        float r = (float) (colour >> 16 & 255) / 255.0F;
+        float g = (float) (colour >> 8 & 255) / 255.0F;
+        float b = (float) (colour & 255) / 255.0F;
+        float a = (float) (colour >> 24 & 255) / 255.0F;
+
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.color(r, g, b, a);
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(left, bottom, 0.0D).endVertex();
+        worldrenderer.pos(right, bottom, 0.0D).endVertex();
+        worldrenderer.pos(right, top, 0.0D).endVertex();
+        worldrenderer.pos(left, top, 0.0D).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+	}
+
+	public void drawVerticalLine(double x, double startY, double endY, int colour) {
 		if(endY < startY) {
-			int i = startY;
+			double swappy = startY;
 			startY = endY;
-			endY = i;
+			endY = swappy;
 		}
 
-		GuiScreen.drawRect(x, startY + 1, x + 1, endY, colour);
+		drawRect(x, startY + 1, x + 1, endY, colour);
 	}
 
 	public void drawOutline(Rectangle rectangle, Colour colour) {
@@ -119,7 +153,7 @@ public class Utils {
 				colour.getValue());
 	}
 
-	public void drawOutline(int left, int top, int right, int bottom, int colour) {
+	public void drawOutline(double left, double top, double right, double bottom, int colour) {
 		drawHorizontalLine(left, right - 1, top, colour);
 		drawHorizontalLine(left, right - 1, bottom -1, colour);
 		drawVerticalLine(left, top, bottom - 1, colour);

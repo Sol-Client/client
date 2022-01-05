@@ -20,6 +20,10 @@ public class Colour {
 	public static final Colour BLUE = new Colour(0, 150, 255);
 	public static final Colour WHITE_128 = WHITE.withAlpha(128);
 	public static final Colour BLACK_128 = BLACK.withAlpha(128);
+	public static final Colour DISABLED_MOD = new Colour(30, 30, 30);
+	public static final Colour DISABLED_MOD_HOVER = new Colour(50, 50, 50);
+	public static final Colour TRANSPARENT = new Colour(0);
+	public static final Colour LIGHTEST_GREY = new Colour(220, 220, 220);
 
 	public Colour(int value) {
 		this.value = value;

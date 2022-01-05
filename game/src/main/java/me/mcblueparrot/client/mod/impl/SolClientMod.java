@@ -2,6 +2,7 @@ package me.mcblueparrot.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
+import gg.essential.universal.USound;
 import me.mcblueparrot.client.mod.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
@@ -71,7 +72,7 @@ public class SolClientMod extends ConfigOnlyMod {
 	}
 
 	private Colour getUiHover() {
-		return uiColour.add(60);
+		return uiColour.add(100);
 	}
 
 }

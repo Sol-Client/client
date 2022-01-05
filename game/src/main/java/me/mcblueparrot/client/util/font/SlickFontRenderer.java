@@ -216,7 +216,7 @@ public class SlickFontRenderer implements Font {
 	}
 
 	public float getHeight(String s) {
-		return unicodeFont.getHeight(s) / 2.0F;
+		return unicodeFont.getHeight(s);
 	}
 
 	public UnicodeFont getFont() {

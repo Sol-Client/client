@@ -29,6 +29,21 @@ async function run() {
 
 		window.loadFile("app.html");
 		window.setMenu(null);
+
+		ipcMain.on("directory", async(event) => {
+			var result = await dialog.showOpenDialog(window,
+				{
+					title: "Select Minecraft Folder",
+					properties: ["openDirectory" ]
+				}
+			);
+
+			var file = result.filePaths[0];
+
+			if(!result.canceled && file) {
+				event.sender.send("directory", file);
+			}
+		});
 	}
 
 	ipcMain.on("msa", async(event) => {
@@ -54,7 +69,7 @@ If you have private messages, try reproducing this issue again.`,
 		});
 
 		// Indentation matters.
-		
+
 		if(option == 1) {
 			shell.openPath(file);
 		}
@@ -98,7 +113,7 @@ ${crashReportText}
 		url.searchParams.set("title", "Short Description")
 		url.searchParams.set("labels", "bug");
 		shell.openExternal(url.toString());
-	})
+	});
 
 	ipcMain.on("devtools", () => window.webContents.openDevTools());
 

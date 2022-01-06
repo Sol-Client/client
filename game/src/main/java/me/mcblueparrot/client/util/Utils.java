@@ -25,6 +25,10 @@ import com.google.gson.JsonParser;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
+import gg.essential.elementa.UIComponent;
+import gg.essential.elementa.constraints.ConstantColorConstraint;
+import gg.essential.elementa.constraints.animation.AnimatingConstraints;
+import gg.essential.elementa.constraints.animation.Animations;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import me.mcblueparrot.client.util.data.Colour;
@@ -382,6 +386,12 @@ public class Utils {
 
 	public static void sendLauncherMessage(String type, String... arguments) {
 		System.out.println("message " + System.getProperty("me.mcblueparrot.client.secret") + " " + type + " " + String.join(" ", arguments));
+	}
+
+	public void animateColour(UIComponent component, Colour colour) {
+		AnimatingConstraints animation = component.makeAnimation();
+		animation.setColorAnimation(Animations.LINEAR, 0.1F, new ConstantColorConstraint(colour.toAWT()));
+		component.animateTo(animation);
 	}
 
 }

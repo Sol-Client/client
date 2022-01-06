@@ -30,7 +30,7 @@ public class SolClientMod extends ConfigOnlyMod {
 	public boolean logoInInventory;
 
 	public SolClientMod() {
-		super("Sol Client", "sol_client", "Settings for Sol Client, a simple and easy to use Minecraft client.", ModCategory.NONE);
+		super("Sol Client", "sol_client", "Global settings for Sol Client.", ModCategory.NONE);
 		instance = this;
 	}
 

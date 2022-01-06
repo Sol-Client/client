@@ -1,6 +1,5 @@
-package me.mcblueparrot.client.ui.screen.mods;
+package me.mcblueparrot.client.ui.screen.mods.option;
 
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -8,9 +7,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
+import com.google.common.base.Supplier;
 import com.google.gson.JsonParser;
 
 import gg.essential.elementa.ElementaVersion;
@@ -46,48 +47,50 @@ import gg.essential.elementa.markdown.MarkdownComponent;
 import gg.essential.universal.UMatrixStack;
 import gg.essential.universal.UKeyboard.Modifiers;
 import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.mod.ConfigOnlyMod;
+import me.mcblueparrot.client.mod.ConfigOptionData;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
+import me.mcblueparrot.client.ui.screen.mods.AbstractModsScreen;
+import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.font.SlickFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
-public class ModsScreen extends AbstractModsScreen {
+public class ModOptionsScreen extends AbstractModsScreen {
 
-	private List<ModButton> buttons = new ArrayList<>();
+	private List<ModOptionButton> buttons = new ArrayList<>();
+	private ModsScreen parent;
 
-	public ModsScreen(GuiScreen parent, Mod mod) {
-		this();
-	}
+	public ModOptionsScreen(ModsScreen parent, Mod mod) {
+		super(parent);
 
-	public ModsScreen(GuiScreen parent) {
-		this();
-	}
+		this.parent = parent;
 
-	public ModsScreen() {
-		super(Minecraft.getMinecraft().currentScreen);
+		new UIText(mod.getName(), false).setChildOf(getWindow()).setX(new CenterConstraint()).setY(new PixelConstraint(10F));
 
-		new UIText("Mods", false).setChildOf(getWindow()).setX(new CenterConstraint()).setY(new PixelConstraint(10F));
-
-		for(ModCategory category : ModCategory.values()) {
-			if(category == ModCategory.ALL) continue;
-
-			if(category.toString() != null) {
-				new UIText(category.toString(), false).setChildOf(container).setX(new CenterConstraint())
-						.setY(new SiblingConstraint(10F));
-
+		for(ConfigOptionData option : mod.getOptions()) {
+			if(mod instanceof ConfigOnlyMod && option.name.equals("Enabled")) {
+				continue;
 			}
 
-			for(Mod mod : category.getMods("")) {
-				buttons.add((ModButton) new ModButton(this, mod).setChildOf(container).setX(new CenterConstraint()).setY(new SiblingConstraint(5F))
-						.setWidth(new PixelConstraint(300F)).setHeight(new PixelConstraint(30F)));
+			Function<ConfigOptionData, ? extends ModOptionButton> function = ModOptionButton::new;
+
+			if(option.getType() == boolean.class) {
+				function = TickboxOptionButton::new;
 			}
+
+			ModOptionButton button = function.apply(option);
+
+			button.setX(new CenterConstraint()).setY(new SiblingConstraint(5F))
+					.setWidth(new PixelConstraint(300)).setHeight(new PixelConstraint(20))
+					.setChildOf(container);
+
+			buttons.add(button);
 		}
-
-//		new Inspector(getWindow()).setX(new PixelConstraint(5)).setY(new PixelConstraint(5)).setChildOf(getWindow());
 	}
 
 	@Override
@@ -95,32 +98,13 @@ public class ModsScreen extends AbstractModsScreen {
 		super.onKeyPressed(keyCode, typedChar, modifiers);
 
 		if(keyCode == Client.INSTANCE.modsKey.getKeyCode()) {
-			restorePreviousScreen();
+			parent.restorePreviousScreen();
 		}
-	}
-
-	public void updateFont() {
-
-	}
-
-	public void switchMod(Mod mod) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public void initScreen(int width, int height) {
-		super.initScreen(width, height);
-
-		try {
-			BufferedImage cogImage = ImageIO.read(getClass().getResourceAsStream("/assets/minecraft/textures/gui/sol_client_settings_" + Utils.getTextureScale() + ".png"));
-
-			for(ModButton button : buttons) {
-				button.init(cogImage);
-			}
-		}
-		catch(IOException error) {
-		}
+	public boolean doesGuiPauseGame() {
+		return false;
 	}
 
 }

@@ -7,25 +7,20 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.annotations.Expose;
-import com.replaymod.replay.ReplayModReplay;
 
-import lombok.Getter;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.GameOverlayElement;
 import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
-import me.mcblueparrot.client.event.impl.PostGameStartEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.HudElement;
-import me.mcblueparrot.client.mod.impl.replay.fix.SCEventRegistrations;
 import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 
 public abstract class Mod {
 
 	protected Minecraft mc;
-	private List<CachedConfigOption> options;
+	private List<ConfigOptionData> options;
 	private String name, id, description;
 	private boolean blocked;
 	@Expose
@@ -86,9 +81,9 @@ public abstract class Mod {
 	public void postOptionChange(String key, Object value) {
 	}
 
-	public List<CachedConfigOption> getOptions() {
+	public List<ConfigOptionData> getOptions() {
 		if(options == null) {
-			return options = CachedConfigOption.get(this);
+			return options = ConfigOptionData.get(this);
 		}
 
 		return options;

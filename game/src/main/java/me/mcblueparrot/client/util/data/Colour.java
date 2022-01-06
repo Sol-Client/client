@@ -24,6 +24,7 @@ public class Colour {
 	public static final Colour DISABLED_MOD_HOVER = new Colour(50, 50, 50);
 	public static final Colour TRANSPARENT = new Colour(0);
 	public static final Colour LIGHTEST_GREY = new Colour(220, 220, 220);
+	public static final Colour BLACK_100 = Colour.BLACK.withAlpha(100);
 
 	public Colour(int value) {
 		this.value = value;

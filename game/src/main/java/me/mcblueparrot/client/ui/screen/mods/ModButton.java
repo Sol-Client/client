@@ -18,22 +18,24 @@ import gg.essential.universal.UMatrixStack;
 import gg.essential.universal.USound;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
+import me.mcblueparrot.client.ui.screen.mods.option.ModOptionsScreen;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
+import net.minecraft.client.Minecraft;
 
 public class ModButton extends UIComponent {
 
 	private Mod mod;
 	public UIImage cog;
 
-	public ModButton(Mod mod) {
+	public ModButton(ModsScreen parent, Mod mod) {
 		this.mod = mod;
 
 		new UIText(mod.getName(), false).setChildOf(this)
-				.setX(new PixelConstraint(6F)).setY(new PixelConstraint(5F));
+				.setX(new PixelConstraint(6)).setY(new PixelConstraint(5));
 
 		new UIText(mod.getDescription(), false).setChildOf(this)
-				.setX(new PixelConstraint(6F)).setY(new PixelConstraint(17F))
+				.setX(new PixelConstraint(6)).setY(new PixelConstraint(17))
 				.setColor(new Color(140, 140, 140));
 
 		onMouseEnterRunnable(() -> {
@@ -45,14 +47,23 @@ public class ModButton extends UIComponent {
 		});
 
 		onMouseClickConsumer((event) -> {
-			if(event.getMouseButton() != 0) {
+			boolean cogHovered = cog.isHovered();
+
+			if(event.getMouseButton() == 1) {
+				cogHovered = true;
+			}
+			else if(event.getMouseButton() != 0) {
 				return;
+			}
+
+			if(mod.isLocked()) {
+				cogHovered = true;
 			}
 
 			USound.INSTANCE.playButtonPress();
 
-			if(cog.isHovered()) {
-
+			if(cogHovered) {
+				Minecraft.getMinecraft().displayGuiScreen(new ModOptionsScreen(parent, mod));
 			}
 			else {
 				mod.toggle();
@@ -81,20 +92,14 @@ public class ModButton extends UIComponent {
 			cog.setColor(cogColour.toAWT());
 		}
 		else {
-			animateColour(this, colour);
-			animateColour(cog, cogColour);
+			Utils.animateColour(this, colour);
+			Utils.animateColour(cog, cogColour);
 		}
-	}
-
-	private void animateColour(UIComponent component, Colour colour) {
-		AnimatingConstraints animation = component.makeAnimation();
-		animation.setColorAnimation(Animations.LINEAR, 0.1F, new ConstantColorConstraint(colour.toAWT()));
-		component.animateTo(animation);
 	}
 
 	@Override
 	public void draw(UMatrixStack stack) {
-		Utils.drawRect(getLeft(), getTop(), getRight(), getBottom(), new Colour(0, 0, 0, 100).getValue());
+		Utils.drawRect(getLeft(), getTop(), getRight(), getBottom(), Colour.BLACK_100.getValue());
 		Utils.drawOutline(getLeft(), getTop(), getRight(), getBottom(), getColor().getRGB());
 
 		super.draw(stack);

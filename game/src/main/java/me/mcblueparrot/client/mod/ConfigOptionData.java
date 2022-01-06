@@ -7,7 +7,7 @@ import java.util.List;
 
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 
-public class CachedConfigOption {
+public class ConfigOptionData {
 
 	public Mod mod;
 	public String name;
@@ -15,7 +15,7 @@ public class CachedConfigOption {
 	public int priority;
 	public boolean common;
 
-	public CachedConfigOption(Mod mod, ConfigOption option, Field field) {
+	public ConfigOptionData(Mod mod, ConfigOption option, Field field) {
 		this.mod = mod;
 		if(option != null) {
 			name = option.value();
@@ -66,13 +66,13 @@ public class CachedConfigOption {
 		}
 	}
 
-	public static List<CachedConfigOption> get(Mod mod) {
-		List<CachedConfigOption> result = new ArrayList<CachedConfigOption>();
+	public static List<ConfigOptionData> get(Mod mod) {
+		List<ConfigOptionData> result = new ArrayList<ConfigOptionData>();
 		add(mod, mod.getClass(), result);
 		return result;
 	}
 
-	private static List<CachedConfigOption> add(Mod mod, Class<? extends Mod> clazz, List<CachedConfigOption> list) {
+	private static List<ConfigOptionData> add(Mod mod, Class<? extends Mod> clazz, List<ConfigOptionData> list) {
 		List<Field> fields = new ArrayList<Field>();
 
 		for(Field field : clazz.getDeclaredFields()) {
@@ -90,7 +90,7 @@ public class CachedConfigOption {
 		for(Field field : fields) {
 			if(field.isAnnotationPresent(ConfigOption.class)) {
 				if(list.stream().noneMatch((cached) -> cached.field.equals(field))) {
-					list.add(new CachedConfigOption(mod, field.getAnnotation(ConfigOption.class), field));
+					list.add(new ConfigOptionData(mod, field.getAnnotation(ConfigOption.class), field));
 				}
 			}
 		}

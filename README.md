@@ -19,9 +19,9 @@ First, go to [releases](https://github.com/TheKodeToad/Sol-Client/releases).
 Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue. The code is all open source, so don't worry.
 
 ## Why?
-There are (too) many Minecraft clients, but they are usually closed source, and may contain malicious code. They often are even more locked down than vanilla Minecraft - Lunar Client banned all modifications, despite it being a modification to Minecraft itself. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
+There are many Minecraft clients, but they are usually closed source, and may contain malicious code. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
 
-Many clients lack important features, including ReplayMod, and have an annoying logo in the corner of the screen.
+Many clients lack important features, including ReplayMod.
 
 There may be mod loaders like Forge and Fabric, which are perfectly good, but are not as easy to use and update.
 
@@ -56,6 +56,7 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 Here are the main features that are currently in the client:
 
 - A clean HUD inspired by Lunar.
+- Replay Mod. You will need to install FFmpeg yourself. This is completely unaffiliated to the original mod by Johni and CrushedPixel. If you encounter any issues, try reproducing them on the official Forge version, and if it happens there, report it on the [ReplayMod GitHub repositority](https://github.com/ReplayMod/ReplayMod). If it only happens on our version, report it here.
 - Freelook (automatically disabled on Hypixel), press "V" to activate.
 - Toggle sprint.
 - Smooth zoom.
@@ -64,10 +65,7 @@ Here are the main features that are currently in the client:
 - Item physics.
 - Hypixel Additions.
 - OptiFine, downloaded automatically from the official site (open an issue if this is a bad thing).
-- Crosshair mod, allowing you to customise your crosshair, while fitting with the vanilla style.  
-
-Selling points:
-- Replay Mod. You will need to install FFmpeg yourself. This is completely unaffiliated to the original mod by Johni and CrushedPixel. If you encounter any issues, try reproducing them on the official Forge version, and if it happens there, report it on the [ReplayMod GitHub repositority](https://github.com/ReplayMod/ReplayMod). If it only happens on our version, report it here.
+- Crosshair mod, allowing you to customise your crosshair, while fitting with the vanilla style.
 - Quick Play Mod. Allows you to quickly join games at the press of a button (by default, "M"). The key opens a menu where you can search for games, navigating through them using the arrow keys. If you type nothing, you can see recent games and a categorised list of all games.
 - Customisable launcher servers - automatically detected from the game, with no pinned servers.
 - Better item tooltips - show item damage and more.
@@ -80,8 +78,6 @@ Selling points:
 - Chunk animator (not sure if many people use this one).
 - Less useless mods (apart from the previous one).
 - Bedwars timers.
-
-There are probably more, but this list is long enough.
 
 Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.
 
@@ -114,6 +110,7 @@ Build Installer:
 ```sh
 npm run make
 ```
+The installer will be in a directory named "out".
 
 ### Game
 
@@ -133,5 +130,5 @@ Build JAR:
 ```sh
 ./gradlew build
 ```
-(into build/libs/game.jar)
+You will find the result in build/libs/game.jar.
 

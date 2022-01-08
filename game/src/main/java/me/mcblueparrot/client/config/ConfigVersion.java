@@ -51,14 +51,31 @@ public enum ConfigVersion {
 		protected JsonObject transformToNext(JsonObject object) {
 			JsonObject newObject = object.deepCopy();
 
-			newObject.add("better_tooltips", newObject.remove("better_tootips"));
+			JsonObject tweaksMod = new JsonObject();
+			tweaksMod.addProperty("enabled", true);
+			tweaksMod.addProperty("fullbright", newObject.get("fullbright").getAsJsonObject().get("enabled").getAsBoolean());
+			tweaksMod.addProperty("showOwnTag", newObject.get("show_own_tag").getAsJsonObject().get("enabled").getAsBoolean());
+			tweaksMod.addProperty("arabicNumerals", newObject.get("arabic_numerals").getAsJsonObject().get("enabled").getAsBoolean());
+			tweaksMod.addProperty("betterTooltips", newObject.get("better_tootips").getAsJsonObject().get("enabled").getAsBoolean());
+			newObject.add("tweaks", tweaksMod);
+
+			JsonObject tabListMod = new JsonObject();
+			tabListMod.addProperty("enabled", true);
+			tabListMod.addProperty("pingType", newObject.get("numeral_ping").getAsJsonObject().get("enabled").getAsBoolean() ? "NUMERAL" : "ICON");
+			newObject.add("tab_list", tabListMod);
+
+			newObject.remove("fullbright");
+			newObject.remove("show_own_tag");
+			newObject.remove("arabic_numerals");
+			newObject.remove("better_tootips");
+			newObject.remove("numeral_ping");
 
 			return newObject;
 		}
 
 	},
 	/**
-	 * Fixes typo with <code>better_tootips</code>.
+	 * Moves a few mods into the tweaks mod, and moves numeral ping to tab list mod.
 	 */
 	V2;
 

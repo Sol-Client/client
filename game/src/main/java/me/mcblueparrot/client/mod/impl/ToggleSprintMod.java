@@ -14,7 +14,6 @@ import net.minecraft.client.settings.KeyBinding;
 
 public class ToggleSprintMod extends SimpleHudMod {
 
-	private KeyBinding sprintKey;
 	private SprintState sprint;
 	@Expose
 	@ConfigOption("HUD")

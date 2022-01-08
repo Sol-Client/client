@@ -7,7 +7,7 @@ import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.HudMod;
-import me.mcblueparrot.client.mod.impl.ArabicNumeralsMod;
+import me.mcblueparrot.client.mod.impl.TweaksMod;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Alignment;
 import me.mcblueparrot.client.util.data.Colour;
@@ -108,8 +108,8 @@ public class PotionEffectsMod extends HudMod {
 				String title = I18n.format(potion.getName());
 
 				if(effect.getAmplifier() > 0 && effect.getAmplifier() < 4) {
-					if(ArabicNumeralsMod.enabled) {
-						title += " " + effect.getAmplifier() + 1;
+					if(TweaksMod.enabled && TweaksMod.instance.arabicNumerals) {
+						title += " " + (effect.getAmplifier() + 1);
 					}
 					else {
 						title += " " + I18n.format("enchantment.level." + (effect.getAmplifier() + 1));

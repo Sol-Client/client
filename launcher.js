@@ -408,13 +408,15 @@ class Launcher {
 				args.push("--assetIndex");
 				args.push(version.assetIndex.id);
 
+				var gameDirectory = Config.getGameDirectory(Utils.gameDirectory);
+
 				args.push("--gameDir");
-				args.push(Utils.gameDirectory);
+				args.push(gameDirectory);
 
 				args.push("--tweakClass");
 				args.push("me.mcblueparrot.client.tweak.Tweaker");
 
-				var process = childProcess.spawn(java, args, { cwd: Utils.gameDirectory });
+				var process = childProcess.spawn(java, args, { cwd: gameDirectory });
 				this.games.push(process);
 
 				let fullOutput = "";
@@ -448,7 +450,7 @@ class Launcher {
 							var optifineName = "OptiFine " + optifineVersion.replace(/_/g, " ");
 						}
 
-						ipcRenderer.send("crash", fullOutput, Utils.latestLog, optifineName);
+						ipcRenderer.send("crash", fullOutput, Config.getGameDirectory(Utils.gameDirectory) + "/logs/latest.log", optifineName);
 					}
 					else {
 						console.log("Game exited with code 0");

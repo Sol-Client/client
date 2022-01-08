@@ -259,6 +259,7 @@ public class Client {
 			}
 			else {
 				data = new JsonObject();
+				data.addProperty("version", ConfigVersion.values()[ConfigVersion.values().length - 1].name());
 			}
 			return true;
 		}

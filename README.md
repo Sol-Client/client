@@ -16,31 +16,24 @@ Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versi
 ## Gimme it now!
 First, go to [releases](https://github.com/TheKodeToad/Sol-Client/releases).
 
-Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue. The code is all open source, so don't worry (and if you do, just look through the code (I say, like it's easy)).
+Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue. The code is all open source, so don't worry.
 
 ## Why?
-There are (too) many Minecraft clients, but they are usually closed source, and may contain malicious code. They often are even more locked down than vanilla Minecraft - Lunar Client banned all modifications, despite it being a modification to Minecraft itself. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
+There are many Minecraft clients, but they are usually closed source, and may contain malicious code. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
 
-Many clients lack important features, including ReplayMod, and have an annoying logo in the corner of the screen.
+Many clients lack important features, including ReplayMod.
 
-There may be mod loaders like Forge and Fabric, which are perfectly good, but are not as simple and easy to use, or maintain.
+There may be mod loaders like Forge and Fabric, which are perfectly good, but are not as easy to use and update.
 
 ## Safety
-I made the code for this client available, because many clients go to extra lengths to make sure that the code is extremely hidden and obfuscated (including safe ones such as Lunar and Badlion, with the exception of OptiFine). While the biggest clients are much more trusted and tested by the community, they all had to start somewhere. The actual code of the client (that is still around) was first written in January 2021.
-
-If you are suspicous, you can sift around the (admittedly large) repository.
+The code for this client is available, meaning that you can see what it does.
 
 This client has been tested by multiple people on Hypixel, and it disables disallowed mods automatically. There may be some unknown servers, but just disable the correct mods and you should be fine, as all Sol Client mods are designed to not change the behaviour of the player.
-
-Sol Client is arguably more Hypixel-safe than Lunar Client - Lunar already has a reputation for making changes they probably shouldn't. Even in current versions, it has a fly boost mod that isn't disabled, giving players an advantage in build battle (not that I play that game too often), allows you to place blocks while breaking other blocks (1.7 animations, not sure why this is unfair, but it's not possible in vanilla), and the crosshair highlights invisible players. In older versions, there were apparently some other issues relating to the particles mod or something, and the CPS limit (probably because it was designed for their own network). <sup>\[<i><a href="/">citation needed</a></i>\]</sup>
-
-## Sorry Lunar
-I still think Lunar is a good client, in the same way that Chrome is the most popular browser, but Firefox continues to exist. It just depends what you want from a web browser. I like both browsers, but I personally prefer using Firefox. I also don't want there to be a "Minecraft client monopoly", where there are only two popular Minecraft clients, that are both closed source.
 
 ## Credits
 [TheKodeToad](https://github.com/TheKodeToad) / [mcblueparrot](https://mine.ly/mcblueparrot.1): Programmer (turning tea into code).
 
-[Holso](https://github.com/Holso) / [Draconish](https://mine.ly/Draconish.1): Helped create Discord, came up with the name (and changed his own one many times) and tested the client.
+[Holso](https://github.com/Holso) / [Dolfinc](https://mine.ly/Dolfinc.1): Helped create Discord, came up with the name (and changed his own one many times) and tested the client.
 
 [sp614x](https://github.com/sp614x): OptiFine mod.
 
@@ -63,6 +56,7 @@ I still think Lunar is a good client, in the same way that Chrome is the most po
 Here are the main features that are currently in the client:
 
 - A clean HUD inspired by Lunar.
+- Replay Mod. You will need to install FFmpeg yourself. This is completely unaffiliated to the original mod by Johni and CrushedPixel. If you encounter any issues, try reproducing them on the official Forge version, and if it happens there, report it on the [ReplayMod GitHub repositority](https://github.com/ReplayMod/ReplayMod). If it only happens on our version, report it here.
 - Freelook (automatically disabled on Hypixel), press "V" to activate.
 - Toggle sprint.
 - Smooth zoom.
@@ -71,10 +65,7 @@ Here are the main features that are currently in the client:
 - Item physics.
 - Hypixel Additions.
 - OptiFine, downloaded automatically from the official site (open an issue if this is a bad thing).
-- Crosshair mod, allowing you to customise your crosshair, while fitting with the vanilla style.  
-
-Selling points:
-- Replay Mod. You will need to install FFmpeg yourself. This is completely unaffiliated to the original mod by Johni and CrushedPixel. If you encounter any issues, try reproducing them on the official Forge version, and if it happens there, report it on the [ReplayMod GitHub repositority](https://github.com/ReplayMod/ReplayMod). If it only happens on our version, report it here.
+- Crosshair mod, allowing you to customise your crosshair, while fitting with the vanilla style.
 - Quick Play Mod. Allows you to quickly join games at the press of a button (by default, "M"). The key opens a menu where you can search for games, navigating through them using the arrow keys. If you type nothing, you can see recent games and a categorised list of all games.
 - Customisable launcher servers - automatically detected from the game, with no pinned servers.
 - Better item tooltips - show item damage and more.
@@ -87,8 +78,6 @@ Selling points:
 - Chunk animator (not sure if many people use this one).
 - Less useless mods (apart from the previous one).
 - Bedwars timers.
-
-There are probably more, but this list is long enough.
 
 Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.
 
@@ -121,6 +110,7 @@ Build Installer:
 ```sh
 npm run make
 ```
+The installer will be in a directory named "out".
 
 ### Game
 
@@ -140,5 +130,5 @@ Build JAR:
 ```sh
 ./gradlew build
 ```
-(into build/libs/game.jar)
+You will find the result in build/libs/game.jar.
 

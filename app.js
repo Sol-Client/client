@@ -42,11 +42,25 @@ window.addEventListener("DOMContentLoaded", () => {
 	const mojangLogin = document.querySelector(".mojang-login");
 	const main = document.querySelector(".main");
 
+	function saveAccount(account) {
+		fs.writeFileSync(Utils.accountFile, JSON.stringify(account));
+	}
+
+	function updateAccount() {
+		document.querySelector(".account-button").innerText = "🗘 " + account.username;
+	}
+
+	function updateMinecraftFolder() {
+		document.querySelector(".minecraft-folder-path").innerText = Config.data.minecraftFolder;
+	}
+
+	updateMinecraftFolder();
+
 	if(fs.existsSync(Utils.accountFile)) {
 		var account = Account.from(JSON.parse(fs.readFileSync(Utils.accountFile)));
 		launcher.account = account;
 		main.style.display = "block";
-		document.querySelector(".account-button").innerText = "🗘 " + account.username;
+		updateAccount();
 	}
 	else {
 		login.style.display = "block";
@@ -83,8 +97,8 @@ window.addEventListener("DOMContentLoaded", () => {
 		launcher.account = account;
 		login.style.display = "none";
 		main.style.display = "block";
-		fs.writeFileSync(Utils.accountFile, JSON.stringify(account));
-		document.querySelector(".account-button").innerText = "🗘 " + account.username;
+		saveAccount(account);
+		updateAccount();
 	})
 
 	mojangLoginButton.onclick = () => {
@@ -109,7 +123,7 @@ window.addEventListener("DOMContentLoaded", () => {
 					return;
 				}
 				launcher.account = result;
-				fs.writeFileSync(Utils.accountFile, JSON.stringify(launcher.account));
+				saveAccount(launcher.account);
 			}
 			launcher.launch(() => {
 				playButton.innerText = "Play";
@@ -129,49 +143,61 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	document.querySelector(".settings-tab").onclick = () => switchToTab("settings");
 
-	document.querySelector(".minecraft-folder").onclick = () => shell.openPath(Utils.gameDirectory);
+	document.querySelector(".minecraft-folder").onclick = () => ipcRenderer.send("directory");
+
+	ipcRenderer.on("directory", (event, file) => {
+		Config.data.minecraftFolder = file;
+		Config.save();
+		updateMinecraftFolder();
+		updateServers();
+	});
 
 	document.querySelector(".devtools").onclick = () => ipcRenderer.send("devtools");
 
-	var serversList = document.querySelector(".quick-servers");
-	var serversFile = Utils.serversFile;
-	var serverText = document.querySelector(".quick-join-text");
+	function updateServers() {
+		var serversList = document.querySelector(".quick-servers");
+		var serversFile = Config.getGameDirectory(Utils.gameDirectory) + "/servers.dat";
+		var serverText = document.querySelector(".quick-join-text");
 
-	if(fs.existsSync(serversFile)) {
-		nbt.parse(fs.readFileSync(serversFile), (error, data) => {
-			if(error) {
-				throw error;
-			}
+		serversList.innerHTML = "";
 
-			var servers = data.value.servers.value.value;
-
-			for(var i = 0; i < servers.length && i < 5; i++) {
-				 // first time I've ever needed to use the let keyword
-				let server = servers[i];
-				let serverIndex = i;
-
-				let serverElement = document.createElement("span");
-
-				serverElement.onmouseenter = () => {
-					serverText.innerText = server.name.value;
-				};
-
-				serverElement.onmouseout = () => {
-					serverText.innerText = "Play Server";
-				};
-
-				serverElement.onclick = () => {
-					play("§sc§" + serverIndex);
+		if(fs.existsSync(serversFile)) {
+			nbt.parse(fs.readFileSync(serversFile), (error, data) => {
+				if(error) {
+					throw error;
 				}
 
-				serverElement.classList.add("server");
-				serverElement.innerHTML = `
-					${server.icon ? `<img src="data:image/png;base64,${server.icon.value}"/>` : `<img src="unknown_server.svg"/>`}`;
+				var servers = data.value.servers.value.value;
 
-				serversList.appendChild(serverElement);
-			}
-		});
+				for(var i = 0; i < servers.length && i < 5; i++) {
+					 // first time I've ever needed to use the let keyword
+					let server = servers[i];
+					let serverIndex = i;
+
+					let serverElement = document.createElement("span");
+
+					serverElement.onmouseenter = () => {
+						serverText.innerText = server.name.value;
+					};
+
+					serverElement.onmouseout = () => {
+						serverText.innerText = "Play Server";
+					};
+
+					serverElement.onclick = () => {
+						play("§sc§" + serverIndex);
+					}
+
+					serverElement.classList.add("server");
+					serverElement.innerHTML = `
+						${server.icon ? `<img src="data:image/png;base64,${server.icon.value}"/>` : `<img src="unknown_server.svg"/>`}`;
+
+					serversList.appendChild(serverElement);
+				}
+			});
+		}
 	}
+	updateServers();
 
 	var memory = document.querySelector(".memory");
 	var memoryLabel = document.querySelector(".memory-label");
@@ -232,8 +258,8 @@ window.addEventListener("DOMContentLoaded", () => {
 				emailField.value = "";
 				passwordField.value = "";
 				errorMessage.innerText = "";
-				fs.writeFileSync(Utils.accountFile, JSON.stringify(account));
-				document.querySelector(".account-button").innerText = "🗘 " + account.username;
+				saveAccount(account);
+				updateAccount();
 			}
 			catch(error) {
 				errorMessage.innerText = "Could not log in";

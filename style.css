@@ -337,3 +337,11 @@ input[type="range"]:hover::-webkit-slider-thumb {
 #text1476 {
 	font-family: Raleway;
 }
+
+.settings {
+	overflow: auto;
+	position: fixed;
+	width: 100%;
+	height: calc(100% - 350px);
+	background-color: rgb(20, 20, 20);
+}

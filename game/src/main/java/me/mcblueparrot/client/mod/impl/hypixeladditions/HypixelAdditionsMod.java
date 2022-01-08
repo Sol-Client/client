@@ -105,6 +105,7 @@ public class HypixelAdditionsMod extends Mod {
 	@ConfigOption("Auto GL")
 	private boolean autogl;
 	@Expose
+	@ConfigOption("Auto GL Message")
 	private AutoGLMessage autoglMessage = AutoGLMessage.GLHF;
 	private String autoglTrigger = "The game starts in 1 second!";
 	private long ticksUntilAutogl = -1;
@@ -125,7 +126,7 @@ public class HypixelAdditionsMod extends Mod {
 	private Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
 
 	public HypixelAdditionsMod() {
-		super("Hypixel Additions", "hypixel_util", "Various improvements to Hypixel.", ModCategory.INTEGRATION);
+		super("Hypixel Additions", "hypixel_util", "Various improvements to Hypixel.", ModCategory.UTILITY);
 		instance = this;
 	}
 

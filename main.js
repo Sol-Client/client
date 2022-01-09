@@ -16,6 +16,7 @@ async function run() {
 	const hastebin = require("hastebin");
 
 	var window;
+	var canQuit = false;
 
 	function createWindow() {
 		window = new BrowserWindow({
@@ -29,6 +30,13 @@ async function run() {
 
 		window.loadFile("app.html");
 		window.setMenu(null);
+
+		window.on("close", (event) => {
+			if(!canQuit) {
+				event.preventDefault();
+				window.webContents.send("close");
+			}
+		});
 
 		ipcMain.on("directory", async(event) => {
 			var result = await dialog.showOpenDialog(window,
@@ -119,6 +127,7 @@ ${crashReportText}
 
 	ipcMain.on("quit", (event, result) => {
 		if(result) {
+			canQuit = true;
 			app.quit();
 		}
 		else {

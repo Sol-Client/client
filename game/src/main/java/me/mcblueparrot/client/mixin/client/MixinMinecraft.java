@@ -2,9 +2,6 @@ package me.mcblueparrot.client.mixin.client;
 
 import java.util.ConcurrentModificationException;
 
-import net.minecraft.client.gui.*;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.Session;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -18,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import com.replaymod.core.versions.MCVer;
 import com.replaymod.replay.InputReplayTimer;
 
@@ -39,6 +35,10 @@ import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.GuiMultiplayer;
+import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
@@ -48,8 +48,11 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.settings.GameSettings.Options;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Session;
 import net.minecraft.util.Timer;
 
 @Mixin(Minecraft.class)
@@ -367,7 +370,7 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	}
 
 	private void debugChatInfo(String message) {
-		ingameGUI.getChatGUI().printChatMessage(new ChatComponentText("[" + ChatFormatting.GREEN + "Debug" + ChatFormatting.RESET + "] " + message));
+		ingameGUI.getChatGUI().printChatMessage(new ChatComponentText("[" + EnumChatFormatting.GREEN + "Debug" + EnumChatFormatting.RESET + "] " + message));
 	}
 
 	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;" +

@@ -1,6 +1,8 @@
 package me.mcblueparrot.client.util.access;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.DefaultResourcePack;
+import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.Timer;
 
 
@@ -10,6 +12,10 @@ public interface AccessMinecraft {
 	boolean isRunning();
 
 	Timer getTimerSC();
+
+	DefaultResourcePack getDefaultResourcePack();
+
+	IMetadataSerializer getMetadataSerialiser();
 
 	static AccessMinecraft getInstance() {
 		return (AccessMinecraft) Minecraft.getMinecraft();

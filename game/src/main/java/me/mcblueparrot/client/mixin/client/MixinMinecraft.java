@@ -45,6 +45,8 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.resources.DefaultResourcePack;
+import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.Timer;
@@ -197,6 +199,14 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	@Override
 	@Accessor
 	public abstract boolean isRunning();
+
+	@Override
+	@Accessor("mcDefaultResourcePack")
+	public abstract DefaultResourcePack getDefaultResourcePack();
+
+	@Override
+	@Accessor("metadataSerializer_")
+	public abstract IMetadataSerializer getMetadataSerialiser();
 
 	@Override
 	@Accessor(value = "timer")

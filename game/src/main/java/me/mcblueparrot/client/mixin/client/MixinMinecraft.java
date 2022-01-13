@@ -3,6 +3,7 @@ package me.mcblueparrot.client.mixin.client;
 import java.util.ConcurrentModificationException;
 
 import net.minecraft.client.gui.*;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Session;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import com.replaymod.core.versions.MCVer;
 import com.replaymod.replay.InputReplayTimer;
 
@@ -43,9 +45,11 @@ import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.settings.GameSettings.Options;
 import net.minecraft.util.Timer;
 
 @Mixin(Minecraft.class)
@@ -362,6 +366,10 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 		this.debugPressed = debugPressed;
 	}
 
+	private void debugChatInfo(String message) {
+		ingameGUI.getChatGUI().printChatMessage(new ChatComponentText("[" + ChatFormatting.GREEN + "Debug" + ChatFormatting.RESET + "] " + message));
+	}
+
 	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;" +
 			"clearChatMessages()V"))
 	public void betterClearMessages(GuiNewChat guiNewChat) {
@@ -372,36 +380,58 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	@Inject(method = "runTick",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;refreshResources()V"))
 	public void betterRefreshResources(CallbackInfo callback) {
+		debugChatInfo("Reloaded Resources");
 		cancelDebug = true;
 	}
 
 	@Inject(method = "runTick",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;setOptionValue(Lnet/minecraft/client/settings/GameSettings$Options;I)V"))
 	public void betterRenderDistance(CallbackInfo callback) {
+		// Broken in vanilla.
+		gameSettings.renderDistanceChunks = (int) Options.RENDER_DISTANCE.snapToStepClamp(gameSettings.renderDistanceChunks + (GuiScreen.isShiftKeyDown() ? -1 : 1));
+
+		debugChatInfo("Render Distance: " + gameSettings.renderDistanceChunks);
+		gameSettings.saveOptions();
 		cancelDebug = true;
 	}
 
 	@Inject(method = "runTick",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;loadRenderers()V"))
 	public void betterLoadRenderers(CallbackInfo callback) {
+		debugChatInfo("Reloaded Chunks");
 		cancelDebug = true;
 	}
 
 	@Inject(method = "runTick",
 			at = @At(value = "INVOKE",
 					target = "Lnet/minecraft/client/settings/GameSettings;saveOptions()V"))
-	public void betterTootipsAndPauseOnLostFocus(CallbackInfo callback) {
+	public void advancedTootipsAndPauseOnLostFocus(CallbackInfo callback) {
 		cancelDebug = true;
+	}
+
+	@Inject(method = "runTick",
+			at = @At(value = "INVOKE",
+					target = "Lnet/minecraft/client/settings/GameSettings;saveOptions()V", ordinal = 0))
+	public void advancedTootips(CallbackInfo callback) {
+		debugChatInfo("Advanced Item Tooltips: " + gameSettings.advancedItemTooltips);
+	}
+
+	@Inject(method = "runTick",
+			at = @At(value = "INVOKE",
+					target = "Lnet/minecraft/client/settings/GameSettings;saveOptions()V", ordinal = 1))
+	public void pauseOnLostFocus(CallbackInfo callback) {
+		debugChatInfo("Pause on Lost Focus: " + gameSettings.pauseOnLostFocus);
 	}
 
 	@Inject(method = "runTick",
 			at = @At(value = "INVOKE",
 					target = "Lnet/minecraft/client/renderer/entity/RenderManager;setDebugBoundingBox(Z)V"))
 	public void betterHitboxes(CallbackInfo callback) {
+		debugChatInfo("Entity Hitboxes: " + !renderManager.isDebugBoundingBox());
 		cancelDebug = true;
 	}
 
-	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyBindState(IZ)V"))
+	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyBindState(IZ)V", ordinal = 1))
 	public void nextKey(int keyCode, boolean pressed) {
 		if(pressed && debugPressed) {
 			if(Keyboard.getEventKey() == 32
@@ -511,5 +541,11 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 
 	@Shadow
 	private String serverName;
+
+	@Shadow
+    public GuiIngame ingameGUI;
+
+	@Shadow
+    private RenderManager renderManager;
 
 }

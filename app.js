@@ -15,12 +15,9 @@ Utils.init();
 Config.init(Utils.minecraftDirectory);
 Config.load();
 
-window.onbeforeunload = (event) => {
+ipcRenderer.on("close", (event) => {
 	ipcRenderer.send("quit", launcher.games.length < 1);
-	if(launcher.games.length > 0) {
-		event.returnValue = false;
-	}
-};
+});
 
 ipcRenderer.on("quitGame", (event) => {
 	for(game of launcher.games) {

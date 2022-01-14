@@ -21,6 +21,7 @@ import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
@@ -93,6 +94,7 @@ public class ChatMod extends HudMod {
 	@Expose
 	@ConfigOption("Smooth Animation")
 	private boolean smooth = true; // Smooth, man!
+
 	private static final float ANIMATION_MULTIPLIER = 0.5F;
 	private int lastAnimatedOffset;
 	private int animatedOffset;

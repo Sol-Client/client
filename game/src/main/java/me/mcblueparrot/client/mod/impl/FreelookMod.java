@@ -18,6 +18,7 @@ import net.minecraft.util.MathHelper;
 
 public class FreelookMod extends Mod {
 
+	@ConfigOption("Key")
 	private KeyBinding key = new KeyBinding("Freelook", Keyboard.KEY_V, "Sol Client");
 	private float yaw;
 	private float pitch;

@@ -14,6 +14,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.impl.quickplay.database.QuickPlayDatabase;
 import me.mcblueparrot.client.mod.impl.quickplay.database.QuickPlayGame;
 import me.mcblueparrot.client.mod.impl.quickplay.database.QuickPlayGameMode;
@@ -24,6 +25,7 @@ import net.minecraft.client.settings.KeyBinding;
 
 public class QuickPlayMod extends Mod {
 
+	@ConfigOption("Key")
 	public KeyBinding menuKey = new KeyBinding("Quick Play", Keyboard.KEY_M, "Sol Client");
 	private QuickPlayDatabase database;
 	@Expose

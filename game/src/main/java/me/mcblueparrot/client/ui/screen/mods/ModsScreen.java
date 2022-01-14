@@ -29,9 +29,13 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import me.mcblueparrot.client.util.font.Font;
 import me.mcblueparrot.client.util.font.SlickFontRenderer;
+import net.minecraft.client.gui.GuiKeyBindingList;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
@@ -49,6 +53,7 @@ public class ModsScreen extends GuiScreen {
 	private boolean openedWithMod;
 	private Mod selectedMod;
 	private CachedConfigOption selectedColour;
+	private KeyBinding selectedKey;
 	private Font font = SolClientMod.getFont();
 	private TextField searchField = new TextField("Search", 25, 6, 100, true, () -> amountScrolled = 0);
 
@@ -64,6 +69,15 @@ public class ModsScreen extends GuiScreen {
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		if(selectedKey != null) {
+			mc.gameSettings.setOptionKeyBinding(selectedKey, mouseButton - 100);
+
+			selectedKey = null;
+
+            KeyBinding.resetKeyBindingArrayAndHash();
+			return;
+		}
+
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
 		if(mouseButton == 0) {
@@ -78,6 +92,7 @@ public class ModsScreen extends GuiScreen {
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
 		super.mouseReleased(mouseX, mouseY, state);
+
 		if(state == 0) {
 			mouseDown = false;
 		}
@@ -107,9 +122,27 @@ public class ModsScreen extends GuiScreen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		if(selectedKey != null) {
+			if(keyCode == 1) {
+				mc.gameSettings.setOptionKeyBinding(selectedKey, 0);
+			}
+			else if(keyCode != 0) {
+				mc.gameSettings.setOptionKeyBinding(selectedKey, keyCode);
+			}
+			else if(typedChar > 0) {
+				mc.gameSettings.setOptionKeyBinding(selectedKey, typedChar + 256);
+			}
+
+			selectedKey = null;
+
+            KeyBinding.resetKeyBindingArrayAndHash();
+
+            return;
+		}
+
 		super.keyTyped(typedChar, keyCode);
 
-		if(keyCode == Client.INSTANCE.modsKey.getKeyCode() && previous == null) {
+		if(!Character.isLetter(typedChar) && keyCode == SolClientMod.instance.modsKey.getKeyCode() && previous == null) {
 			mc.displayGuiScreen(null);
 		}
 		else if(keyCode == Keyboard.KEY_RETURN) {
@@ -498,6 +531,32 @@ public class ModsScreen extends GuiScreen {
 								}
 							}
 						}
+					}
+				}
+				else if(option.getType() == KeyBinding.class) {
+					KeyBinding key = (KeyBinding) option.getValue();
+					String value = GameSettings.getKeyDisplayString(key.getKeyCode());
+
+					if(selectedKey == key) {
+						value = EnumChatFormatting.YELLOW + value;
+					}
+
+					if(key.getKeyCode() != 0) {
+						for(KeyBinding testKey : mc.gameSettings.keyBindings) {
+							if(testKey != key
+									&& testKey.getKeyCode() == key.getKeyCode()) {
+								value = EnumChatFormatting.RED + value;
+								break;
+							}
+						}
+					}
+
+					font.renderString(value, rectangle.getX() + rectangle.getWidth() - font.getWidth(value) - sweetSpot, rectangle.getY() + sweetSpot,
+							-1);
+
+					if(rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
+						Utils.playClickSound();
+						selectedKey = key;
 					}
 				}
 

@@ -115,8 +115,6 @@ public class Client {
 
 	private ChatChannelSystem chatChannelSystem;
 
-	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
-
 	public static final String VERSION = System.getProperty("me.mcblueparrot.client.version", "DEVELOPMENT TEST");
 	public static final String NAME = "Sol Client " + VERSION;
 
@@ -174,8 +172,6 @@ public class Client {
 		register(SCReplayMod::new);
 		register(QuickPlayMod::new);
 		register(HypixelAdditionsMod::new);
-
-		registerKeyBinding(modsKey);
 
 		try {
 			unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
@@ -397,7 +393,7 @@ public class Client {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(modsKey.isPressed()) {
+		if(SolClientMod.instance.modsKey.isPressed()) {
 			mc.displayGuiScreen(new ModsScreen(null));
 		}
 	}

@@ -562,9 +562,9 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	private String serverName;
 
 	@Shadow
-    public GuiIngame ingameGUI;
+	public GuiIngame ingameGUI;
 
 	@Shadow
-    private RenderManager renderManager;
+	private RenderManager renderManager;
 
 }

@@ -144,6 +144,6 @@ public class MixinGuiScreenResourcePacks extends GuiScreen {
 	private GuiResourcePackAvailable availableResourcePacksList;
 
 	@Shadow
-    private GuiResourcePackSelected selectedResourcePacksList;
+	private GuiResourcePackSelected selectedResourcePacksList;
 
 }

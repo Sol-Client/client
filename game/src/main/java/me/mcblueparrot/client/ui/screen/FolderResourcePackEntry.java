@@ -33,8 +33,8 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 		super.drawEntry(slotIndex, x, y, listWidth, slotHeight, mouseX, mouseY, isSelected);
 
 		if(mc.gameSettings.touchscreen || isSelected) {
-            Gui.drawRect(x, y, x + 32, y + 32, -1601138544);
-        }
+			Gui.drawRect(x, y, x + 32, y + 32, -1601138544);
+		}
 	}
 
 	public BetterResourcePackList getSublist() throws IOException {

@@ -74,7 +74,7 @@ public class ModsScreen extends GuiScreen {
 
 			selectedKey = null;
 
-            KeyBinding.resetKeyBindingArrayAndHash();
+			KeyBinding.resetKeyBindingArrayAndHash();
 			return;
 		}
 
@@ -135,9 +135,9 @@ public class ModsScreen extends GuiScreen {
 
 			selectedKey = null;
 
-            KeyBinding.resetKeyBindingArrayAndHash();
+			KeyBinding.resetKeyBindingArrayAndHash();
 
-            return;
+			return;
 		}
 
 		super.keyTyped(typedChar, keyCode);

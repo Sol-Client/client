@@ -44,20 +44,20 @@ public class RecordingIndicator extends BaseHudElement {
 	public void render(Position position, boolean editMode) {
 		if(!editMode && guiControls.isStopped()) return;
 
-        Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getMinecraft();
 
-        boolean paused = !editMode && guiControls.isPaused();
+		boolean paused = !editMode && guiControls.isPaused();
 
-        String text = paused ? I18n.format("replaymod.gui.paused") : I18n.format("replaymod.gui.recording");
+		String text = paused ? I18n.format("replaymod.gui.paused") : I18n.format("replaymod.gui.recording");
 
 		mc.fontRendererObj.drawString(text, 20 + position.getX(),
 				position.getY() + 8 - (mc.fontRendererObj.FONT_HEIGHT / 2), mod.recordingIndicatorTextColour.getValue(),
 				mod.recordingIndicatorTextShadow);
 
-        mc.getTextureManager().bindTexture(paused ? PAUSED : RECORDING);
+		mc.getTextureManager().bindTexture(paused ? PAUSED : RECORDING);
 
-        GL11.glColor3f(1, 1, 1);
-        Gui.drawModalRectWithCustomSizedTexture(position.getX(), position.getY(), 0, 0, 16, 16, 16, 16);
+		GL11.glColor3f(1, 1, 1);
+		Gui.drawModalRectWithCustomSizedTexture(position.getX(), position.getY(), 0, 0, 16, 16, 16, 16);
 	}
 
 	@Override

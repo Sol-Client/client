@@ -82,9 +82,9 @@ public class MixinResourcePackRepository {
 
 	@Shadow
 	@Final
-    private static Logger logger;
+	private static Logger logger;
 
 	@Shadow
-    private List<ResourcePackRepository.Entry> repositoryEntries;
+	private List<ResourcePackRepository.Entry> repositoryEntries;
 
 }

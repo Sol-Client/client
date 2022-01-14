@@ -35,7 +35,7 @@ public class TabListMod extends Mod {
 	public boolean textShadow = true;
 
 	public TabListMod() {
-		super("Tab List", "tab_list", "Modify the tab/player list.", ModCategory.HUD);
+		super("Tab List", "tab_list", "Customise the tab list.", ModCategory.HUD);
 		instance = this;
 	}
 

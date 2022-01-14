@@ -90,6 +90,13 @@ public class MixinChatMod {
 	@Mixin(GuiNewChat.class)
 	public static class MixinGuiNewChat {
 
+		@Inject(method = "getChatOpen", at = @At("HEAD"), cancellable = true)
+		public void overrideChatOpen(CallbackInfoReturnable<Boolean> callback) {
+			if(ChatMod.enabled && ChatMod.instance.peekKey.isKeyDown()) {
+				callback.setReturnValue(true);
+			}
+		}
+
 		@Redirect(method = "getChatWidth", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSetti" +
 				"ngs;chatWidth:F"))
 		public float overrideChatWidth(GameSettings instance) {

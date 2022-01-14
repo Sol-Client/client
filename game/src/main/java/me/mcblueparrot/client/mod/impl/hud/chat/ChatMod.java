@@ -1,6 +1,5 @@
 package me.mcblueparrot.client.mod.impl.hud.chat;
 
-import net.minecraft.client.gui.GuiChat;
 import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
@@ -9,6 +8,7 @@ import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.ChatRenderEvent;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
+import me.mcblueparrot.client.event.impl.ScrollEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.hud.HudMod;
@@ -20,6 +20,7 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.EnumChatFormatting;
@@ -51,6 +52,29 @@ public class ChatMod extends HudMod {
 
 		return table;
 	}
+
+
+	@Expose
+	@ConfigOption("Prevent Force Closing")
+	public boolean preventClose = true;
+	@Expose
+	@ConfigOption("Smooth Animation")
+	private boolean smooth = true; // Smooth, man!
+
+	private static final float ANIMATION_MULTIPLIER = 0.5F;
+	private int lastAnimatedOffset;
+	private int animatedOffset;
+
+	@Expose
+	@ConfigOption("Infinite Chat")
+	public boolean infiniteChat = true;
+
+	@ConfigOption("Peek")
+	public KeyBinding peekKey;
+
+	private boolean wasPeeking;
+
+	private boolean hasScrollbar;
 
 	@Expose
 	@ConfigOption("Visibility")
@@ -88,28 +112,18 @@ public class ChatMod extends HudMod {
 	@Expose
 	@ConfigOption("Prompt Web Links")
 	public boolean promptLinks = true;
-	@Expose
-	@ConfigOption("Prevent Force Closing")
-	public boolean preventClose = true;
-	@Expose
-	@ConfigOption("Smooth Animation")
-	private boolean smooth = true; // Smooth, man!
-
-	private static final float ANIMATION_MULTIPLIER = 0.5F;
-	private int lastAnimatedOffset;
-	private int animatedOffset;
-
-	@Expose
-	@ConfigOption("Infinite Chat")
-	public boolean infiniteChat = true;
 
 	private int previousChatSize;
 
 	public final SymbolsButton symbolsButton = new SymbolsButton();
 
 	public ChatMod() {
-		super("Chat", "chat", "Improves and allows you to customise the chat.");
+		super("Chat", "chat", "Improves and allows customisation of the chat.");
 		instance = this;
+
+		peekKey = new KeyBinding("Chat Peek", 0, "Sol Client");
+
+		Client.INSTANCE.registerKeyBinding(peekKey);
 	}
 
 	@Override
@@ -149,9 +163,36 @@ public class ChatMod extends HudMod {
 		return true;
 	}
 
+	@EventHandler
+	public void onScroll(ScrollEvent event) {
+		// Arrow key scrolling isn't implemented for various reasons, but nobody cares anyway.
+
+		if(hasScrollbar && peekKey.isKeyDown() && event.amount != 0) {
+			int amount = 1;
+
+			if(event.amount < 0) {
+				amount = -amount;
+			}
+
+			if(!GuiScreen.isShiftKeyDown()) {
+				amount *= 7;
+			}
+
+			mc.ingameGUI.getChatGUI().scroll(amount);
+
+			event.cancelled = true;
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	@EventHandler
 	public void onTick(PostTickEvent event) {
+		if(!peekKey.isKeyDown() && wasPeeking) {
+			mc.ingameGUI.getChatGUI().resetScroll();
+		}
+
+		wasPeeking = peekKey.isKeyDown();
+
 		if(smooth && !mc.isGamePaused()) {
 			lastAnimatedOffset = animatedOffset;
 
@@ -199,12 +240,12 @@ public class ChatMod extends HudMod {
 				}
 
 				for(int i = 0; i + accessor.getScrollPos() < accessor.getDrawnChatLines().size() && i < linesCount; ++i) {
-					ChatLine line = (ChatLine)accessor.getDrawnChatLines().get(i + accessor.getScrollPos());
+					ChatLine line = (ChatLine) accessor.getDrawnChatLines().get(i + accessor.getScrollPos());
 
 					if(line != null) {
 						int update = event.updateCounter - line.getUpdatedCounter();
 
-						if(update < 200 || open) {
+						if(open || update < 200) {
 							double percent = (double) update / 200.0D;
 							percent = 1.0D - percent;
 							percent = percent * 10.0D;
@@ -231,15 +272,17 @@ public class ChatMod extends HudMod {
 							if(percent > 0.05F) {
 								int i2 = 0;
 								int j2 = -i * 9;
+
 								if(background) {
 									Gui.drawRect(i2 - 2, j2 - 9, i2 + l + 4, j2,
 											backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * percent)).getValue());
 								}
+
 								String formattedText = line.getChatComponent().getFormattedText();
 								GlStateManager.enableBlend();
 
 								if(percentFG > 0.05F) {
-									this.mc.fontRendererObj.drawString(colours ? formattedText :
+									mc.fontRendererObj.drawString(colours ? formattedText :
 											EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float) i2, (float) (j2 - 8),
 											textColour.withAlpha((int) (textColour.getAlpha() * percentFG)).getValue(), shadow);
 								}
@@ -252,7 +295,7 @@ public class ChatMod extends HudMod {
 				}
 
 				if(open) {
-					int k2 = this.mc.fontRendererObj.FONT_HEIGHT;
+					int k2 = mc.fontRendererObj.FONT_HEIGHT;
 					GlStateManager.translate(-3.0F, 0.0F, 0.0F);
 					int l2 = drawnLinesCount * k2 + drawnLinesCount;
 					int i3 = j * k2 + j;
@@ -260,15 +303,26 @@ public class ChatMod extends HudMod {
 					int k1 = i3 * i3 / l2;
 
 					if(l2 != i3) {
+						hasScrollbar = true;
+
 						int k3 = j3 > 0 ? 170 : 96;
 						int l3 = accessor.getIsScrolled() ? 13382451 : 3355562;
 						Gui.drawRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
 						Gui.drawRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
 					}
+					else {
+						hasScrollbar = false;
+					}
 				}
 
 				GlStateManager.popMatrix();
 			}
+			else {
+				hasScrollbar = false;
+			}
+		}
+		else {
+			hasScrollbar = false;
 		}
 
 		previousChatSize = accessor.getDrawnChatLines().size();

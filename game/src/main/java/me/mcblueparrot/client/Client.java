@@ -15,7 +15,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -172,13 +171,6 @@ public class Client {
 		register(SCReplayMod::new);
 		register(QuickPlayMod::new);
 		register(HypixelAdditionsMod::new);
-
-		try {
-			unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
-		}
-		catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
-			// OptiFine is not enabled.
-		}
 
 		cacheHudList();
 
@@ -358,6 +350,13 @@ public class Client {
 	@EventHandler
 	public void onPostStart(PostGameStartEvent event) {
 		mods.forEach(Mod::postStart);
+
+		try {
+			unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
+		}
+		catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
+			// OptiFine is not enabled.
+		}
 	}
 
 	@EventHandler

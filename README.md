@@ -1,3 +1,5 @@
+> :warning: This project contains license violations. I am in the process of fixing them, either by rewriting the code myself, or relicensing the project.
+
 # Sol Client
 
 

@@ -1,4 +1,4 @@
-> :warning: This project contains license violations. I am in the process of fixing them, either by rewriting the code myself, or relicensing the project.
+> :warning: This project contains license violations. I am in the process of fixing them, either by rewriting the code myself, or relicensing the project. Since ReplayMod code is used, it can't be easily replaced
 
 # Sol Client
 

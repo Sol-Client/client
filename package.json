@@ -1,6 +1,6 @@
 {
   "name": "Sol Client",
-  "version": "1.5.22",
+  "version": "1.5.23",
   "description": "Simple and easy to use Minecraft client.",
   "main": "main.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "make": "electron-forge make"
   },
   "author": "mcblueparrot",
-  "license": "MIT",
+  "license": "GPL-3.0+",
   "dependencies": {
     "archiver": "^5.3.0",
     "axios": "^0.21.4",

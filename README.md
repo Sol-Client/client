@@ -3,11 +3,11 @@
 # Sol Client
 
 
-<a href="https://github.com/TheKodeToad/Sol-Client/actions/workflows/build.yml"><img src="https://img.shields.io/github/workflow/status/TheKodeToad/Sol-Client/build?style=for-the-badge&logo=github&logoColor=white"/></a>&nbsp;
+<a href="https://github.com/Sol-Client/Client/actions/workflows/build.yml"><img src="https://img.shields.io/github/workflow/status/Sol-Client/Client/build?style=for-the-badge&logo=github&logoColor=white"/></a>&nbsp;
 <img src="https://img.shields.io/static/v1?label=you%20didn%27t&message=ask%20for%20this&color=blue&style=for-the-badge"/>&nbsp;
 <img src="https://img.shields.io/static/v1?label=minecraft&message=1.8.9&color=brightgreen&style=for-the-badge"/>&nbsp;
 <a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?color=5662F6&label=discord&logo=discord&logoColor=white&style=for-the-badge"/></a>&nbsp;
-![GitHub all releases](https://img.shields.io/github/downloads/TheKodeToad/Sol-Client/total?label=Downloads&style=for-the-badge)&nbsp;
+![GitHub all releases](https://img.shields.io/github/downloads/Sol-Client/Client/total?label=Downloads&style=for-the-badge)&nbsp;
 
 Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versions).
 
@@ -16,7 +16,7 @@ Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versi
 [Screenshots](assets/screenshots/README.md)
 
 ## Gimme it now!
-First, go to [releases](https://github.com/TheKodeToad/Sol-Client/releases).
+First, go to [releases](https://github.com/Sol-Client/Client/releases).
 
 Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue. The code is all open source, so don't worry.
 
@@ -81,12 +81,12 @@ Here are the main features that are currently in the client:
 - Less useless mods (apart from the previous one).
 - Bedwars timers.
 
-Click [this fancy blue text](https://github.com/TheKodeToad/SolClient/projects/1) to see planned features.
+Click [this fancy blue text](https://github.com/Sol-Client/Client/projects/1) to see planned features.
 
-If you want to suggest a feature, [create a new issue](https://github.com/TheKodeToad/Sol-Client/issues/new) or [ask on Discord](https://discord.gg/QFDGDhcFqu).
+If you want to suggest a feature, [create a new issue](https://github.com/Sol-Client/Client/issues/new) or [ask on Discord](https://discord.gg/QFDGDhcFqu).
 
 ## License
-This project uses the [MIT license](LICENSE). There are some parts of the code that use other licenses (such as code "borrowed" from other projects). If this is the case, it will be noted in a comment, or another license file in the same directory.
+This project uses [GNU General Public License v3.0](LICENSE). There are some parts of the code that use other licenses (such as code "borrowed" from other projects). If this is the case, it will be noted in a comment, or another license file in the same directory.
 
 If there are any issues with us using your code, please open an issue.
 

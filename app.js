@@ -41,7 +41,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		fs.writeFileSync(Utils.accountFile, JSON.stringify(account));
 	}
 
-	function updateAccount() {
+	function updateAccount(account) {
 		document.querySelector(".account-button").innerText = "🗘 " + account.username;
 	}
 

@@ -31,7 +31,9 @@ class Launcher {
 				var optifine = Utils.librariesDirectory + "/" + optifineRelative;
 				var secret = crypto.randomBytes(32).toString("hex");
 
-				fs.rmdirSync(nativesFolder, { recursive: true });
+				if(fs.existsSync(nativesFolder)) {
+					fs.rmdirSync(nativesFolder, { recursive: true });
+				}
 
 				version.libraries.push({
 					downloads: {

@@ -74,6 +74,7 @@ public class ModsScreen extends GuiScreen {
 
 			selectedKey = null;
 
+			mc.gameSettings.saveOptions();
 			KeyBinding.resetKeyBindingArrayAndHash();
 			return;
 		}
@@ -135,8 +136,8 @@ public class ModsScreen extends GuiScreen {
 
 			selectedKey = null;
 
+			mc.gameSettings.saveOptions();
 			KeyBinding.resetKeyBindingArrayAndHash();
-
 			return;
 		}
 

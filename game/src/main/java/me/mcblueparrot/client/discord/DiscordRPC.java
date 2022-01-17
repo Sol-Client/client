@@ -50,7 +50,7 @@ public class DiscordRPC {
 
 	@EventHandler
 	public void onGuiChange(OpenGuiEvent event) {
-		if((event.screen instanceof GuiMainMenu || event.screen instanceof GuiMultiplayer) && state && mc.theWorld == null) {
+		if((event.screen == null || event.screen instanceof GuiMainMenu || event.screen instanceof GuiMultiplayer) && state && mc.theWorld == null) {
 			noWorld();
 		}
 	}

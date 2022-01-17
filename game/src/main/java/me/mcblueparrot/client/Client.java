@@ -361,7 +361,7 @@ public class Client {
 
 	@EventHandler
 	public void onSendMessage(SendChatMessageEvent event) {
-		// TODO tab completion
+		// TODO Tab completion. Skipped during port to mixin.
 
 		if(event.message.startsWith("/")) {
 			List<String> args = new ArrayList<>(Arrays.asList(event.message.split(" ")));

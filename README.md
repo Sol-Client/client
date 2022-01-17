@@ -76,8 +76,8 @@ Here are the main features that are currently in the client:
 - Turning off the inventory logo.
 - Speedometer.
 - Chunk animator (not sure if many people use this one).
-- Less useless mods (apart from the previous one).
 - Bedwars timers.
+- Resource pack folders.
 
 Click [this fancy blue text](https://github.com/Sol-Client/Client/projects/1) to see planned features.
 

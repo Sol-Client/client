@@ -57,7 +57,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		var account = Account.from(JSON.parse(fs.readFileSync(Utils.accountFile)));
 		launcher.account = account;
 		main.style.display = "block";
-		updateAccount();
+		updateAccount(account);
 	}
 	else {
 		login.style.display = "block";
@@ -95,7 +95,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		login.style.display = "none";
 		main.style.display = "block";
 		saveAccount(account);
-		updateAccount();
+		updateAccount(account);
 	})
 
 	mojangLoginButton.onclick = () => {
@@ -256,7 +256,7 @@ window.addEventListener("DOMContentLoaded", () => {
 				passwordField.value = "";
 				errorMessage.innerText = "";
 				saveAccount(account);
-				updateAccount();
+				updateAccount(account);
 			}
 			catch(error) {
 				errorMessage.innerText = "Could not log in";

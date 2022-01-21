@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.mod;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,6 +52,13 @@ public abstract class Mod {
 		if(this.enabled) {
 			onEnable();
 		}
+
+		try {
+			options = CachedConfigOption.get(this);
+		}
+		catch(IOException error) {
+			throw new IllegalStateException(error);
+		}
 	}
 
 	public String getName() {
@@ -87,10 +95,6 @@ public abstract class Mod {
 	}
 
 	public List<CachedConfigOption> getOptions() {
-		if(options == null) {
-			return options = CachedConfigOption.get(this);
-		}
-
 		return options;
 	}
 
@@ -166,6 +170,8 @@ public abstract class Mod {
 	public String getLockMessage() {
 		return "";
 	}
+
+	public void onFileUpdate(String fieldName) {}
 
 	public void render(boolean editMode) {
 		for(HudElement element : getHudElements()) {

@@ -73,6 +73,7 @@ import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
+import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -180,7 +181,8 @@ public class Client {
 		save();
 
 		LOGGER.info("Starting culling thread...");
-		Thread cullThread = new Thread(new CullTask(new OcclusionCullingInstance(128, new DataProvider() {
+
+		CullTask cullingTask = new CullTask(new OcclusionCullingInstance(128, new DataProvider() {
 
 			private WorldClient world;
 
@@ -194,11 +196,41 @@ public class Client {
 				return world.isBlockNormalCube(new BlockPos(x, y, z), false);
 			}
 
-		})), "Culling Thread");
-		cullThread.setUncaughtExceptionHandler((thread, error) -> {
-			LOGGER.error("Culling Thread has crashed:", error);
-		});
-		cullThread.start();
+		}));
+
+		try {
+			// Group together the mod file listener and culling thread
+			// as it makes sense considering both tasks can deal with a 10ms pause,
+			// and file listeners will not take much time.
+
+			FilePollingTask filePolling = new FilePollingTask(mods);
+
+			Thread generalUpdateThread = new Thread(() -> {
+				while(((AccessMinecraft) mc).isRunning()) {
+					try {
+						Thread.sleep(10);
+					}
+					catch(InterruptedException error) {
+						return;
+					}
+
+					cullingTask.run();
+
+					if(filePolling != null) {
+						filePolling.run();
+					}
+				}
+
+				filePolling.close();
+			}, "Async Updates");
+			generalUpdateThread.setUncaughtExceptionHandler((thread, error) -> {
+				LOGGER.error("Async updates has crashed", error);
+			});
+			generalUpdateThread.start();
+		}
+		catch(IOException error) {
+			LOGGER.error("Could not start async updates thread", error);
+		}
 
 		bus.register(new ClientApi());
 		bus.register(popupManager = new PopupManager());

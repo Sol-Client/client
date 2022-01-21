@@ -1,5 +1,9 @@
 package me.mcblueparrot.client.mod.impl.hud.chat;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
@@ -8,7 +12,9 @@ import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.ChatRenderEvent;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
+import me.mcblueparrot.client.event.impl.ReceiveChatMessageEvent;
 import me.mcblueparrot.client.event.impl.ScrollEvent;
+import me.mcblueparrot.client.mod.annotation.ConfigFile;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.hud.HudMod;
@@ -113,6 +119,24 @@ public class ChatMod extends HudMod {
 	@ConfigOption("Prompt Web Links")
 	public boolean promptLinks = true;
 
+	@Expose
+	@ConfigOption("Chat Filter")
+	private boolean chatFilter = false;
+	@ConfigOption("Filtered Words")
+	@ConfigFile(text = "Edit File...", file = "Chat Filter.txt", header = "# List words and/or phrases here for them to be blocked.\n# The chat mod and chat filter must be enabled for this to work.\n# This mainly works for English. You may have trouble with other languages and it is not perfect at detection.")
+	private String filteredWordsContent;
+	private List<String> filteredWords = new ArrayList<>();
+
+	@Override
+	public void onFileUpdate(String fieldName) {
+		super.onFileUpdate(fieldName);
+
+		if(fieldName.equals("filteredWordsContent")) {
+			filteredWords = new ArrayList<>(Arrays.asList(filteredWordsContent.split("\\r?\\n"))); // https://stackoverflow.com/a/454913
+			filteredWords.removeIf((word) -> word.isEmpty() || word.startsWith("#"));
+		}
+	}
+
 	private int previousChatSize;
 
 	public final SymbolsButton symbolsButton = new SymbolsButton();
@@ -204,6 +228,35 @@ public class ChatMod extends HudMod {
 				line.setTransparency(line.getTransparency() * ANIMATION_MULTIPLIER);
 			}
 		}
+	}
+
+	@EventHandler
+	public void onReceiveChatMessage(ReceiveChatMessageEvent event) {
+		if(!chatFilter) {
+			return;
+		}
+
+		if(filteredWords.contains(event.message)) {
+			event.cancelled = true;
+			return;
+		}
+
+		// Primarily focused on English text, as all non-ascii characters are stripped.
+		String message = strip(event.message);
+
+		for(String word : filteredWords) {
+			word = strip(word);
+
+			if(message.startsWith(word) || message.endsWith(word)
+					|| message.contains(" " + word + " ")) {
+				event.cancelled = true;
+				return;
+			}
+		}
+	}
+
+	private static String strip(String message) {
+		return EnumChatFormatting.getTextWithoutFormattingCodes(message).toLowerCase().replaceAll("[^a-z ]", "");
 	}
 
 	@EventHandler

@@ -19,6 +19,7 @@ import me.mcblueparrot.client.mod.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
+import me.mcblueparrot.client.mod.annotation.ConfigFile;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.element.Button;
@@ -353,6 +354,11 @@ public class ModsScreen extends GuiScreen {
 				Utils.drawRectangle(rectangle, new Colour(0, 0, 0, 150));
 				font.renderString(option.name, rectangle.getX() + sweetSpot, rectangle.getY() + sweetSpot, -1);
 
+				Colour textColour = new Colour(200, 200, 200);
+				if(rectangle.contains(mouseX, mouseY)) {
+					textColour = Colour.WHITE;
+				}
+
 				if(option.getType() == boolean.class) {
 					Tickbox box = new Tickbox(rectangle.getX() + rectangle.getWidth() - 18, rectangle.getY() + 3,
 							(boolean) option.getValue());
@@ -370,11 +376,6 @@ public class ModsScreen extends GuiScreen {
 					method.setAccessible(true); // Why?
 					Enum<?>[] values = (Enum<?>[]) method.invoke(null);
 
-					Colour valueColour = new Colour(200, 200, 200);
-					if(rectangle.contains(mouseX, mouseY)) {
-						valueColour = Colour.WHITE;
-					}
-
 					int maxWidth = 0;
 
 					for(Enum<?> value : values) {
@@ -387,7 +388,7 @@ public class ModsScreen extends GuiScreen {
 
 					font.renderString(valueName, textarea.getX() + (textarea.getWidth() / 2) - (font.getWidth(valueName) / 2),
 							rectangle.getY() + sweetSpot,
-							valueColour.getValue());
+							textColour.getValue());
 
 					Rectangle previousBounds = new Rectangle(
 							textarea.getX() - 8,
@@ -553,11 +554,22 @@ public class ModsScreen extends GuiScreen {
 					}
 
 					font.renderString(value, rectangle.getX() + rectangle.getWidth() - font.getWidth(value) - sweetSpot, rectangle.getY() + sweetSpot,
-							-1);
+							textColour.getValue());
 
 					if(rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
 						Utils.playClickSound();
 						selectedKey = key;
+					}
+				}
+				else if(option.getType() == String.class && option.file != null) {
+					String text = option.configFile.text();
+
+					font.renderString(text, rectangle.getX() + rectangle.getWidth() - font.getWidth(text) - sweetSpot, rectangle.getY() + sweetSpot,
+							textColour.getValue());
+
+					if(rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
+						Utils.playClickSound();
+						Utils.sendLauncherMessage("openUrl", option.file.toURI().toURL().toString());
 					}
 				}
 

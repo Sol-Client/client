@@ -123,7 +123,9 @@ public class ChatMod extends HudMod {
 	@ConfigOption("Chat Filter")
 	private boolean chatFilter = false;
 	@ConfigOption("Filtered Words")
-	@ConfigFile(text = "Edit File...", file = "Chat Filter.txt", header = "# List words and/or phrases here for them to be blocked.\n# The chat mod and chat filter must be enabled for this to work.\n# This mainly works for English. You may have trouble with other languages and it is not perfect at detection.")
+	@ConfigFile(text = "Edit File...", file = "Chat Filter.txt", header = "# List words and/or phrases here for them to be blocked.\n"
+			+ "# The chat mod and chat filter must be enabled for this to work.\n"
+			+ "# This mainly works for English. You may have trouble with other languages and it is not perfect at detection.")
 	private String filteredWordsContent;
 	private List<String> filteredWords = new ArrayList<>();
 

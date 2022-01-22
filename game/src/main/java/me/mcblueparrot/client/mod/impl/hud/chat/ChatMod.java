@@ -238,19 +238,14 @@ public class ChatMod extends HudMod {
 			return;
 		}
 
-		if(filteredWords.contains(event.message)) {
-			event.cancelled = true;
-			return;
-		}
-
 		// Primarily focused on English text, as all non-ascii characters are stripped.
 		String message = strip(event.message);
 
 		for(String word : filteredWords) {
 			word = strip(word);
 
-			if(message.startsWith(word) || message.endsWith(word)
-					|| message.contains(" " + word + " ")) {
+			if(message.equals(word) || message.startsWith(word + " ")
+					|| message.endsWith(" " + word) || message.contains(" " + word + " ")) {
 				event.cancelled = true;
 				return;
 			}

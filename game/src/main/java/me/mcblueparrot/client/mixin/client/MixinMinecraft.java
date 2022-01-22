@@ -31,6 +31,7 @@ import me.mcblueparrot.client.event.impl.PreRenderTickEvent;
 import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.event.impl.ScrollEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
+import me.mcblueparrot.client.mod.impl.TweaksMod;
 import me.mcblueparrot.client.ui.screen.SplashScreen;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
@@ -41,6 +42,7 @@ import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.GuiConnecting;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -175,7 +177,11 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	public int onScroll() {
 		int dWheel = Mouse.getEventDWheel();
 
+		int divided = 0;
+
 		if(dWheel != 0) {
+			divided = dWheel / Math.abs(dWheel);
+
 			if(Client.INSTANCE.bus.post(new ScrollEvent(dWheel)).cancelled) {
 				dWheel = 0;
 			}
@@ -183,8 +189,13 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 				dWheel = 0;
 			}
 			else {
-				InputReplayTimer.handleScroll(dWheel / Math.abs(dWheel) /* convert to -1/0/1 */);
+				InputReplayTimer.handleScroll(divided);
 			}
+		}
+
+		if(dWheel != 0 && !playerController.isSpectatorMode()
+				&& TweaksMod.enabled && !TweaksMod.instance.hotbarScrolling) {
+			dWheel = 0;
 		}
 
 		return dWheel;
@@ -566,5 +577,8 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 
 	@Shadow
 	private RenderManager renderManager;
+
+	@Shadow
+	public PlayerControllerMP playerController;
 
 }

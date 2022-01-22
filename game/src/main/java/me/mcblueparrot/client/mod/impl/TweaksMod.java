@@ -2,7 +2,6 @@ package me.mcblueparrot.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import lombok.AllArgsConstructor;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.GammaEvent;
 import me.mcblueparrot.client.mod.Mod;
@@ -35,6 +34,9 @@ public class TweaksMod extends Mod {
 	@Expose
 	@ConfigOption("Better Key Bindings")
 	public boolean betterKeyBindings = true;
+	@Expose
+	@ConfigOption("Hotbar Scrolling")
+	public boolean hotbarScrolling = true;
 
 	public TweaksMod() {
 		super("Tweaks", "tweaks", "Various game tweaks.", ModCategory.UTILITY);
@@ -63,21 +65,6 @@ public class TweaksMod extends Mod {
 		if(fullbright) {
 			event.gamma = 20F;
 		}
-	}
-
-	@AllArgsConstructor
-	public enum ViewBobbingStyle {
-		HAND_AND_WORLD("Hand and World"),
-		HAND_ONLY("Hand Only"),
-		WORLD_ONLY("World Only");
-
-		private String name;
-
-		@Override
-		public String toString() {
-			return name;
-		}
-
 	}
 
 }

@@ -5,6 +5,7 @@ class Config {
 	static data = {
 		maxMemory: 2048,
 		optifine: true,
+		discord: false,
 		minecraftFolder: "<use default>"
 	};
 	static file;

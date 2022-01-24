@@ -56,7 +56,6 @@ public class CullTask implements Runnable {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private final OcclusionCullingInstance culling;
 	private final Minecraft mc = Minecraft.getMinecraft();
-	private final int sleepDelay = 10;
 	private final int hitboxLimit = 15;
 	public long lastTime = 0;
 
@@ -71,109 +70,105 @@ public class CullTask implements Runnable {
 
 	@Override
 	public void run() {
-		while (((AccessMinecraft) mc).isRunning()) {
-			try {
-				Thread.sleep(sleepDelay);
+		try {
+			if(mc.thePlayer != null && mc.getRenderViewEntity() != null) {
+				Vec3 cameraMC = ActiveRenderInfo.projectViewFromEntity(mc.getRenderViewEntity(), 1);
 
-				if(mc.thePlayer != null && mc.getRenderViewEntity() != null) {
-					Vec3 cameraMC = ActiveRenderInfo.projectViewFromEntity(mc.getRenderViewEntity(), 1);
-
-					if(requestCull || !(cameraMC.xCoord == lastPos.x && cameraMC.yCoord == lastPos.y
-							&& cameraMC.zCoord == lastPos.z)) {
-						long start = System.currentTimeMillis();
-						requestCull = false;
-						lastPos.set(cameraMC.xCoord, cameraMC.yCoord, cameraMC.zCoord);
-						Vec3d camera = lastPos;
-						culling.resetCache();
-						boolean spectator = mc.thePlayer.isSpectator();
-						for (int x = -8; x <= 8; x++) {
-							for(int z = -8; z <= 8; z++) {
-								Chunk chunk = mc.theWorld.getChunkFromChunkCoords(mc.thePlayer.chunkCoordX + x,
-										mc.thePlayer.chunkCoordZ + z);
-								Iterator<Entry<BlockPos, TileEntity>> iterator = chunk.getTileEntityMap().entrySet()
-										.iterator();
-								Entry<BlockPos, TileEntity> entry;
-								while (iterator.hasNext()) {
-									try {
-										entry = iterator.next();
-									}
-									catch(NullPointerException | ConcurrentModificationException ex) {
-										break; // We are not synced to the main thread, so NPE's/CME are allowed here
-											   // and way less
-											   // overhead probably than trying to sync stuff up for no really good reason
-									}
-
-									if(entry.getValue().getBlockType() == Blocks.beacon) {
-										continue;
-									}
-
-									TileEntity tile = entry.getValue();
-
-									if(spectator) {
-										((Cullable) tile).setCulled(false);
-										continue;
-									}
-
-									BlockPos pos = entry.getKey();
-
-									if(pos.distanceSq(cameraMC.xCoord, cameraMC.yCoord,
-											cameraMC.zCoord) < 4096.0D) {
-										aabbMin.set(pos.getX(), pos.getY(), pos.getZ());
-										aabbMax.set(pos.getX() + 1d, pos.getY() + 1d, pos.getZ() + 1d);
-
-										boolean visible = culling.isAABBVisible(aabbMin, aabbMax, camera);
-										((Cullable) tile).setCulled(!visible);
-									}
+				if(requestCull || !(cameraMC.xCoord == lastPos.x && cameraMC.yCoord == lastPos.y
+						&& cameraMC.zCoord == lastPos.z)) {
+					long start = System.currentTimeMillis();
+					requestCull = false;
+					lastPos.set(cameraMC.xCoord, cameraMC.yCoord, cameraMC.zCoord);
+					Vec3d camera = lastPos;
+					culling.resetCache();
+					boolean spectator = mc.thePlayer.isSpectator();
+					for (int x = -8; x <= 8; x++) {
+						for(int z = -8; z <= 8; z++) {
+							Chunk chunk = mc.theWorld.getChunkFromChunkCoords(mc.thePlayer.chunkCoordX + x,
+									mc.thePlayer.chunkCoordZ + z);
+							Iterator<Entry<BlockPos, TileEntity>> iterator = chunk.getTileEntityMap().entrySet()
+									.iterator();
+							Entry<BlockPos, TileEntity> entry;
+							while (iterator.hasNext()) {
+								try {
+									entry = iterator.next();
+								}
+								catch(NullPointerException | ConcurrentModificationException ex) {
+									break; // We are not synced to the main thread, so NPE's/CME are allowed here
+									// and way less
+									// overhead probably than trying to sync stuff up for no really good reason
 								}
 
+								if(entry.getValue().getBlockType() == Blocks.beacon) {
+									continue;
+								}
+
+								TileEntity tile = entry.getValue();
+
+								if(spectator) {
+									((Cullable) tile).setCulled(false);
+									continue;
+								}
+
+								BlockPos pos = entry.getKey();
+
+								if(pos.distanceSq(cameraMC.xCoord, cameraMC.yCoord,
+										cameraMC.zCoord) < 4096.0D) {
+									aabbMin.set(pos.getX(), pos.getY(), pos.getZ());
+									aabbMax.set(pos.getX() + 1d, pos.getY() + 1d, pos.getZ() + 1d);
+
+									boolean visible = culling.isAABBVisible(aabbMin, aabbMax, camera);
+									((Cullable) tile).setCulled(!visible);
+								}
 							}
+
 						}
-
-						Entity entity = null;
-						Iterator<Entity> iterable = mc.theWorld.loadedEntityList.iterator();
-
-						while(iterable.hasNext()) {
-							try {
-								entity = iterable.next();
-							}
-							catch(NullPointerException | ConcurrentModificationException ex) {
-								break; // We are not synced to the main thread, so NPE's/CME are allowed here and way
-									   // less
-									   // overhead probably than trying to sync stuff up for no really good reason
-							}
-
-							if(spectator || isSkippableArmorstand(entity)) {
-								((Cullable) entity).setCulled(false);
-								continue;
-							}
-
-							if(!(entity.getPositionVector().distanceTo(cameraMC) < 128)) {
-								((Cullable) entity).setCulled(false); // If your entity view distance is larger than
-								// tracingDistance just render it
-								continue;
-							}
-
-							AxisAlignedBB boundingBox = entity.getEntityBoundingBox();
-							if(boundingBox.maxX - boundingBox.minX > hitboxLimit
-									|| boundingBox.maxY - boundingBox.minY > hitboxLimit
-									|| boundingBox.maxZ - boundingBox.minZ > hitboxLimit) {
-								((Cullable) entity).setCulled(false); // To big to bother to cull
-								continue;
-							}
-
-							aabbMin.set(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
-							aabbMax.set(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
-
-							boolean visible = culling.isAABBVisible(aabbMin, aabbMax, camera);
-							((Cullable) entity).setCulled(!visible);
-						}
-						lastTime = (System.currentTimeMillis() - start);
 					}
+
+					Entity entity = null;
+					Iterator<Entity> iterable = mc.theWorld.loadedEntityList.iterator();
+
+					while(iterable.hasNext()) {
+						try {
+							entity = iterable.next();
+						}
+						catch(NullPointerException | ConcurrentModificationException ex) {
+							break; // We are not synced to the main thread, so NPE's/CME are allowed here and way
+							// less
+							// overhead probably than trying to sync stuff up for no really good reason
+						}
+
+						if(spectator || isSkippableArmorstand(entity)) {
+							((Cullable) entity).setCulled(false);
+							continue;
+						}
+
+						if(!(entity.getPositionVector().distanceTo(cameraMC) < 128)) {
+							((Cullable) entity).setCulled(false); // If your entity view distance is larger than
+							// tracingDistance just render it
+							continue;
+						}
+
+						AxisAlignedBB boundingBox = entity.getEntityBoundingBox();
+						if(boundingBox.maxX - boundingBox.minX > hitboxLimit
+								|| boundingBox.maxY - boundingBox.minY > hitboxLimit
+								|| boundingBox.maxZ - boundingBox.minZ > hitboxLimit) {
+							((Cullable) entity).setCulled(false); // To big to bother to cull
+							continue;
+						}
+
+						aabbMin.set(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
+						aabbMax.set(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+
+						boolean visible = culling.isAABBVisible(aabbMin, aabbMax, camera);
+						((Cullable) entity).setCulled(!visible);
+					}
+					lastTime = (System.currentTimeMillis() - start);
 				}
 			}
-			catch(Exception error) {
-				LOGGER.error("Error culling", error);
-			}
+		}
+		catch(Exception error) {
+			LOGGER.error("Error culling", error);
 		}
 	}
 

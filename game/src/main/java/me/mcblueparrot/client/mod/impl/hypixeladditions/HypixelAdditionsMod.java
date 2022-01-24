@@ -4,9 +4,7 @@
 
 package me.mcblueparrot.client.mod.impl.hypixeladditions;
 
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,16 +15,16 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
+import me.mcblueparrot.client.AutoGGMessage;
+import me.mcblueparrot.client.AutoGLMessage;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.DetectedServer;
+import me.mcblueparrot.client.api.Popup;
 import me.mcblueparrot.client.event.EventHandler;
-import me.mcblueparrot.client.event.impl.GameOverlayElement;
-import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
 import me.mcblueparrot.client.event.impl.ReceiveChatMessageEvent;
 import me.mcblueparrot.client.event.impl.ServerConnectEvent;
@@ -38,16 +36,9 @@ import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.impl.hypixeladditions.commands.ChatChannelCommand;
 import me.mcblueparrot.client.mod.impl.hypixeladditions.commands.VisitHousingCommand;
-import me.mcblueparrot.client.mod.impl.hypixeladditions.request.Request;
 import me.mcblueparrot.client.util.ApacheHttpClient;
 import me.mcblueparrot.client.util.Utils;
-import me.mcblueparrot.client.util.data.Colour;
-import me.mcblueparrot.client.util.data.Rectangle;
 import net.hypixel.api.HypixelAPI;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.item.ItemStack;
@@ -80,6 +71,9 @@ public class HypixelAdditionsMod extends Mod {
 	@Expose
 	@ConfigOption("Auto GG")
 	private boolean autogg = true;
+	@Expose
+	@ConfigOption("Auto GG Message")
+	private AutoGGMessage autoggMessage = AutoGGMessage.GG;
 	private List<Pattern> autoggTriggers = Arrays.asList(
 			"^ +1st Killer - ?\\[?\\w*\\+*\\]? \\w+ - \\d+(?: Kills?)?$",
 			"^ *1st (?:Place ?)?(?:-|:)? ?\\[?\\w*\\+*\\]? \\w+(?: : \\d+| - \\d+(?: Points?)?| - \\d+(?: x .)?| \\(\\w+ .{1,6}\\) - \\d+ Kills?|: \\d+:\\d+| - \\d+ (?:Zombie )?(?:Kills?|Blocks? Destroyed)| - \\[LINK\\])?$",
@@ -102,8 +96,7 @@ public class HypixelAdditionsMod extends Mod {
 	@ConfigOption("Hide GG")
 	private boolean hidegg = false;
 	private List<Pattern> hideggTriggers = Arrays.asList(
-			".*: [gG]{2}",
-			".*: [gG]ood [gG]ame",
+			".*: (([gG]{2})|([gG]ood [gG]ame))",
 			"\\+\\d* Karma!").stream().map(Pattern::compile).collect(Collectors.toList());
 	private boolean donegg;
 	private Pattern hideChannelMessageTrigger = Pattern.compile("(You are now in the (ALL|PARTY|GUILD|OFFICER) channel|You're already in this channel!)");
@@ -111,6 +104,9 @@ public class HypixelAdditionsMod extends Mod {
 	@Expose
 	@ConfigOption("Auto GL")
 	private boolean autogl;
+	@Expose
+	@ConfigOption("Auto GL Message")
+	private AutoGLMessage autoglMessage = AutoGLMessage.GLHF;
 	private String autoglTrigger = "The game starts in 1 second!";
 	private long ticksUntilAutogl = -1;
 	private long ticksUntilLocraw = -1;
@@ -126,18 +122,12 @@ public class HypixelAdditionsMod extends Mod {
 	@Expose
 	private String apiKey;
 	private HypixelAPI api;
-	public Deque<Request> requests = new ArrayDeque<>();
-	public Request request;
-	private KeyBinding keyAcceptRequest = new KeyBinding("Accept Request", Keyboard.KEY_Y, "Sol Client");
-	private KeyBinding keyDismissRequest = new KeyBinding("Dismiss Request", Keyboard.KEY_N, "Sol Client");
 	private HypixelLocationData locationData;
 	private Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
 
 	public HypixelAdditionsMod() {
-		super("Hypixel Additions", "hypixel_util", "Various additions to Hypixel.", ModCategory.UTILITY);
+		super("Hypixel Additions", "hypixel_util", "Various improvements to Hypixel.", ModCategory.UTILITY);
 		instance = this;
-		Client.INSTANCE.registerKeyBinding(keyAcceptRequest);
-		Client.INSTANCE.registerKeyBinding(keyDismissRequest);
 	}
 
 
@@ -345,9 +335,9 @@ public class HypixelAdditionsMod extends Mod {
 
 		if(popupEvents) {
 			for(String line : event.message.split("\\n")) {
-				Request request = Request.fromMessage(line);
-				if(request != null) {
-					requests.add(request);
+				Popup popup = HypixelPopupType.popupFromMessage(line);
+				if(popup != null) {
+					Client.INSTANCE.getPopupManager().add(popup);
 					return;
 				}
 			}
@@ -357,7 +347,7 @@ public class HypixelAdditionsMod extends Mod {
 			for(Pattern pattern : autoggTriggers) {
 				if(pattern.matcher(event.message).matches()) {
 					donegg = true;
-					mc.thePlayer.sendChatMessage("/achat gg");
+					mc.thePlayer.sendChatMessage("/achat " + autoggMessage);
 					return;
 				}
 			}
@@ -402,66 +392,16 @@ public class HypixelAdditionsMod extends Mod {
 					|| ("UHC".equals(locationData.getType()) && !"SOLO".equals(locationData.getType()))
 					|| ("SPEED_UHC".equals(locationData.getType()) && !"solo_nomal".equals(locationData.getType()))
 					|| "BATTLEGROUND" /* Warlords */ .equals(locationData.getType()))) {
-				mc.thePlayer.sendChatMessage("/shout glhf");
+				mc.thePlayer.sendChatMessage("/shout " + autoglMessage);
 			}
 			else {
-				mc.thePlayer.sendChatMessage("/achat glhf");
+				mc.thePlayer.sendChatMessage("/achat " + autoglMessage);
 			}
 
 			donegl = true;
 
 			ticksUntilAutogl = -1;
 		}
-	}
-
-	@EventHandler
-	public void onRender(PostGameOverlayRenderEvent event) {
-		if(event.type != GameOverlayElement.ALL) return;
-
-		if(request != null) {
-			long since = System.currentTimeMillis() - request.time;
-			if(since > 10000) {
-				request = null;
-			}
-			else {
-				String message = request.message;
-				String keys = EnumChatFormatting.GREEN + " [ " + GameSettings.getKeyDisplayString(keyAcceptRequest.getKeyCode()) + " ] Accept" +
-						EnumChatFormatting.RED + "  [ " + GameSettings.getKeyDisplayString(keyDismissRequest.getKeyCode()) + " ] Dismiss ";
-				int width = Math.max(mc.fontRendererObj.getStringWidth(message), mc.fontRendererObj.getStringWidth(keys)) + 15;
-
-				ScaledResolution resolution = new ScaledResolution(mc);
-
-				Rectangle popupBounds = new Rectangle(resolution.getScaledWidth() / 2 - (width / 2), 10, width, 50);
-				Utils.drawRectangle(popupBounds, new Colour(0, 0, 0, 100));
-				Utils.drawRectangle(new Rectangle(popupBounds.getX(), popupBounds.getY() + popupBounds.getHeight() - 1, width, 2), Colour.BLACK);
-				Utils.drawRectangle(new Rectangle(popupBounds.getX(),
-						popupBounds.getY() + popupBounds.getHeight() - 1,
-						(int) ((popupBounds.getWidth() / 10000F) * (since)), 2), Colour.BLUE);
-
-				mc.fontRendererObj.drawString(message,
-						popupBounds.getX() + (popupBounds.getWidth() / 2) - (mc.fontRendererObj.getStringWidth(message) / 2), 20,
-						-1);
-
-				mc.fontRendererObj.drawString(keys,
-						popupBounds.getX() + (popupBounds.getWidth() / 2) - (mc.fontRendererObj.getStringWidth(keys) / 2), 40,
-						-1);
-
-				if(keyAcceptRequest.isPressed()) {
-					mc.thePlayer.sendChatMessage(request.command);
-					request = null;
-				}
-				else if(keyDismissRequest.isPressed()) {
-					request = null;
-				}
-			}
-		}
-
-		if(request == null && !requests.isEmpty()) {
-			request = requests.pop();
-			request.time = System.currentTimeMillis();
-		}
-		keyAcceptRequest.isPressed();
-		keyDismissRequest.isPressed();
 	}
 
 	@EventHandler

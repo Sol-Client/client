@@ -1,6 +1,7 @@
 package me.mcblueparrot.client.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,6 +53,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
+import net.minecraft.util.Util.EnumOS;
 
 @UtilityClass
 public class Utils {
@@ -348,6 +352,17 @@ public class Utils {
 
 	public static void sendLauncherMessage(String type, String... arguments) {
 		System.out.println("message " + System.getProperty("me.mcblueparrot.client.secret") + " " + type + " " + String.join(" ", arguments));
+	}
+
+	public static String getRelativeToPackFolder(File packFile) {
+		String relative = new File(Minecraft.getMinecraft().mcDataDir, "resourcepacks").toPath().toAbsolutePath()
+				.relativize(packFile.toPath().toAbsolutePath()).toString();
+
+		if(Util.getOSType() == EnumOS.WINDOWS) {
+			relative = relative.replace("\\", "/"); // Just to be safe
+		}
+
+		return relative;
 	}
 
 }

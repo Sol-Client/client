@@ -15,7 +15,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,8 +25,11 @@ import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
 import lombok.Getter;
+import me.mcblueparrot.client.api.ClientApi;
+import me.mcblueparrot.client.api.PopupManager;
 import me.mcblueparrot.client.config.ConfigVersion;
 import me.mcblueparrot.client.culling.CullTask;
+import me.mcblueparrot.client.discord.DiscordRPC;
 import me.mcblueparrot.client.event.EventBus;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PostGameStartEvent;
@@ -35,47 +37,43 @@ import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.event.impl.SendChatMessageEvent;
 import me.mcblueparrot.client.event.impl.ServerConnectEvent;
 import me.mcblueparrot.client.mod.Mod;
-import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.mod.hud.HudElement;
-import me.mcblueparrot.client.mod.impl.ArabicNumeralsMod;
-import me.mcblueparrot.client.mod.impl.BetterTooltipsMod;
 import me.mcblueparrot.client.mod.impl.BlockSelectionMod;
 import me.mcblueparrot.client.mod.impl.ChunkAnimatorMod;
 import me.mcblueparrot.client.mod.impl.ColourSaturationMod;
+import me.mcblueparrot.client.mod.impl.FreelookMod;
 import me.mcblueparrot.client.mod.impl.HitColourMod;
 import me.mcblueparrot.client.mod.impl.ItemPhysicsMod;
 import me.mcblueparrot.client.mod.impl.MenuBlurMod;
 import me.mcblueparrot.client.mod.impl.MotionBlurMod;
-import me.mcblueparrot.client.mod.impl.FullbrightMod;
-import me.mcblueparrot.client.mod.impl.NumeralPingMod;
-import me.mcblueparrot.client.mod.impl.V1_7VisualsMod;
 import me.mcblueparrot.client.mod.impl.ParticlesMod;
-import me.mcblueparrot.client.mod.impl.FreelookMod;
-import me.mcblueparrot.client.mod.impl.ScoreboardMod;
-import me.mcblueparrot.client.mod.impl.ShowOwnTagMod;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.mod.impl.TimeChangerMod;
+import me.mcblueparrot.client.mod.impl.ToggleSprintMod;
+import me.mcblueparrot.client.mod.impl.TweaksMod;
+import me.mcblueparrot.client.mod.impl.V1_7VisualsMod;
 import me.mcblueparrot.client.mod.impl.ZoomMod;
 import me.mcblueparrot.client.mod.impl.hud.ArmourMod;
 import me.mcblueparrot.client.mod.impl.hud.ComboCounterMod;
+import me.mcblueparrot.client.mod.impl.hud.CoordinatesMod;
 import me.mcblueparrot.client.mod.impl.hud.CpsMod;
 import me.mcblueparrot.client.mod.impl.hud.CrosshairMod;
 import me.mcblueparrot.client.mod.impl.hud.FpsMod;
 import me.mcblueparrot.client.mod.impl.hud.KeystrokesMod;
 import me.mcblueparrot.client.mod.impl.hud.PingMod;
-import me.mcblueparrot.client.mod.impl.hud.PositionMod;
-import me.mcblueparrot.client.mod.impl.hud.ReachDisplayMod;
-import me.mcblueparrot.client.mod.impl.hud.SpeedometerMod;
 import me.mcblueparrot.client.mod.impl.hud.PotionEffectsMod;
+import me.mcblueparrot.client.mod.impl.hud.ReachDisplayMod;
+import me.mcblueparrot.client.mod.impl.hud.ScoreboardMod;
+import me.mcblueparrot.client.mod.impl.hud.SpeedometerMod;
+import me.mcblueparrot.client.mod.impl.hud.TabListMod;
 import me.mcblueparrot.client.mod.impl.hud.TimersMod;
-import me.mcblueparrot.client.mod.impl.hud.ToggleSprintMod;
 import me.mcblueparrot.client.mod.impl.hud.chat.ChatMod;
 import me.mcblueparrot.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
-import me.mcblueparrot.client.util.data.Colour;
+import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -99,6 +97,7 @@ public class Client {
 	private JsonObject data;
 	@Getter
 	private List<Mod> mods = new ArrayList<Mod>();
+	private Map<String, Mod> modsById = new HashMap<>();
 	@Getter
 	private List<HudElement> huds = new ArrayList<HudElement>();
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -116,10 +115,13 @@ public class Client {
 
 	private ChatChannelSystem chatChannelSystem;
 
-	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
-
 	public static final String VERSION = System.getProperty("me.mcblueparrot.client.version", "DEVELOPMENT TEST");
 	public static final String NAME = "Sol Client " + VERSION;
+
+	@Getter
+	private PopupManager popupManager;
+	@Getter
+	private CapeManager capeManager;
 
 	public void init() {
 		System.setProperty("http.agent", "Sol Client/" + VERSION);
@@ -141,7 +143,7 @@ public class Client {
 
 		register(SolClientMod::new);
 		register(FpsMod::new);
-		register(PositionMod::new);
+		register(CoordinatesMod::new);
 		register(KeystrokesMod::new);
 		register(CpsMod::new);
 		register(PingMod::new);
@@ -152,9 +154,10 @@ public class Client {
 		register(ArmourMod::new);
 		register(TimersMod::new);
 		register(ChatMod::new);
+		register(TabListMod::new);
 		register(CrosshairMod::new);
 		register(ScoreboardMod::new);
-		register(FullbrightMod::new);
+		register(TweaksMod::new);
 		register(MotionBlurMod::new);
 		register(MenuBlurMod::new);
 		register(ColourSaturationMod::new);
@@ -166,24 +169,11 @@ public class Client {
 		register(ZoomMod::new);
 		register(ParticlesMod::new);
 		register(TimeChangerMod::new);
-		register(HypixelAdditionsMod::new);
-		register(ArabicNumeralsMod::new);
-		register(NumeralPingMod::new);
-		register(ShowOwnTagMod::new);
-		register(BetterTooltipsMod::new);
 		register(BlockSelectionMod::new);
 		register(HitColourMod::new);
 		register(SCReplayMod::new);
 		register(QuickPlayMod::new);
-
-		registerKeyBinding(modsKey);
-
-		try {
-			unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
-		}
-		catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
-			// OptiFine is not enabled.
-		}
+		register(HypixelAdditionsMod::new);
 
 		cacheHudList();
 
@@ -193,7 +183,8 @@ public class Client {
 		save();
 
 		LOGGER.info("Starting culling thread...");
-		Thread cullThread = new Thread(new CullTask(new OcclusionCullingInstance(128, new DataProvider() {
+
+		CullTask cullingTask = new CullTask(new OcclusionCullingInstance(128, new DataProvider() {
 
 			private WorldClient world;
 
@@ -207,11 +198,60 @@ public class Client {
 				return world.isBlockNormalCube(new BlockPos(x, y, z), false);
 			}
 
-		})), "Culling Thread");
-		cullThread.setUncaughtExceptionHandler((thread, error) -> {
-			LOGGER.error("Culling Thread has crashed:", error);
-		});
-		cullThread.start();
+		}));
+
+		try {
+			// Group together the mod file listener and culling thread
+			// as it makes sense considering both tasks can deal with a 10ms pause,
+			// and file listeners will not take much time.
+
+			FilePollingTask filePolling = new FilePollingTask(mods);
+
+			Thread generalUpdateThread = new Thread(() -> {
+				while(((AccessMinecraft) mc).isRunning()) {
+					try {
+						Thread.sleep(10);
+					}
+					catch(InterruptedException error) {
+						return;
+					}
+
+					cullingTask.run();
+
+					if(filePolling != null) {
+						filePolling.run();
+					}
+				}
+
+				filePolling.close();
+			}, "Async Updates");
+			generalUpdateThread.setUncaughtExceptionHandler((thread, error) -> {
+				LOGGER.error("Async updates has crashed", error);
+			});
+			generalUpdateThread.start();
+		}
+		catch(IOException error) {
+			LOGGER.error("Could not start async updates thread", error);
+		}
+
+		bus.register(new ClientApi());
+		bus.register(popupManager = new PopupManager());
+
+		try {
+			capeManager = new CapeManager();
+		}
+		catch(IOException error) {
+			LOGGER.error("Failed to initialise capes", error);
+		}
+
+		if(Boolean.getBoolean("me.mcblueparrot.client.discord")) {
+			try {
+				bus.register(new DiscordRPC());
+			}
+			catch(Throwable error) {
+				LOGGER.warn("Could not initialise Discord RPC", error);
+			}
+		}
 	}
 
 	public void registerKeyBinding(KeyBinding keyBinding) {
@@ -281,17 +321,21 @@ public class Client {
 			Mod mod = modInitialiser.get();
 
 			if(data.has(mod.getId())) {
-				mods.add(getGson(mod).fromJson(data.get(mod.getId()), mod.getClass()));
+				getGson(mod).fromJson(data.get(mod.getId()), mod.getClass());
 			}
-			else {
-				mods.add(mod);
-			}
+			mods.add(mod);
+
+			modsById.put(mod.getId(), mod);
 
 			mod.onRegister();
 		}
 		catch(Throwable error) {
 			LOGGER.error("Could not register mod", error);
 		}
+	}
+
+	public Mod getModById(String id) {
+		return modsById.get(id);
 	}
 
 	public void addResource(ResourceLocation location, IResource resource) {
@@ -347,11 +391,18 @@ public class Client {
 	@EventHandler
 	public void onPostStart(PostGameStartEvent event) {
 		mods.forEach(Mod::postStart);
+
+		try {
+			unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
+		}
+		catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
+			// OptiFine is not enabled.
+		}
 	}
 
 	@EventHandler
 	public void onSendMessage(SendChatMessageEvent event) {
-		// TODO tab completion
+		// TODO Tab completion. Skipped during port to mixin.
 
 		if(event.message.startsWith("/")) {
 			List<String> args = new ArrayList<>(Arrays.asList(event.message.split(" ")));
@@ -382,7 +433,7 @@ public class Client {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(modsKey.isPressed()) {
+		if(SolClientMod.instance.modsKey.isPressed()) {
 			mc.displayGuiScreen(new ModsScreen(null));
 		}
 	}

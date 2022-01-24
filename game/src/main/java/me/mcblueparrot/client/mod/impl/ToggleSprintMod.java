@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.mod.impl.hud;
+package me.mcblueparrot.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
@@ -14,7 +14,6 @@ import net.minecraft.client.settings.KeyBinding;
 
 public class ToggleSprintMod extends SimpleHudMod {
 
-	private KeyBinding sprintKey;
 	private SprintState sprint;
 	@Expose
 	@ConfigOption("HUD")

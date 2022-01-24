@@ -28,6 +28,8 @@ ipcRenderer.on("quitGame", (event) => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
+	document.getElementsByTagName("title")[0].innerText += " " + Utils.version;
+
 	const playButton = document.getElementById("launch-button");
 	const microsoftLoginButton = document.querySelector(".microsoft-login-button");
 	const mojangLoginButton = document.querySelector(".mojang-login-button");
@@ -204,6 +206,13 @@ window.addEventListener("DOMContentLoaded", () => {
 	optifine.checked = Config.data.optifine;
 	optifine.onchange = () => {
 		Config.data.optifine = optifine.checked;
+		Config.save();
+	}
+
+	var discord = document.querySelector(".discord");
+	discord.checked = Config.data.discord;
+	discord.onchange = () => {
+		Config.data.discord = discord.checked;
 		Config.save();
 	}
 

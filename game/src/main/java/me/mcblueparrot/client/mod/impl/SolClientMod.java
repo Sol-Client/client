@@ -1,7 +1,10 @@
 package me.mcblueparrot.client.mod.impl;
 
+import org.lwjgl.input.Keyboard;
+
 import com.google.gson.annotations.Expose;
 
+import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.mod.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
@@ -10,6 +13,7 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.font.Font;
 import me.mcblueparrot.client.util.font.SlickFontRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 
 public class SolClientMod extends ConfigOnlyMod {
 
@@ -28,9 +32,13 @@ public class SolClientMod extends ConfigOnlyMod {
 	@ConfigOption("Show Logo in Inventory")
 	public boolean logoInInventory;
 
+	@ConfigOption("Mods Key")
+	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");;
+
 	public SolClientMod() {
 		super("Sol Client", "sol_client", "Settings for Sol Client, a simple and easy to use Minecraft client.", ModCategory.NONE);
 		instance = this;
+		Client.INSTANCE.registerKeyBinding(modsKey);
 	}
 
 	@Override

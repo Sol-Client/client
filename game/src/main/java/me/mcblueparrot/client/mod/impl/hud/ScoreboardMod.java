@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.mod.impl;
+package me.mcblueparrot.client.mod.impl.hud;
 
 import java.util.Collection;
 import java.util.List;

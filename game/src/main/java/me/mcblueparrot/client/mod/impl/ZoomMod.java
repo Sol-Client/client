@@ -24,8 +24,12 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static boolean enabled;
 	public static ZoomMod instance;
+
+	@ConfigOption("Zoom Key")
 	private KeyBinding key = new KeyBinding("Zoom", Keyboard.KEY_C, "Sol Client");
+	@ConfigOption("Zoom Out")
 	private KeyBinding zoomOutKey = new KeyBinding("Zoom Out", Keyboard.KEY_MINUS, "Sol Client");
+	@ConfigOption("Zoom In")
 	private KeyBinding zoomInKey = new KeyBinding("Zoom In", Keyboard.KEY_EQUALS, "Sol Client");
 
 	@Expose

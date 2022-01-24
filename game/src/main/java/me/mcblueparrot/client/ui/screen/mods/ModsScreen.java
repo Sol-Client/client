@@ -19,6 +19,7 @@ import me.mcblueparrot.client.mod.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
+import me.mcblueparrot.client.mod.annotation.ConfigFile;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.element.Button;
@@ -29,9 +30,13 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import me.mcblueparrot.client.util.font.Font;
 import me.mcblueparrot.client.util.font.SlickFontRenderer;
+import net.minecraft.client.gui.GuiKeyBindingList;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
@@ -49,6 +54,7 @@ public class ModsScreen extends GuiScreen {
 	private boolean openedWithMod;
 	private Mod selectedMod;
 	private CachedConfigOption selectedColour;
+	private KeyBinding selectedKey;
 	private Font font = SolClientMod.getFont();
 	private TextField searchField = new TextField("Search", 25, 6, 100, true, () -> amountScrolled = 0);
 
@@ -64,6 +70,16 @@ public class ModsScreen extends GuiScreen {
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		if(selectedKey != null) {
+			mc.gameSettings.setOptionKeyBinding(selectedKey, mouseButton - 100);
+
+			selectedKey = null;
+
+			mc.gameSettings.saveOptions();
+			KeyBinding.resetKeyBindingArrayAndHash();
+			return;
+		}
+
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
 		if(mouseButton == 0) {
@@ -78,6 +94,7 @@ public class ModsScreen extends GuiScreen {
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
 		super.mouseReleased(mouseX, mouseY, state);
+
 		if(state == 0) {
 			mouseDown = false;
 		}
@@ -107,9 +124,27 @@ public class ModsScreen extends GuiScreen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		if(selectedKey != null) {
+			if(keyCode == 1) {
+				mc.gameSettings.setOptionKeyBinding(selectedKey, 0);
+			}
+			else if(keyCode != 0) {
+				mc.gameSettings.setOptionKeyBinding(selectedKey, keyCode);
+			}
+			else if(typedChar > 0) {
+				mc.gameSettings.setOptionKeyBinding(selectedKey, typedChar + 256);
+			}
+
+			selectedKey = null;
+
+			mc.gameSettings.saveOptions();
+			KeyBinding.resetKeyBindingArrayAndHash();
+			return;
+		}
+
 		super.keyTyped(typedChar, keyCode);
 
-		if(keyCode == Client.INSTANCE.modsKey.getKeyCode() && previous == null) {
+		if(!Character.isLetter(typedChar) && keyCode == SolClientMod.instance.modsKey.getKeyCode() && previous == null) {
 			mc.displayGuiScreen(null);
 		}
 		else if(keyCode == Keyboard.KEY_RETURN) {
@@ -282,8 +317,9 @@ public class ModsScreen extends GuiScreen {
 								if(mouseInSettings && hasSettings) {
 									newSelected = mod;
 								}
-								else if(mod.isBlocked()) {
+								else if(mod.isBlocked() && Client.INSTANCE.detectedServer != null) {
 									URI blockedModPage;
+
 									if((blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage()) != null) {
 										Utils.sendLauncherMessage("openUrl", blockedModPage.toString());
 									}
@@ -318,6 +354,11 @@ public class ModsScreen extends GuiScreen {
 				Utils.drawRectangle(rectangle, new Colour(0, 0, 0, 150));
 				font.renderString(option.name, rectangle.getX() + sweetSpot, rectangle.getY() + sweetSpot, -1);
 
+				Colour textColour = new Colour(200, 200, 200);
+				if(rectangle.contains(mouseX, mouseY)) {
+					textColour = Colour.WHITE;
+				}
+
 				if(option.getType() == boolean.class) {
 					Tickbox box = new Tickbox(rectangle.getX() + rectangle.getWidth() - 18, rectangle.getY() + 3,
 							(boolean) option.getValue());
@@ -335,11 +376,6 @@ public class ModsScreen extends GuiScreen {
 					method.setAccessible(true); // Why?
 					Enum<?>[] values = (Enum<?>[]) method.invoke(null);
 
-					Colour valueColour = new Colour(200, 200, 200);
-					if(rectangle.contains(mouseX, mouseY)) {
-						valueColour = Colour.WHITE;
-					}
-
 					int maxWidth = 0;
 
 					for(Enum<?> value : values) {
@@ -352,7 +388,7 @@ public class ModsScreen extends GuiScreen {
 
 					font.renderString(valueName, textarea.getX() + (textarea.getWidth() / 2) - (font.getWidth(valueName) / 2),
 							rectangle.getY() + sweetSpot,
-							valueColour.getValue());
+							textColour.getValue());
 
 					Rectangle previousBounds = new Rectangle(
 							textarea.getX() - 8,
@@ -497,6 +533,43 @@ public class ModsScreen extends GuiScreen {
 								}
 							}
 						}
+					}
+				}
+				else if(option.getType() == KeyBinding.class) {
+					KeyBinding key = (KeyBinding) option.getValue();
+					String value = GameSettings.getKeyDisplayString(key.getKeyCode());
+
+					if(selectedKey == key) {
+						value = EnumChatFormatting.YELLOW + value;
+					}
+
+					if(key.getKeyCode() != 0) {
+						for(KeyBinding testKey : mc.gameSettings.keyBindings) {
+							if(testKey != key
+									&& testKey.getKeyCode() == key.getKeyCode()) {
+								value = EnumChatFormatting.RED + value;
+								break;
+							}
+						}
+					}
+
+					font.renderString(value, rectangle.getX() + rectangle.getWidth() - font.getWidth(value) - sweetSpot, rectangle.getY() + sweetSpot,
+							textColour.getValue());
+
+					if(rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
+						Utils.playClickSound();
+						selectedKey = key;
+					}
+				}
+				else if(option.getType() == String.class && option.file != null) {
+					String text = option.configFile.text();
+
+					font.renderString(text, rectangle.getX() + rectangle.getWidth() - font.getWidth(text) - sweetSpot, rectangle.getY() + sweetSpot,
+							textColour.getValue());
+
+					if(rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
+						Utils.playClickSound();
+						Utils.sendLauncherMessage("openUrl", option.file.toURI().toURL().toString());
 					}
 				}
 

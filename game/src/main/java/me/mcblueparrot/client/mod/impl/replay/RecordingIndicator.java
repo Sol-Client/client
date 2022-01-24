@@ -42,7 +42,7 @@ public class RecordingIndicator extends BaseHudElement {
 
 	@Override
 	public void render(Position position, boolean editMode) {
-		if(!editMode && guiControls.isStopped()) return;
+		if(guiControls == null || (!editMode && guiControls.isStopped())) return;
 
         Minecraft mc = Minecraft.getMinecraft();
 

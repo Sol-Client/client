@@ -18,6 +18,18 @@ First, go to [releases](https://github.com/Sol-Client/Client/releases).
 
 Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue. The code is all open source, so don't worry.
 
+## License
+This project uses [GNU General Public License v3.0](LICENSE), meaning that if you fork this project, it must be either completely private, or the code *must* be available to your users.
+
+This is not legal advice, or even a summary, this is just a simplification of one of the main parts of the license.
+
+While not stated in the license, forks should have the following changed:
+- Name
+- Logo
+- Design
+
+There are some parts of the code that use other licenses (such as code "borrowed" from other projects). If this is the case, it will be noted in a comment, or another license file in the same directory.
+
 ## Why?
 There are many Minecraft clients, but they are usually closed source, and may contain malicious code. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
 
@@ -82,9 +94,6 @@ Here are the main features that are currently in the client:
 Click [this fancy blue text](https://github.com/Sol-Client/Client/projects/1) to see planned features.
 
 If you want to suggest a feature, [create a new issue](https://github.com/Sol-Client/Client/issues/new) or [ask on Discord](https://discord.gg/QFDGDhcFqu).
-
-## License
-This project uses [GNU General Public License v3.0](LICENSE). There are some parts of the code that use other licenses (such as code "borrowed" from other projects). If this is the case, it will be noted in a comment, or another license file in the same directory.
 
 If there are any issues with us using your code, please open an issue.
 

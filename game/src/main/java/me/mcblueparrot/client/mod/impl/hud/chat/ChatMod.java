@@ -121,7 +121,7 @@ public class ChatMod extends HudMod {
 
 	@Expose
 	@ConfigOption("Chat Filter")
-	private boolean chatFilter = false;
+	private boolean chatFilter = true;
 	@ConfigOption("Filtered Words")
 	@ConfigFile(text = "Edit File...", file = "Chat Filter.txt", header = "# List words and/or phrases here for them to be blocked.\n"
 			+ "# The chat mod and chat filter must be enabled for this to work.\n"

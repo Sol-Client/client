@@ -120,6 +120,8 @@ public class Client {
 
 	@Getter
 	private PopupManager popupManager;
+	@Getter
+	private CapeManager capeManager;
 
 	public void init() {
 		System.setProperty("http.agent", "Sol Client/" + VERSION);
@@ -234,6 +236,13 @@ public class Client {
 
 		bus.register(new ClientApi());
 		bus.register(popupManager = new PopupManager());
+
+		try {
+			capeManager = new CapeManager();
+		}
+		catch(IOException error) {
+			LOGGER.error("Failed to initialise capes", error);
+		}
 
 		if(Boolean.getBoolean("me.mcblueparrot.client.discord")) {
 			try {

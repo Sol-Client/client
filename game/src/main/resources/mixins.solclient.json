@@ -45,6 +45,7 @@
 		"client.MixinResourcePackRepository",
 		"client.MixinGuiResourcePackList",
 		"client.MixinGuiListExtended",
+		"client.MixinAbstractClientPlayer",
 		"mod.MixinTweaksMod$MixinEnchantment",
 		"mod.MixinTweaksMod$MixinInventoryEffectRenderer",
 		"mod.MixinTweaksMod$MixinItemPotion",

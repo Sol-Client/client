@@ -52,8 +52,6 @@ public class CapeManager {
 				return capeCache.get(player.getUniqueID());
 			}
 			else {
-				System.out.println(capeUrl);
-
 				MinecraftProfileTexture texture = new MinecraftProfileTexture(capeUrl, null);
 
 				ResourceLocation cape = new ResourceLocation("sc_capes/" + texture.getHash());

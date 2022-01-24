@@ -1,5 +1,3 @@
-if(require("electron-squirrel-startup")) return; // If on Windows, handle squirrel-related stuff.
-
 const https = require("https");
 const fs = require("fs");
 const path = require("path");

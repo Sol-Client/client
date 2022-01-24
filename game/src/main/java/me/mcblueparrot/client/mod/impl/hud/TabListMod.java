@@ -29,7 +29,7 @@ public class TabListMod extends Mod {
 	public Colour entryBackgroundColour = new Colour(553648127);
 	@Expose
 	@ConfigOption("Hide Player Heads")
-	public boolean hidePlayerHeads = true;
+	public boolean hidePlayerHeads;
 	@Expose
 	@ConfigOption("Text Shadow")
 	public boolean textShadow = true;

@@ -28,8 +28,9 @@ class Launcher {
 				var optifineRelative = "net/optifine/optifine/1.8.9_HD_U_M5/optifine-1.8.9_HD_U_M5.jar";
 				var optifine = Utils.librariesDirectory + "/" + optifineRelative;
 				var secret = crypto.randomBytes(32).toString("hex");
-
-				if(fs.existsSync(nativesFolder)) {
+				var alreadyRunning = Launcher.games.length > 0;
+				
+				if(!alreadyRunning && fs.existsSync(nativesFolder)) {
 					fs.rmdirSync(nativesFolder, { recursive: true });
 				}
 
@@ -147,7 +148,7 @@ class Launcher {
 						jars.push(Library.getPath(library.downloads.artifact));
 					}
 
-					if(library.natives != null) {
+					if(!alreadyRunning && library.natives != null) {
 						var nativeName = library.natives[Utils.getOsName()];
 						if(nativeName != null) {
 							var download = library.downloads.classifiers[nativeName];

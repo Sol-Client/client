@@ -144,7 +144,7 @@ public class ModsScreen extends GuiScreen {
 
 		super.keyTyped(typedChar, keyCode);
 
-		if(!Character.isLetter(typedChar) && keyCode == SolClientMod.instance.modsKey.getKeyCode() && previous == null) {
+		if(!Character.isLetter(typedChar) && keyCode == SolClientMod.instance.modsKey.getKeyCode()) {
 			mc.displayGuiScreen(null);
 		}
 		else if(keyCode == Keyboard.KEY_RETURN) {

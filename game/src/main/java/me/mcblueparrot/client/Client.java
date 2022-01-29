@@ -73,6 +73,7 @@ import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
+import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
@@ -435,6 +436,9 @@ public class Client {
 	public void onTick(PreTickEvent event) {
 		if(SolClientMod.instance.modsKey.isPressed()) {
 			mc.displayGuiScreen(new ModsScreen(null));
+		}
+		else if(SolClientMod.instance.editHudKey.isPressed()) {
+			mc.displayGuiScreen(new MoveHudsScreen(new ModsScreen(null), null));
 		}
 	}
 

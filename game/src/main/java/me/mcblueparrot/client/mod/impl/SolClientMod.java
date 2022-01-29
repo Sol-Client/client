@@ -33,7 +33,9 @@ public class SolClientMod extends ConfigOnlyMod {
 	public boolean logoInInventory;
 
 	@ConfigOption("Mods Key")
-	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");;
+	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
+	@ConfigOption("Edit HUD Key")
+	public KeyBinding editHudKey = new KeyBinding("Edit HUD", Keyboard.KEY_GRAVE, "Sol Client");
 
 	public SolClientMod() {
 		super("Sol Client", "sol_client", "Settings for Sol Client, a simple and easy to use Minecraft client.", ModCategory.NONE);

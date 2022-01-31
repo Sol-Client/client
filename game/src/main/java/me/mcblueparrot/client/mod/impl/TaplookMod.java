@@ -44,11 +44,13 @@ public class TaplookMod extends Mod {
 		active = true;
 		previousPerspective = mc.gameSettings.thirdPersonView;
 		mc.gameSettings.thirdPersonView = perspective.ordinal();
+		mc.renderGlobal.setDisplayListEntitiesDirty();
 	}
 
 	public void stop() {
 		active = false;
 		mc.gameSettings.thirdPersonView = previousPerspective;
+		mc.renderGlobal.setDisplayListEntitiesDirty();
 	}
 
 	@Override

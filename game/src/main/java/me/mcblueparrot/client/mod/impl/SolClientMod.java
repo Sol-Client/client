@@ -25,6 +25,10 @@ public class SolClientMod extends ConfigOnlyMod {
 	public Colour uiHover;
 
 	@Expose
+	@ConfigOption("Fancy Main Menu")
+	public boolean fancyMainMenu;
+
+	@Expose
 	@ConfigOption("Fancy Font")
 	public boolean fancyFont = true;
 

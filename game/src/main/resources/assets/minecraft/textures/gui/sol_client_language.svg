@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333332 4.2333332"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="sol_client_language.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_language_4x.png"
+   inkscape:export-xdpi="384"
+   inkscape:export-ydpi="384"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#242424"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="11.313709"
+     inkscape:cx="-5.7894368"
+     inkscape:cy="15.070213"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <ellipse
+       style="fill:#ffffff;stroke-width:0.259933;stroke-linecap:round;stroke-linejoin:round"
+       id="path9313"
+       cx="1.9344144"
+       cy="1.972821"
+       rx="1.5375394"
+       ry="1.1790709" />
+    <path
+       id="path9467"
+       style="fill:#ffffff;stroke-width:0.265132;stroke-linecap:round;stroke-linejoin:round"
+       inkscape:transform-center-x="0.10716479"
+       inkscape:transform-center-y="-0.047630852"
+       d="M 2.4779597,3.0477667 2.8855186,2.7269495 3.2597471,2.4374909 C 3.1370637,2.9865362 3.4812068,3.216852 3.8364583,3.4395833 3.3255633,3.3511608 2.8239955,3.2476012 2.4779597,3.0477667 Z"
+       sodipodi:nodetypes="ccccc" />
+  </g>
+</svg>

@@ -18,8 +18,10 @@ public class Colour {
 	public static final Colour BLACK = new Colour(0, 0, 0);
 	public static final Colour RED = new Colour(255, 0, 0);
 	public static final Colour BLUE = new Colour(0, 150, 255);
+	public static final Colour BLUE_HOVER = new Colour(30, 180, 255);
 	public static final Colour WHITE_128 = WHITE.withAlpha(128);
 	public static final Colour BLACK_128 = BLACK.withAlpha(128);
+	public static final Colour BACKGROUND = new Colour(20, 20, 20);
 
 	public Colour(int value) {
 		this.value = value;

@@ -31,13 +31,16 @@ import me.mcblueparrot.client.event.impl.PreRenderTickEvent;
 import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.event.impl.ScrollEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
+import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.mod.impl.TweaksMod;
+import me.mcblueparrot.client.ui.screen.SolClientMainMenu;
 import me.mcblueparrot.client.ui.screen.SplashScreen;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.gui.GuiScreen;
@@ -551,6 +554,18 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	@Inject(method = "shutdownMinecraftApplet" /* applet? looks like MCP is a bit outdated */, at = @At("HEAD"))
 	public void preShutdown(CallbackInfo callback) {
 		Client.INSTANCE.bus.post(new GameQuitEvent());
+	}
+
+	@Inject(method = "displayGuiScreen", at = @At("HEAD"), cancellable = true)
+	public void preDisplayGuiScreen(GuiScreen screen, CallbackInfo callback) {
+		if(((screen == null && theWorld == null) || screen instanceof GuiMainMenu) && SolClientMod.instance.fancyMainMenu) {
+			callback.cancel();
+			displayGuiScreen(new SolClientMainMenu());
+		}
+		else if(screen instanceof SolClientMainMenu && !SolClientMod.instance.fancyMainMenu) {
+			callback.cancel();
+			displayGuiScreen(null);
+		}
 	}
 
 	@Shadow

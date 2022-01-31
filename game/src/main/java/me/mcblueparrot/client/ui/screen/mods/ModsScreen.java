@@ -1,6 +1,5 @@
 package me.mcblueparrot.client.ui.screen.mods;
 
-import java.awt.Desktop;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -193,7 +192,7 @@ public class ModsScreen extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		if(mc.theWorld == null) {
-			drawRect(0, 0, width, height, new Colour(20, 20, 20).getValue());
+			drawRect(0, 0, width, height, Colour.BACKGROUND.getValue());
 		}
 		else {
 			drawWorldBackground(0);
@@ -650,7 +649,7 @@ public class ModsScreen extends GuiScreen {
 					Button applyToAllButton = new Button(font, "Apply to All",
 							new Rectangle(colourSelectBox.getX() + (colourSelectBox.getWidth() / 2) - 50,
 									colourSelectBox.getY() + colourSelectBox.getHeight() - 20, 100, 15),
-							new Colour(0, 150, 255), new Colour(30, 180, 255));
+							Colour.BLUE, Colour.BLUE_HOVER);
 	                applyToAllButton.render(mouseX, mouseY);
 
 	                if(applyToAllButton.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {

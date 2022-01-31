@@ -48,6 +48,7 @@ import me.mcblueparrot.client.mod.impl.MenuBlurMod;
 import me.mcblueparrot.client.mod.impl.MotionBlurMod;
 import me.mcblueparrot.client.mod.impl.ParticlesMod;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
+import me.mcblueparrot.client.mod.impl.TaplookMod;
 import me.mcblueparrot.client.mod.impl.TimeChangerMod;
 import me.mcblueparrot.client.mod.impl.ToggleSprintMod;
 import me.mcblueparrot.client.mod.impl.TweaksMod;
@@ -164,6 +165,7 @@ public class Client {
 		register(ColourSaturationMod::new);
 		register(ChunkAnimatorMod::new);
 		register(FreelookMod::new);
+		register(TaplookMod::new);
 		register(ToggleSprintMod::new);
 		register(V1_7VisualsMod::new);
 		register(ItemPhysicsMod::new);

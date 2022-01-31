@@ -10,8 +10,8 @@
    sodipodi:docname="sol_client_language.svg"
    inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
    inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_language_4x.png"
-   inkscape:export-xdpi="384"
-   inkscape:export-ydpi="384"
+   inkscape:export-xdpi="384.00003"
+   inkscape:export-ydpi="384.00003"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,9 +27,9 @@
      inkscape:document-units="mm"
      showgrid="false"
      units="px"
-     inkscape:zoom="11.313709"
-     inkscape:cx="-5.7894368"
-     inkscape:cy="15.070213"
+     inkscape:zoom="32.000001"
+     inkscape:cx="2.5468749"
+     inkscape:cy="4.5781248"
      inkscape:window-width="1848"
      inkscape:window-height="1016"
      inkscape:window-x="72"
@@ -43,18 +43,18 @@
      inkscape:groupmode="layer"
      id="layer1">
     <ellipse
-       style="fill:#ffffff;stroke-width:0.259933;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#ffffff;stroke-width:0.23692;stroke-linecap:round;stroke-linejoin:round"
        id="path9313"
-       cx="1.9344144"
-       cy="1.972821"
-       rx="1.5375394"
-       ry="1.1790709" />
+       cx="1.9484339"
+       cy="1.9872056"
+       rx="1.4192672"
+       ry="1.0611639" />
     <path
        id="path9467"
-       style="fill:#ffffff;stroke-width:0.265132;stroke-linecap:round;stroke-linejoin:round"
-       inkscape:transform-center-x="0.10716479"
-       inkscape:transform-center-y="-0.047630852"
-       d="M 2.4779597,3.0477667 2.8855186,2.7269495 3.2597471,2.4374909 C 3.1370637,2.9865362 3.4812068,3.216852 3.8364583,3.4395833 3.3255633,3.3511608 2.8239955,3.2476012 2.4779597,3.0477667 Z"
+       style="fill:#ffffff;stroke-width:0.241659;stroke-linecap:round;stroke-linejoin:round"
+       inkscape:transform-center-x="0.098921356"
+       inkscape:transform-center-y="-0.042867772"
+       d="M 2.450168,2.9546567 2.8263762,2.6659212 3.1718179,2.4054085 C 3.0585717,2.8995492 3.3762423,3.1068335 3.7041667,3.3072916 3.2325713,3.2277114 2.7695857,3.1345078 2.450168,2.9546567 Z"
        sodipodi:nodetypes="ccccc" />
   </g>
 </svg>

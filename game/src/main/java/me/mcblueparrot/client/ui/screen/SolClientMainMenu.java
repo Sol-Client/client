@@ -5,32 +5,47 @@ import java.io.IOException;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
+import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 import me.mcblueparrot.client.ui.element.Button;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.access.AccessGuiMainMenu;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
+import me.mcblueparrot.client.util.font.Font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiLanguage;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 
-public class SolClientMainMenu extends GuiScreen {
+public class SolClientMainMenu extends GuiMainMenu {
 
 	private boolean wasMouseDown;
 	private boolean mouseDown;
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
-		drawRect(0, 0, width, height, Colour.BACKGROUND.getValue());
-		GlStateManager.enableBlend();
-		GlStateManager.color(1, 1, 1);
+		drawPanorama(mouseX, mouseY, partialTicks);
+
+		Font font = SolClientMod.getFont();
+
+		String copyrightString = "Copyright Mojang AB. Do not distribute!";
+		font.renderString(copyrightString, (int) (width - font.getWidth(copyrightString) - 10), height - 15, -1);
+		String versionString = "Minecraft 1.8.9";
+		font.renderString(versionString, (int) (width - font.getWidth(versionString) - 10), height - 25, -1);
+
+		font.renderString("Copyright TheKodeToad and contributors.", 10, height - 15, -1);
+		font.renderString(Client.NAME, 10, height - 25, -1);
+
 		mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_logo_with_text_" +
 						Utils.getTextureScale() + ".png"));
 		Gui.drawModalRectWithCustomSizedTexture(width / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
@@ -109,6 +124,48 @@ public class SolClientMainMenu extends GuiScreen {
 		}
 
 		wasMouseDown = mouseDown;
+	}
+
+	private void drawPanorama(int mouseX, int mouseY, float partialTicks) {
+		AccessGuiMainMenu access = (AccessGuiMainMenu) (Object) this;
+
+		this.mc.getFramebuffer().unbindFramebuffer();
+        GlStateManager.viewport(0, 0, 256, 256);
+        access.renderPanorama(mouseX, mouseY, partialTicks);
+        access.rotateAndBlurPanorama(partialTicks);
+        access.rotateAndBlurPanorama(partialTicks);
+        access.rotateAndBlurPanorama(partialTicks);
+        access.rotateAndBlurPanorama(partialTicks);
+        access.rotateAndBlurPanorama(partialTicks);
+        access.rotateAndBlurPanorama(partialTicks);
+        access.rotateAndBlurPanorama(partialTicks);
+        mc.getFramebuffer().bindFramebuffer(true);
+
+        GlStateManager.viewport(0, 0, mc.displayWidth, mc.displayHeight);
+
+        float uvBase = width > height ? 120.0F / width : 120.0F / height;
+        float uBase = height * uvBase / 256.0F;
+        float vBase = width * uvBase / 256.0F;
+
+		Tessellator tessellator = Tessellator.getInstance();
+		WorldRenderer renderer = tessellator.getWorldRenderer();
+		renderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+		renderer.pos(0.0D, height, zLevel).tex((0.5F - uBase), (0.5F + vBase)).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+		renderer.pos(width, height, zLevel).tex(0.5F - uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+		renderer.pos(width, 0.0D, zLevel).tex(0.5F + uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+		renderer.pos(0.0D, 0.0D, zLevel).tex(0.5F + uBase, 0.5F + vBase).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+		tessellator.draw();
+
+		drawRect(0, 0, width, height, new Colour(0, 0, 0, 100).getValue());
+
+		GlStateManager.enableBlend();
+		GlStateManager.color(1, 1, 1);
+	}
+
+	@Override
+	public void initGui() {
+		super.initGui();
+		buttonList.clear();
 	}
 
 	@Override

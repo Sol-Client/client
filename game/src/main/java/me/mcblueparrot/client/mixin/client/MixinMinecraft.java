@@ -558,7 +558,7 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 
 	@Inject(method = "displayGuiScreen", at = @At("HEAD"), cancellable = true)
 	public void preDisplayGuiScreen(GuiScreen screen, CallbackInfo callback) {
-		if(((screen == null && theWorld == null) || screen instanceof GuiMainMenu) && SolClientMod.instance.fancyMainMenu) {
+		if(((screen == null && theWorld == null) || screen.getClass().equals(GuiMainMenu.class)) && SolClientMod.instance.fancyMainMenu) {
 			callback.cancel();
 			displayGuiScreen(new SolClientMainMenu());
 		}

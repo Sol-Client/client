@@ -108,7 +108,7 @@ public class SCReplayMod extends Mod {
 	private SCReplayModBackend backend;
 
 	public SCReplayMod() {
-		super("Replay", "replay", "Record and replay your gameplay. Modified from the Forge version: ReplayMod.", ModCategory.UTILITY);
+		super("Replay", "replay", "Record and replay your gameplay.", ModCategory.UTILITY);
 		instance = this;
 
 		backend = new SCReplayModBackend();

@@ -114,7 +114,7 @@ public class MoveHudsScreen extends GuiScreen {
 		}
 
 		Button button = new Button(SolClientMod.getFont(), "Done", new Rectangle(width / 2 - 50, height - 60, 100, 20), new Colour(0, 255, 0),
-				new Colour(150, 255, 150));
+				new Colour(150, 255, 150)).withIcon("textures/gui/sol_client_tick");
 		button.render(mouseX, mouseY);
 
 		if(button.contains(mouseX, mouseY) && !wasMouseDown && mouseDown) {

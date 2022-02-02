@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333332 4.2333332"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="sol_client_replay_button.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_replay_4x.png"
+   inkscape:export-xdpi="384.00003"
+   inkscape:export-ydpi="384.00003"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#242424"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="8"
+     inkscape:cx="-21.6875"
+     inkscape:cy="17.3125"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;stroke-width:0.492477;stroke-linecap:round;stroke-linejoin:round"
+       id="rect12128"
+       height="2.1431251"
+       x="0.65479732"
+       y="1.0451041"
+       rx="0"
+       ry="0"
+       width="2.2750001" />
+    <path
+       sodipodi:type="star"
+       style="fill:#ffffff;stroke-width:0.88063;stroke-linecap:round;stroke-linejoin:round"
+       id="path12652"
+       inkscape:flatsided="false"
+       sodipodi:sides="3"
+       sodipodi:cx="9.4417181"
+       sodipodi:cy="4.9937391"
+       sodipodi:r1="1.9576553"
+       sodipodi:r2="0.97882766"
+       sodipodi:arg1="-3.1415927"
+       sodipodi:arg2="-2.0943951"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 7.4840628,4.9937392 1.4682415,-0.8476897 1.4682417,-0.8476896 0,1.6953792 0,1.6953792 -1.4682417,-0.8476896 z"
+       transform="matrix(0.49556163,0,0,0.4740367,-1.5854866,-0.25054892)"
+       inkscape:transform-center-x="0.24253459" />
+  </g>
+</svg>

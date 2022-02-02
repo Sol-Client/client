@@ -78,7 +78,7 @@ public class SolClientMainMenu extends GuiScreen {
 		if(replay) {
 			replayButton = new Button(SolClientMod.getFont(), "",
 					new Rectangle(buttonsX += 26, height / 4 + 48 + 70, 20, 20), SolClientMod.instance.uiColour,
-					SolClientMod.instance.uiHover).withIcon("textures/gui/sol_client_replay");
+					SolClientMod.instance.uiHover).withIcon("textures/gui/sol_client_replay_button");
 		}
 
 		if(mouseDown && !wasMouseDown) {

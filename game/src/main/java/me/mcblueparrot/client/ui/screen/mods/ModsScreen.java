@@ -9,7 +9,6 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.Sys;
 
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
@@ -18,7 +17,6 @@ import me.mcblueparrot.client.mod.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigFile;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.element.Button;
@@ -29,7 +27,6 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import me.mcblueparrot.client.util.font.Font;
 import me.mcblueparrot.client.util.font.SlickFontRenderer;
-import net.minecraft.client.gui.GuiKeyBindingList;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -334,8 +331,15 @@ public class ModsScreen extends GuiScreen {
 						}
 					}
 					rectangle.stroke(outline);
-					font.renderString(mod.getName(), rectangle.getX() + 6, rectangle.getY() + 4 + (slickFont ? 0 : 1), -1);
-					font.renderString(description, rectangle.getX() + 6, rectangle.getY() + 16, 8421504);
+
+					GlStateManager.enableBlend();
+					GlStateManager.color(1, 1, 1);
+					mc.getTextureManager().bindTexture(new ResourceLocation(
+							"textures/gui/sol_client_" + mod.getId() + "_" + Utils.getTextureScale() + ".png"));
+					drawModalRectWithCustomSizedTexture(rectangle.getX() + 6, rectangle.getY() + 7, 0, 0, 16, 16, 16, 16);
+
+					font.renderString(mod.getName(), rectangle.getX() + 28, rectangle.getY() + 4 + (slickFont ? 0 : 1), -1);
+					font.renderString(description, rectangle.getX() + 28, rectangle.getY() + 16, 8421504);
 
 					y += rectangle.getHeight() + 5;
 				}
@@ -467,7 +471,7 @@ public class ModsScreen extends GuiScreen {
 
 					if(selectedColour == option) {
 						colourSelectBox = new Rectangle(rectangle.getX(), rectangle.getY() + rectangle.getHeight() + 1, 300,
-								option.common ? 120 : 100);
+								option.common ? 125 : 100);
 						if(!colourSelectBox.contains(mouseX, mouseY) && !rectangle.contains(mouseX, mouseY) && mouseDown && !wasMouseDown && mouseInList) {
 							newSelectedColour = null;
 						}
@@ -648,8 +652,8 @@ public class ModsScreen extends GuiScreen {
 				if(this.selectedColour.common) {
 					Button applyToAllButton = new Button(font, "Apply to All",
 							new Rectangle(colourSelectBox.getX() + (colourSelectBox.getWidth() / 2) - 50,
-									colourSelectBox.getY() + colourSelectBox.getHeight() - 20, 100, 15),
-							Colour.BLUE, Colour.BLUE_HOVER);
+									colourSelectBox.getY() + colourSelectBox.getHeight() - 25, 100, 20),
+							Colour.BLUE, Colour.BLUE_HOVER).withIcon("textures/gui/sol_client_new");
 	                applyToAllButton.render(mouseX, mouseY);
 
 	                if(applyToAllButton.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
@@ -671,7 +675,7 @@ public class ModsScreen extends GuiScreen {
 		drawHorizontalLine(0, width, 29, 0xFF000000);
 		drawHorizontalLine(0, width, height - 31, 0xFF000000);
 		Button done = new Button(font, "Done", new Rectangle(openedWithMod ? width / 2 - 50 : width / 2 - 103, height - 25, 100, 20), new Colour(0, 255, 0),
-				new Colour(150, 255, 150));
+				new Colour(150, 255, 150)).withIcon("textures/gui/sol_client_tick");
 		done.render(mouseX, mouseY);
 
 		if(done.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
@@ -690,8 +694,8 @@ public class ModsScreen extends GuiScreen {
 		}
 
 		if(!openedWithMod) {
-			Button edit = new Button(font, "HUD Editor", new Rectangle(width / 2 + 3, height - 25, 100, 20), new Colour(255, 150, 0),
-					new Colour(255, 190, 40));
+			Button edit = new Button(font, "Edit HUD", new Rectangle(width / 2 + 3, height - 25, 100, 20), new Colour(255, 150, 0),
+					new Colour(255, 190, 40)).withIcon("textures/gui/sol_client_hud");
 			edit.render(mouseX, mouseY);
 			if(edit.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
 				Utils.playClickSound();

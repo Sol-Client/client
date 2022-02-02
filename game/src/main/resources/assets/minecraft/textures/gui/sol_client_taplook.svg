@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   inkscape:export-ydpi="384.00003"
+   inkscape:export-xdpi="384.00003"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_tick_4x.png"
+   sodipodi:docname="sol_client_taplook.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   id="svg5"
+   version="1.1"
+   viewBox="0 0 4.2333333 4.2333333"
+   height="16"
+   width="16"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#282828"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="11.313709"
+     inkscape:cx="8.1759222"
+     inkscape:cy="13.567611"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="false" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lstart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path7763" />
+    </marker>
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect54069"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Use fill-rule evenodd on &lt;b&gt;fill and stroke&lt;/b&gt; dialog if no flatten result after convert clip to paths." />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath54065">
+      <path
+         id="path54067"
+         style="display:block;fill:#000000;stroke:none;stroke-width:0.0549891;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:0.995048"
+         d="M 2.076359,0.63510335 V 1.6934367 H 0.68419596 V 1.8257283 H 3.6685098 V 1.6934367 H 2.2086507 V 0.63510335 Z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath54065-6">
+      <path
+         id="path54067-1"
+         style="display:block;fill:#000000;stroke:none;stroke-width:0.0549891;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:0.995048"
+         d="M 2.076359,0.63510335 V 1.6934367 H 0.68419596 V 1.8257283 H 3.6685098 V 1.6934367 H 2.2086507 V 0.63510335 Z" />
+    </clipPath>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect15912"
+       style="font-variation-settings:normal;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.385247;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+       d="M 1.8520833,0.40190603 V 2.5185728 H 1.4552083 L 1.7859375,3.0477394 2.1166667,3.5769061 2.4473958,3.0477394 2.778125,2.5185728 H 2.38125 V 0.40190603 Z" />
+    <rect
+       style="fill:#ffffff;stroke-width:0.195172;stroke-linecap:round;stroke-linejoin:round"
+       id="rect857"
+       width="2.1166666"
+       height="0.26458332"
+       x="1.0583334"
+       y="3.566844" />
+  </g>
+</svg>

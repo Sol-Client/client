@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333333 4.2333333"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="sol_client_quickplay.svg"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_tick_4x.png"
+   inkscape:export-xdpi="384.00003"
+   inkscape:export-ydpi="384.00003"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#282828"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="16"
+     inkscape:cx="-2.90625"
+     inkscape:cy="15.59375"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1-1"
+     showguides="false" />
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="powerclip"
+       id="path-effect54069"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false"
+       message="Use fill-rule evenodd on &lt;b&gt;fill and stroke&lt;/b&gt; dialog if no flatten result after convert clip to paths." />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath54065">
+      <path
+         id="path54067"
+         style="display:block;fill:#000000;stroke:none;stroke-width:0.0549891;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:0.995048"
+         d="M 2.076359,0.63510335 V 1.6934367 H 0.68419596 V 1.8257283 H 3.6685098 V 1.6934367 H 2.2086507 V 0.63510335 Z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath54065-6">
+      <path
+         id="path54067-1"
+         style="display:block;fill:#000000;stroke:none;stroke-width:0.0549891;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:0.995048"
+         d="M 2.076359,0.63510335 V 1.6934367 H 0.68419596 V 1.8257283 H 3.6685098 V 1.6934367 H 2.2086507 V 0.63510335 Z" />
+    </clipPath>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       inkscape:label="Layer 1"
+       id="layer1-1"
+       transform="matrix(0.11495075,0.42900204,-0.42900204,0.11495075,4.4201041,0.53510989)">
+      <path
+         sodipodi:type="star"
+         style="fill:#ffffff;stroke-width:0.88063;stroke-linecap:round;stroke-linejoin:round"
+         id="path1037"
+         inkscape:flatsided="false"
+         sodipodi:sides="3"
+         sodipodi:cx="6.0864716"
+         sodipodi:cy="3.2019844"
+         sodipodi:r1="4.5884066"
+         sodipodi:r2="2.2942033"
+         sodipodi:arg1="2.0943951"
+         sodipodi:arg2="3.1415927"
+         inkscape:rounded="0"
+         inkscape:randomized="0"
+         d="m 3.7922683,7.1756611 0,-3.9736768 0,-3.97367654 3.441305,1.98683834 3.4413047,1.9868383 -3.4413049,1.9868384 z"
+         transform="matrix(0.31363037,-1.1704842,1.1584789,0.31041352,-3.8807823,13.404111)"
+         inkscape:transform-center-x="-0.61736106" />
+    </g>
+  </g>
+</svg>

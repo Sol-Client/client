@@ -27,9 +27,9 @@
      inkscape:document-units="mm"
      showgrid="false"
      units="px"
-     inkscape:zoom="22.627417"
-     inkscape:cx="3.6902135"
-     inkscape:cy="15.711029"
+     inkscape:zoom="32"
+     inkscape:cx="6.078125"
+     inkscape:cy="13.296875"
      inkscape:window-width="1848"
      inkscape:window-height="1016"
      inkscape:window-x="72"
@@ -43,14 +43,14 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#ffffff;stroke-width:0.492477;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#ffffff;stroke-width:0.699678;stroke-linecap:round;stroke-linejoin:round"
        id="rect12128"
-       width="2.2752926"
-       height="2.1431251"
-       x="0.65479732"
-       y="1.0451041"
-       rx="2.25296"
-       ry="0" />
+       height="3.0448062"
+       x="0.039742187"
+       y="0.59426355"
+       rx="0"
+       ry="0"
+       width="3.2321651" />
     <path
        sodipodi:type="star"
        style="fill:#ffffff;stroke-width:0.88063;stroke-linecap:round;stroke-linejoin:round"
@@ -66,7 +66,7 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 7.4840628,4.9937392 1.4682415,-0.8476897 1.4682417,-0.8476896 0,1.6953792 0,1.6953792 -1.4682417,-0.8476896 z"
-       transform="matrix(0.49556163,0,0,0.4740367,-1.5854866,-0.25054892)"
-       inkscape:transform-center-x="0.24253459" />
+       transform="matrix(0.70406022,0,0,0.67347906,-3.1431006,-1.2465121)"
+       inkscape:transform-center-x="0.3445766" />
   </g>
 </svg>

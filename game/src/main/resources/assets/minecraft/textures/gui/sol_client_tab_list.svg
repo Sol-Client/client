@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333333 4.2333333"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="sol_client_tab_list.svg"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_tick_4x.png"
+   inkscape:export-xdpi="384.00003"
+   inkscape:export-ydpi="384.00003"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#282828"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="32"
+     inkscape:cx="8.078125"
+     inkscape:cy="11.109375"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="false" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect927"
+       style="fill:#ffffff;stroke-width:0.292353;stroke-linecap:round;stroke-linejoin:round"
+       d="M 1.2478314,0.42861462 0.81028019,0.76622502 0.37272903,1.1038355 0.81028019,1.4414458 1.2478314,1.7790562 V 1.4414458 H 4.164839 V 0.76622502 H 1.2478314 Z" />
+    <rect
+       style="fill:#ffffff;stroke-width:0.241191;stroke-linecap:round;stroke-linejoin:round"
+       id="rect1135"
+       width="0.29170075"
+       height="1.3504415"
+       x="0.068586595"
+       y="0.42861494" />
+    <path
+       id="rect927-1"
+       style="fill:#ffffff;stroke-width:0.292353;stroke-linecap:round;stroke-linejoin:round"
+       d="M 2.985502,2.4542771 V 2.7918875 H 0.06849424 V 3.4671082 H 2.985502 V 3.8047187 L 3.4230533,3.4671082 3.8606044,3.1294978 3.4230533,2.7918875 Z" />
+    <rect
+       style="fill:#ffffff;stroke-width:0.241191;stroke-linecap:round;stroke-linejoin:round"
+       id="rect1135-9"
+       width="0.29170075"
+       height="1.3504415"
+       x="-4.1647463"
+       y="2.4542763"
+       transform="scale(-1,1)" />
+  </g>
+</svg>

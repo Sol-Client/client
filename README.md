@@ -30,6 +30,8 @@ While not stated in the license, forks should have the following changed:
 
 There are some parts of the code that use other licenses (such as code "borrowed" from other projects). If this is the case, it will be noted in a comment, or another license file in the same directory.
 
+Note that this project is not 100% open source, because both Minecraft and OptiFine are closed source. There are 100% open source clients, but they do not inherit any of the game's code, meaning they are not as complete, and will likely get you banned on servers.
+
 ## Why?
 There are many Minecraft clients, but they are usually closed source, and may contain malicious code. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
 
@@ -46,7 +48,7 @@ Here are the main features that are currently in the client:
 - Freelook (automatically disabled on Hypixel), press "V" to activate.
 - Toggle sprint.
 - Smooth zoom.
-- Motion blur.
+- Motion blur (if that's your thing).
 - 1.7 animations.
 - Item physics.
 - Hypixel Additions.

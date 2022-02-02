@@ -46,6 +46,7 @@
 		"client.MixinGuiResourcePackList",
 		"client.MixinGuiListExtended",
 		"client.MixinAbstractClientPlayer",
+		"client.MixinLightMap",
 		"mod.MixinTweaksMod$MixinEnchantment",
 		"mod.MixinTweaksMod$MixinInventoryEffectRenderer",
 		"mod.MixinTweaksMod$MixinItemPotion",

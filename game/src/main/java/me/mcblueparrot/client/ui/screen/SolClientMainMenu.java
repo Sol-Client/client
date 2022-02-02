@@ -15,6 +15,7 @@ import me.mcblueparrot.client.util.access.AccessGuiMainMenu;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import me.mcblueparrot.client.util.font.Font;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiLanguage;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -28,12 +29,25 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 
-public class SolClientMainMenu extends GuiMainMenu {
+public class SolClientMainMenu extends GuiScreen {
 
+	private GuiMainMenu base;
 	private boolean wasMouseDown;
 	private boolean mouseDown;
 
+	public SolClientMainMenu(GuiMainMenu base) {
+		this.base = base;
+	}
+
+	@Override
+	public void setWorldAndResolution(Minecraft mc, int width, int height) {
+		super.setWorldAndResolution(mc, width, height);
+		base.setWorldAndResolution(mc, width, height);
+	}
+
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
+
 		drawPanorama(mouseX, mouseY, partialTicks);
 
 		Font font = SolClientMod.getFont();
@@ -127,7 +141,7 @@ public class SolClientMainMenu extends GuiMainMenu {
 	}
 
 	private void drawPanorama(int mouseX, int mouseY, float partialTicks) {
-		AccessGuiMainMenu access = (AccessGuiMainMenu) (Object) this;
+		AccessGuiMainMenu access = (AccessGuiMainMenu) (Object) base;
 
 		this.mc.getFramebuffer().unbindFramebuffer();
         GlStateManager.viewport(0, 0, 256, 256);
@@ -163,12 +177,6 @@ public class SolClientMainMenu extends GuiMainMenu {
 	}
 
 	@Override
-	public void initGui() {
-		super.initGui();
-		buttonList.clear();
-	}
-
-	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
@@ -184,6 +192,12 @@ public class SolClientMainMenu extends GuiMainMenu {
 		if(state == 0) {
 			mouseDown = false;
 		}
+	}
+
+	@Override
+	public void updateScreen() {
+		super.updateScreen();
+		base.updateScreen();
 	}
 
 }

@@ -168,11 +168,22 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 		Client.INSTANCE.bus.post(new WorldLoadEvent(world));
 	}
 
-	@Inject(method = "displayGuiScreen", at = @At(value = "HEAD"))
-	public void openGui(GuiScreen guiScreenIn, CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new OpenGuiEvent(guiScreenIn));
-		if(currentScreen == null && guiScreenIn != null) {
-			Client.INSTANCE.bus.post(new InitialOpenGuiEvent(guiScreenIn));
+	@Inject(method = "displayGuiScreen", at = @At(value = "HEAD"), cancellable = true)
+	public void openGui(GuiScreen screen, CallbackInfo callback) {
+		if(((screen == null && theWorld == null) || screen instanceof GuiMainMenu) && SolClientMod.instance.fancyMainMenu) {
+			callback.cancel();
+			displayGuiScreen(new SolClientMainMenu(screen == null ? new GuiMainMenu() : (GuiMainMenu) screen));
+			return;
+		}
+		else if(screen instanceof SolClientMainMenu && !SolClientMod.instance.fancyMainMenu) {
+			callback.cancel();
+			displayGuiScreen(null);
+			return;
+		}
+
+		Client.INSTANCE.bus.post(new OpenGuiEvent(screen));
+		if(currentScreen == null && screen != null) {
+			Client.INSTANCE.bus.post(new InitialOpenGuiEvent(screen));
 		}
 	}
 
@@ -554,18 +565,6 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	@Inject(method = "shutdownMinecraftApplet" /* applet? looks like MCP is a bit outdated */, at = @At("HEAD"))
 	public void preShutdown(CallbackInfo callback) {
 		Client.INSTANCE.bus.post(new GameQuitEvent());
-	}
-
-	@Inject(method = "displayGuiScreen", at = @At("HEAD"), cancellable = true)
-	public void preDisplayGuiScreen(GuiScreen screen, CallbackInfo callback) {
-		if(((screen == null && theWorld == null) || screen.getClass().equals(GuiMainMenu.class)) && SolClientMod.instance.fancyMainMenu) {
-			callback.cancel();
-			displayGuiScreen(new SolClientMainMenu());
-		}
-		else if(screen instanceof SolClientMainMenu && !SolClientMod.instance.fancyMainMenu) {
-			callback.cancel();
-			displayGuiScreen(null);
-		}
 	}
 
 	@Shadow

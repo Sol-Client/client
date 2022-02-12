@@ -50,6 +50,10 @@ public abstract class MixinEntityRenderer {
 
 	@Inject(method = "updateShaderGroupSize", at = @At("RETURN"))
 	public void updateShaders(int width, int height, CallbackInfo callback) {
+		if(mc.theWorld == null) {
+			return;
+		}
+
 		if(OpenGlHelper.shadersSupported) {
 			for (ShaderGroup group : Client.INSTANCE.bus.post(new PostProcessingEvent(PostProcessingEvent.Type.UPDATE))
 					.groups) {

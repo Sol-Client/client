@@ -99,6 +99,8 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 
 [robere2](https://github.com/robere2): QuickPlay Mod servers. The mod itself is a totally different creature. Sorry for not providing you with analytics.
 
+[lumien231](https://github.com/lumien231): Chunk Animator. The version in the client was based around the original Forge mod.
+
 ## Build Instructions
 
 Want to contribute? Or are you just trying to re-enable freelook (please don't do this)? Want to port this to your toaster's operating system, or run this on Windows 98?

@@ -365,4 +365,11 @@ public class Utils {
 		return relative;
 	}
 
+	public static void resetLineWidth() {
+		// Reset the fishing rod line back to its normal width.
+		// Fun fact: the line should actually be thinner, but it's overriden by the
+		// block selection.
+		GL11.glLineWidth(2);
+	}
+
 }

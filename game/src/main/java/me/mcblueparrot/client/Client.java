@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -73,6 +74,7 @@ import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
+import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
@@ -124,6 +126,7 @@ public class Client {
 	private CapeManager capeManager;
 
 	public void init() {
+		Utils.resetLineWidth();
 		System.setProperty("http.agent", "Sol Client/" + VERSION);
 
 		LOGGER.info("Initialising...");

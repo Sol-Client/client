@@ -11,6 +11,7 @@ import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
+import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -100,7 +101,6 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 		GlStateManager.disableTexture2D();
 
 		GlStateManager.depthMask(false);
-		float f = 0.002F;
 		BlockPos blockpos = event.movingObjectPosition.getBlockPos();
 		Block block = mc.theWorld.getBlockState(blockpos).getBlock();
 
@@ -113,7 +113,6 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 			double d2 = mc.getRenderViewEntity().lastTickPosZ
 					+ (mc.getRenderViewEntity().posZ - mc.getRenderViewEntity().lastTickPosZ) * (double) event.partialTicks;
 			AxisAlignedBB axisalignedbb = block.getSelectedBoundingBox(mc.theWorld, blockpos);
-			Block.EnumOffsetType block$enumoffsettype = block.getOffsetType();
 
 			axisalignedbb = axisalignedbb.expand(0.0020000000949949026D, 0.0020000000949949026D, 0.0020000000949949026D)
 					.offset(-d0, -d1, -d2);
@@ -195,6 +194,8 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 		if(!depth) {
 			GlStateManager.enableDepth();
 		}
+
+		Utils.resetLineWidth();
 	}
 
 	@Override

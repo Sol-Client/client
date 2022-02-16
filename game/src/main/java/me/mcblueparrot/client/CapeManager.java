@@ -26,7 +26,7 @@ public class CapeManager {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private Map<String, String> capes = new HashMap<>();
 	private Map<UUID, ResourceLocation> capeCache = new HashMap<>();
-	private static final String BASE_URL = "https://cdn.jsdelivr.net/gh/Sol-Client/Capes/";
+	private static final String BASE_URL = "https://raw.githubusercontent.com/Sol-Client/Capes/main/";
 	private static final URL BY_PLAYER_URL = Utils.sneakyParse(BASE_URL + "by_player.json");
 
 	public CapeManager() throws IOException {

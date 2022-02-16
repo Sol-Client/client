@@ -101,6 +101,21 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 
 [lumien231](https://github.com/lumien231): Chunk Animator. The version in the client was based around the original Forge mod.
 
+## IDE
+### Eclipse
+This IDE is prefered by the author, but many prefer IntelliJ for its IntelliJence (there's a clue in the name).
+
+1. Right click in "Package Explorer" and press "Import Project".
+2. Select "Gradle" > "Existing Gradle Project".
+3. Select the "game" directory inside the repository folder.
+4. Press "Finish".
+
+### IntelliJ IDEA
+
+1. Close your current project ("File" > "Close Project").
+2. Press "Open".
+3. Select the "game" directory inside the repository folder.
+
 ## Build Instructions
 
 Want to contribute? Or are you just trying to re-enable freelook (please don't do this)? Want to port this to your toaster's operating system, or run this on Windows 98?

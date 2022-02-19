@@ -57,7 +57,7 @@ jobs:
       with:
         name: Game
     - name: Remove Unnecessary Files
-      run: rm -r game *.md
+      run: rm -r game
     - name: Relocate Game
       run: mkdir -p game/build/libs && mv game.jar game/build/libs 
     - name: Build Installer

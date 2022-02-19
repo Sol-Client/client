@@ -16,7 +16,7 @@ public abstract class MixinEntity implements Cullable, AccessEntity {
 	@Setter
 	private boolean culled;
 
-	@Accessor
+	@Accessor("isInWeb")
 	public abstract boolean getIsInWeb();
 
 }

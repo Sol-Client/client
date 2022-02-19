@@ -35,7 +35,7 @@ public abstract class MixinGuiMainMenu extends GuiScreen implements AccessGuiMai
 	@Redirect(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiMainMenu;" +
 			"switchToRealms()V"))
 	public void openModsMenu(GuiMainMenu guiMainMenu) {
-		mc.displayGuiScreen(new ModsScreen(guiMainMenu));
+		mc.displayGuiScreen(new ModsScreen());
 	}
 
 	@Inject(method = "actionPerformed", at = @At("RETURN"))

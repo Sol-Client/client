@@ -53,7 +53,7 @@ public class MoveHudsScreen extends GuiScreen {
 						.contains(mouseX, mouseY)) {
 					if(previous instanceof ModsScreen) {
 						Utils.playClickSound();
-						((ModsScreen) previous).switchMod(hud.getMod());
+//						((ModsScreen) previous).switchMod(hud.getMod());
 						Minecraft.getMinecraft().displayGuiScreen(previous);
 					}
 				}

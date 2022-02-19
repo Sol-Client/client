@@ -160,7 +160,10 @@ public class Utils {
 	public void scissor(Rectangle rectangle) {
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 		double scale = resolution.getScaleFactor();
-		GL11.glScissor((int) (rectangle.getX() * scale), (int) ((resolution.getScaledHeight() - rectangle.getHeight() - rectangle.getY()) * scale), (int) (rectangle.getWidth() * scale), (int) (rectangle.getHeight() * scale));
+
+		GL11.glScissor((int) (rectangle.getX() * scale),
+				(int) ((resolution.getScaledHeight() - rectangle.getHeight() - rectangle.getY()) * scale),
+				(int) (rectangle.getWidth() * scale), (int) (rectangle.getHeight() * scale));
 	}
 
 	public void playClickSound() {

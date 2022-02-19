@@ -16,7 +16,7 @@ import me.mcblueparrot.client.event.impl.WorldLoadEvent;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.util.BukkitMaterial;
-import me.mcblueparrot.client.util.data.Alignment;
+import me.mcblueparrot.client.util.data.VerticalAlignment;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
@@ -38,7 +38,7 @@ public class TimersMod extends HudMod {
 
 	@Expose
 	@ConfigOption("Alignment")
-	private Alignment alignment = Alignment.MIDDLE;
+	private VerticalAlignment alignment = VerticalAlignment.MIDDLE;
 	@Expose
 	@ConfigOption("Icon")
 	private boolean icon = true;

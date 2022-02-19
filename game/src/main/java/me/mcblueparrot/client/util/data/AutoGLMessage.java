@@ -1,4 +1,4 @@
-package me.mcblueparrot.client;
+package me.mcblueparrot.client.util.data;
 
 import lombok.AllArgsConstructor;
 

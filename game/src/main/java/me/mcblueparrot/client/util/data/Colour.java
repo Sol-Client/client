@@ -4,10 +4,14 @@ import java.awt.Color;
 
 import com.google.gson.annotations.Expose;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import me.mcblueparrot.client.util.Utils;
 import net.minecraft.util.MathHelper;
 
+@ToString
+@EqualsAndHashCode
 public class Colour {
 
 	@Getter
@@ -22,6 +26,11 @@ public class Colour {
 	public static final Colour WHITE_128 = WHITE.withAlpha(128);
 	public static final Colour BLACK_128 = BLACK.withAlpha(128);
 	public static final Colour BACKGROUND = new Colour(20, 20, 20);
+	public static final Colour DISABLED_MOD = new Colour(40, 40, 40);
+	public static final Colour DISABLED_MOD_HOVER = new Colour(60, 60, 60);
+	public static final Colour TRANSPARENT = new Colour(0);
+	public static final Colour LIGHT_BUTTON = new Colour(200, 200, 200);
+	public static final Colour LIGHT_BUTTON_HOVER = WHITE;
 
 	public Colour(int value) {
 		this.value = value;
@@ -114,6 +123,14 @@ public class Colour {
 
 	public Colour getShadow() {
 		return new Colour(getShadowValue());
+	}
+
+	public Colour blend(Colour dest, float percent) {
+		return new Colour(Utils.blendColor(value, dest.value, percent));
+	}
+
+	public boolean isShadeOfGray() {
+		return getRed() == getGreen() && getRed() == getBlue();
 	}
 
 }

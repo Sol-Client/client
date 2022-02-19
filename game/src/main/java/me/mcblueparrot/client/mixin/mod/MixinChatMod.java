@@ -178,7 +178,7 @@ public class MixinChatMod {
 		@Inject(method = "actionPerformed", at = @At("RETURN"))
 		public void actionPerformed(GuiButton button, CallbackInfo callback) {
 			if(button.id == 201) {
-				mc.displayGuiScreen(new ModsScreen(this, ChatMod.instance));
+				mc.displayGuiScreen(new ModsScreen(ChatMod.instance));
 			}
 		}
 

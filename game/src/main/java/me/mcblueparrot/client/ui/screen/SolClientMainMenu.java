@@ -117,7 +117,7 @@ public class SolClientMainMenu extends GuiScreen {
 			}
 			else if(modsButton.contains(mouseX, mouseY)) {
 				Utils.playClickSound();
-				mc.displayGuiScreen(new ModsScreen(this));
+				mc.displayGuiScreen(new ModsScreen());
 			}
 			else if(languageButton.contains(mouseX, mouseY)) {
 				Utils.playClickSound();

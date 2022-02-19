@@ -360,6 +360,11 @@ class Launcher {
 					args.push("-Dme.mcblueparrot.client.discord_lib=" + discordNativeLibrary);
 				}
 
+				// Fix crashing on some non-English setups. Basically, Mixin is broken in the current version.
+				// This shouldn't (at least I hope it doesn't) interfere with anything, and you can still select your own language from the menu.
+				args.push("-Duser.language=en");
+				args.push("-Duser.country=US");
+
 				var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";
 				var classpath = "";
 

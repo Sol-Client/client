@@ -56,7 +56,11 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: Game
+    - name: Remove Unnecessary Files (Windows)
+      if: matrix.os == 'windows-latest'
+      run: Remove-Item -r game *.md
     - name: Remove Unnecessary Files
+      if: matrix.os != 'windows-latest'
       run: rm -rf game *.md
     - name: Relocate Game
       run: mkdir -p game/build/libs && mv game.jar game/build/libs 

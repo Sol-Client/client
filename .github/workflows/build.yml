@@ -32,7 +32,6 @@ jobs:
       with:
         name: Game
         path: game/build/libs/game.jar
-      
     
   launcher:
     runs-on: ${{ matrix.os }}
@@ -60,7 +59,7 @@ jobs:
     - name: Remove Unnecessary Files
       run: rm -rf game *.md
     - name: Relocate Game
-      run: mkdir -p game/build/libs && mv Game/game.jar game/build/libs 
+      run: mkdir -p game/build/libs && mv game.jar game/build/libs 
     - name: Build Installer
       run: npm run make
     - name: Upload Artifact (Linux)

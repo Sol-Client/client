@@ -9,6 +9,10 @@ class Patcher {
 	static async patch(java, versionFolder, versionJar, outputFile, optiFine) {
 		var tempFolder = versionFolder + "/patch/";
 		
+		if(fs.existsSync(tempFolder)) {
+			fs.rmdirSync(tempFolder, { recursive: true });
+		}
+		
 		fs.mkdirSync(tempFolder);
 
 		var inputJar = versionJar;

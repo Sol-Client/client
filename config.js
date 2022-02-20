@@ -1,10 +1,11 @@
 const fs = require("fs");
+const Utils = require("./utils");
 
 class Config {
 
 	static data = {
 		maxMemory: 2048,
-		optifine: true,
+		optifine: Utils.getOsName() != "osx",
 		discord: false,
 		minecraftFolder: "<use default>"
 	};

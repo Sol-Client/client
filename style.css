@@ -345,3 +345,10 @@ input[type="range"]:hover::-webkit-slider-thumb {
 	height: calc(100% - 350px);
 	background-color: rgb(20, 20, 20);
 }
+
+#launch-note {
+	position: fixed;
+	width: 100%;
+	text-align: center;
+	bottom: 4px;
+}

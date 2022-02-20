@@ -31,6 +31,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	document.getElementsByTagName("title")[0].innerText += " " + Utils.version;
 
 	const playButton = document.getElementById("launch-button");
+	const launchNote = document.getElementById("launch-note");
 	const microsoftLoginButton = document.querySelector(".microsoft-login-button");
 	const mojangLoginButton = document.querySelector(".mojang-login-button");
 	const accountButton = document.querySelector(".account-button");
@@ -108,6 +109,11 @@ window.addEventListener("DOMContentLoaded", () => {
 	async function play(server) {
 		if(!launching) {
 			launching = true;
+
+			if(!fs.existsSync(Utils.assetsDirectory)) {
+				launchNote.style.display = "inline";
+			}
+
 			playButton.innerText = "...";
 			var valid = await launcher.account.getService().validate(launcher.account);
 			if(!valid) {
@@ -125,6 +131,7 @@ window.addEventListener("DOMContentLoaded", () => {
 			launcher.launch(() => {
 				playButton.innerText = "Play";
 				launching = false;
+				launchNote.style.display = null;
 			}, server);
 		}
 	}

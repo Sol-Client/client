@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.lwjgl.input.Mouse;
 
+import lombok.Getter;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.component.controller.ParentBoundsController;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
@@ -14,7 +15,9 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class Screen extends GuiScreen {
 
+	@Getter
 	protected GuiScreen parentScreen;
+	protected Component root;
 	private Component rootWrapper;
 	private int mouseX;
 	private int mouseY;
@@ -34,6 +37,12 @@ public class Screen extends GuiScreen {
 
 		rootWrapper.setScreen(this);
 		rootWrapper.setFont(SolClientMod.getFont());
+
+		this.root = root;
+	}
+
+	public Component getRoot() {
+		return root;
 	}
 
 	@Override
@@ -64,15 +73,22 @@ public class Screen extends GuiScreen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(!rootWrapper.keyPressed(getInfo(), typedChar, typedChar)) {
+		if(!rootWrapper.keyPressed(getInfo(), keyCode, typedChar)) {
 			super.keyTyped(typedChar, keyCode);
 		}
 	}
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		if(!rootWrapper.mouseClicked(getInfo(), mouseButton)) {
+		if(!rootWrapper.mouseClickedAnywhere(getInfo(), mouseButton, true)) {
 			super.mouseClicked(mouseX, mouseY, mouseButton);
+		}
+	}
+
+	@Override
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		if(!rootWrapper.mouseReleasedAnywhere(getInfo(), state, true)) {
+			super.mouseReleased(mouseX, mouseY, state);
 		}
 	}
 
@@ -80,6 +96,11 @@ public class Screen extends GuiScreen {
 	public void updateScreen() {
 		super.updateScreen();
 		rootWrapper.tick();
+	}
+
+	@Override
+	public boolean doesGuiPauseGame() {
+		return false;
 	}
 
 	public void updateFont() {

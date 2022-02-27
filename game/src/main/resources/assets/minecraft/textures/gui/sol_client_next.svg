@@ -1,1 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" id="svg5" width="32" height="32" version="1.1" viewBox="0 0 32 32"><g id="layer1"><path id="path5537" d="m 24.323759,20.573698 -7.810568,0 -7.8105673,0 3.9052833,-6.76415 3.905284,-6.7641502 3.905284,6.7641502 z" transform="matrix(0,-2.0485067,-2.3654118,0,48.665267,49.827383)" style="fill:#fff;stroke:none;stroke-width:4"/></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg5"
+   width="8"
+   height="8"
+   version="1.1"
+   viewBox="0 0 8 8"
+   sodipodi:docname="sol_client_next.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_next_4x.png"
+   inkscape:export-xdpi="384"
+   inkscape:export-ydpi="384"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7" />
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#1e1e1e"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="22.627417"
+     inkscape:cx="13.678097"
+     inkscape:cy="4.7508737"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5" />
+  <g
+     id="layer1"
+     transform="matrix(0.18749999,0,0,0.24999999,1.0000003,0)">
+    <path
+       id="path5537"
+       d="M 24.323759,20.573698 H 16.513191 8.7026237 l 3.9052833,-6.76415 3.905284,-6.7641502 3.905284,6.7641502 z"
+       transform="matrix(0,-2.0485067,-2.3654118,0,48.665267,49.827383)"
+       style="fill:#ffffff;stroke:none;stroke-width:4" />
+  </g>
+</svg>

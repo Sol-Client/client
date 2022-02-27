@@ -7,7 +7,7 @@
    viewBox="0 0 4.2333333 4.2333333"
    version="1.1"
    id="svg5"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="sol_client_tweaks.svg"
    inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_tick_4x.png"
    inkscape:export-xdpi="384.00003"
@@ -27,9 +27,9 @@
      inkscape:document-units="mm"
      showgrid="false"
      units="px"
-     inkscape:zoom="22.627417"
-     inkscape:cx="3.2703689"
-     inkscape:cy="6.6512232"
+     inkscape:zoom="11.313709"
+     inkscape:cx="12.860505"
+     inkscape:cy="26.118757"
      inkscape:window-width="1848"
      inkscape:window-height="1016"
      inkscape:window-x="72"
@@ -46,10 +46,11 @@
     <rect
        style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264605;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3652"
-       width="3.9687283"
        height="3.9687283"
        x="0.13230266"
-       y="0.13230249" />
+       y="0.13230249"
+       width="3.9690001"
+       ry="0.52916664" />
     <path
        id="rect1480"
        style="fill:#ffffff;stroke-width:0.321892;stroke-linecap:round;stroke-linejoin:round"

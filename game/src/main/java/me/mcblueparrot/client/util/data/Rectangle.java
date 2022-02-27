@@ -56,7 +56,7 @@ public class Rectangle {
 	}
 
 	public int getEndX() {
-		return y + height;
+		return x + width;
 	}
 
 	public int getEndY() {

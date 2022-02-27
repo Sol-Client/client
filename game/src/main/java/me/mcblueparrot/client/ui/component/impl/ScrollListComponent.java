@@ -27,12 +27,13 @@ public abstract class ScrollListComponent extends Component {
 
 			@Override
 			public void render(ComponentRenderInfo info) {
-				scrollPercent = (double) ScrollListComponent.this.getBounds().getHeight()
-						/ (double) ScrollListComponent.this.subComponents
-								.get(ScrollListComponent.this.subComponents.size() - 1).getBounds().getEndY();
+				scrollPercent = (double) ScrollListComponent.this.getBounds().getHeight() / (double) getContentHeight();
 
 				GlStateManager.translate(0, calculatedY * scrollPercent, 0);
-				super.render(info);
+
+				if(maxScrolling != 0) {
+					super.render(info);
+				}
 			}
 
 		}, (component, defaultBounds) -> {
@@ -70,16 +71,42 @@ public abstract class ScrollListComponent extends Component {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		calculatedY = (lastAnimatedY + (animatedY - lastAnimatedY) * info.getPartialTicks());
+		if(!SolClientMod.instance.smoothScrolling) {
+			calculatedY = targetY;
+		}
+		else {
+			calculatedY = (lastAnimatedY + (animatedY - lastAnimatedY) * info.getPartialTicks());
+		}
+
 		GlStateManager.translate(0, -calculatedY, 0);
-		maxScrolling = subComponents.get(subComponents.size() - 1).getBounds().getEndY() - getBounds().getHeight();
+		maxScrolling = getContentHeight() - getBounds().getHeight();
+
+		if(maxScrolling < 0) {
+			maxScrolling = 0;
+		}
 
 		super.render(translate(info));
 	}
 
+	public void snapTo(int scroll) {
+		targetY = animatedY = lastAnimatedY = calculatedY = maxScrolling = scroll;
+	}
+
+	public void jumpTo(int scroll) {
+		targetY = scroll;
+	}
+
+	public int getScroll() {
+		return (int) targetY;
+	}
+
+	private int getContentHeight() {
+		return subComponents.size() == 0 ? 0 : subComponents.get(subComponents.size() - 1).getBounds().getEndY();
+	}
+
 	@Override
-	public boolean mouseClicked(ComponentRenderInfo info, int button) {
-		return super.mouseClicked(translate(info), button);
+	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
+		return super.mouseClickedAnywhere(translate(info), button, inside);
 	}
 
 	@Override
@@ -89,8 +116,10 @@ public abstract class ScrollListComponent extends Component {
 		}
 
 		delta = delta / Math.abs(delta);
-		targetY -= delta * (subComponents.get(0).getBounds().getHeight() + getSpacing());
-		targetY = MathHelper.clamp_double(targetY, 0, maxScrolling);
+
+		if(subComponents.size() != 0) {
+			targetY -= delta * (subComponents.get(0).getBounds().getHeight() + getSpacing());
+		}
 
 		return true;
 	}
@@ -98,6 +127,8 @@ public abstract class ScrollListComponent extends Component {
 	@Override
 	public void tick() {
 		super.tick();
+
+		targetY = MathHelper.clamp_double(targetY, 0, maxScrolling);
 
 		lastAnimatedY = animatedY;
 

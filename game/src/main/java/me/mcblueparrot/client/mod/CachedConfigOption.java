@@ -32,6 +32,7 @@ public class CachedConfigOption {
 
 	public CachedConfigOption(Mod mod, ConfigOption option, Field field) throws IOException {
 		this.mod = mod;
+
 		if(option != null) {
 			name = option.value();
 		}

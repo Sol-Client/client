@@ -72,11 +72,11 @@ public class SolClientMainMenu extends GuiScreen {
 				.withIcon("textures/gui/sol_client_players");
 
 		if(singleplayerButton.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
-			Utils.playClickSound();
+			Utils.playClickSound(true);
 			mc.displayGuiScreen(new GuiSelectWorld(this));
 		}
 		else if(multiplayerButton.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
-			Utils.playClickSound();
+			Utils.playClickSound(true);
 			mc.displayGuiScreen(new GuiMultiplayer(this));
 		}
 
@@ -112,19 +112,19 @@ public class SolClientMainMenu extends GuiScreen {
 
 		if(mouseDown && !wasMouseDown) {
 			if(optionsButton.contains(mouseX, mouseY)) {
-				Utils.playClickSound();
+				Utils.playClickSound(true);
 				mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
 			}
 			else if(modsButton.contains(mouseX, mouseY)) {
-				Utils.playClickSound();
+				Utils.playClickSound(true);
 				mc.displayGuiScreen(new ModsScreen());
 			}
 			else if(languageButton.contains(mouseX, mouseY)) {
-				Utils.playClickSound();
+				Utils.playClickSound(true);
 				mc.displayGuiScreen(new GuiLanguage(this, mc.gameSettings, mc.getLanguageManager()));
 			}
 			else if(replayButton != null && replayButton.contains(mouseX, mouseY)) {
-				Utils.playClickSound();
+				Utils.playClickSound(true);
 				new GuiReplayViewer(ReplayModReplay.instance).display();
 			}
 		}

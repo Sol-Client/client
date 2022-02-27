@@ -1,8 +1,10 @@
 package me.mcblueparrot.client.ui.component.impl;
 
+import lombok.Getter;
 import me.mcblueparrot.client.ui.component.Component;
 import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
 import me.mcblueparrot.client.ui.component.controller.AlignedBoundsController;
+import me.mcblueparrot.client.ui.component.controller.AnimatedColourController;
 import me.mcblueparrot.client.ui.component.controller.Controller;
 import me.mcblueparrot.client.ui.component.handler.ClickHandler;
 import me.mcblueparrot.client.util.Utils;
@@ -15,12 +17,17 @@ import net.minecraft.util.ResourceLocation;
 
 public class ButtonComponent extends ColouredComponent {
 
+	@Getter
+	private Controller<String> text;
+
 	public ButtonComponent(String text, Controller<Colour> colour) {
 		this((component, defaultText) -> text, colour);
 	}
 
 	public ButtonComponent(Controller<String> text, Controller<Colour> colour) {
 		super(colour);
+		this.text = text;
+
 		add(new LabelComponent(text), new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
 	}
 
@@ -50,12 +57,26 @@ public class ButtonComponent extends ColouredComponent {
 		return this;
 	}
 
-	public Component withIcon(String name) {
-		add(new ScaledIconComponent("sol_client_tick", 16, 16),
+	public ButtonComponent withIcon(String name) {
+		add(new ScaledIconComponent(name, 16, 16),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 		return this;
+	}
+
+	public static ButtonComponent done(Runnable onClick) {
+		return new ButtonComponent("Done", new AnimatedColourController(
+				(component, defaultColour) -> component.isHovered() ? new Colour(20, 120, 20) : new Colour(0, 100, 0)))
+						.onClick((info, button) -> {
+							if (button == 0) {
+								Utils.playClickSound(true);
+								onClick.run();
+
+								return true;
+							}
+							return false;
+						}).withIcon("sol_client_tick");
 	}
 
 }

@@ -33,6 +33,7 @@ import me.mcblueparrot.client.event.impl.ScrollEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.mod.impl.TweaksMod;
+import me.mcblueparrot.client.ui.component.Screen;
 import me.mcblueparrot.client.ui.screen.SolClientMainMenu;
 import me.mcblueparrot.client.ui.screen.SplashScreen;
 import me.mcblueparrot.client.util.Utils;
@@ -138,9 +139,10 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	 */
 	@Overwrite
 	public int getLimitFramerate() {
-		if(theWorld == null || !Display.isActive()) {
+		if((theWorld == null && !(currentScreen instanceof Screen)) || !Display.isActive()) {
 			return 30; // Only limit framerate to 30. This means there is no noticable lag spike.
 		}
+
 		return gameSettings.limitFramerate;
 	}
 

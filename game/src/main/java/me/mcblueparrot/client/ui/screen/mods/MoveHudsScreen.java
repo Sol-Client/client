@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.lwjgl.input.Mouse;
 
 import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.mod.hud.HudElement;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.element.Button;
@@ -52,8 +53,10 @@ public class MoveHudsScreen extends GuiScreen {
 				if(hud.isEnabled() && hud.isVisible() && hud.getMultipliedBounds() != null && hud.getMultipliedBounds()
 						.contains(mouseX, mouseY)) {
 					if(previous instanceof ModsScreen) {
-						Utils.playClickSound();
-//						((ModsScreen) previous).switchMod(hud.getMod());
+						Utils.playClickSound(true);
+
+						((ModsScreen) previous).switchMod(hud.getMod());
+
 						Minecraft.getMinecraft().displayGuiScreen(previous);
 					}
 				}
@@ -73,27 +76,20 @@ public class MoveHudsScreen extends GuiScreen {
 	public void setWorldAndResolution(Minecraft mc, int width, int height) {
 		super.setWorldAndResolution(mc, width, height);
 
-		if(title != null) {
-			title.setWorldAndResolution(mc, width, height);
-		}
+		if(title != null) title.setWorldAndResolution(mc, width, height);
 	}
 
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
 
-		if(title != null) {
-			title.updateScreen();
-		}
+		if(title != null) title.updateScreen();
 	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		if(title != null) {
 			title.drawScreen(0, 0, partialTicks);
-		}
-		else if(mc.theWorld == null) {
-			drawRect(0, 0, width, height, Colour.BACKGROUND.getValue());
 		}
 
 		HudElement selectedHud = getSelectedHud(mouseX, mouseY);
@@ -114,11 +110,11 @@ public class MoveHudsScreen extends GuiScreen {
 		}
 
 		Button button = new Button(SolClientMod.getFont(), "Done", new Rectangle(width / 2 - 50, height - 60, 100, 20), new Colour(0, 255, 0),
-				new Colour(150, 255, 150)).withIcon("textures/gui/sol_client_tick");
+				new Colour(150, 255, 150));
 		button.render(mouseX, mouseY);
 
 		if(button.contains(mouseX, mouseY) && !wasMouseDown && mouseDown) {
-			Utils.playClickSound();
+			Utils.playClickSound(true);
 			mc.displayGuiScreen(previous);
 		}
 
@@ -148,9 +144,6 @@ public class MoveHudsScreen extends GuiScreen {
 			else {
 				mc.displayGuiScreen(null);
 			}
-		}
-		else if(keyCode == SolClientMod.instance.editHudKey.getKeyCode()) {
-			mc.displayGuiScreen(null);
 		}
 	}
 

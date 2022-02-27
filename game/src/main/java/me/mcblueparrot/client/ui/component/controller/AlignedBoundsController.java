@@ -1,6 +1,9 @@
 package me.mcblueparrot.client.ui.component.controller;
+
 import lombok.AllArgsConstructor;
 import me.mcblueparrot.client.ui.component.Component;
+import me.mcblueparrot.client.ui.component.impl.ButtonComponent;
+import me.mcblueparrot.client.ui.component.impl.LabelComponent;
 import me.mcblueparrot.client.util.data.Alignment;
 import me.mcblueparrot.client.util.data.Rectangle;
 
@@ -11,8 +14,8 @@ public class AlignedBoundsController implements Controller<Rectangle> {
 	private Alignment yAlignment;
 	private Controller<Rectangle> baseController;
 
-	public AlignedBoundsController(Alignment xAlignment, Alignment yAlightment) {
-		this(xAlignment, xAlignment, (component, defaultBounds) -> defaultBounds);
+	public AlignedBoundsController(Alignment xAlignment, Alignment yAlignment) {
+		this(xAlignment, yAlignment, (component, defaultBounds) -> defaultBounds);
 	}
 
 	@Override

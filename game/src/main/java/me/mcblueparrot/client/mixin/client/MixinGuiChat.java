@@ -45,11 +45,11 @@ public abstract class MixinGuiChat extends GuiScreen implements AccessGuiChat {
 					buttonBounds.contains(mouseX, mouseY) ? 0 : -1);
 			if(mouseDown && !wasMouseDown && buttonBounds.contains(mouseX, mouseY)) {
 				if(selectedButton == button) {
-					Utils.playClickSound();
+					Utils.playClickSound(false);
 					selectedButton = null;
 				}
 				else {
-					Utils.playClickSound();
+					Utils.playClickSound(false);
 					selectedButton = button;
 				}
 			}
@@ -63,7 +63,7 @@ public abstract class MixinGuiChat extends GuiScreen implements AccessGuiChat {
 		}
 
 		Gui.drawRect(left, top, right, bottom, color);
-		
+
 		wasMouseDown = mouseDown;
 	}
 

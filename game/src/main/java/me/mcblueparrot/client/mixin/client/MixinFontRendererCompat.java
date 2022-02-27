@@ -13,6 +13,11 @@ import net.minecraft.client.renderer.GlStateManager;
 public abstract class MixinFontRendererCompat implements Font {
 
 	@Override
+	public int getHeight() {
+		return FONT_HEIGHT;
+	}
+
+	@Override
 	public int renderString(String text, float x, float y, int colour) {
 		return withOffset(x, y, () -> drawString(text, (int) x, (int) y, colour));
 	}
@@ -58,5 +63,8 @@ public abstract class MixinFontRendererCompat implements Font {
 
 	@Shadow(prefix = "shadow$")
 	public abstract int drawStringWithShadow(String text, float x, float y, int color);
+
+	@Shadow
+	public int FONT_HEIGHT;
 
 }

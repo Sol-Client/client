@@ -25,6 +25,18 @@ public class SolClientMod extends ConfigOnlyMod {
 	public Colour uiHover;
 
 	@Expose
+	@ConfigOption("Smooth UI Colours")
+	public boolean smoothUIColours = true;
+
+	@Expose
+	@ConfigOption("Button Clicks")
+	public boolean buttonClicks = true;
+
+	@Expose
+	@ConfigOption("Smooth Scrolling")
+	public boolean smoothScrolling = true;
+
+	@Expose
 	@ConfigOption("Fancy Main Menu")
 	public boolean fancyMainMenu;
 
@@ -42,9 +54,10 @@ public class SolClientMod extends ConfigOnlyMod {
 	public KeyBinding editHudKey = new KeyBinding("Edit HUD", Keyboard.KEY_GRAVE, "Sol Client");
 
 	public SolClientMod() {
-		super("Sol Client", "sol_client", "Settings for Sol Client, a simple and easy to use Minecraft client.", ModCategory.NONE);
+		super("Sol Client", "sol_client", "Settings for Sol Client.", ModCategory.NONE);
 		instance = this;
 		Client.INSTANCE.registerKeyBinding(modsKey);
+		Client.INSTANCE.registerKeyBinding(editHudKey);
 	}
 
 	@Override
@@ -78,9 +91,6 @@ public class SolClientMod extends ConfigOnlyMod {
 
 	@Override
 	public String getDescription() {
-		if(!instance.fancyFont) {
-			return "Settings for Sol Client, an easy to use Minecraft client.";
-		}
 		return super.getDescription();
 	}
 

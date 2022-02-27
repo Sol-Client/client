@@ -1,8 +1,10 @@
 package me.mcblueparrot.client.ui.component.handler;
 
+import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
+
 @FunctionalInterface
 public interface ClickHandler {
 
-	boolean onClick(int button);
+	boolean onClick(ComponentRenderInfo info, int button);
 
 }

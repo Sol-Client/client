@@ -29,45 +29,12 @@ public class ColourPickerDialog extends ScaledIconComponent {
 
 	private TextFieldComponent hex;
 
-	//	private boolean hsv;
-//	private float hue;
-
 	public ColourPickerDialog(CachedConfigOption colourOption, Colour colour, Consumer<Colour> callback) {
 		super("sol_client_colour_dialog", 300, 150, (component, defaultColour) -> new Colour(40, 40, 40));
 		add(new LabelComponent(colourOption.name),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() + 10,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
-
-		//		add(new ScaledIconComponent("sol_client_rgb", 16, 16, new AnimatedColourController(
-		//				(component, defaultColour) -> component.isHovered() || !hsv ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
-		//						.onClick((info, button) -> {
-		//							if(button == 0) {
-		//								Utils.playClickSound(true);
-		//								hsv = false;
-		//								return true;
-		//							}
-		//
-		//							return false;
-		//						}),
-		//				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
-		//						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - 10, defaultBounds.getY() + 24,
-		//								defaultBounds.getWidth(), defaultBounds.getHeight())));
-		//
-		//		add(new ScaledIconComponent("sol_client_hsv", 16, 16, new AnimatedColourController(
-		//				(component, defaultColour) -> component.isHovered() || hsv ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
-		//						.onClick((info, button) -> {
-		//							if(button == 0) {
-		//								Utils.playClickSound(true);
-		//								hsv = true;
-		//								return true;
-		//							}
-		//
-		//							return false;
-		//						}),
-		//				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
-		//						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 10, defaultBounds.getY() + 24,
-		//								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 		add(ButtonComponent.done(() -> {
 			hex.flush();
@@ -124,6 +91,16 @@ public class ColourPickerDialog extends ScaledIconComponent {
 
 	private void updateHex() {
 		hex.setText(colour.toHexString());
+	}
+
+	@Override
+	public boolean useFallback() {
+		return true;
+	}
+
+	@Override
+	public void renderFallback(ComponentRenderInfo info) {
+		Utils.drawRectangle(getRelativeBounds(), getColour());
 	}
 
 	@Override
@@ -188,41 +165,6 @@ public class ColourPickerDialog extends ScaledIconComponent {
 				Utils.drawVerticalLine(RGB_OFFSET_LEFT + i, RGB_OFFSET_TOP + component * RGB_SPACING, RGB_OFFSET_TOP + (component * RGB_SPACING) + 11, stripColour.getValue());
 			}
 		}
-		//		}
-		//		else {
-		//			for(float h = 0; h < 1; h += 0.001) {
-		//				Utils.drawHorizontalLine(0, 10, (int) (h * 100), Colour.fromHSV(h, 1, 1).getValue());
-		//			}
-		//
-		//			for(float s = 0; s < 1; s += 0.01F) {
-		//				for(float v = 0; v < 1; v += 0.002F) {
-		//					int x = 30 + (int) (s * 50);
-		//					int y = 50 - (int) (v * 50);
-		//					Gui.drawRect(x, y, x + 1, y + 1, Colour.fromHSV(hue, s, v).getValue());
-		//				}
-		//			}
-		//
-		//			int hueY = (int) (hue * 100);
-		//			Utils.drawHorizontalLine(0, 10, hueY, -1);
-		//
-		//			int saturationX = 30 + (int) (colour.getHSVSaturation() * 50) - 1;
-		//			Utils.drawVerticalLine(saturationX, 0, 51, -1);
-		//
-		//			int valueY = 50 - (int) (colour.getHSVValue() * 50);
-		//			Utils.drawHorizontalLine(30, 79, valueY, -1);
-		//
-		//			if(selectedSlider == 0) {
-		//				int relativeX = MathHelper.clamp_int(info.getRelativeMouseX() - 30, 0, 50);
-		//				int relativeY = 50 - MathHelper.clamp_int(info.getRelativeMouseY(), 0, 50);
-		//
-		//				colour = colour.withHSVSaturation(relativeX / 50F);
-		//				colour = colour.withHSVValue(relativeY / 50F);
-		//			}
-		//			else if(selectedSlider == 1) {
-		//				int relativeY = MathHelper.clamp_int(info.getRelativeMouseY(), 0, 99);
-		//				colour = colour.withHSVHue(relativeY / 100F);
-		//			}
-		//		}
 	}
 
 	@Override
@@ -238,17 +180,6 @@ public class ColourPickerDialog extends ScaledIconComponent {
 		return super.mouseClicked(info, button);
 	}
 
-//	private int getSelectedHSVComponent(ComponentRenderInfo info) {
-//		if(new Rectangle(30, 0, 50, 50).contains(info.getRelativeMouseX(), info.getRelativeMouseY())) {
-//			return 0;
-//		}
-//		else if(new Rectangle(0, 0, 11, 100).contains(info.getRelativeMouseX(), info.getRelativeMouseY())) {
-//			return 1;
-//		}
-//
-//		return -1;
-//	}
-
 	@Override
 	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
 		if(button == 0 && selectedSlider != -1) {
@@ -261,9 +192,6 @@ public class ColourPickerDialog extends ScaledIconComponent {
 	}
 
 	private int getSelectedRGBComponent(ComponentRenderInfo info) {
-//		if(hsv) {
-//			return -1;
-//		}
 
 		for(int component = 0; component < 4; component++) {
 			Rectangle rectangle = new Rectangle(RGB_OFFSET_LEFT, RGB_OFFSET_TOP + component * RGB_SPACING, 256, 11);

@@ -57,4 +57,14 @@ public class TickboxComponent extends ScaledIconComponent {
 		return true;
 	}
 
+	@Override
+	public boolean useFallback() {
+		return true;
+	}
+
+	@Override
+	public void renderFallback(ComponentRenderInfo info) {
+		Utils.drawOutline(getRelativeBounds(), getColour());
+	}
+
 }

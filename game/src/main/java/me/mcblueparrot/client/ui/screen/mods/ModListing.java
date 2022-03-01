@@ -71,15 +71,21 @@ public class ModListing extends ColouredComponent {
 		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
 
-		Utils.glColour(Colour.BLACK_128);
+		if(SolClientMod.instance.roundedUI) {
+			Utils.glColour(Colour.BLACK_128);
+			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_mod_listing_" + Utils.getTextureScale() + ".png"));
+			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
 
-		mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_mod_listing_" + Utils.getTextureScale() + ".png"));
-		Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
+			Utils.glColour(getColour());
 
-		Utils.glColour(getColour());
+			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_mod_listing_outline_" + Utils.getTextureScale() + ".png"));
+			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
+		}
+		else {
 
-		mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_mod_listing_outline_" + Utils.getTextureScale() + ".png"));
-		Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
+			Utils.drawRectangle(getRelativeBounds(), Colour.BLACK_128);
+			Utils.drawOutline(getRelativeBounds(), getColour());
+		}
 
 		super.render(info);
 	}

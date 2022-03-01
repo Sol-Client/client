@@ -1,6 +1,7 @@
 package me.mcblueparrot.client.ui.component;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +42,10 @@ public abstract class Component {
 	protected ClickHandler onClick;
 	protected Runnable onMouseEnter;
 	protected Runnable onMouseExit;
+	@Getter
 	protected List<Component> subComponents = new ArrayList<>();
 	private Map<Component, Controller<Rectangle>> subComponentControllers = new HashMap<>();
+	@Getter
 	private Component dialog;
 	private AnimatedColourController overlayColour = new AnimatedColourController(
 			(component, defaultColour) -> dialog == null ? Colour.TRANSPARENT : new Colour(0, 0, 0, 150));
@@ -90,6 +93,10 @@ public abstract class Component {
 		}
 	}
 
+	public Rectangle getRelativeBounds() {
+		return new Rectangle(0, 0, getBounds().getWidth(), getBounds().getHeight());
+	}
+
 	public Rectangle getBounds() {
 		return parent.getBounds(this);
 	}
@@ -127,6 +134,10 @@ public abstract class Component {
 				drawDialogOverlay();
 			}
 
+			if(shouldScissor() && shouldCull(component)) {
+				continue;
+			}
+
 			Rectangle bounds = getBounds(component);
 
 			GlStateManager.pushMatrix();
@@ -149,6 +160,17 @@ public abstract class Component {
 		if(dialog == null) {
 			drawDialogOverlay();
 		}
+	}
+
+	protected boolean shouldCull(Component component) {
+		if(component.getBounds().getEndY() < getBounds().getY()) {
+			return true;
+		}
+		else if(component.getBounds().getY() > getBounds().getHeight()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private void drawDialogOverlay() {
@@ -181,42 +203,45 @@ public abstract class Component {
 		return false;
 	}
 
-	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
+	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside, boolean processed) {
 		if(dialog != null) {
 			boolean insideDialog = dialog.getBounds().contains(info.getRelativeMouseX(), info.getRelativeMouseY());
 
-			if(dialog.mouseClickedAnywhere(transform(info, dialog.getBounds()), button, insideDialog)) {
-				return true;
+			if(dialog.mouseClickedAnywhere(transform(info, dialog.getBounds()), button, insideDialog, processed)) {
+				processed = true;
 			}
-
-			if(!insideDialog && button == 0) {
+			else if(!insideDialog && button == 0) {
 				setDialog(null);
 			}
 
-			return true;
+			return processed;
 		}
 
-		if(onClickAnywhere != null && onClickAnywhere.onClick(info, button)) {
-			return true;
+		if(!processed && onClickAnywhere != null && onClickAnywhere.onClick(info, button)) {
+			processed = true;
 		}
 
-		for(Component component : subComponents) {
-			Rectangle bounds = getBounds(component);
+		try {
+			for(Component component : subComponents) {
+				Rectangle bounds = getBounds(component);
 
-			if(component.mouseClickedAnywhere(transform(info, bounds), button, inside && bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()))) {
-				return true;
+				if(component.mouseClickedAnywhere(transform(info, bounds), button, inside && bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()), processed)) {
+					processed = true;
+				}
 			}
+		}
+		catch(ConcurrentModificationException error) {
 		}
 
 		if(inside && onClick != null && onClick.onClick(info, button)) {
-			return true;
+			processed = true;
 		}
 
-		if(inside && mouseClicked(info, button)) {
-			return true;
+		if(inside && !processed && mouseClicked(info, button)) {
+			processed = true;
 		}
 
-		return false;
+		return processed;
 	}
 
 	/**

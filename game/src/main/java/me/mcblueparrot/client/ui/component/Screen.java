@@ -21,6 +21,7 @@ public class Screen extends GuiScreen {
 	private Component rootWrapper;
 	private int mouseX;
 	private int mouseY;
+	protected boolean background = true;
 
 	public Screen(Component root) {
 		this.parentScreen = Minecraft.getMinecraft().currentScreen;
@@ -50,11 +51,13 @@ public class Screen extends GuiScreen {
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
 
-		if(mc.theWorld == null) {
-			drawRect(0, 0, width, height, Colour.BACKGROUND.getValue());
-		}
-		else {
-			drawDefaultBackground();
+		if(background) {
+			if(mc.theWorld == null) {
+				drawRect(0, 0, width, height, Colour.BACKGROUND.getValue());
+			}
+			else {
+				drawDefaultBackground();
+			}
 		}
 
 		rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, partialTicks));
@@ -80,7 +83,7 @@ public class Screen extends GuiScreen {
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		if(!rootWrapper.mouseClickedAnywhere(getInfo(), mouseButton, true)) {
+		if(!rootWrapper.mouseClickedAnywhere(getInfo(), mouseButton, true, false)) {
 			super.mouseClicked(mouseX, mouseY, mouseButton);
 		}
 	}

@@ -19,6 +19,21 @@ public class SolClientMod extends ConfigOnlyMod {
 
 	public static SolClientMod instance;
 
+
+	@Expose
+	@ConfigOption("Fancy Main Menu")
+	public boolean fancyMainMenu;
+
+	@Expose
+	@ConfigOption("Show Logo in Inventory")
+	public boolean logoInInventory;
+
+	@ConfigOption("Mods Key")
+	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
+
+	@ConfigOption("Edit HUD Key")
+	public KeyBinding editHudKey = new KeyBinding("Edit HUD", Keyboard.KEY_GRAVE, "Sol Client");
+
 	@Expose
 	@ConfigOption("UI Colour")
 	public Colour uiColour = new Colour(255, 180, 0);
@@ -29,6 +44,10 @@ public class SolClientMod extends ConfigOnlyMod {
 	public boolean smoothUIColours = true;
 
 	@Expose
+	@ConfigOption("Rounded UI")
+	public boolean roundedUI = true;
+
+	@Expose
 	@ConfigOption("Button Clicks")
 	public boolean buttonClicks = true;
 
@@ -37,21 +56,8 @@ public class SolClientMod extends ConfigOnlyMod {
 	public boolean smoothScrolling = true;
 
 	@Expose
-	@ConfigOption("Fancy Main Menu")
-	public boolean fancyMainMenu;
-
-	@Expose
 	@ConfigOption("Fancy Font")
 	public boolean fancyFont = true;
-
-	@Expose
-	@ConfigOption("Show Logo in Inventory")
-	public boolean logoInInventory;
-
-	@ConfigOption("Mods Key")
-	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
-	@ConfigOption("Edit HUD Key")
-	public KeyBinding editHudKey = new KeyBinding("Edit HUD", Keyboard.KEY_GRAVE, "Sol Client");
 
 	public SolClientMod() {
 		super("Sol Client", "sol_client", "Settings for Sol Client.", ModCategory.NONE);

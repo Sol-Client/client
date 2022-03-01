@@ -19,8 +19,6 @@ public class ModsScroll extends ScrollListComponent {
 	@Override
 	public void setParent(Component parent) {
 		super.setParent(parent);
-
-		load();
 	}
 
 	public void load() {
@@ -32,11 +30,13 @@ public class ModsScroll extends ScrollListComponent {
 					continue;
 				}
 
-				if(category.toString() != null) {
-					add(new LabelComponent(category.toString()));
+				if(screen.getQuery().isEmpty()) {
+					if(category.toString() != null) {
+						add(new LabelComponent(category.toString()));
+					}
 				}
 
-				for(Mod mod : category.getMods("")) {
+				for(Mod mod : category.getMods(screen.getQuery())) {
 					add(new ModListing(mod, screen));
 				}
 			}

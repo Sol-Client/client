@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.ui.component.impl;
 
+import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
 import me.mcblueparrot.client.ui.component.controller.Controller;
 import me.mcblueparrot.client.util.Utils;
@@ -30,16 +31,28 @@ public class ScaledIconComponent extends ColouredComponent {
 		this.height = height;
 	}
 
+	public void renderFallback(ComponentRenderInfo info) {
+	}
+
+	public boolean useFallback() {
+		return false;
+	}
+
 	@Override
 	public void render(ComponentRenderInfo info) {
-		GlStateManager.enableAlpha();
-		GlStateManager.enableBlend();
+		if(useFallback() && !SolClientMod.instance.roundedUI) {
+			renderFallback(info);
+		}
+		else {
+			GlStateManager.enableAlpha();
+			GlStateManager.enableBlend();
 
-		Utils.glColour(getColour());
+			Utils.glColour(getColour());
 
-		mc.getTextureManager().bindTexture(new ResourceLocation(
-				"textures/gui/" + iconName.get(this, "sol_client_confusion") + "_" + Utils.getTextureScale() + ".png"));
-		Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, width, height, width, height);
+			mc.getTextureManager().bindTexture(new ResourceLocation(
+					"textures/gui/" + iconName.get(this, "sol_client_confusion") + "_" + Utils.getTextureScale() + ".png"));
+			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, width, height, width, height);
+		}
 
 		super.render(info);
 	}

@@ -440,7 +440,7 @@ public class Client {
 			mc.displayGuiScreen(new ModsScreen());
 		}
 		else if(SolClientMod.instance.editHudKey.isPressed()) {
-			mc.displayGuiScreen(new MoveHudsScreen(new ModsScreen(null), null));
+			mc.displayGuiScreen(new MoveHudsScreen());
 		}
 	}
 

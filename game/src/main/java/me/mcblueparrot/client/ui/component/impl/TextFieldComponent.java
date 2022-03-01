@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import com.google.common.base.Predicate;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.component.Component;
 import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
@@ -22,8 +23,12 @@ public class TextFieldComponent extends Component {
 
 	private int width;
 	private String lastText = "";
+	@Getter
 	private String text = "";
+	private String placeholder;
 	private int cursor;
+	@Setter
+	@Getter
 	private boolean focused;
 	private int selectionEnd;
 	private boolean enabled = true;
@@ -31,6 +36,8 @@ public class TextFieldComponent extends Component {
 			(component, defaultColour) -> focused ? Colour.WHITE : Colour.LIGHT_BUTTON);
 	private boolean centred;
 	private Predicate<String> onUpdate;
+	private boolean flush;
+	private int ticks;
 
 	public TextFieldComponent(int width, boolean centred) {
 		this.width = width;
@@ -47,12 +54,27 @@ public class TextFieldComponent extends Component {
 			text = text.substring(0, 32);
 		}
 
+		boolean different = this.text != text;
+
 		this.text = text;
-		setCursorPosition(cursor);
+
+		cursor = clamp(cursor);
+		selectionEnd = clamp(selectionEnd);
+
+		if(different) {
+			ticks = 0;
+			if(flush) {
+				flush();
+			}
+		}
+	}
+
+	private int clamp(int value) {
+		return MathHelper.clamp_int(value, 0, text.length());
 	}
 
 	@Override
-	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
+	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside, boolean processed) {
 		if(!inside) {
 			if(focused) {
 				flush();
@@ -61,13 +83,14 @@ public class TextFieldComponent extends Component {
 			focused = false;
 		}
 
-		return super.mouseClickedAnywhere(info, button, inside);
+		return super.mouseClickedAnywhere(info, button, inside, processed);
 	}
 
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
 		if(!focused) {
 			focused = true;
+			ticks = 0;
 			return true;
 		}
 
@@ -94,11 +117,12 @@ public class TextFieldComponent extends Component {
 			Utils.drawFloatRectangle(textOffset + offset, 0, textOffset + offset + selectionWidth, 10, Colour.BLUE.getValue());
 		}
 
-		font.renderString(text, textOffset, SolClientMod.instance.fancyFont ? 0 : 1, -1);
+		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
-		float relativeCursorPosition = font.getWidth(text.substring(0, cursor));
+		font.renderString(hasPlaceholder ? placeholder : text, textOffset, SolClientMod.instance.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
 
-		if(focused) {
+		if(focused && ticks / 12 % 2 == 0) {
+			float relativeCursorPosition = font.getWidth(text.substring(0, cursor));
 			Utils.drawFloatRectangle(textOffset + relativeCursorPosition, 0, textOffset + relativeCursorPosition + 1, 10, -1);
 		}
 
@@ -367,7 +391,7 @@ public class TextFieldComponent extends Component {
 
 	private void setCursorPosition(int position) {
 		cursor = position;
-		cursor = MathHelper.clamp_int(cursor, 0, text.length());
+		cursor = clamp(cursor);
 		setSelectionPosition(cursor);
 	}
 
@@ -385,11 +409,20 @@ public class TextFieldComponent extends Component {
 		selectionEnd = position;
 	}
 
-	public void onUpdate(Predicate<String> onUpdate) {
+	public TextFieldComponent onUpdate(Predicate<String> onUpdate) {
 		this.onUpdate = onUpdate;
+		return this;
 	}
 
 	public void flush() {
+		if(text == lastText) {
+			return;
+		}
+
+		if(onUpdate == null) {
+			return;
+		}
+
 		if(!onUpdate.apply(text)) {
 			setTextInternal(lastText);
 			setCursorPositionEnd();
@@ -397,6 +430,22 @@ public class TextFieldComponent extends Component {
 		else {
 			lastText = text;
 		}
+	}
+
+	public TextFieldComponent autoFlush() {
+		flush = true;
+		return this;
+	}
+
+	public TextFieldComponent placeholder(String placeholder) {
+		this.placeholder = placeholder;
+		return this;
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+		ticks++;
 	}
 
 }

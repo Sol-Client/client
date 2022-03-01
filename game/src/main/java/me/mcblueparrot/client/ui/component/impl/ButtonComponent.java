@@ -1,6 +1,7 @@
 package me.mcblueparrot.client.ui.component.impl;
 
 import lombok.Getter;
+import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.component.Component;
 import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
 import me.mcblueparrot.client.ui.component.controller.AlignedBoundsController;
@@ -33,14 +34,20 @@ public class ButtonComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		GlStateManager.enableAlpha();
-		GlStateManager.enableBlend();
+		if(SolClientMod.instance.roundedUI) {
+			GlStateManager.enableAlpha();
+			GlStateManager.enableBlend();
 
-		Utils.glColour(getColour());
+			Utils.glColour(getColour());
 
-		mc.getTextureManager().bindTexture(
-				new ResourceLocation("textures/gui/sol_client_button_" + Utils.getTextureScale() + ".png"));
-		Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 100, 20, 100, 20);
+			mc.getTextureManager().bindTexture(
+					new ResourceLocation("textures/gui/sol_client_button_" + Utils.getTextureScale() + ".png"));
+			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 100, 20, 100, 20);
+		}
+		else {
+			Utils.drawRectangle(getRelativeBounds(), getColour().withAlpha(140));
+			Utils.drawOutline(getRelativeBounds(), getColour().withAlpha(140));
+		}
 
 		super.render(info);
 	}

@@ -1,9 +1,12 @@
 package me.mcblueparrot.client.ui.component.impl;
 
+import org.lwjgl.input.Keyboard;
+
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.component.Component;
 import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
 import me.mcblueparrot.client.ui.component.controller.AlignedBoundsController;
+import me.mcblueparrot.client.ui.screen.mods.ModListing;
 import me.mcblueparrot.client.util.data.Alignment;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
@@ -88,6 +91,18 @@ public abstract class ScrollListComponent extends Component {
 		super.render(translate(info));
 	}
 
+	@Override
+	protected boolean shouldCull(Component component) {
+		if((component.getBounds().getEndY() - calculatedY) < 0) {
+			return true;
+		}
+		else if(component.getBounds().getY() - calculatedY > getBounds().getHeight()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public void snapTo(int scroll) {
 		targetY = animatedY = lastAnimatedY = calculatedY = maxScrolling = scroll;
 	}
@@ -105,8 +120,12 @@ public abstract class ScrollListComponent extends Component {
 	}
 
 	@Override
-	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
-		return super.mouseClickedAnywhere(translate(info), button, inside);
+	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside, boolean processed) {
+		return super.mouseClickedAnywhere(translate(info), button, inside, processed);
+	}
+
+	private int getScrollStep() {
+		return (subComponents.get(0).getBounds().getHeight() + getSpacing());
 	}
 
 	@Override
@@ -118,10 +137,22 @@ public abstract class ScrollListComponent extends Component {
 		delta = delta / Math.abs(delta);
 
 		if(subComponents.size() != 0) {
-			targetY -= delta * (subComponents.get(0).getBounds().getHeight() + getSpacing());
+			targetY -= delta * getScrollStep();
 		}
 
 		return true;
+	}
+
+	@Override
+	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
+		if(keyCode == Keyboard.KEY_DOWN) {
+			targetY += getScrollStep();
+		}
+		else if(keyCode == Keyboard.KEY_UP) {
+			targetY -= getScrollStep();
+		}
+
+		return false;
 	}
 
 	@Override

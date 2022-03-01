@@ -55,15 +55,23 @@ public class SliderComponent extends Component {
 		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
 
-		Utils.glColour(Colour.LIGHT_BUTTON);
-		mc.getTextureManager().bindTexture(new ResourceLocation(
-				"textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));
-		Gui.drawModalRectWithCustomSizedTexture(0, 4, 0, 0, 100, 2, 100, 2);
+		int x = (int) (100 * (((value - min) / (max - min)))) - 4;
 
-		Utils.glColour(colour.get(this, null));
-		mc.getTextureManager().bindTexture(new ResourceLocation(
-				"textures/gui/sol_client_slider_thumb_" + Utils.getTextureScale() + ".png"));
-		Gui.drawModalRectWithCustomSizedTexture((int) (100 * (((value - min) / (max - min)))) - 4, 1, 0, 0, 8, 8, 8, 8);
+		if(SolClientMod.instance.roundedUI) {
+			Utils.glColour(Colour.LIGHT_BUTTON);
+			mc.getTextureManager().bindTexture(new ResourceLocation(
+					"textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));
+			Gui.drawModalRectWithCustomSizedTexture(0, 4, 0, 0, 100, 2, 100, 2);
+
+			Utils.glColour(colour.get(this, null));
+			mc.getTextureManager().bindTexture(new ResourceLocation(
+					"textures/gui/sol_client_slider_thumb_" + Utils.getTextureScale() + ".png"));
+			Gui.drawModalRectWithCustomSizedTexture(x, 1, 0, 0, 8, 8, 8, 8);
+		}
+		else {
+			Utils.drawRectangle(new Rectangle(0, 4, 100, 2), Colour.LIGHT_BUTTON);
+			Utils.drawRectangle(new Rectangle(x, 1, 8, 8), colour.get(this, null));
+		}
 
 		if(selected) {
 			value = MathHelper.clamp_float((float) (min + Math.floor(((info.getRelativeMouseX() / 100F) * (max - min)) / step) * step), min, max);

@@ -1,15 +1,15 @@
 package me.mcblueparrot.client.ui.screen.mods;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
+import lombok.Getter;
 import me.mcblueparrot.client.mod.CachedConfigOption;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.ui.component.Component;
+import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
 import me.mcblueparrot.client.ui.component.controller.AlignedBoundsController;
 import me.mcblueparrot.client.ui.component.controller.AnimatedColourController;
 import me.mcblueparrot.client.ui.component.controller.Controller;
@@ -18,25 +18,26 @@ import me.mcblueparrot.client.ui.component.impl.ColourPickerDialog;
 import me.mcblueparrot.client.ui.component.impl.LabelComponent;
 import me.mcblueparrot.client.ui.component.impl.ScaledIconComponent;
 import me.mcblueparrot.client.ui.component.impl.SliderComponent;
-import me.mcblueparrot.client.ui.component.impl.TextFieldComponent;
 import me.mcblueparrot.client.ui.component.impl.TickboxComponent;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Alignment;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.EnumChatFormatting;
 
 public class ModOptionComponent extends ScaledIconComponent {
 
+	@Getter
+	private CachedConfigOption option;
 	private boolean listening;
 	private int enumWidth;
 
 	public ModOptionComponent(CachedConfigOption option) {
 		super("sol_client_mod_option", 300, 21, (component, defaultColour) -> Colour.BLACK_128);
+
+		this.option = option;
 
 		add(new LabelComponent(option.name),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
@@ -210,7 +211,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 			if(sliderAnnotation.showValue()) {
 				add(new LabelComponent((component, defaultText) -> new DecimalFormat("0.##").format(option.getValue()) + sliderAnnotation.suffix()), (component, defaultBounds) -> {
 					Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
-					return new Rectangle((int) (getBounds().getWidth() - font.getWidth(((LabelComponent) component).getText()) - 115), defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
+					return new Rectangle((int) (getBounds().getWidth() - font.getWidth(((LabelComponent) component).getText()) - 117), defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
 				});
 			}
 
@@ -242,6 +243,16 @@ public class ModOptionComponent extends ScaledIconComponent {
 				return false;
 			});
 		}
+	}
+
+	@Override
+	public void renderFallback(ComponentRenderInfo info) {
+		Utils.drawRectangle(getRelativeBounds(), getColour());
+	}
+
+	@Override
+	public boolean useFallback() {
+		return true;
 	}
 
 	private boolean isConflicting(KeyBinding binding) {

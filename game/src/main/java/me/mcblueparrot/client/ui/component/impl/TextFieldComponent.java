@@ -325,11 +325,11 @@ public class TextFieldComponent extends Component {
 					result = result + text.substring(end);
 				}
 
-				setTextInternal(result);
-
 				if(negativeMovement) {
 					moveCursorBy(move);
 				}
+
+				setTextInternal(result);
 			}
 		}
 	}

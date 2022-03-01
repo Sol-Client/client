@@ -2,16 +2,16 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="100"
+   width="20"
    height="20"
-   viewBox="0 0 26.458333 5.2916668"
+   viewBox="0 0 5.2916666 5.2916668"
    version="1.1"
    id="svg12175"
-   sodipodi:docname="sol_client_button_normal.svg"
+   sodipodi:docname="sol_client_button_small.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_button_normal_1x.png"
-   inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_button_small_4x.png"
+   inkscape:export-xdpi="384"
+   inkscape:export-ydpi="384"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,9 +27,9 @@
      inkscape:document-units="mm"
      showgrid="false"
      showguides="true"
-     inkscape:zoom="4.0000001"
-     inkscape:cx="34.625"
-     inkscape:cy="18.875"
+     inkscape:zoom="11.313709"
+     inkscape:cx="27.974912"
+     inkscape:cy="19.578019"
      inkscape:window-width="1848"
      inkscape:window-height="1016"
      inkscape:window-x="72"
@@ -44,12 +44,12 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="opacity:0.8;fill:#ffffff;fill-opacity:0.69999999;stroke:#ffffff;stroke-width:0.26458333;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.8;fill:#ffffff;fill-opacity:0.7;stroke:#ffffff;stroke-width:0.264547;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1261"
-       width="25.400011"
-       height="4.2333441"
-       x="0.52908438"
-       y="0.5290845"
-       ry="1.2000034" />
+       width="4.2333694"
+       height="4.2333708"
+       x="0.52914703"
+       y="0.5291481"
+       ry="1.2000108" />
   </g>
 </svg>

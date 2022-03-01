@@ -20,6 +20,7 @@ public class ButtonComponent extends ColouredComponent {
 
 	@Getter
 	private Controller<String> text;
+	private ButtonType type = ButtonType.NORMAL;
 
 	public ButtonComponent(String text, Controller<Colour> colour) {
 		this((component, defaultText) -> text, colour);
@@ -41,8 +42,8 @@ public class ButtonComponent extends ColouredComponent {
 			Utils.glColour(getColour());
 
 			mc.getTextureManager().bindTexture(
-					new ResourceLocation("textures/gui/sol_client_button_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 100, 20, 100, 20);
+					new ResourceLocation("textures/gui/sol_client_button_" + type + "_" + Utils.getTextureScale() + ".png"));
+			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, type.getWidth(), 20, type.getWidth(), 20);
 		}
 		else {
 			Utils.drawRectangle(getRelativeBounds(), getColour().withAlpha(140));
@@ -54,7 +55,7 @@ public class ButtonComponent extends ColouredComponent {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return new Rectangle(0, 0, 100, 20);
+		return new Rectangle(0, 0, type.getWidth(), 20);
 	}
 
 	@Override
@@ -69,6 +70,11 @@ public class ButtonComponent extends ColouredComponent {
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
+		return this;
+	}
+
+	public ButtonComponent type(ButtonType type) {
+		this.type = type;
 		return this;
 	}
 

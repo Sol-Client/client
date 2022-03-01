@@ -16,7 +16,6 @@ import me.mcblueparrot.client.ui.component.controller.AnimatedColourController;
 import me.mcblueparrot.client.ui.component.controller.Controller;
 import me.mcblueparrot.client.ui.component.handler.ClickHandler;
 import me.mcblueparrot.client.ui.component.handler.KeyHandler;
-import me.mcblueparrot.client.ui.component.impl.ColourPickerDialog;
 import me.mcblueparrot.client.ui.component.impl.ScrollListComponent;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Alignment;
@@ -53,6 +52,7 @@ public abstract class Component {
 	private KeyHandler onKeyPressed;
 	private ClickHandler onClickAnywhere;
 	private ClickHandler onReleaseAnywhere;
+	private Controller<Boolean> visibilityController;
 
 	public void add(Component component, Controller<Rectangle> position) {
 		subComponents.add(component);
@@ -134,7 +134,7 @@ public abstract class Component {
 				drawDialogOverlay();
 			}
 
-			if(shouldScissor() && shouldCull(component)) {
+			if(component.shouldSkip() || (shouldScissor() && shouldCull(component))) {
 				continue;
 			}
 
@@ -160,6 +160,10 @@ public abstract class Component {
 		if(dialog == null) {
 			drawDialogOverlay();
 		}
+	}
+
+	private boolean shouldSkip() {
+		return visibilityController != null && !visibilityController.get(this, true);
 	}
 
 	protected boolean shouldCull(Component component) {
@@ -195,6 +199,10 @@ public abstract class Component {
 		}
 
 		for(Component component : subComponents) {
+			if(component.shouldSkip()) {
+				continue;
+			}
+
 			if(component.keyPressed(transform(info, getBounds(component)), keyCode, character)) {
 				return true;
 			}
@@ -223,6 +231,10 @@ public abstract class Component {
 
 		try {
 			for(Component component : subComponents) {
+				if(component.shouldSkip()) {
+					continue;
+				}
+
 				Rectangle bounds = getBounds(component);
 
 				if(component.mouseClickedAnywhere(transform(info, bounds), button, inside && bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()), processed)) {
@@ -263,6 +275,10 @@ public abstract class Component {
 		}
 
 		for(Component component : subComponents) {
+			if(component.shouldSkip()) {
+				continue;
+			}
+
 			Rectangle bounds = getBounds(component);
 
 			if(component.mouseReleasedAnywhere(transform(info, bounds), button, bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()))) {
@@ -364,6 +380,11 @@ public abstract class Component {
 		if(dialog != null) {
 			add(dialog, new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE, (component, defaultBounds) -> defaultBounds));
 		}
+	}
+
+	public Component visibilityController(Controller<Boolean> visibilityController) {
+		this.visibilityController = visibilityController;
+		return this;
 	}
 
 }

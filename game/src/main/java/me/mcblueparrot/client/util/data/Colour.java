@@ -28,7 +28,7 @@ public class Colour {
 	public static final Colour BLACK_128 = BLACK.withAlpha(128);
 	public static final Colour BACKGROUND = new Colour(20, 20, 20);
 	public static final Colour DISABLED_MOD = new Colour(40, 40, 40);
-	public static final Colour DISABLED_MOD_HOVER = new Colour(60, 60, 60);
+	public static final Colour DISABLED_MOD_HOVER = new Colour(50, 50, 50);
 	public static final Colour TRANSPARENT = new Colour(0);
 	public static final Colour LIGHT_BUTTON = new Colour(200, 200, 200);
 	public static final Colour LIGHT_BUTTON_HOVER = WHITE;
@@ -148,6 +148,18 @@ public class Colour {
 
 	public Colour blend(Colour dest, float percent) {
 		return new Colour(Utils.blendColor(value, dest.value, percent));
+	}
+
+	public double getLuminance() {
+		return 0.299 * getRed() + 0.587 * getGreen() + 0.114 * getBlue();
+	}
+
+	public boolean isLight() {
+		return getLuminance() > 128;
+	}
+
+	public Colour getOptimalForeground() {
+		return isLight() ? Colour.BLACK : Colour.WHITE;
 	}
 
 	public boolean isShadeOfGray() {

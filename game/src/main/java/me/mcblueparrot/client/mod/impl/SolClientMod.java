@@ -19,7 +19,6 @@ public class SolClientMod extends ConfigOnlyMod {
 
 	public static SolClientMod instance;
 
-
 	@Expose
 	@ConfigOption("Fancy Main Menu")
 	public boolean fancyMainMenu;
@@ -101,7 +100,7 @@ public class SolClientMod extends ConfigOnlyMod {
 	}
 
 	private Colour getUiHover() {
-		return uiColour.add(60);
+		return uiColour.add(40);
 	}
 
 }

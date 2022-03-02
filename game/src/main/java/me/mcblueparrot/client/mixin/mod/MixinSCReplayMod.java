@@ -146,9 +146,9 @@ public class MixinSCReplayMod {
 
 		@Inject(method = "<init>", at = @At("RETURN"), remap = false)
 		public void overrideSettings(ReplayModReplay mod, CallbackInfo callback) {
+			Minecraft.getMinecraft().currentScreen = new JGuiPreviousScreen(this);
 			settingsButton.onClick(() -> Minecraft.getMinecraft().displayGuiScreen(
-					new ModsScreen(new JGuiPreviousScreen(this),
-					SCReplayMod.instance)));
+					new ModsScreen(SCReplayMod.instance)));
 		}
 
 		@Override
@@ -177,7 +177,7 @@ public class MixinSCReplayMod {
 		@Overwrite(remap = false)
 		public void registerKeyBindings(KeyBindingRegistry registry) {
 			registry.registerKeyBinding("replaymod.input.settings", 0, () -> mc.displayGuiScreen(
-					new ModsScreen(null, SCReplayMod.instance)), false);
+					new ModsScreen(SCReplayMod.instance)), false);
 		}
 
 		@Final

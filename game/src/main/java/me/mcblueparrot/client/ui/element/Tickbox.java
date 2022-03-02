@@ -17,8 +17,8 @@ public class Tickbox {
 
 	public void render(int mouseX, int mouseY, boolean hovered) {
 		Colour boxColour = hovered ? SolClientMod.instance.uiHover : SolClientMod.instance.uiColour;
-
 		bounds.stroke(boxColour);
+
 		if(value) {
 			Utils.drawRectangle(new Rectangle(bounds.getX() + 2, bounds.getY() + 2, bounds.getWidth() - 4,
 					bounds.getHeight() - 4), boxColour);

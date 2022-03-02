@@ -132,7 +132,7 @@ public abstract class ChatChannelSystem {
 				boolean hovered = optionBounds.contains(mouseX, mouseY);
 				optionBounds.fill(hovered ? Colour.WHITE_128 : Colour.BLACK_128);
 				if(hovered && wasMouseClicked) {
-					Utils.playClickSound();
+					Utils.playClickSound(false);
 					AccessGuiChat.getInstance().setSelectedChatButton(null);
 					Client.INSTANCE.getChatChannelSystem().setChannel(channel);
 				}

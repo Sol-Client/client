@@ -19,8 +19,6 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.AutoGGMessage;
-import me.mcblueparrot.client.AutoGLMessage;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.DetectedServer;
 import me.mcblueparrot.client.api.Popup;
@@ -38,6 +36,8 @@ import me.mcblueparrot.client.mod.impl.hypixeladditions.commands.ChatChannelComm
 import me.mcblueparrot.client.mod.impl.hypixeladditions.commands.VisitHousingCommand;
 import me.mcblueparrot.client.util.ApacheHttpClient;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.data.AutoGGMessage;
+import me.mcblueparrot.client.util.data.AutoGLMessage;
 import net.hypixel.api.HypixelAPI;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;

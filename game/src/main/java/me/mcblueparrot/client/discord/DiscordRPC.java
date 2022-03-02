@@ -15,6 +15,7 @@ import me.mcblueparrot.client.event.impl.GameQuitEvent;
 import me.mcblueparrot.client.event.impl.OpenGuiEvent;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
+import me.mcblueparrot.client.ui.screen.SolClientMainMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMultiplayer;
@@ -50,7 +51,8 @@ public class DiscordRPC {
 
 	@EventHandler
 	public void onGuiChange(OpenGuiEvent event) {
-		if((event.screen == null || event.screen instanceof GuiMainMenu || event.screen instanceof GuiMultiplayer) && state && mc.theWorld == null) {
+		if ((event.screen == null || event.screen instanceof GuiMainMenu || event.screen instanceof SolClientMainMenu
+				|| event.screen instanceof GuiMultiplayer) && state && mc.theWorld == null) {
 			noWorld();
 		}
 	}

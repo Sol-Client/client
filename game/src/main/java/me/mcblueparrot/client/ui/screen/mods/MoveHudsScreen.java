@@ -5,29 +5,37 @@ import java.io.IOException;
 import org.lwjgl.input.Mouse;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.mod.hud.HudElement;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
-import me.mcblueparrot.client.ui.element.Button;
+import me.mcblueparrot.client.ui.component.Component;
+import me.mcblueparrot.client.ui.component.Screen;
+import me.mcblueparrot.client.ui.component.controller.AlignedBoundsController;
+import me.mcblueparrot.client.ui.component.impl.ButtonComponent;
+import me.mcblueparrot.client.ui.screen.SolClientMainMenu;
 import me.mcblueparrot.client.util.Utils;
-import me.mcblueparrot.client.util.data.Colour;
+import me.mcblueparrot.client.util.data.Alignment;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 
-public class MoveHudsScreen extends GuiScreen {
+public class MoveHudsScreen extends Screen {
 
-	private GuiScreen previous;
 	private GuiScreen title;
 	private HudElement movingHud;
 	private Position moveOffset;
-	private boolean wasMouseDown;
-	private boolean mouseDown;
 
-	public MoveHudsScreen(GuiScreen previous, GuiScreen title) {
-		this.previous = previous;
-		this.title = title;
+	public MoveHudsScreen() {
+		super(new MoveHudsComponent());
+		background = false;
+		if(parentScreen instanceof Screen) {
+			GuiScreen grandparentScreen = ((Screen) parentScreen).getParentScreen();
+
+			if(grandparentScreen instanceof GuiMainMenu || grandparentScreen instanceof SolClientMainMenu) {
+				title = grandparentScreen;
+			}
+		}
 	}
 
 	public HudElement getSelectedHud(int mouseX, int mouseY) {
@@ -44,31 +52,19 @@ public class MoveHudsScreen extends GuiScreen {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
-		if(mouseButton == 0) {
-			mouseDown = true;
-		}
-
 		if(mouseButton == 1) {
 			for(HudElement hud : Client.INSTANCE.getHuds()) {
 				if(hud.isEnabled() && hud.isVisible() && hud.getMultipliedBounds() != null && hud.getMultipliedBounds()
 						.contains(mouseX, mouseY)) {
-					if(previous instanceof ModsScreen) {
-						Utils.playClickSound();
+					if(parentScreen instanceof ModsScreen) {
+						Utils.playClickSound(true);
 
-						((ModsScreen) previous).switchMod(hud.getMod());
+						((ModsScreen) parentScreen).switchMod(hud.getMod());
 
-						Minecraft.getMinecraft().displayGuiScreen(previous);
+						Minecraft.getMinecraft().displayGuiScreen(parentScreen);
 					}
 				}
 			}
-		}
-	}
-
-	@Override
-	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		super.mouseReleased(mouseX, mouseY, state);
-		if(state == 0) {
-			mouseDown = false;
 		}
 	}
 
@@ -109,15 +105,6 @@ public class MoveHudsScreen extends GuiScreen {
 			movingHud = null;
 		}
 
-		Button button = new Button(SolClientMod.getFont(), "Done", new Rectangle(width / 2 - 50, height - 60, 100, 20), new Colour(0, 255, 0),
-				new Colour(150, 255, 150));
-		button.render(mouseX, mouseY);
-
-		if(button.contains(mouseX, mouseY) && !wasMouseDown && mouseDown) {
-			Utils.playClickSound();
-			mc.displayGuiScreen(previous);
-		}
-
 		for(HudElement hud : Client.INSTANCE.getHuds()) {
 			if(!(hud.isEnabled() && hud.isVisible())) continue;
 
@@ -131,12 +118,12 @@ public class MoveHudsScreen extends GuiScreen {
 			}
 		}
 
-		wasMouseDown = mouseDown;
+		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(keyCode == 1) {
+		if(keyCode == 1 || keyCode == SolClientMod.instance.editHudKey.getKeyCode()) {
 			Client.INSTANCE.save();
 			if(title != null) {
 				mc.displayGuiScreen(title);
@@ -145,6 +132,17 @@ public class MoveHudsScreen extends GuiScreen {
 				mc.displayGuiScreen(null);
 			}
 		}
+	}
+
+	public static class MoveHudsComponent extends Component {
+
+		public MoveHudsComponent() {
+			add(ButtonComponent.done(() -> screen.close()),
+					new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
+							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() - 30,
+									defaultBounds.getWidth(), defaultBounds.getHeight())));
+		}
+
 	}
 
 }

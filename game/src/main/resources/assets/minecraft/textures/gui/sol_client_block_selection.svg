@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333333 4.2333333"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="sol_client_block_selection.svg"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_tick_4x.png"
+   inkscape:export-xdpi="384.00003"
+   inkscape:export-ydpi="384.00003"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#282828"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="22.627417"
+     inkscape:cx="17.036854"
+     inkscape:cy="5.3695921"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="false" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect2353"
+       style="fill:#ffffff;stroke-width:1.16893;stroke-linecap:round;stroke-linejoin:round"
+       d="M 7.7050781 0.5 L 1.5566406 4.8496094 L 1.5390625 4.8359375 L 1.5390625 4.8613281 L 1.53125 4.8671875 L 1.5390625 4.8730469 L 1.5390625 11.896484 L 7.6875 15.867188 L 7.6875 15.892578 L 7.7070312 15.880859 L 7.7226562 15.890625 L 7.7226562 15.869141 L 13.871094 11.896484 L 13.871094 4.875 L 13.880859 4.8671875 L 13.871094 4.859375 L 13.871094 4.8359375 L 13.853516 4.8476562 L 7.7050781 0.5 z "
+       transform="scale(0.26458333)" />
+    <path
+       style="fill:#ececec;fill-opacity:1;stroke:none;stroke-width:0.462104px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 3.6698485,1.2796799 V 3.1476644 L 2.0339004,4.20467 2.0360661,2.4349425"
+       id="path2623"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#cccccc;fill-opacity:1;stroke:none;stroke-width:0.462104px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 0.40729095,1.279571 V 3.1475554 L 2.043239,4.204561 2.0410733,2.4348335"
+       id="path5567"
+       sodipodi:nodetypes="cccc" />
+  </g>
+</svg>

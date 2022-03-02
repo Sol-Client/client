@@ -75,7 +75,7 @@ public class ChatMod extends HudMod {
 	@ConfigOption("Infinite Chat")
 	public boolean infiniteChat = true;
 
-	@ConfigOption("Peek")
+	@ConfigOption("Peek Key")
 	public KeyBinding peekKey;
 
 	private boolean wasPeeking;
@@ -92,7 +92,7 @@ public class ChatMod extends HudMod {
 	@ConfigOption("Background Colour")
 	private Colour backgroundColour = new Colour(0, 0, 0, 127);
 	@Expose
-	@ConfigOption("Text Colour")
+	@ConfigOption("Default Text Colour")
 	private Colour textColour = Colour.WHITE;
 	@Expose
 	@ConfigOption("Text Shadow")
@@ -441,7 +441,7 @@ public class ChatMod extends HudMod {
 					}
 
 					if(selected && wasMouseClicked) {
-						Utils.playClickSound();
+						Utils.playClickSound(false);
 						((AccessGuiChat) Utils.getChatGui()).type(character, Keyboard.KEY_0);
 					}
 					x += 13;

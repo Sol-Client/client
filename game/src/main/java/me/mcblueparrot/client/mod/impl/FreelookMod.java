@@ -12,6 +12,7 @@ import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.util.Perspective;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -105,24 +106,6 @@ public class FreelookMod extends Mod {
 	@Override
 	public boolean isEnabledByDefault() {
 		return true;
-	}
-
-	public enum Perspective {
-		FIRST_PERSON("First"),
-		THIRD_PERSON_BACK("Third Back"),
-		THIRD_PERSON_FRONT("Third Front");
-
-		private String name;
-
-		private Perspective(String name) {
-			this.name = name;
-		}
-
-		@Override
-		public String toString() {
-			return name;
-		}
-
 	}
 
 }

@@ -45,4 +45,6 @@ public interface Font {
 
 	float getWidth(String text);
 
+	int getHeight();
+
 }

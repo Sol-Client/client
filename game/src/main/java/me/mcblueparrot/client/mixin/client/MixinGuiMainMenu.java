@@ -4,6 +4,7 @@ import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 import me.mcblueparrot.client.ui.element.ReplayButton;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -13,12 +14,13 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
+import me.mcblueparrot.client.util.access.AccessGuiMainMenu;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 
 @Mixin(GuiMainMenu.class)
-public class MixinGuiMainMenu extends GuiScreen {
+public abstract class MixinGuiMainMenu extends GuiScreen implements AccessGuiMainMenu {
 
 	@Inject(method = "addSingleplayerMultiplayerButtons", at = @At("RETURN"))
 	public void getModsButton(int x, int y, CallbackInfo callback) {
@@ -33,7 +35,7 @@ public class MixinGuiMainMenu extends GuiScreen {
 	@Redirect(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiMainMenu;" +
 			"switchToRealms()V"))
 	public void openModsMenu(GuiMainMenu guiMainMenu) {
-		mc.displayGuiScreen(new ModsScreen(guiMainMenu));
+		mc.displayGuiScreen(new ModsScreen());
 	}
 
 	@Inject(method = "actionPerformed", at = @At("RETURN"))
@@ -45,5 +47,13 @@ public class MixinGuiMainMenu extends GuiScreen {
 
 	@Shadow
 	private GuiButton realmsButton;
+
+	@Invoker("drawPanorama")
+	@Override
+	public abstract void renderPanorama(int mouseX, int mouseY, float partialTicks);
+
+	@Invoker("rotateAndBlurSkybox")
+	@Override
+	public abstract void rotateAndBlurPanorama(float partialTicks);
 
 }

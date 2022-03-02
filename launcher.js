@@ -431,11 +431,28 @@ class Launcher {
 					var dataString = data.toString("UTF-8");
 					fullOutput += dataString;
 
-					if(dataString.indexOf("message ") === 0) {
+					if(dataString.endsWith("\n")) {
+						dataString = dataString.substring(0, dataString.length - 1);
+					}
+
+					if(dataString.indexOf("message ") == 0) {
 						var splitDataString = dataString.split(" ");
 						if(splitDataString[1] === secret) {
-							if(splitDataString[2] === "openUrl") {
-								shell.openExternal(splitDataString[3]);
+							if(splitDataString[2] == "openUrl") {
+								var url = splitDataString[3];
+
+								if(url.endsWith("§scshowinfolder§")) {
+									url = url.substring(5, url.length - 16);
+
+									if(Utils.getOsName() == "windows") {
+										url = url.substring(1).replace(/\//g, "\\");
+									}
+
+									shell.showItemInFolder(url);
+								}
+								else {
+									shell.openExternal(url);
+								}
 							}
 						}
 					}

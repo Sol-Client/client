@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333333 4.2333333"
+   version="1.1"
+   id="svg12175"
+   sodipodi:docname="sol_client_rgb.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_colour_dialog_4x.png"
+   inkscape:export-xdpi="384"
+   inkscape:export-ydpi="384"
+   shape-rendering="crispEdges"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview12177"
+     pagecolor="#101010"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="false"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:zoom="5.6568543"
+     inkscape:cx="-46.934212"
+     inkscape:cy="-24.483572"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="path925"
+     units="px" />
+  <defs
+     id="defs12172" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="path925">
+      <rect
+         style="fill:#ffffff;stroke-width:0.346846;stroke-linecap:square;stroke-miterlimit:2"
+         id="rect1196"
+         width="3.934413"
+         height="0.39344129"
+         x="0.14946009"
+         y="0.73962206"
+         ry="0" />
+      <circle
+         style="fill:#ffffff;stroke-width:0.29229;stroke-linecap:square;stroke-miterlimit:2"
+         id="path1322"
+         cx="0.93634266"
+         cy="0.93634266"
+         r="0.39344129" />
+      <rect
+         style="fill:#ffffff;stroke-width:0.346846;stroke-linecap:square;stroke-miterlimit:2"
+         id="rect1196-7"
+         width="3.934413"
+         height="0.39344129"
+         x="0.14946009"
+         y="1.9200729"
+         ry="0" />
+      <circle
+         style="fill:#ffffff;stroke-width:0.29229;stroke-linecap:square;stroke-miterlimit:2"
+         id="path1322-6"
+         cx="3.2969902"
+         cy="2.1166666"
+         r="0.39344129" />
+      <rect
+         style="fill:#ffffff;stroke-width:0.346846;stroke-linecap:square;stroke-miterlimit:2"
+         id="rect1196-7-4"
+         width="3.934413"
+         height="0.39344129"
+         x="0.14946018"
+         y="3.1002696"
+         ry="0" />
+      <circle
+         style="fill:#ffffff;stroke-width:0.29229;stroke-linecap:square;stroke-miterlimit:2"
+         id="path1322-6-3"
+         cx="1.7232255"
+         cy="3.2969906"
+         r="0.39344129" />
+    </g>
+  </g>
+</svg>

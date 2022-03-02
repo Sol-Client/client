@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333333 4.2333334"
+   version="1.1"
+   id="svg12175"
+   sodipodi:docname="sol_client_small_tick.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/home/me/Documents/Projects/Java/Sol-Client/game/src/main/resources/assets/minecraft/textures/gui/sol_client_small_tick_4x.png"
+   inkscape:export-xdpi="384.00003"
+   inkscape:export-ydpi="384.00003"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview12177"
+     pagecolor="#101010"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:zoom="28.96"
+     inkscape:cx="3.8501381"
+     inkscape:cy="5.4730663"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     units="px" />
+  <defs
+     id="defs12172" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.179534;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.990567"
+       id="rect1403"
+       width="2.5134766"
+       height="2.5134766"
+       x="0.85992837"
+       y="0.85992837"
+       ry="0.71248192" />
+    <path
+       id="rect1480"
+       style="fill:#ffffff;stroke-width:0.23414;stroke-linecap:round;stroke-linejoin:round"
+       d="M 3.1031844,1.2320144 1.7424702,2.5931046 1.1301488,1.9804072 0.9260417,2.1848903 1.7424702,3.001319 1.9465774,2.7972118 3.3072916,1.4361215 Z" />
+  </g>
+</svg>

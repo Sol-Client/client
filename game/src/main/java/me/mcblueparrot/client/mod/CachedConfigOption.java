@@ -32,6 +32,7 @@ public class CachedConfigOption {
 
 	public CachedConfigOption(Mod mod, ConfigOption option, Field field) throws IOException {
 		this.mod = mod;
+
 		if(option != null) {
 			name = option.value();
 		}
@@ -101,6 +102,11 @@ public class CachedConfigOption {
 	public static List<CachedConfigOption> get(Mod mod) throws IOException {
 		List<CachedConfigOption> result = new ArrayList<CachedConfigOption>();
 		add(mod, mod.getClass(), result);
+
+		if(mod instanceof ConfigOnlyMod) {
+			result.remove(0);
+		}
+
 		return result;
 	}
 

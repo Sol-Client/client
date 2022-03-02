@@ -40,7 +40,7 @@ public class ScoreboardMod extends Mod {
 	@ConfigOption("Background Colour Top")
 	public Colour backgroundColourTop = new Colour(1610612736);
 	@Expose
-	@ConfigOption("Text Colour")
+	@ConfigOption("Default Text Colour")
 	public Colour textColour = Colour.WHITE;
 	@Expose
 	@ConfigOption("Text Shadow")

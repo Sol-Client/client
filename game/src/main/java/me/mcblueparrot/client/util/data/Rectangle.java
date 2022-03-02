@@ -1,9 +1,13 @@
 package me.mcblueparrot.client.util.data;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import me.mcblueparrot.client.util.Utils;
 
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
 public class Rectangle {
 
@@ -15,6 +19,12 @@ public class Rectangle {
 	private int width;
 	@Getter
 	private int height;
+
+	public static final Rectangle ZERO = ofDimensions(0, 0);
+
+	public static Rectangle ofDimensions(int width, int height) {
+		return new Rectangle(0, 0, width, height);
+	}
 
 	public Rectangle offset(int x, int y) {
 		return new Rectangle(this.x + x, this.y + y, width, height);
@@ -46,7 +56,7 @@ public class Rectangle {
 	}
 
 	public int getEndX() {
-		return y + height;
+		return x + width;
 	}
 
 	public int getEndY() {

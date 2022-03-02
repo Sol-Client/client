@@ -58,7 +58,6 @@ public class MixinGuiScreenResourcePacks extends GuiScreen {
 	public void addSearch(CallbackInfo callback) {
 		searchField = new GuiTextField(3, mc.fontRendererObj, width / 2 - 203, height - 47, 198,
 				20);
-		searchField.setFocused(true);
 
 		availablePacksX = width / 2 - 4 - 200;
 		availablePacksY = 36;

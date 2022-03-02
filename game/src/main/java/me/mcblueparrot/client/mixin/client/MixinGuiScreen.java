@@ -89,13 +89,14 @@ public abstract class MixinGuiScreen implements AccessGuiScreen {
 		}
 	}
 
-	@Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;" +
-			"handleKeyboardInput()V"))
-	public void handleKeyboardInput(GuiScreen instance) throws IOException {
-		if(!Client.INSTANCE.bus.post(new PreGuiKeyboardInputEvent()).cancelled) {
-			instance.handleKeyboardInput();
-		}
-	}
+	// Temporarily disable - Replay Mod bug
+//	@Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;" +
+//			"handleKeyboardInput()V"))
+//	public void handleKeyboardInput(GuiScreen instance) throws IOException {
+//		if(!Client.INSTANCE.bus.post(new PreGuiKeyboardInputEvent()).cancelled) {
+//			instance.handleKeyboardInput();
+//		}
+//	}
 
 	// Fix options not saving when "esc" is pressed.
 	@Redirect(method = "keyTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen" +

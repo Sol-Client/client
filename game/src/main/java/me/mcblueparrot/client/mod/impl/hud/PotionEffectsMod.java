@@ -9,7 +9,7 @@ import me.mcblueparrot.client.mod.annotation.ConfigOption;
 import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.mod.impl.TweaksMod;
 import me.mcblueparrot.client.util.Utils;
-import me.mcblueparrot.client.util.data.Alignment;
+import me.mcblueparrot.client.util.data.VerticalAlignment;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
@@ -25,7 +25,7 @@ public class PotionEffectsMod extends HudMod {
 
 	@Expose
 	@ConfigOption("Alignment")
-	private Alignment alignment = Alignment.MIDDLE;
+	private VerticalAlignment alignment = VerticalAlignment.MIDDLE;
 	@Expose
 	@ConfigOption("Icon")
 	private boolean icon = true;
@@ -124,7 +124,7 @@ public class PotionEffectsMod extends HudMod {
 		}
 	}
 
-	public Alignment getAlignment() {
+	public VerticalAlignment getAlignment() {
 		return alignment;
 	}
 

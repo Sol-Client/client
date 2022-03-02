@@ -35,7 +35,7 @@ public class MixinGuiIngameMenu extends GuiScreen {
 	@Inject(method = "actionPerformed", at = @At("RETURN"))
 	public void actionPerformed(GuiButton button, CallbackInfo callback) {
 		if(button.id == 5000) {
-			mc.displayGuiScreen(new ModsScreen(this));
+			mc.displayGuiScreen(new ModsScreen());
 		}
 		else if(button.id == 5001) {
 			mc.displayGuiScreen(new IngameServerList(this));

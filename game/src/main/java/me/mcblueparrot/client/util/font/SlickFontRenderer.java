@@ -64,7 +64,7 @@ public class SlickFontRenderer implements Font {
 		0xFFFFFF
 	};
 	private float antiAliasingFactor;
-	private UnicodeFont unicodeFont;
+	private UnicodeFont slickFont;
 	private int prevScaleFactor;
 	private String name;
 	private float size;
@@ -78,11 +78,11 @@ public class SlickFontRenderer implements Font {
 
 		try {
 			prevScaleFactor = resolution.getScaleFactor();
-			unicodeFont = new UnicodeFont(getFontFromInput(path).deriveFont((int) fontStyle, fontSize * prevScaleFactor / 2));
-			unicodeFont.addAsciiGlyphs();
-			unicodeFont.addNeheGlyphs();
-			unicodeFont.getEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
-			unicodeFont.loadGlyphs();
+			slickFont = new UnicodeFont(getFontFromInput(path).deriveFont((int) fontStyle, fontSize * prevScaleFactor / 2));
+			slickFont.addAsciiGlyphs();
+			slickFont.addNeheGlyphs();
+			slickFont.getEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
+			slickFont.loadGlyphs();
 		}
 		catch(FontFormatException | IOException | SlickException e) {
 			e.printStackTrace();
@@ -108,10 +108,10 @@ public class SlickFontRenderer implements Font {
 		try {
 			if(resolution.getScaleFactor() != prevScaleFactor) {
 				prevScaleFactor = resolution.getScaleFactor();
-				unicodeFont = new UnicodeFont(getFontFromInput(name).deriveFont(size * prevScaleFactor / 2));
-				unicodeFont.addAsciiGlyphs();
-				unicodeFont.getEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
-				unicodeFont.loadGlyphs();
+				slickFont = new UnicodeFont(getFontFromInput(name).deriveFont(size * prevScaleFactor / 2));
+				slickFont.addAsciiGlyphs();
+				slickFont.getEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
+				slickFont.loadGlyphs();
 			}
 		}
 		catch(FontFormatException | IOException | SlickException e) {
@@ -146,8 +146,8 @@ public class SlickFontRenderer implements Font {
 			for(String s2 : s.split("\n")) {
 				for(String s3 : s2.split("\r")) {
 
-					unicodeFont.drawString(x, y, s3, new org.newdawn.slick.Color(currentColour));
-					x += unicodeFont.getWidth(s3);
+					slickFont.drawString(x, y, s3, new org.newdawn.slick.Color(currentColour));
+					x += slickFont.getWidth(s3);
 
 					index += s3.length();
 					if(index < characters.length && characters[index] == '\r') {
@@ -203,24 +203,24 @@ public class SlickFontRenderer implements Font {
 	}
 
 	public float getAscent() {
-		return unicodeFont.getAscent();
+		return slickFont.getAscent();
 	}
 
 	@Override
 	public float getWidth(String text) {
-		return unicodeFont.getWidth(EnumChatFormatting.getTextWithoutFormattingCodes(text)) / antiAliasingFactor;
+		return slickFont.getWidth(EnumChatFormatting.getTextWithoutFormattingCodes(text)) / antiAliasingFactor;
 	}
 
 	public float getCharWidth(char c) {
-		return unicodeFont.getWidth(String.valueOf(c));
+		return slickFont.getWidth(String.valueOf(c));
 	}
 
 	public float getHeight(String s) {
-		return unicodeFont.getHeight(s) / 2.0F;
+		return slickFont.getHeight(s) / 2.0F;
 	}
 
 	public UnicodeFont getFont() {
-		return unicodeFont;
+		return slickFont;
 	}
 
 	public void drawSplitString(ArrayList<String> lines, int x, int y, int color) {
@@ -251,5 +251,10 @@ public class SlickFontRenderer implements Font {
 
 		lines.add(currentString.toString());
 		return lines;
+	}
+
+	@Override
+	public int getHeight() {
+		return 11;
 	}
 }

@@ -29,6 +29,7 @@ import com.replaymod.replay.camera.CameraEntity;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.Minecraft;
@@ -160,10 +161,17 @@ public class Utils {
 	public void scissor(Rectangle rectangle) {
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 		double scale = resolution.getScaleFactor();
-		GL11.glScissor((int) (rectangle.getX() * scale), (int) ((resolution.getScaledHeight() - rectangle.getHeight() - rectangle.getY()) * scale), (int) (rectangle.getWidth() * scale), (int) (rectangle.getHeight() * scale));
+
+		GL11.glScissor((int) (rectangle.getX() * scale),
+				(int) ((resolution.getScaledHeight() - rectangle.getHeight() - rectangle.getY()) * scale),
+				(int) (rectangle.getWidth() * scale), (int) (rectangle.getHeight() * scale));
 	}
 
-	public void playClickSound() {
+	public void playClickSound(boolean ui) {
+		if(ui && !SolClientMod.instance.buttonClicks) {
+			return;
+		}
+
 		Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 	}
 
@@ -370,6 +378,39 @@ public class Utils {
 		// Fun fact: the line should actually be thinner, but it's overriden by the
 		// block selection.
 		GL11.glLineWidth(2);
+	}
+
+	public static void drawFloatRectangle(float left, float top, float right, float bottom, int colour) {
+		if(left < right) {
+			float swap = left;
+			left = right;
+			right = swap;
+		}
+
+		if(top < bottom) {
+			float swap = top;
+			top = bottom;
+			bottom = swap;
+		}
+
+		float f3 = (float) (colour >> 24 & 255) / 255.0F;
+		float f = (float) (colour >> 16 & 255) / 255.0F;
+		float f1 = (float) (colour >> 8 & 255) / 255.0F;
+		float f2 = (float) (colour & 255) / 255.0F;
+		Tessellator tessellator = Tessellator.getInstance();
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		GlStateManager.enableBlend();
+		GlStateManager.disableTexture2D();
+		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.color(f, f1, f2, f3);
+		worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+		worldrenderer.pos((double) left, (double) bottom, 0.0D).endVertex();
+		worldrenderer.pos((double) right, (double) bottom, 0.0D).endVertex();
+		worldrenderer.pos((double) right, (double) top, 0.0D).endVertex();
+		worldrenderer.pos((double) left, (double) top, 0.0D).endVertex();
+		tessellator.draw();
+		GlStateManager.enableTexture2D();
+		GlStateManager.disableBlend();
 	}
 
 }

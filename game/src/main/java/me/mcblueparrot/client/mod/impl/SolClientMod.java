@@ -20,25 +20,49 @@ public class SolClientMod extends ConfigOnlyMod {
 	public static SolClientMod instance;
 
 	@Expose
-	@ConfigOption("UI Colour")
-	public Colour uiColour = new Colour(255, 180, 0);
-	public Colour uiHover;
-
-	@Expose
-	@ConfigOption("Fancy Font")
-	public boolean fancyFont = true;
+	@ConfigOption("Fancy Main Menu")
+	public boolean fancyMainMenu;
 
 	@Expose
 	@ConfigOption("Show Logo in Inventory")
 	public boolean logoInInventory;
 
 	@ConfigOption("Mods Key")
-	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");;
+	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
+
+	@ConfigOption("Edit HUD Key")
+	public KeyBinding editHudKey = new KeyBinding("Edit HUD", Keyboard.KEY_GRAVE, "Sol Client");
+
+	@Expose
+	@ConfigOption("UI Colour")
+	public Colour uiColour = new Colour(255, 180, 0);
+	public Colour uiHover;
+
+	@Expose
+	@ConfigOption("Smooth UI Colours")
+	public boolean smoothUIColours = true;
+
+	@Expose
+	@ConfigOption("Rounded UI")
+	public boolean roundedUI = true;
+
+	@Expose
+	@ConfigOption("Button Clicks")
+	public boolean buttonClicks = true;
+
+	@Expose
+	@ConfigOption("Smooth Scrolling")
+	public boolean smoothScrolling = true;
+
+	@Expose
+	@ConfigOption("Fancy Font")
+	public boolean fancyFont = true;
 
 	public SolClientMod() {
-		super("Sol Client", "sol_client", "Settings for Sol Client, a simple and easy to use Minecraft client.", ModCategory.NONE);
+		super("Sol Client", "sol_client", "Settings for Sol Client.", ModCategory.NONE);
 		instance = this;
 		Client.INSTANCE.registerKeyBinding(modsKey);
+		Client.INSTANCE.registerKeyBinding(editHudKey);
 	}
 
 	@Override
@@ -72,14 +96,11 @@ public class SolClientMod extends ConfigOnlyMod {
 
 	@Override
 	public String getDescription() {
-		if(!instance.fancyFont) {
-			return "Settings for Sol Client, an easy to use Minecraft client.";
-		}
 		return super.getDescription();
 	}
 
 	private Colour getUiHover() {
-		return uiColour.add(60);
+		return uiColour.add(40);
 	}
 
 }

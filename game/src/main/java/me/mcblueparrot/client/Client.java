@@ -15,7 +15,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.opengl.GL11;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,6 +48,7 @@ import me.mcblueparrot.client.mod.impl.MenuBlurMod;
 import me.mcblueparrot.client.mod.impl.MotionBlurMod;
 import me.mcblueparrot.client.mod.impl.ParticlesMod;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
+import me.mcblueparrot.client.mod.impl.TaplookMod;
 import me.mcblueparrot.client.mod.impl.TimeChangerMod;
 import me.mcblueparrot.client.mod.impl.ToggleSprintMod;
 import me.mcblueparrot.client.mod.impl.TweaksMod;
@@ -74,6 +74,7 @@ import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
+import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
@@ -166,6 +167,7 @@ public class Client {
 		register(ColourSaturationMod::new);
 		register(ChunkAnimatorMod::new);
 		register(FreelookMod::new);
+		register(TaplookMod::new);
 		register(ToggleSprintMod::new);
 		register(V1_7VisualsMod::new);
 		register(ItemPhysicsMod::new);
@@ -437,7 +439,11 @@ public class Client {
 	@EventHandler
 	public void onTick(PreTickEvent event) {
 		if(SolClientMod.instance.modsKey.isPressed()) {
-			mc.displayGuiScreen(new ModsScreen(null));
+			mc.displayGuiScreen(new ModsScreen());
+		}
+		else if(SolClientMod.instance.editHudKey.isPressed()) {
+			mc.displayGuiScreen(new ModsScreen());
+			mc.displayGuiScreen(new MoveHudsScreen());
 		}
 	}
 

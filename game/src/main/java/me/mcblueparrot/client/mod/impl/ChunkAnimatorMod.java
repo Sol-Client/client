@@ -27,7 +27,7 @@ import me.mcblueparrot.client.mod.annotation.Slider;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 
-// Read this class for long enough and the world "chunk" will lose meaning.
+// Based on lumien231's chunk animator.
 public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
 	private Map<RenderChunk, Data> chunks = new WeakHashMap<>();

@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.Inject;
 
 import com.replaymod.replay.ReplayModReplay;
 
@@ -25,6 +26,8 @@ import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ScreenShotHelper;
 
@@ -56,12 +59,10 @@ public class MixinScreenshotHelper {
 
 			if(OpenGlHelper.isFramebufferEnabled()) {
 				GlStateManager.bindTexture(buffer.framebufferTexture);
-				GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV,
-						pixelBuffer);
+				GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
 			}
 			else {
-				GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV,
-						pixelBuffer);
+				GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
 			}
 
 			pixelBuffer.get(pixelValues);
@@ -93,21 +94,29 @@ public class MixinScreenshotHelper {
 			}
 
 			BufferedImage finalImage = image;
-			
+
 			Thread thread = new Thread(() -> {
 				try {
 					ImageIO.write(finalImage, "png", (File) screenshot);
 
-					IChatComponent text = new ChatComponentText(screenshot.getName());
-					text.getChatStyle()
-							.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshot.getAbsolutePath()));
-					text.getChatStyle().setUnderlined(true);
+					Minecraft.getMinecraft().ingameGUI.getChatGUI()
+							.printChatMessage(new ChatComponentTranslation("screenshot.success", screenshot.getName()));
 
-					Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentTranslation("screenshot.success", text));
+					IChatComponent secondaryText = new ChatComponentText("[View]")
+							.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE).setChatClickEvent(
+									new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshot.getAbsolutePath())))
+							.appendSibling(
+									new ChatComponentText(" ").appendSibling(new ChatComponentText("[Open Folder]")
+											.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)
+													.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE,
+															screenshot.getAbsolutePath() + "§scshowinfolder§")))));
+
+					Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(secondaryText);
 				}
 				catch(Exception error) {
 					logger.warn("Couldn\'t save screenshot", error);
-					Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentTranslation("screenshot.failure", error.getMessage()));
+					Minecraft.getMinecraft().ingameGUI.getChatGUI()
+							.printChatMessage(new ChatComponentTranslation("screenshot.failure", error.getMessage()));
 				}
 			});
 
@@ -134,7 +143,9 @@ public class MixinScreenshotHelper {
 	private static Logger logger;
 
 	@Shadow
-	private static File getTimestampedPNGFileForDirectory(File gameDirectory) { throw new UnsupportedOperationException(); }
+	private static File getTimestampedPNGFileForDirectory(File gameDirectory) {
+		throw new UnsupportedOperationException();
+	}
 
 	@Shadow
 	private static int[] pixelValues;

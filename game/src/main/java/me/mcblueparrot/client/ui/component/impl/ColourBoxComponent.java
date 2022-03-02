@@ -31,12 +31,12 @@ public class ColourBoxComponent extends ScaledIconComponent {
 				Utils.drawOutline(getRelativeBounds(), getColour());
 			}
 
-		},				(component, defaultBounds) -> defaultBounds);
+		}, (component, defaultBounds) -> defaultBounds);
 	}
 
 	@Override
 	public boolean isHovered() {
-		return hoverController.isHovered();
+		return hoverController != null ? hoverController.isHovered() : super.isHovered();
 	}
 
 	@Override

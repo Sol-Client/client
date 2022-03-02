@@ -148,8 +148,9 @@ public class ModsScreen extends Screen {
 
 		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-			if(screen.getRoot().getDialog() == null && keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER) {
+			if((screen.getRoot().getDialog() == null && (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER)) && !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
+
 				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true, false);
 			}
 			else if(mod == null && keyCode == Keyboard.KEY_F && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown()) {

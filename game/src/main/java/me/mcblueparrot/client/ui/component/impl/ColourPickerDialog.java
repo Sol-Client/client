@@ -28,15 +28,16 @@ public class ColourPickerDialog extends ScaledIconComponent {
 	private static final int RGB_SPACING = 20;
 
 	private TextFieldComponent hex;
+	private ButtonComponent done;
 
 	public ColourPickerDialog(CachedConfigOption colourOption, Colour colour, Consumer<Colour> callback) {
 		super("sol_client_colour_dialog", 300, 150, (component, defaultColour) -> new Colour(40, 40, 40));
 		add(new LabelComponent(colourOption.name),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
-						(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() + 10,
+						(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() + 9,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-		add(ButtonComponent.done(() -> {
+		add(done = ButtonComponent.done(() -> {
 			hex.flush();
 			parent.setDialog(null);
 		}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
@@ -70,7 +71,8 @@ public class ColourPickerDialog extends ScaledIconComponent {
 									defaultBounds.getWidth(), defaultBounds.getHeight())));
 		}
 
-		add(hex = new TextFieldComponent(60, true), new AlignedBoundsController(Alignment.CENTRE, Alignment.END, (component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() - 30, defaultBounds.getWidth(), defaultBounds.getHeight())));
+		add(hex = new TextFieldComponent(60, true), new AlignedBoundsController(Alignment.CENTRE, Alignment.END, (component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() - 32, defaultBounds.getWidth(), defaultBounds.getHeight())));
+		add(new ColourBoxComponent((component, defaultColour) -> this.colour, null), (component, defaultBounds) -> new Rectangle(done.getBounds().getX() - 20, done.getBounds().getY() + 2, defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 		this.colour = colour;
 		this.callback = callback;
@@ -107,16 +109,9 @@ public class ColourPickerDialog extends ScaledIconComponent {
 	public void render(ComponentRenderInfo info) {
 		super.render(info);
 
-//		if(colour.getHSVHue() != 0) {
-//			hue = colour.getHSVHue();
-//		}
-//		else {
-//			colour = colour.withHSVHue(hue);
-//		}
-
-		//		if(!hsv) {
 		if(selectedSlider != -1) {
 			colour = colour.withComponent(selectedSlider, MathHelper.clamp_int(info.getRelativeMouseX() - RGB_OFFSET_LEFT, 0, 255));
+			callback.accept(colour);
 			updateHex();
 		}
 
@@ -184,7 +179,6 @@ public class ColourPickerDialog extends ScaledIconComponent {
 	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
 		if(button == 0 && selectedSlider != -1) {
 			selectedSlider = -1;
-			callback.accept(colour);
 			return true;
 		}
 

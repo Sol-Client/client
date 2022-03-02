@@ -79,6 +79,9 @@ public class ModsScreen extends Screen {
 					}
 					else {
 						getScreen().close();
+						if(getScreen().getParentScreen() instanceof Screen) {
+							((Screen) getScreen().getParentScreen()).getRoot().setFont(font);
+						}
 					}
 				}
 				else {

@@ -76,6 +76,7 @@ static def process(File inputFile, File outputFile, Map<String, String> methods,
 		InputStream entryInput = zip.getInputStream(entry)
 
 		if(entry.getName() == "mixins.core.replaymod.json"
+				|| entry.getName() == "mixins.recording.replaymod.json"
 				|| entry.getName() == "mixins.compat.mapwriter.replaymod.json"
 				|| entry.getName() == "assets/replaymod/logo_button.png"
 				|| entry.getName() == "assets/replaymod/logo.jpg"

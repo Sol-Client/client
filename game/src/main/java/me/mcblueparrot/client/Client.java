@@ -128,6 +128,8 @@ public class Client {
 
 	public void init() {
 		Utils.resetLineWidth();
+		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
+
 		System.setProperty("http.agent", "Sol Client/" + VERSION);
 
 		LOGGER.info("Initialising...");

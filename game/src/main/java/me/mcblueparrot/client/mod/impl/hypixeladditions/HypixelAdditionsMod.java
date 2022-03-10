@@ -176,9 +176,7 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	public boolean isHousing() {
-		return (mc.theWorld != null && mc.theWorld.getScoreboard() != null && mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1) != null
-				&& "HOUSING".equals(EnumChatFormatting.getTextWithoutFormattingCodes(
-						mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1).getDisplayName())));
+		return "HOUSING".equals(Utils.getScoreboardTitle());
 	}
 
 	public static boolean isHypixel() {

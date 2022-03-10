@@ -82,7 +82,8 @@
 		"mod.MixinSCReplayMod$MixinVanillaCameraController",
 		"mod.MixinV1_7VisualsMod$MixinEntityRenderer",
 		"mod.MixinV1_7VisualsMod$MixinItemRenderer",
-		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase"
+		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase",
+		"mod.MixinTNTTimerMod$MixinRenderTNTPrimed"
 	],
 	"injectors": {
 		"defaultRequire": 1

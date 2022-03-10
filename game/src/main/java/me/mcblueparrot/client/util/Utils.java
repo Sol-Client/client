@@ -50,7 +50,9 @@ import net.minecraft.network.status.client.C00PacketServerQuery;
 import net.minecraft.network.status.client.C01PacketPing;
 import net.minecraft.network.status.server.S00PacketServerInfo;
 import net.minecraft.network.status.server.S01PacketPong;
+import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -411,6 +413,20 @@ public class Utils {
 		tessellator.draw();
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();
+	}
+
+	public static String getScoreboardTitle() {
+		Minecraft mc = Minecraft.getMinecraft();
+
+		if(mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
+			ScoreObjective first = mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
+
+			if(first != null) {
+				return EnumChatFormatting.getTextWithoutFormattingCodes(first.getDisplayName());
+			}
+		}
+
+		return null;
 	}
 
 }

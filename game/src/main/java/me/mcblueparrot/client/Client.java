@@ -48,6 +48,7 @@ import me.mcblueparrot.client.mod.impl.MenuBlurMod;
 import me.mcblueparrot.client.mod.impl.MotionBlurMod;
 import me.mcblueparrot.client.mod.impl.ParticlesMod;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
+import me.mcblueparrot.client.mod.impl.TNTTimerMod;
 import me.mcblueparrot.client.mod.impl.TaplookMod;
 import me.mcblueparrot.client.mod.impl.TimeChangerMod;
 import me.mcblueparrot.client.mod.impl.ToggleSprintMod;
@@ -181,6 +182,7 @@ public class Client {
 		register(SCReplayMod::new);
 		register(QuickPlayMod::new);
 		register(HypixelAdditionsMod::new);
+		register(TNTTimerMod::new);
 
 		cacheHudList();
 

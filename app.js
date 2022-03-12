@@ -174,7 +174,7 @@ window.addEventListener("DOMContentLoaded", () => {
 				var servers = data.value.servers.value.value;
 
 				for(var i = 0; i < servers.length && i < 5; i++) {
-					 // first time I've ever needed to use the let keyword
+					// first time I've ever needed to use the let keyword
 					let server = servers[i];
 					let serverIndex = i;
 

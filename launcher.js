@@ -11,6 +11,7 @@ const Utils = require("./utils");
 const Patcher = require("./patcher");
 const { ipcRenderer, shell } = require("electron");
 const crypto = require("crypto");
+const url = require("url");
 
 class Launcher {
 
@@ -439,19 +440,15 @@ class Launcher {
 						var splitDataString = dataString.split(" ");
 						if(splitDataString[1] === secret) {
 							if(splitDataString[2] == "openUrl") {
-								var url = splitDataString[3];
+								var openUrl = splitDataString[3];
 
-								if(url.endsWith("§scshowinfolder§")) {
-									url = url.substring(5, url.length - 16);
-
-									if(Utils.getOsName() == "windows") {
-										url = url.substring(1).replace(/\//g, "\\");
-									}
-
-									shell.showItemInFolder(url);
+								if(openUrl.endsWith("§scshowinfolder§")) {
+									openUrl = openUrl.substring(0, openUrl.length - 16);
+									console.log(openUrl);
+									shell.showItemInFolder(url.fileURLToPath(openUrl));
 								}
 								else {
-									shell.openExternal(url);
+									shell.openExternal(openUrl);
 								}
 							}
 						}

@@ -444,7 +444,6 @@ class Launcher {
 
 								if(openUrl.endsWith("§scshowinfolder§")) {
 									openUrl = openUrl.substring(0, openUrl.length - 16);
-									console.log(openUrl);
 									shell.showItemInFolder(url.fileURLToPath(openUrl));
 								}
 								else {

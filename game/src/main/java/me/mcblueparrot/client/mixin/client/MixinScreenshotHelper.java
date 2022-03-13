@@ -106,7 +106,7 @@ public class MixinScreenshotHelper {
 							.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE).setChatClickEvent(
 									new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshot.getAbsolutePath())))
 							.appendSibling(
-									new ChatComponentText(" ").appendSibling(new ChatComponentText("[Open Folder]")
+									new ChatComponentText(" ").appendSibling(new ChatComponentText("[Open in Folder]")
 											.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)
 													.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE,
 															screenshot.getAbsolutePath() + "§scshowinfolder§")))));

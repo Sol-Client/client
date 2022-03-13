@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
@@ -60,9 +63,19 @@ import net.minecraft.util.Util.EnumOS;
 @UtilityClass
 public class Utils {
 
+	private PrintStream out;
 	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 	public Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
+	static {
+		try {
+			out = new PrintStream(System.out, true, "UTF-8");
+		}
+		catch(UnsupportedEncodingException error) {
+			out = System.out;
+		}
+	}
+	
 	private static int getStringWidth(String text) {
 		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
 	}
@@ -359,7 +372,7 @@ public class Utils {
 	}
 
 	public static void sendLauncherMessage(String type, String... arguments) {
-		System.out.println("message " + System.getProperty("me.mcblueparrot.client.secret") + " " + type + " " + String.join(" ", arguments));
+		out.println("message " + System.getProperty("me.mcblueparrot.client.secret") + " " + type + " " + String.join(" ", arguments));
 	}
 
 	public static String getRelativeToPackFolder(File packFile) {

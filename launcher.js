@@ -30,7 +30,7 @@ class Launcher {
 				var optifine = Utils.librariesDirectory + "/" + optifineRelative;
 				var secret = crypto.randomBytes(32).toString("hex");
 				var alreadyRunning = this.games.length > 0;
-				
+
 				if(!alreadyRunning && fs.existsSync(nativesFolder)) {
 					fs.rmdirSync(nativesFolder, { recursive: true });
 				}
@@ -441,6 +441,10 @@ class Launcher {
 						if(splitDataString[1] === secret) {
 							if(splitDataString[2] == "openUrl") {
 								var openUrl = splitDataString[3];
+
+								if(Utils.getOsName() == "windows") {
+									openUrl = openUrl.substring(0, openUrl.length - 1);
+								}
 
 								if(openUrl.endsWith("§scshowinfolder§")) {
 									openUrl = openUrl.substring(0, openUrl.length - 16);

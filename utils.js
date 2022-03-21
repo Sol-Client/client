@@ -14,6 +14,7 @@ class Utils {
 	static assetsDirectory;
 	static assetObjectsDirectory;
 	static assetIndexesDirectory;
+	static accountsFile;
 	static gameDirectory;
 	static serversFile;
 	static version = require("./package.json").version;
@@ -52,7 +53,17 @@ class Utils {
 		Utils.assetsDirectory = Utils.minecraftDirectory + "/assets";
 		Utils.assetObjectsDirectory = Utils.assetsDirectory + "/objects";
 		Utils.assetIndexesDirectory = Utils.assetsDirectory + "/indexes";
-		Utils.accountFile = Utils.minecraftDirectory + "/account.json";
+		Utils.accountsFile = Utils.minecraftDirectory + "/accounts.json";
+
+		var accountFile = Utils.minecraftDirectory + "/account.json";
+		if(fs.existsSync(accountFile) && !fs.existsSync(Utils.accountsFile)) {
+			var oldAccount = JSON.parse(fs.readFileSync(accountFile, "UTF-8"));
+			var converted = { accounts: [oldAccount], activeAccount: 0 }
+			fs.writeFileSync(Utils.accountsFile, JSON.stringify(converted));
+			fs.rmSync(accountFile);
+		}
+
+		Utils.skinsFile = Utils.minecraftDirectory + "/skins.json";
 		Utils.gameDirectory = Utils.minecraftDirectory + "/minecraft";
 
 		if(!fs.existsSync(Utils.gameDirectory)) {
@@ -125,6 +136,68 @@ class Utils {
 			case "Windows_NT":
 				return "windows";
 		}
+	}
+
+	// Expands an image URL into full data url
+	// Heavily based around https://stackoverflow.com/a/64929732
+	static expandImageURL(url) {
+		return new Promise(async(resolve) => {
+			var data = await fetch(url);
+			var reader = new FileReader();
+			reader.readAsDataURL(await data.blob());
+			reader.onloadend = () => {
+				resolve(reader.result);
+			};
+		});
+	}
+
+	static expandImageFile(file) {
+		return "data:image/png;base64," + fs.readFileSync(file).toString("base64");
+	}
+
+	static loadImage(url) {
+		return new Promise(async(resolve) => {
+			var image = new Image();
+			image.onload = () => {
+				resolve(image);
+			};
+			image.src = url;
+		})
+	}
+
+	static getTextures(uuid) {
+		return new Promise(async(resolve) => {
+			var profile = await axios.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
+
+			if(!profile.data) {
+				return;
+			}
+			else {
+				for(var property of profile.data.properties) {
+					if(property.name == "textures") {
+						resolve(JSON.parse(atob(property.value)).textures);
+						return;
+					}
+				}
+			}
+
+			resolve(null);
+		});
+	}
+
+	static getProfile(username) {
+		return new Promise(async(resolve) => {
+			try {
+				resolve((await axios.get("https://api.mojang.com/users/profiles/minecraft/" + username)).data);
+			}
+			catch(error) {
+				resolve(null);
+			}
+		});
+	}
+
+	static dataURLToBuffer(url) {
+		return Buffer.from(url.substring(url.indexOf(",")), "base64");
 	}
 
 }

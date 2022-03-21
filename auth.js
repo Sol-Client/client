@@ -1,5 +1,156 @@
 const axios = require("axios");
 const msmc = require("msmc");
+const fs = require("fs");
+const Utils = require("./utils");
+
+class AccountManager {
+
+	constructor(file, dataCallback) {
+		this.file = file;
+		if(fs.existsSync(file)) {
+			var data = JSON.parse(fs.readFileSync(file, "UTF-8"));
+			this.accounts = [];
+			for(var account of data.accounts) {
+				this.accounts.push(Account.from(account));
+			}
+			this.activeAccount = this.accounts[data.activeAccount];
+			this.fetchSkin(this.activeAccount);
+		}
+		else {
+			this.accounts = [];
+			this.save();
+		}
+		this.dataCallback = dataCallback;
+		this.refreshTask = {};
+	}
+
+	save() {
+		fs.writeFileSync(this.file, JSON.stringify({ accounts: this.accounts, activeAccount: this.accounts.indexOf(this.activeAccount) }));
+	}
+
+	refreshAccount(account) {
+		if(this.refreshTask[account]) {
+			return this.refreshTask;
+		}
+
+		var task = new Promise(async(resolve, reject) => {
+			var valid = await this.activeAccount.getService().validate(this.activeAccount);
+			if(!valid) {
+				var result = await this.activeAccount.getService().refresh(this.activeAccount);
+				if(!result) {
+					this.removeAccount(this.activeAccount);
+					reject();
+					return;
+				}
+				this.addAccount(result);
+			}
+			this.refreshTask[account] = null;
+			resolve();
+		});
+
+		this.refreshTask[account] = task;
+		return task;
+	}
+
+	getFullProfile(account) {
+		return new Promise(async(resolve, reject) => {
+			try {
+				await this.refreshAccount(account);
+				resolve((await axios.get("https://api.minecraftservices.com/minecraft/profile",
+						{
+							headers: {
+								"Authorization": "Bearer " + account.accessToken
+							}
+						})).data);
+			}
+			catch(error) {
+				reject(error);
+			}
+		});
+	}
+
+	async fetchSkin(account) {
+		var textures = await Utils.getTextures(account.uuid);
+
+		if(textures) {
+			if(textures.SKIN) {
+				account.skin = await Utils.expandImageURL(textures.SKIN.url);
+
+				var image = await Utils.loadImage(account.skin);
+
+				var canvas = document.createElement("canvas");
+				var context = canvas.getContext("2d");
+
+				canvas.width = 8;
+				canvas.height = 8;
+				context.drawImage(image, 8, 8, 8, 8, 0, 0, 8, 8);
+
+				if(image.naturalWidth == 64) {
+					context.drawImage(image, 40, 8, 8, 8, 0, 0, 8, 8);
+				}
+
+				account.head = canvas.toDataURL();
+			}
+
+			if(textures.CAPE) {
+				account.cape = await Utils.expandImageURL(textures.CAPE.url);
+			}
+			else {
+				account.cape = null;
+			}
+
+			this.dataCallback(account);
+
+			this.save();
+		}
+	}
+
+	switchAccount(account) {
+		this.activeAccount = account;
+		this.fetchSkin(account);
+		this.save();
+	}
+
+	addAccount(account) {
+		var sameUUIDIndex = -1;
+
+		for(var i = 0; i < this.accounts.length; i++) {
+			var item = this.accounts[i];
+			if(item.uuid == account.uuid) {
+				sameUUIDIndex = i;
+			}
+		}
+
+		if(sameUUIDIndex == -1) {
+			this.accounts.push(account);
+		}
+		else {
+			this.accounts[sameUUIDIndex] = account;
+		}
+
+		this.switchAccount(account);
+	}
+
+	removeAccount(account) {
+		var index = this.accounts.indexOf(this.activeAccount);
+		this.accounts = this.accounts.filter((item) => item != account);
+
+		if(account == this.activeAccount) {
+			this.activeAccount = this.accounts[index];
+
+			if(!this.activeAccount) {
+				this.activeAccount = this.accounts[index - 1];
+			}
+
+			this.save();
+			return this.activeAccount != null;
+		}
+
+		this.save();
+		return true;
+	}
+
+}
 
 class AuthService {
 
@@ -153,6 +304,7 @@ class Account {
 		this.clientToken = clientToken;
 		this.demo = demo;
 		this._msmc = _msmc;
+		this.head = "headless.png";
 	}
 
 	getService() {
@@ -169,3 +321,4 @@ class Account {
 exports.YggdrasilAuthService = YggdrasilAuthService;
 exports.MicrosoftAuthService = MicrosoftAuthService;
 exports.Account = Account;
+exports.AccountManager = AccountManager;

@@ -16,11 +16,16 @@
 
 .input {
 	display: block;
-	border: solid rgb(80, 80, 80);
+	border: solid 2px transparent;
 	border-radius: 5px;
 	background-color: black;
 	color: white;
 	outline: none;
+	transition: border-color 0.2s;
+}
+
+.input:focus {
+	border-color: white;
 }
 
 .button {
@@ -39,9 +44,9 @@
 	width: 50px;
 	height: 50px;
 	position: fixed;
-	top: 10px;
-	left: 10px;
-	font-size: 2em;
+	top: 20px;
+	left: 20px;
+	font-size: 1.5em;
 	box-shadow: 0 0 20px rgb(0, 150, 255);
 	cursor: pointer;
 }
@@ -67,6 +72,14 @@
 	font-weight: normal;
 }
 
+.launcher-title {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 30px;
+	margin-bottom: 26px;
+	display: table-cell;
+}
+
 .subtitle {
 	font-family: Raleway-Regular;
 	text-align: center;
@@ -75,6 +88,7 @@
 
 .account-button {
 	position: fixed;
+	height: 30px;
 	top: 15px;
 	right: 15px;
 	background: rgba(255, 150, 0);
@@ -83,8 +97,45 @@
 	padding: 5px;
 	padding-top: 3px;
 	padding-bottom: 3px;
+	padding-right: 8px;
 	box-shadow: 0 0 10px rgba(255, 150, 0);
 }
+
+.account-button img {
+	position: relative;
+	top: 0px;
+	width: 24px;
+	height: 24px;
+	image-rendering: pixelated;
+}
+
+.account img {
+	position: relative;
+	top: 2px;
+	width: 24px;
+	height: 24px;
+	image-rendering: pixelated;
+}
+
+.account-button span {
+	position: relative;
+	top: -7px;
+	left: 3px;
+}
+
+.account span {
+	position: relative;
+	top: -5px;
+	left: 3px;
+}
+
+.account-button .arrow-icon {
+	position: relative;
+	top: 1px;
+	width: 12px;
+	height: 9px;
+}
+
 
 .account-button:hover {
 	background: rgba(255, 180, 30);
@@ -92,6 +143,68 @@
 
 .account-button:active {
 	background: rgba(225, 120, 0);
+}
+
+.accounts {
+	position: fixed;
+	top: 55px;
+	right: 15px;
+	background: rgba(60, 60, 60);
+	border-radius: 5px;
+	color: white;
+	border: none;
+	z-index: 1;
+}
+
+.account {
+	position: relative;
+	background: inherit;
+	color: white;
+	transition: background 0.2s;
+	border: none;
+	padding: 5px;
+	padding-right: 33px;
+	font-size: 0.8rem;
+	cursor: pointer;
+}
+
+.account .remove-account {
+	position: absolute;
+	top: 9px;
+	right: 3px;
+	opacity: 0;
+	transition: opacity 0.2s, background 0.2s;
+	padding: 0;
+	background: none;
+	border: none;
+	width: 22px;
+	height: 22px;
+	border-radius: 100%;
+	cursor: pointer;
+}
+
+.account:hover .remove-account {
+	opacity: 1;
+}
+
+.remove-account:hover {
+	background: rgba(255, 255, 255, 0.3);
+}
+
+.remove-account:active {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.account:hover {
+	background: rgb(75, 75, 75);
+}
+
+.accounts div:first-of-type {
+	border-radius: 5px 5px 0px 0px;
+}
+
+.accounts div:last-of-type {
+	border-radius: 0px 0px 5px 5px;
 }
 
 .play-button {
@@ -139,9 +252,6 @@
 
 .login-box .input {
 	font-size: 1.3em;
-	background: rgb(0, 0, 0);
-	border: solid rgb(40, 40, 40);
-	border-radius: 5px;
 	width: 350px;
 	height: 30px;
 	margin-bottom: 30px;
@@ -149,8 +259,11 @@
 }
 
 .label {
+	position: relative;
+	left: 2px;
 	display: block;
 	font-size: 1.5em;
+	width: calc(100% - 2px);
 }
 
 .discord-widget {
@@ -192,12 +305,12 @@ a:link:hover, a:link:focus, a:link:active {
 	background-color: rgba(255, 255, 255, 0.3);
 }
 
-.selected-tab {
-	text-decoration: underline;
-}
-
 .tabs button:active {
 	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.selected-tab {
+	text-decoration: underline;
 }
 
 .tabs .sep {
@@ -228,6 +341,10 @@ body {
 	color: white;
 	user-select: none;
 	margin: 0;
+}
+
+img, a:link {
+	-webkit-user-drag: none;
 }
 
 body, button, input {
@@ -278,19 +395,33 @@ input[type="range"]:hover::-webkit-slider-thumb {
 	width: 100%;
 }
 
-.button-generic {
+.button-generic, .button-toggle.button-active {
 	background: var(--primary-colour);
 	border-radius: 5px;
 	color: black;
 	box-shadow: 0 0 10px var(--primary-colour);
 }
 
-.button-generic:hover {
+.button-generic:hover, .button-toggle.button-active:hover {
 	background: var(--primary-colour-lighter);
 }
 
-.button-generic:active {
+.button-generic:active, .button-toggle.button-active:active {
 	background: var(--primary-colour-darker);
+}
+
+.button-generic-black, .button-toggle {
+	background: rgb(60, 60, 60);
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgb(50, 50, 50);
+}
+
+.button-generic-black:hover, .button-toggle:hover {
+	background: rgb(70, 70, 70);
+}
+
+.button-generic-black:active, .button-toggle:active {
+	background: rgb(50, 50, 50);
 }
 
 .spaced-15 {
@@ -338,7 +469,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
 	font-family: Raleway;
 }
 
-.settings {
+.settings, .skins {
 	overflow: auto;
 	position: fixed;
 	width: 100%;
@@ -351,4 +482,159 @@ input[type="range"]:hover::-webkit-slider-thumb {
 	width: 100%;
 	text-align: center;
 	bottom: 4px;
+}
+
+.current-skin, .new-skin-preview-box {
+	display: inline-block;
+	width: 300px;
+	height: 250px;
+	border-right: solid 1px rgb(80, 80, 80);
+	/* never thought of this trick */
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.current-skin h2:first-of-type, .new-skin-preview-box h2:first-of-type {
+	position: absolute;
+	top: -20px;
+	left: 0px;
+	width: 100%;
+	text-align: center;
+}
+
+.current-skin-box, .new-skin-box {
+	position: relative;
+	top: 32px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.skin-library, .new-skin-properties {
+	position: absolute;
+	top: 0px;
+	left: 310px;
+	width: calc(100% - 310px);
+	overflow: auto;
+    height: 100%;
+}
+
+.skin-library h2:first-of-type, .new-skin-properties h2:first-of-type {
+	position: absolute;
+	top: 6px;
+	width: 100%;
+	text-align: center;
+}
+
+.skin-library-box, .new-skin-properties-box {
+	position: absolute;
+	top: 75px;
+	left: 5px;
+	width: calc(100% - 5px);
+}
+
+.skin {
+	display: inline-block;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	width: 150px;
+	height: 200px;
+	text-align: center;
+	transition: background 0.2s;
+	border-radius: 5px;
+	cursor: pointer;
+	position: relative;
+}
+
+.skin-name {
+	position: absolute;
+	top: 15px;
+	width: 100%;
+}
+
+.skin img {
+	position: absolute;
+	left: 75px;
+	top: 110px;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.skin:hover {
+	background: rgb(40, 40, 40);
+}
+
+.skin:active:not(.no-press) {
+	background: rgb(30, 30, 30);
+}
+
+.skin .apply-button {
+	position: absolute;
+	bottom: 15px;
+	left: 50%;
+	transform: translateX(-50%);
+	opacity: 0;
+	transition: opacity 0.2s, background 0.2s;
+}
+
+.skin:hover .apply-button {
+	opacity: 1;
+}
+
+.quick-servers {
+	color: grey;
+}
+
+.quick-join-box {
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 220px;
+}
+
+.back-to-skins-home {
+	position: absolute;
+	bottom: 15px;
+	right: 184px;
+}
+
+.save-skin {
+	position: absolute;
+	bottom: 15px;
+	right: 126px;
+}
+
+.save-and-apply-skin {
+	position: absolute;
+	bottom: 15px;
+	right: 18px;
+}
+
+.new-skin-properties-box .label {
+	font-size: 1em;
+}
+
+.new-skin-properties-box .input {
+	padding: 5px;
+}
+
+.spaced-bottom-5 {
+	margin-bottom: 5px;
+}
+
+.new-skin-browse {
+	margin-right: 5px;
+}
+
+.new-skin-username {
+	margin-left: 5px;
+	margin-right: 5px;
+	width: 100px;
+}
+
+.skins .input {
+	background: rgb(30, 30, 30);
+}
+
+.new-skin-properties-box {
+	top: 50px;
 }

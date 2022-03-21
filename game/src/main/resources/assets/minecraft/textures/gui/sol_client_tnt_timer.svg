@@ -23,92 +23,96 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="16"
-     inkscape:cx="16.84375"
-     inkscape:cy="8.59375"
+     inkscape:zoom="8"
+     inkscape:cx="1.3125"
+     inkscape:cy="30.0625"
      inkscape:window-width="1848"
      inkscape:window-height="1016"
      inkscape:window-x="72"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer1"
+     showguides="false"
+     inkscape:lockguides="false" />
   <defs
      id="defs2" />
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <circle
-       style="fill:#ffffff;stroke-linecap:square"
-       id="path892"
-       cx="11.840889"
-       cy="20.140823"
-       r="9.3345213" />
-    <rect
-       style="fill:#ffffff;stroke-width:0.562687;stroke-linecap:square"
-       id="rect916"
-       width="1"
-       height="10"
-       x="22.114483"
-       y="-11.116048"
+    <g
+       id="g849"
+       transform="matrix(0,1.2467434,-1.2467434,0,30.321051,1.8138922)"
+       style="fill:#000000" />
+    <g
+       id="g1919"
+       transform="matrix(0.88158416,0.88158416,-0.88158074,0.88158074,2.5643462,-17.406857)"
+       style="fill:#ffffff">
+      <rect
+         style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
+         id="rect1126"
+         width="1"
+         height="3.1198373"
+         x="26.04159"
+         y="-2.2058477"
+         inkscape:transform-center-x="0.025864615"
+         inkscape:transform-center-y="-4.0746038" />
+      <rect
+         style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
+         id="rect1924"
+         width="1"
+         height="3.1198373"
+         x="20.684605"
+         y="-21.996117"
+         inkscape:transform-center-x="-2.8628942"
+         inkscape:transform-center-y="-2.8994686"
+         transform="rotate(45)" />
+      <rect
+         style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
+         id="rect1926"
+         width="1"
+         height="3.1198373"
+         x="2.902813"
+         y="-32.201969"
+         inkscape:transform-center-x="-4.0745964"
+         inkscape:transform-center-y="-0.025859707"
+         transform="rotate(90)" />
+      <rect
+         style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
+         id="rect1928"
+         width="1"
+         height="3.1198373"
+         x="15.835732"
+         y="15.575945"
+         inkscape:transform-center-x="2.899465"
+         inkscape:transform-center-y="-2.8628943"
+         transform="rotate(-45)" />
+      <rect
+         style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
+         id="rect1930"
+         width="1"
+         height="3.1198373"
+         x="-3.9545326"
+         y="20.932932"
+         inkscape:transform-center-x="4.074605"
+         inkscape:transform-center-y="0.025860911"
+         transform="rotate(-90)" />
+    </g>
+    <path
+       id="rect1706"
+       style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 15.468772,11.571282 3.0698907,23.970165 a 3.5069335,2.6302001 45 0 0 0.6199442,4.339608 3.5069335,2.6302001 45 0 0 4.3396088,0.619944 L 20.428326,16.530835 a 3.5069335,2.6302001 45 0 1 -4.339609,-0.619944 3.5069335,2.6302001 45 0 1 -0.619945,-4.339609 z" />
+    <ellipse
+       style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="ellipse3558"
+       cx="22.627682"
+       cy="-2.7564917"
+       rx="3.5069335"
+       ry="2.6302001"
        transform="rotate(45)" />
-    <rect
-       style="fill:#ffffff;stroke:none;stroke-width:0.889001;stroke-linecap:square;stroke-opacity:1"
-       id="rect1020"
-       width="6"
-       height="4"
-       x="19.614485"
-       y="-4.7553511"
-       ry="1.0666667"
-       transform="rotate(45)" />
-    <rect
-       style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
-       id="rect1126"
-       width="1"
-       height="3.1198373"
-       x="22.114479"
-       y="-16.736046"
-       inkscape:transform-center-x="-2.8628916"
-       inkscape:transform-center-y="-2.8994685"
-       transform="rotate(45)" />
-    <rect
-       style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
-       id="rect1924"
-       width="1"
-       height="3.1198373"
-       x="7.6333165"
-       y="-29.493631"
-       inkscape:transform-center-x="-4.0746062"
-       inkscape:transform-center-y="-0.025861434"
-       transform="rotate(90)" />
-    <rect
-       style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
-       id="rect1926"
-       width="1"
-       height="3.1198373"
-       x="-11.627385"
-       y="-28.274858"
-       inkscape:transform-center-x="-2.899461"
-       inkscape:transform-center-y="2.8628897"
-       transform="rotate(135)" />
-    <rect
-       style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
-       id="rect1928"
-       width="1"
-       height="3.1198373"
-       x="23.333246"
-       y="2.5246561"
-       inkscape:transform-center-x="0.025859952"
-       inkscape:transform-center-y="-4.0746035" />
-    <rect
-       style="fill:#ffffff;stroke-width:0.675812;stroke-linecap:square"
-       id="rect1930"
-       width="1"
-       height="3.1198373"
-       x="10.575665"
-       y="17.005821"
-       inkscape:transform-center-x="2.8994666"
-       inkscape:transform-center-y="-2.8628939"
-       transform="rotate(-45)" />
+    <path
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 18.381116,13.764977 23.432761,8.7133316"
+       id="path7278" />
   </g>
 </svg>

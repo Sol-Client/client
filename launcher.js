@@ -11,11 +11,12 @@ const Utils = require("./utils");
 const Patcher = require("./patcher");
 const { ipcRenderer, shell } = require("electron");
 const crypto = require("crypto");
+const { AccountManager } = require("./auth");
 
 class Launcher {
 
 	static instance = new Launcher();
-	account = null;
+	accountManager = null;
 	games = [];
 
 	launch(callback, server) {
@@ -387,11 +388,13 @@ class Launcher {
 				args.push("--version");
 				args.push("Sol Client");
 
+				var activeAccount = this.accountManager.activeAccount;
+
 				args.push("--username");
-				args.push(this.account.username);
+				args.push(activeAccount.username);
 
 				args.push("--uuid");
-				args.push(this.account.uuid);
+				args.push(activeAccount.uuid);
 
 				if(server) {
 					args.push("--server");
@@ -399,12 +402,12 @@ class Launcher {
 				}
 
 				args.push("--accessToken");
-				args.push(this.account.accessToken);
+				args.push(activeAccount.accessToken);
 
 				args.push("--versionType");
 				args.push("release");
 
-				if(this.account.demo) {
+				if(activeAccount.demo) {
 					args.push("--demo");
 				}
 

@@ -6,8 +6,10 @@
 	</head>
 	<body>
 		<div class="login invisible">
+			<button class="button back-button invisible back-to-main-button">◀</button>
+			<br/>
+			<br/>
 			<h1 class="title">Log In</h1>
-			<h2 class="subtitle">To play the game, you need to log in.</h2>
 			<br/>
 			<br/>
 			<div class="login-box">
@@ -18,22 +20,26 @@
 		</div>
 		<div class="mojang-login invisible">
 			<button class="button back-button back-to-login-button">◀</button>
+			<br/>
+			<br/>
 			<h1 class="title">Log In</h1>
 			<br/>
 			<br/>
 			<div class="login-box">
-				<label for="username" class="label">Email</label>
-				<input id="username" class="input" type="username" spellcheck="false" autocomplete="off"></input>
-				<label for="username" class="label">Password</label>
-				<input id="password" class="input" type="password"></input>
+				<label for="username" class="label">Mojang Account (Email)</label>
+				<input id="username" class="input" type="username" spellcheck="false" autocomplete="off"/>
+				<label for="password" class="label">Password</label>
+				<input id="password" class="input" type="password"/>
 				<br/>
 			</div>
 			<span class="error-message"></span>
 			<button class="button play-button login-button-mojang">Log In</button>
 		</div>
 		<div class="main invisible">
-			<h1 class="title">Sol Client</h1>
+			<img src="assets/sol_client_logo_with_text.svg" class="launcher-title" height=64/>
 			<button class="button account-button"></button>
+			<div class="accounts invisible">
+			</div>
 			<div class="tabs">
 				<button class="about-tab selected-tab">Home</button>
 				<div class="sep"></div>
@@ -48,8 +54,10 @@
 					<a class="open-in-browser" href="https://discord.gg/QFDGDhcFqu">Discord Server</a>
 				</div>
 				<br/>
-				<h3 class="centred-text quick-join-text">Play Server</h3>
-				<div class="quick-servers centred"></div>
+				<div class="quick-join-box">
+					<h3 class="centred-text quick-join-text">Play Server</h3>
+					<div class="quick-servers centred">No Added Servers</div>
+				</div>
 			</div>
 			<div class="settings invisible">
 				<br/>

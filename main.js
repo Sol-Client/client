@@ -21,7 +21,7 @@ async function run() {
 	function createWindow() {
 		window = new BrowserWindow({
 			width: 800,
-			height: 600,
+			height: 650,
 			icon: __dirname + "/assets/icon.png",
 			webPreferences: {
 				preload: path.join(__dirname, "app.js")
@@ -30,6 +30,7 @@ async function run() {
 
 		window.loadFile("app.html");
 		window.setMenu(null);
+		window.webContents.openDevTools();
 
 		window.on("close", (event) => {
 			if(!canQuit) {
@@ -50,6 +51,30 @@ async function run() {
 
 			if(!result.canceled && file) {
 				event.sender.send("directory", file);
+			}
+		});
+
+		ipcMain.on("skinFile", async(event) => {
+			var result = await dialog.showOpenDialog(window,
+				{
+					title: "Select Skin File",
+					filters: [
+						{
+							name: "Minecraft Skins",
+							extensions: ["png"]
+						},
+						{
+							name: "All Files",
+							extensions: ["*"]
+						}
+					]
+				}
+			);
+
+			var file = result.filePaths[0];
+
+			if(!result.canceled && file) {
+				event.sender.send("skinFile", file);
 			}
 		});
 	}

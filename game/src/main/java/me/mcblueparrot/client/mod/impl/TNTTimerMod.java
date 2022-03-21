@@ -28,7 +28,19 @@ public class TNTTimerMod extends Mod {
 			fuse -= 28;
 		}
 
-		return EnumChatFormatting.GREEN + FORMAT.format(fuse / 20);
+		EnumChatFormatting colour = EnumChatFormatting.GREEN;
+
+		if(fuse < 20) {
+			colour = EnumChatFormatting.DARK_RED;
+		}
+		else if(fuse < 40) {
+			colour = EnumChatFormatting.RED;
+		}
+		else if (fuse < 60) {
+			colour = EnumChatFormatting.GOLD;
+		}
+
+		return colour + FORMAT.format(fuse / 20);
 	}
 
 	@Override

@@ -30,7 +30,6 @@ async function run() {
 
 		window.loadFile("app.html");
 		window.setMenu(null);
-		window.webContents.openDevTools();
 
 		window.on("close", (event) => {
 			if(!canQuit) {

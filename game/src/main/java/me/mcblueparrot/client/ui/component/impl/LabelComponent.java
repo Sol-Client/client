@@ -4,6 +4,7 @@ import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
 import me.mcblueparrot.client.ui.component.controller.Controller;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class LabelComponent extends ColouredComponent {
 
@@ -24,6 +25,7 @@ public class LabelComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
+		GlStateManager.color(2, 1, 1, 1);
 		font.renderString(getText(), 0, 0, getColourValue());
 
 		super.render(info);

@@ -25,6 +25,7 @@ public class LabelComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
+		// Why? Why? Why? Why?
 		GlStateManager.color(2, 1, 1, 1);
 		font.renderString(getText(), 0, 0, getColourValue());
 

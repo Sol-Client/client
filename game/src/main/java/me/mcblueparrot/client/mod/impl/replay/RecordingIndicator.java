@@ -14,6 +14,7 @@ import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
@@ -32,7 +33,7 @@ public class RecordingIndicator extends BaseHudElement {
 
 	@Override
 	public boolean isEnabled() {
-		return SCReplayMod.enabled && mod.recordingIndicator;
+		return (SCReplayMod.instance.isEnabled() || SCReplayMod.enabled) && mod.recordingIndicator;
 	}
 
 	@Override
@@ -42,7 +43,9 @@ public class RecordingIndicator extends BaseHudElement {
 
 	@Override
 	public void render(Position position, boolean editMode) {
-		if(guiControls == null || (!editMode && guiControls.isStopped())) return;
+		if(!editMode && (guiControls == null || guiControls.isStopped())) {
+			return;
+		}
 
 		Minecraft mc = Minecraft.getMinecraft();
 
@@ -56,7 +59,8 @@ public class RecordingIndicator extends BaseHudElement {
 
 		mc.getTextureManager().bindTexture(paused ? PAUSED : RECORDING);
 
-		GL11.glColor3f(1, 1, 1);
+		GlStateManager.enableBlend();
+		Utils.glColour(SCReplayMod.instance.recordingIndicatorColour);
 		Gui.drawModalRectWithCustomSizedTexture(position.getX(), position.getY(), 0, 0, 16, 16, 16, 16);
 	}
 

@@ -11,7 +11,7 @@ public abstract class SimpleHudMod extends HudMod {
 
 	@Expose
 	@ConfigOption("Background")
-	private boolean background = true;
+	protected boolean background = true;
 	@Expose
 	@ConfigOption("Background Colour")
 	private Colour backgroundColour = new Colour(0, 0, 0, 100);
@@ -44,10 +44,16 @@ public abstract class SimpleHudMod extends HudMod {
 			if(background) {
 				getBounds(position).fill(backgroundColour);
 			}
+			else {
+				if(!text.isEmpty()) {
+					text = "[" + text + "]";
+				}
+			}
+
 			if(border) {
 				getBounds(position).stroke(borderColour);
 			}
-			font.drawString(text,
+ 			font.drawString(text,
 					position.getX() + (getBounds(position).getWidth() / 2F) - (font.getStringWidth(text) / 2F),
 					position.getY() + 4, textColour.getValue(), shadow);
 		}

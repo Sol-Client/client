@@ -52,6 +52,9 @@ public class SCReplayMod extends Mod {
 	@ConfigOption("Recording Indicator")
 	public boolean recordingIndicator = true;
 	@Expose
+	@ConfigOption("Recording Indicator Colour")
+	public Colour recordingIndicatorColour = Colour.BLACK;
+	@Expose
 	@ConfigOption("Recording Indicator Scale")
 	@Slider(min = 50, max = 150, step = 1, suffix = "%")
 	protected float recordingIndicatorScale = 100;

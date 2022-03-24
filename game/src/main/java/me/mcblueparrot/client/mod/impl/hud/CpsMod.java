@@ -1,6 +1,7 @@
 package me.mcblueparrot.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
+import com.replaymod.lib.de.johni0702.minecraft.gui.container.AbstractGuiScreen.Background;
 
 import me.mcblueparrot.client.CpsMonitor;
 import me.mcblueparrot.client.mod.annotation.ConfigOption;
@@ -26,12 +27,15 @@ public class CpsMod extends SimpleHudMod {
 	public void render(Position position, boolean editMode) {
 		super.render(position, editMode);
 		if(rmb) {
-			int width = font.getStringWidth(CpsMonitor.LMB.getCps() + " | " + CpsMonitor.RMB.getCps() + " CPS") - 2;
+			String prefix = background ? "" : "[";
+			String suffix = background ? "" : "]";
+
+			int width = font.getStringWidth(prefix + CpsMonitor.LMB.getCps() + " | " + CpsMonitor.RMB.getCps() + " CPS" + suffix) - 2;
 
 			int x = position.getX() + (53 / 2) - (width / 2);
 			int y = position.getY() + 4;
 
-			x = font.drawString(Integer.toString(CpsMonitor.LMB.getCps()), x, y, textColour.getValue(), shadow);
+			x = font.drawString(prefix + Integer.toString(CpsMonitor.LMB.getCps()), x, y, textColour.getValue(), shadow);
 
 			x--;
 			if(shadow) x--;
@@ -48,7 +52,7 @@ public class CpsMod extends SimpleHudMod {
 
 			x += font.getCharWidth(' ');
 
-			font.drawString(CpsMonitor.RMB.getCps() + " CPS", x, y, textColour.getValue(), shadow);
+			font.drawString(CpsMonitor.RMB.getCps() + " CPS" + suffix, x, y, textColour.getValue(), shadow);
 		}
 	}
 

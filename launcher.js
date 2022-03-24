@@ -366,6 +366,9 @@ class Launcher {
 				args.push("-Duser.language=en");
 				args.push("-Duser.country=US");
 
+				// Fix Log4j encoding.
+				args.push("-Dfile.encoding=UTF-8");
+
 				var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";
 				var classpath = "";
 

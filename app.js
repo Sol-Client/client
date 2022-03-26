@@ -45,6 +45,79 @@ window.addEventListener("DOMContentLoaded", () => {
 	const main = document.querySelector(".main");
 	const accounts = document.querySelector(".accounts");
 	const backToMain = document.querySelector(".back-to-main-button");
+	const news = document.querySelector(".news");
+
+	const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+	fetch("https://sol-client.github.io/news.html", {
+				headers: {
+					"Cache-Control": "no-cache"
+				}
+			})
+			.then(async(response, error) => {
+				var today = new Date();
+
+				news.innerHTML = "<br/>" + await response.text();
+				for(var timeElement of news.getElementsByTagName("time")) {
+					var datetime = timeElement.getAttribute("datetime");
+
+					if(datetime == "future") {
+						timeElement.innerText = "The Future";
+						continue;
+					}
+
+					var todayYear = today.getFullYear();
+					var todayMonth = today.getMonth() + 1;
+					var todayDay = today.getDate();
+
+					var year = parseInt(datetime.substring(0, 4));
+					var month = parseInt(datetime.substring(5, 7));
+					var day = parseInt(datetime.substring(8, 10));
+
+					if(todayYear == year && todayMonth == month) {
+						if(todayDay == day) {
+							timeElement.innerText = "Today";
+							continue;
+						}
+						else if(todayDay - 1 == day) {
+							timeElement.innerText = "Yesterday";
+							continue;
+						}
+					}
+					
+
+					var friendlyName = "";
+					
+					friendlyName += day;
+					
+					var lastDigit = day % 10;
+					
+					if(lastDigit == 1) {
+						friendlyName += "st";
+					}
+					else if(lastDigit == 2) {
+						friendlyName += "nd";
+					}
+					else if(lastDigit == 3) {
+						friendlyName += "rd";
+					}
+					else {
+						friendlyName += "th";
+					}
+
+					friendlyName += " " + monthNames[month - 1];
+
+					if(today.getFullYear() != year) {
+						friendlyName += " " + year;
+					}
+
+					timeElement.innerText = friendlyName;
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+				news.innerHTML = `<p>${error}</p>`;
+			});
 
 	launcher.accountManager = new AccountManager(Utils.accountsFile, (account) => {
 		if(account == launcher.accountManager.activeAccount) {
@@ -224,6 +297,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	document.querySelector(".about-tab").onclick = () => switchToTab("about");
 	document.querySelector(".settings-tab").onclick = () => switchToTab("settings");
+	document.querySelector(".news-tab").onclick = () => switchToTab("news");
 	document.querySelector(".minecraft-folder").onclick = () => ipcRenderer.send("directory");
 
 	ipcRenderer.on("directory", (event, file) => {
@@ -321,6 +395,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 		document.querySelector(".about-tab").classList.remove("selected-tab");
 		document.querySelector(".settings-tab").classList.remove("selected-tab");
+		document.querySelector(".news-tab").classList.remove("selected-tab");
 		document.querySelector("." + tab).style.display = "block";
 		document.querySelector("." + tab + "-tab").classList.add("selected-tab");
 

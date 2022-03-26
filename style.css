@@ -469,7 +469,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
 	font-family: Raleway;
 }
 
-.settings, .skins {
+.settings, .news {
 	overflow: auto;
 	position: fixed;
 	width: 100%;
@@ -637,4 +637,17 @@ input[type="range"]:hover::-webkit-slider-thumb {
 
 .new-skin-properties-box {
 	top: 50px;
+}
+
+.news time, .news h1, .news h2, .news p {
+	margin-left: 15px;
+}
+
+.news h1 {
+	font-size: 1.8em;
+	margin-top: 2px;
+}
+
+.news time {
+	color: rgb(160, 160, 160);
 }

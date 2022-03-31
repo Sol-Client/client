@@ -133,10 +133,16 @@
 	width: 100%;
 }
 
-rickroll {
+.version-switcher-text {
 	position: absolute;
 	width: 100%;
 	text-align: center;
+}
+
+.version-switcher-popup {
+	position: relative;
+	top: -100px;
+	left: -80px;
 }
 
 .login-button {

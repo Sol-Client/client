@@ -121,6 +121,24 @@
 	background: rgb(80, 80, 80);
 }
 
+.play-button img {
+	position: absolute;
+	right: 25px;
+	top: 35px;
+}
+
+.button-box {
+	position: absolute;
+	bottom: 30px;
+	width: 100%;
+}
+
+rickroll {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+}
+
 .login-button {
 	width: 350px;
 	display: block;

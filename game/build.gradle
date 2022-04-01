@@ -34,6 +34,20 @@ buildscript {
 apply plugin: CustomTweakerPlugin
 apply plugin: "org.spongepowered.mixin"
 apply plugin: "java"
+apply plugin: "maven-publish"
+
+publishToMavenLocal.dependsOn build
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact "build/libs/game-deobf.jar"
+        }
+    }
+}
+
+group = "me.mcblueparrot.sol-client"
+version = "1.8.0"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -376,6 +390,14 @@ runClient {
 	}
 }
 
+task backupJar(type: Copy) {
+	from("build/libs/game.jar")
+	into("build/libs")
+	rename "game.jar", "game-deobf.jar"
+}
+
+reobfJar.dependsOn backupJar
+
 jar {
 	dependsOn configurations.compile
 	manifest {
@@ -391,6 +413,8 @@ jar {
 			it.isDirectory() ? it : zipTree(it)
 		}
 	}
+	version = null
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.withType(JavaCompile) {

@@ -29,7 +29,11 @@ public enum ModCategory {
 	/**
 	 * Aesthetic/graphical mods.
 	 */
-	VISUAL("Visual");
+	VISUAL("Visual"),
+	/**
+	 * User installed extensions.
+	 */
+	EXTENSIONS("Extensions");
 
 	private String name;
 	private List<Mod> mods;

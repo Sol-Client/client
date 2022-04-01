@@ -1,9 +1,10 @@
 {
-  "required": true,
-  "package": "me.mcblueparrot.client.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "refmap": "mixins.solclient.refmap.json",
-  "mixins": [
+	"required": true,
+	"package": "me.mcblueparrot.client.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "mixins.solclient.refmap.json",
+	"mixins": [
+		"MixinBootstrap",
 		"MixinEntity",
 		"MixinEntityLivingBase",
 		"MixinEntityPlayer",

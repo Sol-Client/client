@@ -31,7 +31,7 @@ public class ModsScroll extends ScrollListComponent {
 				}
 
 				if(screen.getQuery().isEmpty()) {
-					if(category.toString() != null) {
+					if(category.toString() != null && !category.getMods("").isEmpty()) {
 						add(new LabelComponent(category.toString()));
 					}
 				}

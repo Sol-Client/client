@@ -36,6 +36,9 @@ import me.mcblueparrot.client.event.impl.PostGameStartEvent;
 import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.event.impl.SendChatMessageEvent;
 import me.mcblueparrot.client.event.impl.ServerConnectEvent;
+import me.mcblueparrot.client.extension.LoadedExtension;
+import me.mcblueparrot.client.extension.ExtensionManager;
+import me.mcblueparrot.client.extension.InvalidExtensionException;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.hud.HudElement;
 import me.mcblueparrot.client.mod.impl.BlockSelectionMod;
@@ -73,6 +76,7 @@ import me.mcblueparrot.client.mod.impl.hud.chat.ChatMod;
 import me.mcblueparrot.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
+import me.mcblueparrot.client.tweak.Tweaker;
 import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
@@ -126,6 +130,8 @@ public class Client {
 	private PopupManager popupManager;
 	@Getter
 	private CapeManager capeManager;
+	@Getter
+	private ExtensionManager extensionManager = ExtensionManager.INSTANCE;
 
 	public void init() {
 		Utils.resetLineWidth();
@@ -184,9 +190,18 @@ public class Client {
 		register(HypixelAdditionsMod::new);
 		register(TNTTimerMod::new);
 
-		cacheHudList();
+		for(LoadedExtension extension : extensionManager.getExtensions()) {
+			try {
+				extension.registerMod();
+			}
+			catch(InvalidExtensionException error) {
+				LOGGER.error("Could not register mod from " + extension.getFileName(), error);
+			}
+		}
 
-		LOGGER.info("Loaded {} mods", mods.size());
+		LOGGER.info("Loaded {} mod(s)", mods.size());
+
+		cacheHudList();
 
 		LOGGER.info("Saving settings...");
 		save();
@@ -325,7 +340,7 @@ public class Client {
 		}
 	}
 
-	private void register(Supplier<Mod> modInitialiser) {
+	public void register(Supplier<Mod> modInitialiser) {
 		try {
 			Mod mod = modInitialiser.get();
 

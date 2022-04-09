@@ -121,30 +121,6 @@
 	background: rgb(80, 80, 80);
 }
 
-.play-button img {
-	position: absolute;
-	right: 25px;
-	top: 35px;
-}
-
-.button-box {
-	position: absolute;
-	bottom: 30px;
-	width: 100%;
-}
-
-.version-switcher-text {
-	position: absolute;
-	width: 100%;
-	text-align: center;
-}
-
-.version-switcher-popup {
-	position: relative;
-	top: -100px;
-	left: -80px;
-}
-
 .login-button {
 	width: 350px;
 	display: block;

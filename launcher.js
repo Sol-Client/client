@@ -98,6 +98,7 @@ class Launcher {
 				}
 			}
 		});
+
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -107,6 +108,7 @@ class Launcher {
 				}
 			}
 		});
+
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -116,6 +118,7 @@ class Launcher {
 				}
 			}
 		});
+
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -125,6 +128,7 @@ class Launcher {
 				}
 			}
 		});
+
 		if(Config.data.discord) {
 			version.libraries.push({
 				downloads: {

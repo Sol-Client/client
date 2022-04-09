@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
 
 import lombok.Getter;
@@ -27,7 +28,6 @@ public class ExtensionManager {
 
 	private File folder = new File(Launch.minecraftHome, "extensions");
 
-	private ClassLoader[] extensionClassLoaders;
 	@Getter
 	private List<LoadedExtension> extensions = new ArrayList<>();
 
@@ -35,9 +35,15 @@ public class ExtensionManager {
 		folder.mkdirs();
 	}
 
+	public static void init() {
+		LOGGER.info("Loading extensions...");
+		INSTANCE.load();
+		LOGGER.info("Loaded {} extension(s)", INSTANCE.getExtensions().size());
+	}
+
 	public void load() {
 		try {
-			// Walk through tree tree so extensions can be organised into folder.
+			// Walk through tree tree so extensions can be organised into folders.
 			Files.walkFileTree(folder.toPath(), new SimpleFileVisitor<Path>() {
 
 				@Override
@@ -64,14 +70,14 @@ public class ExtensionManager {
 			LOGGER.error("Couldn't scan extensions folder");
 		}
 
-		extensionClassLoaders = new ClassLoader[extensions.size()];
-
-		for(int i = 0; i < extensions.size(); i++) {
-			extensionClassLoaders[i] = extensions.get(i).getLoader();
-		}
-
-		Launch.blackboard.put("extensionClassLoaders", extensionClassLoaders);
-
+//		extensionClassLoaders = new ClassLoader[extensions.size()];
+//
+//		for(int i = 0; i < extensions.size(); i++) {
+//			extensionClassLoaders[i] = extensions.get(i).getLoader();
+//		}
+//
+//		Launch.blackboard.put("extensionClassLoaders", extensionClassLoaders);
+//
 		for(LoadedExtension extension : extensions) {
 			if(extension.getMixinConfig() != null) {
 				Mixins.addConfiguration(extension.getMixinConfig());
@@ -81,6 +87,7 @@ public class ExtensionManager {
 
 	public void loadJAR(String name, File jarFile) throws InvalidExtensionException, IOException {
 		try {
+			Launch.classLoader.addURL(jarFile.toURI().toURL());
 			URLClassLoader loader = new URLClassLoader(new URL[] { jarFile.toURI().toURL() }, Launch.classLoader);
 			extensions.add(LoadedExtension.from(name, loader));
 

@@ -2,7 +2,9 @@ package me.mcblueparrot.client.ui.screen.mods;
 
 import java.net.URI;
 
+import com.sun.org.apache.xpath.internal.operations.String;
 import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.extension.Extension;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.component.Component;
@@ -10,6 +12,7 @@ import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
 import me.mcblueparrot.client.ui.component.controller.AlignedBoundsController;
 import me.mcblueparrot.client.ui.component.controller.AnimatedColourController;
 import me.mcblueparrot.client.ui.component.impl.ColouredComponent;
+import me.mcblueparrot.client.ui.component.impl.IconComponent;
 import me.mcblueparrot.client.ui.component.impl.LabelComponent;
 import me.mcblueparrot.client.ui.component.impl.ScaledIconComponent;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
@@ -19,6 +22,7 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 public class ModListing extends ColouredComponent {
@@ -44,7 +48,8 @@ public class ModListing extends ColouredComponent {
 		this.mod = mod;
 		this.screen = screen;
 
-		add(new ScaledIconComponent("sol_client_" + mod.getId(), 16, 16),
+		add(new IconComponent((component, defaultIcon) -> mod.getIconLocation() == null ? defaultIcon :
+						mod.getIconLocation(), 16, 16, (component, defaultColour) -> defaultColour),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -57,12 +62,33 @@ public class ModListing extends ColouredComponent {
 						(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - defaultBounds.getWidth() - defaultBounds.getY(),
 								defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-		add(new LabelComponent((component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : "")),
+		add(new LabelComponent((component, defaultText) -> {
+					StringBuilder modName = new StringBuilder();
+					modName.append(mod.getName());
+
+					if(mod.isBlocked()) {
+						modName.append(" (blocked)");
+					}
+
+					if(mod instanceof Extension) {
+						Extension extension = (Extension) mod;
+
+						if(extension.getVersion() != null) {
+							modName.append(" " + extension.getVersion());
+						}
+					}
+
+					if(mod.getBy() != null) {
+						modName.append(EnumChatFormatting.GRAY + "  " + mod.getBy());
+					}
+
+					return modName.toString();
+				}),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
 								defaultBounds.getY() - (font.getHeight() / 2) - (SolClientMod.instance.fancyFont ? 0 : 1), defaultBounds.getWidth(), defaultBounds.getHeight())));
 		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
-				(component, defaultColour) -> new Colour(160, 160, 160)), new AlignedBoundsController(Alignment.START, Alignment.CENTRE, (component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
+				(component, defaultColour) -> new Colour(140, 140, 140)), new AlignedBoundsController(Alignment.START, Alignment.CENTRE, (component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
 						defaultBounds.getY() + (font.getHeight() / 2) + (SolClientMod.instance.fancyFont ? 0 : 1), defaultBounds.getWidth(), defaultBounds.getHeight())));
 	}
 
@@ -82,7 +108,6 @@ public class ModListing extends ColouredComponent {
 			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
 		}
 		else {
-
 			Utils.drawRectangle(getRelativeBounds(), Colour.BLACK_128);
 			Utils.drawOutline(getRelativeBounds(), getColour());
 		}

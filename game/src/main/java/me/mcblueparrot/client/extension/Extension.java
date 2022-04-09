@@ -2,6 +2,7 @@ package me.mcblueparrot.client.extension;
 
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
+import net.minecraft.util.ResourceLocation;
 
 public abstract class Extension extends Mod {
 
@@ -25,9 +26,23 @@ public abstract class Extension extends Mod {
 		return loadedExtension.getId();
 	}
 
+	public String getVersion() {
+		return loadedExtension.getVersion();
+	}
+
+	@Override
+	public String getBy() {
+		return loadedExtension.getBy();
+	}
+
 	@Override
 	public String getDescription() {
 		return loadedExtension.getDescription() == null ? "No description provided." : loadedExtension.getDescription();
+	}
+
+	@Override
+	public ResourceLocation getIconLocation() {
+		return loadedExtension.getIconLocation();
 	}
 
 }

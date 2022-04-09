@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import me.mcblueparrot.client.util.Utils;
+import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -71,6 +73,10 @@ public abstract class Mod {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public String getBy() {
+		return null;
 	}
 
 	public ModCategory getCategory() {
@@ -177,6 +183,10 @@ public abstract class Mod {
 		for(HudElement element : getHudElements()) {
 			element.render(editMode);
 		}
+	}
+
+	public ResourceLocation getIconLocation() {
+		return new ResourceLocation("textures/gui/sol_client_" + getId() + "_" + Utils.getTextureScale() + ".png");
 	}
 
 	@EventHandler

@@ -5,6 +5,7 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.List;
 
+import me.mcblueparrot.client.extension.LoadedExtension;
 import org.spongepowered.asm.service.mojang.MixinServiceLaunchWrapper;
 
 import me.mcblueparrot.client.extension.ExtensionManager;
@@ -30,14 +31,8 @@ public class SCMixinService extends MixinServiceLaunchWrapper {
 			return superStream;
 		}
 
-		ClassLoader[] fallbacks = (ClassLoader[]) Launch.blackboard.get("extensionClassLoaders");
-
-		System.out.println(Arrays.toString(fallbacks));
-
-		for(ClassLoader fallback : fallbacks) {
-			System.out.println(fallback);
-
-			InputStream fallbackInput = fallback.getResourceAsStream(name);
+		for(LoadedExtension extension : ExtensionManager.INSTANCE.getExtensions()) {
+			InputStream fallbackInput = extension.getLoader().getResourceAsStream(name);
 
 			if(fallbackInput != null) {
 				return fallbackInput;

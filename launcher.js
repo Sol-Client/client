@@ -30,7 +30,7 @@ class Launcher {
 				var optifine = Utils.librariesDirectory + "/" + optifineRelative;
 				var secret = crypto.randomBytes(32).toString("hex");
 				var alreadyRunning = this.games.length > 0;
-				
+
 				if(!alreadyRunning && fs.existsSync(nativesFolder)) {
 					fs.rmdirSync(nativesFolder, { recursive: true });
 				}
@@ -374,14 +374,15 @@ class Launcher {
 
 				args.push("-cp");
 
+				classpath += path.join(__dirname, "game/build/libs/game.jar");
+				classpath += classpathSeparator;
+
 				for(var jar of jars) {
 					classpath += jar;
 					classpath += classpathSeparator;
 				}
 
 				classpath += versionToAdd;
-				classpath += classpathSeparator;
-				classpath += path.join(__dirname, "game/build/libs/game.jar");
 				classpath += classpathSeparator;
 
 				args.push(classpath);

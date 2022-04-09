@@ -125,6 +125,10 @@ public abstract class ScrollListComponent extends Component {
 	}
 
 	private int getScrollStep() {
+		if(subComponents.isEmpty()) {
+			return 0;
+		}
+
 		return (subComponents.get(0).getBounds().getHeight() + getSpacing());
 	}
 

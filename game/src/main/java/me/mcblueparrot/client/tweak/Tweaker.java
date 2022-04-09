@@ -1,15 +1,17 @@
 package me.mcblueparrot.client.tweak;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.mcblueparrot.client.extension.ExtensionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
-import org.spongepowered.asm.service.MixinService;
 
 import net.minecraft.launchwrapper.ITweaker;
 import net.minecraft.launchwrapper.LaunchClassLoader;
@@ -60,13 +62,31 @@ public class Tweaker implements ITweaker {
 		if(optiFine) Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
 		Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
 
+		try {
+			Class<?> extensionClass = classLoader.findClass("me.mcblueparrot.client.extension.ExtensionManager");
+			Method initMethod = extensionClass.getDeclaredMethod("init");
+			initMethod.setAccessible(true);
+			initMethod.invoke(null);
+		}
+		catch(ClassNotFoundException | NoSuchMethodException | IllegalAccessException error) {
+			throw new Error(error);
+		}
+		catch(InvocationTargetException error) {
+			if(error.getCause() instanceof RuntimeException) {
+				throw (RuntimeException) error.getCause();
+			}
+			else if(error.getCause() instanceof Error) {
+				throw (Error) error.getCause();
+			}
+
+			throw new Error(error.getCause());
+		}
+
 		MixinEnvironment env = MixinEnvironment.getDefaultEnvironment();
 
 		if(env.getObfuscationContext() == null) {
-			env.setObfuscationContext("notch");
+			env.setObfuscationContext("searge");
 		}
-
-		System.out.println(MixinService.getService().getResourceAsStream(""));
 
 		env.setSide(MixinEnvironment.Side.CLIENT);
 	}

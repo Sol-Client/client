@@ -30,11 +30,6 @@ ipcRenderer.on("quitGame", (event) => {
 window.addEventListener("DOMContentLoaded", () => {
 	document.getElementsByTagName("title")[0].innerText += " " + Utils.version;
 
-	if(new Date().getMonth() == 3
-			&& new Date().getDate() == 1) {
-		document.querySelector(".version-switcher-text").style.display = "inline";
-	}
-
 	const playButton = document.getElementById("launch-button");
 	const launchNote = document.getElementById("launch-note");
 	const microsoftLoginButton = document.querySelector(".microsoft-login-button");

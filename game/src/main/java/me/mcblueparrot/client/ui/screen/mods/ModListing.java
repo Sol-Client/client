@@ -2,7 +2,6 @@ package me.mcblueparrot.client.ui.screen.mods;
 
 import java.net.URI;
 
-import com.sun.org.apache.xpath.internal.operations.String;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.extension.Extension;
 import me.mcblueparrot.client.mod.Mod;

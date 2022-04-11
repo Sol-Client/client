@@ -32,8 +32,6 @@ ipcRenderer.on("quitGame", (event) => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-	document.getElementsByTagName("title")[0].innerText += " " + Utils.version;
-
 	const playButton = document.getElementById("launch-button");
 	const launchNote = document.getElementById("launch-note");
 	const microsoftLoginButton = document.querySelector(".microsoft-login-button");
@@ -84,14 +82,14 @@ window.addEventListener("DOMContentLoaded", () => {
 							continue;
 						}
 					}
-					
+
 
 					var friendlyName = "";
-					
+
 					friendlyName += day;
-					
+
 					var lastDigit = day % 10;
-					
+
 					if(lastDigit == 1) {
 						friendlyName += "st";
 					}

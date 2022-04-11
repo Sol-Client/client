@@ -39,11 +39,11 @@
 }
 
 .back-button {
+	position: absolute;
 	background-color: rgb(0, 150, 255);
 	border-radius: 100px;
 	width: 50px;
 	height: 50px;
-	position: fixed;
 	top: 20px;
 	left: 20px;
 	font-size: 1.5em;
@@ -232,6 +232,10 @@
 
 .play-button:disabled, .login-button:disabled {
 	background: rgb(80, 80, 80);
+}
+
+.login, .mojang-login {
+	position: relative;
 }
 
 .login-button {
@@ -650,4 +654,14 @@ input[type="range"]:hover::-webkit-slider-thumb {
 
 .news time {
 	color: rgb(160, 160, 160);
+}
+
+.drag-region {
+	display: block;
+	height: 26px;
+	-webkit-app-region: drag;
+}
+
+#sol-client-text {
+	font-family: Raleway;
 }

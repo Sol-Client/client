@@ -657,7 +657,6 @@ input[type="range"]:hover::-webkit-slider-thumb {
 }
 
 .drag-region {
-	display: block;
 	height: 26px;
 	-webkit-app-region: drag;
 }

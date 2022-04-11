@@ -32,6 +32,10 @@ ipcRenderer.on("quitGame", (event) => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
+	if(Utils.getOsName() == "osx") {
+		document.querySelector(".drag-region").style.display = "block";
+	}
+
 	const playButton = document.getElementById("launch-button");
 	const launchNote = document.getElementById("launch-note");
 	const microsoftLoginButton = document.querySelector(".microsoft-login-button");

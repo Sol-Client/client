@@ -10,9 +10,9 @@
 
 Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versions).
 
-[Website](https://sol-client.github.io/)
+Update: Yes, I know, it has been seven months since I wrote about the newer versions thing.
 
-[Screenshots](assets/screenshots/README.md)
+[Website](https://sol-client.github.io)
 
 ## Gimme it now!
 First, go to [releases](https://github.com/Sol-Client/Client/releases).

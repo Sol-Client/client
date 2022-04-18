@@ -27,6 +27,10 @@ sol_client.file.edit=Edit File...
 
 sol_client.servers=Servers
 
+sol_client.key.category=Sol Client
+sol_client.key.accept_request=Accept Request
+sol_client.key.dismiss_request=Dismiss Request
+
 sol_client.mod.generic.option.enabled=Enabled
 sol_client.mod.hud.option.scale=Scale
 sol_client.mod.simple_hud.option.background=Background
@@ -39,9 +43,12 @@ sol_client.mod.simple_hud.option.shadow=Text Shadow
 sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=General settings for Sol Client.
 
+
 sol_client.mod.sol_client.option.fancyMainMenu=Main Menu
 sol_client.mod.sol_client.option.logoInInventory=Show Logo in Inventory
+sol_client.mod.sol_client.mods=Mods
 sol_client.mod.sol_client.option.modsKey=Mods Key
+sol_client.mod.sol_client.edit_hud=Edit HUD
 sol_client.mod.sol_client.option.editHudKey=Edit HUD Key
 sol_client.mod.sol_client.option.uiColour=Accent Color
 sol_client.mod.sol_client.option.smoothUIColours=Smooth UI Colors
@@ -125,6 +132,7 @@ sol_client.mod.timers.option.timeColour=Time Color
 sol_client.mod.chat.name=Chat
 sol_client.mod.chat.description=Customize ingame chat.
 
+sol_client.mod.chat.peek=Peek
 sol_client.mod.chat.option.preventClose=Prevent Closing
 sol_client.mod.chat.option.smooth=Message Animation
 sol_client.mod.chat.option.infiniteChat=Infinite Chat
@@ -209,6 +217,7 @@ sol_client.mod.tweaks.confirm_disconnect=Press Again to Confirm
 sol_client.mod.freelook.name=Freelook
 sol_client.mod.freelook.description=Unlock camera rotation from the player's head.
 
+sol_client.mod.freelook.key=Freelook
 sol_client.mod.freelook.option.key=Key
 
 sol_client.mod.freelook.option.perspective=Perspective
@@ -218,6 +227,7 @@ sol_client.mod.freelook.option.invertYaw=Invert Mouse Horizontally
 sol_client.mod.taplook.name=Taplook
 sol_client.mod.taplook.description=Change your perspective by holding a button.
 
+sol_client.mod.taplook.key=Taplook
 sol_client.mod.taplook.option.key=Key
 sol_client.mod.taplook.option.perspective=Perspective
 
@@ -232,8 +242,11 @@ sol_client.mod.toggle_sprint.toggled=Sprinting (Toggled)
 sol_client.mod.zoom.name=Zoom
 sol_client.mod.zoom.description=Zoom in when pressing a button.
 
+sol_client.mod.zoom.key=Zoom
 sol_client.mod.zoom.option.key=Key
+sol_client.mod.zoom.zoom_out=Zoom Out
 sol_client.mod.zoom.option.zoomOutKey=Zoom Out Key
+sol_client.mod.zoom.zoom_in=Zoom In
 sol_client.mod.zoom.option.zoomInKey=Zoom In Key
 sol_client.mod.zoom.option.cinematic=Cinematic Camera
 sol_client.mod.zoom.option.reduceSensitivity=Reduce Sensitivity
@@ -272,6 +285,7 @@ sol_client.mod.replay.option.showServerIPs=Show Server IPs
 sol_client.mod.quickplay.name=Quick Play
 sol_client.mod.quickplay.description=Quickly queue games using your keyboard.
 
+sol_client.mod.quickplay.key=Quick Play
 sol_client.mod.quickplay.option.menuKey=Key
 
 sol_client.mod.hypixel_util.name=Hypixel Additions

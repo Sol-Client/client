@@ -34,6 +34,10 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	public float scale = 100;
 	protected FontRenderer font;
 
+	public HudMod() {
+		position = getDefaultPosition();
+	}
+
 	@Override
 	public ModCategory getCategory() {
 		return ModCategory.HUD;

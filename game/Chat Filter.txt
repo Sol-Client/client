@@ -1,4 +1,0 @@
-# List words on each line for them to be blocked.
-# The chat mod and chat filter must be enabled for this to work.
-# This may not work well for all languages.
-# Any lines starting with "#" will be ignored.

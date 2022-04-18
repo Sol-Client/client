@@ -7,7 +7,7 @@ import me.mcblueparrot.client.event.impl.EntityAttackEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,24 +18,30 @@ import net.minecraft.util.EnumParticleTypes;
 public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Expose
-	@ConfigOption("Multiplier")
+	@Option
 	@Slider(min = 1, max = 10, step = 1)
 	public float multiplier = 4;
 	@Expose
-	@ConfigOption("Always Sharpness")
+	@Option
 	public boolean sharpness = true;
 	@Expose
-	@ConfigOption("Snow")
+	@Option
 	public boolean snow;
 	@Expose
-	@ConfigOption("Slime")
+	@Option
 	public boolean slime;
 	@Expose
-	@ConfigOption("Flames")
+	@Option
 	public boolean flames;
 
-	public ParticlesMod() {
-		super("Particles", "particles", "Change attack particles.", ModCategory.VISUAL);
+	@Override
+	public String getId() {
+		return "particles";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.VISUAL;
 	}
 
 	@Override

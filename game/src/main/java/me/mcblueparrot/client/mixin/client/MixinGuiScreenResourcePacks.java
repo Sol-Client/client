@@ -43,7 +43,7 @@ public class MixinGuiScreenResourcePacks extends GuiScreen {
 	public <E> boolean moveApplyButton(List list, E e) {
 		GuiButton button = (GuiButton) e;
 		return list.add(new GuiButton(button.id, button.xPosition + 25, button.yPosition, 150, 20,
-				"Apply"));
+				I18n.format("sol_client.packs.apply")));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -51,7 +51,7 @@ public class MixinGuiScreenResourcePacks extends GuiScreen {
 			ordinal = 0))
 	public <E> boolean moveOpenButton(List list, E e) {
 		GuiButton button = (GuiButton) e;
-		return list.add(new GuiButton(button.id, width / 2 + 29, height - 26, 150, 20, "Pack " + "Folder"));
+		return list.add(new GuiButton(button.id, width / 2 + 29, height - 26, 150, 20, I18n.format("sol_client.packs.open_folder")));
 	}
 
 	@Inject(method = "initGui", at = @At("RETURN"))

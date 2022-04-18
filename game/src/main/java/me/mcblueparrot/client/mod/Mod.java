@@ -16,30 +16,27 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.GameOverlayElement;
 import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
 import me.mcblueparrot.client.event.impl.PostGameStartEvent;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.AbstractTranslationKey;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.hud.HudElement;
 import me.mcblueparrot.client.mod.impl.replay.fix.SCEventRegistrations;
 import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 
+@AbstractTranslationKey("sol_client.mod.generic")
 public abstract class Mod {
 
 	protected Minecraft mc;
-	private List<CachedConfigOption> options;
-	private String name, id, description;
+	private List<ModOption> options;
 	private boolean blocked;
 	@Expose
-	@ConfigOption(value = "Enabled", priority = 2)
+	@Option(priority = 2)
 	private boolean enabled;
 	protected Logger logger;
-	public ModCategory category;
 
-	public Mod(String name, String id, String description, ModCategory category) {
-		this.name = name;
-		this.id = id;
-		this.description = description;
-		this.category = category;
+	public Mod() {
 		mc = Minecraft.getMinecraft();
 		logger = LogManager.getLogger();
 		enabled = isEnabledByDefault();
@@ -54,28 +51,28 @@ public abstract class Mod {
 		}
 
 		try {
-			options = CachedConfigOption.get(this);
+			options = ModOption.get(this);
 		}
 		catch(IOException error) {
 			throw new IllegalStateException(error);
 		}
 	}
 
-	public String getName() {
-		return name;
+	public String getTranslationKey() {
+		return "sol_client.mod." + getId();
 	}
 
-	public String getId() {
-		return id;
+	public String getName() {
+		return I18n.format(getTranslationKey() + ".name");
 	}
+
+	public abstract String getId();
 
 	public String getDescription() {
-		return description;
+		return I18n.format("sol_client.mod." + getId() + ".description");
 	}
 
-	public ModCategory getCategory() {
-		return category;
-	}
+	public abstract ModCategory getCategory();
 
 	public boolean isEnabledByDefault() {
 		return false;
@@ -94,7 +91,7 @@ public abstract class Mod {
 	public void postOptionChange(String key, Object value) {
 	}
 
-	public List<CachedConfigOption> getOptions() {
+	public List<ModOption> getOptions() {
 		return options;
 	}
 

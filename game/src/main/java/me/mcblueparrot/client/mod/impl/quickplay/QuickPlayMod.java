@@ -14,7 +14,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.impl.quickplay.database.QuickPlayDatabase;
 import me.mcblueparrot.client.mod.impl.quickplay.database.QuickPlayGame;
 import me.mcblueparrot.client.mod.impl.quickplay.database.QuickPlayGameMode;
@@ -25,16 +25,28 @@ import net.minecraft.client.settings.KeyBinding;
 
 public class QuickPlayMod extends Mod {
 
-	@ConfigOption("Key")
-	public KeyBinding menuKey = new KeyBinding("Quick Play", Keyboard.KEY_M, "Sol Client");
+	@Option
+	private KeyBinding menuKey = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_M, Client.KEY_CATEGORY);
 	private QuickPlayDatabase database;
 	@Expose
 	private List<String> recentlyPlayed = new ArrayList<>();
 
-	public QuickPlayMod() {
-		super("Quick Play", "quickplay", "Quickly queue any game.", ModCategory.UTILITY);
+	@Override
+	public void onRegister() {
+		super.onRegister();
+
 		database = new QuickPlayDatabase();
 		Client.INSTANCE.registerKeyBinding(menuKey);
+	}
+
+	@Override
+	public String getId() {
+		return "quickplay";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
 	}
 
 	public List<QuickPlayOption> getRecentlyPlayed() {
@@ -53,7 +65,7 @@ public class QuickPlayMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(menuKey.isPressed() && Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL) {
+		if(menuKey.isPressed()) {
 			mc.displayGuiScreen(new QuickPlayPalette(this));
 		}
 	}

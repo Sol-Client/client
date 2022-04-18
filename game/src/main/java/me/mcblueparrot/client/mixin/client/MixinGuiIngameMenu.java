@@ -13,6 +13,7 @@ import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 
 @Mixin(GuiIngameMenu.class)
 public class MixinGuiIngameMenu extends GuiScreen {
@@ -24,11 +25,11 @@ public class MixinGuiIngameMenu extends GuiScreen {
 		buttonList.add(new GuiButton(5000, replay ? buttonList.get(2).xPosition + 102 : width / 2 - 100,
 				replay ? buttonList.get(2).yPosition : height / 4 + 56
 				, 98, 20,
-				"Mods"));
+				I18n.format("sol_client.mod.screen.title")));
 
 		if(!replay) {
 			buttonList.add(new GuiButton(5001, width / 2 + 2, height / 4 + 56, 98, 20,
-					"Servers"));
+					I18n.format("sol_client.servers")));
 		}
 	}
 

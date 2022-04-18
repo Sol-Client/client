@@ -1,17 +1,17 @@
 package me.mcblueparrot.client.mod.impl.replay;
 
+import com.replaymod.replaystudio.util.I18n;
+
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 public enum SCInterpolatorType {
-	CATMULL("Catmull-Rom Spline"),
-	CUBIC("Cubic Spline"),
-	LINEAR("Linear");
-
-	private String name;
+	CATMULL,
+	CUBIC,
+	LINEAR;
 
 	@Override
 	public String toString() {
-		return name;
+		return I18n.format("sol_client.mod.replay.interpolator." + name().toLowerCase());
 	}
+
 }

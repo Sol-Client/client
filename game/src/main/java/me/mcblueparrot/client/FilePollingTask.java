@@ -13,13 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.mcblueparrot.client.mod.CachedConfigOption;
+import me.mcblueparrot.client.mod.ModOption;
 import me.mcblueparrot.client.mod.Mod;
 import net.minecraft.client.Minecraft;
 
 public class FilePollingTask implements Runnable, Closeable {
 
-	private Map<String, CachedConfigOption> files = new HashMap<>();
+	private Map<String, ModOption> files = new HashMap<>();
 	private WatchKey key;
 
 	public FilePollingTask(List<Mod> mods) throws IOException {
@@ -28,9 +28,13 @@ public class FilePollingTask implements Runnable, Closeable {
 		key = Minecraft.getMinecraft().mcDataDir.toPath().register(service, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
 
 		for(Mod mod : mods) {
-			for(CachedConfigOption option : mod.getOptions()) {
-				if(option.file != null) {
-					files.put(option.file.getName(), option);
+			if(mod.getOptions() == null) {
+				System.out.println(mod.getClass().getName());
+			}
+
+			for(ModOption option : mod.getOptions()) {
+				if(option.isFile()) {
+					files.put(option.getFile().getName(), option);
 				}
 			}
 		}
@@ -41,7 +45,7 @@ public class FilePollingTask implements Runnable, Closeable {
 		for(WatchEvent<?> event : key.pollEvents()) {
 			File changedFile = ((Path) event.context()).toFile();
 
-			CachedConfigOption option = files.get(changedFile.getName());
+			ModOption option = files.get(changedFile.getName());
 
 			if(option != null) {
 				try {

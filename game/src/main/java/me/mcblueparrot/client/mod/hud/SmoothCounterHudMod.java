@@ -6,10 +6,6 @@ import net.minecraft.client.Minecraft;
 
 public abstract class SmoothCounterHudMod extends SimpleHudMod {
 
-	public SmoothCounterHudMod(String name, String id, String description) {
-		super(name, id, description);
-	}
-
 	public abstract int getIntValue();
 
 	public abstract String getSuffix();

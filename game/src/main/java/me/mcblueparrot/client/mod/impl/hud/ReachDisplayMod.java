@@ -12,8 +12,9 @@ public class ReachDisplayMod extends SimpleHudMod {
 	private long hitTime = -1;
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 
-	public ReachDisplayMod() {
-		super("Reach Display", "reach_display", "Display your reach when hitting entities.");
+	@Override
+	public String getId() {
+		return "reach_display";
 	}
 
 	@Override

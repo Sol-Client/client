@@ -25,6 +25,7 @@ import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.mcblueparrot.client.api.ClientApi;
 import me.mcblueparrot.client.api.PopupManager;
 import me.mcblueparrot.client.config.ConfigVersion;
@@ -43,7 +44,6 @@ import me.mcblueparrot.client.mod.impl.ChunkAnimatorMod;
 import me.mcblueparrot.client.mod.impl.ColourSaturationMod;
 import me.mcblueparrot.client.mod.impl.FreelookMod;
 import me.mcblueparrot.client.mod.impl.HitColourMod;
-import me.mcblueparrot.client.mod.impl.ItemPhysicsMod;
 import me.mcblueparrot.client.mod.impl.MenuBlurMod;
 import me.mcblueparrot.client.mod.impl.MotionBlurMod;
 import me.mcblueparrot.client.mod.impl.ParticlesMod;
@@ -51,34 +51,37 @@ import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.mod.impl.TNTTimerMod;
 import me.mcblueparrot.client.mod.impl.TaplookMod;
 import me.mcblueparrot.client.mod.impl.TimeChangerMod;
-import me.mcblueparrot.client.mod.impl.ToggleSprintMod;
 import me.mcblueparrot.client.mod.impl.TweaksMod;
 import me.mcblueparrot.client.mod.impl.V1_7VisualsMod;
 import me.mcblueparrot.client.mod.impl.ZoomMod;
-import me.mcblueparrot.client.mod.impl.hud.ArmourMod;
 import me.mcblueparrot.client.mod.impl.hud.ComboCounterMod;
 import me.mcblueparrot.client.mod.impl.hud.CoordinatesMod;
 import me.mcblueparrot.client.mod.impl.hud.CpsMod;
-import me.mcblueparrot.client.mod.impl.hud.CrosshairMod;
 import me.mcblueparrot.client.mod.impl.hud.FpsMod;
-import me.mcblueparrot.client.mod.impl.hud.KeystrokesMod;
 import me.mcblueparrot.client.mod.impl.hud.PingMod;
 import me.mcblueparrot.client.mod.impl.hud.PotionEffectsMod;
 import me.mcblueparrot.client.mod.impl.hud.ReachDisplayMod;
 import me.mcblueparrot.client.mod.impl.hud.ScoreboardMod;
 import me.mcblueparrot.client.mod.impl.hud.SpeedometerMod;
-import me.mcblueparrot.client.mod.impl.hud.TabListMod;
-import me.mcblueparrot.client.mod.impl.hud.TimersMod;
+import me.mcblueparrot.client.mod.impl.hud.armour.ArmourMod;
 import me.mcblueparrot.client.mod.impl.hud.chat.ChatMod;
+import me.mcblueparrot.client.mod.impl.hud.crosshair.CrosshairMod;
+import me.mcblueparrot.client.mod.impl.hud.keystrokes.KeystrokesMod;
+import me.mcblueparrot.client.mod.impl.hud.tablist.TabListMod;
+import me.mcblueparrot.client.mod.impl.hud.timers.TimersMod;
 import me.mcblueparrot.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
+import me.mcblueparrot.client.mod.impl.itemphysics.ItemPhysicsMod;
 import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
+import me.mcblueparrot.client.mod.impl.togglesprint.ToggleSprintMod;
 import me.mcblueparrot.client.ui.element.ChatButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.IResource;
@@ -121,11 +124,16 @@ public class Client {
 
 	public static final String VERSION = System.getProperty("me.mcblueparrot.client.version", "DEVELOPMENT TEST");
 	public static final String NAME = "Sol Client " + VERSION;
+	public static final String KEY_TRANSLATION_KEY = "sol_client.key";
+	public static final String KEY_CATEGORY = KEY_TRANSLATION_KEY + ".category";
 
 	@Getter
 	private PopupManager popupManager;
 	@Getter
 	private CapeManager capeManager;
+	@Getter
+	@Setter
+	private GuiMainMenu mainMenu;
 
 	public void init() {
 		Utils.resetLineWidth();

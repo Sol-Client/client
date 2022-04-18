@@ -189,7 +189,7 @@ public class MixinTweaksMod {
 		public void overrideButton(GuiButton button, CallbackInfo callback) {
 			if(button.id == 1 && !disconnect) {
 				callback.cancel();
-				button.displayString = EnumChatFormatting.GREEN + "Press Again to Confirm";
+				button.displayString = EnumChatFormatting.GREEN + I18n.format("sol_client.mod.tweaks.confirm_disconnect");
 				disconnect = true;
 			}
 		}

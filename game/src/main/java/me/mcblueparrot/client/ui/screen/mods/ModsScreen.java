@@ -18,6 +18,7 @@ import me.mcblueparrot.client.ui.component.impl.ButtonComponent;
 import me.mcblueparrot.client.ui.component.impl.LabelComponent;
 import me.mcblueparrot.client.ui.component.impl.ScaledIconComponent;
 import me.mcblueparrot.client.ui.component.impl.TextFieldComponent;
+import me.mcblueparrot.client.ui.screen.PanoramaBackgroundScreen;
 import me.mcblueparrot.client.ui.screen.SolClientMainMenu;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Alignment;
@@ -25,8 +26,9 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 
-public class ModsScreen extends Screen {
+public class ModsScreen extends PanoramaBackgroundScreen {
 
 	private ModsScreenComponent component;
 
@@ -38,6 +40,25 @@ public class ModsScreen extends Screen {
 		super(new ModsScreenComponent(mod));
 
 		component = (ModsScreenComponent) root;
+		background = false;
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		if(mc.theWorld == null) {
+			if(SolClientMod.instance.fancyMainMenu) {
+				background = false;
+				drawPanorama(mouseX, mouseY, partialTicks);
+			}
+			else {
+				background = true;
+			}
+		}
+		else {
+			drawDefaultBackground();
+		}
+
+		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
 	public void switchMod(Mod mod) {
@@ -48,6 +69,16 @@ public class ModsScreen extends Screen {
 	public void onGuiClosed() {
 		super.onGuiClosed();
 		Client.INSTANCE.save();
+	}
+
+	@Override
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		if(keyCode == 1 && mc.theWorld == null && SolClientMod.instance.fancyMainMenu) {
+			mc.displayGuiScreen(Client.INSTANCE.getMainMenu());
+			return;
+		}
+
+		super.keyTyped(typedChar, keyCode);
 	}
 
 	public static class ModsScreenComponent extends Component {
@@ -65,7 +96,7 @@ public class ModsScreen extends Screen {
 				singleModMode = true;
 			}
 
-			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName() : "Mods"),
+			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName() : I18n.format("sol_client.mod.screen.title")),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
 							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), 10, defaultBounds.getWidth(),
 									defaultBounds.getHeight())));
@@ -92,7 +123,7 @@ public class ModsScreen extends Screen {
 							getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
 
 			if(!singleModMode) {
-				add(new ButtonComponent("Edit HUD",
+				add(new ButtonComponent("sol_client.hud.edit",
 						new AnimatedColourController(
 								(component, defaultColour) -> component.isHovered() ? new Colour(255, 165, 65)
 										: new Colour(255, 120, 20))).onClick((info, button) -> {
@@ -115,7 +146,7 @@ public class ModsScreen extends Screen {
 				scroll.snapTo(0);
 				scroll.load();
 				return true;
-			}).placeholder("Search");
+			}).placeholder("sol_client.mod.screen.search");
 			searchIcon = new ScaledIconComponent("sol_client_search", 16, 16);
 
 			switchMod(startingMod, true);

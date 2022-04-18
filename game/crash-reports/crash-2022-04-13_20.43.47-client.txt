@@ -1,0 +1,80 @@
+---- Minecraft Crash Report ----
+// But it works on my machine.
+
+Time: 13/04/22 20:43
+Description: Initializing game
+
+java.lang.NullPointerException: Initializing game
+	at me.mcblueparrot.client.FilePollingTask.<init>(FilePollingTask.java:31)
+	at me.mcblueparrot.client.Client.init(Client.java:217)
+	at net.minecraft.client.Minecraft.handler$init$zbd000(Minecraft.java:3425)
+	at net.minecraft.client.Minecraft.startGame(Minecraft.java:457)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:362)
+	at net.minecraft.client.main.Main.main(Main.java:113)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97)
+	at GradleStart.main(GradleStart.java:26)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at me.mcblueparrot.client.FilePollingTask.<init>(FilePollingTask.java:31)
+	at me.mcblueparrot.client.Client.init(Client.java:217)
+	at net.minecraft.client.Minecraft.handler$init$zbd000(Minecraft.java:3425)
+	at net.minecraft.client.Minecraft.startGame(Minecraft.java:457)
+
+-- Initialization --
+Details:
+Stacktrace:
+	at net.minecraft.client.Minecraft.run(Minecraft.java:362)
+	at net.minecraft.client.main.Main.main(Main.java:113)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97)
+	at GradleStart.main(GradleStart.java:26)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.8.9
+	Operating System: Linux (amd64) version 5.13.0-39-generic
+	Java Version: 1.8.0_312, Temurin
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Temurin
+	Memory: 182660280 bytes (174 MB) / 324534272 bytes (309 MB) up to 1603272704 bytes (1529 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	Launched Version: 1.8.9
+	LWJGL: 2.9.3
+	OpenGL: AMD Radeon(TM) Vega 8 Graphics (RAVEN, DRM 3.41.0, 5.13.0-39-generic, LLVM 12.0.0) GL version 4.6 (Compatibility Profile) Mesa 21.2.6, AMD
+	GL Caps: Using GL 1.3 multitexturing.
+Using GL 1.3 texture combiners.
+Using framebuffer objects because OpenGL 3.0 is supported and separate blending is supported.
+Shaders are available because OpenGL 2.1 is supported.
+VBOs are available because OpenGL 1.5 is supported.
+
+	Using VBOs: Yes
+	Is Modded: Very likely; Jar signature invalidated
+	Type: Client (map_client.txt)
+	Resource Packs: 
+	Current Language: English (US)
+	Profiler Position: N/A (disabled)
+	CPU: 4x AMD Ryzen 3 2200G with Radeon Vega Graphics

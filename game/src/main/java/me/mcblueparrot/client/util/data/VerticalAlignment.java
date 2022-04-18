@@ -1,18 +1,15 @@
 package me.mcblueparrot.client.util.data;
 
+import net.minecraft.client.resources.I18n;
+
 public enum VerticalAlignment {
-	TOP("Top"),
-	MIDDLE("Centre"),
-	BOTTOM("Bottom");
-
-	private String name;
-
-	VerticalAlignment(String name) {
-		this.name = name;
-	}
+	TOP,
+	MIDDLE,
+	BOTTOM;
 
 	@Override
 	public String toString() {
-		return name;
+		return I18n.format("sol_client.vertical_alignment." + name().toLowerCase());
 	}
+
 }

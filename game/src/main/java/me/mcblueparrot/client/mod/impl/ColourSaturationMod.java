@@ -8,7 +8,7 @@ import me.mcblueparrot.client.event.impl.PostProcessingEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.access.AccessShaderGroup;
 import net.minecraft.client.resources.IResource;
@@ -26,7 +26,7 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/" +
 			"color_convolve.json");
 	@Expose
-	@ConfigOption("Saturation")
+	@Option
 	@Slider(min = 0, max = 2F, step = 0.1F)
 	private float saturation = 1f;
 	private ShaderGroup group;
@@ -36,9 +36,19 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 		return group;
 	}
 
-	public ColourSaturationMod() {
-		super("Colour Saturation", "colour_saturation", "Change the saturation of ingame colours.",
-				ModCategory.VISUAL);
+	@Override
+	public String getId() {
+		return "colour_saturation";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.VISUAL;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		Client.INSTANCE.addResource(RESOURCE_LOCATION, new SaturationShader());
 	}
 
@@ -53,6 +63,7 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 				logger.error("Could not load saturation shader", error);
 			}
 		}
+
 		if(groupSaturation != saturation) {
 			((AccessShaderGroup) group).getListShaders().forEach((shader) -> {
 				ShaderUniform saturationUniform = shader.getShaderManager().getShaderUniform("Saturation");

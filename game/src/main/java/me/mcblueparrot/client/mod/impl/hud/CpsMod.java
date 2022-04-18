@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.replaymod.lib.de.johni0702.minecraft.gui.container.AbstractGuiScreen.Background;
 
 import me.mcblueparrot.client.CpsMonitor;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
@@ -13,14 +13,15 @@ import me.mcblueparrot.client.util.data.Position;
 public class CpsMod extends SimpleHudMod {
 
 	@Expose
-	@ConfigOption("RMB")
+	@Option
 	private boolean rmb;
 	@Expose
-	@ConfigOption("Separator Colour")
+	@Option
 	private Colour separatorColour = new Colour(64, 64, 64);
 
-	public CpsMod() {
-		super("CPS", "cps", "Display your CPS (clicks per second).");
+	@Override
+	public String getId() {
+		return "cps";
 	}
 
 	@Override

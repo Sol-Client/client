@@ -12,8 +12,9 @@ public class ComboCounterMod extends SimpleHudMod {
 	private int combo;
 	private int possibleTarget;
 
-	public ComboCounterMod() {
-		super("Combo Counter", "combo_counter", "Display the number of subsequent hits.");
+	@Override
+	public String getId() {
+		return "combo_counter";
 	}
 
 	@Override

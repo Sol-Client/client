@@ -13,14 +13,10 @@ import me.mcblueparrot.client.mod.Mod;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ConfigOption {
-
-	/**
-	 * The option's name.
-	 * @return The name.
-	 */
-	String value();
+public @interface Option {
 
 	int priority() default 0;
+
+	String translationKey() default "";
 
 }

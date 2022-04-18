@@ -34,7 +34,8 @@ public class MixinSimpleReloadableResourceManager {
 	public void injectDomains(List<IResourcePack> resourcesPacksList, CallbackInfo callback) {
 		for(String domain : new String[] {
 				"replaymod",
-				"jgui"
+				"jgui",
+				"sol_client"
 		}) {
 			setResourceDomains.add(domain);
 			domainResourceManagers.put(domain, domainResourceManagers.get("minecraft"));

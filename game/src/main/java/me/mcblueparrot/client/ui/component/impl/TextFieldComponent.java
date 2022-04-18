@@ -16,6 +16,7 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.MathHelper;
 
@@ -119,7 +120,7 @@ public class TextFieldComponent extends Component {
 
 		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
-		font.renderString(hasPlaceholder ? placeholder : text, textOffset, SolClientMod.instance.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
+		font.renderString(hasPlaceholder ? I18n.format(placeholder) : text, textOffset, SolClientMod.instance.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
 
 		if(focused && ticks / 12 % 2 == 0) {
 			float relativeCursorPosition = font.getWidth(text.substring(0, cursor));

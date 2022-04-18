@@ -47,8 +47,8 @@ public abstract class MixinGuiIngame {
 			"showCrosshair()Z"))
 	public boolean preRenderCrosshair(GuiIngame guiIngame) {
 		boolean result =
-				showCrosshair() && !Client.INSTANCE.bus.post(new PreGameOverlayRenderEvent(AccessMinecraft.getInstance()
-				.getTimerSC().renderPartialTicks, GameOverlayElement.CROSSHAIRS)).cancelled;
+				!Client.INSTANCE.bus.post(new PreGameOverlayRenderEvent(AccessMinecraft.getInstance()
+				.getTimerSC().renderPartialTicks, GameOverlayElement.CROSSHAIRS)).cancelled && showCrosshair();
 		mc.getTextureManager().bindTexture(Gui.icons);
 		return result;
 	}

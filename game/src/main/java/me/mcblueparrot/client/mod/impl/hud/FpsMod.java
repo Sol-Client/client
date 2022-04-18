@@ -5,8 +5,9 @@ import net.minecraft.client.Minecraft;
 
 public class FpsMod extends SmoothCounterHudMod {
 
-	public FpsMod() {
-		super("FPS", "fps", "Display the FPS (frames per second).");
+	@Override
+	public String getId() {
+		return "fps";
 	}
 
 	@Override
@@ -18,7 +19,5 @@ public class FpsMod extends SmoothCounterHudMod {
 	public String getSuffix() {
 		return "FPS";
 	}
-
-
 
 }

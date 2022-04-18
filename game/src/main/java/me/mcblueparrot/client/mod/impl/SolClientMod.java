@@ -7,7 +7,7 @@ import com.google.gson.annotations.Expose;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.mod.ConfigOnlyMod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.font.Font;
@@ -20,54 +20,61 @@ public class SolClientMod extends ConfigOnlyMod {
 	public static SolClientMod instance;
 
 	@Expose
-	@ConfigOption("Fancy Main Menu")
+	@Option
 	public boolean fancyMainMenu;
 
 	@Expose
-	@ConfigOption("Show Logo in Inventory")
+	@Option
 	public boolean logoInInventory;
 
-	@ConfigOption("Mods Key")
-	public KeyBinding modsKey = new KeyBinding("Mods", Keyboard.KEY_RSHIFT, "Sol Client");
+	@Option
+	public KeyBinding modsKey = new KeyBinding(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT, Client.KEY_CATEGORY);
 
-	@ConfigOption("Edit HUD Key")
-	public KeyBinding editHudKey = new KeyBinding("Edit HUD", Keyboard.KEY_GRAVE, "Sol Client");
+	@Option
+	public KeyBinding editHudKey = new KeyBinding(getTranslationKey() + ".edit_hud", Keyboard.KEY_GRAVE, Client.KEY_CATEGORY);
 
 	@Expose
-	@ConfigOption("UI Colour")
+	@Option
 	public Colour uiColour = new Colour(255, 180, 0);
 	public Colour uiHover;
 
 	@Expose
-	@ConfigOption("Smooth UI Colours")
+	@Option
 	public boolean smoothUIColours = true;
 
 	@Expose
-	@ConfigOption("Rounded UI")
+	@Option
 	public boolean roundedUI = true;
 
 	@Expose
-	@ConfigOption("Button Clicks")
+	@Option
 	public boolean buttonClicks = true;
 
 	@Expose
-	@ConfigOption("Smooth Scrolling")
+	@Option
 	public boolean smoothScrolling = true;
 
 	@Expose
-	@ConfigOption("Fancy Font")
+	@Option
 	public boolean fancyFont = true;
 
-	public SolClientMod() {
-		super("Sol Client", "sol_client", "Settings for Sol Client.", ModCategory.NONE);
-		instance = this;
-		Client.INSTANCE.registerKeyBinding(modsKey);
-		Client.INSTANCE.registerKeyBinding(editHudKey);
+	@Override
+	public String getId() {
+		return "sol_client";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.NONE;
 	}
 
 	@Override
 	public void onRegister() {
 		super.onRegister();
+
+		instance = this;
+		Client.INSTANCE.registerKeyBinding(modsKey);
+		Client.INSTANCE.registerKeyBinding(editHudKey);
 		uiHover = getUiHover();
 	}
 

@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.mod.impl.hud;
+package me.mcblueparrot.client.mod.impl.hud.timers;
 
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
@@ -13,8 +13,9 @@ import com.google.gson.annotations.Expose;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.hud.HudMod;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.util.BukkitMaterial;
 import me.mcblueparrot.client.util.data.VerticalAlignment;
 import me.mcblueparrot.client.util.data.Colour;
@@ -37,23 +38,24 @@ public class TimersMod extends HudMod {
 	private Map<Long, Timer> timers = new HashMap<>();
 
 	@Expose
-	@ConfigOption("Alignment")
+	@Option
 	private VerticalAlignment alignment = VerticalAlignment.MIDDLE;
 	@Expose
-	@ConfigOption("Icon")
+	@Option
 	private boolean icon = true;
 	@Expose
-	@ConfigOption("Text Shadow")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
-	@ConfigOption("Name Colour")
+	@Option
 	private Colour nameColour = Colour.WHITE;
 	@Expose
-	@ConfigOption("Time Colour")
+	@Option
 	private Colour timeColour = new Colour(8355711);
 
-	public TimersMod() {
-		super("Timers", "timers", "Timers for game events.");
+	@Override
+	public String getId() {
+		return "timers";
 	}
 
 	@Override
@@ -78,19 +80,9 @@ public class TimersMod extends HudMod {
 		Map<Long, Timer> timers;
 		if(editMode) {
 			timers = new HashMap<>();
-			Timer oven = new Timer();
-			oven.renderItem = new ItemStack(Blocks.furnace);
-			oven.name = "Oven";
-			Timer toaster = new Timer();
-			toaster.renderItem = new ItemStack(Items.bread);
-			toaster.name = "Toaster";
-			Timer dishwasher = new Timer();
-			dishwasher.renderItem = new ItemStack(Blocks.iron_bars);
-			dishwasher.name = "Dishwasher";
-
-			timers.put(0L, oven);
-			timers.put(1L, toaster);
-			timers.put(2L, dishwasher);
+			timers.put(0L, new Timer("Oven", new ItemStack(Blocks.furnace)));
+			timers.put(1L, new Timer("Toaster", new ItemStack(Items.bread)));
+			timers.put(2L, new Timer("Dishwasher", new ItemStack(Blocks.iron_bars)));
 		}
 		else {
 			timers = this.timers;
@@ -110,9 +102,9 @@ public class TimersMod extends HudMod {
 		}
 
 		for(Timer timer : timers.values()) {
-			mc.getRenderItem().renderItemIntoGUI(timer.renderItem, position.getX(), y);
-			font.drawString(TIME_FORMAT.format(Math.ceil(timer.time / 20F * 1000)),
-					font.drawString(timer.name, position.getX() + 22, y + 5, nameColour.getValue(), shadow) + (shadow ? 3 :
+			mc.getRenderItem().renderItemIntoGUI(timer.getRenderItem(), position.getX(), y);
+			font.drawString(TIME_FORMAT.format(Math.ceil(timer.getTime() / 20F * 1000)),
+					font.drawString(timer.getName(), position.getX() + 22, y + 5, nameColour.getValue(), shadow) + (shadow ? 3 :
 							4), y + 5,
 					timeColour.getValue(), shadow);
 			y += 19;
@@ -139,7 +131,7 @@ public class TimersMod extends HudMod {
 		String message = new String(payload.getBufferData().array(), StandardCharsets.UTF_8);
 
 		String type = message.substring(0, message.indexOf('|'));
-		JsonObject data = new JsonParser().parse(message.substring(message.indexOf('|') + 1)).getAsJsonObject();
+		JsonObject data = JsonParser.parseString(message.substring(message.indexOf('|') + 1)).getAsJsonObject();
 
 		long id = -1;
 		if(data.has("id")) {
@@ -153,33 +145,17 @@ public class TimersMod extends HudMod {
 			timers.remove(id);
 		}
 		else if(type.equals("SYNC_TIMERS")) {
-			timers.get(id).time = data.get("time").getAsLong();
+			timers.get(id).setTime(data.get("time").getAsLong());
 		}
 		else if(type.equals("ADD_TIMER")) {
 			JsonObject item = data.get("item").getAsJsonObject();
-			Timer tickTock = new Timer();
+			Timer tickTock = new Timer(data.get("name").getAsString(),
+					new ItemStack(BukkitMaterial.valueOf(item.get("type").getAsString()).getItem(),
+							item.has("amount") ? item.get("amount").getAsInt() : 1));
 			timers.put(id, tickTock);
-			tickTock.id = id;
-			tickTock.name = data.get("name").getAsString();
-			tickTock.renderItem = new ItemStack(BukkitMaterial.valueOf(item.get("type").getAsString()).getItem(),
-					item.has("amount") ? item.get("amount").getAsInt() : 1);
-			tickTock.time = data.get("time").getAsLong();
+			tickTock.setId(id);
+			tickTock.setTime(id);
 		}
-	}
-
-	public class Timer {
-
-		public long id;
-		public String name;
-		public ItemStack renderItem;
-		public long time;
-
-		public void tick() {
-			if(time > 0) {
-				time--;
-			}
-		}
-
 	}
 
 }

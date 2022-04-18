@@ -11,7 +11,7 @@ import me.mcblueparrot.client.event.impl.PlayerHeadRotateEvent;
 import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.util.Perspective;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
@@ -19,24 +19,35 @@ import net.minecraft.util.MathHelper;
 
 public class FreelookMod extends Mod {
 
-	@ConfigOption("Key")
-	private KeyBinding key = new KeyBinding("Freelook", Keyboard.KEY_V, "Sol Client");
+	@Option
+	private KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_V, Client.KEY_CATEGORY);
 	private float yaw;
 	private float pitch;
 	private int previousPerspective;
 	private boolean active;
 	@Expose
-	@ConfigOption("Perspective")
+	@Option
 	private Perspective perspective = Perspective.THIRD_PERSON_BACK;
 	@Expose
-	@ConfigOption("Vertically Invert")
+	@Option
 	private boolean invertPitch;
 	@Expose
-	@ConfigOption("Horizontally Invert")
+	@Option
 	private boolean invertYaw;
 
-	public FreelookMod() {
-		super("Freelook", "freelook", "Unlock the camera rotation.", ModCategory.UTILITY);
+	@Override
+	public String getId() {
+		return "freelook";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		Client.INSTANCE.registerKeyBinding(key);
 	}
 

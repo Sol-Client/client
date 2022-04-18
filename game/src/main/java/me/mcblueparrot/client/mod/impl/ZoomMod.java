@@ -15,7 +15,7 @@ import me.mcblueparrot.client.event.impl.ScrollEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.MathHelper;
@@ -25,28 +25,29 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	public static boolean enabled;
 	public static ZoomMod instance;
 
-	@ConfigOption("Zoom Key")
-	private KeyBinding key = new KeyBinding("Zoom", Keyboard.KEY_C, "Sol Client");
-	@ConfigOption("Zoom Out")
-	private KeyBinding zoomOutKey = new KeyBinding("Zoom Out", Keyboard.KEY_MINUS, "Sol Client");
-	@ConfigOption("Zoom In")
-	private KeyBinding zoomInKey = new KeyBinding("Zoom In", Keyboard.KEY_EQUALS, "Sol Client");
+	@Option
+	private KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C, Client.KEY_CATEGORY);
+	@Option
+	private KeyBinding zoomOutKey = new KeyBinding(getTranslationKey() + ".zoom_out", Keyboard.KEY_MINUS, Client.KEY_CATEGORY);
+	@Option
+	private KeyBinding zoomInKey = new KeyBinding(getTranslationKey() + ".zoom_in", Keyboard.KEY_EQUALS, Client.KEY_CATEGORY);
 
 	@Expose
-	@ConfigOption("Cinematic")
+	@Option
 	private boolean cinematic = true;
 	@Expose
-	@ConfigOption("Reduce Sensitivity")
+	@Option
 	private boolean reduceSensitivity = false;
 	@Expose
-	@ConfigOption("Scroll-to-Zoom")
+	@Option
 	public boolean scrolling = true;
 	@Expose
-	@ConfigOption("Smooth Animation")
+	@Option
 	private boolean smooth = true;
 	@Expose
-	@ConfigOption("Factor")
-	@Slider(min = 2, max = 32, step = 1, suffix = "x")
+	@Option
+	@Slider(min = 2, max = 32, step = 1, format = "sol_client.slider.factor")
+
 	private float factor = 4;
 	private float currentFactor = 1;
 	private float lastAnimatedFactor = 1;
@@ -56,8 +57,19 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	public boolean wasCinematic;
 	public boolean active;
 
-	public ZoomMod() {
-		super("Zoom", "zoom", "Zoom in when pressing a button.", ModCategory.UTILITY);
+	@Override
+	public String getId() {
+		return "zoom";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		Client.INSTANCE.registerKeyBinding(key);
 		Client.INSTANCE.registerKeyBinding(zoomOutKey);
 		Client.INSTANCE.registerKeyBinding(zoomInKey);

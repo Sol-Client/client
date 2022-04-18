@@ -30,7 +30,7 @@ import me.mcblueparrot.client.event.impl.SoundPlayEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.impl.hypixeladditions.commands.ChatChannelCommand;
 import me.mcblueparrot.client.mod.impl.hypixeladditions.commands.VisitHousingCommand;
@@ -54,25 +54,25 @@ public class HypixelAdditionsMod extends Mod {
 	private static boolean enabled;
 	public static HypixelAdditionsMod instance;
 	@Expose
-	@ConfigOption("/visithousing")
+	@Option
 	public boolean visitHousingCommand = true;
 	@Expose
-	@ConfigOption("Lobby Sounds Volume")
-	@Slider(min = 0, max = 100, step = 1, suffix = "%")
+	@Option
+	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	public float lobbySoundsVolume = 100;
 	@Expose
-	@ConfigOption("Housing Music Volume")
-	@Slider(min = 0, max = 100, step = 1, suffix = "%")
+	@Option
+	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	public float housingMusicVolume = 100;
 	@Expose
-	@ConfigOption("Pop-up Events")
+	@Option
 	private boolean popupEvents = true;
 	// Borrowed (nicked) and updated from https://static.sk1er.club/autogg/regex_triggers_3.json.
 	@Expose
-	@ConfigOption("Auto GG")
+	@Option
 	private boolean autogg = true;
 	@Expose
-	@ConfigOption("Auto GG Message")
+	@Option
 	private AutoGGMessage autoggMessage = AutoGGMessage.GG;
 	private List<Pattern> autoggTriggers = Arrays.asList(
 			"^ +1st Killer - ?\\[?\\w*\\+*\\]? \\w+ - \\d+(?: Kills?)?$",
@@ -93,7 +93,7 @@ public class HypixelAdditionsMod extends Mod {
 			"^ {21}Bridge CTF [a-zA-Z]+ - \\d\\d:\\d\\d$"
 	).stream().map(Pattern::compile).collect(Collectors.toList());
 	@Expose
-	@ConfigOption("Hide GG")
+	@Option
 	private boolean hidegg = false;
 	private List<Pattern> hideggTriggers = Arrays.asList(
 			".*: (([gG]{2})|([gG]ood [gG]ame))",
@@ -102,21 +102,21 @@ public class HypixelAdditionsMod extends Mod {
 	private Pattern hideChannelMessageTrigger = Pattern.compile("(You are now in the (ALL|PARTY|GUILD|OFFICER) channel|You're already in this channel!)");
 	private Pattern apiKeyMessageTrigger = Pattern.compile("Your new API key is (.*)");
 	@Expose
-	@ConfigOption("Auto GL")
+	@Option
 	private boolean autogl;
 	@Expose
-	@ConfigOption("Auto GL Message")
+	@Option
 	private AutoGLMessage autoglMessage = AutoGLMessage.GLHF;
 	private String autoglTrigger = "The game starts in 1 second!";
 	private long ticksUntilAutogl = -1;
 	private long ticksUntilLocraw = -1;
 	@Expose
-	@ConfigOption("Hide GL")
+	@Option
 	private boolean hidegl = false;
 	private Pattern hideglTrigger = Pattern.compile(".*: [gG](ood )?[lL](uck,? ?)?([hH](ave )?[fF](un)?!?)?");
 	private boolean donegl;
 	@Expose
-	@ConfigOption("Level Head")
+	@Option
 	public boolean levelhead;
 	private Map<UUID, String> levelCache = new HashMap<>();
 	@Expose
@@ -125,16 +125,19 @@ public class HypixelAdditionsMod extends Mod {
 	private HypixelLocationData locationData;
 	private Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
 
-	public HypixelAdditionsMod() {
-		super("Hypixel Additions", "hypixel_util", "Various improvements to Hypixel.", ModCategory.UTILITY);
-		instance = this;
+	@Override
+	public String getId() {
+		return "hypixel_util";
 	}
 
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
+	}
 
 	public String getLevelhead(boolean isMainPlayer, String name, UUID id) {
 		if((!(enabled && levelhead))
-				|| (name.contains(EnumChatFormatting.OBFUSCATED.toString()) && !isMainPlayer)
-				|| (name.indexOf('§') == -1 /* probably one of those weird generated players */ )) {
+				|| (name.contains(EnumChatFormatting.OBFUSCATED.toString()) && !isMainPlayer)) {
 			return null;
 		}
 
@@ -364,6 +367,10 @@ public class HypixelAdditionsMod extends Mod {
 
 	@EventHandler
 	public void onTick(PostTickEvent event) {
+		if(mc.theWorld == null) {
+			return;
+		}
+
 		if(ticksUntilLocraw != -1 && --ticksUntilLocraw == 0) {
 			ticksUntilLocraw = -1;
 

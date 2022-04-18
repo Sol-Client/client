@@ -6,7 +6,7 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.GammaEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 
 public class TweaksMod extends Mod {
 
@@ -14,32 +14,43 @@ public class TweaksMod extends Mod {
 	public static TweaksMod instance;
 
 	@Expose
-	@ConfigOption("Fullbright")
+	@Option
 	public boolean fullbright;
 	@Expose
-	@ConfigOption("Show Own Tag")
+	@Option
 	public boolean showOwnTag;
 	@Expose
-	@ConfigOption("Arabic Numerals")
+	@Option
 	public boolean arabicNumerals;
 	@Expose
-	@ConfigOption("Better Item Tooltips")
+	@Option
 	public boolean betterTooltips = true;
 	@Expose
-	@ConfigOption("Minimal View Bobbing")
+	@Option
 	public boolean minimalViewBobbing;
 	@Expose
-	@ConfigOption("Confirm Disconnect")
+	@Option
 	public boolean confirmDisconnect;
 	@Expose
-	@ConfigOption("Better Key Bindings")
+	@Option
 	public boolean betterKeyBindings = true;
 	@Expose
-	@ConfigOption("Hotbar Scrolling")
-	public boolean hotbarScrolling = true;
+	@Option
+	public boolean disableHotbarScrolling;
 
-	public TweaksMod() {
-		super("Tweaks", "tweaks", "Various game tweaks.", ModCategory.UTILITY);
+	@Override
+	public String getId() {
+		return "tweaks";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		instance = this;
 	}
 

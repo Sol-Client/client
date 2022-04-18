@@ -7,7 +7,6 @@ package me.mcblueparrot.client.mod.impl;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.minecraft.client.gui.GuiDownloadTerrain;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.JsonSyntaxException;
@@ -22,7 +21,7 @@ import me.mcblueparrot.client.event.impl.RenderGuiBackgroundEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessShaderGroup;
@@ -39,22 +38,33 @@ import net.minecraft.util.ResourceLocation;
 public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Expose
-	@ConfigOption("Blur")
+	@Option
 	@Slider(min = 0, max = 100, step = 1)
 	public float blur = 8;
 	@Expose
-	@ConfigOption("Fade Time")
-	@Slider(min = 0, max = 1, step = 0.1F, suffix = "s")
+	@Option
+	@Slider(min = 0, max = 1, step = 0.1F, format = "sol_client.slider.seconds")
 	private float fadeTime = 0.1F;
 	@Expose
-	@ConfigOption("Menu Background")
+	@Option
 	public Colour backgroundColour = new Colour(0, 0, 0, 100);
 	public ShaderGroup group;
 	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/menu_blur.json");
 	private long openTime;
 
-	public MenuBlurMod() {
-		super("Menu Blur", "menu_blur", "Blurs the background of all menus.", ModCategory.VISUAL);
+	@Override
+	public String getId() {
+		return "menu_blur";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.VISUAL;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		Client.INSTANCE.addResource(RESOURCE_LOCATION, new MenuBlurShader());
 	}
 

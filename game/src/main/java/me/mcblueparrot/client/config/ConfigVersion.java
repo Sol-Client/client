@@ -77,7 +77,36 @@ public enum ConfigVersion {
 	/**
 	 * Moves a few mods into the tweaks mod, and moves numeral ping to tab list mod.
 	 */
-	V2;
+	V2 {
+
+		@Override
+		protected JsonObject transformToNext(JsonObject object) {
+			JsonObject newObject = object.deepCopy();
+
+			JsonObject chat = newObject.get("chat").getAsJsonObject();
+			chat.add("defaultTextColour", chat.remove("textColour").getAsJsonObject());
+
+			JsonObject armour = newObject.get("armour").getAsJsonObject();
+			armour.addProperty("durability", armour.remove("mode").getAsString());
+
+			JsonObject crosshair = newObject.get("crosshair").getAsJsonObject();
+			crosshair.addProperty("style", crosshair.remove("type").getAsString());
+
+			JsonObject tweaks = newObject.get("tweaks").getAsJsonObject();
+			tweaks.addProperty("disableHotbarScrolling", !tweaks.remove("hotbarScrolling").getAsBoolean());
+
+			JsonObject blockSelection = newObject.get("blockSelection").getAsJsonObject();
+			// Ummm, that's not how you spell persistent...
+			blockSelection.addProperty("persistent", blockSelection.remove("persistant").getAsBoolean());
+
+			return newObject;
+		}
+
+	},
+	/**
+	 * Removes a few inconsistencies and spelling errors.
+	 */
+	V3;
 
 	private static final Logger LOGGER = LogManager.getLogger();
 

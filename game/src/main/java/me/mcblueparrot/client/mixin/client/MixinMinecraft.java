@@ -161,7 +161,7 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 		try {
 			effectRenderer.updateEffects();
 		}
-		catch(NullPointerException | ConcurrentModificationException ignored) {
+		catch(NullPointerException | ConcurrentModificationException | ArrayIndexOutOfBoundsException ignored) {
 		}
 	}
 
@@ -174,7 +174,15 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	public void openGui(GuiScreen screen, CallbackInfo callback) {
 		if(((screen == null && theWorld == null) || screen instanceof GuiMainMenu) && SolClientMod.instance.fancyMainMenu) {
 			callback.cancel();
-			displayGuiScreen(new SolClientMainMenu(screen == null ? new GuiMainMenu() : (GuiMainMenu) screen));
+
+			if(screen == null) {
+				new GuiMainMenu();
+			}
+			else {
+				Client.INSTANCE.setMainMenu((GuiMainMenu) screen);
+			}
+
+			displayGuiScreen(new SolClientMainMenu());
 			return;
 		}
 		else if(screen instanceof SolClientMainMenu && !SolClientMod.instance.fancyMainMenu) {
@@ -210,7 +218,7 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 		}
 
 		if(dWheel != 0 && !playerController.isSpectatorMode()
-				&& TweaksMod.enabled && !TweaksMod.instance.hotbarScrolling) {
+				&& TweaksMod.enabled && TweaksMod.instance.disableHotbarScrolling) {
 			dWheel = 0;
 		}
 

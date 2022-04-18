@@ -1,11 +1,12 @@
-package me.mcblueparrot.client.mod.impl.hud;
+package me.mcblueparrot.client.mod.impl.hud.tablist;
 
 import com.google.gson.annotations.Expose;
 
 import lombok.AllArgsConstructor;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.util.data.Colour;
 
 public class TabListMod extends Mod {
@@ -13,29 +14,40 @@ public class TabListMod extends Mod {
 	public static boolean enabled;
 	public static TabListMod instance;
 	@Expose
-	@ConfigOption("Hide Header")
+	@Option
 	public boolean hideHeader;
 	@Expose
-	@ConfigOption("Hide Footer")
+	@Option
 	public boolean hideFooter;
 	@Expose
-	@ConfigOption("Ping")
+	@Option
 	public PingType pingType = PingType.NUMERAL;
 	@Expose
-	@ConfigOption("List Background Colour")
+	@Option
 	public Colour backgroundColour = new Colour(Integer.MIN_VALUE);
 	@Expose
-	@ConfigOption("Entry Background Colour")
+	@Option
 	public Colour entryBackgroundColour = new Colour(553648127);
 	@Expose
-	@ConfigOption("Hide Player Heads")
+	@Option
 	public boolean hidePlayerHeads;
 	@Expose
-	@ConfigOption("Text Shadow")
+	@Option
 	public boolean textShadow = true;
 
-	public TabListMod() {
-		super("Tab List", "tab_list", "Customise the tab list.", ModCategory.HUD);
+	@Override
+	public String getId() {
+		return "tab_list";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.HUD;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		instance = this;
 	}
 
@@ -54,21 +66,6 @@ public class TabListMod extends Mod {
 	@Override
 	public boolean isEnabledByDefault() {
 		return true;
-	}
-
-	@AllArgsConstructor
-	public enum PingType {
-		NONE("None"),
-		ICON("Icon"),
-		NUMERAL("Numeral");
-
-		private String name;
-
-		@Override
-		public String toString() {
-			return name;
-		}
-
 	}
 
 }

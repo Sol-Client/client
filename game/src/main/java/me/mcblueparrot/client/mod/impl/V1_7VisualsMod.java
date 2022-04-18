@@ -1,5 +1,6 @@
 /**
- * Credit for OrangeMarshall for original mod, and most of the code (excluding the sneak).
+ * Credit for OrangeMarshall for original mod.
+ * It helped a lot when making this.
  */
 
 package me.mcblueparrot.client.mod.impl;
@@ -10,29 +11,41 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.TransformFirstPersonItemEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemFishingRod;
 
 public class V1_7VisualsMod extends Mod {
 
 	@Expose
-	@ConfigOption("Use Item while Mining")
+	@Option
 	public boolean useAndMine = true;
 	@Expose
-	@ConfigOption("Fishing Rod")
+	@Option
 	public boolean rod = true;
 	@Expose
-	@ConfigOption("Armour Damage")
+	@Option
 	public boolean armourDamage = true;
 	@Expose
-	@ConfigOption("Sneaking")
+	@Option
 	public boolean sneaking = true;
+
 	public static V1_7VisualsMod instance;
 	public static boolean enabled;
 
-	public V1_7VisualsMod() {
-		super("1.7 Visuals", "1.7_visuals", "Brings back some of the look-and-feel of 1.7.", ModCategory.VISUAL);
+	@Override
+	public String getId() {
+		return "1.7_visuals";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.VISUAL;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		instance = this;
 	}
 

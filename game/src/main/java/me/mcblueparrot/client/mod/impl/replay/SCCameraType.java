@@ -1,16 +1,15 @@
 package me.mcblueparrot.client.mod.impl.replay;
 
 import lombok.AllArgsConstructor;
+import net.minecraft.client.resources.I18n;
 
-@AllArgsConstructor
 public enum SCCameraType {
-	CLASSIC("Classic"),
-	VANILLA_ISH("Vanilla-ish");
-
-	private String name;
+	CLASSIC,
+	VANILLA_ISH;
 
 	@Override
 	public String toString() {
-		return name;
+		return I18n.format("sol_client.mod.replay.option.camera." + name().toLowerCase());
 	}
+
 }

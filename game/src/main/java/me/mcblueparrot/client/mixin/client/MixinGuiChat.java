@@ -35,14 +35,18 @@ public abstract class MixinGuiChat extends GuiScreen implements AccessGuiChat {
 		boolean mouseDown = Mouse.isButtonDown(0);
 
 		List<ChatButton> buttons = Client.INSTANCE.getChatButtons();
+
 		for(ChatButton button : buttons) {
 			int start = right - button.getWidth();
 			Rectangle buttonBounds = new Rectangle(start, height - 14, button.getWidth(), 12);
+
 			Utils.drawRectangle(buttonBounds, buttonBounds.contains(mouseX, mouseY) ? Colour.WHITE_128 : Colour.BLACK_128);
+
 			fontRendererObj.drawString(button.getText(),
 					start + (button.getWidth() / 2) - (fontRendererObj.getStringWidth(button.getText()) / 2),
 					this.height - 8 - (fontRendererObj.FONT_HEIGHT / 2),
 					buttonBounds.contains(mouseX, mouseY) ? 0 : -1);
+
 			if(mouseDown && !wasMouseDown && buttonBounds.contains(mouseX, mouseY)) {
 				if(selectedButton == button) {
 					Utils.playClickSound(false);
@@ -53,12 +57,14 @@ public abstract class MixinGuiChat extends GuiScreen implements AccessGuiChat {
 					selectedButton = button;
 				}
 			}
+
 			if(selectedButton == button) {
 				button.render(right - button.getPopupWidth(), this.height - 15 - button.getPopupHeight(),
 						mouseDown, wasMouseDown,
 						mouseDown && !wasMouseDown,
 						mouseX, mouseY);
 			}
+
 			right = start - 1;
 		}
 

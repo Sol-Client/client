@@ -90,7 +90,6 @@ public class TimersMod extends HudMod {
 		RenderHelper.enableGUIStandardItemLighting();
 		int y = position.getY();
 
-
 		switch(alignment) {
 			case TOP:
 				break;

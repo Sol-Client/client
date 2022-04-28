@@ -382,6 +382,10 @@ sol_client.mod.discord_integration.description=Integration features for Discord 
 
 sol_client.mod.discord_integration.option.voiceChatHud=Voice Chat HUD
 sol_client.mod.discord_integration.option.voiceChatHudScale=Voice Chat HUD Scale
+sol_client.mod.discord_integration.option.voiceChatHudAlignment=Voice Chat HUD Alignment
+sol_client.mod.discord_integration.option.usernameColour=Username Colour
+sol_client.mod.discord_integration.option.mutedColour=Muted Colour
+sol_client.mod.discord_integration.option.speakingColour=Speaking Colour
 
 sol_client.mod.screen.title=Mods
 sol_client.mod.screen.search=Type to search

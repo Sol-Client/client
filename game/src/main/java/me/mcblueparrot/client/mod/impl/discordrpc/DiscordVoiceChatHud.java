@@ -2,6 +2,7 @@ package me.mcblueparrot.client.mod.impl.discordrpc;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ import net.minecraft.client.gui.Gui;
 
 public class DiscordVoiceChatHud extends BaseHudElement {
 
+	private static final int USER_HEIGHT = 20;
+
 	protected FontRenderer font;
 	private DiscordIntegrationMod mod;
 
@@ -36,12 +39,25 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 
 	@Override
 	public Rectangle getBounds(Position position) {
-		return position.rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
+		int yOffset = 0;
+
+		switch(mod.voiceChatHudAlignment) {
+			case MIDDLE:
+				yOffset = (USER_HEIGHT * 4) / 2;
+				break;
+			case BOTTOM:
+				yOffset = USER_HEIGHT * 4;
+				break;
+			default:
+				break;
+		}
+
+		return position.offset(0, yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
 	}
 
 	@Override
 	public void render(Position position, boolean editMode) {
-		Collection<User> users;
+		List<User> users;
 
 		if(editMode) {
 			users = new ArrayList<>();
@@ -66,10 +82,23 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 			return;
 		}
 		else {
-			users = mod.socket.getVoiceCallUsers();
+			users = new ArrayList<>(mod.socket.getVoiceCallUsers());
 		}
 
+		Collections.sort(users, (u1, u2) -> u1.getUsername().compareTo(u2.getUsername()));
+
 		int y = position.getY();
+
+		switch(mod.voiceChatHudAlignment) {
+			case MIDDLE:
+				y -= (USER_HEIGHT * (users.size())) / 2;
+				break;
+			case BOTTOM:
+				y -= USER_HEIGHT * users.size();
+				break;
+			default:
+				break;
+		}
 
 		for(User user : users) {
 			user.bindTexture();

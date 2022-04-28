@@ -52,11 +52,11 @@ public class DiscordIntegrationMod extends Mod {
 	protected boolean voiceChatHud;
 	@Expose
 	@Option
-	private VerticalAlignment voiceChatHudAlignment = VerticalAlignment.TOP;
-	@Expose
-	@Option
 	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
 	protected float voiceChatHudScale = 100;
+	@Expose
+	@Option
+	protected VerticalAlignment voiceChatHudAlignment = VerticalAlignment.TOP;
 	@Expose
 	protected HudPosition voiceChatHudPosition = new HudPosition(0, 0);
 	@Expose

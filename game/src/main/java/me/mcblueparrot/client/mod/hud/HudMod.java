@@ -98,11 +98,6 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	class HudModElement extends BaseHudElement {
 
 		@Override
-		public boolean isEnabled() {
-			return HudMod.this.isEnabled();
-		}
-
-		@Override
 		public Mod getMod() {
 			return HudMod.this;
 		}
@@ -124,7 +119,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 
 		@Override
 		public boolean isVisible() {
-			return HudMod.this.isVisible();
+			return isEnabled() && HudMod.this.isVisible();
 		}
 
 		@Override

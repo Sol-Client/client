@@ -20,6 +20,7 @@ import me.mcblueparrot.client.mod.impl.quickplay.database.QuickPlayGame;
 import me.mcblueparrot.client.mod.impl.quickplay.database.QuickPlayGameMode;
 import me.mcblueparrot.client.mod.impl.quickplay.ui.QuickPlayOption;
 import me.mcblueparrot.client.mod.impl.quickplay.ui.QuickPlayPalette;
+import me.mcblueparrot.client.util.Utils;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 
@@ -35,7 +36,9 @@ public class QuickPlayMod extends Mod {
 	public void onRegister() {
 		super.onRegister();
 
-		database = new QuickPlayDatabase();
+		Utils.MAIN_EXECUTOR.submit(() -> {
+			database = new QuickPlayDatabase();
+		});
 		Client.INSTANCE.registerKeyBinding(menuKey);
 	}
 
@@ -46,7 +49,7 @@ public class QuickPlayMod extends Mod {
 
 	@Override
 	public ModCategory getCategory() {
-		return ModCategory.UTILITY;
+		return ModCategory.INTEGRATION;
 	}
 
 	public List<QuickPlayOption> getRecentlyPlayed() {
@@ -65,7 +68,8 @@ public class QuickPlayMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(menuKey.isPressed()) {
+		if(database != null && menuKey.isPressed()
+				&& Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL) {
 			mc.displayGuiScreen(new QuickPlayPalette(this));
 		}
 	}

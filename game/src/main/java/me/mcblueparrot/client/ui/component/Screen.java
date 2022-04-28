@@ -77,7 +77,12 @@ public class Screen extends GuiScreen {
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if(!rootWrapper.keyPressed(getInfo(), keyCode, typedChar)) {
-			super.keyTyped(typedChar, keyCode);
+			if(keyCode == 1) {
+				closeAll();
+			}
+			else {
+				super.keyTyped(typedChar, keyCode);
+			}
 		}
 	}
 
@@ -112,6 +117,10 @@ public class Screen extends GuiScreen {
 
 	public void close() {
 		mc.displayGuiScreen(parentScreen);
+	}
+
+	public void closeAll() {
+		mc.displayGuiScreen(null);
 	}
 
 	private ComponentRenderInfo getInfo() {

@@ -15,7 +15,7 @@ public class Position {
 		return new Position(this.x + x, this.y - y);
 	}
 
-	public Rectangle expandToRectangle(int width, int height) {
+	public Rectangle rectangle(int width, int height) {
 		return new Rectangle(x, y, width, height);
 	}
 

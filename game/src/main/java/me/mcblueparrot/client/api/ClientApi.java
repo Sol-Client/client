@@ -23,7 +23,7 @@ public class ClientApi {
 			String message = payload.getBufferData().readStringFromBuffer(32767);
 
 			if(payload.getChannelName().equals("solclient:block_mods")) {
-				JsonArray array = new JsonParser().parse(message).getAsJsonArray();
+				JsonArray array = JsonParser.parse(message).getAsJsonArray();
 
 				Client.INSTANCE.getMods().forEach(Mod::unblock);
 
@@ -41,7 +41,7 @@ public class ClientApi {
 				}
 			}
 			else if(payload.getChannelName().equals("solclient:popup")) {
-				JsonObject data = new JsonParser().parse(message).getAsJsonObject();
+				JsonObject data = JsonParser.parse(message).getAsJsonObject();
 
 				String text = data.get("text").getAsString();
 				String command = data.get("command").getAsString();

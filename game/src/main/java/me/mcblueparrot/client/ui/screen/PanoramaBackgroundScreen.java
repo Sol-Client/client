@@ -26,18 +26,16 @@ public abstract class PanoramaBackgroundScreen extends Screen {
 	@Override
 	public void setWorldAndResolution(Minecraft mc, int width, int height) {
 		super.setWorldAndResolution(mc, width, height);
-		mainMenu.setWorldAndResolution(mc, width, height);
+
+		if(mc.theWorld == null) {
+			mainMenu.setWorldAndResolution(mc, width, height);
+		}
 	}
 
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
 		mainMenu.updateScreen();
-	}
-
-	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		super.keyTyped(typedChar, keyCode);
 	}
 
 	protected void drawPanorama(int mouseX, int mouseY, float partialTicks) {

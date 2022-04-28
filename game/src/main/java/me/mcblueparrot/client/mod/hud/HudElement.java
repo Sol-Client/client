@@ -17,8 +17,6 @@ public interface HudElement {
 
 	void setPosition(Position position);
 
-	boolean isEnabled();
-
 	boolean isVisible();
 
 	Rectangle getBounds();

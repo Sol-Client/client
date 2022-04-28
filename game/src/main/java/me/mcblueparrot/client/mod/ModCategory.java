@@ -30,7 +30,11 @@ public enum ModCategory {
 	/**
 	 * Aesthetic/graphical mods.
 	 */
-	VISUAL(true);
+	VISUAL(true),
+	/**
+	 * Integration mods.
+	 */
+	INTEGRATION(true);
 
 	private boolean showName;
 	private List<Mod> mods;

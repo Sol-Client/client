@@ -132,7 +132,7 @@ public class HypixelAdditionsMod extends Mod {
 
 	@Override
 	public ModCategory getCategory() {
-		return ModCategory.UTILITY;
+		return ModCategory.INTEGRATION;
 	}
 
 	public String getLevelhead(boolean isMainPlayer, String name, UUID id) {

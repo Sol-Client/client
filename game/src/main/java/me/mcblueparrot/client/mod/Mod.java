@@ -46,15 +46,15 @@ public abstract class Mod {
 	}
 
 	public void onRegister() {
-		if(this.enabled) {
-			onEnable();
-		}
-
 		try {
 			options = ModOption.get(this);
 		}
 		catch(IOException error) {
 			throw new IllegalStateException(error);
+		}
+
+		if(this.enabled) {
+			tryEnable();
 		}
 	}
 
@@ -101,13 +101,28 @@ public abstract class Mod {
 
 		if(enabled != this.enabled) {
 			if(enabled) {
-				onEnable();
+				tryEnable();
 			}
 			else {
-				onDisable();
+				try {
+					onDisable();
+				}
+				catch(Throwable error) {
+					logger.error("Error while disabling mod", error);
+				}
 			}
 		}
 		this.enabled = enabled;
+	}
+
+	private void tryEnable() {
+		try {
+			onEnable();
+		}
+		catch(Throwable error) {
+			logger.error("Could not enable mod", error);
+			setEnabled(false);
+		}
 	}
 
 	protected void onEnable() {

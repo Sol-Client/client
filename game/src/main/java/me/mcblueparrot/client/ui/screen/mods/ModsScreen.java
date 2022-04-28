@@ -72,13 +72,13 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(keyCode == 1 && mc.theWorld == null && SolClientMod.instance.fancyMainMenu) {
+	public void closeAll() {
+		if(mc.theWorld == null && SolClientMod.instance.fancyMainMenu) {
 			mc.displayGuiScreen(Client.INSTANCE.getMainMenu());
 			return;
 		}
 
-		super.keyTyped(typedChar, keyCode);
+		super.closeAll();
 	}
 
 	public static class ModsScreenComponent extends Component {

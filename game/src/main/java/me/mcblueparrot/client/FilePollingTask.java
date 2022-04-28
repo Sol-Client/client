@@ -28,10 +28,6 @@ public class FilePollingTask implements Runnable, Closeable {
 		key = Minecraft.getMinecraft().mcDataDir.toPath().register(service, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
 
 		for(Mod mod : mods) {
-			if(mod.getOptions() == null) {
-				System.out.println(mod.getClass().getName());
-			}
-
 			for(ModOption option : mod.getOptions()) {
 				if(option.isFile()) {
 					files.put(option.getFile().getName(), option);

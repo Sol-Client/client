@@ -32,13 +32,8 @@ public class RecordingIndicator extends BaseHudElement {
 	}
 
 	@Override
-	public boolean isEnabled() {
-		return (SCReplayMod.instance.isEnabled() || SCReplayMod.enabled) && mod.recordingIndicator;
-	}
-
-	@Override
 	public boolean isVisible() {
-		return isEnabled();
+		return (SCReplayMod.instance.isEnabled() || SCReplayMod.enabled) && mod.recordingIndicator;
 	}
 
 	@Override

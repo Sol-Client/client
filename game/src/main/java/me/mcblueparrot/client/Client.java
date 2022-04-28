@@ -30,7 +30,6 @@ import me.mcblueparrot.client.api.ClientApi;
 import me.mcblueparrot.client.api.PopupManager;
 import me.mcblueparrot.client.config.ConfigVersion;
 import me.mcblueparrot.client.culling.CullTask;
-import me.mcblueparrot.client.discord.DiscordRPC;
 import me.mcblueparrot.client.event.EventBus;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PostGameStartEvent;
@@ -54,6 +53,7 @@ import me.mcblueparrot.client.mod.impl.TimeChangerMod;
 import me.mcblueparrot.client.mod.impl.TweaksMod;
 import me.mcblueparrot.client.mod.impl.V1_7VisualsMod;
 import me.mcblueparrot.client.mod.impl.ZoomMod;
+import me.mcblueparrot.client.mod.impl.discordrpc.DiscordIntegrationMod;
 import me.mcblueparrot.client.mod.impl.hud.ComboCounterMod;
 import me.mcblueparrot.client.mod.impl.hud.CoordinatesMod;
 import me.mcblueparrot.client.mod.impl.hud.CpsMod;
@@ -126,6 +126,7 @@ public class Client {
 	public static final String NAME = "Sol Client " + VERSION;
 	public static final String KEY_TRANSLATION_KEY = "sol_client.key";
 	public static final String KEY_CATEGORY = KEY_TRANSLATION_KEY + ".category";
+	public static final boolean DEV = isDevelopment();
 
 	@Getter
 	private PopupManager popupManager;
@@ -156,43 +157,42 @@ public class Client {
 
 		LOGGER.info("Loading mods...");
 
-		register(SolClientMod::new);
-		register(FpsMod::new);
-		register(CoordinatesMod::new);
-		register(KeystrokesMod::new);
-		register(CpsMod::new);
-		register(PingMod::new);
-		register(SpeedometerMod::new);
-		register(ReachDisplayMod::new);
-		register(ComboCounterMod::new);
-		register(PotionEffectsMod::new);
-		register(ArmourMod::new);
-		register(TimersMod::new);
-		register(ChatMod::new);
-		register(TabListMod::new);
-		register(CrosshairMod::new);
-		register(ScoreboardMod::new);
-		register(TweaksMod::new);
-		register(MotionBlurMod::new);
-		register(MenuBlurMod::new);
-		register(ColourSaturationMod::new);
-		register(ChunkAnimatorMod::new);
-		register(FreelookMod::new);
-		register(TaplookMod::new);
-		register(ToggleSprintMod::new);
-		register(V1_7VisualsMod::new);
-		register(ItemPhysicsMod::new);
-		register(ZoomMod::new);
-		register(ParticlesMod::new);
-		register(TimeChangerMod::new);
-		register(BlockSelectionMod::new);
-		register(HitColourMod::new);
-		register(SCReplayMod::new);
-		register(QuickPlayMod::new);
-		register(HypixelAdditionsMod::new);
-		register(TNTTimerMod::new);
-
-		cacheHudList();
+		register(new SolClientMod());
+		register(new FpsMod());
+		register(new CoordinatesMod());
+		register(new KeystrokesMod());
+		register(new CpsMod());
+		register(new PingMod());
+		register(new SpeedometerMod());
+		register(new ReachDisplayMod());
+		register(new ComboCounterMod());
+		register(new PotionEffectsMod());
+		register(new ArmourMod());
+		register(new TimersMod());
+		register(new ChatMod());
+		register(new TabListMod());
+		register(new CrosshairMod());
+		register(new ScoreboardMod());
+		register(new TweaksMod());
+		register(new MotionBlurMod());
+		register(new MenuBlurMod());
+		register(new ColourSaturationMod());
+		register(new ChunkAnimatorMod());
+		register(new FreelookMod());
+		register(new TaplookMod());
+		register(new ToggleSprintMod());
+		register(new TNTTimerMod());
+		register(new V1_7VisualsMod());
+		register(new ItemPhysicsMod());
+		register(new ZoomMod());
+		register(new ParticlesMod());
+		register(new TimeChangerMod());
+		register(new BlockSelectionMod());
+		register(new HitColourMod());
+		register(new SCReplayMod());
+		register(new QuickPlayMod());
+		register(new HypixelAdditionsMod());
+		register(new DiscordIntegrationMod());
 
 		LOGGER.info("Loaded {} mods", mods.size());
 
@@ -254,21 +254,17 @@ public class Client {
 		bus.register(new ClientApi());
 		bus.register(popupManager = new PopupManager());
 
-		try {
-			capeManager = new CapeManager();
-		}
-		catch(IOException error) {
-			LOGGER.error("Failed to initialise capes", error);
+		capeManager = new CapeManager();
+	}
+
+	private static boolean isDevelopment() {
+		for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
+			if(element.getClassName().equals("GradleStart")) {
+				return true;
+			}
 		}
 
-		if(Boolean.getBoolean("me.mcblueparrot.client.discord")) {
-			try {
-				bus.register(new DiscordRPC());
-			}
-			catch(Throwable error) {
-				LOGGER.warn("Could not initialise Discord RPC", error);
-			}
-		}
+		return false;
 	}
 
 	public void registerKeyBinding(KeyBinding keyBinding) {
@@ -333,10 +329,8 @@ public class Client {
 		}
 	}
 
-	private void register(Supplier<Mod> modInitialiser) {
+	private void register(Mod mod) {
 		try {
-			Mod mod = modInitialiser.get();
-
 			if(data.has(mod.getId())) {
 				getGson(mod).fromJson(data.get(mod.getId()), mod.getClass());
 			}
@@ -347,7 +341,8 @@ public class Client {
 			mod.onRegister();
 		}
 		catch(Throwable error) {
-			LOGGER.error("Could not register mod", error);
+			LOGGER.error("Could not register mod " + mod.getId(), error);
+			mods.remove(mod);
 		}
 	}
 
@@ -408,6 +403,7 @@ public class Client {
 	@EventHandler
 	public void onPostStart(PostGameStartEvent event) {
 		mods.forEach(Mod::postStart);
+		cacheHudList();
 
 		try {
 			unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
@@ -491,6 +487,15 @@ public class Client {
 
 	public List<ChatButton> getChatButtons() {
 		return chatButtons;
+	}
+
+	/**
+	 * Saves if the mod screen is not opened.
+	 */
+	public void optionChanged() {
+		if(!(Minecraft.getMinecraft().currentScreen instanceof ModsScreen)) {
+			save();
+		}
 	}
 
 }

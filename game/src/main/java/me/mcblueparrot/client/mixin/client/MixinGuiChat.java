@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.ui.element.ChatButton;
+import me.mcblueparrot.client.ui.ChatButton;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiChat;
 import me.mcblueparrot.client.util.data.Colour;

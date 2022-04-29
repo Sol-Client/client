@@ -24,8 +24,8 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 
 	private static final int USER_HEIGHT = 20;
 
-	protected FontRenderer font;
-	private DiscordIntegrationMod mod;
+	protected final FontRenderer font;
+	private final DiscordIntegrationMod mod;
 
 	public DiscordVoiceChatHud(DiscordIntegrationMod mod) {
 		this.mod = mod;
@@ -57,18 +57,18 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 
 	@Override
 	public void render(Position position, boolean editMode) {
-		List<User> users;
+		Collection<User> users;
 
 		if(editMode) {
 			users = new ArrayList<>();
 
-			User theKodeToad = new User("0");
-			theKodeToad.setName("TheKodeToad");
-			users.add(theKodeToad);
-
 			User lynith = new User("0");
 			lynith.setName("Lynith");
 			users.add(lynith);
+
+			User theKodeToad = new User("0");
+			theKodeToad.setName("TheKodeToad");
+			users.add(theKodeToad);
 
 			User trigg = new User("0");
 			trigg.setName("Trigg");
@@ -82,10 +82,8 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 			return;
 		}
 		else {
-			users = new ArrayList<>(mod.socket.getVoiceCallUsers());
+			users = mod.socket.getVoiceCallUsers();
 		}
-
-		Collections.sort(users, (u1, u2) -> u1.getUsername().compareTo(u2.getUsername()));
 
 		int y = position.getY();
 

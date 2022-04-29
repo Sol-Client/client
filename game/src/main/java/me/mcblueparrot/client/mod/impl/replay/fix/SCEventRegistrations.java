@@ -33,7 +33,7 @@ import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 
 public class SCEventRegistrations {
 
-	private List<EventRegistration<?>> registrations = new ArrayList<>();
+	private final List<EventRegistration<?>> registrations = new ArrayList<>();
 	private static final EventBus BUS = Client.INSTANCE.bus;
 
 	public <T> SCEventRegistrations on(EventRegistration<T> registration) {

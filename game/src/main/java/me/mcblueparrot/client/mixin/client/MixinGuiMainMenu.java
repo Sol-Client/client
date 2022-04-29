@@ -13,7 +13,7 @@ import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
-import me.mcblueparrot.client.ui.element.ReplayButton;
+import me.mcblueparrot.client.ui.ReplayButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import me.mcblueparrot.client.util.access.AccessGuiMainMenu;
 import net.minecraft.client.gui.GuiButton;

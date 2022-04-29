@@ -6,6 +6,6 @@ import lombok.AllArgsConstructor;
 public class FovEvent {
 
 	public float fov;
-	public float partialTicks;
+	public final float partialTicks;
 
 }

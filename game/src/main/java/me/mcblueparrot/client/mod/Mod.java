@@ -28,19 +28,13 @@ import net.minecraft.client.resources.I18n;
 @AbstractTranslationKey("sol_client.mod.generic")
 public abstract class Mod {
 
-	protected Minecraft mc;
+	protected final Minecraft mc = Minecraft.getMinecraft();
 	private List<ModOption> options;
 	private boolean blocked;
 	@Expose
 	@Option(priority = 2)
-	private boolean enabled;
-	protected Logger logger;
-
-	public Mod() {
-		mc = Minecraft.getMinecraft();
-		logger = LogManager.getLogger();
-		enabled = isEnabledByDefault();
-	}
+	private boolean enabled = isEnabledByDefault();
+	protected final Logger logger = LogManager.getLogger();
 
 	public void postStart() {
 	}

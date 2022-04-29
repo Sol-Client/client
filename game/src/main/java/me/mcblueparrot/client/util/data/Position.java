@@ -7,9 +7,9 @@ import lombok.Getter;
 public class Position {
 
 	@Getter
-	private int x;
+	private final int x;
 	@Getter
-	private int y;
+	private final int y;
 
 	public Position offset(int x, int y) {
 		return new Position(this.x + x, this.y - y);

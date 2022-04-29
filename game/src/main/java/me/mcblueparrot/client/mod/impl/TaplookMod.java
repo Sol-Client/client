@@ -16,7 +16,7 @@ import net.minecraft.client.settings.KeyBinding;
 public class TaplookMod extends Mod {
 
 	@Option
-	private KeyBinding key = new KeyBinding(getTranslationKey() + ".key", 0, Client.KEY_CATEGORY);
+	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", 0, Client.KEY_CATEGORY);
 	private int previousPerspective;
 	private boolean active;
 	@Expose

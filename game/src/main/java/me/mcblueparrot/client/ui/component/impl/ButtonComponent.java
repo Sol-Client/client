@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 public class ButtonComponent extends ColouredComponent {
 
 	@Getter
-	private Controller<String> text;
+	private final Controller<String> text;
 	private ButtonType type = ButtonType.NORMAL;
 
 	public ButtonComponent(String text, Controller<Colour> colour) {

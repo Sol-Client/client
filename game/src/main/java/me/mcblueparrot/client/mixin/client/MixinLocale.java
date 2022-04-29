@@ -43,6 +43,7 @@ public abstract class MixinLocale {
 	@Shadow
 	private Map<String, String> properties;
 
-	@Shadow protected abstract void checkUnicode();
+	@Shadow
+	protected abstract void checkUnicode();
 
 }

@@ -106,7 +106,7 @@ public class ModListing extends ColouredComponent {
 				URI blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage();
 
 				if(blockedModPage != null) {
-					Utils.sendLauncherMessage("openUrl", blockedModPage.toString());
+					Utils.openUrl(blockedModPage.toString());
 				}
 
 				return false;

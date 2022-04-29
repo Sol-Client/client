@@ -29,21 +29,18 @@ import net.minecraft.nbt.JsonToNBT;
 public class QuickPlayGame implements QuickPlayOption {
 
 	@Getter
-	private String id;
+	private final String id;
 	@Getter
-	private String name;
-	private Map<String, QuickPlayGameMode> modes;
-	private URL imageURL;
-	private BufferedImage image;
+	private final String name;
+	private final Map<String, QuickPlayGameMode> modes;
 	@Getter
-	private ItemStack item;
+	private final ItemStack item;
 
 	@SneakyThrows
 	public QuickPlayGame(JsonObject object) {
 		id = object.get("unlocalizedName").getAsString();
 		name = object.get("name").getAsString();
 		modes = new LinkedHashMap<>();
-		imageURL = Utils.sneakyParse(object.get("imageURL").getAsString());
 
 		for(JsonElement modeElement : object.get("modes").getAsJsonArray()) {
 			QuickPlayGameMode mode = new QuickPlayGameMode(this, modeElement.getAsJsonObject());
@@ -51,6 +48,7 @@ public class QuickPlayGame implements QuickPlayOption {
 		}
 
 		Item itemType = null;
+		ItemStack item = null;
 
 		switch(id) {
 			case "mainLobby":
@@ -119,27 +117,21 @@ public class QuickPlayGame implements QuickPlayOption {
 			case "tournament":
 				itemType = Items.blaze_powder;
 				break;
+			default:
+				itemType = Items.lava_bucket;
+				break;
 		}
 
-		if(itemType != null) {
-			item = new ItemStack(itemType);
+		if(item == null) {
+			this.item = new ItemStack(itemType);
+		}
+		else {
+			this.item = item;
 		}
 	}
 
 	public QuickPlayGameMode getMode(String command) {
 		return modes.get(command);
-	}
-
-	public BufferedImage getImage() {
-		if(image == null) {
-			try(InputStream in = imageURL.openStream()) {
-				image = ImageIO.read(in);
-			}
-			catch(IOException error) {
-				throw new IllegalStateException(error);
-			}
-		}
-		return image;
 	}
 
 	public List<QuickPlayGameMode> getModes() {

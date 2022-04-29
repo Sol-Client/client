@@ -26,7 +26,9 @@ import net.minecraft.scoreboard.ScoreObjective;
 @Mixin(GuiIngame.class)
 public abstract class MixinGuiIngame {
 
-	@Shadow @Final private Minecraft mc;
+	@Final
+	@Shadow
+	private Minecraft mc;
 
 	@Inject(method = "renderGameOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer" +
 			"/GlStateManager;enableBlend()V", ordinal = 1, shift = At.Shift.AFTER), cancellable = true)

@@ -19,7 +19,7 @@ import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.mod.hud.SimpleHudMod;
-import me.mcblueparrot.client.ui.element.ChatButton;
+import me.mcblueparrot.client.ui.ChatButton;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiChat;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
@@ -35,6 +35,8 @@ import net.minecraft.util.MathHelper;
 
 public class ChatMod extends HudMod {
 
+	private static final float ANIMATION_MULTIPLIER = 0.5F;
+
 	public static boolean enabled;
 	public static ChatMod instance;
 
@@ -45,7 +47,6 @@ public class ChatMod extends HudMod {
 	@Option
 	private boolean smooth = true; // Smooth, man!
 
-	private static final float ANIMATION_MULTIPLIER = 0.5F;
 	private int lastAnimatedOffset;
 	private int animatedOffset;
 
@@ -204,8 +205,8 @@ public class ChatMod extends HudMod {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@EventHandler
+	@SuppressWarnings("unchecked")
 	public void onTick(PostTickEvent event) {
 		if(!peekKey.isKeyDown() && wasPeeking) {
 			mc.ingameGUI.getChatGUI().resetScroll();

@@ -11,16 +11,16 @@ import net.minecraft.item.ItemStack;
 public class QuickPlayGameMode implements QuickPlayOption {
 
 	@Getter
-	private QuickPlayGame parent;
+	private final QuickPlayGame parent;
 	@Getter
-	private String name;
+	private final String name;
 	@Getter
-	private String command;
+	private final String command;
 
 	public QuickPlayGameMode(QuickPlayGame parent, JsonObject object) {
 		this.parent = parent;
 		name = object.get("name").getAsString();
-		command = object.get("command").getAsString();
+		String command = object.get("command").getAsString();
 
 		if(command.equals("/quickplay limbo")) {
 			command = "/achat §";
@@ -28,6 +28,8 @@ public class QuickPlayGameMode implements QuickPlayOption {
 		else if(command.equals("/quickplay delivery")) {
 			command = "/delivery";
 		}
+
+		this.command = command;
 	}
 
 	public String getFullId() {

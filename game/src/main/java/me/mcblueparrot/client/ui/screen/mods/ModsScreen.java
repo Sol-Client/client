@@ -203,12 +203,14 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				search.setText("");
 			}
 
-			if(!super.keyPressed(info, keyCode, character) && keyCode == SolClientMod.instance.modsKey.getKeyCode()) {
+			boolean result = super.keyPressed(info, keyCode, character);
+
+			if(!result && keyCode == SolClientMod.instance.modsKey.getKeyCode()) {
 				mc.displayGuiScreen(null);
 				return true;
 			}
 
-			return false;
+			return result;
 		}
 
 		public String getQuery() {

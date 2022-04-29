@@ -35,7 +35,7 @@ public class TimersMod extends HudMod {
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("mm:ss");
 	private static final int TIMER_HEIGHT = 19;
 
-	private Map<Long, Timer> timers = new HashMap<>();
+	private final Map<Long, Timer> timers = new HashMap<>();
 
 	@Expose
 	@Option

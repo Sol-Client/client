@@ -140,7 +140,7 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	@Overwrite
 	public int getLimitFramerate() {
 		if((theWorld == null && !(currentScreen instanceof Screen)) || !Display.isActive()) {
-			return 30; // Only limit framerate to 30. This means there is no noticable lag spike.
+			return 30; // Only limit framerate to 30. This means there is no noticeable lag spike.
 		}
 
 		return gameSettings.limitFramerate;
@@ -483,14 +483,9 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyBindState(IZ)V", ordinal = 1))
 	public void nextKey(int keyCode, boolean pressed) {
 		if(pressed && debugPressed) {
-			if(Keyboard.getEventKey() == 32
-					|| Keyboard.getEventKey() == 31
-					|| Keyboard.getEventKey() == 20
-					|| Keyboard.getEventKey() == 33
-					|| Keyboard.getEventKey() == 30
-					|| Keyboard.getEventKey() == 35
-					|| Keyboard.getEventKey() == 48
-					|| Keyboard.getEventKey() == 25) {
+			if (Keyboard.getEventKey() == 32 || Keyboard.getEventKey() == 31 || Keyboard.getEventKey() == 20
+					|| Keyboard.getEventKey() == 33 || Keyboard.getEventKey() == 30 || Keyboard.getEventKey() == 35
+					|| Keyboard.getEventKey() == 48 || Keyboard.getEventKey() == 25) {
 				return;
 			}
 		}

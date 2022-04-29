@@ -234,7 +234,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 				if(button == 0) {
 					Utils.playClickSound(true);
 					try {
-						Utils.sendLauncherMessage("openUrl", option.getFile().toURI().toURL().toString());
+						Utils.openUrl(option.getFile().toURI().toURL().toString());
 					}
 					catch(MalformedURLException error) {
 						throw new IllegalStateException(error);

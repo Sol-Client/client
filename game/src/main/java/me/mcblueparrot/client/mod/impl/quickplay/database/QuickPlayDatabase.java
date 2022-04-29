@@ -16,7 +16,7 @@ import me.mcblueparrot.client.util.Utils;
 public class QuickPlayDatabase {
 
 	@Getter
-	private Map<String, QuickPlayGame> games = new LinkedHashMap<>();
+	private final Map<String, QuickPlayGame> games = new LinkedHashMap<>();
 
 	public QuickPlayDatabase() {
 		initDatabase();
@@ -28,8 +28,10 @@ public class QuickPlayDatabase {
 
 	private void initDatabase() {
 		try {
-			JsonArray array = new JsonParser().parse(Utils.urlToString(Utils.sneakyParse("https://bugg.co/quickplay/mod/gamelist")))
+			JsonArray array = JsonParser
+					.parseString(Utils.urlToString(Utils.sneakyParse("https://bugg.co/quickplay/mod/gamelist")))
 					.getAsJsonObject().get("content").getAsJsonObject().get("games").getAsJsonArray();
+
 			for(JsonElement gameElement : array) {
 				games.put(gameElement.getAsJsonObject().get("unlocalizedName").getAsString(), new QuickPlayGame(gameElement.getAsJsonObject()));
 			}

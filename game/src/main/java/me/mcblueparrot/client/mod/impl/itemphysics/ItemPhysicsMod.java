@@ -30,8 +30,8 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 	@Option
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	private float rotationSpeed = 100;
-	private Map<EntityItem, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
-																	 // usage is prioritised.
+	private final Map<EntityItem, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
+																	 	   // usage is prioritised.
 	@Override
 	public String getId() {
 		return "item_physics";

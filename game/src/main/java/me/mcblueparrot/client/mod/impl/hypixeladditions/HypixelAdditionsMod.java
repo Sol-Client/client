@@ -49,8 +49,6 @@ import net.minecraft.util.IChatComponent;
 
 public class HypixelAdditionsMod extends Mod {
 
-	private static final Logger LOGGER = LogManager.getLogger();
-
 	private static boolean enabled;
 	public static HypixelAdditionsMod instance;
 	@Expose
@@ -67,14 +65,14 @@ public class HypixelAdditionsMod extends Mod {
 	@Expose
 	@Option
 	private boolean popupEvents = true;
-	// Borrowed (nicked) and updated from https://static.sk1er.club/autogg/regex_triggers_3.json.
 	@Expose
 	@Option
 	private boolean autogg = true;
 	@Expose
 	@Option
 	private AutoGGMessage autoggMessage = AutoGGMessage.GG;
-	private List<Pattern> autoggTriggers = Arrays.asList(
+	// Borrowed (nicked) and updated from https://static.sk1er.club/autogg/regex_triggers_3.json.
+	private final List<Pattern> autoggTriggers = Arrays.asList(
 			"^ +1st Killer - ?\\[?\\w*\\+*\\]? \\w+ - \\d+(?: Kills?)?$",
 			"^ *1st (?:Place ?)?(?:-|:)? ?\\[?\\w*\\+*\\]? \\w+(?: : \\d+| - \\d+(?: Points?)?| - \\d+(?: x .)?| \\(\\w+ .{1,6}\\) - \\d+ Kills?|: \\d+:\\d+| - \\d+ (?:Zombie )?(?:Kills?|Blocks? Destroyed)| - \\[LINK\\])?$",
 			"^ +Winn(?:er #1 \\(\\d+ Kills\\): \\w+ \\(\\w+\\)|er(?::| - )(?:Hiders|Seekers|Defenders|Attackers|PLAYERS?|MURDERERS?|Red|Blue|RED|BLU|\\w+)(?: Team)?|ers?: ?\\[?\\w*\\+*\\]? \\w+(?:, ?\\[?\\w*\\+*\\]? \\w+)?|ing Team ?[\\:-] (?:Animals|Hunters|Red|Green|Blue|Yellow|RED|BLU|Survivors|Vampires))$",
@@ -95,35 +93,35 @@ public class HypixelAdditionsMod extends Mod {
 	@Expose
 	@Option
 	private boolean hidegg = false;
-	private List<Pattern> hideggTriggers = Arrays.asList(
+	private final List<Pattern> hideggTriggers = Arrays.asList(
 			".*: (([gG]{2})|([gG]ood [gG]ame))",
 			"\\+\\d* Karma!").stream().map(Pattern::compile).collect(Collectors.toList());
 	private boolean donegg;
-	private Pattern hideChannelMessageTrigger = Pattern.compile("(You are now in the (ALL|PARTY|GUILD|OFFICER) channel|You're already in this channel!)");
-	private Pattern apiKeyMessageTrigger = Pattern.compile("Your new API key is (.*)");
+	private final Pattern hideChannelMessageTrigger = Pattern.compile("(You are now in the (ALL|PARTY|GUILD|OFFICER) channel|You're already in this channel!)");
+	private final Pattern apiKeyMessageTrigger = Pattern.compile("Your new API key is (.*)");
 	@Expose
 	@Option
 	private boolean autogl;
 	@Expose
 	@Option
 	private AutoGLMessage autoglMessage = AutoGLMessage.GLHF;
-	private String autoglTrigger = "The game starts in 1 second!";
+	private final String autoglTrigger = "The game starts in 1 second!";
 	private long ticksUntilAutogl = -1;
 	private long ticksUntilLocraw = -1;
 	@Expose
 	@Option
 	private boolean hidegl = false;
-	private Pattern hideglTrigger = Pattern.compile(".*: [gG](ood )?[lL](uck,? ?)?([hH](ave )?[fF](un)?!?)?");
+	private final Pattern hideglTrigger = Pattern.compile(".*: [gG](ood )?[lL](uck,? ?)?([hH](ave )?[fF](un)?!?)?");
 	private boolean donegl;
 	@Expose
 	@Option
 	public boolean levelhead;
-	private Map<UUID, String> levelCache = new HashMap<>();
+	private final Map<UUID, String> levelCache = new HashMap<>();
 	@Expose
 	private String apiKey;
 	private HypixelAPI api;
 	private HypixelLocationData locationData;
-	private Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
+	private final Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
 
 	@Override
 	public String getId() {
@@ -301,7 +299,7 @@ public class HypixelAdditionsMod extends Mod {
 				return;
 			}
 			catch(Throwable error) {
-				LOGGER.warn("Could not detect location", error);
+				logger.warn("Could not detect location", error);
 			}
 		}
 

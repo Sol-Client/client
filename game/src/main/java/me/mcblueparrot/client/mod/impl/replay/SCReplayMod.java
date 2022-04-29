@@ -105,8 +105,8 @@ public class SCReplayMod extends Mod {
 	public boolean skipPostRenderGui;
 	public boolean skipPostScreenshotGui;
 
-	private List<Object> unregisterOnDisable = new ArrayList<>();
-	private List<Object> registerOnEnable = new ArrayList<>();
+	private final List<Object> unregisterOnDisable = new ArrayList<>();
+	private final List<Object> registerOnEnable = new ArrayList<>();
 
 	private SCReplayModBackend backend;
 

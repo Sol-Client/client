@@ -8,8 +8,8 @@ import net.minecraft.client.settings.KeyBinding;
 
 public class ToggleSprintKeyBinding extends KeyBinding {
 
-	private Minecraft mc = Minecraft.getMinecraft();
-	private ToggleSprintMod mod;
+	private final Minecraft mc = Minecraft.getMinecraft();
+	private final ToggleSprintMod mod;
 	private boolean wasDown;
 	private long startTime;
 

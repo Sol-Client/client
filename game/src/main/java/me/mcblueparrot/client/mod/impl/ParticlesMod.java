@@ -20,19 +20,19 @@ public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 	@Expose
 	@Option
 	@Slider(min = 1, max = 10, step = 1)
-	public float multiplier = 4;
+	private float multiplier = 4;
 	@Expose
 	@Option
-	public boolean sharpness = true;
+	private boolean sharpness = true;
 	@Expose
 	@Option
-	public boolean snow;
+	private boolean snow;
 	@Expose
 	@Option
-	public boolean slime;
+	private boolean slime;
 	@Expose
 	@Option
-	public boolean flames;
+	private boolean flames;
 
 	@Override
 	public String getId() {

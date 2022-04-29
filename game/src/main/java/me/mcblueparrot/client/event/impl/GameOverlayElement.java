@@ -17,5 +17,5 @@ public enum GameOverlayElement {
 	TEXT,
 	CHAT,
 	PLAYER_LIST,
-	DEBUG;
+	DEBUG
 }

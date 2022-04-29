@@ -6,6 +6,6 @@ import net.minecraft.client.renderer.chunk.RenderChunk;
 @AllArgsConstructor
 public class PreRenderChunkEvent {
 
-	public RenderChunk chunk;
+	public final RenderChunk chunk;
 
 }

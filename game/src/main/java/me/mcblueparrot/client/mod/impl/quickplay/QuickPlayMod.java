@@ -27,10 +27,10 @@ import net.minecraft.client.settings.KeyBinding;
 public class QuickPlayMod extends Mod {
 
 	@Option
-	private KeyBinding menuKey = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_M, Client.KEY_CATEGORY);
+	private final KeyBinding menuKey = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_M, Client.KEY_CATEGORY);
 	private QuickPlayDatabase database;
 	@Expose
-	private List<String> recentlyPlayed = new ArrayList<>();
+	private final List<String> recentlyPlayed = new ArrayList<>();
 
 	@Override
 	public void onRegister() {

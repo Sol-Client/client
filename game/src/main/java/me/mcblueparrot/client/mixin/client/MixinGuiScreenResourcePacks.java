@@ -128,9 +128,9 @@ public class MixinGuiScreenResourcePacks extends GuiScreen {
 			ordinal = 0))
 	public void searchableList(GuiScreenResourcePacks screen, GuiResourcePackAvailable availableResourcePacksList) {
 		try {
-			this.availableResourcePacksList = betterList = new BetterResourcePackList(mc, (GuiScreenResourcePacks) (Object) this,
-					availableResourcePacksList.getListWidth(), height, mc.getResourcePackRepository(),
-					() -> searchField.getText());
+			this.availableResourcePacksList = betterList = new BetterResourcePackList(mc,
+					(GuiScreenResourcePacks) (Object) this, availableResourcePacksList.getListWidth(), height,
+					mc.getResourcePackRepository(), () -> searchField.getText());
 		}
 		catch(IOException error) {
 		}

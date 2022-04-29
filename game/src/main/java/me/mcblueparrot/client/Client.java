@@ -74,7 +74,7 @@ import me.mcblueparrot.client.mod.impl.itemphysics.ItemPhysicsMod;
 import me.mcblueparrot.client.mod.impl.quickplay.QuickPlayMod;
 import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
 import me.mcblueparrot.client.mod.impl.togglesprint.ToggleSprintMod;
-import me.mcblueparrot.client.ui.element.ChatButton;
+import me.mcblueparrot.client.ui.ChatButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
 import me.mcblueparrot.client.util.Utils;

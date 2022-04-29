@@ -195,6 +195,8 @@ public abstract class Component {
 	 */
 	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
 		if(onKeyPressed != null && onKeyPressed.keyPressed(info, keyCode, character)) {
+			Thread.dumpStack();
+			System.out.println("true");
 			return true;
 		}
 

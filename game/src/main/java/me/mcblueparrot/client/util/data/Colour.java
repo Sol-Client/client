@@ -16,7 +16,7 @@ public class Colour {
 
 	@Getter
 	@Expose
-	private int value;
+	private final int value;
 
 	public static final Colour WHITE = new Colour(255, 255, 255);
 	public static final Colour BLACK = new Colour(0, 0, 0);

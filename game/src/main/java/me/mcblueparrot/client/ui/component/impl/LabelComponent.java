@@ -9,7 +9,7 @@ import net.minecraft.client.resources.I18n;
 
 public class LabelComponent extends ColouredComponent {
 
-	private Controller<String> text;
+	private final Controller<String> text;
 
 	public LabelComponent(String text) {
 		this((component, defaultText) -> I18n.format(text), (component, defaultColour) -> defaultColour);

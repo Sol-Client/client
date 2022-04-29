@@ -15,6 +15,12 @@ import net.minecraft.item.ItemStack;
 
 public class ArmourMod extends HudMod {
 
+	private static final ItemStack HELMET = new ItemStack(Items.iron_helmet);
+	private static final ItemStack CHESTPLATE = new ItemStack(Items.iron_chestplate);
+	private static final ItemStack LEGGINGS = new ItemStack(Items.iron_leggings);
+	private static final ItemStack BOOTS = new ItemStack(Items.iron_boots);
+	private static final ItemStack HAND = new ItemStack(Items.iron_sword);
+
 	@Expose
 	@Option
 	private DurabilityDisplay durability = DurabilityDisplay.REMAINING;
@@ -30,11 +36,6 @@ public class ArmourMod extends HudMod {
 	@Expose
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private Colour textColour = Colour.WHITE;
-	private static final ItemStack HELMET = new ItemStack(Items.iron_helmet);
-	private static final ItemStack CHESTPLATE = new ItemStack(Items.iron_chestplate);
-	private static final ItemStack LEGGINGS = new ItemStack(Items.iron_leggings);
-	private static final ItemStack BOOTS = new ItemStack(Items.iron_boots);
-	private static final ItemStack HAND = new ItemStack(Items.iron_sword);
 
 	@Override
 	public String getId() {

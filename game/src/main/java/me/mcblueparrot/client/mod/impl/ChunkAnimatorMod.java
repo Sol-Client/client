@@ -20,7 +20,8 @@ import net.minecraft.client.renderer.chunk.RenderChunk;
 // Based on lumien231's chunk animator.
 public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
-	private Map<RenderChunk, Long> chunks = new WeakHashMap<>();
+	private final Map<RenderChunk, Long> chunks = new WeakHashMap<>();
+
 	@Expose
 	@Option
 	@Slider(min = 0, max = 5, step = 0.5F, format = "sol_client.slider.seconds")

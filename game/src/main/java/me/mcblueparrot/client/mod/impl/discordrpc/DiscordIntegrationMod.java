@@ -40,7 +40,6 @@ public class DiscordIntegrationMod extends Mod {
 
 	public static DiscordIntegrationMod instance;
 
-	private Minecraft mc = Minecraft.getMinecraft();
 	private CreateParams params;
 	private Core core;
 	protected DiscordSocket socket;

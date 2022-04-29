@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PostGameOverlayRenderEvent {
 
-	public float partialTicks;
-	public GameOverlayElement type;
+	public final float partialTicks;
+	public final GameOverlayElement type;
 
 }

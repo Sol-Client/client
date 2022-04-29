@@ -13,8 +13,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class TNTTimerMod extends Mod {
 
-	public static boolean enabled;
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
+	public static boolean enabled;
 
 	@Override
 	public String getId() {

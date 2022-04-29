@@ -114,6 +114,7 @@ public abstract class MixinEntityRenderer {
 		Client.INSTANCE.bus.post(event);
 		yaw = event.yaw;
 		pitch = event.pitch;
+
 		if(!event.cancelled && !Utils.isSpectatingEntityInReplay()) {
 			entityPlayerSP.setAngles(yaw, pitch);
 		}

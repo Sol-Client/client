@@ -3,6 +3,7 @@ package me.mcblueparrot.client.mod;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import me.mcblueparrot.client.Client;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
@@ -10,6 +11,7 @@ import net.minecraft.util.EnumChatFormatting;
 /**
  * Categories of Sol Client mods.
  */
+@RequiredArgsConstructor
 public enum ModCategory {
 	/**
 	 * All mods.
@@ -36,12 +38,8 @@ public enum ModCategory {
 	 */
 	INTEGRATION(true);
 
-	private boolean showName;
+	private final boolean showName;
 	private List<Mod> mods;
-
-	private ModCategory(boolean showName) {
-		this.showName = showName;
-	}
 
 	@Override
 	public String toString() {

@@ -25,6 +25,7 @@ public class ScoreboardMod extends Mod {
 
 	public static ScoreboardMod instance;
 	public static boolean enabled;
+
 	@Expose
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	public boolean background = true;

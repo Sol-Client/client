@@ -23,8 +23,9 @@ import java.io.InputStream;
 
 public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod {
 
-	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/" +
-			"color_convolve.json");
+	private static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(
+			"minecraft:shaders/post/" + "color_convolve.json");
+
 	@Expose
 	@Option
 	@Slider(min = 0, max = 2F, step = 0.1F)

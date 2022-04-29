@@ -40,10 +40,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ReportedException;
 
 public class SCScheduler implements Scheduler {
+
 	private static final Minecraft mc = Minecraft.getMinecraft();
-	private static final EventBus BUS = Client.INSTANCE.bus;
 	private boolean inRunLater = false;
 
+	@Override
 	public void runSync(Runnable runnable) throws InterruptedException, ExecutionException, TimeoutException {
 		if(mc.isCallingFromMinecraftThread()) {
 			runnable.run();
@@ -55,14 +56,17 @@ public class SCScheduler implements Scheduler {
 		}
 	}
 
+	@Override
 	public void runPostStartup(Runnable runnable) {
 		this.runLater(runnable);
 	}
 
+	@Override
 	public void runLaterWithoutLock(Runnable runnable) {
 		this.runLater(() -> this.runLaterWithoutLock(runnable), runnable);
 	}
 
+	@Override
 	public void runLater(Runnable runnable) {
 		this.runLater(runnable, () -> this.runLater(runnable));
 	}
@@ -94,6 +98,7 @@ public class SCScheduler implements Scheduler {
 		}
 	}
 
+	@Override
 	public void runTasks() {
 	}
 

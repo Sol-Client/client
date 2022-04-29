@@ -30,7 +30,7 @@ public class V1_7VisualsMod extends Mod {
 	private boolean particles = true;
 	@Expose
 	@Option
-	public boolean items = true;
+	private boolean items = true;
 	@Expose
 	@Option
 	public boolean armourDamage = true;

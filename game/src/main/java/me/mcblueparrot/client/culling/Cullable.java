@@ -6,5 +6,4 @@ public interface Cullable {
 
 	void setCulled(boolean culled);
 
-
 }

@@ -17,6 +17,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import lombok.Getter;
 import me.mcblueparrot.client.Client;
@@ -30,6 +32,8 @@ import net.minecraft.client.resources.I18n;
 
 public class ModOption {
 
+	private static final Logger LOGGER = LogManager.getLogger();
+
 	private final Mod mod;
 	@Getter
 	private final Field field;
@@ -42,6 +46,10 @@ public class ModOption {
 	public ModOption(Mod mod, Option option, Field field) throws IOException {
 		this.mod = mod;
 		this.field = field;
+
+		if(Modifier.isFinal(field.getModifiers())) {
+			LOGGER.warn("mod option " + field.getName() + " is final");
+		}
 
 		if(field != null) {
 			field.setAccessible(true);

@@ -24,7 +24,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	/**
 	 * Represents the single element that this mod contains.
 	 */
-	private HudModElement element = new HudModElement();
+	private final HudModElement element = new HudModElement();
 
 	@Expose
 	private HudPosition position;

@@ -10,9 +10,9 @@ import me.mcblueparrot.client.util.data.Rectangle;
 @AllArgsConstructor
 public class AlignedBoundsController implements Controller<Rectangle> {
 
-	private Alignment xAlignment;
-	private Alignment yAlignment;
-	private Controller<Rectangle> baseController;
+	private final Alignment xAlignment;
+	private final Alignment yAlignment;
+	private final Controller<Rectangle> baseController;
 
 	public AlignedBoundsController(Alignment xAlignment, Alignment yAlignment) {
 		this(xAlignment, yAlignment, (component, defaultBounds) -> defaultBounds);

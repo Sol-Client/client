@@ -37,19 +37,20 @@ import net.minecraft.util.ResourceLocation;
 
 public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
+	private static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/menu_blur.json");
+
 	@Expose
 	@Option
 	@Slider(min = 0, max = 100, step = 1)
-	public float blur = 8;
+	private float blur = 8;
 	@Expose
 	@Option
 	@Slider(min = 0, max = 1, step = 0.1F, format = "sol_client.slider.seconds")
 	private float fadeTime = 0.1F;
 	@Expose
 	@Option
-	public Colour backgroundColour = new Colour(0, 0, 0, 100);
-	public ShaderGroup group;
-	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/menu_blur.json");
+	private Colour backgroundColour = new Colour(0, 0, 0, 100);
+	private ShaderGroup group;
 	private long openTime;
 
 	@Override

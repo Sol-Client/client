@@ -26,11 +26,11 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	public static ZoomMod instance;
 
 	@Option
-	private KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C, Client.KEY_CATEGORY);
+	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C, Client.KEY_CATEGORY);
 	@Option
-	private KeyBinding zoomOutKey = new KeyBinding(getTranslationKey() + ".zoom_out", Keyboard.KEY_MINUS, Client.KEY_CATEGORY);
+	private final KeyBinding zoomOutKey = new KeyBinding(getTranslationKey() + ".zoom_out", Keyboard.KEY_MINUS, Client.KEY_CATEGORY);
 	@Option
-	private KeyBinding zoomInKey = new KeyBinding(getTranslationKey() + ".zoom_in", Keyboard.KEY_EQUALS, Client.KEY_CATEGORY);
+	private final KeyBinding zoomInKey = new KeyBinding(getTranslationKey() + ".zoom_in", Keyboard.KEY_EQUALS, Client.KEY_CATEGORY);
 
 	@Expose
 	@Option

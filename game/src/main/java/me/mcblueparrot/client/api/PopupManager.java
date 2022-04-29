@@ -21,12 +21,12 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class PopupManager {
 
-	private Minecraft mc = Minecraft.getMinecraft();
+	private final Minecraft mc = Minecraft.getMinecraft();
 
-	private KeyBinding keyAcceptRequest = new KeyBinding(Client.KEY_TRANSLATION_KEY + ".accept_request", Keyboard.KEY_Y, Client.KEY_CATEGORY);
-	private KeyBinding keyDismissRequest = new KeyBinding(Client.KEY_TRANSLATION_KEY + ".dismiss_request", Keyboard.KEY_N, Client.KEY_CATEGORY);
+	private final KeyBinding keyAcceptRequest = new KeyBinding(Client.KEY_TRANSLATION_KEY + ".accept_request", Keyboard.KEY_Y, Client.KEY_CATEGORY);
+	private final KeyBinding keyDismissRequest = new KeyBinding(Client.KEY_TRANSLATION_KEY + ".dismiss_request", Keyboard.KEY_N, Client.KEY_CATEGORY);
 
-	private Deque<Popup> popups = new ArrayDeque<>();
+	private final Deque<Popup> popups = new ArrayDeque<>();
 	private Popup currentPopup;
 
 	public PopupManager() {

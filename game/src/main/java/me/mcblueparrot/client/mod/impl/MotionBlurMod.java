@@ -26,6 +26,7 @@ import net.minecraft.util.ResourceLocation;
 public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/motion_blur.json");
+
 	@Expose
 	@Option
 	@Slider(min = 0, max = 0.99F, step = 0.01F)

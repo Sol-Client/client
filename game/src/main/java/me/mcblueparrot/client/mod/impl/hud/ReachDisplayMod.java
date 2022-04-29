@@ -8,9 +8,10 @@ import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 
 public class ReachDisplayMod extends SimpleHudMod {
 
+	private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
+
 	private double distance = 0;
 	private long hitTime = -1;
-	private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 
 	@Override
 	public String getId() {
@@ -31,7 +32,7 @@ public class ReachDisplayMod extends SimpleHudMod {
 	}
 
 	@EventHandler
-	public void deffoNoReachHax(EntityAttackEvent event) {
+	public void totallyNoReachHax(EntityAttackEvent event) {
 		if(mc.objectMouseOver != null && mc.objectMouseOver.hitVec != null) {
 			distance = mc.objectMouseOver.hitVec.distanceTo(mc.thePlayer.getPositionEyes(1.0F));
 			hitTime = System.currentTimeMillis();

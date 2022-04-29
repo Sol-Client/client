@@ -12,9 +12,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class ScaledIconComponent extends ColouredComponent {
 
-	private Controller<String> iconName;
-	private int width;
-	private int height;
+	private final Controller<String> iconName;
+	private final int width;
+	private final int height;
 
 	public ScaledIconComponent(String iconName, int width, int height) {
 		this((component, defaultName) -> iconName, width, height, (component, defaultColour) -> defaultColour);

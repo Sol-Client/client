@@ -13,6 +13,7 @@ public class TabListMod extends Mod {
 
 	public static boolean enabled;
 	public static TabListMod instance;
+
 	@Expose
 	@Option
 	public boolean hideHeader;

@@ -82,7 +82,8 @@ public class CullTask implements Runnable {
 					Vec3d camera = lastPos;
 					culling.resetCache();
 					boolean spectator = mc.thePlayer.isSpectator();
-					for (int x = -8; x <= 8; x++) {
+
+					for(int x = -8; x <= 8; x++) {
 						for(int z = -8; z <= 8; z++) {
 							Chunk chunk = mc.theWorld.getChunkFromChunkCoords(mc.thePlayer.chunkCoordX + x,
 									mc.thePlayer.chunkCoordZ + z);
@@ -175,4 +176,5 @@ public class CullTask implements Runnable {
 	private boolean isSkippableArmorstand(Entity entity) {
 		return entity instanceof EntityArmorStand && ((EntityArmorStand) entity).hasMarker();
 	}
+
 }

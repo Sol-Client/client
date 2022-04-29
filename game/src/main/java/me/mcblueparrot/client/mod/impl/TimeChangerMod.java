@@ -15,7 +15,7 @@ public class TimeChangerMod extends Mod implements PrimaryIntegerSettingMod {
 	@Expose
 	@Option
 	@Slider(min = 0, max = 24000, step = 1, showValue = false)
-	public float time = 1000;
+	private float time = 1000;
 
 	@Override
 	public String getId() {

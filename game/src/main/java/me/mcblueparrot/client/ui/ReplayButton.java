@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.ui.element;
+package me.mcblueparrot.client.ui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

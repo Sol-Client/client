@@ -11,12 +11,9 @@ import me.mcblueparrot.client.util.data.Colour;
 
 public class HitColourMod extends Mod {
 
-	public static boolean enabled;
-	public static HitColourMod instance;
-
 	@Expose
 	@Option
-	public Colour colour = new Colour(255, 0, 0, 76);
+	private Colour colour = new Colour(255, 0, 0, 76);
 
 	@Override
 	public String getId() {
@@ -26,24 +23,6 @@ public class HitColourMod extends Mod {
 	@Override
 	public ModCategory getCategory() {
 		return ModCategory.VISUAL;
-	}
-
-	@Override
-	public void onRegister() {
-		super.onRegister();
-		instance = this;
-	}
-
-	@Override
-	protected void onEnable() {
-		super.onEnable();
-		enabled = true;
-	}
-
-	@Override
-	protected void onDisable() {
-		super.onDisable();
-		enabled = false;
 	}
 
 	@EventHandler

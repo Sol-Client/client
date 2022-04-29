@@ -63,7 +63,7 @@ import net.minecraft.util.Util.EnumOS;
 public class Utils {
 
 	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
-	public Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
+	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
 	private int getStringWidth(String text) {
 		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
@@ -360,7 +360,11 @@ public class Utils {
 		return ThreadLocalRandom.current().nextInt(from, to + 1); // https://stackoverflow.com/a/363692
 	}
 
-	public void sendLauncherMessage(String type, String... arguments) {
+	public void openUrl(String url) {
+		sendLauncherMessage("openUrl", url);
+	}
+
+	private void sendLauncherMessage(String type, String... arguments) {
 		System.out.println("message " + System.getProperty("me.mcblueparrot.client.secret") + " " + type + " " + String.join(" ", arguments));
 	}
 

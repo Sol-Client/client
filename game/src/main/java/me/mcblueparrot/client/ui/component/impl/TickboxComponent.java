@@ -12,8 +12,8 @@ import me.mcblueparrot.client.util.data.Colour;
 public class TickboxComponent extends ScaledIconComponent {
 
 	private boolean value;
-	private Consumer<Boolean> booleanConsumer;
-	private Component hoverController;
+	private final Consumer<Boolean> booleanConsumer;
+	private final Component hoverController;
 
 	public TickboxComponent(boolean value, Consumer<Boolean> booleanConsumer, Component hoverController) {
 		super("sol_client_tickbox", 16, 16,

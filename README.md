@@ -14,7 +14,7 @@ Update: Yes, I know, it has been seven months since I wrote about the newer vers
 
 [Website](https://sol-client.github.io)
 
-## Gimme it now!
+## Installing
 First, go to [releases](https://github.com/Sol-Client/Client/releases).
 
 Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue. The code is all open source, so don't worry.

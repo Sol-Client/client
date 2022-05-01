@@ -124,7 +124,7 @@ Want to contribute? Or are you just trying to re-enable freelook (please don't d
 
 ### Launcher
 
-Make sure you have the latest Node.JS and NPM.
+Make sure you have the latest Node.JS and NPM. You also need to build the game according to the instructions [below](#game).
 
 Setup:
 ```sh
@@ -144,7 +144,7 @@ The installer will be in a directory named "out".
 
 ### Game
 
-Make sure you have Java JDK 8 installed.
+Make sure to build it with Java 8 and not any newer versions.
 
 Move into folder:
 ```sh

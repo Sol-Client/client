@@ -199,6 +199,15 @@ public class Client {
 		register(new HypixelAdditionsMod());
 		register(new DiscordIntegrationMod());
 
+		for(LoadedExtension extension : extensionManager.getExtensions()) {
+			try {
+				extension.registerMod();
+			}
+			catch(InvalidExtensionException error) {
+				LOGGER.error("Could not register mod from " + extension.getFileName(), error);
+			}
+		}
+
 		LOGGER.info("Loaded {} mod(s)", mods.size());
 
 		cacheHudList();

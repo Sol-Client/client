@@ -1,0 +1,399 @@
+sol_client.passthrough=%s
+sol_client.slider.percent=%s%%
+sol_client.slider.factor=%sx
+sol_client.slider.seconds=%ss
+
+sol_client.vertical_alignment.top=Oberseite
+sol_client.vertical_alignment.middle=Mitte
+sol_client.vertical_alignment.bottom=Unterseite
+
+sol_client.perspective.first_person=Erste Person
+sol_client.perspective.third_person_back=Dritte Person Rückseite
+sol_client.perspective.third_person_front=Dritte Person Vorderseite
+
+sol_client.easing.linear=Geradlinig
+sol_client.easing.quad=Quad
+sol_client.easing.cubic=Cubic
+sol_client.easing.quart=Quart
+sol_client.easing.quint=Quint
+sol_client.easing.expo=Expo
+sol_client.easing.sine=Sine
+sol_client.easing.circ=Circ
+sol_client.easing.back=Rücken
+sol_client.easing.bounce=Prallen
+sol_client.easing.elastic=Elastisch
+
+sol_client.file.edit=Datei bearbeiten...
+
+sol_client.servers=Server
+
+sol_client.key.category=Sol Client
+sol_client.key.accept_request=Anfrage annehmen
+sol_client.key.dismiss_request=Anfrage 
+
+sol_client.mod.generic.option.enabled=Ermöglicht
+sol_client.mod.hud.option.scale=Größe
+sol_client.mod.simple_hud.option.background=Hintergrund
+sol_client.mod.simple_hud.option.backgroundColour=Hintergrundfarbe
+sol_client.mod.simple_hud.option.border=Umriss
+sol_client.mod.simple_hud.option.borderColour=Umrissfarbe
+sol_client.mod.simple_hud.option.textColour=Textfarbe
+sol_client.mod.simple_hud.option.shadow=Textschatten
+
+sol_client.mod.sol_client.name=Sol Client
+sol_client.mod.sol_client.description=Generelle Einstellungen für Sol Client.
+
+sol_client.mod.sol_client.option.fancyMainMenu=Hauptmenü
+sol_client.mod.sol_client.option.logoInInventory=Symbol im Inventar anzeigen
+sol_client.mod.sol_client.mods=Mods
+sol_client.mod.sol_client.option.modsKey=Mods Taste
+sol_client.mod.sol_client.edit_hud=HUD bearbeiten
+sol_client.mod.sol_client.option.editHudKey=HUD Taste bearbeiten
+sol_client.mod.sol_client.option.uiColour=Akzent Farben
+sol_client.mod.sol_client.option.smoothUIColours=Sanfte UI Farben
+sol_client.mod.sol_client.option.roundedUI=Gerundetes UI
+sol_client.mod.sol_client.option.buttonClicks=Knopfklicks
+sol_client.mod.sol_client.option.smoothScrolling=Sanftes Scrollen
+sol_client.mod.sol_client.option.fancyFont=HD Schriftart
+
+sol_client.mod.fps.name=FPS
+sol_client.mod.fps.description=FPS (Frames pro Sekunde).
+
+sol_client.mod.coordinates.name=Koordinaten
+sol_client.mod.coordinates.description=Deine Koordinaten anzeigen.
+
+sol_client.mod.coordinates.option.axisLabelColour=Achsenetikettenfarbe
+sol_client.mod.coordinates.option.axisValueColour=Achsenwertfarbe
+sol_client.mod.coordinates.option.cardinalDirection=Himmelsrichtung
+sol_client.mod.coordinates.option.cardinalDirectionColour=Farbe der Himmelsrichtung
+sol_client.mod.coordinates.option.axisDirection=Achsenrichtung
+sol_client.mod.coordinates.option.axisDirectionColour=Farbe der Achsenrichtung
+
+sol_client.mod.keystrokes.name=Tastenanschläge
+sol_client.mod.keystrokes.description=Die momentan gedrückten Tasten anzeigen.
+
+sol_client.mod.keystrokes.option.movement=Bewegung
+sol_client.mod.keystrokes.option.mouse=Maus
+sol_client.mod.keystrokes.option.mouseMovement=Mausbewegung
+sol_client.mod.keystrokes.option.showSpace=Leertaste
+sol_client.mod.keystrokes.option.cps=KPS auf Tasten
+sol_client.mod.keystrokes.option.backgroundColourPressed=Hintergrundfarbe (Gedrückt)
+sol_client.mod.keystrokes.option.borderColourPressed=Umrissfarbe (Gedrückt)
+sol_client.mod.keystrokes.option.textColourPressed=Textfarbe (Gedrückt)
+sol_client.mod.keystrokes.option.smoothColours=Sanfte Farben
+
+sol_client.mod.cps.name=KPS
+sol_client.mod.cps.description=KPS anzeigen (Klicks pro Sekunde).
+
+sol_client.mod.cps.option.rmb=Rechter Mausknopf KPS
+sol_client.mod.cps.option.separatorColour=Trennerfarbe
+
+sol_client.mod.ping.name=Ping
+sol_client.mod.ping.description=Zeige die Latenz zum aktuellen Server an.
+
+sol_client.mod.speedometer.name=Tachometer
+sol_client.mod.speedometer.description=Deine Geschwindigkeit anzeigen.
+
+sol_client.mod.reach_display.name=Reichweitendisplay
+sol_client.mod.reach_display.description=Distanz beim Treffen von Kreaturen anzeigen.
+
+sol_client.mod.combo_counter.name=Combo Zähler
+sol_client.mod.combo_counter.description=Zähle die Nummer von nachfolgenden Treffer.
+
+sol_client.mod.potion_effects.name=Trankeffekte
+sol_client.mod.potion_effects.description=Aktive Tränke mit Countdowns anzeigen.
+
+sol_client.mod.potion_effects.option.alignment=Ausrichtung
+sol_client.mod.potion_effects.option.icon=Symbol
+sol_client.mod.potion_effects.option.background=Hintergrund
+sol_client.mod.potion_effects.option.titleColour=Etikettfarbe
+sol_client.mod.potion_effects.option.durationColour=Haltbarkeitsfarbe
+
+sol_client.mod.armour.name=Ausrüstung
+sol_client.mod.armour.description=Ausrüsting mit Haltbarkeit anzeigen.
+
+sol_client.mod.armour.option.durability=Haltbarkeit
+sol_client.mod.armour.option.durability.remaining=Übrige
+sol_client.mod.armour.option.durability.percentage=Prozentanzahl
+sol_client.mod.armour.option.durability.fraction=Fraktion
+
+sol_client.mod.armour.option.armour=Rüstung anzeigen
+sol_client.mod.armour.option.hand=Item anzeigen
+
+sol_client.mod.timers.name=Timers
+sol_client.mod.timers.description=Timers anzeigen für ingame Ereignisse.
+
+sol_client.mod.timers.option.alignment=Ausrichtung
+sol_client.mod.timers.option.icon=Symbol
+sol_client.mod.timers.option.nameColour=Etikettfarbe
+sol_client.mod.timers.option.timeColour=Zeitfarbe
+
+sol_client.mod.chat.name=Chat
+sol_client.mod.chat.description=Passe den ingame chat an.
+
+sol_client.mod.chat.peek=Gucken
+sol_client.mod.chat.option.preventClose=Schließen verhindern
+sol_client.mod.chat.option.smooth=Nachrichtanimation
+sol_client.mod.chat.option.infiniteChat=Unendlicher Chat
+sol_client.mod.chat.option.peekKey=Guck Taste
+
+sol_client.mod.chat.option.visibility=Sichtbarkeit
+sol_client.mod.chat.option.visibility.shown=Gezeigt
+sol_client.mod.chat.option.visibility.commands=Nur Aufforderungen
+sol_client.mod.chat.option.visibility.hidden=Versteckt
+
+sol_client.mod.chat.option.defaultTextColour=Standard Textfarbe
+sol_client.mod.chat.option.colours=Farben
+sol_client.mod.chat.option.width=Breite
+sol_client.mod.chat.option.closedHeight=Geschlossene Höhe
+sol_client.mod.chat.option.openHeight=Offene Höhe
+sol_client.mod.chat.option.links=Links
+sol_client.mod.chat.option.promptLinks=Prompt Links
+sol_client.mod.chat.option.chatFilter=Chatfilter ermöglichen
+sol_client.mod.chat.option.filteredWordsContent=Gefilterte Wörter
+
+sol_client.mod.tab_list.name=Tabliste
+sol_client.mod.tab_list.description=Passe die Tab- oder Playerliste an.
+
+sol_client.mod.tab_list.option.hideHeader=Kopfzeile verstecken
+sol_client.mod.tab_list.option.hideFooter=Fußzeile verstecken
+
+sol_client.mod.tab_list.option.pingType=Ping
+sol_client.mod.tab_list.option.pingType.none=Versteckt
+sol_client.mod.tab_list.option.pingType.icon=Symbol
+sol_client.mod.tab_list.option.pingType.numeral=Nummer
+
+sol_client.mod.tab_list.option.backgroundColour=Listenhintergrundfarbe
+sol_client.mod.tab_list.option.entryBackgroundColour=Eintraghintergrundfarbe
+sol_client.mod.tab_list.option.hidePlayerHeads=Spielerköpfe verstecken
+sol_client.mod.tab_list.option.textShadow=Textschatten
+
+sol_client.mod.crosshair.name=Fadenkreuz
+sol_client.mod.crosshair.description=Passe das Fadenkreuz an.
+
+sol_client.mod.crosshair.option.style=Stil
+sol_client.mod.crosshair.option.style.default=Standard
+sol_client.mod.crosshair.option.style.none=Keine
+sol_client.mod.crosshair.option.style.dot=Punkt
+sol_client.mod.crosshair.option.style.plus=Plus
+sol_client.mod.crosshair.option.style.plus_dot=Pluspunkt
+sol_client.mod.crosshair.option.style.square=Viereck
+sol_client.mod.crosshair.option.style.square_dot=Viereckspunkt
+sol_client.mod.crosshair.option.style.circle=Kreis
+sol_client.mod.crosshair.option.style.circle_dot=Kreispunkt
+sol_client.mod.crosshair.option.style.four_angled=4 abgewinkelt
+sol_client.mod.crosshair.option.style.four_angled_dot=4 abgewinkelter Punkt
+sol_client.mod.crosshair.option.style.triangle=Dreieck
+
+sol_client.mod.crosshair.option.thirdPerson=In der dritten Person anzeigen
+sol_client.mod.crosshair.option.spectatorAlways=Im Zuschauermodus anzeigen
+sol_client.mod.crosshair.option.debug=Im Debug Overlay anzeigen
+sol_client.mod.crosshair.option.blending=Mischen
+sol_client.mod.crosshair.option.crosshairColour=Farbe
+sol_client.mod.crosshair.option.highlightEntities=Kreaturen markieren
+sol_client.mod.crosshair.option.entityColour=Kreaturfarbe
+
+sol_client.mod.scoreboard.name=Scoreboard
+sol_client.mod.scoreboard.description=Passe das Scoreboard an.
+
+sol_client.mod.scoreboard.option.backgroundColourTop=Oberhintergrundfarbe
+sol_client.mod.scoreboard.option.numbers=Nummern
+sol_client.mod.scoreboard.option.numbersColour=Nummerfarbe
+
+sol_client.mod.tweaks.name=Optimierungen
+sol_client.mod.tweaks.description=Mehrere Spieloptimierungen einschließlich Vollhelligkeit.
+
+sol_client.mod.tweaks.option.fullbright=Vollhelligkeit
+sol_client.mod.tweaks.option.showOwnTag=Eigenen Nametag anzeigen
+sol_client.mod.tweaks.option.arabicNumerals=Arabische Ziffern
+sol_client.mod.tweaks.option.betterTooltips=Bessere Kurzinfos
+sol_client.mod.tweaks.option.minimalViewBobbing=Minimales Wippen der Sicht
+sol_client.mod.tweaks.option.confirmDisconnect=Trennung bestätigen
+sol_client.mod.tweaks.option.betterKeyBindings=Bessere Tastenbindungen
+sol_client.mod.tweaks.option.disableHotbarScrolling=Hotbarscrollen deaktivieren
+sol_client.mod.tweaks.confirm_disconnect=Drücke noch ein Mal um zu bestätigen
+
+sol_client.mod.freelook.name=Freischauen
+sol_client.mod.freelook.description=Schalte Kamerarotation vom Kopf des Spielers frei.
+
+sol_client.mod.freelook.key=Freischauen
+sol_client.mod.freelook.option.key=Taste
+
+sol_client.mod.freelook.option.perspective=Perspektive
+sol_client.mod.freelook.option.invertPitch=Maus vertikal invertieren
+sol_client.mod.freelook.option.invertYaw=Maus horizontal invertieren
+
+sol_client.mod.taplook.name=Drückschauen
+sol_client.mod.taplook.description=Ändere deine Perspektive indem du einen Button gedrückt haltest.
+
+sol_client.mod.taplook.key=Drückschauen
+sol_client.mod.taplook.option.key=Taste
+sol_client.mod.taplook.option.perspective=Perspektive
+
+sol_client.mod.toggle_sprint.name=Umschaltsprint
+sol_client.mod.toggle_sprint.description=Schalte die Sprinttaste um.
+
+sol_client.mod.toggle_sprint.option.hud=HUD
+
+sol_client.mod.toggle_sprint.held=Sprinten (Gehalten)
+sol_client.mod.toggle_sprint.toggled=Sprinten (Umgeschaltet)
+
+sol_client.mod.zoom.name=Zoom
+sol_client.mod.zoom.description=Reinzoomen, wenn man eine Taste drückt.
+
+sol_client.mod.zoom.key=Zoom
+sol_client.mod.zoom.option.key=Taste
+sol_client.mod.zoom.zoom_out=Rauszoomen
+sol_client.mod.zoom.option.zoomOutKey=Rauszoom Taste
+sol_client.mod.zoom.zoom_in=Reinzoomen
+sol_client.mod.zoom.option.zoomInKey=Reinzoom Taste
+sol_client.mod.zoom.option.cinematic=Filmische Kamera
+sol_client.mod.zoom.option.reduceSensitivity=Empfindlichkeit reduzieren
+sol_client.mod.zoom.option.scrolling=Scrollen beim Zoomen
+sol_client.mod.zoom.option.smooth=Zoom Animation
+sol_client.mod.zoom.option.factor=Zoom Faktor
+
+sol_client.mod.replay.name=Wiedergabe
+sol_client.mod.replay.description=Nehme und wiedergebe deinen Gameplay auf.
+
+sol_client.mod.replay.option.enableNotifications=Benachrichtigungen ermöglichen
+sol_client.mod.replay.option.recordSingleplayer=Singleplayer aufnehmen
+sol_client.mod.replay.option.recordServer=Server aufnehmen
+sol_client.mod.replay.option.recordingIndicator=Aufnahmeanzeige
+sol_client.mod.replay.option.recordingIndicatorColour=Farbe der Aufnahmeanzeige
+sol_client.mod.replay.option.recordingIndicatorScale=Größe der Aufnahmeanzeige
+sol_client.mod.replay.option.recordingIndicatorTextColour=Textfarbe der Aufnahmeanzeige
+sol_client.mod.replay.option.recordingIndicatorTextShadow=Textschatten der Aufnahmeanzeige
+sol_client.mod.replay.option.automaticRecording=Automatische Aufnahme
+sol_client.mod.replay.option.renameDialog=Dialog umbenennen
+sol_client.mod.replay.option.showChat=Chat anzeigen
+
+sol_client.mod.replay.option.camera=Kamera
+sol_client.mod.replay.option.camera.classic=Klassisch
+sol_client.mod.replay.option.camera.vanilla_ish=Vanilla-isch
+
+sol_client.mod.replay.option.showPathPreview=Weg Vorschau anzeigen
+
+sol_client.mod.replay.option.defaultInterpolator=Standard Interpolator
+sol_client.mod.replay.interpolator.catmull=Catmull-Rom Spline
+sol_client.mod.replay.interpolator.cubic=Würfeliger Spline
+sol_client.mod.replay.interpolator.linear=Geradlinig
+
+sol_client.mod.replay.option.showServerIPs=Server IPs anzeigen
+
+sol_client.mod.quickplay.name=Schnellspiel
+sol_client.mod.quickplay.description=Reihe schnell in Spielen ein mit der Tastatur.
+
+sol_client.mod.quickplay.key=Schnellspiel
+sol_client.mod.quickplay.option.menuKey=Taste
+
+sol_client.mod.hypixel_util.name=Hypixel Ergänzungen
+sol_client.mod.hypixel_util.description=Mehrere Verbesserungen zur Erfahrung auf Hypixel.
+
+sol_client.mod.hypixel_util.option.visitHousingCommand=/visithousing
+sol_client.mod.hypixel_util.option.lobbySoundsVolume=Lobby Sounds Lautstärke
+sol_client.mod.hypixel_util.option.housingMusicVolume=Housing Musik Lautstärke
+sol_client.mod.hypixel_util.option.popupEvents=Popup Ereignisse
+sol_client.mod.hypixel_util.option.autogg=Auto GG
+sol_client.mod.hypixel_util.option.autoggMessage=GG Nachricht
+sol_client.mod.hypixel_util.option.hidegg=GG verstecken
+sol_client.mod.hypixel_util.option.autogl=Auto GL
+sol_client.mod.hypixel_util.option.autoglMessage=GL Nachricht
+sol_client.mod.hypixel_util.option.hidegl=GL verstecken
+sol_client.mod.hypixel_util.option.levelhead=Level Kopf
+
+sol_client.mod.tnt_timer.name=TNT Stoppuhr
+sol_client.mod.tnt_timer.description=Explosionszeit von TNT anzeigen.
+
+sol_client.mod.motion_blur.name=Bewegungsverschwommenheit
+sol_client.mod.motion_blur.description=Sanfter Bewegungsverschwommenheitseffekt.
+
+sol_client.mod.motion_blur.option.blur=Verschwommenheit
+
+sol_client.mod.menu_blur.name=Menüverschwommenheit
+sol_client.mod.menu_blur.description=Verschwimme die Hintergrunde von den Menüs.
+
+sol_client.mod.menu_blur.option.blur=Verschwommenheit
+sol_client.mod.menu_blur.option.fadeTime=Verblasszeit
+sol_client.mod.menu_blur.option.backgroundColour=Hintergrundfarbe
+
+sol_client.mod.colour_saturation.name=Farbsättigung
+sol_client.mod.colour_saturation.description=Stelle die Farbsättigung der Welt ein.
+
+sol_client.mod.colour_saturation.option.saturation=Sättigung
+
+sol_client.mod.chunk_animator.name=Chunk Animierer
+sol_client.mod.chunk_animator.description=Animiere die Welt während sie lädt.
+
+sol_client.mod.chunk_animator.option.duration=Dauer
+sol_client.mod.chunk_animator.option.animation=Animation
+
+sol_client.mod.1.7_visuals.name=1.7 Sichtbarkeiten
+sol_client.mod.1.7_visuals.description=Bringe ein paar Animationen und das Gefühl von 1.7 zurück.
+
+sol_client.mod.1.7_visuals.option.useAndMine=Blockieren und Graben
+sol_client.mod.1.7_visuals.option.rod=Angel
+sol_client.mod.1.7_visuals.option.armourDamage=Schadeneffekt auf Rüstung
+sol_client.mod.1.7_visuals.option.sneaking=Sanftes Schleichen
+
+sol_client.mod.item_physics.name=Item Physik
+sol_client.mod.item_physics.description=Füge eine drehende Animation zu den Items hinzu.
+
+sol_client.mod.item_physics.option.rotationSpeed=Rotationsgeschwindigkeit
+
+sol_client.mod.particles.name=Partikel
+sol_client.mod.particles.description=Angriffspartikel einstellen und vermehren.
+
+sol_client.mod.particles.option.multiplier=Vermehrer
+sol_client.mod.particles.option.sharpness=Immer Schärfe zeigen
+sol_client.mod.particles.option.snow=Schnee
+sol_client.mod.particles.option.slime=Schleim
+sol_client.mod.particles.option.flames=Flammen
+
+sol_client.mod.time_changer.name=Zeitwechsler
+sol_client.mod.time_changer.description=Ändere die visuelle Zeit, ohne das Gameplay zu beeinträchtigen.
+
+sol_client.mod.time_changer.option.time=Zeit
+
+sol_client.mod.block_selection.name=Blockauswahl
+sol_client.mod.block_selection.description=Passe die Block Auswahl an.
+
+sol_client.mod.block_selection.option.outline=Umriss
+sol_client.mod.block_selection.option.outlineWidth=Umrissbreite
+sol_client.mod.block_selection.option.outlineColour=Umrissfarbe
+sol_client.mod.block_selection.option.fill=Füllen
+sol_client.mod.block_selection.option.fillColour=Füllfarbe
+sol_client.mod.block_selection.option.depth=Tiefe
+sol_client.mod.block_selection.option.persistent=Ausdauernd
+
+sol_client.mod.hit_colour.name=Trefferfarbe
+sol_client.mod.hit_colour.description=Ändere die Farbe beim Treffen anderer Spieler.
+
+sol_client.mod.hit_colour.option.colour=Farbe
+
+sol_client.mod.category.hud.name=HUD
+sol_client.mod.category.utility.name=Nützliches
+sol_client.mod.category.visual.name=Visuelles
+sol_client.mod.category.integration.name=Integration
+
+sol_client.mod.discord_integration.name=Discord Integration
+sol_client.mod.discord_integration.description=Integrations features für Discord, einschließlich Aktivitäten und Overlay.
+
+sol_client.mod.discord_integration.option.voiceChatHud=Sprach Chat HUD
+sol_client.mod.discord_integration.option.voiceChatHudScale=Sprach Chat HUD Größe
+sol_client.mod.discord_integration.option.voiceChatHudAlignment=Sprach Chat HUD Ausrichtung
+sol_client.mod.discord_integration.option.usernameColour=Benutzername Farbe
+sol_client.mod.discord_integration.option.mutedColour=Stummgeschaltete Farbe
+sol_client.mod.discord_integration.option.speakingColour=Sprechende Farbe
+
+sol_client.mod.screen.title=Mods
+sol_client.mod.screen.search=Gebe etwas ein, um zu suchen
+
+sol_client.hud.edit=HUD bearbeiten
+
+sol_client.packs.apply=Apply
+sol_client.packs.open_folder=Pack Ordner
+sol_client.packs.folder=Ordner (%d items)
+
+sol_client.screenshot.view=Ansehen
+sol_client.screenshot.open_folder=Im Ordner anzeigen

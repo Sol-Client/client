@@ -358,6 +358,10 @@ configurations {
 	ship
 }
 
+configurations.forgeGradleMcDeps {
+    exclude group: "org.apache.logging.log4j"
+}
+
 dependencies {
 	compileOnly "org.projectlombok:lombok:1.18.20"
 	annotationProcessor "org.projectlombok:lombok:1.18.20"
@@ -378,6 +382,11 @@ dependencies {
 	}
 
 	dependency "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
+	dependency "org.java-websocket:Java-WebSocket:1.5.3"
+	
+	// patch log4shell
+	implementation "org.apache.logging.log4j:log4j-api:2.17.0"
+	implementation "org.apache.logging.log4j:log4j-core:2.17.0"
 }
 
 mixin {

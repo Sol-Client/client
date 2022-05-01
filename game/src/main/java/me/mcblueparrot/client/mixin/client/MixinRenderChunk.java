@@ -15,6 +15,9 @@ import net.minecraft.util.BlockPos;
 @Mixin(RenderChunk.class)
 public class MixinRenderChunk {
 
+	/**
+	 * @reason OptiFine for 1.8 has some issues on 1.8. This fixed it, so I don't question it.
+	 */
 	@Redirect(method = "deleteGlResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/vertex/" +
 			"VertexBuffer;deleteGlBuffers()V"))
 	public void cancelDelete(VertexBuffer instance) {

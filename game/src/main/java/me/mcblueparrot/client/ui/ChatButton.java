@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.ui.element;
+package me.mcblueparrot.client.ui;
 
 import me.mcblueparrot.client.util.access.AccessGuiChat;
 import net.minecraft.client.Minecraft;

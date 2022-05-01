@@ -19,14 +19,23 @@ async function run() {
 	var canQuit = false;
 
 	function createWindow() {
-		window = new BrowserWindow({
+		var options = {
 			width: 800,
 			height: 650,
 			icon: __dirname + "/assets/icon.png",
 			webPreferences: {
 				preload: path.join(__dirname, "app.js")
-			}
-		});
+			},
+			title: "Sol Client " + Utils.version,
+			show: false,
+			backgroundColor: "#1e1e1e"
+		};
+
+		if(Utils.getOsName() == "osx") {
+			options.titleBarStyle = "hidden";
+		}
+
+		window = new BrowserWindow(options);
 
 		window.loadFile("app.html");
 		window.setMenu(null);
@@ -37,6 +46,8 @@ async function run() {
 				window.webContents.send("close");
 			}
 		});
+
+		window.once("ready-to-show", () => window.show());
 
 		ipcMain.on("directory", async(event) => {
 			var result = await dialog.showOpenDialog(window,

@@ -2,35 +2,38 @@ package me.mcblueparrot.client.mod.hud;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.AbstractTranslationKey;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
 
+/**
+ * A simple HUD mod that rendered a simple string.
+ */
+@AbstractTranslationKey(SimpleHudMod.TRANSLATION_KEY)
 public abstract class SimpleHudMod extends HudMod {
 
+	public static final String TRANSLATION_KEY = "sol_client.mod.simple_hud";
+
 	@Expose
-	@ConfigOption("Background")
+	@Option
 	protected boolean background = true;
 	@Expose
-	@ConfigOption("Background Colour")
-	private Colour backgroundColour = new Colour(0, 0, 0, 100);
+	@Option
+	protected Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
-	@ConfigOption("Border")
-	private boolean border = false;
+	@Option
+	protected boolean border = false;
 	@Expose
-	@ConfigOption("Border Colour")
-	private Colour borderColour = Colour.BLACK;
+	@Option
+	protected Colour borderColour = Colour.BLACK;
 	@Expose
-	@ConfigOption("Text Colour")
+	@Option
 	protected Colour textColour = Colour.WHITE;
 	@Expose
-	@ConfigOption("Text Shadow")
+	@Option
 	protected boolean shadow = true;
-
-	public SimpleHudMod(String name, String id, String description) {
-		super(name, id, description);
-	}
 
 	@Override
 	public Rectangle getBounds(Position position) {

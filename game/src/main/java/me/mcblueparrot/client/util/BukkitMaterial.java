@@ -1,10 +1,12 @@
 package me.mcblueparrot.client.util;
 
+import lombok.AllArgsConstructor;
 import net.minecraft.item.Item;
 
 /**
  * Enum of Bukkit API materials for version 1.8.
  */
+@AllArgsConstructor
 public enum BukkitMaterial {
 	AIR(0), STONE(1), GRASS(2), DIRT(3), COBBLESTONE(4), WOOD(5), SAPLING(6), BEDROCK(7), WATER(8), STATIONARY_WATER(9),
 	LAVA(10), STATIONARY_LAVA(11), SAND(12), GRAVEL(13), GOLD_ORE(14), IRON_ORE(15), COAL_ORE(16), LOG(17), LEAVES(18),
@@ -70,11 +72,7 @@ public enum BukkitMaterial {
 	RECORD_4(2259), RECORD_5(2260), RECORD_6(2261), RECORD_7(2262), RECORD_8(2263), RECORD_9(2264), RECORD_10(2265),
 	RECORD_11(2266), RECORD_12(2267);
 
-	private int id;
-
-	private BukkitMaterial(int id) {
-		this.id = id;
-	}
+	private final int id;
 
 	public Item getItem() {
 		return Item.getItemById(id);

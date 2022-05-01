@@ -9,7 +9,7 @@ import me.mcblueparrot.client.util.data.Colour;
 
 public class ColourBoxComponent extends ScaledIconComponent {
 
-	private Component hoverController;
+	private final Component hoverController;
 
 	public ColourBoxComponent(Controller<Colour> colourController, Component hoverController) {
 		super("sol_client_colour_fill", 16, 16,

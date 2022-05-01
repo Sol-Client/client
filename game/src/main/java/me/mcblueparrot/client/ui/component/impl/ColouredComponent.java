@@ -8,7 +8,7 @@ import me.mcblueparrot.client.util.data.Colour;
 @AllArgsConstructor
 public class ColouredComponent extends Component {
 
-	private Controller<Colour> colour;
+	private final Controller<Colour> colour;
 
 	public Colour getColour() {
 		return colour.get(this, Colour.WHITE);

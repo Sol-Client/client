@@ -15,7 +15,7 @@ import me.mcblueparrot.client.event.impl.PostGameOverlayRenderEvent;
 import me.mcblueparrot.client.event.impl.WorldLoadEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.hud.HudElement;
 import me.mcblueparrot.client.mod.hud.HudPosition;
@@ -38,58 +38,58 @@ public class SCReplayMod extends Mod {
 	public static SCReplayMod instance;
 
 	@Expose
-	@ConfigOption("Enable Notifications")
+	@Option
 	public boolean enableNotifications = true;
 
 	@Expose
-	@ConfigOption("Record Singleplayer")
+	@Option
 	public boolean recordSingleplayer = true;
 	@Expose
-	@ConfigOption("Record Server")
+	@Option
 	public boolean recordServer = true;
 
 	@Expose
-	@ConfigOption("Recording Indicator")
+	@Option
 	public boolean recordingIndicator = true;
 	@Expose
-	@ConfigOption("Recording Indicator Colour")
+	@Option
 	public Colour recordingIndicatorColour = Colour.BLACK;
 	@Expose
-	@ConfigOption("Recording Indicator Scale")
-	@Slider(min = 50, max = 150, step = 1, suffix = "%")
+	@Option
+	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
 	protected float recordingIndicatorScale = 100;
 	@Expose
-	@ConfigOption("Recording Indicator Text Colour")
+	@Option
 	protected Colour recordingIndicatorTextColour = Colour.WHITE;
 	@Expose
-	@ConfigOption("Recording Indicator Text Shadow")
+	@Option
 	protected boolean recordingIndicatorTextShadow = true;
 	@Expose
 	protected HudPosition recordingIndicatorPosition = new HudPosition(0.1F, 0.1F);
 	private RecordingIndicator recordingIndicatorHud = new RecordingIndicator(this);
 
 	@Expose
-	@ConfigOption("Automatic Recording")
+	@Option
 	public boolean automaticRecording = true;
 
 	@Expose
-	@ConfigOption("Rename Dialog")
+	@Option
 	public boolean renameDialog = true;
 	@Expose
-	@ConfigOption("Show Chat")
+	@Option
 	public boolean showChat = true;
 
 	@Expose
-	@ConfigOption("Camera")
+	@Option
 	public SCCameraType camera = SCCameraType.CLASSIC;
 	@Expose
-	@ConfigOption("Show Path Preview")
+	@Option
 	public boolean showPathPreview = true;
 	@Expose
-	@ConfigOption("Default Interpolator")
+	@Option
 	public SCInterpolatorType defaultInterpolator = SCInterpolatorType.CATMULL;
 	@Expose
-	@ConfigOption("Show Server IPs")
+	@Option
 	public boolean showServerIPs = true;
 
 	@Expose
@@ -105,19 +105,31 @@ public class SCReplayMod extends Mod {
 	public boolean skipPostRenderGui;
 	public boolean skipPostScreenshotGui;
 
-	private List<Object> unregisterOnDisable = new ArrayList<>();
-	private List<Object> registerOnEnable = new ArrayList<>();
+	private final List<Object> unregisterOnDisable = new ArrayList<>();
+	private final List<Object> registerOnEnable = new ArrayList<>();
 
 	private SCReplayModBackend backend;
 
-	public SCReplayMod() {
-		super("Replay", "replay", "Record and replay your gameplay.", ModCategory.UTILITY);
+	@Override
+	public String getId() {
+		return "replay";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
+	}
+
+	@Override
+	public void onRegister() {
 		instance = this;
 
 		backend = new SCReplayModBackend();
 		backend.init();
 
 		Client.INSTANCE.bus.register(new ConstantListener());
+
+		super.onRegister();
 	}
 
 	@Override

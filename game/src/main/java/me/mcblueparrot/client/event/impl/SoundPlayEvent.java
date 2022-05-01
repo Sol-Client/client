@@ -6,13 +6,9 @@ import lombok.AllArgsConstructor;
 public class SoundPlayEvent {
 
 	public String soundName;
-
 	public float volume;
-
 	public float pitch;
-
 	public float originalVolume;
-
 	public float originalPitch;
 
 	/**

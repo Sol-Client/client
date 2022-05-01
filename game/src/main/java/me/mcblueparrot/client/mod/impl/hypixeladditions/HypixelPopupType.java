@@ -24,9 +24,9 @@ public enum HypixelPopupType {
 			"/party accept %2$s"),
 	SKYBLOCK_TRADE("(\\S{1,16}) has sent you a trade request\\. Click here to accept!$", "Skyblock trade request from %s", "/trade %s");
 
-	private Pattern pattern;
-	private String message;
-	private String command;
+	private final Pattern pattern;
+	private final String message;
+	private final String command;
 
 	HypixelPopupType(String regex, String message, String command) {
 		pattern = Pattern.compile(regex);

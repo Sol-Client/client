@@ -1,7 +1,5 @@
 package me.mcblueparrot.client.mixin.client;
 
-import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
-import me.mcblueparrot.client.ui.element.ReplayButton;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -13,19 +11,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
+import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.mod.impl.replay.SCReplayMod;
+import me.mcblueparrot.client.ui.ReplayButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import me.mcblueparrot.client.util.access.AccessGuiMainMenu;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 
 @Mixin(GuiMainMenu.class)
 public abstract class MixinGuiMainMenu extends GuiScreen implements AccessGuiMainMenu {
 
+	@Inject(method = "<init>", at = @At("RETURN"))
+	public void setActiveMainMenu(CallbackInfo callback) {
+		Client.INSTANCE.setMainMenu((GuiMainMenu) (Object) this);
+	}
+
 	@Inject(method = "addSingleplayerMultiplayerButtons", at = @At("RETURN"))
 	public void getModsButton(int x, int y, CallbackInfo callback) {
 		buttonList.remove(realmsButton);
-		buttonList.add(new GuiButton(realmsButton.id, realmsButton.xPosition, realmsButton.yPosition, "Mods"));
+		buttonList.add(new GuiButton(realmsButton.id, realmsButton.xPosition, realmsButton.yPosition, I18n.format("sol_client.mod.screen.title")));
 
 		if(SCReplayMod.enabled) {
 			buttonList.add(new ReplayButton(15, realmsButton.xPosition + 202, realmsButton.yPosition));

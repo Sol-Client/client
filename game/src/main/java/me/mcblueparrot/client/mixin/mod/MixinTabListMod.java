@@ -15,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import me.mcblueparrot.client.mod.impl.hud.TabListMod;
+import me.mcblueparrot.client.mod.impl.hud.tablist.PingType;
+import me.mcblueparrot.client.mod.impl.hud.tablist.TabListMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -105,32 +106,37 @@ public class MixinTabListMod {
 		@Inject(method = "drawPing", at = @At("HEAD"), cancellable = true)
 		public void drawNumeralPing(int p_175245_1_, int p_175245_2_, int p_175245_3_,
 									NetworkPlayerInfo networkPlayerInfoIn, CallbackInfo callback) {
-			if(TabListMod.enabled && TabListMod.instance.pingType != TabListMod.PingType.ICON) {
+			if(TabListMod.enabled && TabListMod.instance.pingType != PingType.ICON) {
 				callback.cancel();
 
-				if(TabListMod.instance.pingType == TabListMod.PingType.NUMERAL) {
+				if(TabListMod.instance.pingType == PingType.NUMERAL) {
 					int level;
 
 					int ping = networkPlayerInfoIn.getResponseTime();
 
-					if (ping < 0) {
+					if(ping < 0) {
 						level = 5;
-					} else if (ping < 150) {
+					}
+					else if(ping < 150) {
 						level = 0;
-					} else if (ping < 300) {
+					}
+					else if(ping < 300) {
 						level = 1;
-					} else if (ping < 600) {
+					}
+					else if(ping < 600) {
 						level = 2;
-					} else if (ping < 1000) {
+					}
+					else if(ping < 1000) {
 						level = 3;
-					} else {
+					}
+					else {
 						level = 4;
 					}
 
 					String pingText = Integer.toString(ping);
 					int colour = 0x00FF00;
 
-					switch (level) {
+					switch(level) {
 						case 1:
 							colour = 0xFFFF00;
 							break;

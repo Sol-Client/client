@@ -8,6 +8,7 @@ import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreenResourcePacks;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.ResourcePackListEntry;
 import net.minecraft.client.resources.ResourcePackRepository;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +17,7 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 
 	private static final ResourceLocation FOLDER_ICON = new ResourceLocation("textures/gui/folder.png");
 	private String name;
+	private int size;
 	private File folder;
 	private BetterResourcePackList list;
 	private BetterResourcePackList sublist;
@@ -25,6 +27,7 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 		this.folder = folder;
 		this.list = list;
 		this.name = folder.getName();
+		this.size = folder.list().length;
 	}
 
 	@Override
@@ -75,7 +78,7 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 
 	@Override
 	protected String func_148311_a() {
-		return "Folder (" + (folder.exists() ? folder.listFiles().length + " items" : "deleted") + ")";
+		return I18n.format("sol_client.packs.folder", size);
 	}
 
 	@Override

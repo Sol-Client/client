@@ -6,33 +6,23 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.HitOverlayEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.util.data.Colour;
 
 public class HitColourMod extends Mod {
 
-	public static boolean enabled;
-	public static HitColourMod instance;
-
 	@Expose
-	@ConfigOption("Colour")
-	public Colour colour = new Colour(255, 0, 0, 76);
+	@Option
+	private Colour colour = new Colour(255, 0, 0, 76);
 
-	public HitColourMod() {
-		super("Hit Colour", "hit_colour", "Customise hit colour.", ModCategory.VISUAL);
-		HitColourMod.instance = this;
+	@Override
+	public String getId() {
+		return "hit_colour";
 	}
 
 	@Override
-	protected void onEnable() {
-		super.onEnable();
-		enabled = true;
-	}
-
-	@Override
-	protected void onDisable() {
-		super.onDisable();
-		enabled = true;
+	public ModCategory getCategory() {
+		return ModCategory.VISUAL;
 	}
 
 	@EventHandler

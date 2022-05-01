@@ -12,13 +12,13 @@ import me.mcblueparrot.client.util.Utils;
 public class Rectangle {
 
 	@Getter
-	private int x;
+	private final int x;
 	@Getter
-	private int y;
+	private final int y;
 	@Getter
-	private int width;
+	private final int width;
 	@Getter
-	private int height;
+	private final int height;
 
 	public static final Rectangle ZERO = ofDimensions(0, 0);
 

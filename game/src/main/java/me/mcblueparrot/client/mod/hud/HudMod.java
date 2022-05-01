@@ -8,7 +8,8 @@ import com.google.gson.annotations.Expose;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.AbstractTranslationKey;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
@@ -17,24 +18,29 @@ import net.minecraft.client.gui.FontRenderer;
 /**
  * Represents a mod with only a single HUD.
  */
+@AbstractTranslationKey("sol_client.mod.hud")
 public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 
 	/**
 	 * Represents the single element that this mod contains.
 	 */
-	private HudModElement element = new HudModElement();
+	private final HudModElement element = new HudModElement();
 
 	@Expose
 	private HudPosition position;
 	@Expose
-	@ConfigOption(value = "Scale", priority = 1)
-	@Slider(min = 50, max = 150, step = 1, suffix = "%")
+	@Option(priority = 1)
+	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
 	public float scale = 100;
 	protected FontRenderer font;
 
-	public HudMod(String name, String id, String description) {
-		super(name, id, description, ModCategory.HUD);
-		this.position = getDefaultPosition();
+	public HudMod() {
+		position = getDefaultPosition();
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.HUD;
 	}
 
 	@Override
@@ -92,11 +98,6 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	class HudModElement extends BaseHudElement {
 
 		@Override
-		public boolean isEnabled() {
-			return HudMod.this.isEnabled();
-		}
-
-		@Override
 		public Mod getMod() {
 			return HudMod.this;
 		}
@@ -118,7 +119,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 
 		@Override
 		public boolean isVisible() {
-			return HudMod.this.isVisible();
+			return isEnabled() && HudMod.this.isVisible();
 		}
 
 		@Override

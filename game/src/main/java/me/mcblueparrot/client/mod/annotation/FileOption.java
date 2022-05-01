@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ConfigFile {
+public @interface FileOption {
 
-	String text();
+	String text() default "sol_client.file.edit";
 
 	String file();
 

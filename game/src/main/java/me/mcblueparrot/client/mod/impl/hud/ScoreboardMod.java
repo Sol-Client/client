@@ -11,7 +11,8 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.ScoreboardRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
 import net.minecraft.client.gui.Gui;
@@ -24,36 +25,48 @@ public class ScoreboardMod extends Mod {
 
 	public static ScoreboardMod instance;
 	public static boolean enabled;
+
 	@Expose
-	@ConfigOption("Background")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	public boolean background = true;
 	@Expose
-	@ConfigOption("Background Colour")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	public Colour backgroundColour = new Colour(1342177280);
 	@Expose
-	@ConfigOption("Border")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	public boolean border = false;
 	@Expose
-	@ConfigOption("Border Colour")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	public Colour borderColour = Colour.BLACK;
 	@Expose
-	@ConfigOption("Background Colour Top")
+	@Option
 	public Colour backgroundColourTop = new Colour(1610612736);
 	@Expose
-	@ConfigOption("Default Text Colour")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	public Colour textColour = Colour.WHITE;
 	@Expose
-	@ConfigOption("Text Shadow")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	public boolean shadow = true;
 	@Expose
-	@ConfigOption("Numbers")
+	@Option
 	public boolean numbers = true;
 	@Expose
-	@ConfigOption("Numbers Colour")
+	@Option
 	public Colour numbersColour = new Colour(-43691);
 
-	public ScoreboardMod() {
-		super("Scoreboard", "scoreboard", "Customise the scoreboard.", ModCategory.HUD);
+	@Override
+	public String getId() {
+		return "scoreboard";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.HUD;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		instance = this;
 	}
 

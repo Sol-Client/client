@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 @AllArgsConstructor
 public class TransformFirstPersonItemEvent {
 
-	public ItemStack itemToRender;
-	public float equipProgress;
-	public float swingProgress;
+	public final ItemStack itemToRender;
+	public final float equipProgress;
+	public final float swingProgress;
 
 }

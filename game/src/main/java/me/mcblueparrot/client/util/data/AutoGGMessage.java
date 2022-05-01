@@ -9,7 +9,7 @@ public enum AutoGGMessage {
 	GOOD_GAME("good game"),
 	GOOD_FIGHT("good fight");
 
-	private String message;
+	private final String message;
 
 	@Override
 	public String toString() {

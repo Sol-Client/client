@@ -10,7 +10,7 @@ public enum ButtonType {
 	LARGE(200);
 
 	@Getter
-	private int width;
+	private final int width;
 
 	@Override
 	public String toString() {

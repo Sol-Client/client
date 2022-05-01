@@ -5,6 +5,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PostGuiRenderEvent {
 
-	public float partialTicks;
+	public final float partialTicks;
 
 }

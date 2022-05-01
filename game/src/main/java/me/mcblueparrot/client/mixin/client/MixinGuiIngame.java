@@ -26,7 +26,9 @@ import net.minecraft.scoreboard.ScoreObjective;
 @Mixin(GuiIngame.class)
 public abstract class MixinGuiIngame {
 
-	@Shadow @Final private Minecraft mc;
+	@Final
+	@Shadow
+	private Minecraft mc;
 
 	@Inject(method = "renderGameOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer" +
 			"/GlStateManager;enableBlend()V", ordinal = 1, shift = At.Shift.AFTER), cancellable = true)
@@ -47,8 +49,8 @@ public abstract class MixinGuiIngame {
 			"showCrosshair()Z"))
 	public boolean preRenderCrosshair(GuiIngame guiIngame) {
 		boolean result =
-				showCrosshair() && !Client.INSTANCE.bus.post(new PreGameOverlayRenderEvent(AccessMinecraft.getInstance()
-				.getTimerSC().renderPartialTicks, GameOverlayElement.CROSSHAIRS)).cancelled;
+				!Client.INSTANCE.bus.post(new PreGameOverlayRenderEvent(AccessMinecraft.getInstance()
+				.getTimerSC().renderPartialTicks, GameOverlayElement.CROSSHAIRS)).cancelled && showCrosshair();
 		mc.getTextureManager().bindTexture(Gui.icons);
 		return result;
 	}

@@ -40,7 +40,7 @@ import net.minecraft.network.NetworkManager;
 public class SCReplayModRecording implements Module {
 	private static final Logger LOGGER = LogManager.getLogger();
 	public static SCReplayModRecording instance;
-	private ReplayMod core;
+	private final ReplayMod core;
 	private ConnectionEventHandler connectionEventHandler;
 
 	public SCReplayModRecording(ReplayMod mod) {
@@ -50,6 +50,7 @@ public class SCReplayModRecording implements Module {
 		Client.INSTANCE.bus.register(this);
 	}
 
+	@Override
 	public void registerKeyBindings(KeyBindingRegistry registry) {
 		registry.registerKeyBinding("replaymod.input.marker", 50, () -> {
 			PacketListener packetListener = connectionEventHandler.getPacketListener();
@@ -61,6 +62,7 @@ public class SCReplayModRecording implements Module {
 		}, false);
 	}
 
+	@Override
 	public void initClient() {
 		this.connectionEventHandler = new ConnectionEventHandler(LOGGER, this.core);
 		new GuiHandler(this.core).register();

@@ -10,7 +10,7 @@ import net.minecraft.client.shader.ShaderGroup;
 public class PostProcessingEvent {
 
 	public final Type type;
-	public List<ShaderGroup> groups = new ArrayList<>();
+	public final List<ShaderGroup> groups = new ArrayList<>();
 
 	public enum Type {
 		RENDER,

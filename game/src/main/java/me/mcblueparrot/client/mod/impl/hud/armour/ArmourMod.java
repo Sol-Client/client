@@ -1,9 +1,10 @@
-package me.mcblueparrot.client.mod.impl.hud;
+package me.mcblueparrot.client.mod.impl.hud.armour;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.hud.HudMod;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
@@ -14,29 +15,31 @@ import net.minecraft.item.ItemStack;
 
 public class ArmourMod extends HudMod {
 
-	@Expose
-	@ConfigOption("Mode")
-	private Mode mode = Mode.REMAINING;
-	@Expose
-	@ConfigOption("Armour")
-	private boolean armour = true;
-	@Expose
-	@ConfigOption("Hand")
-	private boolean hand = true;
-	@Expose
-	@ConfigOption("Shadow")
-	private boolean shadow = true;
-	@Expose
-	@ConfigOption("Text Colour")
-	private Colour textColour = Colour.WHITE;
 	private static final ItemStack HELMET = new ItemStack(Items.iron_helmet);
 	private static final ItemStack CHESTPLATE = new ItemStack(Items.iron_chestplate);
 	private static final ItemStack LEGGINGS = new ItemStack(Items.iron_leggings);
 	private static final ItemStack BOOTS = new ItemStack(Items.iron_boots);
 	private static final ItemStack HAND = new ItemStack(Items.iron_sword);
 
-	public ArmourMod() {
-		super("Equipment", "armour", "Display your armour and equipment.");
+	@Expose
+	@Option
+	private DurabilityDisplay durability = DurabilityDisplay.REMAINING;
+	@Expose
+	@Option
+	private boolean armour = true;
+	@Expose
+	@Option
+	private boolean hand = true;
+	@Expose
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	private boolean shadow = true;
+	@Expose
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	private Colour textColour = Colour.WHITE;
+
+	@Override
+	public String getId() {
+		return "armour";
 	}
 
 	@Override
@@ -44,7 +47,7 @@ public class ArmourMod extends HudMod {
 		int height = 0;
 		if(armour) height += 15 * 4;
 		if(hand) height += 15;
-		return new Rectangle(position.getX(), position.getY(), mode.getWidth(), height);
+		return new Rectangle(position.getX(), position.getY(), durability.getWidth(), height);
 	}
 
 	@Override
@@ -82,7 +85,7 @@ public class ArmourMod extends HudMod {
 		mc.getRenderItem().renderItemIntoGUI(stack, x, y);
 		if(stack.getMaxDamage() > 0) {
 			String text;
-			switch(mode) {
+			switch(durability) {
 				case FRACTION:
 					text = stack.getMaxDamage() - stack.getItemDamage() + " / " + (stack.getMaxDamage());
 					break;
@@ -97,37 +100,6 @@ public class ArmourMod extends HudMod {
 			}
 			font.drawString(text, x + 20, y + 5, textColour.getValue(), shadow);
 		}
-	}
-
-	public enum Mode {
-		FRACTION("Fraction"),
-		REMAINING("Remaining"),
-		PERCENTAGE("Percentage");
-
-		private String name;
-
-		private Mode(String name) {
-			this.name = name;
-		}
-
-		@Override
-		public String toString() {
-			return name;
-		}
-
-		public int getWidth() {
-			switch(this) {
-				case FRACTION:
-					return 73;
-				case REMAINING:
-					return 40;
-				case PERCENTAGE:
-					return 45;
-				default:
-					return 0;
-			}
-		}
-
 	}
 
 }

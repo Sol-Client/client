@@ -101,7 +101,7 @@ public class LoadedExtension {
 
 				Extension extension = (Extension) constructor.newInstance();
 				extension.setLoadedExtension(this);
-				Client.INSTANCE.register(() -> extension);
+				Client.INSTANCE.register(extension);
 			}
 			catch(NoSuchMethodException | IllegalAccessException error) {
 				throw new InvalidExtensionException("Could not find single-argument constructor in " + modClass, error);

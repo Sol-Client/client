@@ -1,19 +1,15 @@
 package me.mcblueparrot.client.util;
 
+import net.minecraft.client.resources.I18n;
+
 public enum Perspective {
-	FIRST_PERSON("First Person"),
-	THIRD_PERSON_BACK("Third Person Back"),
-	THIRD_PERSON_FRONT("Third Person Front");
-
-	private String name;
-
-	private Perspective(String name) {
-		this.name = name;
-	}
+	FIRST_PERSON,
+	THIRD_PERSON_BACK,
+	THIRD_PERSON_FRONT;
 
 	@Override
 	public String toString() {
-		return name;
+		return I18n.format("sol_client.perspective." + name().toLowerCase());
 	}
 
 }

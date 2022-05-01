@@ -8,8 +8,9 @@ public abstract class Extension extends Mod {
 
 	private LoadedExtension loadedExtension;
 
-	public Extension() {
-		super(null, null, null, ModCategory.EXTENSIONS);
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.EXTENSIONS;
 	}
 
 	void setLoadedExtension(LoadedExtension extension) {

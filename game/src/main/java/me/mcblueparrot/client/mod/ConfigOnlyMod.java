@@ -5,10 +5,6 @@ package me.mcblueparrot.client.mod;
  */
 public abstract class ConfigOnlyMod extends Mod {
 
-	public ConfigOnlyMod(String name, String id, String description, ModCategory category) {
-		super(name, id, description, category);
-	}
-
 	@Override
 	public boolean isEnabled() {
 		return isEnabledByDefault();

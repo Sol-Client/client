@@ -1,4 +1,4 @@
-package me.mcblueparrot.client.mod.impl.hud;
+package me.mcblueparrot.client.mod.impl.hud.crosshair;
 
 import org.lwjgl.opengl.GL11;
 
@@ -7,7 +7,7 @@ import com.google.gson.annotations.Expose;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.GameOverlayElement;
 import me.mcblueparrot.client.event.impl.PreGameOverlayRenderEvent;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
@@ -24,32 +24,33 @@ public class CrosshairMod extends HudMod {
 			"/sol_client_crosshairs.png");
 
 	@Expose
-	@ConfigOption("Style")
-	private Type type = Type.DEFAULT;
+	@Option
+	private CrosshairStyle style = CrosshairStyle.DEFAULT;
 	@Expose
-	@ConfigOption("Third Person")
+	@Option
 	private boolean thirdPerson = true;
 	@Expose
-	@ConfigOption("Spectator")
+	@Option
 	private boolean spectatorAlways = false;
 	@Expose
-	@ConfigOption("Debug")
+	@Option
 	private boolean debug = false;
 	@Expose
-	@ConfigOption("Blending")
+	@Option
 	private boolean blending = true;
 	@Expose
-	@ConfigOption("Crosshair Colour")
+	@Option
 	private Colour crosshairColour = Colour.WHITE;
 	@Expose
-	@ConfigOption("Highlight Entities")
+	@Option
 	private boolean highlightEntities = false;
 	@Expose
-	@ConfigOption("Entity Colour")
+	@Option
 	private Colour entityColour = Colour.RED;
 
-	public CrosshairMod() {
-		super("Crosshair", "crosshair", "Customise your crosshair.");
+	@Override
+	public String getId() {
+		return "crosshair";
 	}
 
 	@EventHandler
@@ -57,7 +58,7 @@ public class CrosshairMod extends HudMod {
 		if(event.type == GameOverlayElement.CROSSHAIRS) {
 			event.cancelled = true;
 			if ((!debug && mc.gameSettings.showDebugInfo) ||
-					(!spectatorAlways && mc.playerController.getCurrentGameType() == GameType.SPECTATOR && mc.objectMouseOver.typeOfHit != MovingObjectType.ENTITY) ||
+					(!spectatorAlways && (mc.playerController.getCurrentGameType() == GameType.SPECTATOR && mc.objectMouseOver.typeOfHit != MovingObjectType.ENTITY)) ||
 					(!thirdPerson && mc.gameSettings.thirdPersonView != 0)) {
 				return;
 			}
@@ -83,13 +84,13 @@ public class CrosshairMod extends HudMod {
 				GlStateManager.enableAlpha();
 			}
 
-			if (type == Type.DEFAULT) {
+			if (style == CrosshairStyle.DEFAULT) {
 				mc.getTextureManager().bindTexture(Gui.icons);
 				Utils.drawTexture(x, y, 0, 0, 16, 16, 0);
 			}
 			else {
 				mc.getTextureManager().bindTexture(CLIENT_CROSSHAIRS);
-				int v = (type.ordinal() - 2) * 16;
+				int v = (style.ordinal() - 2) * 16;
 				Utils.drawTexture(x, y, 0, v, 16, 16, 0);
 				mc.getTextureManager().bindTexture(Gui.icons);
 			}
@@ -97,33 +98,6 @@ public class CrosshairMod extends HudMod {
 
 			GlStateManager.popMatrix();
 		}
-	}
-
-	enum Type {
-		DEFAULT("Default"),
-		NONE("None"),
-		DOT("Dot"),
-		PLUS("Plus"),
-		PLUS_DOT("Plus Dot"),
-		SQUARE("Square"),
-		SQUARE_DOT("Square Dot"),
-		CIRCLE("Circle"),
-		CIRCLE_DOT("Circle Dot"),
-		FOUR_ANGLED("4 Angled"),
-		FOUR_ANGLED_DOT("4 Angled Dot"),
-		TRIANGLE("Triangle");
-
-		private String name;
-
-		Type(String name) {
-			this.name = name;
-		}
-
-		@Override
-		public String toString() {
-			return name;
-		}
-
 	}
 
 }

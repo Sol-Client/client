@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 public class CommandHotkey {
 
 	public int key;
-
 	public String action;
-	
+
 }

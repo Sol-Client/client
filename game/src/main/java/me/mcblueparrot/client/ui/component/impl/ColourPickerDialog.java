@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.function.Consumer;
 
 import me.mcblueparrot.client.Client;
-import me.mcblueparrot.client.mod.CachedConfigOption;
+import me.mcblueparrot.client.mod.ModOption;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
@@ -20,19 +20,21 @@ import net.minecraft.util.MathHelper;
 public class ColourPickerDialog extends ScaledIconComponent {
 
 	private Colour colour;
-	private Consumer<Colour> callback;
+	private final Consumer<Colour> callback;
 	private int selectedSlider = -1;
 
 	private static final int RGB_OFFSET_TOP = 24;
 	private static final int RGB_OFFSET_LEFT = 22;
 	private static final int RGB_SPACING = 20;
 
-	private TextFieldComponent hex;
-	private ButtonComponent done;
+	private final TextFieldComponent hex;
+	private final ButtonComponent done;
 
-	public ColourPickerDialog(CachedConfigOption colourOption, Colour colour, Consumer<Colour> callback) {
+	public ColourPickerDialog(ModOption colourOption, Colour colour, Consumer<Colour> callback) {
 		super("sol_client_colour_dialog", 300, 150, (component, defaultColour) -> new Colour(40, 40, 40));
-		add(new LabelComponent(colourOption.name),
+		add(hex = new TextFieldComponent(60, true), new AlignedBoundsController(Alignment.CENTRE, Alignment.END, (component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() - 32, defaultBounds.getWidth(), defaultBounds.getHeight())));
+
+		add(new LabelComponent(colourOption.getName()),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() + 9,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -41,11 +43,11 @@ public class ColourPickerDialog extends ScaledIconComponent {
 			hex.flush();
 			parent.setDialog(null);
 		}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
-				(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - (colourOption.common ? 50 : 0), defaultBounds.getY() - 5,
+				(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - (colourOption.canApplyToAll() ? 50 : 0), defaultBounds.getY() - 5,
 						defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-		if(colourOption.common) {
-			add(new ButtonComponent("Apply to All",
+		if(colourOption.canApplyToAll()) {
+			add(new ButtonComponent("mod.screen.apply_to_all",
 					new AnimatedColourController(
 							(component, defaultColour) -> component.isHovered() ? Colour.BLUE_HOVER : Colour.BLUE))
 									.withIcon("sol_client_new")
@@ -54,13 +56,7 @@ public class ColourPickerDialog extends ScaledIconComponent {
 											hex.flush();
 											parent.setDialog(null);
 											Utils.playClickSound(true);
-											for(Mod mod : Client.INSTANCE.getMods()) {
-												for(CachedConfigOption option : mod.getOptions()) {
-													if(option.name.equals(colourOption.name)) {
-														option.setValue(this.colour);
-													}
-												}
-											}
+											colourOption.applyToAll();
 											return true;
 										}
 
@@ -71,7 +67,6 @@ public class ColourPickerDialog extends ScaledIconComponent {
 									defaultBounds.getWidth(), defaultBounds.getHeight())));
 		}
 
-		add(hex = new TextFieldComponent(60, true), new AlignedBoundsController(Alignment.CENTRE, Alignment.END, (component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() - 32, defaultBounds.getWidth(), defaultBounds.getHeight())));
 		add(new ColourBoxComponent((component, defaultColour) -> this.colour, null), (component, defaultBounds) -> new Rectangle(done.getBounds().getX() - 20, done.getBounds().getY() + 2, defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 		this.colour = colour;

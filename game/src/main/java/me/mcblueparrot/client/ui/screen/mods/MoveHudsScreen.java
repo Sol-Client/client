@@ -40,7 +40,7 @@ public class MoveHudsScreen extends Screen {
 
 	public HudElement getSelectedHud(int mouseX, int mouseY) {
 		for(HudElement hud : Client.INSTANCE.getHuds()) {
-			if(!(hud.isEnabled() && hud.isVisible())) continue;
+			if(!hud.isVisible()) continue;
 
 			if(hud.isSelected(mouseX, mouseY)) {
 				return hud;
@@ -53,16 +53,15 @@ public class MoveHudsScreen extends Screen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		if(mouseButton == 1) {
-			for(HudElement hud : Client.INSTANCE.getHuds()) {
-				if(hud.isEnabled() && hud.isVisible() && hud.getMultipliedBounds() != null && hud.getMultipliedBounds()
-						.contains(mouseX, mouseY)) {
-					if(parentScreen instanceof ModsScreen) {
-						Utils.playClickSound(true);
+			HudElement hud = getSelectedHud(mouseX, mouseY);
 
-						((ModsScreen) parentScreen).switchMod(hud.getMod());
+			if(hud != null) {
+				if (parentScreen instanceof ModsScreen) {
+					Utils.playClickSound(true);
 
-						Minecraft.getMinecraft().displayGuiScreen(parentScreen);
-					}
+					((ModsScreen) parentScreen).switchMod(hud.getMod());
+
+					Minecraft.getMinecraft().displayGuiScreen(parentScreen);
 				}
 			}
 		}
@@ -88,6 +87,19 @@ public class MoveHudsScreen extends Screen {
 			title.drawScreen(0, 0, partialTicks);
 		}
 
+		for(HudElement hud : Client.INSTANCE.getHuds()) {
+			if(!hud.isVisible()) continue;
+
+			if(mc.theWorld == null) {
+				hud.render(true);
+			}
+
+			Rectangle bounds = hud.getMultipliedBounds();
+			if(bounds != null) {
+				bounds.stroke(SolClientMod.instance.uiColour);
+			}
+		}
+
 		HudElement selectedHud = getSelectedHud(mouseX, mouseY);
 		if(Mouse.isButtonDown(0)) {
 			if(movingHud == null) {
@@ -103,19 +115,6 @@ public class MoveHudsScreen extends Screen {
 		}
 		else {
 			movingHud = null;
-		}
-
-		for(HudElement hud : Client.INSTANCE.getHuds()) {
-			if(!(hud.isEnabled() && hud.isVisible())) continue;
-
-			if(mc.theWorld == null) {
-				hud.render(true);
-			}
-
-			Rectangle bounds = hud.getMultipliedBounds();
-			if(bounds != null) {
-				bounds.stroke(SolClientMod.instance.uiColour);
-			}
 		}
 
 		super.drawScreen(mouseX, mouseY, partialTicks);

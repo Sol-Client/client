@@ -17,6 +17,6 @@ public @interface Slider {
 
 	boolean showValue() default true;
 
-	String suffix() default "";
+	String format() default "sol_client.passthrough";
 
 }

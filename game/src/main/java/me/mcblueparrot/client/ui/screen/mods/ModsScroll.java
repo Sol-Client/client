@@ -1,6 +1,6 @@
 package me.mcblueparrot.client.ui.screen.mods;
 
-import me.mcblueparrot.client.mod.CachedConfigOption;
+import me.mcblueparrot.client.mod.ModOption;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.ui.component.Component;
@@ -42,7 +42,7 @@ public class ModsScroll extends ScrollListComponent {
 			}
 		}
 		else {
-			for(CachedConfigOption option : screen.getMod().getOptions()) {
+			for(ModOption option : screen.getMod().getOptions()) {
 				add(new ModOptionComponent(option));
 			}
 		}

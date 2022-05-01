@@ -9,22 +9,33 @@ import me.mcblueparrot.client.event.*;
 import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.util.Perspective;
 import net.minecraft.client.settings.KeyBinding;
 
 public class TaplookMod extends Mod {
 
-	@ConfigOption("Key")
-	private KeyBinding key = new KeyBinding("Taplook", 0, "Sol Client");
+	@Option
+	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", 0, Client.KEY_CATEGORY);
 	private int previousPerspective;
 	private boolean active;
 	@Expose
-	@ConfigOption("Perspective")
+	@Option
 	private Perspective perspective = Perspective.THIRD_PERSON_BACK;
 
-	public TaplookMod() {
-		super("Taplook", "taplook", "Change your perspective by holding a key.", ModCategory.UTILITY);
+	@Override
+	public String getId() {
+		return "taplook";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		Client.INSTANCE.registerKeyBinding(key);
 	}
 

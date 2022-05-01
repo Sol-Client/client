@@ -3,17 +3,18 @@
  * but was modified to be more similar to CreativeMD's original mod.
  */
 
-package me.mcblueparrot.client.mod.impl;
+package me.mcblueparrot.client.mod.impl.itemphysics;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import lombok.Data;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.ItemEntityRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.access.AccessEntity;
 import net.minecraft.client.Minecraft;
@@ -26,14 +27,19 @@ import net.minecraft.util.MathHelper;
 
 public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 
-	@ConfigOption("Rotation Speed")
-	@Slider(min = 0, max = 100, step = 1, suffix = "%")
+	@Option
+	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	private float rotationSpeed = 100;
-	private Map<EntityItem, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
-																	 // usage is prioritised.
+	private final Map<EntityItem, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
+																	 	   // usage is prioritised.
+	@Override
+	public String getId() {
+		return "item_physics";
+	}
 
-	public ItemPhysicsMod() {
-		super("Item Physics", "item_physics", "Add spinning animation to items.", ModCategory.VISUAL);
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.VISUAL;
 	}
 
 	@EventHandler
@@ -46,23 +52,13 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 		if(item != null) {
 			boolean is3d = event.model.isGui3d();
 			int clumpSize = getClumpSize(itemstack.stackSize);
-			float f = 0.25F;
-			float f1 =
-					MathHelper.sin((event.entity.getAge() + event.partialTicks) / 10.0F
-							+ event.entity.hoverStart) * 0.1F + 0.1F;
-			float yScale =
-					event.model.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
 			GlStateManager.translate((float) event.x, (float) event.y + 0.1, (float) event.z);
-
-			float hover =
-					((event.entity.getAge() + event.partialTicks) / 20.0F + event.entity.hoverStart)
-							* (180F / (float)Math.PI);
 
 			long now = System.nanoTime();
 
 			ItemData data = dataMap.computeIfAbsent(event.entity, (itemStack) -> new ItemData(System.nanoTime()));
 
-			long since = now - data.lastUpdate;
+			long since = now - data.getLastUpdate();
 
 			GlStateManager.rotate(180, 0, 1, 1);
 			GlStateManager.rotate(event.entity.rotationYaw, 0, 0, 1);
@@ -73,16 +69,16 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 					if(((AccessEntity) event.entity).getIsInWeb()) {
 						divisor *= 10;
 					}
-					data.rotation += ((float) since) / ((float) divisor) * (rotationSpeed / 100F);
+					data.setRotation(data.getRotation() + (((float) since) / ((float) divisor) * (rotationSpeed / 100F)));
 				}
-				else if(data.rotation != 0) {
-					data.rotation = 0;
+				else if(data.getRotation() != 0) {
+					data.setRotation(0);
 				}
 			}
 
-			GlStateManager.rotate(data.rotation, 0, 1, 0);
+			GlStateManager.rotate(data.getRotation(), 0, 1, 0);
 
-			data.lastUpdate = now;
+			data.setLastUpdate(now);
 
 			if(!is3d) {
 				float rotationXAndY = -0.0F * (clumpSize - 1) * 0.5F;
@@ -123,17 +119,6 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 			return 2;
 		}
 		return 1;
-	}
-
-	public static class ItemData {
-
-		public long lastUpdate;
-		public float rotation;
-
-		public ItemData(long lastUpdate) {
-			this.lastUpdate = lastUpdate;
-		}
-
 	}
 
 }

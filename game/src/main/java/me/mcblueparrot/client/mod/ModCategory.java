@@ -3,48 +3,51 @@ package me.mcblueparrot.client.mod;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import me.mcblueparrot.client.Client;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Categories of Sol Client mods.
  */
+@RequiredArgsConstructor
 public enum ModCategory {
 	/**
 	 * All mods.
 	 */
-	ALL(null),
+	ALL(false),
 	/**
 	 * Mod appears before all others.
 	 */
-	NONE(null),
+	NONE(false),
 	/**
 	 * HUD widgets.
 	 */
-	HUD("HUD"),
+	HUD(true),
 	/**
 	 * Utility mods.
 	 */
-	UTILITY("Utility"),
+	UTILITY(true),
 	/**
 	 * Aesthetic/graphical mods.
 	 */
-	VISUAL("Visual"),
+	VISUAL(true),
+	/**
+	 * Integration mods.
+	 */
+	INTEGRATION(true),
 	/**
 	 * User installed extensions.
 	 */
-	EXTENSIONS("Extensions");
+	EXTENSIONS(true);
 
-	private String name;
+	private final boolean showName;
 	private List<Mod> mods;
-
-	private ModCategory(String name) {
-		this.name = name;
-	}
 
 	@Override
 	public String toString() {
-		return name;
+		return showName ? I18n.format("sol_client.mod.category." + name().toLowerCase() + ".name") : null;
 	}
 
 	public List<Mod> getMods(String filter) {
@@ -60,11 +63,12 @@ public enum ModCategory {
 			return mods;
 		}
 
-		return mods.stream().filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase()))
+		return mods.stream().filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
+				|| mod.getDescription().toLowerCase().contains(filter.toLowerCase()))
 				.sorted((o1, o2) -> {
 					return Integer.compare(o1.getName().toLowerCase()
-							.startsWith(filter.toLowerCase()) ? 0 : 1, o2.getName().toLowerCase()
-							.startsWith(filter.toLowerCase()) ? 0 : 1);
+							.startsWith(filter.toLowerCase()) ? -1 : 1, o2.getName().toLowerCase()
+							.startsWith(filter.toLowerCase()) ? -1 : 1);
 				}).collect(Collectors.toList());
 	}
 

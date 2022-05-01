@@ -5,8 +5,9 @@ import java.util.Collection;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.hud.HudMod;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.mod.impl.TweaksMod;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.VerticalAlignment;
@@ -24,31 +25,33 @@ public class PotionEffectsMod extends HudMod {
 	private static final int EFFECT_HEIGHT = 33;
 
 	@Expose
-	@ConfigOption("Alignment")
+	@Option
 	private VerticalAlignment alignment = VerticalAlignment.MIDDLE;
 	@Expose
-	@ConfigOption("Icon")
+	@Option
 	private boolean icon = true;
 	@Expose
-	@ConfigOption("Background")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean background = false;
 	@Expose
-	@ConfigOption("Text Shadow")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
-	@ConfigOption("Title Colour")
+	@Option
 	private Colour titleColour = Colour.WHITE;
 	@Expose
-	@ConfigOption("Duration Colour")
+	@Option
 	private Colour durationColour = new Colour(8355711);
 
-	public PotionEffectsMod() {
-		super("Potion Effects", "potion_effects", "Display your potion effects on the HUD.");
+	@Override
+	public String getId() {
+		return "potion_effects";
 	}
 
 	@Override
 	public Rectangle getBounds(Position position) {
 		int y = position.getY();
+
 		switch(alignment) {
 			case TOP:
 				break;
@@ -59,6 +62,7 @@ public class PotionEffectsMod extends HudMod {
 				y -= 66 * getScale();
 				break;
 		}
+
 		return new Rectangle(position.getX(), y, 120, 64);
 	}
 
@@ -122,10 +126,6 @@ public class PotionEffectsMod extends HudMod {
 				y += EFFECT_HEIGHT;
 			}
 		}
-	}
-
-	public VerticalAlignment getAlignment() {
-		return alignment;
 	}
 
 }

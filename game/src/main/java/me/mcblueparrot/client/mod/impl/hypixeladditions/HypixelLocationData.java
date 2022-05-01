@@ -10,11 +10,8 @@ public class HypixelLocationData {
 
 	@SerializedName("gametype")
 	private String type;
-
 	private String map;
-
 	private String server;
-
 	private String mode;
 
 }

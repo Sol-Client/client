@@ -22,6 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.util.ChatComponentText;
@@ -102,11 +103,11 @@ public class MixinScreenshotHelper {
 					Minecraft.getMinecraft().ingameGUI.getChatGUI()
 							.printChatMessage(new ChatComponentTranslation("screenshot.success", screenshot.getName()));
 
-					IChatComponent secondaryText = new ChatComponentText("[View]")
+					IChatComponent secondaryText = new ChatComponentText("[" + I18n.format("sol_client.screenshot.view") + "]")
 							.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE).setChatClickEvent(
 									new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshot.getAbsolutePath())))
 							.appendSibling(
-									new ChatComponentText(" ").appendSibling(new ChatComponentText("[Open Folder]")
+									new ChatComponentText(" ").appendSibling(new ChatComponentText("[" + I18n.format("sol_client.screenshot.open_folder") + "]")
 											.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)
 													.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE,
 															screenshot.getAbsolutePath() + "§scshowinfolder§")))));

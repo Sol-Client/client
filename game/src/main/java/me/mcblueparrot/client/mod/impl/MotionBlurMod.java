@@ -14,7 +14,7 @@ import me.mcblueparrot.client.event.impl.PostProcessingEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.access.AccessShaderGroup;
 import net.minecraft.client.resources.IResource;
@@ -26,8 +26,9 @@ import net.minecraft.util.ResourceLocation;
 public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/motion_blur.json");
+
 	@Expose
-	@ConfigOption("Blur")
+	@Option
 	@Slider(min = 0, max = 0.99F, step = 0.01F)
 	private float blur = 0.5f;
 	private ShaderGroup group;
@@ -37,8 +38,19 @@ public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 		return group;
 	}
 
-	public MotionBlurMod() {
-		super("Motion Blur", "motion_blur", "Smooth motion blur effect.", ModCategory.VISUAL);
+	@Override
+	public String getId() {
+		return "motion_blur";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.VISUAL;
+	}
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
 		Client.INSTANCE.addResource(RESOURCE_LOCATION, new MotionBlurShader());
 	}
 

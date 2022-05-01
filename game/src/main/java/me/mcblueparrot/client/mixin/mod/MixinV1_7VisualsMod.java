@@ -45,21 +45,6 @@ public abstract class MixinV1_7VisualsMod {
 		private float eyeHeightSubtractor;
 		private long lastEyeHeightUpdate;
 
-		@Inject(method = "renderHand", at = @At(value = "HEAD"))
-		public void forceSwing(float partialTicks, int xOffset, CallbackInfo callback) {
-			if(mc.thePlayer != null && V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine
-					&& mc.objectMouseOver != null
-					&& mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
-					&& mc.thePlayer != null
-					&& mc.gameSettings.keyBindAttack.isKeyDown() && mc.gameSettings.keyBindUseItem.isKeyDown()
-					&& mc.thePlayer.getItemInUseCount() > 0 && (!mc.thePlayer.isSwingInProgress
-					|| mc.thePlayer.swingProgressInt >= ((AccessEntityLivingBase) mc.thePlayer).accessArmSwingAnimationEnd()
-					/ 2 || mc.thePlayer.swingProgressInt < 0)) {
-				mc.thePlayer.swingProgressInt = -1;
-				mc.thePlayer.isSwingInProgress = true;
-			}
-		}
-
 		@Redirect(method = "orientCamera", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeHeight()F"))
 		public float smoothSneaking(Entity entity) {
 			if(V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking

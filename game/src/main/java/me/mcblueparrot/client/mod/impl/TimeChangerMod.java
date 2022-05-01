@@ -7,18 +7,24 @@ import me.mcblueparrot.client.event.impl.TimeEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 
 public class TimeChangerMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Expose
-	@ConfigOption("Time")
+	@Option
 	@Slider(min = 0, max = 24000, step = 1, showValue = false)
-	public float time = 1000;
+	private float time = 1000;
 
-	public TimeChangerMod() {
-		super("Time Changer", "time_changer", "Change the visual time.", ModCategory.VISUAL);
+	@Override
+	public String getId() {
+		return "time_changer";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.VISUAL;
 	}
 
 	@EventHandler

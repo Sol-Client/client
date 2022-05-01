@@ -9,7 +9,7 @@ public enum AutoGLMessage {
 	GOOD_LUCK("good luck!"),
 	GOOD_LUCK_HAVE_FUN("good luck, have fun!");
 
-	private String message;
+	private final String message;
 
 	@Override
 	public String toString() {

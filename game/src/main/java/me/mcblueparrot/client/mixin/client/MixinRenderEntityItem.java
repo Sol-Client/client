@@ -15,8 +15,8 @@ import net.minecraft.entity.item.EntityItem;
 public class MixinRenderEntityItem {
 
 	@Inject(method = "func_177077_a", at = @At(value = "HEAD"), cancellable = true)
-	public void preItemEntityRender(EntityItem itemIn, double x, double y, double z,
-									float partialTicks, IBakedModel model, CallbackInfoReturnable<Integer> callback) {
+	public void preItemEntityRender(EntityItem itemIn, double x, double y, double z, float partialTicks,
+			IBakedModel model, CallbackInfoReturnable<Integer> callback) {
 		int result;
 		if((result = Client.INSTANCE.bus.post(new ItemEntityRenderEvent(itemIn, x, y, z, partialTicks, model)).result) != -1) {
 			callback.setReturnValue(result);

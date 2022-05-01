@@ -24,21 +24,17 @@ public class RecordingIndicator extends BaseHudElement {
 			"textures/gui/sol_client_recording.png");
 	private static final ResourceLocation PAUSED = new ResourceLocation(
 			"textures/gui/sol_client_paused.png");
+
 	public static GuiRecordingControls guiControls;
-	private SCReplayMod mod;
+	private final SCReplayMod mod;
 
 	public RecordingIndicator(SCReplayMod mod) {
 		this.mod = mod;
 	}
 
 	@Override
-	public boolean isEnabled() {
-		return (SCReplayMod.instance.isEnabled() || SCReplayMod.enabled) && mod.recordingIndicator;
-	}
-
-	@Override
 	public boolean isVisible() {
-		return isEnabled();
+		return (SCReplayMod.instance.isEnabled() || SCReplayMod.enabled) && mod.recordingIndicator;
 	}
 
 	@Override

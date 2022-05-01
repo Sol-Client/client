@@ -29,13 +29,20 @@ public class CapeManager {
 	private static final String BASE_URL = "https://raw.githubusercontent.com/Sol-Client/Capes/main/";
 	private static final URL BY_PLAYER_URL = Utils.sneakyParse(BASE_URL + "by_player.json");
 
-	public CapeManager() throws IOException {
-		JsonObject capesObject = new JsonParser().parseReader(new InputStreamReader(BY_PLAYER_URL.openStream()))
-				.getAsJsonObject();
+	public CapeManager() {
+		Utils.MAIN_EXECUTOR.submit(() -> {
+			try {
+				JsonObject capesObject = JsonParser.parseReader(new InputStreamReader(BY_PLAYER_URL.openStream()))
+						.getAsJsonObject();
 
-		for(Map.Entry<String, JsonElement> entry : capesObject.entrySet()) {
-			capes.put(entry.getKey(), BASE_URL + "capes/" + entry.getValue().getAsString() + ".png");
-		}
+				for(Map.Entry<String, JsonElement> entry : capesObject.entrySet()) {
+					capes.put(entry.getKey(), BASE_URL + "capes/" + entry.getValue().getAsString() + ".png");
+				}
+			}
+			catch(Exception error) {
+				LOGGER.error("Could not load capes", error);
+			}
+		});
 	}
 
 	public ResourceLocation getForPlayer(EntityPlayer player) {

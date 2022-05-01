@@ -25,7 +25,7 @@ import net.minecraft.client.Minecraft;
 @NotThreadSafe
 public class EventBus {
 
-	public static class MethodData {
+	private static class MethodData {
 
 		public Object instance;
 		public Method target;
@@ -103,7 +103,7 @@ public class EventBus {
 
 	private boolean validate(Method method) {
 		if(method.isAnnotationPresent(EventHandler.class)) {
-			Validate.isTrue(method.getParameterCount() == 1, "Method " + method.getName() + " has " + method.getParameterCount() + " parameter; expected 1.");
+			Validate.isTrue(method.getParameterCount() == 1, "Method " + method.getName() + " has " + method.getParameterCount() + " parameters; expected 1.");
 			return true;
 		}
 		return false;

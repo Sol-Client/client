@@ -35,6 +35,7 @@ import net.minecraft.util.ResourceLocation;
 @Mixin(GuiScreen.class)
 public abstract class MixinGuiScreen implements AccessGuiScreen {
 
+	@Override
 	public boolean canBeForceClosed() {
 		return true;
 	}
@@ -52,9 +53,8 @@ public abstract class MixinGuiScreen implements AccessGuiScreen {
 
 	@Redirect(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;mousePressed(Lnet/minecraft/client/Minecraft;II)Z"))
 	public boolean onActionPerformed(GuiButton instance, Minecraft mc, int mouseX, int mouseY) {
-		return instance.mousePressed(mc,
-				mouseX,
-				mouseY) && !Client.INSTANCE.bus.post(new ActionPerformedEvent((GuiScreen) (Object) this, instance)).cancelled;
+		return instance.mousePressed(mc, mouseX, mouseY)
+				&& !Client.INSTANCE.bus.post(new ActionPerformedEvent((GuiScreen) (Object) this, instance)).cancelled;
 	}
 
 	@Redirect(method = "setWorldAndResolution", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui" +
@@ -89,15 +89,6 @@ public abstract class MixinGuiScreen implements AccessGuiScreen {
 		}
 	}
 
-	// Temporarily disable - Replay Mod bug
-//	@Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;" +
-//			"handleKeyboardInput()V"))
-//	public void handleKeyboardInput(GuiScreen instance) throws IOException {
-//		if(!Client.INSTANCE.bus.post(new PreGuiKeyboardInputEvent()).cancelled) {
-//			instance.handleKeyboardInput();
-//		}
-//	}
-
 	// Fix options not saving when "esc" is pressed.
 	@Redirect(method = "keyTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen" +
 			"(Lnet/minecraft/client/gui/GuiScreen;)V"))
@@ -112,7 +103,7 @@ public abstract class MixinGuiScreen implements AccessGuiScreen {
 
 	@Overwrite
 	private void openWebLink(URI uri) {
-		Utils.sendLauncherMessage("openUrl", uri.toString());
+		Utils.openUrl(uri.toString());
 	}
 
 	@Shadow

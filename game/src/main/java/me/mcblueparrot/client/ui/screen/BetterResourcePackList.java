@@ -147,8 +147,6 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 				for(ResourcePackListEntry compareEntry : parent.getSelectedResourcePacks()) {
 
 					if(compareEntry instanceof ResourcePackListEntryFound) {
-//							&& ((ResourcePackListEntryFound) compareEntry).func_148318_i().equals(repoEntry)) {
-//						System.out.println(repoEntry + " vs " + ((ResourcePackListEntryFound) compareEntry).func_148318_i());
 						if(((ResourcePackListEntryFound) compareEntry).func_148318_i().equals(repoEntry)) {
 							return false;
 						}

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import me.mcblueparrot.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
-import me.mcblueparrot.client.ui.element.ChatButton;
+import me.mcblueparrot.client.ui.ChatButton;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiChat;
 import me.mcblueparrot.client.util.data.Colour;

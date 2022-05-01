@@ -6,6 +6,6 @@ import net.minecraft.client.multiplayer.WorldClient;
 @AllArgsConstructor
 public class WorldLoadEvent {
 
-	public WorldClient world;
+	public final WorldClient world;
 
 }

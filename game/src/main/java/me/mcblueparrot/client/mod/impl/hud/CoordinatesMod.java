@@ -2,8 +2,9 @@ package me.mcblueparrot.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
 
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.hud.HudMod;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
@@ -11,43 +12,43 @@ import net.minecraft.util.MathHelper;
 
 public class CoordinatesMod extends HudMod {
 
-	private String editString = "XYZ: 000.000 / 00.000 / 000.000";
 	@Expose
-	@ConfigOption("Background")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean background = true;
 	@Expose
-	@ConfigOption("Background Colour")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
-	@ConfigOption("Border")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean border = false;
 	@Expose
-	@ConfigOption("Border Colour")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private Colour borderColour = Colour.BLACK;
 	@Expose
-	@ConfigOption("Axis Label Colour")
+	@Option
 	private Colour axisLabelColour = new Colour(0, 150, 255);
 	@Expose
-	@ConfigOption("Axis Value Colour")
+	@Option
 	private Colour axisValueColour = Colour.WHITE;
 	@Expose
-	@ConfigOption("Cardinal Direction")
+	@Option
 	private boolean cardinalDirection = true;
 	@Expose
-	@ConfigOption("Cardinal Direction Colour")
+	@Option
 	private Colour cardinalDirectionColour = new Colour(0, 150, 255);
 	@Expose
-	@ConfigOption("Axis Direction")
+	@Option
 	private boolean axisDirection = true;
 	@Expose
-	@ConfigOption("Axis Direction Colour")
+	@Option
 	private Colour axisDirectionColour = new Colour(0, 150, 255);
 	@Expose
-	@ConfigOption("Text Shadow")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 
-	public CoordinatesMod() {
-		super("Coordinates", "coordinates", "Display your coordinates.");
+	@Override
+	public String getId() {
+		return "coordinates";
 	}
 
 	@Override

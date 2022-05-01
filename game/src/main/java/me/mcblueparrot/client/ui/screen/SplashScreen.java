@@ -7,6 +7,9 @@ import net.minecraft.client.gui.ScaledResolution;
 
 public class SplashScreen {
 
+	private static final int FG = 0xFFDF242F;
+	private static final int BG = 0xFF000000;
+
 	public static final SplashScreen INSTANCE = new SplashScreen();
 	private Minecraft mc = Minecraft.getMinecraft();
 	private int stage;
@@ -24,14 +27,14 @@ public class SplashScreen {
 		if(stage > stages) {
 			throw new IndexOutOfBoundsException(Integer.toString(stage));
 		}
+
 		ScaledResolution resolution = new ScaledResolution(mc);
-		int bg = new Colour(0, 0, 0).getValue();
-		int fg = new Colour(255, 50, 50).getValue();
 		int factor = resolution.getScaleFactor();
+
 		Gui.drawRect(0, resolution.getScaledHeight() * factor - 30, resolution.getScaledWidth() * factor,
-				resolution.getScaledHeight() * factor, bg);
+				resolution.getScaledHeight() * factor, BG);
 		Gui.drawRect(0, resolution.getScaledHeight() * factor - 30,
-				resolution.getScaledWidth() * factor / stages * stage, resolution.getScaledHeight() * factor, fg);
+				resolution.getScaledWidth() * factor / stages * stage, resolution.getScaledHeight() * factor, FG);
 		stage++;
 	}
 

@@ -16,8 +16,9 @@ public class PingMod extends SmoothCounterHudMod {
 	private static final int PING_INTERVAL = 600;
 	private int nextPing;
 
-	public PingMod() {
-		super("Ping", "ping", "Display the latency to the server.");
+	@Override
+	public String getId() {
+		return "ping";
 	}
 
 	@EventHandler

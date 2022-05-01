@@ -13,17 +13,24 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class TNTTimerMod extends Mod {
 
-	public static boolean enabled;
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
+	public static boolean enabled;
 
-	public TNTTimerMod() {
-		super("TNT Timer", "tnt_timer", "Display the time before TNT explodes.", ModCategory.UTILITY);
+	@Override
+	public String getId() {
+		return "tnt_timer";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
 	}
 
 	// Unfortunately doesn't work with TNT chains due to their random nature.
 	public static String getText(EntityTNTPrimed tnt) {
 		float fuse = tnt.fuse;
 
+		// Based on Sk1er's mod
 		if(Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL && "BED WARS".equals(Utils.getScoreboardTitle())) {
 			fuse -= 28;
 		}

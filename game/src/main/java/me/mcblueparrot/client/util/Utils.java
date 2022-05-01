@@ -63,9 +63,9 @@ import net.minecraft.util.Util.EnumOS;
 public class Utils {
 
 	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
-	public Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
+	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
-	private static int getStringWidth(String text) {
+	private int getStringWidth(String text) {
 		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
 	}
 
@@ -237,7 +237,7 @@ public class Utils {
 		return null;
 	}
 
-	public static void drawTexture(int x, int y, int textureX, int textureY, int width, int height, int zLevel) {
+	public void drawTexture(int x, int y, int textureX, int textureY, int width, int height, int zLevel) {
 		float xMultiplier = 0.00390625F;
 		float yMultiplier = 0.00390625F;
 		Tessellator tessellator = Tessellator.getInstance();
@@ -252,7 +252,7 @@ public class Utils {
 		tessellator.draw();
 	}
 
-	public static void drawGradientRect(int left, int top, int right, int bottom, int startColour, int endColour) {
+	public void drawGradientRect(int left, int top, int right, int bottom, int startColour, int endColour) {
 		float alpha1 = (startColour >> 24 & 255) / 255.0F;
 		float red1 = (startColour >> 16 & 255) / 255.0F;
 		float green1 = (startColour >> 8 & 255) / 255.0F;
@@ -285,7 +285,7 @@ public class Utils {
 				&& !(Minecraft.getMinecraft().getRenderViewEntity() instanceof CameraEntity);
 	}
 
-	public static String getTextureScale() {
+	public String getTextureScale() {
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 
 		if(resolution.getScaleFactor() > 0 && resolution.getScaleFactor() < 5) {
@@ -295,7 +295,7 @@ public class Utils {
 		return "4x";
 	}
 
-	public static String urlToString(URL url) throws IOException {
+	public String urlToString(URL url) throws IOException {
 		URLConnection connection = url.openConnection();
 		connection.addRequestProperty("User-Agent", System.getProperty("http.agent")); // Force consistent behaviour
 
@@ -312,7 +312,7 @@ public class Utils {
 		return result.toString();
 	}
 
-	public static int getShadowColour(int value) {
+	public int getShadowColour(int value) {
 		return (value & 16579836) >> 2 | value & -16777216;
 	}
 
@@ -356,15 +356,19 @@ public class Utils {
 		networkManager.sendPacket(new C00PacketServerQuery());
 	}
 
-	public static int randomInt(int from, int to) {
+	public int randomInt(int from, int to) {
 		return ThreadLocalRandom.current().nextInt(from, to + 1); // https://stackoverflow.com/a/363692
 	}
 
-	public static void sendLauncherMessage(String type, String... arguments) {
+	public void openUrl(String url) {
+		sendLauncherMessage("openUrl", url);
+	}
+
+	private void sendLauncherMessage(String type, String... arguments) {
 		System.out.println("message " + System.getProperty("me.mcblueparrot.client.secret") + " " + type + " " + String.join(" ", arguments));
 	}
 
-	public static String getRelativeToPackFolder(File packFile) {
+	public String getRelativeToPackFolder(File packFile) {
 		String relative = new File(Minecraft.getMinecraft().mcDataDir, "resourcepacks").toPath().toAbsolutePath()
 				.relativize(packFile.toPath().toAbsolutePath()).toString();
 
@@ -375,14 +379,14 @@ public class Utils {
 		return relative;
 	}
 
-	public static void resetLineWidth() {
+	public void resetLineWidth() {
 		// Reset the fishing rod line back to its normal width.
 		// Fun fact: the line should actually be thinner, but it's overriden by the
 		// block selection.
 		GL11.glLineWidth(2);
 	}
 
-	public static void drawFloatRectangle(float left, float top, float right, float bottom, int colour) {
+	public void drawFloatRectangle(float left, float top, float right, float bottom, int colour) {
 		if(left < right) {
 			float swap = left;
 			left = right;
@@ -427,6 +431,17 @@ public class Utils {
 		}
 
 		return null;
+	}
+
+	public static String getNativeFileExtension() {
+		switch(Util.getOSType()) {
+			case WINDOWS:
+				return "dll";
+			case OSX:
+				return "dylib";
+			default:
+				return "so";
+		}
 	}
 
 }

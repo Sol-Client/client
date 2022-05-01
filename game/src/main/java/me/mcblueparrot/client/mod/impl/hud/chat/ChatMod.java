@@ -14,11 +14,12 @@ import me.mcblueparrot.client.event.impl.ChatRenderEvent;
 import me.mcblueparrot.client.event.impl.PostTickEvent;
 import me.mcblueparrot.client.event.impl.ReceiveChatMessageEvent;
 import me.mcblueparrot.client.event.impl.ScrollEvent;
-import me.mcblueparrot.client.mod.annotation.ConfigFile;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.FileOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.hud.HudMod;
-import me.mcblueparrot.client.ui.element.ChatButton;
+import me.mcblueparrot.client.mod.hud.SimpleHudMod;
+import me.mcblueparrot.client.ui.ChatButton;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessGuiChat;
 import me.mcblueparrot.client.util.access.AccessGuiNewChat;
@@ -34,140 +35,113 @@ import net.minecraft.util.MathHelper;
 
 public class ChatMod extends HudMod {
 
+	private static final float ANIMATION_MULTIPLIER = 0.5F;
+
 	public static boolean enabled;
 	public static ChatMod instance;
 
-	private static String symbols = "☺☹♡♥◀▶▲▼←→↑↓«»©™‽☕✓✕⚐⚑⚠☆★✮✫☃☄";
-	private static char[][] table;
-
-	private static char[][] getSymbolTable() {
-		if(table == null) {
-			table = new char[6][6];
-			int y = 0;
-			int x = 0;
-			for(char character : symbols.toCharArray()) {
-				table[y][x] = character;
-				x++;
-				if(x > 5) {
-					x = 0;
-					y++;
-				}
-			}
-			return table;
-		}
-
-		return table;
-	}
-
-
 	@Expose
-	@ConfigOption("Prevent Force Closing")
+	@Option
 	public boolean preventClose = true;
 	@Expose
-	@ConfigOption("Smooth Animation")
+	@Option
 	private boolean smooth = true; // Smooth, man!
 
-	private static final float ANIMATION_MULTIPLIER = 0.5F;
 	private int lastAnimatedOffset;
 	private int animatedOffset;
 
 	@Expose
-	@ConfigOption("Infinite Chat")
+	@Option
 	public boolean infiniteChat = true;
 
-	@ConfigOption("Peek Key")
-	public KeyBinding peekKey;
-
+	@Option
+	public KeyBinding peekKey = new KeyBinding(getTranslationKey() + ".peek", 0, Client.KEY_CATEGORY);
 	private boolean wasPeeking;
-
 	private boolean hasScrollbar;
 
 	@Expose
-	@ConfigOption("Visibility")
+	@Option
 	public ChatVisibility visibility = ChatVisibility.SHOWN;
 	@Expose
-	@ConfigOption("Background")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean background = true;
 	@Expose
-	@ConfigOption("Background Colour")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private Colour backgroundColour = new Colour(0, 0, 0, 127);
 	@Expose
-	@ConfigOption("Default Text Colour")
-	private Colour textColour = Colour.WHITE;
+	@Option
+	private Colour defaultTextColour = Colour.WHITE;
 	@Expose
-	@ConfigOption("Text Shadow")
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
-	@ConfigOption("Colours")
+	@Option
 	public boolean colours = true;
 	@Expose
-	@ConfigOption("Width")
+	@Option
 	@Slider(min = 40, max = 320, step = 1)
 	public float width = 320;
 	@Expose
-	@ConfigOption("Height (Closed)")
+	@Option
 	@Slider(min = 20, max = 180, step = 1)
 	public float closedHeight = 90;
 	@Expose
-	@ConfigOption("Height (Open)")
+	@Option
 	@Slider(min = 20, max = 180, step = 1)
 	public float openHeight = 180;
 	@Expose
-	@ConfigOption("Web Links")
+	@Option
 	public boolean links = true;
 	@Expose
-	@ConfigOption("Prompt Web Links")
+	@Option
 	public boolean promptLinks = true;
 
 	@Expose
-	@ConfigOption("Chat Filter")
+	@Option
 	private boolean chatFilter = true;
-	@ConfigOption("Filtered Words")
-	@ConfigFile(text = "Edit File...", file = "Chat Filter.txt", header = "# List words on each line for them to be blocked.\n"
+	@Option
+	@FileOption(file = "Chat Filter.txt", header = "# List words on each line for them to be blocked.\n"
 			+ "# The chat mod and chat filter must be enabled for this to work.\n"
-			+ "# This mainly works for English. You may have trouble with other languages and it is not perfect at detection.\n"
+			+ "# This may not work well for all languages.\n"
 			+ "# Any lines starting with \"#\" will be ignored.")
 	private String filteredWordsContent;
 	private List<String> filteredWords = new ArrayList<>();
 
-	@Override
-	public void onFileUpdate(String fieldName) {
-		super.onFileUpdate(fieldName);
+	private int previousChatSize;
+	private SymbolsButton symbolsButton;
 
-		if(fieldName.equals("filteredWordsContent")) {
-			filteredWords = new ArrayList<>(Arrays.asList(filteredWordsContent.split("\\r?\\n"))); // https://stackoverflow.com/a/454913
-			filteredWords.removeIf((word) -> word.isEmpty() || word.startsWith("#"));
-		}
+	@Override
+	public String getId() {
+		return "chat";
 	}
 
-	private int previousChatSize;
+	@Override
+	public void onRegister() {
+		super.onRegister();
 
-	public final SymbolsButton symbolsButton = new SymbolsButton();
-
-	public ChatMod() {
-		super("Chat", "chat", "Improves and allows customisation of the chat.");
 		instance = this;
-
-		peekKey = new KeyBinding("Chat Peek", 0, "Sol Client");
-
 		Client.INSTANCE.registerKeyBinding(peekKey);
 	}
 
 	@Override
-	public boolean onOptionChange(String key, Object value) {
-		if(key.equals("closedHeight") || key.equals("openHeight")
-				|| key.equals("width") || key.equals("enabled")
-				|| key.equals("scale")) {
-			mc.ingameGUI.getChatGUI().refreshChat();
+	public void postStart() {
+		super.postStart();
+
+		symbolsButton = new SymbolsButton(this);
+
+		if(enabled) {
+			Client.INSTANCE.registerChatButton(symbolsButton);
 		}
-		return super.onOptionChange(key, value);
 	}
 
 	@Override
 	protected void onEnable() {
 		super.onEnable();
 		enabled = true;
-		Client.INSTANCE.registerChatButton(symbolsButton);
+
+		if(symbolsButton != null) {
+			Client.INSTANCE.registerChatButton(symbolsButton);
+		}
 
 		if(mc.theWorld != null) {
 			mc.ingameGUI.getChatGUI().refreshChat();
@@ -188,6 +162,26 @@ public class ChatMod extends HudMod {
 	@Override
 	public boolean isEnabledByDefault() {
 		return true;
+	}
+
+	@Override
+	public void onFileUpdate(String fieldName) {
+		super.onFileUpdate(fieldName);
+
+		if(fieldName.equals("filteredWordsContent")) {
+			filteredWords = new ArrayList<>(Arrays.asList(filteredWordsContent.split("\\r?\\n"))); // https://stackoverflow.com/a/454913
+			filteredWords.removeIf((word) -> word.isEmpty() || word.startsWith("#"));
+		}
+	}
+
+	@Override
+	public boolean onOptionChange(String key, Object value) {
+		if(key.equals("closedHeight") || key.equals("openHeight")
+				|| key.equals("width") || key.equals("enabled")
+				|| key.equals("scale")) {
+			mc.ingameGUI.getChatGUI().refreshChat();
+		}
+		return super.onOptionChange(key, value);
 	}
 
 	@EventHandler
@@ -211,8 +205,8 @@ public class ChatMod extends HudMod {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@EventHandler
+	@SuppressWarnings("unchecked")
 	public void onTick(PostTickEvent event) {
 		if(!peekKey.isKeyDown() && wasPeeking) {
 			mc.ingameGUI.getChatGUI().resetScroll();
@@ -335,7 +329,7 @@ public class ChatMod extends HudMod {
 								if(percentFG > 0.05F) {
 									mc.fontRendererObj.drawString(colours ? formattedText :
 											EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float) i2, (float) (j2 - 8),
-											textColour.withAlpha((int) (textColour.getAlpha() * percentFG)).getValue(), shadow);
+											defaultTextColour.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue(), shadow);
 								}
 
 								GlStateManager.disableAlpha();
@@ -377,78 +371,6 @@ public class ChatMod extends HudMod {
 		}
 
 		previousChatSize = accessor.getDrawnChatLines().size();
-	}
-
-	public enum ChatVisibility {
-		SHOWN("Shown"),
-		COMMANDS("Commands Only"),
-		HIDDEN("Hidden");
-
-		private String name;
-
-		ChatVisibility(String name) {
-			this.name = name;
-		}
-
-		@Override
-		public String toString() {
-			return name;
-		}
-
-	}
-
-	public class SymbolsButton implements ChatButton {
-
-		@Override
-		public int getPriority() {
-			return getIndex();
-		}
-
-		@Override
-		public int getPopupWidth() {
-			return 77;
-		}
-
-		@Override
-		public int getPopupHeight() {
-			return getSymbolTable().length * 13 - 1;
-		}
-
-		@Override
-		public int getWidth() {
-			return 12;
-		}
-
-		@Override
-		public String getText() {
-			return "✮";
-		}
-
-		@Override
-		public void render(int x, int y, boolean mouseDown, boolean wasMouseDown, boolean wasMouseClicked, int mouseX, int mouseY) {
-			int originalX = x;
-			for(char[] characters : getSymbolTable()) {
-				x = originalX;
-				for(char character : characters) {
-					Rectangle characterBounds = new Rectangle(x, y, 12, 12);
-					boolean selected = character != 0 && characterBounds.contains(mouseX, mouseY);
-					Utils.drawRectangle(characterBounds, selected ? Colour.WHITE_128 : Colour.BLACK_128);
-					if(character != 0) {
-						font.drawString(character + "",
-								x + (13 / 2) - (font.getCharWidth(character) / 2),
-								characterBounds.getY() + (characterBounds.getHeight() / 2)- (font.FONT_HEIGHT / 2),
-								characterBounds.contains(mouseX, mouseY) ? 0 : -1);
-					}
-
-					if(selected && wasMouseClicked) {
-						Utils.playClickSound(false);
-						((AccessGuiChat) Utils.getChatGui()).type(character, Keyboard.KEY_0);
-					}
-					x += 13;
-				}
-				y += 13;
-			}
-		}
 	}
 
 }

@@ -32,7 +32,9 @@ ipcRenderer.on("quitGame", (event) => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-	document.getElementsByTagName("title")[0].innerText += " " + Utils.version;
+	if(Utils.getOsName() == "osx") {
+		document.querySelector(".drag-region").style.display = "block";
+	}
 
 	const playButton = document.getElementById("launch-button");
 	const launchNote = document.getElementById("launch-note");
@@ -84,14 +86,14 @@ window.addEventListener("DOMContentLoaded", () => {
 							continue;
 						}
 					}
-					
+
 
 					var friendlyName = "";
-					
+
 					friendlyName += day;
-					
+
 					var lastDigit = day % 10;
-					
+
 					if(lastDigit == 1) {
 						friendlyName += "st";
 					}

@@ -21,11 +21,11 @@ public class SliderComponent extends Component {
 	private float max;
 	private float step;
 	private float value;
-	private Consumer<Float> callback;
+	private final Consumer<Float> callback;
 	private boolean selected;
-	private Controller<Colour> colour = new AnimatedColourController(
+	private final Controller<Colour> colour = new AnimatedColourController(
 			(component, defaultColour) -> component.isHovered() || selected ? SolClientMod.instance.uiHover : SolClientMod.instance.uiColour);
-	private Component hoverController;
+	private final Component hoverController;
 
 	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback, Component hoverController) {
 		this.min = min;

@@ -4,6 +4,8 @@ import com.replaymod.replay.ReplayModReplay;
 
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 
 public abstract class BaseHudElement implements HudElement {

@@ -14,16 +14,17 @@ import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
 public class ButtonComponent extends ColouredComponent {
 
 	@Getter
-	private Controller<String> text;
+	private final Controller<String> text;
 	private ButtonType type = ButtonType.NORMAL;
 
 	public ButtonComponent(String text, Controller<Colour> colour) {
-		this((component, defaultText) -> text, colour);
+		this((component, defaultText) -> I18n.format(text), colour);
 	}
 
 	public ButtonComponent(Controller<String> text, Controller<Colour> colour) {
@@ -79,7 +80,7 @@ public class ButtonComponent extends ColouredComponent {
 	}
 
 	public static ButtonComponent done(Runnable onClick) {
-		return new ButtonComponent("Done", new AnimatedColourController(
+		return new ButtonComponent("gui.done", new AnimatedColourController(
 				(component, defaultColour) -> component.isHovered() ? new Colour(20, 120, 20) : new Colour(0, 100, 0)))
 						.onClick((info, button) -> {
 							if (button == 0) {

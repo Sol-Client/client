@@ -9,7 +9,7 @@ import me.mcblueparrot.client.event.impl.BlockHighlightRenderEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
-import me.mcblueparrot.client.mod.annotation.ConfigOption;
+import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.data.Colour;
@@ -32,45 +32,51 @@ import net.minecraft.world.WorldSettings;
 public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Expose
-	@ConfigOption("Outline")
+	@Option
 	private boolean outline = true;
 	@Expose
-	@ConfigOption("Outline Width")
+	@Option
 	@Slider(min = 1, max = 10, step = 1)
 	private float outlineWidth = 4;
 	@Expose
-	@ConfigOption("Outline Colour")
+	@Option
 	private Colour outlineColour = Colour.BLACK.withAlpha(130);
 	@Expose
-	@ConfigOption("Fill")
+	@Option
 	private boolean fill = true;
 	@Expose
-	@ConfigOption("Fill Colour")
+	@Option
 	private Colour fillColour = Colour.BLACK.withAlpha(50);
 	@Expose
-	@ConfigOption("Depth")
+	@Option
 	private boolean depth = true;
 	@Expose
-	@ConfigOption("Persistant")
-	private boolean persistant = true;
+	@Option
+	private boolean persistent = true;
 
-	public BlockSelectionMod() {
-		super("Block Selection", "block_selection", "Customise block selection.", ModCategory.VISUAL);
+	@Override
+	public String getId() {
+		return "block_selection";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.VISUAL;
 	}
 
 	private boolean canRender(MovingObjectPosition movingObjectPositionIn) {
 		Entity entity = this.mc.getRenderViewEntity();
 		boolean result = entity instanceof EntityPlayer && !this.mc.gameSettings.hideGUI;
 
-		if (result && !((EntityPlayer)entity).capabilities.allowEdit && !persistant) {
+		if(result && !((EntityPlayer)entity).capabilities.allowEdit && !persistent) {
 			ItemStack itemstack = ((EntityPlayer)entity).getCurrentEquippedItem();
 
-			if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-				BlockPos blockpos = this.mc.objectMouseOver.getBlockPos();
-				Block block = this.mc.theWorld.getBlockState(blockpos).getBlock();
+			if(this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+				BlockPos selectedBlock = this.mc.objectMouseOver.getBlockPos();
+				Block block = this.mc.theWorld.getBlockState(selectedBlock).getBlock();
 
-				if (this.mc.playerController.getCurrentGameType() == WorldSettings.GameType.SPECTATOR) {
-					result = block.hasTileEntity() && this.mc.theWorld.getTileEntity(blockpos) instanceof IInventory;
+				if(this.mc.playerController.getCurrentGameType() == WorldSettings.GameType.SPECTATOR) {
+					result = block.hasTileEntity() && this.mc.theWorld.getTileEntity(selectedBlock) instanceof IInventory;
 				}
 				else {
 					result = itemstack != null && (itemstack.canDestroy(block) || itemstack.canPlaceOn(block));
@@ -106,16 +112,16 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
 		if(block.getMaterial() != Material.air && mc.theWorld.getWorldBorder().contains(blockpos)) {
 			block.setBlockBoundsBasedOnState(mc.theWorld, blockpos);
-			double d0 = mc.getRenderViewEntity().lastTickPosX
+			double x = mc.getRenderViewEntity().lastTickPosX
 					+ (mc.getRenderViewEntity().posX - mc.getRenderViewEntity().lastTickPosX) * (double) event.partialTicks;
-			double d1 = mc.getRenderViewEntity().lastTickPosY
+			double y = mc.getRenderViewEntity().lastTickPosY
 					+ (mc.getRenderViewEntity().posY - mc.getRenderViewEntity().lastTickPosY) * (double) event.partialTicks;
-			double d2 = mc.getRenderViewEntity().lastTickPosZ
+			double z = mc.getRenderViewEntity().lastTickPosZ
 					+ (mc.getRenderViewEntity().posZ - mc.getRenderViewEntity().lastTickPosZ) * (double) event.partialTicks;
-			AxisAlignedBB axisalignedbb = block.getSelectedBoundingBox(mc.theWorld, blockpos);
 
-			axisalignedbb = axisalignedbb.expand(0.0020000000949949026D, 0.0020000000949949026D, 0.0020000000949949026D)
-					.offset(-d0, -d1, -d2);
+			AxisAlignedBB selectedBox = block.getSelectedBoundingBox(mc.theWorld, blockpos);
+			selectedBox = selectedBox.expand(0.0020000000949949026D, 0.0020000000949949026D, 0.0020000000949949026D)
+					.offset(-x, -y, -z);
 
 			if(fill) {
 				GL11.glColor4ub((byte) fillColour.getRed(), (byte) fillColour.getGreen(), (byte) fillColour.getBlue(),
@@ -126,51 +132,51 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 				WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 
 				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
 				tessellator.draw();
 
 				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.minZ).endVertex();
 				tessellator.draw();
 
 				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
 				tessellator.draw();
 
 				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
 				tessellator.draw();
 
 				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.minZ).endVertex();
 				tessellator.draw();
 
 				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ).endVertex();
-				worldrenderer.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ).endVertex();
-				worldrenderer.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.minZ).endVertex();
+				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
+				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
 				tessellator.draw();
 
 
@@ -182,7 +188,7 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 						(byte) outlineColour.getAlpha());
 				GL11.glLineWidth(outlineWidth);
 
-				RenderGlobal.drawSelectionBoundingBox(axisalignedbb);
+				RenderGlobal.drawSelectionBoundingBox(selectedBox);
 			}
 		}
 

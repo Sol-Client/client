@@ -5,8 +5,10 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
+import com.replaymod.replaystudio.util.I18n;
+
 import lombok.Getter;
-import me.mcblueparrot.client.mod.CachedConfigOption;
+import me.mcblueparrot.client.mod.ModOption;
 import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.ui.component.Component;
 import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
@@ -30,16 +32,16 @@ import net.minecraft.client.settings.KeyBinding;
 public class ModOptionComponent extends ScaledIconComponent {
 
 	@Getter
-	private CachedConfigOption option;
+	private ModOption option;
 	private boolean listening;
 	private int enumWidth;
 
-	public ModOptionComponent(CachedConfigOption option) {
+	public ModOptionComponent(ModOption option) {
 		super("sol_client_mod_option", 300, 21, (component, defaultColour) -> Colour.BLACK_128);
 
 		this.option = option;
 
-		add(new LabelComponent(option.name),
+		add(new LabelComponent(option.getName()),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -205,11 +207,11 @@ public class ModOptionComponent extends ScaledIconComponent {
 				throw new IllegalStateException(error);
 			}
 		}
-		else if(option.getType() == float.class && option.field.isAnnotationPresent(Slider.class)) {
-			Slider sliderAnnotation = option.field.getAnnotation(Slider.class);
+		else if(option.getType() == float.class && option.getField().isAnnotationPresent(Slider.class)) {
+			Slider sliderAnnotation = option.getField().getAnnotation(Slider.class);
 
 			if(sliderAnnotation.showValue()) {
-				add(new LabelComponent((component, defaultText) -> new DecimalFormat("0.##").format(option.getValue()) + sliderAnnotation.suffix()), (component, defaultBounds) -> {
+				add(new LabelComponent((component, defaultText) -> I18n.format(sliderAnnotation.format(), new DecimalFormat("0.##").format(option.getValue()))), (component, defaultBounds) -> {
 					Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 					return new Rectangle((int) (getBounds().getWidth() - font.getWidth(((LabelComponent) component).getText()) - 117), defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
 				});
@@ -221,8 +223,8 @@ public class ModOptionComponent extends ScaledIconComponent {
 						return new Rectangle(defaultBounds.getX() - 5, defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
 					});
 		}
-		else if(option.file != null) {
-			String text = option.configFile.text();
+		else if(option.isFile()) {
+			String text = option.getEditText();
 
 			add(new LabelComponent((component, defaultText) -> text, new AnimatedColourController(
 					(component, defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)),
@@ -232,7 +234,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 				if(button == 0) {
 					Utils.playClickSound(true);
 					try {
-						Utils.sendLauncherMessage("openUrl", option.file.toURI().toURL().toString());
+						Utils.openUrl(option.getFile().toURI().toURL().toString());
 					}
 					catch(MalformedURLException error) {
 						throw new IllegalStateException(error);

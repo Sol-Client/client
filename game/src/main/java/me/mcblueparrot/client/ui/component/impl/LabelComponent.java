@@ -5,13 +5,14 @@ import me.mcblueparrot.client.ui.component.controller.Controller;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 
 public class LabelComponent extends ColouredComponent {
 
-	private Controller<String> text;
+	private final Controller<String> text;
 
 	public LabelComponent(String text) {
-		this((component, defaultText) -> text, (component, defaultColour) -> defaultColour);
+		this((component, defaultText) -> I18n.format(text), (component, defaultColour) -> defaultColour);
 	}
 
 	public LabelComponent(Controller<String> text) {

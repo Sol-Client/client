@@ -7,7 +7,7 @@ import net.minecraft.util.BlockPos;
 @AllArgsConstructor
 public class PlayerSleepEvent {
 
-	public EntityPlayer entityPlayer;
-	public BlockPos pos;
+	public final EntityPlayer entityPlayer;
+	public final BlockPos pos;
 
 }

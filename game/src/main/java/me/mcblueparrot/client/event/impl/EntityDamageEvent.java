@@ -6,6 +6,6 @@ import net.minecraft.entity.Entity;
 @AllArgsConstructor
 public class EntityDamageEvent {
 
-	public Entity entity;
+	public final Entity entity;
 
 }

@@ -20,6 +20,7 @@ import me.mcblueparrot.client.event.impl.PostGuiRenderEvent;
 import me.mcblueparrot.client.event.impl.PreGuiInitEvent;
 import me.mcblueparrot.client.event.impl.PreGuiKeyboardInputEvent;
 import me.mcblueparrot.client.event.impl.PreGuiMouseInputEvent;
+import me.mcblueparrot.client.event.impl.PreGuiRenderEvent;
 import me.mcblueparrot.client.event.impl.RenderGuiBackgroundEvent;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.util.Utils;
@@ -64,6 +65,11 @@ public abstract class MixinGuiScreen implements AccessGuiScreen {
 			instance.initGui();
 			Client.INSTANCE.bus.post(new PostGuiInitEvent(instance, buttonList));
 		}
+	}
+
+	@Inject(method = "drawScreen", at = @At("HEAD"))
+	public void preGuiRender(int mouseX, int mouseY, float partialTicks, CallbackInfo callback) {
+		Client.INSTANCE.bus.post(new PreGuiRenderEvent(partialTicks));
 	}
 
 	@Inject(method = "drawScreen", at = @At("RETURN"))

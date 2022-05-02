@@ -9,6 +9,9 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.replaymod.replay.ReplayModReplay;
 
@@ -202,4 +205,23 @@ public abstract class Mod {
 		}
 	}
 
+	protected void fromJsonObject(JsonObject obj) {
+		new GsonBuilder().registerTypeAdapter(getClass(), (InstanceCreator<Mod>) (type) -> this)
+				.excludeFieldsWithoutExposeAnnotation().create()
+				.fromJson(obj, getClass());
+	}
+
+	protected JsonObject toJsonObject() {
+		return Utils.GSON.toJsonTree(this).getAsJsonObject();
+	}
+
+	public void loadStorage() throws IOException {
+		if(Client.INSTANCE.getModsData().has(getId())) {
+			fromJsonObject(Client.INSTANCE.getModsData().get(getId()).getAsJsonObject());
+		}
+	}
+
+	public void saveStorage() throws IOException {
+		Client.INSTANCE.getModsData().add(getId(), toJsonObject());
+	}
 }

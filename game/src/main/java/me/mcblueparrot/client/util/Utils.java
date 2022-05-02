@@ -22,6 +22,8 @@ import java.util.function.IntConsumer;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.replaymod.replay.ReplayModReplay;
@@ -62,6 +64,7 @@ import net.minecraft.util.Util.EnumOS;
 @UtilityClass
 public class Utils {
 
+	public final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
@@ -94,7 +97,7 @@ public class Utils {
 		out.close();
 		in.close();
 
-		return new JsonParser().parse(result).getAsJsonObject();
+		return JsonParser.parseString(result).getAsJsonObject();
 	}
 
 	public void glColour(Colour color) {

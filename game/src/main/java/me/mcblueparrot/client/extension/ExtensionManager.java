@@ -26,10 +26,10 @@ public class ExtensionManager {
 	public static final ExtensionManager INSTANCE = new ExtensionManager();
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	private File folder = new File(Launch.minecraftHome, "extensions");
-
 	@Getter
-	private List<LoadedExtension> extensions = new ArrayList<>();
+	private final File folder = new File(Launch.minecraftHome, "extensions");
+	@Getter
+	private final List<LoadedExtension> extensions = new ArrayList<>();
 
 	public ExtensionManager() {
 		folder.mkdirs();

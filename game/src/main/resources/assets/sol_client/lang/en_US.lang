@@ -372,11 +372,6 @@ sol_client.mod.hit_colour.description=Change the hit color.
 
 sol_client.mod.hit_colour.option.colour=Color
 
-sol_client.mod.category.hud.name=HUD
-sol_client.mod.category.utility.name=Utility
-sol_client.mod.category.visual.name=Visual
-sol_client.mod.category.integration.name=Integration
-
 sol_client.mod.discord_integration.name=Discord Integration
 sol_client.mod.discord_integration.description=Integration features for Discord including activities and overlay.
 
@@ -386,6 +381,14 @@ sol_client.mod.discord_integration.option.voiceChatHudAlignment=Voice Chat HUD A
 sol_client.mod.discord_integration.option.usernameColour=Username Colour
 sol_client.mod.discord_integration.option.mutedColour=Muted Colour
 sol_client.mod.discord_integration.option.speakingColour=Speaking Colour
+
+sol_client.mod.category.hud.name=HUD
+sol_client.mod.category.utility.name=Utility
+sol_client.mod.category.visual.name=Visual
+sol_client.mod.category.integration.name=Integration
+
+sol_client.mod.category.extensions.name=Extensions
+sol_client.extesion.default_description=No description was provided.
 
 sol_client.mod.screen.title=Mods
 sol_client.mod.screen.search=Type to search

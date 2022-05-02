@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
@@ -88,7 +87,6 @@ import me.mcblueparrot.client.util.Utils;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.IResource;
@@ -104,7 +102,8 @@ public class Client {
 
 	private Minecraft mc = Minecraft.getMinecraft();
 	public static final Client INSTANCE = new Client();
-	private JsonObject data;
+	@Getter
+	private JsonObject modsData;
 	@Getter
 	private List<Mod> mods = new ArrayList<Mod>();
 	private Map<String, Mod> modsById = new HashMap<>();
@@ -112,8 +111,8 @@ public class Client {
 	private List<HudElement> huds = new ArrayList<HudElement>();
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "sol_client_mods.json");
-	private final File LEGACY_DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json" /* This was the old name. */ );
+	private static final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "sol_client_mods.json");
+	private static final File LEGACY_DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json" /* This was the old name. */ );
 
 	public DetectedServer detectedServer;
 
@@ -135,8 +134,6 @@ public class Client {
 	private PopupManager popupManager;
 	@Getter
 	private CapeManager capeManager;
-	@Getter
-	private ExtensionManager extensionManager = ExtensionManager.INSTANCE;
 	@Getter
 	@Setter
 	private GuiMainMenu mainMenu;
@@ -199,7 +196,7 @@ public class Client {
 		register(new HypixelAdditionsMod());
 		register(new DiscordIntegrationMod());
 
-		for(LoadedExtension extension : extensionManager.getExtensions()) {
+		for(LoadedExtension extension : ExtensionManager.INSTANCE.getExtensions()) {
 			try {
 				extension.registerMod();
 			}
@@ -292,14 +289,6 @@ public class Client {
 		keyBinding.setKeyCode(0);
 	}
 
-	private Gson getGson(Mod mod) {
-		GsonBuilder builder = new GsonBuilder();
-		if(mod != null) {
-			builder.registerTypeAdapter(mod.getClass(), (InstanceCreator<Mod>) (type) -> mod);
-		}
-		return builder.excludeFieldsWithoutExposeAnnotation().create();
-	}
-
 	private void cacheHudList() {
 		huds.clear();
 		for(Mod mod : mods) {
@@ -307,36 +296,37 @@ public class Client {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	public boolean load() {
+	private boolean load() {
 		try {
 			if(DATA_FILE.exists()) {
-				// 1.8 uses old libraries, so this warning cannot be easily fixed.
-				data = new JsonParser().parse(FileUtils.readFileToString(DATA_FILE)).getAsJsonObject();
-				data = ConfigVersion.migrate(data);
+				modsData = JsonParser.parseString(FileUtils.readFileToString(DATA_FILE)).getAsJsonObject();
+				modsData = ConfigVersion.migrate(modsData);
 			}
 			else {
-				data = new JsonObject();
-				data.addProperty("version", ConfigVersion.values()[ConfigVersion.values().length - 1].name());
+				modsData = new JsonObject();
+				modsData.addProperty("version", ConfigVersion.values()[ConfigVersion.values().length - 1].name());
 			}
 			return true;
 		}
 		catch(IOException error) {
 			LOGGER.error("Could not load data", error);
-			data = new JsonObject();
+			modsData = new JsonObject();
 			return false;
 		}
 	}
 
 	public boolean save() {
-		Gson gson = getGson(null);
-
 		for(Mod mod : mods) {
-			data.add(mod.getId(), gson.toJsonTree(mod));
+			try {
+				mod.saveStorage();
+			}
+			catch(IOException error) {
+				LOGGER.error("Could not save data for mod {}", error);
+			}
 		}
 
 		try {
-			FileUtils.writeStringToFile(DATA_FILE, gson.toJson(data));
+			FileUtils.writeStringToFile(DATA_FILE, Utils.GSON.toJson(modsData));
 			return true;
 		}
 		catch(IOException error) {
@@ -347,9 +337,7 @@ public class Client {
 
 	public void register(Mod mod) {
 		try {
-			if(data.has(mod.getId())) {
-				getGson(mod).fromJson(data.get(mod.getId()), mod.getClass());
-			}
+			mod.loadStorage();
 			mods.add(mod);
 
 			modsById.put(mod.getId(), mod);

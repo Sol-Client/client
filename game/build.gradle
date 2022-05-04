@@ -4,8 +4,9 @@ import net.md_5.specialsource.SpecialSource
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.commons.ClassRemapper
 import org.objectweb.asm.commons.Remapper
-import org.objectweb.asm.commons.RemappingClassAdapter
 import org.objectweb.asm.tree.ClassNode
 
 import java.nio.file.Files
@@ -103,7 +104,7 @@ static def process(File inputFile, File outputFile, Map<String, String> methods,
 
 		if(entry.getName().endsWith(".class") && methods != null && fields != null) {
 			def reader = new ClassReader(content)
-			reader.accept(new RemappingClassAdapter(new ClassNode(), sniffer), ClassReader.EXPAND_FRAMES)
+			reader.accept(new ClassRemapper(new ClassNode(), sniffer), ClassReader.EXPAND_FRAMES)
 		}
 
 		entryInput.close()
@@ -204,8 +205,8 @@ def replayModRuntimeJar
 def replayModShippedJar
 
 if(workspaceReady) {
-	def methodsFile = new File(mcpFolder, "methods.csv");
-	def fieldsFile = new File(mcpFolder, "fields.csv");
+	def methodsFile = new File(mcpFolder, "methods.csv")
+	def fieldsFile = new File(mcpFolder, "fields.csv")
 
 	def srgFolder = new File(mcpFolder, "srgs")
 
@@ -273,6 +274,78 @@ if(workspaceReady) {
 				fixSrgShipped
 		] as String[])
 	}
+}
+
+def lwjglDir = new File("lwjgl")
+
+def lwjglJar = new File(lwjglDir, "lwjgl-core.jar")
+
+if(!lwjglJar.exists()) {
+	FileUtils.copyURLToFile(new URL("https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1.jar"), lwjglJar)
+}
+
+def lwjglRelocatedJar = new File(lwjglDir, "lwjgl-core-relocated.jar")
+
+if(!lwjglRelocatedJar.exists()) {
+	relocate(lwjglJar, lwjglRelocatedJar)
+}
+
+def lwjglNanoVGJar = new File(lwjglDir, "lwjgl-nanovg.jar")
+
+if(!lwjglNanoVGJar.exists()) {
+	FileUtils.copyURLToFile(new URL("https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1.jar"), lwjglNanoVGJar)
+}
+
+def lwjglNanoVGRelocatedJar = new File(lwjglDir, "lwjgl-nanovg-relocated.jar")
+
+if(!lwjglNanoVGRelocatedJar.exists()) {
+	relocate(lwjglNanoVGJar, lwjglNanoVGRelocatedJar)
+}
+
+static def relocate(def inputJar, def outputJar) {
+	def inputZip = new ZipFile(inputJar)
+	def entries = inputZip.entries()
+	def outputZip = new ZipOutputStream(new FileOutputStream(outputJar))
+
+	while(entries.hasMoreElements()) {
+		def entry = entries.nextElement()
+		def inputStream = inputZip.getInputStream(entry)
+		def bytes = IOUtils.toByteArray(inputStream)
+
+		if(entry.getName().startsWith("META-INF")) continue
+
+		if(entry.getName().endsWith(".class")){
+			def classReader = new ClassReader(bytes)
+			def classWriter = new ClassWriter(0)
+			classReader.accept(new ClassRemapper(classWriter, new Remapper() {
+
+				@Override
+				String map(String typeName) {
+					return relocate(typeName)
+				}
+
+			}), 0)
+			bytes = classWriter.toByteArray()
+		}
+
+		outputZip.putNextEntry(new ZipEntry(relocate(entry.getName())))
+		outputZip.write(bytes)
+		inputStream.close()
+	}
+
+	inputZip.close()
+	outputZip.close()
+}
+
+static def relocate(def name) {
+	if(name.endsWith("PointerBuffer")
+			|| name.endsWith("PointerBuffer.class")
+			|| name.endsWith("BufferUtils")
+			|| name.endsWith("BufferUtils.class")) {
+		return name.replace("org/lwjgl", "org/lwjgl3")
+	}
+
+	return name
 }
 
 task cleanRefmap() {
@@ -369,10 +442,23 @@ dependencies {
 
 	dependency "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
 	dependency "org.java-websocket:Java-WebSocket:1.5.3"
-	
+
 	// patch log4shell
 	implementation "org.apache.logging.log4j:log4j-api:2.17.0"
 	implementation "org.apache.logging.log4j:log4j-core:2.17.0"
+
+	dependency files(lwjglRelocatedJar)
+	ship files(lwjglRelocatedJar)
+
+	dependency files(lwjglNanoVGRelocatedJar)
+	ship files(lwjglNanoVGRelocatedJar)
+
+    runtimeOnly("org.lwjgl:lwjgl:3.3.1:natives-linux") {
+		transitive false
+	}
+    runtimeOnly("org.lwjgl:lwjgl-nanovg:3.3.1:natives-linux") {
+		transitive false
+	}
 }
 
 mixin {

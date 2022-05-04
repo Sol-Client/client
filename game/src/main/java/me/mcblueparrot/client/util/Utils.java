@@ -11,6 +11,8 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Comparator;
@@ -20,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.IntConsumer;
 
 import org.apache.commons.io.IOUtils;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.JsonObject;
@@ -419,7 +422,7 @@ public class Utils {
 		GlStateManager.disableBlend();
 	}
 
-	public static String getScoreboardTitle() {
+	public String getScoreboardTitle() {
 		Minecraft mc = Minecraft.getMinecraft();
 
 		if(mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
@@ -433,7 +436,7 @@ public class Utils {
 		return null;
 	}
 
-	public static String getNativeFileExtension() {
+	public String getNativeFileExtension() {
 		switch(Util.getOSType()) {
 			case WINDOWS:
 				return "dll";
@@ -441,6 +444,14 @@ public class Utils {
 				return "dylib";
 			default:
 				return "so";
+		}
+	}
+
+	public ByteBuffer resourceToByteBuffer(String resource) throws IOException {
+		try(InputStream in = Utils.class.getResourceAsStream(resource)) {
+			ByteBuffer buffer = BufferUtils.createByteBuffer(in.available());
+			Channels.newChannel(in).read(buffer);
+			return buffer;
 		}
 	}
 

@@ -3,6 +3,8 @@ package me.mcblueparrot.client.ui.screen.mods;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.nanovg.NanoVG;
+import org.lwjgl.opengl.GL11;
 
 import lombok.Getter;
 import me.mcblueparrot.client.Client;
@@ -21,11 +23,13 @@ import me.mcblueparrot.client.ui.component.impl.TextFieldComponent;
 import me.mcblueparrot.client.ui.screen.PanoramaBackgroundScreen;
 import me.mcblueparrot.client.ui.screen.SolClientMainMenu;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.VGManager;
 import me.mcblueparrot.client.util.data.Alignment;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 
 public class ModsScreen extends PanoramaBackgroundScreen {
@@ -57,8 +61,27 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		else {
 			drawDefaultBackground();
 		}
+//
+//		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		GlStateManager.enableBlend();
+		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+		NanoVG.nvgBeginFrame(VGManager.MAIN, mc.displayWidth, mc.displayHeight, 1F);
+
+		NanoVG.nvgBeginPath(VGManager.MAIN);
+		NanoVG.nvgFillColor(VGManager.MAIN, VGManager.mainColour(31, 31, 31, 255));
+		NanoVG.nvgRoundedRect(VGManager.MAIN, mc.displayWidth / 2 - 350, mc.displayHeight / 2 - 400, 700, 800, 45);
+		NanoVG.nvgFill(VGManager.MAIN);
+
+		NanoVG.nvgFontSize(VGManager.MAIN, 25);
+		NanoVG.nvgFontFace(VGManager.MAIN, VGManager.INTER);
+		NanoVG.nvgFillColor(VGManager.MAIN, VGManager.mainColour(255, 255, 255, 255));
+		NanoVG.nvgText(VGManager.MAIN, 20, 20, "Test");
+
+		NanoVG.nvgEndFrame(VGManager.MAIN);
+
+		GL11.glPopAttrib();
 	}
 
 	public void switchMod(Mod mod) {

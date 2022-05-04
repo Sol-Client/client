@@ -204,3 +204,4 @@ game/libs/*
 out/
 
 game/replaymod/
+game/lwjgl/

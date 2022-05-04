@@ -78,6 +78,7 @@ import me.mcblueparrot.client.ui.ChatButton;
 import me.mcblueparrot.client.ui.screen.mods.ModsScreen;
 import me.mcblueparrot.client.ui.screen.mods.MoveHudsScreen;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.VGManager;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -137,13 +138,14 @@ public class Client {
 	private GuiMainMenu mainMenu;
 
 	public void init() {
-		Utils.resetLineWidth();
-		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
-
-		System.setProperty("http.agent", "Sol Client/" + VERSION);
-
 		LOGGER.info("Initialising...");
 		bus.register(this);
+
+		Utils.resetLineWidth();
+		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
+		System.setProperty("http.agent", "Sol Client/" + VERSION);
+
+		VGManager.init();
 
 		CpsMonitor.forceInit();
 

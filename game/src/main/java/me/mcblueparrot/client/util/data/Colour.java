@@ -2,6 +2,9 @@ package me.mcblueparrot.client.util.data;
 
 import java.awt.Color;
 
+import org.lwjgl.nanovg.NVGColor;
+import org.lwjgl.nanovg.NanoVG;
+
 import com.google.gson.annotations.Expose;
 
 import lombok.EqualsAndHashCode;
@@ -120,6 +123,10 @@ public class Colour {
 
 	public Color toAWT() {
 		return new Color(value, true);
+	}
+
+	public void toNanoVG(NVGColor color) {
+		NanoVG.nvgRGBA((byte) getRed(), (byte) getGreen(), (byte) getBlue(), (byte) getAlpha(), color);
 	}
 
 	public int[] getComponents() {

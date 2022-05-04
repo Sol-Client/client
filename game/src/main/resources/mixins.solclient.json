@@ -47,6 +47,7 @@
 		"client.MixinGuiListExtended",
 		"client.MixinAbstractClientPlayer",
 		"client.MixinLightMap",
+		"client.MixinNanoVGConfig",
 		"mod.MixinTweaksMod$MixinEnchantment",
 		"mod.MixinTweaksMod$MixinInventoryEffectRenderer",
 		"mod.MixinTweaksMod$MixinItemPotion",

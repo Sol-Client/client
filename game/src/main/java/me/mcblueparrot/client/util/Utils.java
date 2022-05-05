@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.util;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -253,11 +255,11 @@ public class Utils {
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glLineWidth(2);
 		GL11.glBegin(2);
+		GlStateManager.color(f2, f3, f4, f);
 
 		for (int i = 0; i < 70; i++) {
 			float x = radius * MathHelper.cos((float) (i * 0.08975979010256552D));
 			float y = radius * MathHelper.sin((float) (i * 0.08975979010256552D));
-			GlStateManager.color(f2, f3, f4, f);
 			GL11.glVertex2f(xx + x, yy + y);
 		}
 

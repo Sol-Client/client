@@ -1,21 +1,28 @@
 package me.mcblueparrot.client.mod.impl.hud.keystrokes;
 
+import org.lwjgl.opengl.GL11;
+
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.CpsMonitor;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.PlayerHeadRotateEvent;
+import me.mcblueparrot.client.event.impl.PostRenderTickEvent;
+import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.access.AccessMinecraft;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 
 public class KeystrokesMod extends HudMod {
 
@@ -67,7 +74,8 @@ public class KeystrokesMod extends HudMod {
 
 	private float mouseX;
 	private float mouseY;
-	private long lastMouseUpdate;
+	private float lastMouseX;
+	private float lastMouseY;
 
 	private Keystroke w, a, s, d, lmb, rmb, space;
 
@@ -110,10 +118,19 @@ public class KeystrokesMod extends HudMod {
 		mouseY = MathHelper.clamp_float(mouseY, -34 / 2 + 4, 34 / 2 - 4);
 	}
 
+	@EventHandler
+	public void onTick(PreTickEvent event) {
+		lastMouseX = mouseX;
+		lastMouseY = mouseY;
+		mouseX *= 0.75F;
+		mouseY *= 0.75F;
+	}
+
 	@Override
 	public void render(Position position, boolean editMode) {
 		int x = position.getX();
 		int y = position.getY();
+		float partialTicks = AccessMinecraft.getInstance().getTimerSC().renderPartialTicks;
 
 		if(movement) {
 			w.render(x, y);
@@ -125,37 +142,6 @@ public class KeystrokesMod extends HudMod {
 		}
 
 		if(mouseMovement) {
-			long mouseUpdate = System.nanoTime();
-			long since = mouseUpdate - lastMouseUpdate;
-
-			if(mouseX > 0) {
-				mouseX -= since / 25000000D;
-				if(mouseX < 0) {
-					mouseX = 0;
-				}
-			}
-			else if(mouseX < 0) {
-				mouseX += since / 25000000D;
-				if(mouseX > 0) {
-					mouseX = 0;
-				}
-			}
-
-			if(mouseY > 0) {
-				mouseY -= since / 25000000D;
-				if(mouseY < 0) {
-					mouseY = 0;
-				}
-			}
-			else if(mouseY < 0) {
-				mouseY += since / 25000000D;
-				if(mouseY > 0) {
-					mouseY = 0;
-				}
-			}
-
-			lastMouseUpdate = mouseUpdate;
-
 			if(background) {
 				GuiScreen.drawRect(x, y, x + space.width, y + 34, backgroundColour.getValue());
 			}
@@ -164,15 +150,22 @@ public class KeystrokesMod extends HudMod {
 				Utils.drawOutline(x, y, x + space.width, y + 34, borderColour.getValue());
 			}
 
-			if(shadow) Utils.drawRectangle(new Rectangle(x + space.width / 2 + 1, y + (34 / 2), 1, 2),
-					new Colour((textColour.getValue() & 16579836) >> 2 | textColour.getValue() & -16777216));
-			Utils.drawRectangle(new Rectangle(x + space.width / 2, y + (34 / 2) - 1, 1, 2), textColour);
+			GlStateManager.pushMatrix();
+			GlStateManager.enableBlend();
+			GlStateManager.color(1, 1, 1);
 
-			if(shadow) Utils.drawCircle(x + space.width / 2 + mouseX + 1, y + (34 / 2) + mouseY + 1, 4,
-					textColour.getShadowValue());
+			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_keystrokes_mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
+			Gui.drawModalRectWithCustomSizedTexture(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
 
-			Utils.drawCircle(x + space.width / 2F + mouseX, y + (34F / 2F) + mouseY, 4, textColour.getValue());
+			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * partialTicks)) - 5;
+			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * partialTicks)) - 5;
+			GL11.glTranslatef(calculatedMouseX, calculatedMouseY, 0);
 
+			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_keystrokes_mouse_ring_" + Utils.getTextureScale() + ".png"));
+			Gui.drawModalRectWithCustomSizedTexture(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
+//			Utils.drawCircle(x + space.width / 2F + calculatedMouseX, y + (34F / 2F) + calculatedMouseY, 4, textColour.getValue());
+
+			GlStateManager.popMatrix();
 			y += 35;
 		}
 

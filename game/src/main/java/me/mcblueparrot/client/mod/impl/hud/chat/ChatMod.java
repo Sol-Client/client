@@ -331,9 +331,6 @@ public class ChatMod extends HudMod {
 											EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float) i2, (float) (j2 - 8),
 											defaultTextColour.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue(), shadow);
 								}
-
-								GlStateManager.disableAlpha();
-								GlStateManager.disableBlend();
 							}
 						}
 					}

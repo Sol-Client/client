@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 
+import lombok.Getter;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.PrimaryIntegerSettingMod;
@@ -24,7 +25,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	/**
 	 * Represents the single element that this mod contains.
 	 */
-	private final HudModElement element = new HudModElement();
+	protected final HudElement element = new HudModElement();
 
 	@Expose
 	private HudPosition position;

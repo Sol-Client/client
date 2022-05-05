@@ -48,7 +48,19 @@ public class Rectangle {
 	}
 
 	public Rectangle multiply(float scale) {
-		return new Rectangle(x, y, (int) (width * scale), (int) (height * scale));
+		return multiply(scale, scale);
+	}
+
+	public Rectangle multiply(float width, float height) {
+		return new Rectangle(x, y, (int) (this.width * width), (int) (this.height * height));
+	}
+
+	public float[] highPrecisionMultiply(float scale) {
+		return highPrecisionMultiply(scale, scale);
+	}
+
+	public float[] highPrecisionMultiply(float width, float height) {
+		return new float[] { x, y, this.width * width, this.height * height };
 	}
 
 	public Rectangle(int x, int y) {

@@ -42,11 +42,24 @@ public abstract class BaseHudElement implements HudElement {
 	}
 
 	@Override
-	public Rectangle getMultipliedBounds() {
-		Rectangle rectangle = getBounds(getPosition());
+	public float[] getHighPrecisionMultipliedBounds() {
+		Rectangle rectangle = getBounds();
+
 		if(rectangle == null) {
 			return null;
 		}
+
+		return rectangle.highPrecisionMultiply(getHudScale());
+	}
+
+	@Override
+	public Rectangle getMultipliedBounds() {
+		Rectangle rectangle = getBounds();
+
+		if(rectangle == null) {
+			return null;
+		}
+
 		return rectangle.multiply(getHudScale());
 	}
 

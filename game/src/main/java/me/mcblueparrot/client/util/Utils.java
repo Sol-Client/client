@@ -101,24 +101,24 @@ public class Utils {
 		GL11.glColor4ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue(), (byte) color.getAlpha());
 	}
 
-	public void drawHorizontalLine(int startX, int endX, int y, int colour) {
+	public void drawHorizontalLine(double startX, double endX, double y, int colour) {
 		if(endX < startX) {
-			int i = startX;
+			double swap = startX;
 			startX = endX;
-			endX = i;
+			endX = swap;
 		}
 
-		GuiScreen.drawRect(startX, y, endX + 1, y + 1, colour);
+		drawRectangle(startX, y, endX + 1, y + 1, colour);
 	}
 
-	public void drawVerticalLine(int x, int startY, int endY, int colour) {
+	public void drawVerticalLine(double x, double startY, double endY, int colour) {
 		if(endY < startY) {
-			int i = startY;
+			double swap = startY;
 			startY = endY;
-			endY = i;
+			endY = swap;
 		}
 
-		GuiScreen.drawRect(x, startY + 1, x + 1, endY, colour);
+		drawRectangle(x, startY + 1, x + 1, endY, colour);
 	}
 
 	public void drawOutline(Rectangle rectangle, Colour colour) {
@@ -126,11 +126,47 @@ public class Utils {
 				colour.getValue());
 	}
 
-	public void drawOutline(int left, int top, int right, int bottom, int colour) {
+	public void drawOutline(double left, double top, double right, double bottom, int colour) {
 		drawHorizontalLine(left, right - 1, top, colour);
 		drawHorizontalLine(left, right - 1, bottom -1, colour);
 		drawVerticalLine(left, top, bottom - 1, colour);
 		drawVerticalLine(right - 1, top, bottom - 1, colour);
+	}
+
+	public void drawRectangle(double x, double y, double right, double bottom, int colour) {
+		if(x < right) {
+            double swap = x;
+            x = right;
+            right = swap;
+        }
+
+        if(y < bottom) {
+        	double swap = y;
+            y = bottom;
+            bottom = swap;
+        }
+
+		float r = (float) (colour >> 24 & 255) / 255.0F;
+		float g = (float) (colour >> 16 & 255) / 255.0F;
+		float b = (float) (colour >> 8 & 255) / 255.0F;
+		float a = (float) (colour & 255) / 255.0F;
+
+		Tessellator tessellator = Tessellator.getInstance();
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		GlStateManager.enableBlend();
+		GlStateManager.disableTexture2D();
+		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.color(g, b, a, r);
+
+		worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+		worldrenderer.pos(x, bottom, 0.0D).endVertex();
+		worldrenderer.pos(right, bottom, 0.0D).endVertex();
+		worldrenderer.pos(right, y, 0.0D).endVertex();
+		worldrenderer.pos(x, y, 0.0D).endVertex();
+		tessellator.draw();
+
+		GlStateManager.enableTexture2D();
+		GlStateManager.disableBlend();
 	}
 
 	public void drawRectangle(Rectangle rectangle, Colour colour) {
@@ -161,12 +197,16 @@ public class Utils {
 	}
 
 	public void scissor(Rectangle rectangle) {
+		scissor(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+	}
+
+	public void scissor(double x, double y, double width, double height) {
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 		double scale = resolution.getScaleFactor();
 
-		GL11.glScissor((int) (rectangle.getX() * scale),
-				(int) ((resolution.getScaledHeight() - rectangle.getHeight() - rectangle.getY()) * scale),
-				(int) (rectangle.getWidth() * scale), (int) (rectangle.getHeight() * scale));
+		GL11.glScissor((int) (x * scale),
+				(int) ((resolution.getScaledHeight() - height - y) * scale),
+				(int) (width * scale), (int) (height * scale));
 	}
 
 	public void playClickSound(boolean ui) {
@@ -442,6 +482,18 @@ public class Utils {
 			default:
 				return "so";
 		}
+	}
+
+	public double max(double[] doubles) {
+		double max = 0;
+
+		for(double d : doubles) {
+			if(max < d) {
+				max = d;
+			}
+		}
+
+		return max;
 	}
 
 }

@@ -95,6 +95,8 @@ sol_client.mod.ping.description=Display the latency to the current server.
 sol_client.mod.speedometer.name=Speedometer
 sol_client.mod.speedometer.description=Display your speed.
 
+sol_client.mod.speedometer.option.graphMode=Graph Mode
+
 sol_client.mod.reach_display.name=Reach Display
 sol_client.mod.reach_display.description=Display the distance when hitting entities.
 

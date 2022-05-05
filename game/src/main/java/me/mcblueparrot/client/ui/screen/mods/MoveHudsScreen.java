@@ -94,9 +94,10 @@ public class MoveHudsScreen extends Screen {
 				hud.render(true);
 			}
 
-			Rectangle bounds = hud.getMultipliedBounds();
+			Utils.drawOutline(mouseY, mouseY, mouseY, mouseX, mouseY);
+			float[] bounds = hud.getHighPrecisionMultipliedBounds();
 			if(bounds != null) {
-				bounds.stroke(SolClientMod.instance.uiColour);
+				Utils.drawOutline(bounds[0], bounds[1], bounds[0] + bounds[2], bounds[1] + bounds[3], SolClientMod.instance.uiColour.getValue());
 			}
 		}
 

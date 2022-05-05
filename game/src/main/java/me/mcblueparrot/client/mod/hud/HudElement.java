@@ -23,6 +23,8 @@ public interface HudElement {
 
 	Rectangle getBounds(Position position);
 
+	float[] getHighPrecisionMultipliedBounds();
+
 	Rectangle getMultipliedBounds();
 
 	void render(boolean editMode);

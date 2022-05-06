@@ -75,7 +75,7 @@ public class SpeedometerMod extends SimpleHudMod {
 				lastUpdate = System.currentTimeMillis();
 			}
 
-			GL11.glEnable(GL11.GL_BLEND);
+			GlStateManager.enableBlend();
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glEnable(GL11.GL_LINE_SMOOTH);

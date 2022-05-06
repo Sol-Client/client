@@ -6,7 +6,6 @@ class Config {
 	static data = {
 		maxMemory: 2048,
 		optifine: Utils.getOsName() != "osx",
-		discord: false,
 		minecraftFolder: "<use default>"
 	};
 	static file;

@@ -121,17 +121,15 @@ class Launcher {
 						}
 					}
 				});
-				if(Config.data.discord) {
-					version.libraries.push({
-						downloads: {
-							artifact: {
-								url: "https://jitpack.io/com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
-								path: "com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
-								size: 202275
-							}
+				version.libraries.push({
+					downloads: {
+						artifact: {
+							url: "https://jitpack.io/com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
+							path: "com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
+							size: 202275
 						}
-					});
-				}
+					}
+				});
 
 				for(var library of version.libraries) {
 					if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"
@@ -297,47 +295,45 @@ class Launcher {
 
 				var discordNativeLibrary;
 
-				if(Config.data.discord) {
-					var discordVersion = "2.5.6";
-					var discordPath = `com/discord/game-sdk/${discordVersion}/game-sdk-${discordVersion}.zip`;
-					var discordFile = Utils.librariesDirectory + "/" + discordPath;
+				var discordVersion = "2.5.6";
+				var discordPath = `com/discord/game-sdk/${discordVersion}/game-sdk-${discordVersion}.zip`;
+				var discordFile = Utils.librariesDirectory + "/" + discordPath;
 
-					await Library.download({
-							url: "https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip",
-							size: 22808634,
-							path: discordPath
-						});
+				await Library.download({
+						url: "https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip",
+						size: 22808634,
+						path: discordPath
+					});
 
-					var sdkZip = fs.createReadStream(discordFile)
+				var sdkZip = fs.createReadStream(discordFile)
 								.pipe(unzipper.Parse({ forceStream: true }));
 
-					var suffix;
+				var suffix;
 
-					switch(Utils.getOsName()) {
-						case "windows":
-							suffix = ".dll";
-							break;
-						case "linux":
-							suffix = ".so";
-							break;
-						case "osx":
-							suffix = ".dylib";
-							break;
+				switch(Utils.getOsName()) {
+					case "windows":
+						suffix = ".dll";
+						break;
+					case "linux":
+						suffix = ".so";
+						break;
+					case "osx":
+						suffix = ".dylib";
+						break;
+				}
+
+				var discordLibraryName = "discord_game_sdk" + suffix;
+				discordNativeLibrary = nativesFolder + "/" + discordLibraryName;
+				var searchPath = "lib/x86_64/" + discordLibraryName;
+
+				for await(const entry of sdkZip) {
+					const fileName = entry.path;
+
+					if(fileName != searchPath) {
+						await entry.autodrain();
 					}
-
-					var discordLibraryName = "discord_game_sdk" + suffix;
-					discordNativeLibrary = nativesFolder + "/" + discordLibraryName;
-					var searchPath = "lib/x86_64/" + discordLibraryName;
-
-					for await(const entry of sdkZip) {
-						const fileName = entry.path;
-
-						if(fileName != searchPath) {
-							await entry.autodrain();
-						}
-						else {
-	 						await entry.pipe(fs.createWriteStream(discordNativeLibrary));
-						}
+					else {
+	 					await entry.pipe(fs.createWriteStream(discordNativeLibrary));
 					}
 				}
 
@@ -348,7 +344,7 @@ class Launcher {
 				args.push("-Dme.mcblueparrot.client.secret=" + secret);
 				args.push("-Dmixin.target.mapid=searge");
 
-				args.push("-Dlog4j2.formatMsgNoLookups=true"); // See https://hypixel.net/threads/understanding-the-recent-rce-exploit-for-minecraft-and-what-it-actually-means.4703643/. Thank you Draconish and danterus on Discord for informing me of this.
+				args.push("-Dlog4j2.formatMsgNoLookups=true");
 
 				args.push("-Xmx" + Config.data.maxMemory + "M");
 
@@ -356,10 +352,7 @@ class Launcher {
 					args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
 				}
 
-				if(Config.data.discord && discordNativeLibrary) {
-					args.push("-Dme.mcblueparrot.client.discord=true");
-					args.push("-Dme.mcblueparrot.client.discord_lib=" + discordNativeLibrary);
-				}
+				args.push("-Dme.mcblueparrot.client.discord_lib=" + discordNativeLibrary);
 
 				// Fix crashing on some non-English setups. Basically, Mixin is broken in the current version.
 				// This shouldn't (at least I hope it doesn't) interfere with anything, and you can still select your own language from the menu.

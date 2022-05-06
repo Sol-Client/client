@@ -27,10 +27,11 @@ public class MixinHypixelAdditionsMod {
 									float p_177069_9_, double p_177069_10_, CallbackInfo callback) {
 			if(HypixelAdditionsMod.isEffective()) {
 				String levelhead = HypixelAdditionsMod.instance.getLevelhead(entityIn == Minecraft.getMinecraft().thePlayer, entityIn.getDisplayName().getFormattedText(), entityIn.getUniqueID());
-				if (levelhead != null) {
+
+				if(levelhead != null) {
 					renderLivingLabel(entityIn,
 							EnumChatFormatting.AQUA + "Level: " + EnumChatFormatting.YELLOW + levelhead, x,
-							y + ((double) ((float) this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F
+							y + ((double) ((float) getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F
 									* p_177069_9_)),
 							z, 64);
 				}

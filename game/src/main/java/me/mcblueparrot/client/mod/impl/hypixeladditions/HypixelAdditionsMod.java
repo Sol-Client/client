@@ -252,6 +252,7 @@ public class HypixelAdditionsMod extends Mod {
 	public void onRegister() {
 		super.onRegister();
 		setApiKey(apiKey);
+		instance = this;
 	}
 
 	@Override

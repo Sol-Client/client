@@ -95,7 +95,7 @@ public enum ConfigVersion {
 			JsonObject tweaks = newObject.get("tweaks").getAsJsonObject();
 			tweaks.addProperty("disableHotbarScrolling", !tweaks.remove("hotbarScrolling").getAsBoolean());
 
-			JsonObject blockSelection = newObject.get("blockSelection").getAsJsonObject();
+			JsonObject blockSelection = newObject.get("block_selection").getAsJsonObject();
 			// Ummm, that's not how you spell persistent...
 			blockSelection.addProperty("persistent", blockSelection.remove("persistant").getAsBoolean());
 

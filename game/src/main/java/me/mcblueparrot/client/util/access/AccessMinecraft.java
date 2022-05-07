@@ -17,6 +17,8 @@ public interface AccessMinecraft {
 
 	IMetadataSerializer getMetadataSerialiser();
 
+	void resizeWindow(int width, int height);
+
 	static AccessMinecraft getInstance() {
 		return (AccessMinecraft) Minecraft.getMinecraft();
 	}

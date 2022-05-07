@@ -35,6 +35,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.shader.ShaderGroup;
+import net.minecraft.client.shader.ShaderLinkHelper;
 import net.minecraft.client.shader.ShaderUniform;
 import net.minecraft.util.ResourceLocation;
 

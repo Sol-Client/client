@@ -1,12 +1,21 @@
 package me.mcblueparrot.client.mod.impl;
 
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.event.EventHandler;
+import me.mcblueparrot.client.event.impl.FullscreenToggleEvent;
 import me.mcblueparrot.client.event.impl.GammaEvent;
+import me.mcblueparrot.client.event.impl.PreRenderTickEvent;
+import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.Option;
+import me.mcblueparrot.client.util.access.AccessMinecraft;
+import me.mcblueparrot.client.util.data.Rectangle;
 
 public class TweaksMod extends Mod {
 
@@ -37,6 +46,11 @@ public class TweaksMod extends Mod {
 	@Expose
 	@Option
 	public boolean disableHotbarScrolling;
+	@Expose
+	@Option
+	private boolean borderlessFullscreen;
+	private Rectangle previousBounds;
+	private long fullscreenTime = -1;
 
 	@Override
 	public String getId() {
@@ -71,10 +85,74 @@ public class TweaksMod extends Mod {
 		return true;
 	}
 
+	@Override
+	public void postOptionChange(String key, Object value) {
+		if(key.equals("borderlessFullscreen")) {
+			if(mc.isFullScreen()) {
+				if((boolean) value) {
+					setBorderlessFullscreen(true);
+				}
+				else {
+					setBorderlessFullscreen(false);
+					mc.toggleFullscreen();
+					mc.toggleFullscreen();
+				}
+			}
+		}
+	}
+
 	@EventHandler
 	public void onGamma(GammaEvent event) {
 		if(fullbright) {
 			event.gamma = 20F;
+		}
+	}
+
+	@EventHandler
+	public void onFullscreenToggle(FullscreenToggleEvent event) {
+		if(borderlessFullscreen) {
+			event.applyState = false;
+			setBorderlessFullscreen(event.state);
+		}
+	}
+
+	@EventHandler
+	public void onRender(PreRenderTickEvent event) {
+		if(fullscreenTime != -1
+				&& System.currentTimeMillis() - fullscreenTime >= 100) {
+			fullscreenTime = -1;
+			if(mc.inGameHasFocus) {
+				mc.mouseHelper.grabMouseCursor();
+			}
+		}
+	}
+
+	private void setBorderlessFullscreen(boolean state) {
+		try {
+			System.setProperty("org.lwjgl.opengl.Window.undecorated", Boolean.toString(state));
+			Display.setFullscreen(false);
+			Display.setResizable(!state);
+
+			if(state) {
+				previousBounds = new Rectangle(Display.getX(), Display.getY(), mc.displayWidth, mc.displayHeight);
+
+				Display.setDisplayMode(new DisplayMode(Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight()));
+				Display.setLocation(0, 0);
+				AccessMinecraft.getInstance().resizeWindow(Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight());
+			}
+			else {
+				Display.setDisplayMode(new DisplayMode(previousBounds.getWidth(), previousBounds.getHeight()));
+				Display.setLocation(previousBounds.getX(), previousBounds.getY());
+				AccessMinecraft.getInstance().resizeWindow(previousBounds.getWidth(), previousBounds.getHeight());
+
+				if(mc.inGameHasFocus) {
+					mc.mouseHelper.ungrabMouseCursor();
+					fullscreenTime = System.currentTimeMillis();
+				}
+			}
+		}
+		catch(LWJGLException error) {
+			logger.error("Could not totggle borderless fullscreen", error);
 		}
 	}
 

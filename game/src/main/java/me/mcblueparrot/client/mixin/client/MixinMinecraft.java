@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -20,6 +21,7 @@ import com.replaymod.replay.InputReplayTimer;
 
 import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
+import me.mcblueparrot.client.event.impl.FullscreenToggleEvent;
 import me.mcblueparrot.client.event.impl.GameQuitEvent;
 import me.mcblueparrot.client.event.impl.InitialOpenGuiEvent;
 import me.mcblueparrot.client.event.impl.MouseClickEvent;
@@ -253,6 +255,10 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	@Override
 	@Accessor(value = "timer")
 	public abstract Timer getTimerSC();
+
+	@Override
+	@Invoker("resize")
+	public abstract void resizeWindow(int width, int height);
 
 	@Shadow
 	public GuiScreen currentScreen;
@@ -527,6 +533,20 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 		instance.displayGuiScreen(screen);
 	}
 
+	@Inject(method = "toggleFullscreen", at = @At("HEAD"), cancellable = true)
+	public void handleToggle(CallbackInfo callback) {
+		FullscreenToggleEvent event = Client.INSTANCE.bus.post(new FullscreenToggleEvent(!fullscreen));
+
+		if(event.cancelled) {
+			callback.cancel();
+			gameSettings.fullScreen = fullscreen;
+		}
+		else if(!event.applyState) {
+			callback.cancel();
+			gameSettings.fullScreen = (fullscreen = !fullscreen);
+		}
+	}
+
 	// Fix Replay Mod bug - textures animate too fast.
 
 	private boolean earlyBird;
@@ -599,5 +619,8 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 
 	@Shadow
 	public PlayerControllerMP playerController;
+
+	@Shadow
+	private boolean fullscreen;
 
 }

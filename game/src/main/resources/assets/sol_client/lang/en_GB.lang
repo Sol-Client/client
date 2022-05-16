@@ -1,3 +1,5 @@
+sol_client.vertical_alignment.middle=Centre
+
 sol_client.mod.simple_hud.option.backgroundColour=Background Colour
 sol_client.mod.simple_hud.option.borderColour=Border Colour
 sol_client.mod.simple_hud.option.textColour=Text Colour

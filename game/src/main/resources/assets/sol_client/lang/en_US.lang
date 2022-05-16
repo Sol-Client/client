@@ -214,7 +214,8 @@ sol_client.mod.tweaks.option.minimalViewBobbing=Minimal View Bobbing
 sol_client.mod.tweaks.option.confirmDisconnect=Confirm Disconnect
 sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
 sol_client.mod.tweaks.option.disableHotbarScrolling=Disable Hotbar Scrolling
-sol_client.mod.tweaks.option.borderlessFullscreen=Borderless Fullscreen
+sol_client.mod.tweaks.option.minimalDamageShake=Minimal Damage Shake
+sol_client.mod.tweaks.option.damageShakeIntensity=Damage Shake Intensity
 
 sol_client.mod.tweaks.confirm_disconnect=Press Again to Confirm
 

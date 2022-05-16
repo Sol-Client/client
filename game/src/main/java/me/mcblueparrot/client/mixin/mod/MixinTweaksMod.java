@@ -3,7 +3,6 @@ package me.mcblueparrot.client.mixin.mod;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -170,8 +169,31 @@ public class MixinTweaksMod {
 			setupViewBobbing(partialTicks);
 		}
 
+		@Redirect(method = "setupCameraTransform", at = @At(value = "INVOKE",
+				target = "Lnet/minecraft/client/renderer/EntityRenderer;hurtCameraEffect(F)V"))
+		public void cancelWorldRotation(EntityRenderer instance, float partialTicks) {
+			if(TweaksMod.enabled && TweaksMod.instance.minimalDamageShake) {
+				return;
+			}
+
+			hurtCameraEffect(partialTicks);
+		}
+
+		@Redirect(method = "hurtCameraEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;rotate(FFFF)V"))
+		public void adjustRotation(float angle, float x, float y, float z) {
+			if(TweaksMod.enabled) {
+				angle *= TweaksMod.instance.getDamageShakeIntensity();
+			}
+			
+			GlStateManager.rotate(angle, x, y, z);
+		}
+
+
 		@Shadow
 		protected abstract void setupViewBobbing(float partialTicks);
+
+		@Shadow
+		protected abstract void hurtCameraEffect(float partialTicks);
 
 	}
 

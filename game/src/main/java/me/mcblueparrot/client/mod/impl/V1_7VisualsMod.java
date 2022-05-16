@@ -30,7 +30,10 @@ public class V1_7VisualsMod extends Mod {
 	private boolean particles = true;
 	@Expose
 	@Option
-	private boolean items = true;
+	private boolean bow = true;
+	@Expose
+	@Option
+	private boolean rod = true;
 	@Expose
 	@Option
 	public boolean armourDamage = true;
@@ -97,18 +100,22 @@ public class V1_7VisualsMod extends Mod {
 
 	@EventHandler
 	public void onItemTransform(TransformFirstPersonItemEvent event) {
-		if(!items) {
+		if(!(bow || rod)) {
 			return;
 		}
 
 		// https://github.com/sp614x/optifine/issues/2098
 
 		if(mc.thePlayer.isUsingItem() && event.itemToRender.getItem() instanceof ItemBow) {
-			GlStateManager.translate(-0.01f, 0.05f, -0.06f);
+			if(bow) {
+				GlStateManager.translate(-0.01f, 0.05f, -0.06f);
+			}
 		}
 		else if(event.itemToRender.getItem() instanceof ItemFishingRod) {
-			GlStateManager.translate(0.08f, -0.027f, -0.33f);
-			GlStateManager.scale(0.93f, 1.0f, 1.0f);
+			if(rod) {
+				GlStateManager.translate(0.08f, -0.027f, -0.33f);
+				GlStateManager.scale(0.93f, 1.0f, 1.0f);
+			}
 		}
 	}
 

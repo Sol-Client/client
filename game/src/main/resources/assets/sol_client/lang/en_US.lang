@@ -211,11 +211,12 @@ sol_client.mod.tweaks.option.showOwnTag=Show Own Nametag
 sol_client.mod.tweaks.option.arabicNumerals=Arabic Numerals
 sol_client.mod.tweaks.option.betterTooltips=Better Tooltips
 sol_client.mod.tweaks.option.minimalViewBobbing=Minimal View Bobbing
-sol_client.mod.tweaks.option.confirmDisconnect=Confirm Disconnect
-sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
-sol_client.mod.tweaks.option.disableHotbarScrolling=Disable Hotbar Scrolling
 sol_client.mod.tweaks.option.minimalDamageShake=Minimal Damage Shake
 sol_client.mod.tweaks.option.damageShakeIntensity=Damage Shake Intensity
+sol_client.mod.tweaks.option.confirmDisconnect=Confirm Disconnect
+sol_client.mod.tweaks.option.borderlessFullscreen=Borderless Fullscreen
+sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
+sol_client.mod.tweaks.option.disableHotbarScrolling=Disable Hotbar Scrolling
 
 sol_client.mod.tweaks.confirm_disconnect=Press Again to Confirm
 
@@ -337,8 +338,10 @@ sol_client.mod.chunk_animator.option.animation=Animation
 sol_client.mod.1.7_visuals.name=1.7 Visuals
 sol_client.mod.1.7_visuals.description=Bring back some of the look-and-feel of 1.7.
 
-sol_client.mod.1.7_visuals.option.useAndMine=Block and Dig
+sol_client.mod.1.7_visuals.option.useAndMine=Dig while using Item
+sol_client.mod.1.7_visuals.option.particles=Particles
 sol_client.mod.1.7_visuals.option.rod=Fishing Rod
+sol_client.mod.1.7_visuals.option.bow=Bow
 sol_client.mod.1.7_visuals.option.armourDamage=Damage Effect on Armor
 sol_client.mod.1.7_visuals.option.sneaking=Smooth Sneaking
 

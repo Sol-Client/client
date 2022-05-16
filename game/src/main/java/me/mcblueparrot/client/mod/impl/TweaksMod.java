@@ -39,6 +39,13 @@ public class TweaksMod extends Mod {
 	public boolean minimalViewBobbing;
 	@Expose
 	@Option
+	public boolean minimalDamageShake;
+	@Expose
+	@Option
+	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
+	private float damageShakeIntensity = 100;
+	@Expose
+	@Option
 	public boolean confirmDisconnect;
 	@Expose
 	@Option
@@ -49,13 +56,6 @@ public class TweaksMod extends Mod {
 	@Expose
 	@Option
 	private boolean borderlessFullscreen;
-	@Expose
-	@Option
-	public boolean minimalDamageShake;
-	@Expose
-	@Option
-	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
-	private float damageShakeIntensity = 100;
 	private Rectangle previousBounds;
 	private long fullscreenTime = -1;
 

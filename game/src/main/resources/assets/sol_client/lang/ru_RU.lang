@@ -212,11 +212,11 @@ sol_client.mod.tweaks.option.arabicNumerals=Арабские цифры на ч�
 sol_client.mod.tweaks.option.betterTooltips=Улучшить подсказки
 sol_client.mod.tweaks.option.minimalViewBobbing=Уменьшить покачивание камеры
 sol_client.mod.tweaks.option.confirmDisconnect=Спрашивать при отключении
-sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
+sol_client.mod.tweaks.option.betterKeyBindings=Улучшенные приивязки клавиш
 sol_client.mod.tweaks.option.disableHotbarScrolling=Отключить колёсико в хотбаре
 sol_client.mod.tweaks.option.borderlessFullscreen=Оконный полный экран
 
-sol_client.mod.tweaks.confirm_disconnect=Press Again to Confirm
+sol_client.mod.tweaks.confirm_disconnect=Нажмите ещё раз для подтверждения
 
 sol_client.mod.freelook.name=Свободный просмотр
 sol_client.mod.freelook.description=Разрешает смотреть вокруг не двигая головой.
@@ -377,7 +377,7 @@ sol_client.mod.hit_colour.description=Изменяет цвет удара.
 sol_client.mod.hit_colour.option.colour=Цвет
 
 sol_client.mod.category.hud.name=Интерфейс
-sol_client.mod.category.utility.name=Utility
+sol_client.mod.category.utility.name=Инструменты
 sol_client.mod.category.visual.name=Вид
 sol_client.mod.category.integration.name=Интеграция
 

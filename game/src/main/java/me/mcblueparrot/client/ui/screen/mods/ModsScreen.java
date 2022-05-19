@@ -55,7 +55,6 @@ public class ModsScreen extends Screen {
 		@Getter
 		private Mod mod;
 		private TextFieldComponent search;
-		private Component searchIcon;
 		private ModsScroll scroll;
 		private int noModsScroll;
 		private boolean singleModMode;
@@ -115,8 +114,7 @@ public class ModsScreen extends Screen {
 				scroll.snapTo(0);
 				scroll.load();
 				return true;
-			}).placeholder("Search");
-			searchIcon = new ScaledIconComponent("sol_client_search", 16, 16);
+			}).placeholder("Search").withIcon("sol_client_search");
 
 			switchMod(startingMod, true);
 		}
@@ -135,16 +133,14 @@ public class ModsScreen extends Screen {
 
 			if(mod == null) {
 				scroll.snapTo(noModsScroll);
-				add(search, (component, defaultBounds) -> new Rectangle(25, 6, defaultBounds.getWidth(),
+				add(search, (component, defaultBounds) -> new Rectangle(6, 6, defaultBounds.getWidth(),
 						defaultBounds.getHeight()));
-				add(searchIcon, (component, defaultBounds) -> new Rectangle(6, 3, defaultBounds.getWidth(), defaultBounds.getHeight()));
 			}
 			else {
 				noModsScroll = scroll.getScroll();
 				scroll.snapTo(0);
 				if(!first) {
 					remove(search);
-					remove(searchIcon);
 				}
 			}
 		}

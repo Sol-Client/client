@@ -59,7 +59,7 @@ public class SolClientMod extends ConfigOnlyMod {
 	public boolean fancyFont = true;
 
 	public SolClientMod() {
-		super("Sol Client", "sol_client", "Settings for Sol Client.", ModCategory.NONE);
+		super("Sol Client", "sol_client", "Settings for Sol Client.", ModCategory.GENERAL);
 		instance = this;
 		Client.INSTANCE.registerKeyBinding(modsKey);
 		Client.INSTANCE.registerKeyBinding(editHudKey);

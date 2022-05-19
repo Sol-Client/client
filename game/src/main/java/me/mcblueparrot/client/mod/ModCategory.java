@@ -15,9 +15,9 @@ public enum ModCategory {
 	 */
 	ALL(null),
 	/**
-	 * Mod appears before all others.
+	 * General uncategorisable mods.
 	 */
-	NONE(null),
+	GENERAL("General"),
 	/**
 	 * HUD widgets.
 	 */

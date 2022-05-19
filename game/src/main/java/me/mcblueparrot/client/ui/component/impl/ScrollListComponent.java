@@ -129,7 +129,7 @@ public abstract class ScrollListComponent extends Component {
 			return 0;
 		}
 
-		return (subComponents.get(0).getBounds().getHeight() + getSpacing());
+		return (subComponents.get(1).getBounds().getHeight() + getSpacing());
 	}
 
 	@Override

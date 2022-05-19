@@ -39,7 +39,7 @@ public class TweaksMod extends Mod {
 	public boolean hotbarScrolling = true;
 
 	public TweaksMod() {
-		super("Tweaks", "tweaks", "Various game tweaks.", ModCategory.UTILITY);
+		super("Tweaks", "tweaks", "Various game tweaks.", ModCategory.GENERAL);
 		instance = this;
 	}
 

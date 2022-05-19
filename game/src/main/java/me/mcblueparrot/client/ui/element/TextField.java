@@ -42,7 +42,7 @@ public class TextField {
 
 			return true;
 		}
-		else if(character == 8 && !text.isEmpty()) {
+		else if(key == 14 && !text.isEmpty()) {
 			if(GuiScreen.isCtrlKeyDown()) {
 				text = "";
 			}

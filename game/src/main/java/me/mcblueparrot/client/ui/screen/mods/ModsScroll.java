@@ -17,6 +17,11 @@ public class ModsScroll extends ScrollListComponent {
 	}
 
 	@Override
+	protected int getScrollStep() {
+		return 30 + getSpacing();
+	}
+
+	@Override
 	public void setParent(Component parent) {
 		super.setParent(parent);
 	}

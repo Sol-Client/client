@@ -124,12 +124,12 @@ public abstract class ScrollListComponent extends Component {
 		return super.mouseClickedAnywhere(translate(info), button, inside, processed);
 	}
 
-	private int getScrollStep() {
+	protected int getScrollStep() {
 		if(subComponents.isEmpty()) {
 			return 0;
 		}
 
-		return (subComponents.get(1).getBounds().getHeight() + getSpacing());
+		return (subComponents.get(0).getBounds().getHeight() + getSpacing());
 	}
 
 	@Override
@@ -163,12 +163,15 @@ public abstract class ScrollListComponent extends Component {
 	public void tick() {
 		super.tick();
 
-		targetY = MathHelper.clamp_double(targetY, 0, maxScrolling);
+		clamp();
 
 		lastAnimatedY = animatedY;
-
 		double multiplier = 0.6F;
 		animatedY += (targetY - animatedY) * multiplier;
+	}
+
+	private void clamp() {
+		targetY = MathHelper.clamp_double(targetY, 0, maxScrolling);
 	}
 
 	@Override

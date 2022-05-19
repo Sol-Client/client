@@ -51,7 +51,7 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 	@ConfigOption("Depth")
 	private boolean depth = true;
 	@Expose
-	@ConfigOption("Persistant")
+	@ConfigOption("Persistent")
 	private boolean persistant = true;
 
 	public BlockSelectionMod() {

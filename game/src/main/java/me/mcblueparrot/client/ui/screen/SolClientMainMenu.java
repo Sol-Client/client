@@ -34,8 +34,6 @@ import net.minecraft.util.ResourceLocation;
 public class SolClientMainMenu extends Screen {
 
 	private GuiMainMenu base;
-	private boolean wasMouseDown;
-	private boolean mouseDown;
 
 	public SolClientMainMenu(GuiMainMenu base) {
 		super(new MainMenuComponent());
@@ -49,6 +47,7 @@ public class SolClientMainMenu extends Screen {
 		base.setWorldAndResolution(mc, width, height);
 	}
 
+	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		drawPanorama(mouseX, mouseY, partialTicks);
 
@@ -65,81 +64,6 @@ public class SolClientMainMenu extends Screen {
 		mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_logo_with_text_" +
 						Utils.getTextureScale() + ".png"));
 		Gui.drawModalRectWithCustomSizedTexture(width / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
-//
-//		Button singleplayerButton = new Button(SolClientMod.getFont(), "Singleplayer",
-//				new Rectangle(width / 2 - 100, height / 4 + 48, 200, 20), SolClientMod.instance.uiColour, SolClientMod.instance.uiHover)
-//				.withIcon("textures/gui/sol_client_player");
-//		Button multiplayerButton = new Button(SolClientMod.getFont(), "Multiplayer",
-//				new Rectangle(width / 2 - 100, height / 4 + 48 + 25, 200, 20), SolClientMod.instance.uiColour, SolClientMod.instance.uiHover)
-//				.withIcon("textures/gui/sol_client_players");
-//
-//		if(singleplayerButton.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
-//			Utils.playClickSound(true);
-//			mc.displayGuiScreen(new GuiSelectWorld(this));
-//		}
-//		else if(multiplayerButton.contains(mouseX, mouseY) && mouseDown && !wasMouseDown) {
-//			Utils.playClickSound(true);
-//			mc.displayGuiScreen(new GuiMultiplayer(this));
-//		}
-//
-//		singleplayerButton.render(mouseX, mouseY);
-//		multiplayerButton.render(mouseX, mouseY);
-//
-//		boolean replay = SCReplayMod.enabled;
-//		int buttonsCount = 3;
-//
-//		if(replay) {
-//			buttonsCount++;
-//		}
-//
-//		int buttonsX = width / 2 - (12 * buttonsCount);
-//
-//		Button languageButton = new Button(SolClientMod.getFont(), "",
-//				new Rectangle(buttonsX, height / 4 + 48 + 70, 20, 20), SolClientMod.instance.uiColour,
-//				SolClientMod.instance.uiHover).withIcon("textures/gui/sol_client_language");
-//		Button optionsButton = new Button(SolClientMod.getFont(), "",
-//				new Rectangle(buttonsX += 26, height / 4 + 48 + 70, 20, 20), SolClientMod.instance.uiColour,
-//				SolClientMod.instance.uiHover).withIcon("textures/gui/sol_client_settings_small");
-//		Button modsButton = new Button(SolClientMod.getFont(), "",
-//				new Rectangle(buttonsX += 26, height / 4 + 48 + 70, 20, 20), SolClientMod.instance.uiColour,
-//				SolClientMod.instance.uiHover).withIcon("textures/gui/sol_client_mods");
-//
-//		Button replayButton = null;
-//
-//		if(replay) {
-//			replayButton = new Button(SolClientMod.getFont(), "",
-//					new Rectangle(buttonsX += 26, height / 4 + 48 + 70, 20, 20), SolClientMod.instance.uiColour,
-//					SolClientMod.instance.uiHover).withIcon("textures/gui/sol_client_replay_button");
-//		}
-//
-//		if(mouseDown && !wasMouseDown) {
-//			if(optionsButton.contains(mouseX, mouseY)) {
-//				Utils.playClickSound(true);
-//				mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
-//			}
-//			else if(modsButton.contains(mouseX, mouseY)) {
-//				Utils.playClickSound(true);
-//				mc.displayGuiScreen(new ModsScreen());
-//			}
-//			else if(languageButton.contains(mouseX, mouseY)) {
-//				Utils.playClickSound(true);
-//				mc.displayGuiScreen(new GuiLanguage(this, mc.gameSettings, mc.getLanguageManager()));
-//			}
-//			else if(replayButton != null && replayButton.contains(mouseX, mouseY)) {
-//				Utils.playClickSound(true);
-//				new GuiReplayViewer(ReplayModReplay.instance).display();
-//			}
-//		}
-//
-//		languageButton.render(mouseX, mouseY);
-//		optionsButton.render(mouseX, mouseY);
-//		modsButton.render(mouseX, mouseY);
-//
-//		if(replayButton != null) {
-//			replayButton.render(mouseX, mouseY);
-//		}
-
-		wasMouseDown = mouseDown;
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
@@ -277,7 +201,7 @@ public class SolClientMainMenu extends Screen {
 			add(new ButtonComponent((component, defaultText) -> "",
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_replay_button")
 							.type(ButtonType.SMALL).onClick((info, button) -> {
-								if (button == 0) {
+								if(button == 0) {
 									Utils.playClickSound(true);
 									new GuiReplayViewer(ReplayModReplay.instance).display();
 									return true;
@@ -286,6 +210,21 @@ public class SolClientMainMenu extends Screen {
 								return false;
 							}).visibilityController((component, defaultVisibility) -> SCReplayMod.enabled),
 					(component, defaultBounds) -> new Rectangle(buttonsX + 78, screen.height / 4 + 48 + 70,
+							defaultBounds.getWidth(), defaultBounds.getHeight()));
+
+			add(new ButtonComponent((component, defaultText) -> "",
+					new AnimatedColourController(
+							(component, defaultColour) -> component.isHovered() ? Colour.RED_HOVER : Colour.RED)).onClick((info, button) -> {
+								if(button == 0) {
+									Utils.playClickSound(true);
+									mc.shutdown();
+									return true;
+								}
+
+								return false;
+							})
+									.type(ButtonType.SMALL).withIcon("sol_client_exit"),
+					(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - 30, 10,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 		}
 

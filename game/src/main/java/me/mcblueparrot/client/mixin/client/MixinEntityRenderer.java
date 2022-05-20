@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.shader.ShaderGroup;
+import net.minecraft.client.shader.ShaderLinkHelper;
 import net.minecraft.entity.Entity;
 
 @Mixin(EntityRenderer.class)
@@ -50,15 +51,13 @@ public abstract class MixinEntityRenderer {
 
 	@Inject(method = "updateShaderGroupSize", at = @At("RETURN"))
 	public void updateShaders(int width, int height, CallbackInfo callback) {
-		if(mc.theWorld == null) {
+		if(ShaderLinkHelper.getStaticShaderLinkHelper() == null || !OpenGlHelper.shadersSupported) {
 			return;
 		}
 
-		if(OpenGlHelper.shadersSupported) {
-			for (ShaderGroup group : Client.INSTANCE.bus.post(new PostProcessingEvent(PostProcessingEvent.Type.UPDATE))
-					.groups) {
-				group.createBindFramebuffers(width, height);
-			}
+		for(ShaderGroup group : Client.INSTANCE.bus.post(new PostProcessingEvent(PostProcessingEvent.Type.UPDATE))
+				.groups) {
+			group.createBindFramebuffers(width, height);
 		}
 	}
 

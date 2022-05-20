@@ -214,16 +214,16 @@ public class SolClientMainMenu extends Screen {
 
 			add(new ButtonComponent((component, defaultText) -> "",
 					new AnimatedColourController(
-							(component, defaultColour) -> component.isHovered() ? Colour.RED_HOVER : Colour.RED)).onClick((info, button) -> {
-								if(button == 0) {
-									Utils.playClickSound(true);
-									mc.shutdown();
-									return true;
-								}
+							(component, defaultColour) -> component.isHovered() ? Colour.RED_HOVER : Colour.RED))
+									.onClick((info, button) -> {
+										if (button == 0) {
+											Utils.playClickSound(true);
+											mc.shutdown();
+											return true;
+										}
 
-								return false;
-							})
-									.type(ButtonType.SMALL).withIcon("sol_client_exit"),
+										return false;
+									}).type(ButtonType.SMALL).withIcon("sol_client_exit"),
 					(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - 30, 10,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 		}

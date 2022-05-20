@@ -224,7 +224,7 @@ public class SolClientMainMenu extends Screen {
 
 										return false;
 									}).type(ButtonType.SMALL).withIcon("sol_client_exit"),
-					(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - 30, 10,
+					(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - 25, 5,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 		}
 

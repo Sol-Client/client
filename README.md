@@ -12,12 +12,7 @@ Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versi
 
 Update: Yes, I know, it has been seven months since I wrote about the newer versions thing.
 
-[Website](https://sol-client.github.io)
-
-## Installing
-First, go to [releases](https://github.com/Sol-Client/Client/releases).
-
-Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue. The code is all open source, so don't worry.
+[Website & Download](https://sol-client.github.io)
 
 ## Licence
 This project uses [GNU General Public License v3.0](LICENSE), meaning that if you fork this project, it must be either completely private, or the code *must* be available to your users.

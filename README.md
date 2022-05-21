@@ -14,6 +14,10 @@ Update: Yes, I know, it has been seven months since I wrote about the newer vers
 
 [Website & Download](https://sol-client.github.io)
 
+## Pojav
+People have alreading been talking about this client working on Pojav, but it's not quite ready.
+However, it does mostly work, and you can download a preview from [here](https://github.com/Sol-Client/Installer/releases).
+
 ## Licence
 This project uses [GNU General Public License v3.0](LICENSE), meaning that if you fork this project, it must be either completely private, or the code *must* be available to your users.
 

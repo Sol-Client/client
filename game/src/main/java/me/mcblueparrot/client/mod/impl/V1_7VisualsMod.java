@@ -30,6 +30,9 @@ public class V1_7VisualsMod extends Mod {
 	private boolean particles = true;
 	@Expose
 	@Option
+	public boolean blocking = true;
+	@Expose
+	@Option
 	private boolean bow = true;
 	@Expose
 	@Option

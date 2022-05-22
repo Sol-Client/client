@@ -43,7 +43,6 @@ sol_client.mod.simple_hud.option.shadow=Text Shadow
 sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=General settings for Sol Client.
 
-
 sol_client.mod.sol_client.option.fancyMainMenu=Main Menu
 sol_client.mod.sol_client.option.logoInInventory=Show Logo in Inventory
 sol_client.mod.sol_client.mods=Mods
@@ -340,6 +339,7 @@ sol_client.mod.1.7_visuals.description=Bring back some of the look-and-feel of 1
 
 sol_client.mod.1.7_visuals.option.useAndMine=Dig while using Item
 sol_client.mod.1.7_visuals.option.particles=Particles
+sol_client.mod.1.7_visuals.option.blocking=Sword Blocking
 sol_client.mod.1.7_visuals.option.rod=Fishing Rod
 sol_client.mod.1.7_visuals.option.bow=Bow
 sol_client.mod.1.7_visuals.option.armourDamage=Damage Effect on Armor

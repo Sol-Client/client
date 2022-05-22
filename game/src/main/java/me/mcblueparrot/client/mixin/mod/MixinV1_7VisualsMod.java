@@ -42,8 +42,8 @@ public abstract class MixinV1_7VisualsMod {
 
 		@Inject(method = "doBlockTransformations", at = @At("RETURN"))
 		public void oldBlocking(CallbackInfo callback) {
-			GlStateManager.scale(0.83f, 0.88f, 0.85f);
-			GlStateManager.translate(-0.3f, 0.1f, 0.0f);
+			GlStateManager.scale(0.83F, 0.88F, 0.85F);
+			GlStateManager.translate(-0.3F, 0.1F, 0.0F);
 		}
 
 	}

@@ -34,7 +34,7 @@ public class ModListing extends ColouredComponent {
 						return component.isHovered() ? SolClientMod.instance.uiHover : SolClientMod.instance.uiColour;
 					}
 					else if(mod.isBlocked()) {
-						return component.isHovered() ? Colour.RED_HOVER : Colour.RED;
+						return component.isHovered() ? Colour.RED_HOVER : Colour.PURE_RED;
 					}
 					else {
 						return component.isHovered() ? Colour.DISABLED_MOD_HOVER : Colour.DISABLED_MOD;

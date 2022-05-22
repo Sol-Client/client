@@ -36,7 +36,7 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 	private boolean outline = true;
 	@Expose
 	@Option
-	@Slider(min = 1, max = 10, step = 1)
+	@Slider(min = 1, max = 10, step = 0.5F)
 	private float outlineWidth = 4;
 	@Expose
 	@Option

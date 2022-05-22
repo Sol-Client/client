@@ -60,3 +60,9 @@ sol_client.mod.block_selection.option.fillColour=Fill Colour
 sol_client.mod.hit_colour.name=Hit Colour
 sol_client.mod.hit_colour.description=Change the hit colour.
 sol_client.mod.hit_colour.option.colour=Colour
+
+sol_client.mod.hitbox.description=Customise and easily toggle entity hitbox displays.
+
+sol_client.mod.hitbox.option.boundingBoxColour=Bounding Box Colour
+sol_client.mod.hitbox.option.eyeHeightColour=Eye Height Colour
+sol_client.mod.hitbox.option.lookVectorColour=Look Vector Colour

@@ -20,7 +20,9 @@ public class Colour {
 
 	public static final Colour WHITE = new Colour(255, 255, 255);
 	public static final Colour BLACK = new Colour(0, 0, 0);
-	public static final Colour RED = new Colour(255, 0, 0);
+	public static final Colour PURE_RED = new Colour(255, 0, 0);
+	public static final Colour PURE_GREEN = new Colour(0, 255, 0);
+	public static final Colour PURE_BLUE = new Colour(0, 0, 255);
 	public static final Colour RED_HOVER = new Colour(255, 80, 80);
 	public static final Colour BLUE = new Colour(0, 150, 255);
 	public static final Colour BLUE_HOVER = new Colour(30, 180, 255);

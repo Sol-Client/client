@@ -380,6 +380,18 @@ sol_client.mod.hit_colour.description=Change the hit color.
 
 sol_client.mod.hit_colour.option.colour=Color
 
+sol_client.mod.hitbox.name=Hitboxes
+sol_client.mod.hitbox.description=Customize and easily toggle entity hitbox displays.
+
+sol_client.mod.hitbox.option.toggleHitboxes=Toggle Hitboxes
+sol_client.mod.hitbox.option.boundingBox=Show Bounding Box
+sol_client.mod.hitbox.option.boundingBoxColour=Bounding Box Color
+sol_client.mod.hitbox.option.eyeHeight=Show Eye Height
+sol_client.mod.hitbox.option.eyeHeightColour=Eye Height Color
+sol_client.mod.hitbox.option.lookVector=Show Look Vector
+sol_client.mod.hitbox.option.lookVectorColour=Look Vector Color
+sol_client.mod.hitbox.option.lineWidth=Line Width
+
 sol_client.mod.category.hud.name=HUD
 sol_client.mod.category.utility.name=Utility
 sol_client.mod.category.visual.name=Visual

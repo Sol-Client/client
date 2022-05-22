@@ -14,6 +14,7 @@ import me.mcblueparrot.client.util.access.AccessEntityLivingBase;
 import me.mcblueparrot.client.util.access.AccessMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.Entity;
@@ -25,9 +26,11 @@ public abstract class MixinV1_7VisualsMod {
 	@Mixin(ItemRenderer.class)
 	public static abstract class MixinItemRenderer {
 
-		@Shadow protected abstract void transformFirstPersonItem(float equipProgress, float swingProgress);
+		@Shadow
+		protected abstract void transformFirstPersonItem(float equipProgress, float swingProgress);
 
-		@Shadow @Final private Minecraft mc;
+		@Shadow
+		private @Final Minecraft mc;
 
 		@Redirect(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;transformFirstPersonItem(FF)V"))
 		public void allowUseAndSwing(ItemRenderer itemRenderer, float equipProgress, float swingProgress) {
@@ -35,6 +38,12 @@ public abstract class MixinV1_7VisualsMod {
 					swingProgress == 0.0F && V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine ?
 					mc.thePlayer.getSwingProgress(AccessMinecraft.getInstance().getTimerSC().renderPartialTicks) :
 							swingProgress);
+		}
+
+		@Inject(method = "doBlockTransformations", at = @At("RETURN"))
+		public void oldBlocking(CallbackInfo callback) {
+			GlStateManager.scale(0.83f, 0.88f, 0.85f);
+			GlStateManager.translate(-0.3f, 0.1f, 0.0f);
 		}
 
 	}

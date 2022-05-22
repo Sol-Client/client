@@ -105,7 +105,6 @@ public class V1_7VisualsMod extends Mod {
 		}
 
 		// https://github.com/sp614x/optifine/issues/2098
-
 		if(mc.thePlayer.isUsingItem() && event.itemToRender.getItem() instanceof ItemBow) {
 			if(bow) {
 				GlStateManager.translate(-0.01f, 0.05f, -0.06f);

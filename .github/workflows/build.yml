@@ -121,4 +121,4 @@ jobs:
           Sol-Client-Launcher-Linux/*.AppImage
           Sol-Client-Launcher-Windows/*.exe
           Sol-Client-Launcher-MacOS/*.dmg
-          game.jar
+          Game/game.jar

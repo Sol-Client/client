@@ -1,6 +1,6 @@
 {
   "name": "Sol Client",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "description": "Simple and easy to use Minecraft client.",
   "main": "main.js",
   "scripts": {

@@ -138,7 +138,7 @@ public class V1_7VisualsMod extends Mod {
 		var16 = var16 * var16 * var16;
 		var16 -= 0.05F;
 		float var17 = 1.0F - var16;
-		GlStateManager.translate(0.0F, MathHelper.abs(MathHelper.cos(var14 / 4F * (float) Math.PI) * 0.1F)
+		GlStateManager.translate(0.0F, MathHelper.abs(MathHelper.cos(var14 / 4F * (float) Math.PI) * 0.11F)
 				* (float) ((double) var15 > 0.2D ? 1 : 0), 0.0F);
 		GlStateManager.translate(var17 * 0.6F, -var17 * 0.5F, 0.0F);
 		GlStateManager.rotate(var17 * 90.0F, 0.0F, 1.0F, 0.0F);

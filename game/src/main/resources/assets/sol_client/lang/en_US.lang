@@ -340,6 +340,7 @@ sol_client.mod.1.7_visuals.description=Bring back some of the look-and-feel of 1
 sol_client.mod.1.7_visuals.option.useAndMine=Dig while using Item
 sol_client.mod.1.7_visuals.option.particles=Particles
 sol_client.mod.1.7_visuals.option.blocking=Sword Blocking
+sol_client.mod.1.7_visuals.option.eatingAndDrinking=Eating and Drinking
 sol_client.mod.1.7_visuals.option.rod=Fishing Rod
 sol_client.mod.1.7_visuals.option.bow=Bow
 sol_client.mod.1.7_visuals.option.armourDamage=Damage Effect on Armor

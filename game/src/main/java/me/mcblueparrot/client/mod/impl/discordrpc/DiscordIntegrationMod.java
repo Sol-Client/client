@@ -227,7 +227,12 @@ public class DiscordIntegrationMod extends Mod {
 		}
 
 		activity = new Activity();
-		activity.setDetails(text);
+		activity.setState(text);
+
+		if(Client.DEV) {
+			activity.setDetails("Development Test");
+		}
+
 		activity.setType(ActivityType.PLAYING);
 		activity.assets().setLargeImage("large_logo");
 		activity.timestamps().setStart(Instant.now());

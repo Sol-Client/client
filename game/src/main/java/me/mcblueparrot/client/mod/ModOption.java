@@ -23,12 +23,12 @@ import org.apache.logging.log4j.Logger;
 import lombok.Getter;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.mod.annotation.AbstractTranslationKey;
-import me.mcblueparrot.client.mod.annotation.ApplyToAll;
 import me.mcblueparrot.client.mod.annotation.FileOption;
 import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.KeyBinding;
 
 public class ModOption {
 
@@ -42,12 +42,13 @@ public class ModOption {
 	private FileOption configFile;
 	@Getter
 	private File file;
+	private String applyToAllClass;
 
 	public ModOption(Mod mod, Option option, Field field) throws IOException {
 		this.mod = mod;
 		this.field = field;
 
-		if(Modifier.isFinal(field.getModifiers())) {
+		if(Modifier.isFinal(field.getModifiers()) && !(field.getType() == KeyBinding.class)) {
 			LOGGER.warn("mod option " + field.getName() + " is final");
 		}
 
@@ -75,6 +76,12 @@ public class ModOption {
 			else {
 				translationKey = mod.getTranslationKey();
 			}
+		}
+
+		applyToAllClass = option.applyToAllClass();
+
+		if(applyToAllClass.isEmpty()) {
+			applyToAllClass = null;
 		}
 	}
 
@@ -171,23 +178,19 @@ public class ModOption {
 	}
 
 	public boolean canApplyToAll() {
-		return field.isAnnotationPresent(ApplyToAll.class);
-	}
-
-	public String getApplyToAllId() {
-		return canApplyToAll() ? field.getAnnotation(ApplyToAll.class).value() : null;
+		return applyToAllClass != null;
 	}
 
 	public void applyToAll() {
-		String id = getApplyToAllId();
+		String key = applyToAllClass;
 
-		if(id == null) {
+		if(key == null) {
 			return;
 		}
 
 		for(Mod mod : Client.INSTANCE.getMods()) {
 			for(ModOption option : mod.getOptions()) {
-				if(option.canApplyToAll() && option.getApplyToAllId().equals(id)
+				if(option.canApplyToAll() && option.applyToAllClass.equals(key)
 						&& option.getType() == getType()) {
 					option.setValue(getValue());
 				}

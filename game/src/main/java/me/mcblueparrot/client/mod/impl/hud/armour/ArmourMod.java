@@ -19,7 +19,7 @@ public class ArmourMod extends HudMod {
 	private static final ItemStack CHESTPLATE = new ItemStack(Items.iron_chestplate);
 	private static final ItemStack LEGGINGS = new ItemStack(Items.iron_leggings);
 	private static final ItemStack BOOTS = new ItemStack(Items.iron_boots);
-	private static final ItemStack HAND = new ItemStack(Items.iron_sword);
+	private static final ItemStack HAND = new ItemStack(Items.diamond_sword);
 
 	@Expose
 	@Option
@@ -34,7 +34,7 @@ public class ArmourMod extends HudMod {
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.TEXT_COLOUR_CLASS)
 	private Colour textColour = Colour.WHITE;
 
 	@Override

@@ -410,6 +410,7 @@ sol_client.mod.discord_integration.option.speakingColour=Speaking Colour
 
 sol_client.mod.screen.title=Mods
 sol_client.mod.screen.search=Type to search
+sol_client.mod.screen.apply_to_all=Apply to All
 
 sol_client.hud.edit=Edit HUD
 

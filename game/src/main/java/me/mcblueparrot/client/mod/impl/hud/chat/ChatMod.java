@@ -66,7 +66,7 @@ public class ChatMod extends HudMod {
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean background = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
 	private Colour backgroundColour = new Colour(0, 0, 0, 127);
 	@Expose
 	@Option

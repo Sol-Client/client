@@ -30,13 +30,13 @@ public class ScoreboardMod extends Mod {
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	public boolean background = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
 	public Colour backgroundColour = new Colour(1342177280);
 	@Expose
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	public boolean border = false;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
 	public Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option

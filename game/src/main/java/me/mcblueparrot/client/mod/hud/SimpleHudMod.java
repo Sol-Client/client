@@ -20,16 +20,16 @@ public abstract class SimpleHudMod extends HudMod {
 	@Option
 	protected boolean background = true;
 	@Expose
-	@Option
+	@Option(applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
 	protected Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
 	@Option
 	protected boolean border = false;
 	@Expose
-	@Option
+	@Option(applyToAllClass = Option.BORDER_COLOUR_CLASS)
 	protected Colour borderColour = Colour.BLACK;
 	@Expose
-	@Option
+	@Option(applyToAllClass = Option.TEXT_COLOUR_CLASS)
 	protected Colour textColour = Colour.WHITE;
 	@Expose
 	@Option

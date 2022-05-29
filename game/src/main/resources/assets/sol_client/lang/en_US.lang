@@ -243,6 +243,8 @@ sol_client.mod.taplook.option.perspective=Perspective
 sol_client.mod.toggle_sprint.name=Toggle Sprint
 sol_client.mod.toggle_sprint.description=Toggle the sprint key.
 
+sol_client.mod.toggle_sprint.default_width=113
+
 sol_client.mod.toggle_sprint.option.hud=HUD
 
 sol_client.mod.toggle_sprint.held=Sprinting (Held)

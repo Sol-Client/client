@@ -1,12 +1,18 @@
 package me.mcblueparrot.client.mod.hud;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.mod.annotation.AbstractTranslationKey;
 import me.mcblueparrot.client.mod.annotation.Option;
+import me.mcblueparrot.client.util.DirtyMapper;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Position;
 import me.mcblueparrot.client.util.data.Rectangle;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 /**
  * A simple HUD mod that rendered a simple string.
@@ -34,10 +40,24 @@ public abstract class SimpleHudMod extends HudMod {
 	@Expose
 	@Option
 	protected boolean shadow = true;
+	private DirtyMapper<String, Integer> langWidth = new DirtyMapper<>(() -> mc.getLanguageManager().getCurrentLanguage().getLanguageCode(), (key) -> {
+		String translationKey = getTranslationKey() + ".default_width";
+		String width = I18n.format(translationKey);
+
+		if(width.equals(translationKey)) {
+			return 53;
+		}
+
+		return Integer.parseInt(width);
+	});
 
 	@Override
 	public Rectangle getBounds(Position position) {
-		return new Rectangle(position.getX(), position.getY(), 53, 16);
+		return new Rectangle(position.getX(), position.getY(), getWidth(), 16);
+	}
+
+	private int getWidth() {
+		return langWidth.get();
 	}
 
 	@Override

@@ -45,11 +45,6 @@ public class ToggleSprintMod extends SimpleHudMod {
 	}
 
 	@Override
-	public Rectangle getBounds(Position position) {
-		return new Rectangle(position.getX(), position.getY(), 110, super.getBounds(position).getHeight());
-	}
-
-	@Override
 	public String getText(boolean editMode) {
 		if(!hud) {
 			return null;

@@ -97,8 +97,14 @@ sol_client.mod.speedometer.description=Deine Geschwindigkeit anzeigen.
 sol_client.mod.reach_display.name=Reichweitendisplay
 sol_client.mod.reach_display.description=Distanz beim Treffen von Kreaturen anzeigen.
 
-sol_client.mod.combo_counter.name=Combo Zähler
+sol_client.mod.combo_counter.name=Kombi Zähler
 sol_client.mod.combo_counter.description=Zähle die Nummer von nachfolgenden Treffer.
+
+sol_client.mod.combo_counter.default_width=63
+
+sol_client.mod.combo_counter.no_hits=Keine Kombi
+sol_client.mod.combo_counter.one_hit=1 Treffer
+sol_client.mod.combo_counter.n_hits=%s Treffer
 
 sol_client.mod.potion_effects.name=Trankeffekte
 sol_client.mod.potion_effects.description=Aktive Tränke mit Countdowns anzeigen.
@@ -208,9 +214,13 @@ sol_client.mod.tweaks.option.showOwnTag=Eigenen Nametag anzeigen
 sol_client.mod.tweaks.option.arabicNumerals=Arabische Ziffern
 sol_client.mod.tweaks.option.betterTooltips=Bessere Kurzinfos
 sol_client.mod.tweaks.option.minimalViewBobbing=Minimales Wippen der Sicht
+sol_client.mod.tweaks.option.minimalDamageShake=Minimales Schadensschütteln
+sol_client.mod.tweaks.option.damageShakeIntensity=Schadensschütteln Intensität
 sol_client.mod.tweaks.option.confirmDisconnect=Trennung bestätigen
+sol_client.mod.tweaks.option.borderlessFullscreen=Grenzenloser Vollbildschirm
 sol_client.mod.tweaks.option.betterKeyBindings=Bessere Tastenbindungen
 sol_client.mod.tweaks.option.disableHotbarScrolling=Hotbarscrollen deaktivieren
+
 sol_client.mod.tweaks.confirm_disconnect=Drücke noch ein Mal um zu bestätigen
 
 sol_client.mod.freelook.name=Freischauen
@@ -332,7 +342,11 @@ sol_client.mod.1.7_visuals.name=1.7 Sichtbarkeiten
 sol_client.mod.1.7_visuals.description=Bringe ein paar Animationen und das Gefühl von 1.7 zurück.
 
 sol_client.mod.1.7_visuals.option.useAndMine=Blockieren und Graben
+sol_client.mod.1.7_visuals.option.particles=Partikel
+sol_client.mod.1.7_visuals.option.blocking=Schwert Blöcken
+sol_client.mod.1.7_visuals.option.eatingAndDrinking=Essen und Trinken
 sol_client.mod.1.7_visuals.option.rod=Angel
+sol_client.mod.1.7_visuals.option.bow=Bogen
 sol_client.mod.1.7_visuals.option.armourDamage=Schadeneffekt auf Rüstung
 sol_client.mod.1.7_visuals.option.sneaking=Sanftes Schleichen
 
@@ -370,6 +384,17 @@ sol_client.mod.hit_colour.name=Trefferfarbe
 sol_client.mod.hit_colour.description=Ändere die Farbe beim Treffen anderer Spieler.
 
 sol_client.mod.hit_colour.option.colour=Farbe
+
+sol_client.mod.hitbox.description=Kreaturen Hitbox Anzeigen einfach umschalten und anpassen.
+
+sol_client.mod.hitbox.option.toggleHitboxes=Hitbox umschalten
+sol_client.mod.hitbox.option.boundingBox=Begrenzungsbox anzeigen
+sol_client.mod.hitbox.option.boundingBoxColour=Begrenzungsbox Farbe
+sol_client.mod.hitbox.option.eyeHeight=Augenhöhe anzeigen
+sol_client.mod.hitbox.option.eyeHeightColour=Augenhöhen Farbe
+sol_client.mod.hitbox.option.lookVector=Sichtvektor anzeigen
+sol_client.mod.hitbox.option.lookVectorColour=Sichtvektor Farbe
+sol_client.mod.hitbox.option.lineWidth=Linienweite
 
 sol_client.mod.category.hud.name=HUD
 sol_client.mod.category.utility.name=Nützliches

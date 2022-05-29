@@ -17,7 +17,6 @@ public class DirtyMapper<I, O> {
 		I controlValue = controlValueSupplier.get();
 
 		if(!controlValue.equals(lastControlValue)) {
-			System.out.println("computing...");
 			lastControlValue = controlValue;
 			return lastOutput = mapper.apply(lastControlValue);
 		}

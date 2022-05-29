@@ -66,7 +66,7 @@ public class TweaksMod extends Mod {
 
 	@Override
 	public ModCategory getCategory() {
-		return ModCategory.UTILITY;
+		return ModCategory.GENERAL;
 	}
 
 	@Override

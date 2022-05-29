@@ -396,6 +396,7 @@ sol_client.mod.hitbox.option.lookVector=Sichtvektor anzeigen
 sol_client.mod.hitbox.option.lookVectorColour=Sichtvektor Farbe
 sol_client.mod.hitbox.option.lineWidth=Linienweite
 
+sol_client.mod.category.general.name=Allgemeines
 sol_client.mod.category.hud.name=HUD
 sol_client.mod.category.utility.name=Nützliches
 sol_client.mod.category.visual.name=Visuelles

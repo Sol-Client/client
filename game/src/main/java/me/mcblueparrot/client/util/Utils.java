@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URI;
@@ -64,39 +67,21 @@ import net.minecraft.util.Util.EnumOS;
 @UtilityClass
 public class Utils {
 
+	private PrintStream out;
 	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
-	private int getStringWidth(String text) {
-		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
+	static {
+		try {
+			out = new PrintStream(System.out, true, "UTF-8");
+		}
+		catch(UnsupportedEncodingException error) {
+			out = System.out;
+		}
 	}
 
-	public JsonObject getGraph(URL url, String query) throws IOException {
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		connection.setDoOutput(true);
-		connection.setRequestMethod("POST");
-		connection.setRequestProperty("Content-Type", "application/json");
-		connection.setRequestProperty("Accept", "application/json");
-
-		JsonObject object = new JsonObject();
-		object.addProperty("query", query);
-
-		OutputStream out = connection.getOutputStream();
-		out.write(object.toString().getBytes());
-
-		InputStream in;
-		try {
-			in = connection.getInputStream();
-		}
-		catch(IOException error) {
-			in = connection.getErrorStream();
-		}
-		String result = IOUtils.toString(in, StandardCharsets.UTF_8);
-
-		out.close();
-		in.close();
-
-		return new JsonParser().parse(result).getAsJsonObject();
+	private int getStringWidth(String text) {
+		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
 	}
 
 	public void glColour(Colour color) {
@@ -407,7 +392,7 @@ public class Utils {
 	}
 
 	private void sendLauncherMessage(String type, String... arguments) {
-		System.out.println("message " + System.getProperty("me.mcblueparrot.client.secret") + " " + type + " " + String.join(" ", arguments));
+		out.println("message " + System.getProperty("me.mcblueparrot.client.secret") + " " + type + " " + String.join(" ", arguments));
 	}
 
 	public String getRelativeToPackFolder(File packFile) {

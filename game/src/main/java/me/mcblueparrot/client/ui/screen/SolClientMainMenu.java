@@ -36,10 +36,6 @@ import net.minecraft.util.ResourceLocation;
 
 public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
-	private GuiMainMenu base;
-	private boolean wasMouseDown;
-	private boolean mouseDown;
-
 	public SolClientMainMenu() {
 		super(new MainMenuComponent());
 	}
@@ -61,8 +57,6 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 		mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_logo_with_text_" +
 						Utils.getTextureScale() + ".png"));
 		Gui.drawModalRectWithCustomSizedTexture(width / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
-
-		wasMouseDown = mouseDown;
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
@@ -167,7 +161,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 			add(new ButtonComponent((component, defaultText) -> "",
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_replay_button")
 							.type(ButtonType.SMALL).onClick((info, button) -> {
-								if (button == 0) {
+								if(button == 0) {
 									Utils.playClickSound(true);
 									new GuiReplayViewer(ReplayModReplay.instance).display();
 									return true;
@@ -176,6 +170,21 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 								return false;
 							}).visibilityController((component, defaultVisibility) -> SCReplayMod.enabled),
 					(component, defaultBounds) -> new Rectangle(buttonsX + 78, screen.height / 4 + 48 + 70,
+							defaultBounds.getWidth(), defaultBounds.getHeight()));
+
+			add(new ButtonComponent((component, defaultText) -> "",
+					new AnimatedColourController(
+							(component, defaultColour) -> component.isHovered() ? Colour.RED_HOVER : Colour.PURE_RED))
+									.onClick((info, button) -> {
+										if (button == 0) {
+											Utils.playClickSound(true);
+											mc.shutdown();
+											return true;
+										}
+
+										return false;
+									}).type(ButtonType.SMALL).withIcon("sol_client_exit"),
+					(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - 25, 5,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 		}
 

@@ -135,6 +135,24 @@ class Launcher {
 				}
 			}
 		});
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://repo.maven.apache.org/maven2/org/java-websocket/Java-WebSocket/1.5.3/Java-WebSocket-1.5.3.jar",
+					path: "org/java-websocket/Java-WebSocket/1.5.3/Java-WebSocket-1.5.3.jar",
+					size: 134209
+				}
+			}
+		});
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar",
+					path: "org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar",
+					size: 41125
+				}
+			}
+		});
 
 		for(var library of version.libraries) {
 			if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"

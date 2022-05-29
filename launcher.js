@@ -11,13 +11,12 @@ const Utils = require("./utils");
 const Patcher = require("./patcher");
 const { ipcRenderer, shell } = require("electron");
 const crypto = require("crypto");
-const { AccountManager } = require("./auth");
 const url = require("url");
 
 class Launcher {
 
 	static instance = new Launcher();
-	accountManager = null;
+	account = null;
 	games = [];
 
 	async launch(callback, server) {
@@ -99,7 +98,6 @@ class Launcher {
 				}
 			}
 		});
-
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -109,7 +107,6 @@ class Launcher {
 				}
 			}
 		});
-
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -119,7 +116,6 @@ class Launcher {
 				}
 			}
 		});
-
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -129,57 +125,15 @@ class Launcher {
 				}
 			}
 		});
-
-		if(Config.data.discord) {
-			version.libraries.push({
-				downloads: {
-					artifact: {
-						url: "https://jitpack.io/com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
-						path: "com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
-						size: 202275
-					}
-<<<<<<< HEAD
-				});
-				version.libraries.push({
-					downloads: {
-						artifact: {
-							url: "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-core/2.17.1/log4j-core-2.17.1.jar",
-							path: "org/apache/logging/log4j/log4j-core/2.17.1/log4j-core-2.17.1.jar",
-							size: 1789769
-						}
-					}
-				});
-				version.libraries.push({
-					downloads: {
-						artifact: {
-							url: "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-api/2.17.1/log4j-api-2.17.1.jar",
-							path: "org/apache/logging/log4j/log4j-api/2.17.1/log4j-api-2.17.1.jar",
-							size: 1789769
-						}
-					}
-				});
-				version.libraries.push({
-					downloads: {
-						artifact: {
-							url: "https://libraries.minecraft.net/com/google/code/gson/gson/2.8.8/gson-2.8.8.jar",
-							path: "com/google/code/gson/gson/2.8.8/gson-2.8.8.jar",
-							size: 242047
-						}
-					}
-				});
-				version.libraries.push({
-					downloads: {
-						artifact: {
-							url: "https://jitpack.io/com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
-							path: "com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
-							size: 202275
-						}
-					}
-				});
-=======
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://jitpack.io/com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
+					path: "com/github/JnCrMx/discord-game-sdk4j/v0.5.4/discord-game-sdk4j-v0.5.4.jar",
+					size: 202275
 				}
-			});
-		}
+			}
+		});
 
 		for(var library of version.libraries) {
 			if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"
@@ -225,7 +179,6 @@ class Launcher {
 				}
 			}
 		}
->>>>>>> main
 
 		console.log("Downloading assets...");
 
@@ -303,209 +256,6 @@ class Launcher {
 						fs.unlinkSync(jrePath);
 					}
 
-<<<<<<< HEAD
-					versionToAdd = optifinePatchedJar;
-				}
-				else {
-					var mappedJar = versionFolder + "/" + version.id + "-searge.jar";
-
-					if(!fs.existsSync(mappedJar)) {
-						await Patcher.patch(java, versionFolder, versionJar, mappedJar);
-					}
-
-					versionToAdd = mappedJar;
-				}
-
-				var discordNativeLibrary;
-
-				var discordVersion = "2.5.6";
-				var discordPath = `com/discord/game-sdk/${discordVersion}/game-sdk-${discordVersion}.zip`;
-				var discordFile = Utils.librariesDirectory + "/" + discordPath;
-
-				await Library.download({
-						url: "https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip",
-						size: 22808634,
-						path: discordPath
-					});
-
-				var sdkZip = fs.createReadStream(discordFile)
-								.pipe(unzipper.Parse({ forceStream: true }));
-
-				var suffix;
-
-				switch(Utils.getOsName()) {
-					case "windows":
-						suffix = ".dll";
-						break;
-					case "linux":
-						suffix = ".so";
-						break;
-					case "osx":
-						suffix = ".dylib";
-						break;
-				}
-
-				var discordLibraryName = "discord_game_sdk" + suffix;
-				discordNativeLibrary = nativesFolder + "/" + discordLibraryName;
-				var searchPath = "lib/x86_64/" + discordLibraryName;
-
-				for await(const entry of sdkZip) {
-					const fileName = entry.path;
-
-					if(fileName != searchPath) {
-						await entry.autodrain();
-					}
-					else {
-	 					await entry.pipe(fs.createWriteStream(discordNativeLibrary));
-					}
-				}
-
-				var args = [];
-				args.push("-Djava.library.path=" + nativesFolder);
-
-				args.push("-Dme.mcblueparrot.client.version=" + Utils.version);
-				args.push("-Dme.mcblueparrot.client.secret=" + secret);
-				args.push("-Dmixin.target.mapid=searge");
-
-				args.push("-Dlog4j2.formatMsgNoLookups=true");
-
-				args.push("-Xmx" + Config.data.maxMemory + "M");
-
-				if(Utils.getOsName() == "windows") {
-					args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
-				}
-
-				args.push("-Dme.mcblueparrot.client.discord_lib=" + discordNativeLibrary);
-
-				// Fix crashing on some non-English setups. Basically, Mixin is broken in the current version.
-				// This shouldn't (at least I hope it doesn't) interfere with anything, and you can still select your own language from the menu.
-				args.push("-Duser.language=en");
-				args.push("-Duser.country=US");
-
-				// Fix Log4j encoding.
-				args.push("-Dfile.encoding=UTF-8");
-
-				var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";
-				var classpath = "";
-
-				args.push("-cp");
-
-				for(var jar of jars) {
-					classpath += jar;
-					classpath += classpathSeparator;
-				}
-
-				classpath += versionToAdd;
-				classpath += classpathSeparator;
-				classpath += path.join(__dirname, "game/build/libs/game.jar");
-				classpath += classpathSeparator;
-
-				args.push(classpath);
-
-				args.push("net.minecraft.launchwrapper.Launch");
-
-				args.push("--version");
-				args.push("Sol Client");
-
-				var activeAccount = this.accountManager.activeAccount;
-
-				args.push("--username");
-				args.push(activeAccount.username);
-
-				args.push("--uuid");
-				args.push(activeAccount.uuid);
-
-				if(server) {
-					args.push("--server");
-					args.push(server);
-				}
-
-				args.push("--accessToken");
-				args.push(activeAccount.accessToken);
-
-				args.push("--versionType");
-				args.push("release");
-
-				if(activeAccount.demo) {
-					args.push("--demo");
-				}
-
-				args.push("--assetsDir");
-				args.push(Utils.assetsDirectory);
-
-				args.push("--assetIndex");
-				args.push(version.assetIndex.id);
-
-				var gameDirectory = Config.getGameDirectory(Utils.gameDirectory);
-
-				args.push("--gameDir");
-				args.push(gameDirectory);
-
-				args.push("--tweakClass");
-				args.push("me.mcblueparrot.client.tweak.Tweaker");
-
-				var process = childProcess.spawn(java, args, { cwd: gameDirectory });
-				this.games.push(process);
-
-				let fullOutput = "";
-
-				process.stdout.on("data", (data) => {
-					var dataString = data.toString("UTF-8");
-					fullOutput += dataString;
-
-					if(dataString.endsWith("\n")) {
-						dataString = dataString.substring(0, dataString.length - 1);
-					}
-
-					if(dataString.indexOf("message ") == 0) {
-						var splitDataString = dataString.split(" ");
-						if(splitDataString[1] === secret) {
-							if(splitDataString[2] == "openUrl") {
-								var url = splitDataString[3];
-
-								if(url.endsWith("§scshowinfolder§")) {
-									url = url.substring(5, url.length - 16);
-
-									if(Utils.getOsName() == "windows") {
-										url = url.substring(1).replace(/\//g, "\\");
-									}
-
-									shell.showItemInFolder(url);
-								}
-								else {
-									shell.openExternal(url);
-								}
-							}
-						}
-					}
-					else {
-						console.log("[Game/STDOUT] " + dataString);
-					}
-				});
-				process.stderr.on("data", (data) => {
-					var dataString = data.toString("UTF-8");
-					fullOutput += dataString;
-					console.error("[Game/STDERR] " + dataString);
-				});
-
-				process.on("exit", (code) => {
-					if(code != 0) {
-						console.error("Game crashed with exit code " + code);
-						if(optifineVersion) {
-							var optifineName = "OptiFine " + optifineVersion.replace(/_/g, " ");
-						}
-
-						ipcRenderer.send("crash", fullOutput, Config.getGameDirectory(Utils.gameDirectory) + "/logs/latest.log", optifineName);
-					}
-					else {
-						console.log("Game exited with code 0");
-					}
-					this.games.splice(this.games.indexOf(process), 1);
-				});
-
-				callback();
-			});
-=======
 					java = dest + "/" + response.data[0].release_name
 							+ "-jre/";
 					switch(Utils.getOsName()) {
@@ -559,47 +309,45 @@ class Launcher {
 
 		var discordNativeLibrary;
 
-		if(Config.data.discord) {
-			var discordVersion = "2.5.6";
-			var discordPath = `com/discord/game-sdk/${discordVersion}/game-sdk-${discordVersion}.zip`;
-			var discordFile = Utils.librariesDirectory + "/" + discordPath;
+		var discordVersion = "2.5.6";
+		var discordPath = `com/discord/game-sdk/${discordVersion}/game-sdk-${discordVersion}.zip`;
+		var discordFile = Utils.librariesDirectory + "/" + discordPath;
 
-			await Library.download({
-					url: "https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip",
-					size: 22808634,
-					path: discordPath
-				});
+		await Library.download({
+				url: "https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip",
+				size: 22808634,
+				path: discordPath
+			});
 
-			var sdkZip = fs.createReadStream(discordFile)
-						.pipe(unzipper.Parse({ forceStream: true }));
+		var sdkZip = fs.createReadStream(discordFile)
+					.pipe(unzipper.Parse({ forceStream: true }));
 
-			var suffix;
+		var suffix;
 
-			switch(Utils.getOsName()) {
-				case "windows":
-					suffix = ".dll";
-					break;
-				case "linux":
-					suffix = ".so";
-					break;
-				case "osx":
-					suffix = ".dylib";
-					break;
+		switch(Utils.getOsName()) {
+			case "windows":
+				suffix = ".dll";
+				break;
+			case "linux":
+				suffix = ".so";
+				break;
+			case "osx":
+				suffix = ".dylib";
+				break;
+		}
+
+		var discordLibraryName = "discord_game_sdk" + suffix;
+		discordNativeLibrary = nativesFolder + "/" + discordLibraryName;
+		var searchPath = "lib/x86_64/" + discordLibraryName;
+
+		for await(const entry of sdkZip) {
+			const fileName = entry.path;
+
+			if(fileName != searchPath) {
+				await entry.autodrain();
 			}
-
-			var discordLibraryName = "discord_game_sdk" + suffix;
-			discordNativeLibrary = nativesFolder + "/" + discordLibraryName;
-			var searchPath = "lib/x86_64/" + discordLibraryName;
-
-			for await(const entry of sdkZip) {
-				const fileName = entry.path;
-
-				if(fileName != searchPath) {
-					await entry.autodrain();
-				}
-				else {
-						await entry.pipe(fs.createWriteStream(discordNativeLibrary));
-				}
+			else {
+					await entry.pipe(fs.createWriteStream(discordNativeLibrary));
 			}
 		}
 
@@ -618,10 +366,7 @@ class Launcher {
 			args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
 		}
 
-		if(Config.data.discord && discordNativeLibrary) {
-			args.push("-Dme.mcblueparrot.client.discord=true");
-			args.push("-Dme.mcblueparrot.client.discord_lib=" + discordNativeLibrary);
-		}
+		args.push("-Dme.mcblueparrot.client.discord_lib=" + discordNativeLibrary);
 
 		// Fix crashing on some non-English setups. Basically, Mixin is broken in the current version.
 		// This shouldn't (at least I hope it doesn't) interfere with anything, and you can still select your own language from the menu.
@@ -721,7 +466,6 @@ class Launcher {
 			else {
 				console.log("[Game/STDOUT] " + dataString);
 			}
->>>>>>> main
 		});
 		process.stderr.on("data", (data) => {
 			var dataString = data.toString("UTF-8");

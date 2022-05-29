@@ -236,7 +236,7 @@ sol_client.mod.toggle_sprint.description=Schalte die Sprinttaste um.
 sol_client.mod.toggle_sprint.option.hud=HUD
 
 sol_client.mod.toggle_sprint.held=Sprinten (Gehalten)
-sol_client.mod.toggle_sprint.toggled=Sprinten (Umgeschaltet)
+sol_client.mod.toggle_sprint.toggled=Sprinten (Umgesch.)
 
 sol_client.mod.zoom.name=Zoom
 sol_client.mod.zoom.description=Reinzoomen, wenn man eine Taste drückt.

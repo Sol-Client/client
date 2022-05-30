@@ -37,7 +37,7 @@ public class PotionEffectsMod extends HudMod {
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
-	@Option
+	@Option(applyToAllClass = Option.TEXT_COLOUR_CLASS)
 	private Colour titleColour = Colour.WHITE;
 	@Expose
 	@Option

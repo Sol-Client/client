@@ -9,9 +9,11 @@ import lombok.Setter;
 import me.mcblueparrot.client.mod.impl.SolClientMod;
 import me.mcblueparrot.client.ui.component.Component;
 import me.mcblueparrot.client.ui.component.ComponentRenderInfo;
+import me.mcblueparrot.client.ui.component.controller.AlignedBoundsController;
 import me.mcblueparrot.client.ui.component.controller.AnimatedColourController;
 import me.mcblueparrot.client.ui.component.controller.Controller;
 import me.mcblueparrot.client.util.Utils;
+import me.mcblueparrot.client.util.data.Alignment;
 import me.mcblueparrot.client.util.data.Colour;
 import me.mcblueparrot.client.util.data.Rectangle;
 import net.minecraft.client.gui.Gui;
@@ -39,6 +41,7 @@ public class TextFieldComponent extends Component {
 	private Predicate<String> onUpdate;
 	private boolean flush;
 	private int ticks;
+	private boolean hasIcon;
 
 	public TextFieldComponent(int width, boolean centred) {
 		this.width = width;
@@ -106,6 +109,10 @@ public class TextFieldComponent extends Component {
 
 		if(centred) {
 			textOffset = (int) ((getBounds().getWidth() / 2) - (font.getWidth(text) / 2));
+		}
+
+		if(hasIcon) {
+			textOffset += 10;
 		}
 
 		if(selectionEnd != cursor) {
@@ -440,6 +447,15 @@ public class TextFieldComponent extends Component {
 
 	public TextFieldComponent placeholder(String placeholder) {
 		this.placeholder = placeholder;
+		return this;
+	}
+
+	public TextFieldComponent withIcon(String name) {
+		hasIcon = true;
+		add(new ScaledIconComponent(name, 16, 16),
+				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
+								defaultBounds.getWidth(), defaultBounds.getHeight())));
 		return this;
 	}
 

@@ -65,7 +65,7 @@ public class SolClientMod extends ConfigOnlyMod {
 
 	@Override
 	public ModCategory getCategory() {
-		return ModCategory.NONE;
+		return ModCategory.GENERAL;
 	}
 
 	@Override

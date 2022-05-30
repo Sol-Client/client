@@ -15,11 +15,11 @@ public enum DurabilityDisplay {
 	public int getWidth() {
 		switch(this) {
 		case FRACTION:
-			return 73;
+			return 84;
 		case REMAINING:
-			return 40;
+			return 46;
 		case PERCENTAGE:
-			return 45;
+			return 47;
 		default:
 			return 0;
 		}

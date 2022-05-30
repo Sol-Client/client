@@ -47,7 +47,7 @@ public class TimersMod extends HudMod {
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
-	@Option
+	@Option(applyToAllClass = Option.TEXT_COLOUR_CLASS)
 	private Colour nameColour = Colour.WHITE;
 	@Expose
 	@Option

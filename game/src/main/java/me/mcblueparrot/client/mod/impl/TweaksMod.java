@@ -1,5 +1,6 @@
 package me.mcblueparrot.client.mod.impl;
 
+import me.mcblueparrot.client.mod.annotation.Slider;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -10,7 +11,6 @@ import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.FullscreenToggleEvent;
 import me.mcblueparrot.client.event.impl.GammaEvent;
 import me.mcblueparrot.client.event.impl.PreRenderTickEvent;
-import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.Option;
@@ -39,6 +39,13 @@ public class TweaksMod extends Mod {
 	public boolean minimalViewBobbing;
 	@Expose
 	@Option
+	public boolean minimalDamageShake;
+	@Expose
+	@Option
+	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
+	private float damageShakeIntensity = 100;
+	@Expose
+	@Option
 	public boolean confirmDisconnect;
 	@Expose
 	@Option
@@ -59,7 +66,7 @@ public class TweaksMod extends Mod {
 
 	@Override
 	public ModCategory getCategory() {
-		return ModCategory.UTILITY;
+		return ModCategory.GENERAL;
 	}
 
 	@Override
@@ -125,6 +132,10 @@ public class TweaksMod extends Mod {
 				mc.mouseHelper.grabMouseCursor();
 			}
 		}
+	}
+
+	public float getDamageShakeIntensity() {
+		return damageShakeIntensity / 100;
 	}
 
 	private void setBorderlessFullscreen(boolean state) {

@@ -5,15 +5,16 @@
 <img src="https://img.shields.io/static/v1?label=you%20didn%27t&message=ask%20for%20this&color=blue&style=for-the-badge"/>&nbsp;
 <img src="https://img.shields.io/static/v1?label=minecraft&message=1.8.9&color=brightgreen&style=for-the-badge"/>&nbsp;
 <a href="https://discord.gg/QFDGDhcFqu"><img src="https://img.shields.io/discord/886561982872977408?color=5662F6&label=discord&logo=discord&logoColor=white&style=for-the-badge"/></a>&nbsp;
+<img src="https://img.shields.io/static/v1?label=Contributions&message=Welcome&color=brightgreen&style=for-the-badge"/>&nbsp;
 ![GitHub all releases](https://img.shields.io/github/downloads/Sol-Client/Client/total?label=Downloads&style=for-the-badge)&nbsp;
 
 Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versions).
 
-[Website](https://sol-client.github.io/)
+Update: Yes, I know, it has been seven months since I wrote about the newer versions thing.
 
-[Screenshots](assets/screenshots/README.md)
+[Website](https://sol-client.github.io)
 
-## Gimme it now!
+## Installing
 First, go to [releases](https://github.com/Sol-Client/Client/releases).
 
 Next, download the latest version for your OS. If there is a security warning, this is because we haven't spent any money on software signing (this client was created in my basement, okay), and many older and more trusted Minecraft projects (including FabricMC) also face this issue. The code is all open source, so don't worry.
@@ -123,7 +124,7 @@ Want to contribute? Or are you just trying to re-enable freelook (please don't d
 
 ### Launcher
 
-Make sure you have the latest Node.JS and NPM.
+Make sure you have the latest Node.JS and NPM. You also need to build the game according to the instructions [below](#game).
 
 Setup:
 ```sh
@@ -143,7 +144,7 @@ The installer will be in a directory named "out".
 
 ### Game
 
-Make sure you have Java JDK 8 installed.
+Make sure to build it with Java 8 and not any newer versions.
 
 Move into folder:
 ```sh

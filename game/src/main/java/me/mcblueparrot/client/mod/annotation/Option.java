@@ -19,4 +19,10 @@ public @interface Option {
 
 	String translationKey() default "";
 
+	String applyToAllClass() default "";
+
+	String BACKGROUND_COLOUR_CLASS = "background_colour";
+	String BORDER_COLOUR_CLASS = "border_colour";
+	String TEXT_COLOUR_CLASS = "text_colour";
+
 }

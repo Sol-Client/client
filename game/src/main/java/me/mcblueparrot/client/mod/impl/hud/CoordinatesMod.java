@@ -16,13 +16,13 @@ public class CoordinatesMod extends HudMod {
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean background = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
 	private Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean border = false;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
 	private Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option

@@ -47,7 +47,7 @@ public class ColourPickerDialog extends ScaledIconComponent {
 						defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 		if(colourOption.canApplyToAll()) {
-			add(new ButtonComponent("mod.screen.apply_to_all",
+			add(new ButtonComponent("sol_client.mod.screen.apply_to_all",
 					new AnimatedColourController(
 							(component, defaultColour) -> component.isHovered() ? Colour.BLUE_HOVER : Colour.BLUE))
 									.withIcon("sol_client_new")

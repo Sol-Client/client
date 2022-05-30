@@ -45,7 +45,7 @@ public class KeystrokesMod extends HudMod {
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	protected boolean background = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
 	protected Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
 	@Option
@@ -54,13 +54,13 @@ public class KeystrokesMod extends HudMod {
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	protected boolean border = false;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
 	protected Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option
 	protected Colour borderColourPressed = Colour.WHITE;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.TEXT_COLOUR_CLASS)
 	protected Colour textColour = Colour.WHITE;
 	@Expose
 	@Option

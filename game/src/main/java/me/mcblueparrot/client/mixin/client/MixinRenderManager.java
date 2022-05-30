@@ -13,6 +13,7 @@ import com.replaymod.replay.camera.CameraEntity;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.culling.Cullable;
 import me.mcblueparrot.client.event.impl.CameraRotateEvent;
+import me.mcblueparrot.client.event.impl.HitboxRenderEvent;
 import me.mcblueparrot.client.util.access.AccessRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -37,6 +38,14 @@ public abstract class MixinRenderManager {
 		if(((Cullable) entity).isCulled()) {
 			((AccessRender<Entity>) getEntityRenderObject(entity)).doRenderName(entity, x, y, z);
 			callback.setReturnValue(renderEngine == null);
+		}
+	}
+
+	@Inject(method = "renderDebugBoundingBox", at = @At("HEAD"), cancellable = true)
+	public void hitboxEvent(Entity entityIn, double x, double y, double z, float entityYaw, float partialTicks,
+			CallbackInfo callback) {
+		if(Client.INSTANCE.bus.post(new HitboxRenderEvent(entityIn, x, y, z, entityYaw, partialTicks)).cancelled) {
+			callback.cancel();
 		}
 	}
 

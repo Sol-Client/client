@@ -57,7 +57,7 @@ public class DiscordSocket extends WebSocketClient {
 	public DiscordSocket(DiscordIntegrationMod mod) {
 		super(SOCKET_URI, new HashMap<String, String>() {
 			{
-				put("origin", STREAMKIT);
+				put("Origin", STREAMKIT);
 			}
 		});
 
@@ -258,6 +258,7 @@ public class DiscordSocket extends WebSocketClient {
 
 		HttpURLConnection connection = (HttpURLConnection) STREAMKIT_TOKEN.openConnection();
 		connection.setDoOutput(true);
+		connection.setRequestProperty("User-Agent", System.getProperty("http.agent"));
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty("Accept", "application/json");

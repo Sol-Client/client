@@ -63,33 +63,18 @@ public class SlickFontRenderer implements Font {
 		0xFFFF55,
 		0xFFFFFF
 	};
-	private float antiAliasingFactor;
+	private float scaleFactor;
 	private UnicodeFont slickFont;
 	private int prevScaleFactor;
 	private String name;
 	private float size;
 
-	public static final SlickFontRenderer DEFAULT = new SlickFontRenderer("/Roboto-Regular.ttf", java.awt.Font.PLAIN, 16);
+	public static final SlickFontRenderer DEFAULT = new SlickFontRenderer("/Roboto-Regular.ttf", 16);
 
-	public SlickFontRenderer(String path, float fontStyle, float fontSize) {
+	public SlickFontRenderer(String path, float fontSize) {
 		name = path;
 		size = fontSize;
-		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-
-		try {
-			prevScaleFactor = resolution.getScaleFactor();
-			slickFont = new UnicodeFont(getFontFromInput(path).deriveFont((int) fontStyle, fontSize * prevScaleFactor / 2));
-			slickFont.addAsciiGlyphs();
-			slickFont.addNeheGlyphs();
-			slickFont.getEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
-			slickFont.loadGlyphs();
-		}
-		catch(FontFormatException | IOException | SlickException e) {
-			e.printStackTrace();
-		}
-
-
-		this.antiAliasingFactor = resolution.getScaleFactor();
+		loadFont();
 	}
 
 	private java.awt.Font getFontFromInput(String path) throws IOException, FontFormatException {
@@ -103,27 +88,12 @@ public class SlickFontRenderer implements Font {
 		x = (int) x;
 		y = (int) y;
 
-		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-
-		try {
-			if(resolution.getScaleFactor() != prevScaleFactor) {
-				prevScaleFactor = resolution.getScaleFactor();
-				slickFont = new UnicodeFont(getFontFromInput(name).deriveFont(size * prevScaleFactor / 2));
-				slickFont.addAsciiGlyphs();
-				slickFont.getEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
-				slickFont.loadGlyphs();
-			}
-		}
-		catch(FontFormatException | IOException | SlickException e) {
-			e.printStackTrace();
-		}
-
-		this.antiAliasingFactor = resolution.getScaleFactor();
+		loadFont();
 
 		GL11.glPushMatrix();
-		GlStateManager.scale(1 / antiAliasingFactor, 1 / antiAliasingFactor, 1 / antiAliasingFactor);
-		x *= antiAliasingFactor;
-		y *= antiAliasingFactor;
+		GlStateManager.scale(1 / scaleFactor, 1 / scaleFactor, 1 / scaleFactor);
+		x *= scaleFactor;
+		y *= scaleFactor;
 		float originalX = x;
 		float red = (colour >> 16 & 255) / 255.0F;
 		float green = (colour >> 8 & 255) / 255.0F;
@@ -186,6 +156,26 @@ public class SlickFontRenderer implements Font {
 		return (int) x;
 	}
 
+	private void loadFont() {
+		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
+		scaleFactor = resolution.getScaleFactor();
+
+		if(scaleFactor != prevScaleFactor) {
+			try {
+				prevScaleFactor = resolution.getScaleFactor();
+				slickFont = new UnicodeFont(getFontFromInput(name).deriveFont(size * prevScaleFactor / 2));
+				slickFont.addAsciiGlyphs();
+				slickFont.addNeheGlyphs();
+				slickFont.addGlyphs(0x0400, 0x04FF);
+				slickFont.getEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
+				slickFont.loadGlyphs();
+			}
+			catch(FontFormatException | IOException | SlickException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	@Override
 	public int renderStringWithShadow(String text, float x, float y, int color) {
 		renderString(StringUtils.stripControlCodes(text), x + 0.5F, y + 0.5F, 0x000000);
@@ -208,7 +198,7 @@ public class SlickFontRenderer implements Font {
 
 	@Override
 	public float getWidth(String text) {
-		return slickFont.getWidth(EnumChatFormatting.getTextWithoutFormattingCodes(text)) / antiAliasingFactor;
+		return slickFont.getWidth(EnumChatFormatting.getTextWithoutFormattingCodes(text)) / scaleFactor;
 	}
 
 	public float getCharWidth(char c) {

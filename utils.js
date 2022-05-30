@@ -81,11 +81,18 @@ class Utils {
 		}
 
 		if(!Utils.isAlreadyDownloaded(file, size)) {
-			return new Promise((resolve) => {
-				(url.startsWith("https://") ? https : http).get(url, async(response) => {
-					if(response.code == 404) {
-						resolve(false);
+			return new Promise((resolve, reject) => {
+				(url.startsWith("https://") ? https : http).get(url, async(response, error) => {
+					if(error) {
+						reject(error);
+						return;
 					}
+
+					if(response.code == 404) {
+						reject(new Error("Server responded with error 404"));
+						return;
+					}
+
 					if(response.headers.location) {
 						var result = await Utils.download(response.headers.location, file, size);
 						resolve(result);

@@ -46,7 +46,7 @@ public class CrosshairMod extends HudMod {
 	private boolean highlightEntities = false;
 	@Expose
 	@Option
-	private Colour entityColour = Colour.RED;
+	private Colour entityColour = Colour.PURE_RED;
 
 	@Override
 	public String getId() {

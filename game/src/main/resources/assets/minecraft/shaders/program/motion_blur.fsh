@@ -8,7 +8,7 @@ varying vec2 oneTexel;
 
 uniform vec2 InSize;
 
-uniform float BlendFactor = 0.7;
+uniform float BlendFactor;
 
 void main() {
 	// Copied three letters from a stackoverflow question (mix), but that's all I needed to create motion blur.

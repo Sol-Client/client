@@ -5,6 +5,8 @@
 
 package me.mcblueparrot.client.mod.impl;
 
+import org.lwjgl.opengl.GL11;
+
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.event.EventHandler;
@@ -15,9 +17,12 @@ import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
 import me.mcblueparrot.client.mod.annotation.Option;
 import me.mcblueparrot.client.util.access.AccessEntityLivingBase;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFishingRod;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 
 public class V1_7VisualsMod extends Mod {
@@ -30,7 +35,16 @@ public class V1_7VisualsMod extends Mod {
 	private boolean particles = true;
 	@Expose
 	@Option
-	private boolean items = true;
+	public boolean blocking = true;
+	@Expose
+	@Option
+	public boolean eatingAndDrinking = true;
+	@Expose
+	@Option
+	private boolean bow = true;
+	@Expose
+	@Option
+	private boolean rod = true;
 	@Expose
 	@Option
 	public boolean armourDamage = true;
@@ -97,19 +111,46 @@ public class V1_7VisualsMod extends Mod {
 
 	@EventHandler
 	public void onItemTransform(TransformFirstPersonItemEvent event) {
-		if(!items) {
+		if(!(bow || rod)) {
 			return;
 		}
 
 		// https://github.com/sp614x/optifine/issues/2098
-
 		if(mc.thePlayer.isUsingItem() && event.itemToRender.getItem() instanceof ItemBow) {
-			GlStateManager.translate(-0.01f, 0.05f, -0.06f);
+			if(bow) {
+				GlStateManager.translate(-0.01f, 0.05f, -0.06f);
+			}
 		}
 		else if(event.itemToRender.getItem() instanceof ItemFishingRod) {
-			GlStateManager.translate(0.08f, -0.027f, -0.33f);
-			GlStateManager.scale(0.93f, 1.0f, 1.0f);
+			if(rod) {
+				GlStateManager.translate(0.08f, -0.027f, -0.33f);
+				GlStateManager.scale(0.93f, 1.0f, 1.0f);
+			}
 		}
+	}
+
+	public static void oldDrinking(ItemStack itemToRender, AbstractClientPlayer clientPlayer, float partialTicks) {
+		float var14 = clientPlayer.getItemInUseCount() - partialTicks + 1.0F;
+		float var15 = 1.0F - var14 / itemToRender.getMaxItemUseDuration();
+		float var16 = 1.0F - var15;
+		var16 = var16 * var16 * var16;
+		var16 = var16 * var16 * var16;
+		var16 = var16 * var16 * var16;
+		var16 -= 0.05F;
+		float var17 = 1.0F - var16;
+		GlStateManager.translate(0.0F, MathHelper.abs(MathHelper.cos(var14 / 4F * (float) Math.PI) * 0.11F)
+				* (float) ((double) var15 > 0.2D ? 1 : 0), 0.0F);
+		GlStateManager.translate(var17 * 0.6F, -var17 * 0.5F, 0.0F);
+		GlStateManager.rotate(var17 * 90.0F, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(var17 * 10.0F, 1.0F, 0.0F, 0.0F);
+		GlStateManager.rotate(var17 * 30.0F, 0.0F, 0.0F, 1.0F);
+		GlStateManager.translate(0, -0.0F, 0.06F);
+		GlStateManager.rotate(-4F, 1, 0, 0);
+	}
+		
+	public static void oldBlocking() {
+		GlStateManager.scale(0.83F, 0.88F, 0.85F);
+		GlStateManager.translate(-0.3F, 0.1F, 0.0F);
 	}
 
 }

@@ -43,7 +43,6 @@ sol_client.mod.simple_hud.option.shadow=Тень текста
 sol_client.mod.sol_client.name=Общие настройки
 sol_client.mod.sol_client.description=Общие настройки Sol Client.
 
-
 sol_client.mod.sol_client.option.fancyMainMenu=Красивое главное меню
 sol_client.mod.sol_client.option.logoInInventory=Показывать логотип в инвентаре
 sol_client.mod.sol_client.mods=Модификации
@@ -102,6 +101,9 @@ sol_client.mod.reach_display.description=Отображает расстояни
 
 sol_client.mod.combo_counter.name=Счётчик комбо
 sol_client.mod.combo_counter.description=Показывает количество ударов в ряд.
+sol_client.mod.combo_counter.no_hits=Нет ударов
+sol_client.mod.combo_counter.one_hit=1 удар
+sol_client.mod.combo_counter.n_hits=%s ударов
 
 sol_client.mod.potion_effects.name=Эффекты
 sol_client.mod.potion_effects.description=Показывает активные эффекты с обратным отсчётом.
@@ -211,6 +213,8 @@ sol_client.mod.tweaks.option.showOwnTag=Показывать свой ник
 sol_client.mod.tweaks.option.arabicNumerals=Арабские цифры на чарах
 sol_client.mod.tweaks.option.betterTooltips=Улучшить подсказки
 sol_client.mod.tweaks.option.minimalViewBobbing=Уменьшить покачивание камеры
+sol_client.mod.tweaks.option.minimalDamageShake=Уменьшить качание при уроне
+sol_client.mod.tweaks.option.damageShakeIntensity=Сила качания при уроне
 sol_client.mod.tweaks.option.confirmDisconnect=Спрашивать при отключении
 sol_client.mod.tweaks.option.betterKeyBindings=Улучшенные приивязки клавиш
 sol_client.mod.tweaks.option.disableHotbarScrolling=Отключить колёсико в хотбаре
@@ -336,8 +340,12 @@ sol_client.mod.chunk_animator.option.animation=Анимация
 sol_client.mod.1.7_visuals.name=Оформление 1.7
 sol_client.mod.1.7_visuals.description=Частично возвращает ощущения от 1.7
 
-sol_client.mod.1.7_visuals.option.useAndMine=Копание и строительство
+sol_client.mod.1.7_visuals.option.useAndMine=Копание при использовании предмета
+sol_client.mod.1.7_visuals.option.particles=Частицы
+sol_client.mod.1.7_visuals.option.blocking=Блокирование мечом
+sol_client.mod.1.7_visuals.option.eatingAndDrinking=Еда и питьё
 sol_client.mod.1.7_visuals.option.rod=Удочка
+sol_client.mod.1.7_visuals.option.bow=Лук
 sol_client.mod.1.7_visuals.option.armourDamage=Эффект урона по броне
 sol_client.mod.1.7_visuals.option.sneaking=Плавное приседание
 
@@ -376,6 +384,19 @@ sol_client.mod.hit_colour.description=Изменяет цвет удара.
 
 sol_client.mod.hit_colour.option.colour=Цвет
 
+sol_client.mod.hitbox.name=Хитбоксы
+sol_client.mod.hitbox.description=Настраивает и включает отображение хитбоксов.
+
+sol_client.mod.hitbox.option.toggleHitboxes=Включить хитбоксы
+sol_client.mod.hitbox.option.boundingBox=Показывать хитбокс
+sol_client.mod.hitbox.option.boundingBoxColour=Цвет хитбокса
+sol_client.mod.hitbox.option.eyeHeight=Показывать высоту глаз
+sol_client.mod.hitbox.option.eyeHeightColour=Цвет высоты глаз
+sol_client.mod.hitbox.option.lookVector=Показывать вектор поворота
+sol_client.mod.hitbox.option.lookVectorColour=Цвет вектора поворота
+sol_client.mod.hitbox.option.lineWidth=Ширина линий
+
+sol_client.mod.category.general.name=Общие
 sol_client.mod.category.hud.name=Интерфейс
 sol_client.mod.category.utility.name=Инструменты
 sol_client.mod.category.visual.name=Вид
@@ -393,6 +414,7 @@ sol_client.mod.discord_integration.option.speakingColour=Цвет имени г�
 
 sol_client.mod.screen.title=Модификации
 sol_client.mod.screen.search=Начните печатать...
+sol_client.mod.screen.apply_to_all=Применить конфигурацию
 
 sol_client.hud.edit=Редактировать интерфейс
 

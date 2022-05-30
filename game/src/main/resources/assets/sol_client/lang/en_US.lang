@@ -112,8 +112,11 @@ sol_client.mod.potion_effects.description=Display your active potions with count
 sol_client.mod.potion_effects.option.alignment=Alignment
 sol_client.mod.potion_effects.option.icon=Icon
 sol_client.mod.potion_effects.option.background=Background
+sol_client.mod.potion_effects.option.title=Label
 sol_client.mod.potion_effects.option.titleColour=Label Color
+sol_client.mod.potion_effects.option.duration=Duration
 sol_client.mod.potion_effects.option.durationColour=Duration Color
+sol_client.mod.potion_effects.option.spacing=Spacing
 
 sol_client.mod.armour.name=Armor and Equipment
 sol_client.mod.armour.description=Display your armor and equipment with durability.

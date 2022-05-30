@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.google.gson.annotations.Expose;
 
 import me.mcblueparrot.client.mod.annotation.Option;
+import me.mcblueparrot.client.mod.annotation.Slider;
 import me.mcblueparrot.client.mod.hud.HudMod;
 import me.mcblueparrot.client.mod.hud.SimpleHudMod;
 import me.mcblueparrot.client.mod.impl.TweaksMod;
@@ -22,8 +23,6 @@ import net.minecraft.util.ResourceLocation;
 
 public class PotionEffectsMod extends HudMod {
 
-	private static final int EFFECT_HEIGHT = 33;
-
 	@Expose
 	@Option
 	private VerticalAlignment alignment = VerticalAlignment.MIDDLE;
@@ -37,11 +36,21 @@ public class PotionEffectsMod extends HudMod {
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
+	@Option
+	private boolean title = true;
+	@Expose
 	@Option(applyToAllClass = Option.TEXT_COLOUR_CLASS)
 	private Colour titleColour = Colour.WHITE;
 	@Expose
 	@Option
+	private boolean duration = true;
+	@Expose
+	@Option
 	private Colour durationColour = new Colour(8355711);
+	@Expose
+	@Option
+	@Slider(min = 2, max = 25, step = 1)
+	private float spacing = 15;
 
 	@Override
 	public String getId() {
@@ -56,14 +65,22 @@ public class PotionEffectsMod extends HudMod {
 			case TOP:
 				break;
 			case MIDDLE:
-				y -= 33 * getScale();
+				y -= getHeight(2) / 2 * getScale();
 				break;
 			case BOTTOM:
-				y -= 66 * getScale();
+				y -= getHeight(2) * getScale();
 				break;
 		}
 
-		return new Rectangle(position.getX(), y, 120, 64);
+		return new Rectangle(position.getX(), y, getWidth(), getHeight(2) + 12 + (background ? 2 : 0));
+	}
+
+	private int getHeight(int size) {
+		return (int) (getEffectHeight() * size - spacing);
+	}
+
+	private int getEffectHeight() {
+		return (int) (18 + spacing);
 	}
 
 	@Override
@@ -84,10 +101,10 @@ public class PotionEffectsMod extends HudMod {
 			case TOP:
 				break;
 			case MIDDLE:
-				y -= ((EFFECT_HEIGHT * (effects.size())) / 2);
+				y -= (getHeight(effects.size()) / 2);
 				break;
 			case BOTTOM:
-				y -= EFFECT_HEIGHT * (effects.size());
+				y -= getHeight(effects.size());
 		}
 
 		if(!effects.isEmpty()) {
@@ -99,33 +116,72 @@ public class PotionEffectsMod extends HudMod {
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
 
-				if(background) {
-					Utils.drawTexture(x, y, 0, 166, 140, 32, 0);
+				int width = getWidth();
+				int iconX = x + 6;
+				int textX = x + 28;
+
+				if(!title && !duration) {
+					iconX++;
 				}
+
+				if(!icon) {
+					textX -= 18;
+				}
+
+				if(background) {
+					Utils.drawTexture(x, y, 0, 166, width / 2, 32, 0);
+					Utils.drawTexture(x + width / 2, y, 120 - width / 2, 166, width / 2, 32, 0);
+				}
+
+				int centreText = y + 12;
 
 				if(icon && potion.hasStatusIcon()) {
 					int icon = potion.getStatusIconIndex();
-					Utils.drawTexture(x + 6, y + 7, icon % 8 * 18, 198 + icon / 8 * 18, 18,
+					Utils.drawTexture(iconX, y + 7, icon % 8 * 18, 198 + icon / 8 * 18, 18,
 							18, 0);
 				}
 
-				String title = I18n.format(potion.getName());
+				if(title) {
+					String titleText = I18n.format(potion.getName());
 
-				if(effect.getAmplifier() > 0 && effect.getAmplifier() < 4) {
-					if(TweaksMod.enabled && TweaksMod.instance.arabicNumerals) {
-						title += " " + (effect.getAmplifier() + 1);
+					if(effect.getAmplifier() > 0 && effect.getAmplifier() < 4) {
+						if(TweaksMod.enabled && TweaksMod.instance.arabicNumerals) {
+							titleText += " " + (effect.getAmplifier() + 1);
+						}
+						else {
+							titleText += " " + I18n.format("enchantment.level." + (effect.getAmplifier() + 1));
+						}
 					}
-					else {
-						title += " " + I18n.format("enchantment.level." + (effect.getAmplifier() + 1));
-					}
+
+					font.drawString(titleText, textX, duration ? y + 7 : centreText, titleColour.getValue(), shadow);
 				}
 
-				font.drawString(title, x + 10 + 18, y + 6, titleColour.getValue(), shadow);
-				String duration = Potion.getDurationString(effect);
-				font.drawString(duration, x + 10 + 18, y + 6 + 10, durationColour.getValue(), shadow);
-				y += EFFECT_HEIGHT;
+				if(duration) {
+					String duration = Potion.getDurationString(effect);
+					font.drawString(duration, textX, title ? y + 17 : centreText, durationColour.getValue(), shadow);
+				}
+
+				y += getEffectHeight();
 			}
 		}
+	}
+
+	private int getWidth() {
+		int base = 0;
+
+		if(!icon) {
+			base = -18;
+		}
+
+		if(!title) {
+			if(!duration) {
+				return base + 32;
+			}
+
+			return base + 56;
+		}
+
+		return base + 140;
 	}
 
 }

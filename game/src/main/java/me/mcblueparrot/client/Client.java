@@ -179,6 +179,7 @@ public class Client {
 		register(new MenuBlurMod());
 		register(new ColourSaturationMod());
 		register(new ChunkAnimatorMod());
+		register(new SCReplayMod());
 		register(new FreelookMod());
 		register(new TaplookMod());
 		register(new ToggleSprintMod());
@@ -189,11 +190,10 @@ public class Client {
 		register(new ParticlesMod());
 		register(new TimeChangerMod());
 		register(new BlockSelectionMod());
-		register(new HitColourMod());
 		register(new HitboxMod());
-		register(new SCReplayMod());
-		register(new QuickPlayMod());
+		register(new HitColourMod());
 		register(new HypixelAdditionsMod());
+		register(new QuickPlayMod());
 		register(new DiscordIntegrationMod());
 
 		LOGGER.info("Loaded {} mods", mods.size());

@@ -83,6 +83,7 @@ static def process(File inputFile, File outputFile, Map<String, String> methods,
 				|| entry.getName().startsWith("assets/replaymod/lang/")
 				|| entry.getName() == "default_thumb.jpg"
 				|| entry.getName().startsWith("org/spongepowered/")
+				|| entry.getName().startsWith("com/replaymod/lib/com/google/gson/")
 				|| entry.getName() == "com/replaymod/core/ReplayModBackend.class"
 				|| entry.getName() == "com/replaymod/core/SettingsRegistry.class"
 				|| entry.getName() == "com/replaymod/core/SettingsRegistry\$SettingKey.class"
@@ -355,7 +356,7 @@ dependencies {
 		exclude module: "commons-io"
 	}
 	dependency "org.slick2d:slick2d-core:1.0.2"
-	dependency "com.logisticscraft:occlusionculling:0.0.5-SNAPSHOT"
+	ship files("libs/occlusionculling.jar")
 	dependency "net.hypixel:hypixel-api-core:4.0"
 	
 	if(workspaceReady) {

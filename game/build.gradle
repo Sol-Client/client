@@ -356,6 +356,7 @@ dependencies {
 		exclude module: "commons-io"
 	}
 	dependency "org.slick2d:slick2d-core:1.0.2"
+	dependency files("libs/occlusionculling.jar")
 	ship files("libs/occlusionculling.jar")
 	dependency "net.hypixel:hypixel-api-core:4.0"
 	

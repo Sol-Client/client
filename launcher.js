@@ -50,15 +50,7 @@ class Launcher {
 			}
 		});
 
-		version.libraries.push({
-			downloads: {
-				artifact: {
-					url: "https://repo.codemc.io/repository/maven-public/com/logisticscraft/occlusionculling/0.0.5-SNAPSHOT/occlusionculling-0.0.5-20210620.172315-1.jar",
-					path: "com/logisticscraft/occlusionculling/0.0.5-SNAPSHOT/occlusionculling-0.0.5-20210620.172315-1.jar",
-					size: 12926
-				},
-			}
-		});
+		// culling lib removed due to repo issues
 
 		version.libraries.push({
 			downloads: {

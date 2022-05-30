@@ -191,7 +191,6 @@ dist/
 game/run/
 # For symlinks
 game/run
-game/libs/*
 
 # JetBrains IDEs
 

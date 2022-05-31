@@ -20,10 +20,11 @@ class Launcher {
 	accountManager = null;
 	games = [];
 
-	async launch(callback, server) {
+	async launch(callback, progress, server) {
 		console.log("Downloading manifest...");
+		progress("Loading manifest...");
 		var manifest = await Manifest.getManifest();
-		console.log("Download version manifest...");
+		console.log("Downloading version manifest...");
 		var version = await Manifest.getVersion(manifest, "1.8.9");
 		var jars = [];
 		var versionFolder = Version.getPath(version);
@@ -39,6 +40,7 @@ class Launcher {
 		}
 
 		console.log("Downloading libraries...");
+		progress("Downloading libraries...");
 
 		version.libraries.push({
 			downloads: {
@@ -91,6 +93,7 @@ class Launcher {
 				}
 			}
 		});
+
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -100,6 +103,7 @@ class Launcher {
 				}
 			}
 		});
+
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -109,6 +113,7 @@ class Launcher {
 				}
 			}
 		});
+
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -118,6 +123,7 @@ class Launcher {
 				}
 			}
 		});
+
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -127,6 +133,7 @@ class Launcher {
 				}
 			}
 		});
+
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -136,6 +143,7 @@ class Launcher {
 				}
 			}
 		});
+
 		version.libraries.push({
 			downloads: {
 				artifact: {
@@ -192,6 +200,7 @@ class Launcher {
 		}
 
 		console.log("Downloading assets...");
+		progress("Downloading assets...");
 
 		var assetIndex = await Version.getAssetIndex(version);
 		assetIndex.id = version.assetIndex.id;
@@ -207,6 +216,7 @@ class Launcher {
 		await Version.downloadJar(version);
 
 		console.log("Downloading JRE...");
+		progress("Downloading runtime...");
 
 		var java;
 
@@ -227,8 +237,8 @@ class Launcher {
 				.then(async(response) => {
 					var jrePackage = response.data[0].binaries[0].package;
 					var name = jrePackage.name;
-					var jrePath = Utils.minecraftDirectory + "/jre/" + name;
-					var dest = Utils.minecraftDirectory + "/jre/"
+					var jrePath = Utils.dataDirectory + "/jre/" + name;
+					var dest = Utils.dataDirectory + "/jre/"
 							+ name.substring(0, name.indexOf("."));
 					var doneFile = dest + "/.done";
 					if(!fs.existsSync(dest + "/.done")) {
@@ -286,6 +296,7 @@ class Launcher {
 		});
 
 		console.log("Patching...");
+		progress("Patching...");
 
 		var versionToAdd;
 
@@ -317,6 +328,7 @@ class Launcher {
 		}
 
 		console.log("Preparing Discord library...");
+		progress("Downloading Discord library...");
 
 		var discordNativeLibrary;
 
@@ -361,6 +373,7 @@ class Launcher {
 					await entry.pipe(fs.createWriteStream(discordNativeLibrary));
 			}
 		}
+		progress("Starting...");
 
 		var args = [];
 		args.push("-Djava.library.path=" + nativesFolder);

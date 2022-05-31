@@ -16,7 +16,7 @@ const path = require("path");
 const axios = require("axios");
 
 Utils.init();
-Config.init(Utils.minecraftDirectory);
+Config.init(Utils.dataDirectory);
 Config.load();
 
 ipcRenderer.on("close", (event) => {
@@ -261,10 +261,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		if(!launching) {
 			launching = true;
 
-			if(!fs.existsSync(Utils.assetsDirectory)) {
-				launchNote.style.display = "inline";
-			}
-
+			launchNote.style.display = "inline";
 			playButton.innerText = "...";
 			try {
 				await launcher.accountManager.refreshAccount(launcher.accountManager.activeAccount);
@@ -280,13 +277,14 @@ window.addEventListener("DOMContentLoaded", () => {
 				backToMain.style.display = launcher.accountManager.accounts.length > 0 ? "block" : "none";
 				playButton.innerText = "Play";
 				launching = false;
+				launchNote.style.display = null;
 				return;
 			}
 			launcher.launch(() => {
 				playButton.innerText = "Play";
 				launching = false;
 				launchNote.style.display = null;
-			}, server);
+			}, (text) => launchNote.innerText = text, server);
 		}
 	}
 

@@ -7,8 +7,9 @@ const axios = require("axios");
 
 class Utils {
 
-	static minecraftDirectory;
+	static dataDirectory;
 	static legacyDirectory;
+	static minecraftDirectory;
 	static librariesDirectory;
 	static versionsDirectory;
 	static assetsDirectory;
@@ -22,40 +23,53 @@ class Utils {
 	static latestLog;
 
 	static init() {
-		Utils.minecraftDirectory = os.homedir();
+		Utils.dataDirectory = os.homedir();
 		Utils.legacyDirectory = os.homedir();
 		switch(Utils.getOsName()) {
 			case "linux":
-				Utils.minecraftDirectory += "/.config/Sol Client";
+				Utils.dataDirectory += "/.config/Sol Client";
 				Utils.legacyDirectory += "/.config/parrotclient";
 				break;
 			case "osx":
-				Utils.minecraftDirectory += "/Library/Application Support/Sol Client";
+				Utils.dataDirectory += "/Library/Application Support/Sol Client";
 				Utils.legacyDirectory += "/Library/Application Support/parrotclient";
 				break;
 			case "windows":
-				Utils.minecraftDirectory += "/AppData/Roaming/Sol Client";
+				Utils.dataDirectory += "/AppData/Roaming/Sol Client";
 				Utils.legacyDirectory += "/AppData/Roaming/parrotclient";
 				break;
 		}
 
+		Utils.minecraftDirectory = os.homedir();
+		switch(Utils.getOsName()) {
+			case "linux":
+				Utils.minecraftDirectory += "/.minecraft";
+				break;
+			case "osx":
+				Utils.minecraftDirectory += "/Library/Application Support/minecraft";
+				break;
+			case "windows":
+				Utils.minecraftDirectory += "/AppData/Roaming/.minecraft";
+				break;
+		}
+
 		try {
-			if(fs.existsSync(Utils.legacyDirectory) && !fs.existsSync(Utils.minecraftDirectory)) {
-				fs.renameSync(Utils.legacyDirectory, Utils.minecraftDirectory);
-				fs.unlinkSync(Utils.minecraftDirectory + "/account.json");
+			if(fs.existsSync(Utils.legacyDirectory) && !fs.existsSync(Utils.dataDirectory)) {
+				fs.renameSync(Utils.legacyDirectory, Utils.dataDirectory);
+				fs.unlinkSync(Utils.dataDirectory + "/account.json");
 			}
 		}
 		catch(error) {
 		}
 
 		Utils.librariesDirectory = Utils.minecraftDirectory + "/libraries";
-		Utils.versionsDirectory = Utils.minecraftDirectory + "/versions";
+		Utils.versionsDirectory = Utils.dataDirectory + "/versions";
 		Utils.assetsDirectory = Utils.minecraftDirectory + "/assets";
 		Utils.assetObjectsDirectory = Utils.assetsDirectory + "/objects";
 		Utils.assetIndexesDirectory = Utils.assetsDirectory + "/indexes";
-		Utils.accountsFile = Utils.minecraftDirectory + "/accounts.json";
+		Utils.accountsFile = Utils.dataDirectory + "/accounts.json";
 
-		var accountFile = Utils.minecraftDirectory + "/account.json";
+		var accountFile = Utils.dataDirectory + "/account.json";
 		if(fs.existsSync(accountFile) && !fs.existsSync(Utils.accountsFile)) {
 			var oldAccount = JSON.parse(fs.readFileSync(accountFile, "UTF-8"));
 			var converted = { accounts: [oldAccount], activeAccount: 0 }
@@ -63,11 +77,15 @@ class Utils {
 			fs.rmSync(accountFile);
 		}
 
-		Utils.skinsFile = Utils.minecraftDirectory + "/skins.json";
-		Utils.gameDirectory = Utils.minecraftDirectory + "/minecraft";
+		Utils.skinsFile = Utils.dataDirectory + "/skins.json";
+		Utils.gameDirectory = Utils.dataDirectory + "/minecraft";
 
 		if(!fs.existsSync(Utils.gameDirectory)) {
 			fs.mkdirSync(Utils.gameDirectory, { recursive: true });
+		}
+
+		if(!fs.existsSync(Utils.minecraftDirectory)) {
+			fs.mkdirSync(Utils.minecraftDirectory, { recursive: true });
 		}
 	}
 

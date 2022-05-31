@@ -21,7 +21,7 @@ class Updater {
 					}
 				}
 
-				var file = Utils.minecraftDirectory + "/Setup.exe";
+				var file = Utils.dataDirectory + "/Setup.exe";
 				await Utils.download(selectedAsset.browser_download_url, file);
 
 				await sleep(1000);

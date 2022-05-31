@@ -76,16 +76,16 @@ sol_client.mod.keystrokes.option.movement=Bewegung
 sol_client.mod.keystrokes.option.mouse=Maus
 sol_client.mod.keystrokes.option.mouseMovement=Mausbewegung
 sol_client.mod.keystrokes.option.showSpace=Leertaste
-sol_client.mod.keystrokes.option.cps=KPS auf Tasten
+sol_client.mod.keystrokes.option.cps=CPS auf Tasten
 sol_client.mod.keystrokes.option.backgroundColourPressed=Hintergrundfarbe (Gedrückt)
 sol_client.mod.keystrokes.option.borderColourPressed=Umrissfarbe (Gedrückt)
 sol_client.mod.keystrokes.option.textColourPressed=Textfarbe (Gedrückt)
 sol_client.mod.keystrokes.option.smoothColours=Sanfte Farben
 
-sol_client.mod.cps.name=KPS
-sol_client.mod.cps.description=KPS anzeigen (Klicks pro Sekunde).
+sol_client.mod.cps.name=CPS
+sol_client.mod.cps.description=CPS anzeigen (Klicks pro Sekunde).
 
-sol_client.mod.cps.option.rmb=Rechter Mausknopf KPS
+sol_client.mod.cps.option.rmb=Rechter Mausknopf CPS
 sol_client.mod.cps.option.separatorColour=Trennerfarbe
 
 sol_client.mod.ping.name=Ping
@@ -112,8 +112,11 @@ sol_client.mod.potion_effects.description=Aktive Tränke mit Countdowns anzeigen
 sol_client.mod.potion_effects.option.alignment=Ausrichtung
 sol_client.mod.potion_effects.option.icon=Symbol
 sol_client.mod.potion_effects.option.background=Hintergrund
+sol_client.mod.potion_effects.option.title=Etikett
 sol_client.mod.potion_effects.option.titleColour=Etikettfarbe
+sol_client.mod.potion_effects.option.duration=Haltbarkeit
 sol_client.mod.potion_effects.option.durationColour=Haltbarkeitsfarbe
+sol_client.mod.potion_effects.option.spacing=Abstand
 
 sol_client.mod.armour.name=Ausrüstung
 sol_client.mod.armour.description=Ausrüsting mit Haltbarkeit anzeigen.

@@ -88,26 +88,7 @@ window.addEventListener("DOMContentLoaded", () => {
 					}
 
 
-					var friendlyName = "";
-
-					friendlyName += day;
-
-					var lastDigit = day % 10;
-
-					if(lastDigit == 1) {
-						friendlyName += "st";
-					}
-					else if(lastDigit == 2) {
-						friendlyName += "nd";
-					}
-					else if(lastDigit == 3) {
-						friendlyName += "rd";
-					}
-					else {
-						friendlyName += "th";
-					}
-
-					friendlyName += " " + monthNames[month - 1];
+					var friendlyName = day + " " + monthNames[month - 1];
 
 					if(today.getFullYear() != year) {
 						friendlyName += " " + year;

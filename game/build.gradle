@@ -83,7 +83,6 @@ static def process(File inputFile, File outputFile, Map<String, String> methods,
 				|| entry.getName().startsWith("assets/replaymod/lang/")
 				|| entry.getName() == "default_thumb.jpg"
 				|| entry.getName().startsWith("org/spongepowered/")
-				|| entry.getName().startsWith("com/replaymod/lib/com/google/gson/")
 				|| entry.getName() == "com/replaymod/core/ReplayModBackend.class"
 				|| entry.getName() == "com/replaymod/core/SettingsRegistry.class"
 				|| entry.getName() == "com/replaymod/core/SettingsRegistry\$SettingKey.class"

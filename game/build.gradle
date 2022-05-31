@@ -1,5 +1,5 @@
 import com.google.gson.JsonParser
-import me.mcblueparrot.client.gradle.CustomTweakerPlugin
+import io.github.solclient.gradle.CustomTweakerPlugin
 import net.md_5.specialsource.SpecialSource
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
@@ -38,7 +38,7 @@ apply plugin: "java"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-def launchWrapperTweakClass = "me.mcblueparrot.client.tweak.Tweaker"
+def launchWrapperTweakClass = "io.github.solclient.client.tweak.Tweaker"
 
 minecraft {
 	version = "1.8.9"
@@ -121,51 +121,51 @@ static def process(File inputFile, File outputFile, Map<String, String> methods,
 }
 
 static def addReplayModRemapper(def fixBuilder) {
-	fixBuilder.add("CL: com/replaymod/core/ReplayModBackend me/mcblueparrot/client/mod/impl/replay/fix/SCReplayModBackend")
+	fixBuilder.add("CL: com/replaymod/core/ReplayModBackend io/github/solclient/client/mod/impl/replay/fix/SCReplayModBackend")
 	fixBuilder.add("CL: com/replaymod/core/SettingsRegistry " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCSettingsRegistry")
+			"io/github/solclient/client/mod/impl/replay/fix/SCSettingsRegistry")
 	fixBuilder.add("CL: com/replaymod/core/versions/scheduler/SchedulerImpl " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCScheduler")
+			"io/github/solclient/client/mod/impl/replay/fix/SCScheduler")
 	fixBuilder.add("CL: com/replaymod/core/utils/ModInfoGetter " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCModInfoGetter")
+			"io/github/solclient/client/mod/impl/replay/fix/SCModInfoGetter")
 	fixBuilder.add("CL: com/replaymod/lib/de/johni0702/minecraft/gui/utils/EventRegistrations " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCEventRegistrations")
+			"io/github/solclient/client/mod/impl/replay/fix/SCEventRegistrations")
 	fixBuilder.add("CL: com/replaymod/recording/ReplayModRecording " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCReplayModRecording")
+			"io/github/solclient/client/mod/impl/replay/fix/SCReplayModRecording")
 	fixBuilder.add("CL: com/replaymod/compat/ReplayModCompat " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCReplayModCompat")
+			"io/github/solclient/client/mod/impl/replay/fix/SCReplayModCompat")
 	fixBuilder.add("CL: net/minecraftforge/client/event/GuiScreenEvent\$ActionPerformedEvent\$Pre " +
-			"me/mcblueparrot/client/event/impl/ActionPerformedEvent")
+			"io/github/solclient/client/event/impl/ActionPerformedEvent")
 	fixBuilder.add("CL: net/minecraftforge/fml/client/registry/ClientRegistry " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCClientRegistry")
+			"io/github/solclient/client/mod/impl/replay/fix/SCClientRegistry")
 	fixBuilder.add("CL: net/minecraftforge/fml/common/eventhandler/SubscribeEvent " +
-			"me/mcblueparrot/client/event/EventHandler")
+			"io/github/solclient/client/event/EventHandler")
 	fixBuilder.add("CL: net/minecraftforge/fml/common/gameevent/PlayerEvent\$ItemPickupEvent " +
-			"me/mcblueparrot/client/event/impl/ItemPickupEvent")
+			"io/github/solclient/client/event/impl/ItemPickupEvent")
 	fixBuilder.add("CL: net/minecraftforge/event/entity/player/PlayerSleepInBedEvent " +
-			"me/mcblueparrot/client/event/impl/PlayerSleepEvent")
+			"io/github/solclient/client/event/impl/PlayerSleepEvent")
 	fixBuilder.add("CL: net/minecraftforge/client/event/EntityViewRenderEvent\$CameraSetup " +
-			"me/mcblueparrot/client/event/impl/CameraRotateEvent")
+			"io/github/solclient/client/event/impl/CameraRotateEvent")
 	fixBuilder.add("CL: net/minecraftforge/client/event/RenderGameOverlayEvent\$ElementType " +
-			"me/mcblueparrot/client/event/impl/GameOverlayElement")
+			"io/github/solclient/client/event/impl/GameOverlayElement")
 	fixBuilder.add("CL: net/minecraftforge/client/event/RenderGameOverlayEvent\$Pre " +
-			"me/mcblueparrot/client/event/impl/PreGameOverlayRenderEvent")
+			"io/github/solclient/client/event/impl/PreGameOverlayRenderEvent")
 	fixBuilder.add("CL: net/minecraftforge/client/event/RenderGameOverlayEvent\$Post " +
-			"me/mcblueparrot/client/event/impl/PostGameOverlayRenderEvent")
+			"io/github/solclient/client/event/impl/PostGameOverlayRenderEvent")
 	fixBuilder.add("CL: net/minecraftforge/fml/common/gameevent/TickEvent\$RenderTickEvent " +
-			"me/mcblueparrot/client/event/impl/RenderTickEvent")
+			"io/github/solclient/client/event/impl/RenderTickEvent")
 	fixBuilder.add("CL: net/minecraftforge/fml/common/network/internal/FMLProxyPacket " +
-			"me/mcblueparrot/client/util/Stub")
+			"io/github/solclient/client/util/Stub")
 	fixBuilder.add("CL: net/minecraftforge/client/event/GuiScreenEvent\$MouseInputEvent\$Pre " +
-			"me/mcblueparrot/client/event/impl/PreGuiMouseInputEvent")
+			"io/github/solclient/client/event/impl/PreGuiMouseInputEvent")
 	fixBuilder.add("CL: net/minecraftforge/client/event/GuiScreenEvent\$KeyboardInputEvent\$Pre " +
-			"me/mcblueparrot/client/event/impl/PreGuiKeyboardInputEvent")
+			"io/github/solclient/client/event/impl/PreGuiKeyboardInputEvent")
 	fixBuilder.add("CL: net/minecraftforge/fml/common/FMLCommonHandler " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCFMLCommonHandler")
+			"io/github/solclient/client/mod/impl/replay/fix/SCFMLCommonHandler")
 	fixBuilder.add("CL: net/minecraftforge/client/ForgeHooksClient " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCForgeHooksClient")
+			"io/github/solclient/client/mod/impl/replay/fix/SCForgeHooksClient")
 	fixBuilder.add("CL: com/replaymod/core/SettingsRegistry\$SettingKey " +
-			"me/mcblueparrot/client/mod/impl/replay/fix/SCSettingsRegistry\$SettingKey")
+			"io/github/solclient/client/mod/impl/replay/fix/SCSettingsRegistry\$SettingKey")
 }
 
 class SeargeSniffer extends Remapper {

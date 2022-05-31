@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "me.mcblueparrot.client.mixin",
+  "package": "io.github.solclient.client.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.solclient.refmap.json",
   "mixins": [

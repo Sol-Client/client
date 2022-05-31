@@ -23,6 +23,7 @@ import lombok.SneakyThrows;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.impl.FullscreenToggleEvent;
 import me.mcblueparrot.client.event.impl.GameQuitEvent;
+import me.mcblueparrot.client.event.impl.HitboxToggleEvent;
 import me.mcblueparrot.client.event.impl.InitialOpenGuiEvent;
 import me.mcblueparrot.client.event.impl.MouseClickEvent;
 import me.mcblueparrot.client.event.impl.OpenGuiEvent;
@@ -478,12 +479,15 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 		debugChatInfo("Pause on Lost Focus: " + gameSettings.pauseOnLostFocus);
 	}
 
-	@Inject(method = "runTick",
+	@Redirect(method = "runTick",
 			at = @At(value = "INVOKE",
 					target = "Lnet/minecraft/client/renderer/entity/RenderManager;setDebugBoundingBox(Z)V"))
-	public void betterHitboxes(CallbackInfo callback) {
-		debugChatInfo("Entity Hitboxes: " + !renderManager.isDebugBoundingBox());
-		cancelDebug = true;
+	public void betterHitboxes(RenderManager instance, boolean value) {
+		if(!Client.INSTANCE.bus.post(new HitboxToggleEvent(value)).cancelled) {
+			instance.setDebugBoundingBox(value);
+			debugChatInfo("Entity Hitboxes: " + value);
+			cancelDebug = true;
+		}
 	}
 
 	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyBindState(IZ)V", ordinal = 1))

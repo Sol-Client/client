@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose;
 import me.mcblueparrot.client.Client;
 import me.mcblueparrot.client.event.EventHandler;
 import me.mcblueparrot.client.event.impl.HitboxRenderEvent;
+import me.mcblueparrot.client.event.impl.HitboxToggleEvent;
 import me.mcblueparrot.client.event.impl.PreTickEvent;
 import me.mcblueparrot.client.mod.Mod;
 import me.mcblueparrot.client.mod.ModCategory;
@@ -51,6 +52,8 @@ public class HitboxMod extends Mod {
 	@Option
 	@Slider(min = 1, max = 10, step = 0.5F)
 	private float lineWidth = 2;
+	@Expose
+	private boolean toggled;
 
 	@Override
 	public void onRegister() {
@@ -59,8 +62,19 @@ public class HitboxMod extends Mod {
 	}
 
 	@Override
+	public void postStart() {
+		super.postStart();
+		if(isEnabled()) {
+			mc.getRenderManager().setDebugBoundingBox(toggled);
+		}
+	}
+
+	@Override
 	protected void onEnable() {
 		super.onEnable();
+		if(mc.getRenderManager() != null) {
+			toggled = mc.getRenderManager().isDebugBoundingBox();
+		}
 		while(toggleHitboxes.isPressed());
 	}
 
@@ -127,6 +141,12 @@ public class HitboxMod extends Mod {
 	}
 
 	@EventHandler
+	public void onHitboxToggle(HitboxToggleEvent event) {
+		toggled = event.state;
+		Client.INSTANCE.save();
+	}
+
+	@EventHandler
 	public void onTick(PreTickEvent event) {
 		while(toggleHitboxes.isPressed()) {
 			// If debug shortcut is used, don't conflict.
@@ -134,8 +154,15 @@ public class HitboxMod extends Mod {
 				continue;
 			}
 
-			mc.getRenderManager().setDebugBoundingBox(!mc.getRenderManager().isDebugBoundingBox());
+			toggled = !mc.getRenderManager().isDebugBoundingBox();
+			mc.getRenderManager().setDebugBoundingBox(toggled);
+			Client.INSTANCE.save();
 		}
+	}
+
+	@Override
+	public boolean isEnabledByDefault() {
+		return true;
 	}
 
 }

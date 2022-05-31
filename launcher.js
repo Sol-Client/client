@@ -378,8 +378,8 @@ class Launcher {
 		var args = [];
 		args.push("-Djava.library.path=" + nativesFolder);
 
-		args.push("-Dme.mcblueparrot.client.version=" + Utils.version);
-		args.push("-Dme.mcblueparrot.client.secret=" + secret);
+		args.push("-Dio.github.solclient.client.version=" + Utils.version);
+		args.push("-Dio.github.solclient.client.secret=" + secret);
 		args.push("-Dmixin.target.mapid=searge");
 
 		args.push("-Dlog4j2.formatMsgNoLookups=true"); // See https://hypixel.net/threads/understanding-the-recent-rce-exploit-for-minecraft-and-what-it-actually-means.4703643/. Thank you Draconish and danterus on Discord for informing me of this.
@@ -390,7 +390,7 @@ class Launcher {
 			args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
 		}
 
-		args.push("-Dme.mcblueparrot.client.discord_lib=" + discordNativeLibrary);
+		args.push("-Dio.github.solclient.client.discord_lib=" + discordNativeLibrary);
 
 		// Fix crashing on some non-English setups. Basically, Mixin is broken in the current version.
 		// This shouldn't (at least I hope it doesn't) interfere with anything, and you can still select your own language from the menu.
@@ -457,7 +457,7 @@ class Launcher {
 		args.push(gameDirectory);
 
 		args.push("--tweakClass");
-		args.push("me.mcblueparrot.client.tweak.Tweaker");
+		args.push("io.github.solclient.client.tweak.Tweaker");
 
 		var process = childProcess.spawn(java, args, { cwd: gameDirectory });
 		this.games.push(process);

@@ -66,7 +66,7 @@ public class DiscordIntegrationMod extends Mod {
 	protected Colour mutedColour = new Colour(255, 80, 80);
 	@Expose
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
-	protected boolean shadow;
+	protected boolean shadow = true;
 	@Expose
 	@Option
 	protected Colour speakingColour = new Colour(20, 255, 20);

@@ -40,7 +40,7 @@ sol_client.mod.simple_hud.option.borderColour=Цвет бордюра
 sol_client.mod.simple_hud.option.textColour=Цвет текста
 sol_client.mod.simple_hud.option.shadow=Тень текста
 
-sol_client.mod.sol_client.name=Общие настройки
+sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=Общие настройки Sol Client.
 
 sol_client.mod.sol_client.option.fancyMainMenu=Красивое главное меню

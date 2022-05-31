@@ -111,8 +111,11 @@ sol_client.mod.potion_effects.description=Показывает активные 
 sol_client.mod.potion_effects.option.alignment=Выравнивание
 sol_client.mod.potion_effects.option.icon=Иконка
 sol_client.mod.potion_effects.option.background=Фон
+sol_client.mod.potion_effects.option.title=Метка
 sol_client.mod.potion_effects.option.titleColour=Цвет названия
+sol_client.mod.potion_effects.option.duration=Время
 sol_client.mod.potion_effects.option.durationColour=Цвет обр. отсчёта
+sol_client.mod.potion_effects.option.spacing=Расстояние
 
 sol_client.mod.armour.name=Броня и инструмент
 sol_client.mod.armour.description=Показывает текущую броню, инструмент и их запас прочности.
@@ -244,8 +247,8 @@ sol_client.mod.toggle_sprint.description=Заставляет кнопку бе�
 
 sol_client.mod.toggle_sprint.option.hud=HUD
 
-sol_client.mod.toggle_sprint.held=Sprinting (Held)
-sol_client.mod.toggle_sprint.toggled=Sprinting (Toggled)
+sol_client.mod.toggle_sprint.held=Бег (Зажат)
+sol_client.mod.toggle_sprint.toggled=Бег (Включен)
 
 sol_client.mod.zoom.name=Зум
 sol_client.mod.zoom.description=Приблизить мир при нажатии на клавишу.

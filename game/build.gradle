@@ -1,407 +1,58 @@
-import com.google.gson.JsonParser
-import io.github.solclient.gradle.CustomTweakerPlugin
-import net.md_5.specialsource.SpecialSource
-import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
-import org.objectweb.asm.ClassReader
-import org.objectweb.asm.commons.Remapper
-import org.objectweb.asm.commons.RemappingClassAdapter
-import org.objectweb.asm.tree.ClassNode
+import com.github.glassmc.kiln.standard.MixinRemapper
+import io.github.solclient.gradle.SolClientKilnEnvironment
 
-import java.nio.file.Files
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
-import java.util.zip.ZipOutputStream
-
-buildscript {
-	repositories {
-		mavenCentral()
-		maven {
-			url "https://files.minecraftforge.net/maven"
-		}
-		maven {
-			url "https://repo.spongepowered.org/maven"
-		}
-		maven {
-			url "https://plugins.gradle.org/m2"
-		}
-	}
-	dependencies {
-		classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
-	}
+plugins {
+	id "com.github.johnrengelman.shadow"
+	id "kiln-main"
+	id "io.freefair.lombok" version "6.4.3"
 }
 
-apply plugin: CustomTweakerPlugin
-apply plugin: "org.spongepowered.mixin"
-apply plugin: "java"
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-def launchWrapperTweakClass = "io.github.solclient.client.tweak.Tweaker"
-
-minecraft {
-	version = "1.8.9"
-	tweakClass = launchWrapperTweakClass
-	mappings = "stable_22"
-	runDir = "run"
-
-	makeObfSourceJar = false
+kiln {
+	environment = new SolClientKilnEnvironment()
+	transformers += new MixinRemapper()
 }
-
-def mcpFolder = new File(System.getProperty("user.home"),
-		".gradle/caches/minecraft/de/oceanlabs/mcp/mcp_stable/22")
-
-static def csvToMap(file) {
-	Map<String, String> methods = new HashMap<>()
-	for(def line : Files.readAllLines(file.toPath())) {
-		methods.put(line.split(",")[0], line.split(",")[1])
-	}
-	return methods
-}
-
-static def process(File inputFile, File outputFile, Map<String, String> methods, Map<String, String> fields,
-				   File fixSrg) {
-	def zip = new ZipFile(inputFile)
-	def fileOutput = new FileOutputStream(outputFile)
-	def output = new ZipOutputStream(fileOutput)
-
-	Set<String> fixBuilder = new HashSet<>()
-
-	SeargeSniffer sniffer = new SeargeSniffer(fixBuilder, methods, fields)
-
-	addReplayModRemapper(fixBuilder)
-
-	for(ZipEntry entry : Collections.list(zip.entries())) {
-		InputStream entryInput = zip.getInputStream(entry)
-
-		if(entry.getName() == "mixins.core.replaymod.json"
-				|| entry.getName() == "mixins.recording.replaymod.json"
-				|| entry.getName() == "mixins.compat.mapwriter.replaymod.json"
-				|| entry.getName() == "assets/replaymod/logo_button.png"
-				|| entry.getName() == "assets/replaymod/logo.jpg"
-				|| entry.getName().startsWith("assets/replaymod/lang/")
-				|| entry.getName() == "default_thumb.jpg"
-				|| entry.getName().startsWith("org/spongepowered/")
-				|| entry.getName() == "com/replaymod/core/ReplayModBackend.class"
-				|| entry.getName() == "com/replaymod/core/SettingsRegistry.class"
-				|| entry.getName() == "com/replaymod/core/SettingsRegistry\$SettingKey.class"
-				|| entry.getName() == "com/replaymod/core/SettingsRegistryBackend.class"
-				|| entry.getName() == "com/replaymod/core/versions/scheduler/SchedulerImpl.class"
-				|| entry.getName() == "com/replaymod/lib/de/johni0702/minecraft/gui/utils/EventRegistrations.class"
-				|| entry.getName() == "com/replaymod/recording/ReplayModRecording.class"
-				|| entry.getName() == "com/replaymod/compat/ReplayModCompat.class"
-				|| entry.getName() == "com/replaymod/core/utils/ModInfoGetter.class"
-				|| (methods != null && entry.getName() == "mixins.replaymod.refmap.json")) {
-			entryInput.close()
-			continue
-		}
-
-		if(entry.isDirectory()) continue
-
-		byte[] content = IOUtils.toByteArray(entryInput)
-
-		if(entry.getName().endsWith(".class") && methods != null && fields != null) {
-			def reader = new ClassReader(content)
-			reader.accept(new RemappingClassAdapter(new ClassNode(), sniffer), ClassReader.EXPAND_FRAMES)
-		}
-
-		entryInput.close()
-
-		output.putNextEntry(new ZipEntry(entry.getName()))
-		output.write(content)
-		output.closeEntry()
-	}
-
-	output.close()
-	fileOutput.close()
-	zip.close()
-
-	FileUtils.writeStringToFile(fixSrg, String.join("\n", fixBuilder), "utf-8")
-}
-
-static def addReplayModRemapper(def fixBuilder) {
-	fixBuilder.add("CL: com/replaymod/core/ReplayModBackend io/github/solclient/client/mod/impl/replay/fix/SCReplayModBackend")
-	fixBuilder.add("CL: com/replaymod/core/SettingsRegistry " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCSettingsRegistry")
-	fixBuilder.add("CL: com/replaymod/core/versions/scheduler/SchedulerImpl " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCScheduler")
-	fixBuilder.add("CL: com/replaymod/core/utils/ModInfoGetter " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCModInfoGetter")
-	fixBuilder.add("CL: com/replaymod/lib/de/johni0702/minecraft/gui/utils/EventRegistrations " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCEventRegistrations")
-	fixBuilder.add("CL: com/replaymod/recording/ReplayModRecording " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCReplayModRecording")
-	fixBuilder.add("CL: com/replaymod/compat/ReplayModCompat " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCReplayModCompat")
-	fixBuilder.add("CL: net/minecraftforge/client/event/GuiScreenEvent\$ActionPerformedEvent\$Pre " +
-			"io/github/solclient/client/event/impl/ActionPerformedEvent")
-	fixBuilder.add("CL: net/minecraftforge/fml/client/registry/ClientRegistry " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCClientRegistry")
-	fixBuilder.add("CL: net/minecraftforge/fml/common/eventhandler/SubscribeEvent " +
-			"io/github/solclient/client/event/EventHandler")
-	fixBuilder.add("CL: net/minecraftforge/fml/common/gameevent/PlayerEvent\$ItemPickupEvent " +
-			"io/github/solclient/client/event/impl/ItemPickupEvent")
-	fixBuilder.add("CL: net/minecraftforge/event/entity/player/PlayerSleepInBedEvent " +
-			"io/github/solclient/client/event/impl/PlayerSleepEvent")
-	fixBuilder.add("CL: net/minecraftforge/client/event/EntityViewRenderEvent\$CameraSetup " +
-			"io/github/solclient/client/event/impl/CameraRotateEvent")
-	fixBuilder.add("CL: net/minecraftforge/client/event/RenderGameOverlayEvent\$ElementType " +
-			"io/github/solclient/client/event/impl/GameOverlayElement")
-	fixBuilder.add("CL: net/minecraftforge/client/event/RenderGameOverlayEvent\$Pre " +
-			"io/github/solclient/client/event/impl/PreGameOverlayRenderEvent")
-	fixBuilder.add("CL: net/minecraftforge/client/event/RenderGameOverlayEvent\$Post " +
-			"io/github/solclient/client/event/impl/PostGameOverlayRenderEvent")
-	fixBuilder.add("CL: net/minecraftforge/fml/common/gameevent/TickEvent\$RenderTickEvent " +
-			"io/github/solclient/client/event/impl/RenderTickEvent")
-	fixBuilder.add("CL: net/minecraftforge/fml/common/network/internal/FMLProxyPacket " +
-			"io/github/solclient/client/util/Stub")
-	fixBuilder.add("CL: net/minecraftforge/client/event/GuiScreenEvent\$MouseInputEvent\$Pre " +
-			"io/github/solclient/client/event/impl/PreGuiMouseInputEvent")
-	fixBuilder.add("CL: net/minecraftforge/client/event/GuiScreenEvent\$KeyboardInputEvent\$Pre " +
-			"io/github/solclient/client/event/impl/PreGuiKeyboardInputEvent")
-	fixBuilder.add("CL: net/minecraftforge/fml/common/FMLCommonHandler " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCFMLCommonHandler")
-	fixBuilder.add("CL: net/minecraftforge/client/ForgeHooksClient " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCForgeHooksClient")
-	fixBuilder.add("CL: com/replaymod/core/SettingsRegistry\$SettingKey " +
-			"io/github/solclient/client/mod/impl/replay/fix/SCSettingsRegistry\$SettingKey")
-}
-
-class SeargeSniffer extends Remapper {
-
-	Map<String, String> methods
-	Map<String, String> fields
-	Set<String> fixBuilder
-
-	SeargeSniffer(Set<String> fixBuilder, Map<String, String> methods, Map<String, String> fields) {
-		this.fixBuilder = fixBuilder
-		this.methods = methods
-		this.fields = fields
-	}
-
-	@Override
-	String mapMethodName(String owner, String name, String desc) {
-		if(methods.containsKey(name) && (owner.startsWith("com/replaymod") || owner.startsWith("net/minecraft"))) {
-			fixBuilder.add("MD: " + owner + "/" + name + " " + desc + " " + owner + "/" + methods.get(name) + " " +
-					desc)
-		}
-		return super.mapMethodName(owner, name, desc)
-	}
-
-	@Override
-	String mapFieldName(String owner, String name, String desc) {
-		if(fields.containsKey(name) && (owner.startsWith("com/replaymod") || owner.startsWith("net/minecraft"))) {
-			fixBuilder.add("FD: " + owner + "/" + name + " " + owner + "/" + fields.get(name))
-		}
-		return super.mapFieldName(owner, name, desc)
-	}
-
-}
-
-def workspaceReady = mcpFolder.exists()
-def replayModRuntimeJar
-def replayModShippedJar
-
-if(workspaceReady) {
-	def methodsFile = new File(mcpFolder, "methods.csv");
-	def fieldsFile = new File(mcpFolder, "fields.csv");
-
-	def srgFolder = new File(mcpFolder, "srgs")
-
-	def libsDir = new File(project.getRootDir(), "replaymod")
-
-	def replayModBase = "replaymod-1.8.9-2.6.3"
-
-	def replayModJar = new File(libsDir, replayModBase + ".jar")
-	if(!replayModJar.exists()) {
-		FileUtils.copyURLToFile(new URL("https://minio.replaymod.com/replaymod/" + replayModJar.getName()), replayModJar)
-	}
-
-	def seargeToMCP = new File(srgFolder, "srg-mcp.srg")
-
-	def replayModRuntimeJar0 = new File(libsDir, replayModBase + "-runtime0.jar")
-	if(!replayModRuntimeJar0.exists()) {
-		SpecialSource.main([
-				"--in-jar",
-				replayModJar,
-				"--out-jar",
-				replayModRuntimeJar0,
-				"--srg-in",
-				seargeToMCP
-		] as String[])
-	}
-
-	def replayModRuntimeJar1 = new File(libsDir, replayModBase + "-runtime1.jar")
-	def fixSrgRuntime = new File(libsDir, "replay-mod-fix-runtime.srg")
-	def fixSrgShipped = new File(libsDir, "replay-mod-fix-shipped.srg")
-
-	if(!replayModRuntimeJar1.exists()) {
-		Map<String, String> methods = csvToMap(methodsFile)
-		Map<String, String> fields = csvToMap(fieldsFile)
-		process(replayModRuntimeJar0, replayModRuntimeJar1, methods, fields, fixSrgRuntime)
-	}
-
-	replayModRuntimeJar = new File(libsDir, replayModBase + "-runtime.jar")
-
-	if(!replayModRuntimeJar.exists()) {
-		SpecialSource.main([
-				"--in-jar",
-				replayModRuntimeJar1,
-				"--out-jar",
-				replayModRuntimeJar,
-				"--srg-in",
-				fixSrgRuntime
-		] as String[])
-	}
-
-	def replayModShippedJar0 = new File(libsDir, replayModBase + "-shipped0.jar")
-
-	if(!replayModShippedJar0.exists()) {
-		process(replayModJar, replayModShippedJar0, null, null, fixSrgShipped)
-	}
-
-	replayModShippedJar = new File(libsDir, replayModBase + "-shipped.jar")
-
-	if(!replayModShippedJar.exists()) {
-		SpecialSource.main([
-				"--in-jar",
-				replayModShippedJar0,
-				"--out-jar",
-				replayModShippedJar,
-				"--srg-in",
-				fixSrgShipped
-		] as String[])
-	}
-}
-
-task cleanRefmap() {
-	doLast {
-		def tmpJar = new File(getTemporaryDir(), "tmp.jar")
-
-		def zip = new ZipFile(jar.archivePath)
-		def fileOutput = new FileOutputStream(tmpJar)
-		def output = new ZipOutputStream(fileOutput)
-
-		for(ZipEntry entry : Collections.list(zip.entries())) {
-			InputStream entryInput = zip.getInputStream(entry)
-
-			if(entry.getName() == "mixins.solclient.refmap.json") {
-				def obj = new JsonParser().parse(new InputStreamReader(entryInput)).getAsJsonObject()
-				obj.remove("data")
-
-				output.putNextEntry(new ZipEntry(entry.getName()))
-				output.write(obj.toString().getBytes())
-				output.close()
-				continue
-			}
-
-			if(entry.isDirectory()) continue
-
-			byte[] content = IOUtils.toByteArray(entryInput)
-
-			entryInput.close()
-
-			output.putNextEntry(new ZipEntry(entry.getName()))
-			output.write(content)
-			output.closeEntry()
-		}
-
-		output.close()
-		fileOutput.close()
-		zip.close()
-
-		jar.archivePath.delete()
-		tmpJar.renameTo(jar.archivePath)
-	}
-}
-
-jar.finalizedBy tasks.cleanRefmap
 
 repositories {
 	mavenCentral()
-	maven {
-		url "https://libraries.minecraft.net"
-	}
-	maven {
-		url "https://repo.spongepowered.org/maven"
-	}
-	maven {
-		url "https://repo.codemc.io/repository/maven-public"
-	}
-	maven {
-		url "https://repo.hypixel.net/repository/Hypixel"
-	}
-	maven {
-        url "https://jitpack.io"
-	}
+	maven { url "https://libraries.minecraft.net" }
+	maven { url "https://repo.spongepowered.org/maven" }
+	maven { url "https://repo.codemc.io/repository/maven-public" }
+	maven { url "https://repo.hypixel.net/repository/Hypixel" }
+	maven { url "https://jitpack.io" }
+	maven { url "https://glassmc.ml/repository/" }
 }
 
 configurations {
-	dependency
-	implementation.extendsFrom(dependency)
-	runtime.extendsFrom(dependency)
-	ship
-}
-
-configurations.forgeGradleMcDeps {
-    exclude group: "org.apache.logging.log4j"
+	shadowImplementation
+	implementation.extendsFrom(shadowImplementation)
 }
 
 dependencies {
-	compileOnly "org.projectlombok:lombok:1.18.20"
-	annotationProcessor "org.projectlombok:lombok:1.18.20"
+	implementation "com.github.glassmc:loader:0.9.6"
 	annotationProcessor "org.spongepowered:mixin:0.7.11-SNAPSHOT"
-	dependency("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+	implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
 		exclude module: "launchwrapper"
 		exclude module: "guava"
 		exclude module: "gson"
 		exclude module: "commons-io"
 	}
-	dependency "org.slick2d:slick2d-core:1.0.2"
-	ship files("libs/occlusionculling.jar")
-	dependency "net.hypixel:hypixel-api-core:4.0"
-	
-	if(workspaceReady) {
-		dependency files(replayModRuntimeJar)
-		ship files(replayModShippedJar)
-	}
+	implementation "org.slick2d:slick2d-core:1.0.2"
+	shadowImplementation files("libs/occlusionculling.jar")
+	implementation "net.hypixel:hypixel-api-core:4.0"
 
-	dependency "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
-	dependency "org.java-websocket:Java-WebSocket:1.5.3"
-	
-	// patch log4shell
-	dependency "org.apache.logging.log4j:log4j-api:2.17.0"
-	dependency "org.apache.logging.log4j:log4j-core:2.17.0"
+	implementation "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
+	implementation "org.java-websocket:Java-WebSocket:1.5.3"
+
+	implementation "org.apache.logging.log4j:log4j-api:2.17.2"
+	implementation "org.apache.logging.log4j:log4j-core:2.17.2"
+
+	implementation "commons-io:commons-io:2.7"
+	implementation "org.apache.commons:commons-lang3:3.3.2"
+	implementation "net.minecraft:launchwrapper:1.12"
+
+	compileOnly "net.minecraft:client-1.8.9:mcp"
 }
 
-mixin {
-	add sourceSets.main, "mixins.solclient.refmap.json"
-}
-
-runClient {
-	outputs.upToDateWhen {
-		false
-	}
-}
-
-jar {
-	dependsOn configurations.compile
-	manifest {
-		attributes(
-				"MixinConfigs": "mixins.solclient.json",
-				"TweakClass": launchWrapperTweakClass,
-				"TweakOrder": "0",
-				"Manifest-Version": "1.0"
-		)
-	}
-	from {
-		configurations.ship.collect {
-			it.isDirectory() ? it : zipTree(it)
-		}
-	}
-}
-
-tasks.withType(JavaCompile) {
-	options.encoding = "UTF-8"
+shadowJar {
+	configurations = [project.configurations.shadowImplementation]
 }

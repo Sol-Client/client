@@ -1,9 +1,9 @@
 repositories {
-    maven {
-        url "https://files.minecraftforge.net/maven"
-    }
+	mavenCentral()
+	mavenLocal()
+	maven { url "https://jitpack.io/" }
 }
 
 dependencies {
-    implementation "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
+	implementation "com.github.glassmc:kiln:0.8.10"
 }

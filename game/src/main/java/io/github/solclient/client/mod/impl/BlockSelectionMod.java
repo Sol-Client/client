@@ -124,70 +124,13 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 					.offset(-x, -y, -z);
 
 			if(fill) {
-				GL11.glColor4ub((byte) fillColour.getRed(), (byte) fillColour.getGreen(), (byte) fillColour.getBlue(),
-						(byte) fillColour.getAlpha());
-
-				GlStateManager.disableCull();
-				Tessellator tessellator = Tessellator.getInstance();
-				WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-
-				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
-				tessellator.draw();
-
-				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.minZ).endVertex();
-				tessellator.draw();
-
-				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
-				tessellator.draw();
-
-				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
-				tessellator.draw();
-
-				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.maxY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.maxY, selectedBox.minZ).endVertex();
-				tessellator.draw();
-
-				worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.minZ).endVertex();
-				worldrenderer.pos(selectedBox.maxX, selectedBox.minY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.maxZ).endVertex();
-				worldrenderer.pos(selectedBox.minX, selectedBox.minY, selectedBox.minZ).endVertex();
-				tessellator.draw();
-
-
-				GlStateManager.enableCull();
+				fillColour.bind();
+				Utils.fillBox(selectedBox);
 			}
 
 			if(outline) {
-				GL11.glColor4ub((byte) outlineColour.getRed(), (byte) outlineColour.getGreen(), (byte) outlineColour.getBlue(),
-						(byte) outlineColour.getAlpha());
+				outlineColour.bind();
 				GL11.glLineWidth(outlineWidth);
-
 				RenderGlobal.drawSelectionBoundingBox(selectedBox);
 			}
 		}

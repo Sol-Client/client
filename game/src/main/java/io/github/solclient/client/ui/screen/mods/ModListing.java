@@ -72,12 +72,11 @@ public class ModListing extends ColouredComponent {
 		GlStateManager.enableBlend();
 
 		if(SolClientMod.instance.roundedUI) {
-			Utils.glColour(Colour.BLACK_128);
+			Colour.BLACK_128.bind();
 			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_mod_listing_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
 
-			Utils.glColour(getColour());
-
+			getColour().bind();
 			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_mod_listing_outline_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
 		}

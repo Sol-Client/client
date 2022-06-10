@@ -40,7 +40,7 @@ public class ButtonComponent extends ColouredComponent {
 			GlStateManager.enableAlpha();
 			GlStateManager.enableBlend();
 
-			Utils.glColour(getColour());
+			getColour().bind();
 
 			mc.getTextureManager().bindTexture(
 					new ResourceLocation("textures/gui/sol_client_button_" + type + "_" + Utils.getTextureScale() + ".png"));

@@ -58,12 +58,12 @@ public class SliderComponent extends Component {
 		int x = (int) (100 * (((value - min) / (max - min)))) - 4;
 
 		if(SolClientMod.instance.roundedUI) {
-			Utils.glColour(Colour.LIGHT_BUTTON);
+			Colour.LIGHT_BUTTON.bind();
 			mc.getTextureManager().bindTexture(new ResourceLocation(
 					"textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(0, 4, 0, 0, 100, 2, 100, 2);
 
-			Utils.glColour(colour.get(this, null));
+			colour.get(this, null);
 			mc.getTextureManager().bindTexture(new ResourceLocation(
 					"textures/gui/sol_client_slider_thumb_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(x, 1, 0, 0, 8, 8, 8, 8);

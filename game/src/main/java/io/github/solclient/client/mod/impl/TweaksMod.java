@@ -79,12 +79,20 @@ public class TweaksMod extends Mod {
 	protected void onEnable() {
 		super.onEnable();
 		enabled = true;
+		if(borderlessFullscreen && mc.isFullScreen()) {
+			setBorderlessFullscreen(true);
+		}
 	}
 
 	@Override
 	protected void onDisable() {
 		super.onDisable();
 		enabled = false;
+		if(borderlessFullscreen && mc.isFullScreen()) {
+			setBorderlessFullscreen(false);
+			mc.toggleFullscreen();
+			mc.toggleFullscreen();
+		}
 	}
 
 	@Override
@@ -94,7 +102,7 @@ public class TweaksMod extends Mod {
 
 	@Override
 	public void postOptionChange(String key, Object value) {
-		if(key.equals("borderlessFullscreen")) {
+		if(isEnabled() && key.equals("borderlessFullscreen")) {
 			if(mc.isFullScreen()) {
 				if((boolean) value) {
 					setBorderlessFullscreen(true);

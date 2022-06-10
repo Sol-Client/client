@@ -244,6 +244,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 			launchNote.style.display = "inline";
 			playButton.innerText = "...";
+			launchNote.innerText = "Refreshing login...";
 			try {
 				await launcher.accountManager.refreshAccount(launcher.accountManager.activeAccount);
 			}

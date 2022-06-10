@@ -47,7 +47,7 @@ public class ScaledIconComponent extends ColouredComponent {
 			GlStateManager.enableAlpha();
 			GlStateManager.enableBlend();
 
-			Utils.glColour(getColour());
+			getColour().bind();
 
 			mc.getTextureManager().bindTexture(new ResourceLocation(
 					"textures/gui/" + iconName.get(this, "sol_client_confusion") + "_" + Utils.getTextureScale() + ".png"));

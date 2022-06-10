@@ -66,7 +66,7 @@ public class SpeedometerMod extends SimpleHudMod {
 
 			float[] bounds = element.getHighPrecisionMultipliedBounds();
 			Utils.scissor(bounds[0], bounds[1], bounds[2], bounds[3]);
-			Utils.glColour(textColour);
+			textColour.bind();
 			GL11.glLineWidth(1.5F);
 
 			if(!editMode && !mc.isGamePaused()

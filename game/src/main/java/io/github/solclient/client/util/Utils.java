@@ -57,6 +57,7 @@ import net.minecraft.network.status.client.C01PacketPing;
 import net.minecraft.network.status.server.S00PacketServerInfo;
 import net.minecraft.network.status.server.S01PacketPong;
 import net.minecraft.scoreboard.ScoreObjective;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -83,10 +84,6 @@ public class Utils {
 
 	public int getStringWidth(String text) {
 		return MinecraftClient.getInstance().getTextRenderer().getWidth(text);
-	}
-
-	public void glColour(Colour color) {
-		GL11.glColor4ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue(), (byte) color.getAlpha());
 	}
 
 	public void drawHorizontalLine(double startX, double endX, double y, int colour) {
@@ -482,6 +479,62 @@ public class Utils {
 		}
 
 		return max;
+	}
+
+	public void fillBox(AxisAlignedBB box) {
+		GlStateManager.disableCull();
+		Tessellator tessellator = Tessellator.getInstance();
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
+		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
+		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
+		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
+		worldrenderer.pos(box.maxX, box.maxY, box.minZ).endVertex();
+		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
+		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
+		tessellator.draw();
+
+		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
+		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
+		worldrenderer.pos(box.maxX, box.minY, box.maxZ).endVertex();
+		worldrenderer.pos(box.maxX, box.maxY, box.maxZ).endVertex();
+		worldrenderer.pos(box.maxX, box.maxY, box.minZ).endVertex();
+		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
+		tessellator.draw();
+
+		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
+		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
+		worldrenderer.pos(box.maxX, box.minY, box.maxZ).endVertex();
+		worldrenderer.pos(box.maxX, box.maxY, box.maxZ).endVertex();
+		worldrenderer.pos(box.minX, box.maxY, box.maxZ).endVertex();
+		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
+		tessellator.draw();
+
+		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
+		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
+		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
+		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
+		worldrenderer.pos(box.minX, box.maxY, box.maxZ).endVertex();
+		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
+		tessellator.draw();
+
+		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
+		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
+		worldrenderer.pos(box.maxX, box.maxY, box.minZ).endVertex();
+		worldrenderer.pos(box.maxX, box.maxY, box.maxZ).endVertex();
+		worldrenderer.pos(box.minX, box.maxY, box.maxZ).endVertex();
+		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
+		tessellator.draw();
+
+		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
+		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
+		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
+		worldrenderer.pos(box.maxX, box.minY, box.maxZ).endVertex();
+		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
+		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
+		tessellator.draw();
+
+		GlStateManager.enableCull();
 	}
 
 }

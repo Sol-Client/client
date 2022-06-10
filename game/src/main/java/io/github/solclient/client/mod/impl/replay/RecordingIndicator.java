@@ -56,7 +56,7 @@ public class RecordingIndicator extends BaseHudElement {
 		mc.getTextureManager().bindTexture(paused ? PAUSED : RECORDING);
 
 		GlStateManager.enableBlend();
-		Utils.glColour(SCReplayMod.instance.recordingIndicatorColour);
+		SCReplayMod.instance.recordingIndicatorColour.bind();
 		Gui.drawModalRectWithCustomSizedTexture(position.getX(), position.getY(), 0, 0, 16, 16, 16, 16);
 	}
 

@@ -2,6 +2,8 @@ package io.github.solclient.client.util.data;
 
 import java.awt.Color;
 
+import org.lwjgl.opengl.GL11;
+
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.util.Utils;
@@ -197,6 +199,10 @@ public class Colour {
 
 	public String toHexString() {
 		return String.format("#%02X%02X%02X%02X", getRed(), getGreen(), getBlue(), getAlpha());
+	}
+
+	public void bind() {
+		GL11.glColor4ub((byte) getRed(), (byte) getGreen(), (byte) getBlue(), (byte) getAlpha());
 	}
 
 	public static Colour fromHexString(String text) {

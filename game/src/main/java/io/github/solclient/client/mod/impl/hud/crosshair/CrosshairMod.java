@@ -69,7 +69,7 @@ public class CrosshairMod extends HudMod {
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(getScale(), getScale(), getScale());
 
-			Utils.glColour(crosshairColour);
+			crosshairColour.bind();
 
 			GlStateManager.enableBlend();
 			GlStateManager.enableAlpha();
@@ -77,7 +77,7 @@ public class CrosshairMod extends HudMod {
 
 			if(highlightEntities && mc.objectMouseOver != null && mc.objectMouseOver.entityHit != null && !(mc.objectMouseOver.entityHit.isInvisible()
 					|| mc.objectMouseOver.entityHit.isInvisibleToPlayer(mc.thePlayer))) {
-				Utils.glColour(entityColour);
+				entityColour.bind();
 			}
 			else if(blending) {
 				GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);

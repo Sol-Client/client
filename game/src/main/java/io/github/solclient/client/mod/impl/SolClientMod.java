@@ -31,7 +31,7 @@ public class SolClientMod extends ConfigOnlyMod {
 	public KeyBinding modsKey = new KeyBinding(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT, Client.KEY_CATEGORY);
 
 	@Option
-	public KeyBinding editHudKey = new KeyBinding(getTranslationKey() + ".edit_hud", Keyboard.KEY_GRAVE, Client.KEY_CATEGORY);
+	public KeyBinding editHudKey = new KeyBinding(getTranslationKey() + ".edit_hud", 0, Client.KEY_CATEGORY);
 
 	@Expose
 	@Option

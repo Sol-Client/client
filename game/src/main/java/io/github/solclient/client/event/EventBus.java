@@ -11,29 +11,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.client.Minecraft;
+import lombok.AllArgsConstructor;
 
 /**
  * Event bus system focused on performance.
  */
-@NotThreadSafe
 public class EventBus {
 
+	@AllArgsConstructor
 	private static class MethodData {
 
-		public Object instance;
-		public Method target;
-
-		public MethodData(Object instance, Method target) {
-			this.instance = instance;
-			this.target = target;
-		}
+		public final Object instance;
+		public final Method target;
 
 	}
 

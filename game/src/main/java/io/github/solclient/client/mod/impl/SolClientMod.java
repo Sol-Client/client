@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.api.option.KeyBinding;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.ConfigOnlyMod;
 import io.github.solclient.client.mod.ModCategory;
@@ -13,7 +14,6 @@ import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.font.Font;
 import io.github.solclient.client.util.font.SlickFontRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 
 public class SolClientMod extends ConfigOnlyMod {
 
@@ -28,10 +28,10 @@ public class SolClientMod extends ConfigOnlyMod {
 	public boolean logoInInventory;
 
 	@Option
-	public KeyBinding modsKey = new KeyBinding(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT, Client.KEY_CATEGORY);
+	public KeyBinding modsKey = KeyBinding.create(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT, Client.KEY_CATEGORY);
 
 	@Option
-	public KeyBinding editHudKey = new KeyBinding(getTranslationKey() + ".edit_hud", Keyboard.KEY_GRAVE, Client.KEY_CATEGORY);
+	public KeyBinding editHudKey = KeyBinding.create(getTranslationKey() + ".edit_hud", Keyboard.KEY_GRAVE, Client.KEY_CATEGORY);
 
 	@Expose
 	@Option

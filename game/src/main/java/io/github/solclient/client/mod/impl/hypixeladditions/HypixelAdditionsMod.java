@@ -13,15 +13,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.DetectedServer;
-import io.github.solclient.client.api.Popup;
+import io.github.solclient.client.packet.Popup;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostTickEvent;
 import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
@@ -209,7 +206,7 @@ public class HypixelAdditionsMod extends Mod {
 		if(Client.INSTANCE.getCommand("chat") == null) {
 			if(isEffective()) {
 				if(mc.thePlayer != null) {
-					mc.thePlayer.sendChatMessage("/chat a");
+					mc.thePlayer.chat("/chat a");
 				}
 				Client.INSTANCE.registerCommand("chat", new ChatChannelCommand(this));
 			}
@@ -347,7 +344,7 @@ public class HypixelAdditionsMod extends Mod {
 			for(Pattern pattern : autoggTriggers) {
 				if(pattern.matcher(event.message).matches()) {
 					donegg = true;
-					mc.thePlayer.sendChatMessage("/achat " + autoggMessage);
+					mc.thePlayer.chat("/achat " + autoggMessage);
 					return;
 				}
 			}
@@ -373,7 +370,7 @@ public class HypixelAdditionsMod extends Mod {
 		if(ticksUntilLocraw != -1 && --ticksUntilLocraw == 0) {
 			ticksUntilLocraw = -1;
 
-			mc.thePlayer.sendChatMessage("/locraw");
+			mc.thePlayer.chat("/locraw");
 		}
 
 		if(ticksUntilAutogl != -1 && --ticksUntilAutogl == 0) {
@@ -396,10 +393,10 @@ public class HypixelAdditionsMod extends Mod {
 					|| ("UHC".equals(locationData.getType()) && !"SOLO".equals(locationData.getType()))
 					|| ("SPEED_UHC".equals(locationData.getType()) && !"solo_nomal".equals(locationData.getType()))
 					|| "BATTLEGROUND" /* Warlords */ .equals(locationData.getType()))) {
-				mc.thePlayer.sendChatMessage("/shout " + autoglMessage);
+				mc.thePlayer.chat("/shout " + autoglMessage);
 			}
 			else {
-				mc.thePlayer.sendChatMessage("/achat " + autoglMessage);
+				mc.thePlayer.chat("/achat " + autoglMessage);
 			}
 
 			donegl = true;

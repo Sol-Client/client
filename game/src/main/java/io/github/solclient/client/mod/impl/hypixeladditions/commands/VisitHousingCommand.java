@@ -18,10 +18,10 @@ public class VisitHousingCommand extends HypixelAdditionsCommand {
 	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
 		if(args.length == 1) {
 			if(mod.isHousing()) {
-				mc.thePlayer.sendChatMessage("/visit " + args[0]);
+				mc.thePlayer.chat("/visit " + args[0]);
 			}
 			else {
-				mc.thePlayer.sendChatMessage("/lobby housing");
+				mc.thePlayer.chat("/lobby housing");
 				new Thread(() -> {
 					try {
 						Thread.sleep(300);
@@ -29,7 +29,7 @@ public class VisitHousingCommand extends HypixelAdditionsCommand {
 					catch(InterruptedException e) {
 						e.printStackTrace();
 					}
-					mc.thePlayer.sendChatMessage("/visit " + args[0]);
+					mc.thePlayer.chat("/visit " + args[0]);
 				}).start();
 			}
 			return;

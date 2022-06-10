@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import io.github.solclient.api.network.ServerData;
 import io.github.solclient.client.mod.Mod;
-import net.minecraft.client.multiplayer.ServerData;
 
 public enum DetectedServer {
 	HYPIXEL("([A-z]+\\.)?hypixel\\.net(:[0-9]+)?",
@@ -40,7 +40,7 @@ public enum DetectedServer {
 	}
 
 	public boolean matches(ServerData data) {
-		return pattern.matcher(data.serverIP).matches();
+		return pattern.matcher(data.getIp()).matches();
 	}
 
 }

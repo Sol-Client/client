@@ -80,7 +80,7 @@ public class QuickPlayMod extends Mod {
 	}
 
 	public void playGame(QuickPlayGameMode mode) {
-		mc.thePlayer.sendChatMessage(mode.getCommand());
+		mc.thePlayer.chat(mode.getCommand());
 
 		if(!GuiScreen.isShiftKeyDown()) {
 			mc.displayGuiScreen(null);

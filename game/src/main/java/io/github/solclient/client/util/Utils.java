@@ -32,6 +32,7 @@ import com.google.gson.JsonParser;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
+import io.github.solclient.api.MinecraftClient;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
@@ -80,8 +81,8 @@ public class Utils {
 		}
 	}
 
-	private int getStringWidth(String text) {
-		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
+	public int getStringWidth(String text) {
+		return MinecraftClient.getInstance().getTextRenderer().getWidth(text);
 	}
 
 	public void glColour(Colour color) {

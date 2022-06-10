@@ -2,6 +2,7 @@ package io.github.solclient.client;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -10,6 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
+
+import io.github.solclient.api.Identifier;
+import io.github.solclient.api.MinecraftClient;
+import io.github.solclient.api.network.ServerData;
+import io.github.solclient.api.option.KeyBinding;
+import io.github.solclient.api.text.ChatColour;
+import io.github.solclient.api.text.LiteralComponent;
+import io.github.solclient.api.world.World;
+import io.github.solclient.api.world.block.BlockPos;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -24,16 +34,17 @@ import com.google.gson.JsonParser;
 import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
-import io.github.solclient.client.api.ClientApi;
-import io.github.solclient.client.api.PopupManager;
+import io.github.solclient.client.packet.PacketApi;
+import io.github.solclient.client.packet.PopupManager;
+import io.github.solclient.client.command.Command;
+import io.github.solclient.client.command.CommandException;
 import io.github.solclient.client.config.ConfigVersion;
 import io.github.solclient.client.culling.CullTask;
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostGameStartEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.event.impl.SendChatMessageEvent;
-import io.github.solclient.client.event.impl.ServerConnectEvent;
+import io.github.solclient.client.event.impl.chat.ChatMessageOutgoingEvent;
+import io.github.solclient.client.event.impl.network.ServerConnectEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.BlockSelectionMod;
@@ -80,45 +91,31 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * Main class for Sol Client.
  */
 public class Client {
 
-	private Minecraft mc = Minecraft.getMinecraft();
+	private MinecraftClient mc = MinecraftClient.getInstance();
 	public static final Client INSTANCE = new Client();
 	private JsonObject data;
 	@Getter
-	private List<Mod> mods = new ArrayList<Mod>();
+	private List<Mod> mods = new ArrayList<>();
 	private Map<String, Mod> modsById = new HashMap<>();
 	@Getter
-	private List<HudElement> huds = new ArrayList<HudElement>();
+	private List<HudElement> huds = new ArrayList<>();
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "sol_client_mods.json");
-	private final File LEGACY_DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json" /* This was the old name. */ );
+	private final File DATA_FILE = new File(mc.getDataFolder(), "sol_client_mods.json");
+	private final File LEGACY_DATA_FILE = new File(mc.getDataFolder(), "parrot_client_mods.json" /* This was the old name. */ );
 
 	public DetectedServer detectedServer;
 
 	public EventBus bus = new EventBus();
 
-	private Map<ResourceLocation, IResource> resources = new HashMap<>();
-	private Map<String, CommandBase> commands = new HashMap<>();
+	private Map<Identifier, Supplier<String>> resources = new HashMap<>();
+	private Map<String, Command> commands = new HashMap<>();
 	private List<ChatButton> chatButtons = new ArrayList<>();
 
 	private ChatChannelSystem chatChannelSystem;
@@ -139,7 +136,7 @@ public class Client {
 
 	public void init() {
 		Utils.resetLineWidth();
-		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
+		new File(mc.getDataFolder(), "server-resource-packs").mkdirs(); // Fix crash
 
 		System.setProperty("http.agent", "Sol Client/" + VERSION);
 
@@ -205,16 +202,16 @@ public class Client {
 
 		CullTask cullingTask = new CullTask(new OcclusionCullingInstance(128, new DataProvider() {
 
-			private WorldClient world;
+			private World world;
 
 			@Override
 			public boolean prepareChunk(int x, int z) {
-				return (world = mc.theWorld) != null;
+				return (world = mc.getWorld()) != null;
 			}
 
 			@Override
 			public boolean isOpaqueFullCube(int x, int y, int z) {
-				return world.isBlockNormalCube(new BlockPos(x, y, z), false);
+				return world.isOpaqueFullCube(BlockPos.create(x, y, z));
 			}
 
 		}));
@@ -253,7 +250,7 @@ public class Client {
 			LOGGER.error("Could not start async updates thread", error);
 		}
 
-		bus.register(new ClientApi());
+		bus.register(new PacketApi());
 		bus.register(popupManager = new PopupManager());
 
 		capeManager = new CapeManager();
@@ -267,15 +264,6 @@ public class Client {
 		}
 
 		return false;
-	}
-
-	public void registerKeyBinding(KeyBinding keyBinding) {
-		mc.gameSettings.keyBindings = ArrayUtils.add(mc.gameSettings.keyBindings, keyBinding);
-	}
-
-	public void unregisterKeyBinding(KeyBinding keyBinding) {
-		mc.gameSettings.keyBindings = ArrayUtils.removeElement(mc.gameSettings.keyBindings, keyBinding);
-		keyBinding.setKeyCode(0);
 	}
 
 	private Gson getGson(Mod mod) {
@@ -322,7 +310,7 @@ public class Client {
 		}
 
 		try {
-			FileUtils.writeStringToFile(DATA_FILE, gson.toJson(data));
+			FileUtils.writeStringToFile(DATA_FILE, gson.toJson(data), StandardCharsets.UTF_8);
 			return true;
 		}
 		catch(IOException error) {
@@ -352,15 +340,15 @@ public class Client {
 		return modsById.get(id);
 	}
 
-	public void addResource(ResourceLocation location, IResource resource) {
+	public void addPsuedoResource(Identifier location, Supplier<String> resource) {
 		resources.put(location, resource);
 	}
 
-	public IResource getResource(ResourceLocation location) {
-		return resources.get(location);
+	public String getPsuedoResource(Identifier location) {
+		return resources.get(location).get();
 	}
 
-	public CommandBase getCommand(String name) {
+	public Command getCommand(String name) {
 		return commands.get(name);
 	}
 
@@ -368,7 +356,7 @@ public class Client {
 		return commands.keySet();
 	}
 
-	public CommandBase registerCommand(String name, CommandBase command) {
+	public Command registerCommand(String name, Command command) {
 		commands.put(name, command);
 		for(String alias : command.getCommandAliases()) {
 			commands.put(alias, command);
@@ -377,8 +365,8 @@ public class Client {
 		return command;
 	}
 
-	public CommandBase unregisterCommand(String name) {
-		CommandBase command;
+	public Command unregisterCommand(String name) {
+		Command command;
 
 		for(String alias : (command = commands.remove(name)).getCommandAliases()) {
 			commands.remove(alias);
@@ -408,7 +396,7 @@ public class Client {
 		cacheHudList();
 
 		try {
-			unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
+			mc.getOptions().removeKey((KeyBinding) mc.getOptions().getClass().getField("ofKeyBindZoom").get(mc.getOptions()));
 		}
 		catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
 			// OptiFine is not enabled.
@@ -416,44 +404,44 @@ public class Client {
 	}
 
 	@EventHandler
-	public void onSendMessage(SendChatMessageEvent event) {
+	public void onSendMessage(ChatMessageOutgoingEvent event) {
 		// TODO Tab completion. Skipped during port to mixin.
 
-		if(event.message.startsWith("/")) {
-			List<String> args = new ArrayList<>(Arrays.asList(event.message.split(" ")));
+		if(event.getMessage().startsWith("/")) {
+			List<String> args = new ArrayList<>(Arrays.asList(event.getMessage().split(" ")));
 			String commandKey = args.get(0).substring(1);
 			if(commands.containsKey(commandKey)) {
-				event.cancelled = true;
+				event.cancel();
 
 				try {
 					args.remove(0);
 
-					commands.get(commandKey).processCommand(mc.thePlayer, args.toArray(new String[0]));
+					commands.get(commandKey).execute(mc.getPlayer(), args);
 				}
 				catch(CommandException error) {
-					mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(EnumChatFormatting.RED + error.getMessage()));
+					mc.getPlayer().sendSystemMessage(LiteralComponent.create(ChatColour.RED + error.getMessage()));
 				}
 				catch(Exception error) {
-					mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could " +
+					mc.getPlayer().sendSystemMessage(LiteralComponent.create(ChatColour.RED + "Could " +
 							"not execute client-sided command, see log for details"));
-					LOGGER.info("Could not execute client-sided command: " + event.message + ", error: ", error);
+					LOGGER.info("Could not execute client-sided command: " + event.getMessage() + ", error: ", error);
 				}
 			}
 		}
 		else if(getChatChannelSystem() != null) {
-			event.cancelled = true;
-			getChatChannelSystem().getChannel().sendMessage(mc.thePlayer, event.message);
+			event.cancel();
+			getChatChannelSystem().getChannel().sendMessage(mc.getPlayer(), event.getMessage());
 		}
 	}
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
 		if(SolClientMod.instance.modsKey.isPressed()) {
-			mc.displayGuiScreen(new ModsScreen());
+			mc.openScreen(new ModsScreen());
 		}
 		else if(SolClientMod.instance.editHudKey.isPressed()) {
-			mc.displayGuiScreen(new ModsScreen());
-			mc.displayGuiScreen(new MoveHudsScreen());
+			mc.openScreen(new ModsScreen());
+			mc.openScreen(new MoveHudsScreen());
 		}
 	}
 
@@ -495,7 +483,7 @@ public class Client {
 	 * Saves if the mod screen is not opened.
 	 */
 	public void optionChanged() {
-		if(!(Minecraft.getMinecraft().currentScreen instanceof ModsScreen)) {
+		if(!(MinecraftClient.getInstance().getScreen() instanceof ModsScreen)) {
 			save();
 		}
 	}

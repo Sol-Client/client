@@ -3,7 +3,7 @@ package io.github.solclient.client.mod.impl.hypixeladditions;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.github.solclient.client.api.Popup;
+import io.github.solclient.client.packet.Popup;
 
 public enum HypixelPopupType {
 	// Taken from https://github.com/Sk1erLLC/PopupEvents/blob/master/src/main/resources/remoteresources/chat_regex.json

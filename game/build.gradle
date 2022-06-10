@@ -1,35 +1,55 @@
-import com.github.glassmc.kiln.standard.MixinRemapper
-import io.github.solclient.gradle.SolClientKilnEnvironment
-
 plugins {
-	id "com.github.johnrengelman.shadow"
-	id "kiln-main"
-	id "io.freefair.lombok" version "6.4.3"
+	id "com.github.johnrengelman.shadow" apply false
+	id "io.freefair.lombok" version "6.4.3" apply false
 }
 
-kiln {
-	environment = new SolClientKilnEnvironment()
-	transformers += new MixinRemapper()
+allprojects {
+	apply plugin: "java"
+	apply plugin: "com.github.johnrengelman.shadow"
+	apply plugin: "io.freefair.lombok"
+
+	repositories {
+		mavenCentral()
+		maven { url "https://libraries.minecraft.net" }
+		maven { url "https://repo.spongepowered.org/maven" }
+		maven { url "https://repo.codemc.io/repository/maven-public" }
+		maven { url "https://repo.hypixel.net/repository/Hypixel" }
+		maven { url "https://jitpack.io" }
+		maven { url "https://glassmc.ml/repository/" }
+	}
+
+	dependencies {
+		implementation "org.apache.logging.log4j:log4j-api:2.17.2"
+		implementation "org.apache.logging.log4j:log4j-core:2.17.2"
+		implementation "commons-io:commons-io:2.7"
+		implementation "org.apache.commons:commons-lang3:3.3.2"
+	}
+
+	configurations {
+		shadowImplementation
+		implementation.extendsFrom(shadowImplementation)
+	}
+
+	jar {
+		enabled = false
+		dependsOn shadowJar
+	}
+
+	shadowJar {
+		configurations = [project.configurations.shadowImplementation]
+	}
+
+	dependencies {
+		implementation "org.jetbrains:annotations:23.0.0"
+	}
 }
 
-repositories {
-	mavenCentral()
-	maven { url "https://libraries.minecraft.net" }
-	maven { url "https://repo.spongepowered.org/maven" }
-	maven { url "https://repo.codemc.io/repository/maven-public" }
-	maven { url "https://repo.hypixel.net/repository/Hypixel" }
-	maven { url "https://jitpack.io" }
-	maven { url "https://glassmc.ml/repository/" }
-}
-
-configurations {
-	shadowImplementation
-	implementation.extendsFrom(shadowImplementation)
-}
+//kiln {
+//	environment = new SolClientKilnEnvironment()
+//	transformers += new MixinRemapper()
+//}
 
 dependencies {
-	implementation "com.github.glassmc:loader:0.9.6"
-	annotationProcessor "org.spongepowered:mixin:0.7.11-SNAPSHOT"
 	implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
 		exclude module: "launchwrapper"
 		exclude module: "guava"
@@ -43,16 +63,7 @@ dependencies {
 	implementation "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
 	implementation "org.java-websocket:Java-WebSocket:1.5.3"
 
-	implementation "org.apache.logging.log4j:log4j-api:2.17.2"
-	implementation "org.apache.logging.log4j:log4j-core:2.17.2"
-
-	implementation "commons-io:commons-io:2.7"
-	implementation "org.apache.commons:commons-lang3:3.3.2"
 	implementation "net.minecraft:launchwrapper:1.12"
 
-	compileOnly "net.minecraft:client-1.8.9:mcp"
-}
-
-shadowJar {
-	configurations = [project.configurations.shadowImplementation]
+	implementation project(":abstraction")
 }

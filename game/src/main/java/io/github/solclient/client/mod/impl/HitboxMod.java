@@ -29,7 +29,7 @@ import net.minecraft.util.Vec3;
 public class HitboxMod extends Mod {
 
 	@Option
-	private final KeyBinding toggleHitboxes = new KeyBinding(getTranslationKey() + ".key", 0, Client.KEY_CATEGORY);
+	private final KeyBinding toggleHitboxes = new KeyBinding(getTranslationKey() + ".option.toggleHitboxes", 0, Client.KEY_CATEGORY);
 	@Expose
 	@Option
 	private boolean boundingBox = true;

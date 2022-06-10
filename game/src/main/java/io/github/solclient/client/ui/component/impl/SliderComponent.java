@@ -63,7 +63,7 @@ public class SliderComponent extends Component {
 					"textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(0, 4, 0, 0, 100, 2, 100, 2);
 
-			colour.get(this, null);
+			colour.get(this, null).bind();
 			mc.getTextureManager().bindTexture(new ResourceLocation(
 					"textures/gui/sol_client_slider_thumb_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(x, 1, 0, 0, 8, 8, 8, 8);

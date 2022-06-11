@@ -46,18 +46,17 @@ public class Keystroke {
 
 		if(mod.background) {
 			GuiScreen.drawRect(x, y, x + width, y + height,
-					Utils.blendColor(mod.backgroundColourPressed.getValue(), mod.backgroundColour.getValue(), progress));
+					Utils.lerpColour(mod.backgroundColourPressed.getValue(), mod.backgroundColour.getValue(), progress));
 		}
 
 		if(mod.border) {
 			Utils.drawOutline(x, y, x + width, y + height,
-					Utils.blendColor(mod.borderColourPressed.getValue(), mod.borderColour.getValue(), progress));
+					Utils.lerpColour(mod.borderColourPressed.getValue(), mod.borderColour.getValue(), progress));
 		}
 
-		int fgColour = Utils.blendColor(mod.textColourPressed.getValue(), mod.textColour.getValue(), progress);
-		String name = this.name;
+		int fgColour = Utils.lerpColour(mod.textColourPressed.getValue(), mod.textColour.getValue(), progress);
 
-		if(name.equals("Space")) {
+		if(name == null) {
 			GuiScreen.drawRect(x + 10, y + 3, x + width - 10, y + 4, fgColour);
 
 			if(mod.shadow) {

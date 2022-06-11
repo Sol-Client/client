@@ -93,7 +93,7 @@ public class KeystrokesMod extends HudMod {
 		d = new Keystroke(this, mc.gameSettings.keyBindRight, "D", 36, 17, 17);
 		lmb = new Keystroke(this, mc.gameSettings.keyBindAttack, "LMB", 0, 26, 17);
 		rmb = new Keystroke(this, mc.gameSettings.keyBindUseItem, "RMB", 27, 26, 17);
-		space = new Keystroke(this, mc.gameSettings.keyBindJump, "Space", 0, 53, 8);
+		space = new Keystroke(this, mc.gameSettings.keyBindJump, null, 0, 53, 8);
 	}
 
 	@Override

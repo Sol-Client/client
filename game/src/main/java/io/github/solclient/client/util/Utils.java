@@ -32,6 +32,7 @@ import com.google.gson.JsonParser;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
+import io.github.solclient.client.lib.penner.easing.Linear;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
@@ -162,21 +163,30 @@ public class Utils {
 		return bytes / 1024L / 1024L;
 	}
 
-	public int blendColor(int start, int end, float percent) {
+	public int lerpColour(int start, int end, float percent) {
 		if(percent >= 1) {
 			return end;
 		}
-		Colour startColor = new Colour(start);
-		Colour endColor = new Colour(end);
+
+		Colour startColour = new Colour(start);
+		Colour endColour = new Colour(end);
+
+		if(startColour.getAlpha() == 0) {
+			startColour = endColour.withAlpha(0);
+		}
+		else if(endColour.getAlpha() == 0) {
+			endColour = startColour.withAlpha(0);
+		}
+
 		return new Colour(
-				blendInt(startColor.getRed(), endColor.getRed(), percent),
-				blendInt(startColor.getGreen(), endColor.getGreen(), percent),
-				blendInt(startColor.getBlue(), endColor.getBlue(), percent),
-				blendInt(startColor.getAlpha(), endColor.getAlpha(), percent)
+				lerp(startColour.getRed(), endColour.getRed(), percent),
+				lerp(startColour.getGreen(), endColour.getGreen(), percent),
+				lerp(startColour.getBlue(), endColour.getBlue(), percent),
+				lerp(startColour.getAlpha(), endColour.getAlpha(), percent)
 		).getValue();
 	}
 
-	public int blendInt(int start, int end, float percent) {
+	public int lerp(int start, int end, float percent) {
 		return Math.round(start + ((end - start) * percent));
 	}
 

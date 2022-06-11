@@ -84,7 +84,8 @@
 		"mod.MixinV1_7VisualsMod$MixinEntityRenderer",
 		"mod.MixinV1_7VisualsMod$MixinItemRenderer",
 		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase",
-		"mod.MixinTNTTimerMod$MixinRenderTNTPrimed"
+		"mod.MixinTNTTimerMod$MixinRenderTNTPrimed",
+		"lwjgl.MixinWindowsDisplay"
 	],
 	"injectors": {
 		"defaultRequire": 1

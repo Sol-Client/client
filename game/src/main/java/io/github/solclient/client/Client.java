@@ -80,7 +80,6 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
@@ -91,7 +90,6 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -139,7 +137,6 @@ public class Client {
 	@Setter
 	private GuiMainMenu mainMenu;
 
-	@SneakyThrows
 	public void init() {
 		Utils.resetLineWidth();
 		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash

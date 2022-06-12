@@ -102,16 +102,6 @@ public class ScoreboardMod extends Mod {
 			return;
 		}
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(-2, 0, 0);
-		GlStateManager.scale(scale / 100F, scale / 100F, scale / 100F);
-
-		int scaledWidth = event.scaledRes.getScaledWidth();
-		int scaledHeight = event.scaledRes.getScaledHeight();
-
-		scaledWidth /= scale / 100;
-		scaledHeight /= scale / 100;
-
 		Scoreboard scoreboard = event.objective.getScoreboard();
 		Collection<Score> scores = scoreboard.getSortedScores(event.objective);
 		List<Score> filteredScores = Lists.newArrayList(Iterables.filter(scores,
@@ -137,8 +127,20 @@ public class ScoreboardMod extends Mod {
 		}
 
 		int scoresHeight = (scores.size() + 1) * mc.fontRendererObj.FONT_HEIGHT + 1;
+
+		int scaledWidth = event.scaledRes.getScaledWidth();
+		int scaledHeight = event.scaledRes.getScaledHeight();
+
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(-3, 0, 0);
+		GlStateManager.scale(scale / 100F, scale / 100F, scale / 100F);
+
+		scaledWidth /= scale / 100;
+		scaledHeight /= scale / 100;
+
 		GlStateManager.translate(0, (scaledHeight / 2) - (scoresHeight / 2), 0);
-		int k1 = 1;
+
+		int k1 = 0;
 		int l1 = scaledWidth - i - k1;
 
 		int j = 0;

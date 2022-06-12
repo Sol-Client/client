@@ -63,11 +63,10 @@ public class CrosshairMod extends HudMod {
 				return;
 			}
 			ScaledResolution resolution = new ScaledResolution(mc);
-			int x = (int) (resolution.getScaledWidth() / getScale() / 2 - 7);
-			int y = (int) (resolution.getScaledHeight() / getScale() / 2 - 7);
 
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(getScale(), getScale(), getScale());
+			GlStateManager.translate(resolution.getScaledWidth() / getScale() / 2 - 7, resolution.getScaledHeight() / getScale() / 2 - 7, 0);
 
 			crosshairColour.bind();
 
@@ -86,12 +85,12 @@ public class CrosshairMod extends HudMod {
 
 			if (style == CrosshairStyle.DEFAULT) {
 				mc.getTextureManager().bindTexture(Gui.icons);
-				Utils.drawTexture(x, y, 0, 0, 16, 16, 0);
+				Utils.drawTexture(0, 0, 0, 0, 16, 16, 0);
 			}
 			else {
 				mc.getTextureManager().bindTexture(CLIENT_CROSSHAIRS);
 				int v = (style.ordinal() - 2) * 16;
-				Utils.drawTexture(x, y, 0, v, 16, 16, 0);
+				Utils.drawTexture(0, 0, 0, v, 16, 16, 0);
 				mc.getTextureManager().bindTexture(Gui.icons);
 			}
 

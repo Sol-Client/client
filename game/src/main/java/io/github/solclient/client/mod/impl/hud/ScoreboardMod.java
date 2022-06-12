@@ -103,6 +103,7 @@ public class ScoreboardMod extends Mod {
 		}
 
 		GlStateManager.pushMatrix();
+		GlStateManager.translate(-2, 0, 0);
 		GlStateManager.scale(scale / 100F, scale / 100F, scale / 100F);
 
 		int scaledWidth = event.scaledRes.getScaledWidth();
@@ -136,8 +137,8 @@ public class ScoreboardMod extends Mod {
 		}
 
 		int scoresHeight = (scores.size() + 1) * mc.fontRendererObj.FONT_HEIGHT + 1;
-		int startY = (scaledHeight / 2) - (scoresHeight / 2);
-		int k1 = 3;
+		GlStateManager.translate(0, (scaledHeight / 2) - (scoresHeight / 2), 0);
+		int k1 = 1;
 		int l1 = scaledWidth - i - k1;
 
 		int j = 0;
@@ -147,7 +148,7 @@ public class ScoreboardMod extends Mod {
 			ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
 			String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
 			String s2 = "" + score1.getScorePoints();
-			int k = startY + (j * mc.fontRendererObj.FONT_HEIGHT) + 1;
+			int k = (j * mc.fontRendererObj.FONT_HEIGHT) + 1;
 			int l = scaledWidth - k1 + 2;
 
 			if(background) {
@@ -164,17 +165,17 @@ public class ScoreboardMod extends Mod {
 			if(j == scores.size()) {
 				String s3 = event.objective.getDisplayName();
 				if (background) {
-					Gui.drawRect(l1 - 2, startY, l, startY + mc.fontRendererObj.FONT_HEIGHT,
+					Gui.drawRect(l1 - 2, 0, l, mc.fontRendererObj.FONT_HEIGHT,
 							backgroundColourTop.getValue());
-					Gui.drawRect(l1 - 2, startY + mc.fontRendererObj.FONT_HEIGHT, l, startY + mc.fontRendererObj.FONT_HEIGHT + 1, backgroundColour.getValue());
+					Gui.drawRect(l1 - 2, mc.fontRendererObj.FONT_HEIGHT, l, mc.fontRendererObj.FONT_HEIGHT + 1, backgroundColour.getValue());
 				}
 				mc.fontRendererObj.drawString(s3, l1 + i / 2 - mc.fontRendererObj.getStringWidth(s3) / 2,
-						startY + 1, textColour.getValue(), shadow);
+						1, textColour.getValue(), shadow);
 			}
 		}
 
 		if(border) {
-			int top = ((startY - j * mc.fontRendererObj.FONT_HEIGHT) - mc.fontRendererObj.FONT_HEIGHT) - 2;
+			int top = ((0 - j * mc.fontRendererObj.FONT_HEIGHT) - mc.fontRendererObj.FONT_HEIGHT) - 2;
 			Utils.drawOutline(l1 - 3, top, scaledWidth - k1 + 2,
 					top + mc.fontRendererObj.FONT_HEIGHT + 3 + scoresHeight, borderColour.getValue());
 		}

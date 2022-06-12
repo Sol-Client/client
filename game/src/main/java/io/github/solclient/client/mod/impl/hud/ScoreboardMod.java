@@ -1,6 +1,7 @@
 package io.github.solclient.client.mod.impl.hud;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.Iterables;
@@ -111,20 +112,21 @@ public class ScoreboardMod extends Mod {
 		scaledHeight /= scale / 100;
 
 		Scoreboard scoreboard = event.objective.getScoreboard();
-		Collection<Score> collection = scoreboard.getSortedScores(event.objective);
-		List<Score> list = Lists.newArrayList(Iterables.filter(collection,
+		Collection<Score> scores = scoreboard.getSortedScores(event.objective);
+		List<Score> filteredScores = Lists.newArrayList(Iterables.filter(scores,
 				p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#")));
+		Collections.reverse(filteredScores);
 
-		if(list.size() > 15) {
-			collection = Lists.newArrayList(Iterables.skip(list, collection.size() - 15));
+		if(filteredScores.size() > 15) {
+			scores = Lists.newArrayList(Iterables.skip(filteredScores, scores.size() - 15));
 		}
 		else {
-			collection = list;
+			scores = filteredScores;
 		}
 
 		int i = mc.fontRendererObj.getStringWidth(event.objective.getDisplayName());
 
-		for (Score score : collection) {
+		for(Score score : scores) {
 			ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
 			String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName());
 			if(numbers) {
@@ -133,19 +135,19 @@ public class ScoreboardMod extends Mod {
 			i = Math.max(i, mc.fontRendererObj.getStringWidth(s));
 		}
 
-		int i1 = collection.size() * mc.fontRendererObj.FONT_HEIGHT;
-		int j1 = scaledHeight / 2 + i1 / 3;
+		int scoresHeight = (scores.size() + 1) * mc.fontRendererObj.FONT_HEIGHT + 1;
+		int startY = (scaledHeight / 2) - (scoresHeight / 2);
 		int k1 = 3;
 		int l1 = scaledWidth - i - k1;
 
 		int j = 0;
 
-		for(Score score1 : collection) {
+		for(Score score1 : scores) {
 			++j;
 			ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
 			String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
 			String s2 = "" + score1.getScorePoints();
-			int k = j1 - j * mc.fontRendererObj.FONT_HEIGHT;
+			int k = startY + (j * mc.fontRendererObj.FONT_HEIGHT) + 1;
 			int l = scaledWidth - k1 + 2;
 
 			if(background) {
@@ -159,22 +161,22 @@ public class ScoreboardMod extends Mod {
 						numbersColour.getValue(), shadow);
 			}
 
-			if(j == collection.size()) {
+			if(j == scores.size()) {
 				String s3 = event.objective.getDisplayName();
 				if (background) {
-					Gui.drawRect(l1 - 2, k - mc.fontRendererObj.FONT_HEIGHT - 1, l, k - 1,
+					Gui.drawRect(l1 - 2, startY, l, startY + mc.fontRendererObj.FONT_HEIGHT,
 							backgroundColourTop.getValue());
-					Gui.drawRect(l1 - 2, k - 1, l, k, backgroundColour.getValue());
+					Gui.drawRect(l1 - 2, startY + mc.fontRendererObj.FONT_HEIGHT, l, startY + mc.fontRendererObj.FONT_HEIGHT + 1, backgroundColour.getValue());
 				}
 				mc.fontRendererObj.drawString(s3, l1 + i / 2 - mc.fontRendererObj.getStringWidth(s3) / 2,
-						k - mc.fontRendererObj.FONT_HEIGHT, textColour.getValue(), shadow);
+						startY + 1, textColour.getValue(), shadow);
 			}
 		}
 
-		if (border) {
-			int top = ((j1 - j * mc.fontRendererObj.FONT_HEIGHT) - mc.fontRendererObj.FONT_HEIGHT) - 2;
+		if(border) {
+			int top = ((startY - j * mc.fontRendererObj.FONT_HEIGHT) - mc.fontRendererObj.FONT_HEIGHT) - 2;
 			Utils.drawOutline(l1 - 3, top, scaledWidth - k1 + 2,
-					top + mc.fontRendererObj.FONT_HEIGHT + 3 + i1, borderColour.getValue());
+					top + mc.fontRendererObj.FONT_HEIGHT + 3 + scoresHeight, borderColour.getValue());
 		}
 
 		GlStateManager.popMatrix();

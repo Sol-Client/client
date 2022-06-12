@@ -60,7 +60,7 @@ public class RecordingIndicator extends BaseHudElement {
 
 		Gui.drawModalRectWithCustomSizedTexture(position.getX(), position.getY(), 0, 0, 16, 16, 16, 16);
 
-		Colour.WHITE.bind();
+		GL11.glColor4f(1, 1, 1, 1);
 	}
 
 	@Override

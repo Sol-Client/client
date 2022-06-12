@@ -93,6 +93,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_LINE_SMOOTH);
 			GL11.glDisable(GL11.GL_SCISSOR_TEST);
+			GL11.glColor4f(1, 1, 1, 1);
 
 			Utils.resetLineWidth();
 		}

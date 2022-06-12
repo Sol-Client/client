@@ -94,6 +94,7 @@ public class CrosshairMod extends HudMod {
 				Utils.drawTexture(x, y, 0, v, 16, 16, 0);
 				mc.getTextureManager().bindTexture(Gui.icons);
 			}
+
 			GL11.glColor4f(1, 1, 1, 1);
 
 			GlStateManager.popMatrix();

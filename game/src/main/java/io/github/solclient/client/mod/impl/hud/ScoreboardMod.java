@@ -14,6 +14,7 @@ import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
@@ -30,7 +31,7 @@ public class ScoreboardMod extends Mod {
 	public static boolean enabled;
 
 	@Expose
-	@Option
+	@Option(translationKey = HudMod.TRANSLATION_KEY)
 	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
 	public float scale = 100;
 	@Expose

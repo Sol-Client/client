@@ -140,7 +140,7 @@ sol_client.mod.timers.option.timeColour=Time Color
 sol_client.mod.chat.name=Chat
 sol_client.mod.chat.description=Customize ingame chat.
 
-sol_client.mod.chat.peek=Peek
+sol_client.mod.chat.peek=Chat Peek
 sol_client.mod.chat.option.preventClose=Prevent Closing
 sol_client.mod.chat.option.smooth=Message Animation
 sol_client.mod.chat.option.infiniteChat=Infinite Chat
@@ -205,6 +205,7 @@ sol_client.mod.crosshair.option.entityColour=Entity Color
 sol_client.mod.scoreboard.name=Scoreboard
 sol_client.mod.scoreboard.description=Customize the scoreboard.
 
+sol_client.mod.scoreboard.option.hide=Hide
 sol_client.mod.scoreboard.option.backgroundColourTop=Top Background Colour
 sol_client.mod.scoreboard.option.numbers=Numbers
 sol_client.mod.scoreboard.option.numbersColour=Numbers Color

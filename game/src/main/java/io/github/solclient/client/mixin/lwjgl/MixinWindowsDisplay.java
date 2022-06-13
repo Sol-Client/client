@@ -18,12 +18,9 @@ public abstract class MixinWindowsDisplay {
     private void doHandleMessage(long hwnd, int msg, long wParam, long lParam, long millis, CallbackInfoReturnable<Long> callback) {
         if(msg == 0x020B) {
             handleMouseButton(wParam >> 16 == 1L ? 3 : 4, 1, millis);
-            callback.setReturnValue(defWindowProc(hwnd, msg, wParam, lParam));
+            callback.setReturnValue(1L);
         }
     }
-
-    @Shadow
-    private static native long defWindowProc(long hwnd, int msg, long wParam, long lParam);
 
     @Shadow
     protected abstract void handleMouseButton(int button, int state, long millis);

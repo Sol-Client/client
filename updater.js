@@ -45,11 +45,11 @@ class Updater {
 
 				var latestRelease = (await axios.get("https://api.github.com/repos/TheKodeToad/Sol-Client/releases/latest")).data;
 
-				// if(latestRelease.name == currentVersion) {
-				// 	console.log("No updates found");
-				// 	resolve(false);
-				// 	return;
-				// }
+				if(latestRelease.name == currentVersion) {
+					console.log("No updates found");
+					resolve(false);
+					return;
+				}
 
 				var selectedAsset;
 				for(var asset of latestRelease.assets) {
@@ -70,7 +70,7 @@ class Updater {
 
 				var window = new BrowserWindow({
 					width: 600,
-					height: 230,
+					height: 210,
 					icon: __dirname + "/assets/icon.png",
 					webPreferences: {
 						preload: path.join(__dirname, "/updater-dom.js")
@@ -84,7 +84,6 @@ class Updater {
 				window.loadFile("updating.html");
 				window.setMenu(null);
 				window.show();
-				window.webContents.openDevTools();
 
 				var wasClosed = false;
 

@@ -131,6 +131,9 @@ class Utils {
 					response.pipe(stream);
 
 					if(progressConsumer) {
+						if(!progressConsumer(0)) {
+							stream.end();
+						}
 						response.on("data", (chunk) => {
 							receivedBytes += chunk.length;
 							if(!progressConsumer(receivedBytes / length * 100)) {

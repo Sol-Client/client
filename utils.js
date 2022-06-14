@@ -90,10 +90,10 @@ class Utils {
 	}
 
 	static isAlreadyDownloaded(file, size) {
-		return fs.existsSync(file) && (size == -1 || fs.statSync(file).size == size);
+		return size != -1 && fs.existsSync(file) && fs.statSync(file).size == size;
 	}
 
-	static download(url, file, size) {
+	static download(url, file, size, progressConsumer) {
 		if(!fs.existsSync(path.dirname(file))) {
 			fs.mkdirSync(path.dirname(file), { recursive: true });
 		}
@@ -106,18 +106,39 @@ class Utils {
 						return;
 					}
 
-					if(response.code == 404) {
-						reject(new Error("Server responded with error 404"));
+					var length;
+					if(response.headers["content-length"]) {
+						length = parseInt(response.headers["content-length"]);
+					}
+					else {
+						length = 0;
+					}
+
+					var receivedBytes = 0;
+
+					if(response.code > 400) {
+						reject(new Error("Server responded with error " + response.code));
 						return;
 					}
 
 					if(response.headers.location) {
-						var result = await Utils.download(response.headers.location, file, size);
+						var result = await Utils.download(response.headers.location, file, size, progressConsumer);
 						resolve(result);
 						return;
 					}
+
 					var stream = fs.createWriteStream(file);
 					response.pipe(stream);
+
+					if(progressConsumer) {
+						response.on("data", (chunk) => {
+							receivedBytes += chunk.length;
+							if(!progressConsumer(receivedBytes / length * 100)) {
+								stream.end();
+							}
+						});
+					}
+
 					response.on("end", () => {
 						stream.close();
 						resolve(true);

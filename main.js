@@ -1,16 +1,27 @@
 async function run() {
 	if(require("electron-squirrel-startup")) return;
 
+    const fs = require("fs");
+
 	const Updater = require("./updater");
 	const Utils = require("./utils");
+	const Config = require("./config");
 
 	Utils.init();
-
-	if(!require("electron-is-dev") && Utils.getOsName() == "windows" && (await Updater.update())) {
-		return;
-	}
+	Config.init(Utils.dataDirectory);
+	Config.load();
 
 	const { app, BrowserWindow, ipcMain, dialog, shell } = require("electron");
+
+	ipcMain.on("disableUpdates", async() => {
+		Config.data.autoUpdate = false;
+		Config.save();
+	});
+
+	if(Config.data.autoUpdate && await Updater.update()) {
+    	return;
+	}
+
 	const path = require("path");
 	const msmc = require("msmc");
 	const hastebin = require("hastebin");

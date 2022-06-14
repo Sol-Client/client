@@ -6,7 +6,8 @@ class Config {
 	static data = {
 		maxMemory: 2048,
 		optifine: Utils.getOsName() != "osx",
-		minecraftFolder: "<use default>"
+		minecraftFolder: "<use default>",
+		autoUpdate: true
 	};
 	static file;
 
@@ -19,6 +20,9 @@ class Config {
 			Config.data = JSON.parse(fs.readFileSync(Config.file, "UTF-8"));
 			if(!Config.data.minecraftFolder) {
 				Config.data.minecraftFolder = "<use default>";
+			}
+			if(Config.data.autoUpdate == undefined) {
+				Config.data.autoUpdate = true;
 			}
 		}
 	}

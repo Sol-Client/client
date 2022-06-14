@@ -336,6 +336,7 @@ window.addEventListener("DOMContentLoaded", () => {
 			});
 		}
 	}
+
 	updateServers();
 
 	var memory = document.querySelector(".memory");
@@ -349,12 +350,19 @@ window.addEventListener("DOMContentLoaded", () => {
 	optifine.onchange = () => {
 		Config.data.optifine = optifine.checked;
 		Config.save();
-	}
+	};
+
+	var autoUpdate = document.querySelector(".auto-update");
+	autoUpdate.checked = Config.data.autoUpdate;
+	autoUpdate.onchange = () => {
+		Config.data.autoUpdate = autoUpdate.checked;
+		Config.save();
+	};
 
 	function updateMemoryLabel() {
 		memoryLabel.innerText = (memory.value / 1024).toFixed(1) + " GB";
 		Config.data.maxMemory = memory.value;
-	}
+	};
 
 	memory.oninput = updateMemoryLabel;
 	memory.onchange = Config.save;

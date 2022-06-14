@@ -47,20 +47,6 @@
           }
         },
         {
-          "name": "@electron-forge/maker-deb",
-          "config": {
-            "options": {
-              "icon": "assets/icon.png",
-              "categories": [
-                "Game"
-              ],
-              "section": "games",
-              "productName": "Sol Client",
-              "maintainer": "mcblueparrot"
-            }
-          }
-        },
-        {
           "name": "@electron-forge/maker-dmg",
           "config": {
             "format": "ULFO"

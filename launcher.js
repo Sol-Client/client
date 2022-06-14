@@ -212,11 +212,12 @@ class Launcher {
 		}
 
 		console.log("Downloading client...");
+		progress("Downloading client...");
 
 		await Version.downloadJar(version);
 
 		console.log("Downloading JRE...");
-		progress("Downloading runtime...");
+		progress("Downloading Java...");
 
 		var java;
 

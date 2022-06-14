@@ -21,7 +21,7 @@ class Updater {
 					destFile = Utils.dataDirectory + "/Setup" + fileExtension;
 					try {
 						if(fs.existsSync(destFile)) {
-							fs.deleteFileSync(destFile);
+							fs.rmSync(destFile);
 						}
 					}
 					catch(error) {
@@ -121,7 +121,12 @@ class Updater {
 					command = appimage;
 				}
 
-				childProcess.spawn(command);
+				if(Utils.getOsName() == "windows") {
+					childProcess.execFileSync(command);
+				}
+				else {
+					childProcess.spawn(command);
+				}
 				resolve(true);
 				app.quit();
 			}

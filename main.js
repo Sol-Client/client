@@ -19,7 +19,7 @@ async function run() {
 	});
 
 	if(Config.data.autoUpdate && await Updater.update()) {
-    	return;
+		return;
 	}
 
 	const path = require("path");

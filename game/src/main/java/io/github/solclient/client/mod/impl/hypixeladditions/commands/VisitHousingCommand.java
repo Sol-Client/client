@@ -1,12 +1,11 @@
 package io.github.solclient.client.mod.impl.hypixeladditions.commands;
 
-import java.util.Arrays;
 import java.util.List;
 
+import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
+import io.github.solclient.client.command.CommandException;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import io.github.solclient.client.util.Utils;
 
 public class VisitHousingCommand extends HypixelAdditionsCommand {
 
@@ -15,41 +14,30 @@ public class VisitHousingCommand extends HypixelAdditionsCommand {
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-		if(args.length == 1) {
+	public void execute(LocalPlayer player, List<String> args) throws CommandException {
+		if(args.size() == 1) {
 			if(mod.isHousing()) {
-				mc.thePlayer.chat("/visit " + args[0]);
+				mc.getPlayer().executeCommand("visit " + args.get(0));
 			}
 			else {
-				mc.thePlayer.chat("/lobby housing");
-				new Thread(() -> {
+				mc.getPlayer().executeCommand("lobby housing");
+				Utils.MAIN_EXECUTOR.execute(() -> {
 					try {
 						Thread.sleep(300);
 					}
-					catch(InterruptedException e) {
-						e.printStackTrace();
+					catch(InterruptedException ignored) {
 					}
-					mc.thePlayer.chat("/visit " + args[0]);
-				}).start();
+					mc.getPlayer().executeCommand("visit ".concat(args.get(0)));
+				});
 			}
 			return;
 		}
-		throw new WrongUsageException("Usage: " + getCommandUsage(sender), new Object[0]);
+		throw new CommandException("Usage: /visithousing <player>");
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
-		return "/visithousing <player>";
-	}
-
-	@Override
-	public List<String> getCommandAliases() {
-		return Arrays.asList("housing");
-	}
-
-	@Override
-	public String getCommandName() {
-		return null;
+	public String[] getAliases() {
+		return new String[] { "housing" };
 	}
 
 }

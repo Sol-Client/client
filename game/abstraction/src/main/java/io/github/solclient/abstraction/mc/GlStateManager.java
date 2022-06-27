@@ -30,7 +30,15 @@ public class GlStateManager {
 		throw new UnsupportedOperationException();
 	}
 
+	public static void scale(double x, double y, double z) {
+		throw new UnsupportedOperationException();
+	}
+
 	public static void translate(float x, float y, float z) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void translate(double x, double y, double z) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -59,6 +67,10 @@ public class GlStateManager {
 	}
 
 	public static void resetLineWidth() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void rotate(float angle, float x, float y, float z) {
 		throw new UnsupportedOperationException();
 	}
 

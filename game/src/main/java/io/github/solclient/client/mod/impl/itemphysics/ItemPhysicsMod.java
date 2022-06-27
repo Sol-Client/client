@@ -8,29 +8,24 @@ package io.github.solclient.client.mod.impl.itemphysics;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import io.github.solclient.abstraction.mc.GlStateManager;
+import io.github.solclient.abstraction.mc.world.entity.Entity;
+import io.github.solclient.abstraction.mc.world.item.ItemStack;
+import io.github.solclient.abstraction.mc.world.item.ItemType;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
+import io.github.solclient.client.event.impl.world.entity.render.ItemEntityRenderEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.util.access.AccessEntity;
-import lombok.Data;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 
 public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Option
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	private float rotationSpeed = 100;
-	private final Map<EntityItem, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
+	private final Map<Entity, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
 																	 	   // usage is prioritised.
 	@Override
 	public String getId() {
@@ -44,29 +39,27 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void onItemEntityRenderEvent(ItemEntityRenderEvent event) {
-		event.cancelled = true;
+		ItemStack item = event.getEntity().getItem();
+		ItemType type = item.getType();
 
-		ItemStack itemstack = event.entity.getEntityItem();
-		Item item = itemstack.getItem();
-
-		if(item != null) {
-			boolean is3d = event.model.isGui3d();
-			int clumpSize = getClumpSize(itemstack.stackSize);
-			GlStateManager.translate((float) event.x, (float) event.y + 0.1, (float) event.z);
+		if(type != null) {
+			boolean is3d = event.getModel().isGui3d();
+			int clumpSize = getClumpSize(item.getQuantity());
+			GlStateManager.translate(event.getX(), event.getY() + 0.1, event.getZ());
 
 			long now = System.nanoTime();
 
-			ItemData data = dataMap.computeIfAbsent(event.entity, (itemStack) -> new ItemData(System.nanoTime()));
+			ItemData data = dataMap.computeIfAbsent(event.getEntity(), (itemStack) -> new ItemData(System.nanoTime()));
 
 			long since = now - data.getLastUpdate();
 
 			GlStateManager.rotate(180, 0, 1, 1);
-			GlStateManager.rotate(event.entity.rotationYaw, 0, 0, 1);
+			GlStateManager.rotate(event.getEntity().getYaw(), 0, 0, 1);
 
-			if(!Minecraft.getMinecraft().isGamePaused()) {
-				if(!event.entity.onGround) {
+			if(!mc.isPaused()) {
+				if(!event.getEntity().isOnGround()) {
 					int divisor = 2500000;
-					if(((AccessEntity) event.entity).getIsInWeb()) {
+					if(event.getEntity().isInWeb()) {
 						divisor *= 10;
 					}
 					data.setRotation(data.getRotation() + (((float) since) / ((float) divisor) * (rotationSpeed / 100F)));
@@ -86,12 +79,12 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 				GlStateManager.translate(rotationXAndY, rotationXAndY, rotationZ);
 			}
 
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.resetColour();
 
-			event.result = clumpSize;
+			event.setReturnValue(clumpSize);
 		}
 		else {
-			event.result = 0;
+			event.setReturnValue(0);
 		}
 	}
 

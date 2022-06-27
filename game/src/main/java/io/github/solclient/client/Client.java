@@ -361,7 +361,7 @@ public class Client {
 
 	public Command registerCommand(String name, Command command) {
 		commands.put(name, command);
-		for(String alias : command.getCommandAliases()) {
+		for(String alias : command.getAliases()) {
 			commands.put(alias, command);
 		}
 
@@ -371,7 +371,7 @@ public class Client {
 	public Command unregisterCommand(String name) {
 		Command command;
 
-		for(String alias : (command = commands.remove(name)).getCommandAliases()) {
+		for(String alias : (command = commands.remove(name)).getAliases()) {
 			commands.remove(alias);
 		}
 

@@ -1,37 +1,29 @@
 package io.github.solclient.client.util;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.InetAddress;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.IntConsumer;
 
-import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
+import de.jcm.discordgamesdk.NetworkManager;
+import io.github.solclient.abstraction.mc.GlStateManager;
 import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.Window;
 import io.github.solclient.abstraction.mc.util.MinecraftUtil;
@@ -41,33 +33,6 @@ import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.multiplayer.ServerAddress;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.network.EnumConnectionState;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.handshake.client.C00Handshake;
-import net.minecraft.network.status.INetHandlerStatusClient;
-import net.minecraft.network.status.client.C00PacketServerQuery;
-import net.minecraft.network.status.client.C01PacketPing;
-import net.minecraft.network.status.server.S00PacketServerInfo;
-import net.minecraft.network.status.server.S01PacketPong;
-import net.minecraft.scoreboard.ScoreObjective;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
-import net.minecraft.util.Util.EnumOS;
 
 @UtilityClass
 public class Utils {
@@ -352,10 +317,10 @@ public class Utils {
 			bottom = swap;
 		}
 
-		float f3 = (float) (colour >> 24 & 255) / 255.0F;
-		float f = (float) (colour >> 16 & 255) / 255.0F;
-		float f1 = (float) (colour >> 8 & 255) / 255.0F;
-		float f2 = (float) (colour & 255) / 255.0F;
+		float f3 = (colour >> 24 & 255) / 255.0F;
+		float f = (colour >> 16 & 255) / 255.0F;
+		float f1 = (colour >> 8 & 255) / 255.0F;
+		float f2 = (colour & 255) / 255.0F;
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 		GlStateManager.enableBlend();

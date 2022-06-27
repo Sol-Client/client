@@ -9,7 +9,7 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.HitboxRenderEvent;
 import io.github.solclient.client.event.impl.HitboxToggleEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
+import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
@@ -150,7 +150,7 @@ public class HitboxMod extends Mod {
 	public void onTick(PreTickEvent event) {
 		while(toggleHitboxes.isPressed()) {
 			// If debug shortcut is used, don't conflict.
-			if(toggleHitboxes.getKeyCode() == Keyboard.KEY_B && Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+			if(toggleHitboxes.getKeyCode() == Keyboard.KEY_B && Keyboard.isKeyHeld(Keyboard.KEY_F3)) {
 				continue;
 			}
 

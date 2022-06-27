@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod.impl.hud.crosshair;
 
-import net.minecraft.client.resources.I18n;
+import io.github.solclient.abstraction.mc.lang.I18n;
 
 public enum CrosshairStyle {
 	DEFAULT,
@@ -18,7 +18,7 @@ public enum CrosshairStyle {
 
 	@Override
 	public String toString() {
-		return I18n.format("sol_client.mod.crosshair.option.style." + name().toLowerCase());
+		return I18n.translate("sol_client.mod.crosshair.option.style." + name().toLowerCase());
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.function.BiPredicate;
 
 import org.lwjgl.opengl.GL11;
 
+import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.ui.component.controller.Controller;
@@ -29,7 +30,7 @@ import net.minecraft.client.renderer.GlStateManager;
 // 7 months later, I finally reintroduced the component API...
 public abstract class Component {
 
-	protected Minecraft mc = Minecraft.getMinecraft();
+	protected MinecraftClient mc = MinecraftClient.getInstance();
 	protected Screen screen;
 	@Getter
 	protected Font font;

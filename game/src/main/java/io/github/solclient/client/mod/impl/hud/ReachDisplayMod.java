@@ -2,8 +2,9 @@ package io.github.solclient.client.mod.impl.hud;
 
 import java.text.DecimalFormat;
 
+import io.github.solclient.abstraction.mc.raycast.HitType;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.EntityAttackEvent;
+import io.github.solclient.client.event.impl.world.entity.EntityAttackEvent;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 
 public class ReachDisplayMod extends SimpleHudMod {
@@ -33,10 +34,8 @@ public class ReachDisplayMod extends SimpleHudMod {
 
 	@EventHandler
 	public void totallyNoReachHax(EntityAttackEvent event) {
-		if(mc.objectMouseOver != null && mc.objectMouseOver.hitVec != null) {
-			distance = mc.objectMouseOver.hitVec.distanceTo(mc.thePlayer.getPositionEyes(1.0F));
-			hitTime = System.currentTimeMillis();
-		}
+		distance = event.getEntity().getEyePosition().distanceSquared(mc.getPlayer().getEyePosition());
+		hitTime = System.currentTimeMillis();
 	}
 
 }

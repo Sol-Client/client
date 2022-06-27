@@ -3,10 +3,9 @@ package io.github.solclient.client.mod;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.github.solclient.abstraction.mc.lang.I18n;
 import io.github.solclient.client.Client;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Categories of Sol Client mods.
@@ -43,7 +42,7 @@ public enum ModCategory {
 
 	@Override
 	public String toString() {
-		return showName ? I18n.format("sol_client.mod.category." + name().toLowerCase() + ".name") : null;
+		return showName ? I18n.translate("sol_client.mod.category." + name().toLowerCase() + ".name") : null;
 	}
 
 	public List<Mod> getMods(String filter) {

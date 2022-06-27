@@ -1,7 +1,7 @@
 package io.github.solclient.client.util;
 
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import lombok.RequiredArgsConstructor;
 

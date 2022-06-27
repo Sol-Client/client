@@ -23,6 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
+ * This should be replaced, since tr7zw has changed their license to a less permissive one, or I should at least ask permission as I think they are mainly concerned with it being used commercially.
  */
 
 package io.github.solclient.client.culling;
@@ -37,17 +38,15 @@ import org.apache.logging.log4j.Logger;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 import com.logisticscraft.occlusionculling.util.Vec3d;
 
-import io.github.solclient.client.util.access.AccessMinecraft;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.chunk.Chunk;
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.maths.Box;
+import io.github.solclient.abstraction.mc.util.MinecraftUtil;
+import io.github.solclient.abstraction.mc.world.entity.Entity;
+import io.github.solclient.abstraction.mc.world.entity.decoration.ArmourStand;
+import io.github.solclient.abstraction.mc.world.level.block.BlockEntity;
+import io.github.solclient.abstraction.mc.world.level.block.BlockPos;
+import io.github.solclient.abstraction.mc.world.level.block.BlockType;
+import io.github.solclient.abstraction.mc.world.level.chunk.Chunk;
 
 public class CullTask implements Runnable {
 
@@ -55,7 +54,7 @@ public class CullTask implements Runnable {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private final OcclusionCullingInstance culling;
-	private final Minecraft mc = Minecraft.getMinecraft();
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 	private final int hitboxLimit = 15;
 	public long lastTime = 0;
 
@@ -71,52 +70,50 @@ public class CullTask implements Runnable {
 	@Override
 	public void run() {
 		try {
-			if(mc.thePlayer != null && mc.getRenderViewEntity() != null) {
-				Vec3 cameraMC = ActiveRenderInfo.projectViewFromEntity(mc.getRenderViewEntity(), 1);
+			if (mc.hasPlayer() && mc.getCameraEntity() != null) {
+				io.github.solclient.abstraction.mc.maths.Vec3d cameraVec = MinecraftUtil.getCameraPos();
 
-				if(requestCull || !(cameraMC.xCoord == lastPos.x && cameraMC.yCoord == lastPos.y
-						&& cameraMC.zCoord == lastPos.z)) {
+				if (requestCull || !(cameraVec.x() == lastPos.x && cameraVec.y() == lastPos.y
+						&& cameraVec.z() == lastPos.z)) {
 					long start = System.currentTimeMillis();
 					requestCull = false;
-					lastPos.set(cameraMC.xCoord, cameraMC.yCoord, cameraMC.zCoord);
+					lastPos.set(cameraVec.x(), cameraVec.y(), cameraVec.z());
 					Vec3d camera = lastPos;
 					culling.resetCache();
-					boolean spectator = mc.thePlayer.isSpectator();
+					boolean spectator = mc.getPlayer().isSpectator();
 
-					for(int x = -8; x <= 8; x++) {
-						for(int z = -8; z <= 8; z++) {
-							Chunk chunk = mc.theWorld.getChunkFromChunkCoords(mc.thePlayer.chunkCoordX + x,
-									mc.thePlayer.chunkCoordZ + z);
-							Iterator<Entry<BlockPos, TileEntity>> iterator = chunk.getTileEntityMap().entrySet()
+					for (int x = -8; x <= 8; x++) {
+						for (int z = -8; z <= 8; z++) {
+							Chunk chunk = mc.getLevel().getChunk(mc.getPlayer().getChunkX() + x,
+									mc.getPlayer().getChunkZ() + z);
+							Iterator<Entry<BlockPos, BlockEntity>> iterator = chunk.getBlockEntities().entrySet()
 									.iterator();
-							Entry<BlockPos, TileEntity> entry;
+							Entry<BlockPos, BlockEntity> entry;
 							while (iterator.hasNext()) {
 								try {
 									entry = iterator.next();
-								}
-								catch(NullPointerException | ConcurrentModificationException ex) {
+								} catch (NullPointerException | ConcurrentModificationException ex) {
 									break; // We are not synced to the main thread, so NPE's/CME are allowed here
 									// and way less
 									// overhead probably than trying to sync stuff up for no really good reason
 								}
 
-								if(entry.getValue().getBlockType() == Blocks.beacon) {
+								if (entry.getValue().getBlockType() == BlockType.BEACON) {
 									continue;
 								}
 
-								TileEntity tile = entry.getValue();
+								BlockEntity tile = entry.getValue();
 
-								if(spectator) {
+								if (spectator) {
 									((Cullable) tile).setCulled(false);
 									continue;
 								}
 
 								BlockPos pos = entry.getKey();
 
-								if(pos.distanceSq(cameraMC.xCoord, cameraMC.yCoord,
-										cameraMC.zCoord) < 4096.0D) {
-									aabbMin.set(pos.getX(), pos.getY(), pos.getZ());
-									aabbMax.set(pos.getX() + 1d, pos.getY() + 1d, pos.getZ() + 1d);
+								if(pos.distanceSquared(cameraVec.x(), cameraVec.y(), cameraVec.z()) < 4096.0D) {
+									aabbMin.set(pos.x(), pos.y(), pos.z());
+									aabbMax.set(pos.x() + 1d, pos.y() + 1d, pos.z() + 1d);
 
 									boolean visible = culling.isAABBVisible(aabbMin, aabbMax, camera);
 									((Cullable) tile).setCulled(!visible);
@@ -127,39 +124,38 @@ public class CullTask implements Runnable {
 					}
 
 					Entity entity = null;
-					Iterator<Entity> iterable = mc.theWorld.loadedEntityList.iterator();
+					Iterator<Entity> iterable = mc.getLevel().getRenderedEntities().iterator();
 
-					while(iterable.hasNext()) {
+					while (iterable.hasNext()) {
 						try {
 							entity = iterable.next();
-						}
-						catch(NullPointerException | ConcurrentModificationException ex) {
+						} catch (NullPointerException | ConcurrentModificationException ex) {
 							break; // We are not synced to the main thread, so NPE's/CME are allowed here and way
 							// less
 							// overhead probably than trying to sync stuff up for no really good reason
 						}
 
-						if(spectator || isSkippableArmorstand(entity)) {
+						if (spectator || isSkippableArmorstand(entity)) {
 							((Cullable) entity).setCulled(false);
 							continue;
 						}
 
-						if(!(entity.getPositionVector().distanceTo(cameraMC) < 128)) {
+						if (!(entity.getPosition().distanceSquared(cameraVec) < 128)) {
 							((Cullable) entity).setCulled(false); // If your entity view distance is larger than
 							// tracingDistance just render it
 							continue;
 						}
 
-						AxisAlignedBB boundingBox = entity.getEntityBoundingBox();
-						if(boundingBox.maxX - boundingBox.minX > hitboxLimit
-								|| boundingBox.maxY - boundingBox.minY > hitboxLimit
-								|| boundingBox.maxZ - boundingBox.minZ > hitboxLimit) {
+						Box boundingBox = entity.getBounds();
+						if (boundingBox.maxX() - boundingBox.minX() > hitboxLimit
+								|| boundingBox.maxY() - boundingBox.minY() > hitboxLimit
+								|| boundingBox.maxZ() - boundingBox.minZ() > hitboxLimit) {
 							((Cullable) entity).setCulled(false); // To big to bother to cull
 							continue;
 						}
 
-						aabbMin.set(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
-						aabbMax.set(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+						aabbMin.set(boundingBox.minX(), boundingBox.minY(), boundingBox.minZ());
+						aabbMax.set(boundingBox.maxX(), boundingBox.maxY(), boundingBox.maxZ());
 
 						boolean visible = culling.isAABBVisible(aabbMin, aabbMax, camera);
 						((Cullable) entity).setCulled(!visible);
@@ -167,14 +163,13 @@ public class CullTask implements Runnable {
 					lastTime = (System.currentTimeMillis() - start);
 				}
 			}
-		}
-		catch(Exception error) {
+		} catch (Exception error) {
 			LOGGER.error("Error culling", error);
 		}
 	}
 
 	private boolean isSkippableArmorstand(Entity entity) {
-		return entity instanceof EntityArmorStand && ((EntityArmorStand) entity).hasMarker();
+		return entity instanceof ArmourStand && ((ArmourStand) entity).isMarker();
 	}
 
 }

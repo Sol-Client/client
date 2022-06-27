@@ -1,14 +1,12 @@
 package io.github.solclient.client.mod.impl.hud.chat;
 
-import org.lwjgl.input.Keyboard;
-
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.text.Font;
+import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessGuiChat;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 
 public class SymbolsButton implements ChatButton {
 
@@ -35,11 +33,13 @@ public class SymbolsButton implements ChatButton {
 	}
 
 	private int priority;
-	private FontRenderer font;
+	private MinecraftClient mc;
+	private Font font;
 
 	public SymbolsButton(ChatMod mod) {
 		priority = mod.getIndex();
-		font = Minecraft.getMinecraft().fontRendererObj;
+		mc = MinecraftClient.getInstance();
+		font = mc.getFont();
 	}
 
 	@Override
@@ -75,17 +75,17 @@ public class SymbolsButton implements ChatButton {
 			for(char character : characters) {
 				Rectangle characterBounds = new Rectangle(x, y, 12, 12);
 				boolean selected = character != 0 && characterBounds.contains(mouseX, mouseY);
-				Utils.drawRectangle(characterBounds, selected ? Colour.WHITE_128 : Colour.BLACK_128);
+				characterBounds.fill(selected ? Colour.WHITE_128 : Colour.BLACK_128);
 				if(character != 0) {
-					font.drawString(character + "",
-							x + (13 / 2) - (font.getCharWidth(character) / 2),
-							characterBounds.getY() + (characterBounds.getHeight() / 2)- (font.FONT_HEIGHT / 2),
+					font.render(character + "",
+							x + (13 / 2) - (font.getWidth(character) / 2),
+							characterBounds.getY() + (characterBounds.getHeight() / 2) - (font.getHeight() / 2),
 							characterBounds.contains(mouseX, mouseY) ? 0 : -1);
 				}
 
 				if(selected && wasMouseClicked) {
 					Utils.playClickSound(false);
-					((AccessGuiChat) Utils.getChatGui()).type(character, Keyboard.KEY_0);
+					mc.getScreen().type(character, 0);
 				}
 				x += 13;
 			}

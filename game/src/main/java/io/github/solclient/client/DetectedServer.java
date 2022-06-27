@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import io.github.solclient.api.network.ServerData;
+import io.github.solclient.abstraction.mc.network.ServerData;
 import io.github.solclient.client.mod.Mod;
 
 public enum DetectedServer {

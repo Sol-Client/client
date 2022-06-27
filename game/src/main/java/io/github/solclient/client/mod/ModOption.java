@@ -20,15 +20,15 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.lang.I18n;
+import io.github.solclient.abstraction.mc.option.KeyBinding;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.FileOption;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.Utils;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.KeyBinding;
 
 public class ModOption {
 
@@ -58,7 +58,7 @@ public class ModOption {
 			if(field.isAnnotationPresent(FileOption.class)) {
 				configFile = field.getAnnotation(FileOption.class);
 
-				file = new File(Minecraft.getMinecraft().mcDataDir, configFile.file());
+				file = new File(MinecraftClient.getInstance().getDataFolder(), configFile.file());
 				readFile();
 			}
 		}
@@ -90,12 +90,12 @@ public class ModOption {
 	}
 
 	public String getEditText() {
-		return I18n.format(configFile.text());
+		return I18n.translate(configFile.text());
 	}
 
 	public void readFile() throws IOException {
 		if(!file.exists()) {
-			FileUtils.writeStringToFile(file, configFile.header());
+			FileUtils.writeStringToFile(file, configFile.header(), StandardCharsets.UTF_8);
 		}
 
 		String contents = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
@@ -104,7 +104,7 @@ public class ModOption {
 	}
 
 	public String getName() {
-		return I18n.format(translationKey + ".option." + field.getName());
+		return I18n.translate(translationKey + ".option." + field.getName());
 	}
 
 	public Class<?> getType() {

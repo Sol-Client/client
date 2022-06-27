@@ -3,21 +3,16 @@ package io.github.solclient.client;
 import java.util.List;
 import java.util.Objects;
 
-import io.github.solclient.api.MinecraftClient;
-import io.github.solclient.api.network.C2SChatMessagePacket;
-import io.github.solclient.api.text.TextRenderer;
-import io.github.solclient.api.world.entity.LocalPlayer;
-import io.github.solclient.api.world.entity.Player;
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.network.C2SChatMessagePacket;
+import io.github.solclient.abstraction.mc.text.Font;
+import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
+import io.github.solclient.abstraction.mc.world.entity.player.Player;
 import io.github.solclient.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessGuiChat;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.network.play.client.C01PacketChatMessage;
 
 public abstract class ChatChannelSystem {
 
@@ -129,7 +124,7 @@ public abstract class ChatChannelSystem {
 
 		@Override
 		public void render(int x, int y, boolean mouseDown, boolean wasMouseDown, boolean wasMouseClicked, int mouseX, int mouseY) {
-			TextRenderer text = MinecraftClient.getInstance().getTextRenderer();
+			Font font = MinecraftClient.getInstance().getFont();
 
 			for(ChatChannel channel : Client.INSTANCE.getChatChannelSystem().getChannels()) {
 				Rectangle optionBounds = new Rectangle(x, y, getPopupWidth(), 12);
@@ -141,10 +136,10 @@ public abstract class ChatChannelSystem {
 					Client.INSTANCE.getChatChannelSystem().setChannel(channel);
 				}
 
-				text.render(channel.getName(),
+				font.render(channel.getName(),
 						optionBounds.getX() + (optionBounds.getWidth() / 2)
-								- (text.getWidth(channel.getName()) / 2),
-						optionBounds.getY() + (optionBounds.getHeight() / 2) - (text.FONT_HEIGHT / 2), hovered ? 0 :
+								- (font.getWidth(channel.getName()) / 2),
+						optionBounds.getY() + (optionBounds.getHeight() / 2) - (font.getHeight() / 2), hovered ? 0 :
 								-1);
 				y += 13;
 			}

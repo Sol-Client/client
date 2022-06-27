@@ -1,26 +1,17 @@
 package io.github.solclient.client.mod.impl.hud;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameOverlayElement;
-import io.github.solclient.client.event.impl.PostGameOverlayRenderEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
+import io.github.solclient.abstraction.mc.GlStateManager;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessMinecraft;
-import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.MathHelper;
 
 public class SpeedometerMod extends SimpleHudMod {
 
@@ -67,9 +58,9 @@ public class SpeedometerMod extends SimpleHudMod {
 			float[] bounds = element.getHighPrecisionMultipliedBounds();
 			Utils.scissor(bounds[0], bounds[1], bounds[2], bounds[3]);
 			textColour.bind();
-			GL11.glLineWidth(1.5F);
+			GlStateManager.lineWidth(1.5F);
 
-			if(!editMode && !mc.isGamePaused()
+			if(!editMode && !mc.isPaused()
 					&& (lastUpdate == -1 || (System.currentTimeMillis() - lastUpdate) > 30)) {
 				addSpeed(getSpeed());
 				lastUpdate = System.currentTimeMillis();
@@ -77,7 +68,7 @@ public class SpeedometerMod extends SimpleHudMod {
 
 			GlStateManager.enableBlend();
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GlStateManager.blendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glEnable(GL11.GL_LINE_SMOOTH);
 			GL11.glShadeModel(GL11.GL_SMOOTH);
 			GL11.glEnable(GL11.GL_SCISSOR_TEST);
@@ -85,7 +76,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			GL11.glBegin(GL11.GL_LINE_STRIP);
 
 			for(int i = 0; i < SPEED_COUNT; i++) {
-				GL11.glVertex2d(position.getX() + (i * (((getBounds(position).getWidth() + 0.4) / (double) SPEED_COUNT))),
+				GL11.glVertex2d(position.getX() + (i * (((getBounds(position).getWidth() + 0.4) / SPEED_COUNT))),
 						position.getY() - 2 + getBounds(position).getHeight() - (speeds[i] * 16));
 			}
 
@@ -99,10 +90,9 @@ public class SpeedometerMod extends SimpleHudMod {
 	}
 
 	private double getSpeed() {
-		double distTraveledLastTickX = mc.thePlayer.posX - mc.thePlayer.prevPosX;
-		double distTraveledLastTickZ = mc.thePlayer.posZ - mc.thePlayer.prevPosZ;
-		return MathHelper.sqrt_double(distTraveledLastTickX * distTraveledLastTickX
-				+ distTraveledLastTickZ * distTraveledLastTickZ);
+		double distTraveledLastTickX = mc.getPlayer().getX() - mc.getPlayer().getPreviousX();
+		double distTraveledLastTickZ = mc.getPlayer().getZ() - mc.getPlayer().getPreviousZ();
+		return Math.sqrt(distTraveledLastTickX * distTraveledLastTickX + distTraveledLastTickZ * distTraveledLastTickZ);
 	}
 
 	@Override
@@ -115,10 +105,10 @@ public class SpeedometerMod extends SimpleHudMod {
 			return "0.00 m/s";
 		}
 		else {
-			double distTraveledLastTickX = mc.thePlayer.posX - mc.thePlayer.prevPosX;
-			double distTraveledLastTickZ = mc.thePlayer.posZ - mc.thePlayer.prevPosZ;
-			double currentSpeed = MathHelper.sqrt_double(distTraveledLastTickX * distTraveledLastTickX
-					+ distTraveledLastTickZ * distTraveledLastTickZ);
+			double distTraveledLastTickX = mc.getPlayer().getX() - mc.getPlayer().getPreviousX();
+			double distTraveledLastTickZ = mc.getPlayer().getZ() - mc.getPlayer().getPreviousZ();
+			double currentSpeed = Math.sqrt(
+					distTraveledLastTickX * distTraveledLastTickX + distTraveledLastTickZ * distTraveledLastTickZ);
 			return FORMAT.format(currentSpeed / 0.05F) + " m/s";
 		}
 	}

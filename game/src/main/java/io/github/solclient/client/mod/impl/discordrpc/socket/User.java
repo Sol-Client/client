@@ -1,25 +1,29 @@
 package io.github.solclient.client.mod.impl.discordrpc.socket;
 
+import java.util.concurrent.CompletableFuture;
+
+import org.lwjgl.opengl.GL11;
+
 import com.google.gson.JsonObject;
 
+import io.github.solclient.abstraction.mc.GlStateManager;
+import io.github.solclient.abstraction.mc.Identifier;
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.texture.Texture;
+import io.github.solclient.abstraction.mc.texture.TextureManager;
 import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
+import io.github.solclient.client.util.data.Colour;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.ResourceLocation;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public class User {
 
-	private static String AVATAR_FORMAT = "https://cdn.discordapp.com/avatars/%s/%s.png?size=%d";
+	private static final String AVATAR_FORMAT = "https://cdn.discordapp.com/avatars/%s/%s.png?size=%d";
 
 	@Getter
 	private final String id;
@@ -41,7 +45,8 @@ public class User {
 	@Getter
 	@Setter
 	private boolean speaking;
-	private ResourceLocation location;
+	private Texture avatarTexture;
+	private CompletableFuture<Texture> expectedAvatarTexture;
 
 	public void update(JsonObject data, JsonObject user) {
 		name = data.get("nick").getAsString();
@@ -73,36 +78,40 @@ public class User {
 	}
 
 	public void bindTexture() {
-		Minecraft mc = Minecraft.getMinecraft();
-		TextureManager texman = mc.getTextureManager();
-		int scale = new ScaledResolution(mc).getScaleFactor();
+		int scale = MinecraftClient.getInstance().getWindow().getScaleFactor();
+		TextureManager texman = MinecraftClient.getInstance().getTextureManager();
 
-		GlStateManager.color(1, 1, 1);
+		GlStateManager.resetColour();
 
 		if(avatar == null) {
-			texman.bindTexture(new ResourceLocation("textures/gui/discord_avatar_generic.png"));
+			texman.bind(Identifier.minecraft("textures/gui/discord_avatar_generic.png"));
 			return;
 		}
 
 		if(!avatar.equals(boundAvatar) || boundScale != scale) {
 			deleteTexture();
 
-			location = new ResourceLocation("discord_avatar/" + avatar);
-			texman.loadTexture(location, new ThreadDownloadImageData(null, String.format(AVATAR_FORMAT, id, avatar, (int) (16 * scale)), null, null));
+			expectedAvatarTexture = texman.download(String.format(AVATAR_FORMAT, id, avatar, (int) (16 * scale)));
+			expectedAvatarTexture.thenAccept((texture) -> {
+				expectedAvatarTexture = null;
+				avatarTexture = texture;
+			});
 
 			boundAvatar = avatar;
 			boundScale = scale;
 		}
-
-		texman.bindTexture(location);
 	}
 
 	public void deleteTexture() {
-		Minecraft mc = Minecraft.getMinecraft();
+		Texture texture = avatarTexture;
+		CompletableFuture<Texture> expectedTexture = expectedAvatarTexture;
 
-		mc.addScheduledTask(() -> {
-			if(location != null) {
-				Minecraft.getMinecraft().getTextureManager().deleteTexture(location);
+		MinecraftClient.getInstance().runSync(() -> {
+			if(texture != null) {
+				MinecraftClient.getInstance().getTextureManager().delete(texture);
+			}
+			else if(expectedTexture != null) {
+				expectedTexture.cancel(false);
 			}
 		});
 	}

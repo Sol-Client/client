@@ -127,7 +127,7 @@ public class SCReplayMod extends Mod {
 		backend = new SCReplayModBackend();
 		backend.init();
 
-		Client.INSTANCE.bus.register(new ConstantListener());
+		Client.INSTANCE.getBus().register(new ConstantListener());
 
 		super.onRegister();
 	}
@@ -170,7 +170,7 @@ public class SCReplayMod extends Mod {
 	public class ConstantListener {
 
 		@EventHandler
-		public void onWorldLoad(WorldLoadEvent event) {
+		public void onWorldLoad(LevelLoadEvent event) {
 			updateState(event.world);
 		}
 
@@ -190,7 +190,7 @@ public class SCReplayMod extends Mod {
 			enabled = deferedState;
 			if(deferedState) {
 				for(Object event : registerOnEnable) {
-					Client.INSTANCE.bus.register(event);
+					Client.INSTANCE.getBus().register(event);
 					unregisterOnDisable.add(event);
 				}
 				registerOnEnable.clear();
@@ -199,7 +199,7 @@ public class SCReplayMod extends Mod {
 			}
 			else {
 				for(Object event : unregisterOnDisable) {
-					Client.INSTANCE.bus.unregister(event);
+					Client.INSTANCE.getBus().unregister(event);
 					registerOnEnable.add(event);
 				}
 				unregisterOnDisable.clear();
@@ -214,7 +214,7 @@ public class SCReplayMod extends Mod {
 		}
 		else {
 			registerOnEnable.add(event);
-			Client.INSTANCE.bus.unregister(event);
+			Client.INSTANCE.getBus().unregister(event);
 		}
 	}
 

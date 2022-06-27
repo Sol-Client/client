@@ -1,5 +1,8 @@
 package io.github.solclient.client.ui.screen;
 
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.Window;
+import io.github.solclient.client.util.Rects;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -28,13 +31,13 @@ public class SplashScreen {
 			throw new IndexOutOfBoundsException(Integer.toString(stage));
 		}
 
-		ScaledResolution resolution = new ScaledResolution(mc);
-		int factor = resolution.getScaleFactor();
+		Window window = MinecraftClient.getInstance().getWindow();
+		int factor = window.getScaleFactor();
 
-		Gui.drawRect(0, resolution.getScaledHeight() * factor - 30, resolution.getScaledWidth() * factor,
-				resolution.getScaledHeight() * factor, BG);
-		Gui.drawRect(0, resolution.getScaledHeight() * factor - 30,
-				resolution.getScaledWidth() * factor / stages * stage, resolution.getScaledHeight() * factor, FG);
+		Rects.fill(0, window.getScaledHeight() * factor - 30, window.getScaledWidth() * factor,
+				window.getScaledHeight() * factor, BG);
+		Rects.fill(0, window.getScaledHeight() * factor - 30,
+				window.getScaledWidth() * factor / stages * stage, window.getScaledHeight() * factor, FG);
 		stage++;
 	}
 

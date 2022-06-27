@@ -1,8 +1,7 @@
 package io.github.solclient.client.mod.hud;
 
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PostTickEvent;
-import net.minecraft.client.Minecraft;
+import io.github.solclient.client.event.impl.game.PostTickEvent;
 
 public abstract class SmoothCounterHudMod extends SimpleHudMod {
 

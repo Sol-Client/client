@@ -1,9 +1,9 @@
 package io.github.solclient.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
-import com.replaymod.lib.de.johni0702.minecraft.gui.container.AbstractGuiScreen.Background;
 
-import io.github.solclient.client.CpsMonitor;
+import io.github.solclient.abstraction.mc.DrawableHelper;
+import io.github.solclient.client.CpsCounter;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.util.Utils;
@@ -31,35 +31,35 @@ public class CpsMod extends SimpleHudMod {
 			String prefix = background ? "" : "[";
 			String suffix = background ? "" : "]";
 
-			int width = font.getStringWidth(prefix + CpsMonitor.LMB.getCps() + " | " + CpsMonitor.RMB.getCps() + " CPS" + suffix) - 2;
+			int width = font.getWidth(prefix + CpsCounter.LMB.getCps() + " | " + CpsCounter.RMB.getCps() + " CPS" + suffix) - 2;
 
 			int x = position.getX() + (53 / 2) - (width / 2);
 			int y = position.getY() + 4;
 
-			x = font.drawString(prefix + Integer.toString(CpsMonitor.LMB.getCps()), x, y, textColour.getValue(), shadow);
+			x = font.render(prefix + Integer.toString(CpsCounter.LMB.getCps()), x, y, textColour.getValue(), shadow);
 
 			x--;
 			if(shadow) x--;
 
-			x += font.getCharWidth(' ');
+			x += font.getWidth(' ');
 
-			Utils.drawVerticalLine(x, y - 1, y + 7, separatorColour.getValue());
+			DrawableHelper.renderVerticalLine(x, y - 1, y + 7, separatorColour.getValue());
 
 			if(shadow) {
-				Utils.drawVerticalLine(x + 1, y, y + 8, separatorColour.getShadowValue());
+				DrawableHelper.renderVerticalLine(x + 1, y, y + 8, separatorColour.getShadowValue());
 			}
 
 			x += 1;
 
-			x += font.getCharWidth(' ');
+			x += font.getWidth(' ');
 
-			font.drawString(CpsMonitor.RMB.getCps() + " CPS" + suffix, x, y, textColour.getValue(), shadow);
+			font.render(CpsCounter.RMB.getCps() + " CPS" + suffix, x, y, textColour.getValue(), shadow);
 		}
 	}
 
 	@Override
 	public String getText(boolean editMode) {
-		return rmb ? "" : CpsMonitor.LMB.getCps() + " CPS";
+		return rmb ? "" : CpsCounter.LMB.getCps() + " CPS";
 	}
 
 }

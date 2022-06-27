@@ -1,11 +1,11 @@
 package io.github.solclient.client.mod.impl.hud;
 
+import io.github.solclient.abstraction.mc.lang.I18n;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.EntityAttackEvent;
-import io.github.solclient.client.event.impl.EntityDamageEvent;
+import io.github.solclient.client.event.impl.world.entity.EntityAttackEvent;
+import io.github.solclient.client.event.impl.world.entity.EntityDamageEffectEvent;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.util.data.Position;
-import net.minecraft.client.resources.I18n;
 
 public class ComboCounterMod extends SimpleHudMod {
 
@@ -29,13 +29,13 @@ public class ComboCounterMod extends SimpleHudMod {
 	@Override
 	public String getText(boolean editMode) {
 		if(editMode || combo == 0) {
-			return I18n.format("sol_client.mod.combo_counter.no_hits");
+			return I18n.translate("sol_client.mod.combo_counter.no_hits");
 		}
 		else if(combo == 1) {
-			return I18n.format("sol_client.mod.combo_counter.one_hit");
+			return I18n.translate("sol_client.mod.combo_counter.one_hit");
 		}
 		else {
-			return I18n.format("sol_client.mod.combo_counter.n_hits", combo);
+			return I18n.translate("sol_client.mod.combo_counter.n_hits", combo);
 		}
 	}
 
@@ -47,15 +47,15 @@ public class ComboCounterMod extends SimpleHudMod {
 
 	@EventHandler
 	public void onEntityAttack(EntityAttackEvent event) {
-		possibleTarget = event.victim.getEntityId();
+		possibleTarget = event.getEntity().getNumericId();
 	}
 
 	@EventHandler
-	public void onEntityDamage(EntityDamageEvent event) {
-		if(event.entity.getEntityId() == possibleTarget) {
+	public void onEntityDamage(EntityDamageEffectEvent event) {
+		if(event.getEntity().getNumericId() == possibleTarget) {
 			dealHit();
 		}
-		else if(event.entity == mc.thePlayer) {
+		else if(event.getEntity() == mc.getPlayer()) {
 			takeHit();
 		}
 	}

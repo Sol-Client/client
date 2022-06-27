@@ -11,7 +11,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.DetectedServer;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PreTickEvent;
+import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;

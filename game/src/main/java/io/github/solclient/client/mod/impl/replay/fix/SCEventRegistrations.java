@@ -34,7 +34,7 @@ import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 public class SCEventRegistrations {
 
 	private final List<EventRegistration<?>> registrations = new ArrayList<>();
-	private static final EventBus BUS = Client.INSTANCE.bus;
+	private static final EventBus BUS = Client.INSTANCE.getBus();
 
 	public <T> SCEventRegistrations on(EventRegistration<T> registration) {
 		registrations.add(registration);

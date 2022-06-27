@@ -1,5 +1,6 @@
 package io.github.solclient.client.util.data;
 
+import io.github.solclient.client.util.Rects;
 import io.github.solclient.client.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -40,11 +41,11 @@ public class Rectangle {
 	}
 
 	public void fill(Colour colour) {
-		Utils.drawRectangle(this, colour);
+		Rects.fill(getX(), getY(), getEndX(), getEndY(), colour.getValue());
 	}
 
 	public void stroke(Colour colour) {
-		Utils.drawOutline(this, colour);
+		Rects.stroke(getX(), getY(), getEndX(), getEndY(), colour.getValue());
 	}
 
 	public Rectangle multiply(float scale) {

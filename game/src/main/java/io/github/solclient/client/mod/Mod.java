@@ -8,27 +8,21 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.annotations.Expose;
-import com.replaymod.replay.ReplayModReplay;
 
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.lang.I18n;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameOverlayElement;
-import io.github.solclient.client.event.impl.PostGameOverlayRenderEvent;
-import io.github.solclient.client.event.impl.PostGameStartEvent;
+import io.github.solclient.client.event.impl.hud.PostHudRenderEvent;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.replay.fix.SCEventRegistrations;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
-import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 
 @AbstractTranslationKey("sol_client.mod.generic")
 public abstract class Mod {
 
-	protected final Minecraft mc = Minecraft.getMinecraft();
+	protected final MinecraftClient mc = MinecraftClient.getInstance();
 	private List<ModOption> options;
 	private boolean blocked;
 	@Expose
@@ -57,13 +51,13 @@ public abstract class Mod {
 	}
 
 	public String getName() {
-		return I18n.format(getTranslationKey() + ".name");
+		return I18n.translate(getTranslationKey() + ".name");
 	}
 
 	public abstract String getId();
 
 	public String getDescription() {
-		return I18n.format("sol_client.mod." + getId() + ".description");
+		return I18n.translate("sol_client.mod." + getId() + ".description");
 	}
 
 	public abstract ModCategory getCategory();
@@ -120,11 +114,11 @@ public abstract class Mod {
 	}
 
 	protected void onEnable() {
-		Client.INSTANCE.bus.register(this);
+		Client.INSTANCE.getBus().register(this);
 	}
 
 	protected void onDisable() {
-		Client.INSTANCE.bus.unregister(this);
+		Client.INSTANCE.getBus().unregister(this);
 	}
 
 	public boolean isBlocked() {
@@ -186,10 +180,8 @@ public abstract class Mod {
 	}
 
 	@EventHandler
-	public void onRender(PostGameOverlayRenderEvent event) {
-		if(event.type == GameOverlayElement.ALL) {
-			render(mc.currentScreen instanceof MoveHudsScreen);
-		}
+	public void onRender(PostHudRenderEvent event) {
+		render(mc.getScreen() instanceof MoveHudsScreen);
 	}
 
 }

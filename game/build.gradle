@@ -50,20 +50,25 @@ allprojects {
 //}
 
 dependencies {
-	implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+	/*implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
 		exclude module: "launchwrapper"
 		exclude module: "guava"
 		exclude module: "gson"
 		exclude module: "commons-io"
-	}
-	implementation "org.slick2d:slick2d-core:1.0.2"
+	}*/
+	// implementation "org.slick2d:slick2d-core:1.0.2"
 	shadowImplementation files("libs/occlusionculling.jar")
 	implementation "net.hypixel:hypixel-api-core:4.0"
 
 	implementation "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
 	implementation "org.java-websocket:Java-WebSocket:1.5.3"
 
-	implementation "net.minecraft:launchwrapper:1.12"
+	// implementation "net.minecraft:launchwrapper:1.12"
+
+	// minimal lwjgl, simply to compile against since the version can vary
+	compileOnly "org.lwjgl:lwjgl-opengl:3.3.1"
+
+	implementation "com.google.guava:guava:31.1-jre"	
 
 	implementation project(":abstraction")
 }

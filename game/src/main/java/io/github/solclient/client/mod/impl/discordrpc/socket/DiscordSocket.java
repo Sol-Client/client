@@ -33,8 +33,6 @@ import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.Utils;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.JsonException;
 
 /**
  * Socket connection to Discord client.
@@ -55,7 +53,7 @@ public class DiscordSocket extends WebSocketClient {
 	private Map<String, User> voiceCallUsers = new LinkedHashMap<>();
 
 	public DiscordSocket(DiscordIntegrationMod mod) {
-		super(SOCKET_URI, new HashMap<String, String>() {
+		super(SOCKET_URI, new HashMap<>() {
 			{
 				put("Origin", STREAMKIT);
 			}

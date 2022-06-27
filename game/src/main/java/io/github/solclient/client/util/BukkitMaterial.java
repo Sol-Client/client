@@ -1,5 +1,6 @@
 package io.github.solclient.client.util;
 
+import io.github.solclient.abstraction.mc.world.item.ItemType;
 import lombok.AllArgsConstructor;
 import net.minecraft.item.Item;
 
@@ -74,8 +75,8 @@ public enum BukkitMaterial {
 
 	private final int id;
 
-	public Item getItem() {
-		return Item.getItemById(id);
+	public ItemType getItem() {
+		return null;
 	}
 
 }

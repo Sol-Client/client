@@ -4,7 +4,8 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.api.option.KeyBinding;
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.option.KeyBinding;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.ConfigOnlyMod;
 import io.github.solclient.client.mod.ModCategory;
@@ -73,8 +74,8 @@ public class SolClientMod extends ConfigOnlyMod {
 		super.onRegister();
 
 		instance = this;
-		Client.INSTANCE.registerKeyBinding(modsKey);
-		Client.INSTANCE.registerKeyBinding(editHudKey);
+		mc.getOptions().addKey(modsKey);
+		mc.getOptions().addKey(editHudKey);
 		uiHover = getUiHover();
 	}
 

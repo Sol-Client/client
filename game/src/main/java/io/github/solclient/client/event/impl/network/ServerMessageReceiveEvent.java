@@ -10,7 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.github.solclient.api.Identifier;
+import io.github.solclient.abstraction.mc.Identifier;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -39,7 +39,7 @@ public class ServerMessageReceiveEvent {
 
 	/**
 	 * Returns the channel identifier.
-	 * Guaranteed to be not null on newer versions of the game.
+	 * Guaranteed to be not null if <code>EnvironmentConstants.PROPER_PLUGIN_MESSAGE_IDS == true</code>.
 	 * @return The channel if it can be resolved as an id, or else <code>null<code>.
 	 */
 	public @Nullable Identifier getChannelId() {
@@ -48,7 +48,7 @@ public class ServerMessageReceiveEvent {
 		}
 
 		try {
-			return Identifier.parse(channel);
+			return channelId = Identifier.parse(channel);
 		}
 		catch(Throwable error) {
 			return null;

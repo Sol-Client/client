@@ -19,7 +19,6 @@ public class BlockComponent extends ColouredComponent {
 	@Override
 	public void render(ComponentRenderInfo info) {
 		super.render(info);
-
 		Rectangle.ofDimensions(getBounds().getWidth(), getBounds().getHeight()).fill(getColour());
 	}
 

@@ -5,12 +5,14 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.util.MathHelper;
 
 public class CoordinatesMod extends HudMod {
+
+	private static final String[] CARDINAL_DIRECTIONS = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
 
 	@Expose
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
@@ -53,7 +55,7 @@ public class CoordinatesMod extends HudMod {
 
 	@Override
 	public Rectangle getBounds(Position position) {
-		return new Rectangle(position.getX(), position.getY(), 82, 4 + font.FONT_HEIGHT + 2 + font.FONT_HEIGHT + 2 + font.FONT_HEIGHT + 2);
+		return new Rectangle(position.getX(), position.getY(), 82, 4 + font.getHeight() + 2 + font.getHeight() + 2 + font.getHeight() + 2);
 	}
 
 	@Override
@@ -79,24 +81,14 @@ public class CoordinatesMod extends HudMod {
 			yaw = -90;
 		}
 		else {
-			x = mc.thePlayer.posX;
-			y = mc.thePlayer.posY;
-			z = mc.thePlayer.posZ;
-			yaw = mc.thePlayer.rotationYaw;
+			x = mc.getPlayer().getX();
+			y = mc.getPlayer().getY();
+			z = mc.getPlayer().getZ();
+			yaw = mc.getPlayer().getYaw();
 		}
 		int width = 80;
-		int cardinalDirectionIndex = MathHelper.floor_double(
-				((MathHelper.wrapAngleTo180_double(yaw) + 180D + 22.5D) % 360D) / 45D);
-		String[] cardinalDirections = {
-				"N",
-				"NE",
-				"E",
-				"SE",
-				"S",
-				"SW",
-				"W",
-				"NW"
-		};
+		int cardinalDirectionIndex = (int) Math.floor(
+				((Utils.wrapYaw(yaw) + 180D + 22.5D) % 360D) / 45D);
 		String xDirection = null;
 		String zDirection = null;
 		switch(cardinalDirectionIndex) {
@@ -129,37 +121,37 @@ public class CoordinatesMod extends HudMod {
 				xDirection = "-";
 				break;
 		}
-		String facing = cardinalDirections[cardinalDirectionIndex];
-		font.drawString(Integer.toString((int) x),
-				font.drawString("X ", position.getX() + 4, position.getY() + 4, axisLabelColour.getValue(), shadow) - subtract,
+		String facing = CARDINAL_DIRECTIONS[cardinalDirectionIndex];
+		font.render(Integer.toString((int) x),
+				font.render("X ", position.getX() + 4, position.getY() + 4, axisLabelColour.getValue(), shadow) - subtract,
 				position.getY() + 4, axisValueColour.getValue(), shadow);
 
 		if(xDirection != null && axisDirection) {
-			font.drawString(xDirection, position.getX() + width - font.getStringWidth(xDirection) - 2,
+			font.render(xDirection, position.getX() + width - font.getWidth(xDirection) - 2,
 					position.getY() + 4,
 					axisDirectionColour.getValue(), shadow);
 		}
 
-		font.drawString(Integer.toString((int) y),
-				font.drawString("Y ", position.getX() + 4, position.getY() + 4 + font.FONT_HEIGHT + 2,
+		font.render(Integer.toString((int) y),
+				font.render("Y ", position.getX() + 4, position.getY() + 4 + font.getHeight() + 2,
 						axisLabelColour.getValue(),
 						shadow) - subtract,
-				position.getY() + 4 + font.FONT_HEIGHT + 2, axisValueColour.getValue(), shadow);
+				position.getY() + 4 + font.getHeight() + 2, axisValueColour.getValue(), shadow);
 
 		if(cardinalDirection) {
-			font.drawString(facing, position.getX() + width - font.getStringWidth(facing) - 2,
-					position.getY() + 4 + font.FONT_HEIGHT + 2, cardinalDirectionColour.getValue(), shadow);
+			font.render(facing, position.getX() + width - font.getWidth(facing) - 2,
+					position.getY() + 4 + font.getHeight() + 2, cardinalDirectionColour.getValue(), shadow);
 		}
 
-		font.drawString(Integer.toString((int) z),
-				font.drawString("Z ", position.getX() + 4,
-						position.getY() + 4 + font.FONT_HEIGHT + 2 + font.FONT_HEIGHT + 2,
+		font.render(Integer.toString((int) z),
+				font.render("Z ", position.getX() + 4,
+						position.getY() + 4 + font.getHeight() + 2 + font.getHeight() + 2,
 						axisLabelColour.getValue(), shadow) - subtract,
-				position.getY() + 4 + font.FONT_HEIGHT + 2 + font.FONT_HEIGHT + 2, axisValueColour.getValue(), shadow);
+				position.getY() + 4 + font.getHeight() + 2 + font.getHeight() + 2, axisValueColour.getValue(), shadow);
 
 		if(zDirection != null && axisDirection) {
-			font.drawString(zDirection, position.getX() + width - font.getStringWidth(zDirection) - 2,
-					position.getY() + 4 + font.FONT_HEIGHT + 2 + font.FONT_HEIGHT + 2, axisDirectionColour.getValue(),
+			font.render(zDirection, position.getX() + width - font.getWidth(zDirection) - 2,
+					position.getY() + 4 + font.getHeight() + 2 + font.getHeight() + 2, axisDirectionColour.getValue(),
 					shadow);
 		}
 

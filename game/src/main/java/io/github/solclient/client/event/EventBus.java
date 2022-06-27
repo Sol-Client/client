@@ -31,9 +31,9 @@ public class EventBus {
 	}
 
 	private boolean inPost;
-	private List<Object> toRemove = new ArrayList<>();
-	private Map<Class<?>, List<MethodData>> handlers = new HashMap<Class<?>, List<MethodData>>();
-	private Logger logger = LogManager.getLogger();
+	private final List<Object> toRemove = new ArrayList<>();
+	private final Map<Class<?>, List<MethodData>> handlers = new HashMap<Class<?>, List<MethodData>>();
+	private final Logger logger = LogManager.getLogger();
 
 	private Set<Method> getMethods(Class<?> clazz) {
 		Set<Method> methods = new HashSet<>();

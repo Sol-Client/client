@@ -6,19 +6,21 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
-import com.replaymod.replay.ReplayModReplay;
 
 import de.jcm.discordgamesdk.Core;
 import de.jcm.discordgamesdk.CreateParams;
 import de.jcm.discordgamesdk.CreateParams.Flags;
 import de.jcm.discordgamesdk.activity.Activity;
 import de.jcm.discordgamesdk.activity.ActivityType;
+import io.github.solclient.abstraction.mc.screen.MultiplayerScreen;
+import io.github.solclient.abstraction.mc.screen.TitleScreen;
+import io.github.solclient.abstraction.mc.world.level.ClientLevel;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameQuitEvent;
-import io.github.solclient.client.event.impl.OpenGuiEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.event.impl.WorldLoadEvent;
+import io.github.solclient.client.event.impl.game.PreTickEvent;
+import io.github.solclient.client.event.impl.game.QuitEvent;
+import io.github.solclient.client.event.impl.screen.ScreenSwitchEvent;
+import io.github.solclient.client.event.impl.world.level.LevelLoadEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
@@ -27,14 +29,11 @@ import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.hud.HudPosition;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.mod.impl.discordrpc.socket.DiscordSocket;
+import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.VerticalAlignment;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.multiplayer.WorldClient;
 
 public class DiscordIntegrationMod extends Mod {
 
@@ -123,7 +122,7 @@ public class DiscordIntegrationMod extends Mod {
 			params.setFlags(Flags.NO_REQUIRE_DISCORD);
 			core = new Core(params);
 
-			startActivity(mc.theWorld);
+			startActivity(mc.getLevel());
 		}
 		catch(Throwable error) {
 			logger.warn("Could not start GameSDK", error);
@@ -162,7 +161,7 @@ public class DiscordIntegrationMod extends Mod {
 	}
 
 	@EventHandler
-	public void onGameQuit(GameQuitEvent event) {
+	public void onGameQuit(QuitEvent event) {
 		if(isEnabled() && core != null) {
 			close();
 		}
@@ -179,39 +178,40 @@ public class DiscordIntegrationMod extends Mod {
 	}
 
 	@EventHandler
-	public void onGuiChange(OpenGuiEvent event) {
+	public void onScreenSwitch(ScreenSwitchEvent event) {
 		if(core == null) {
 			return;
 		}
 
-		if ((event.screen == null || event.screen instanceof GuiMainMenu || event.screen instanceof SolClientMainMenu
-				|| event.screen instanceof GuiMultiplayer) && state && mc.theWorld == null) {
+		if ((event.getScreen() == null || event.getScreen() instanceof TitleScreen
+				|| event.getScreen() instanceof SolClientMainMenu || event.getScreen() instanceof MultiplayerScreen)
+				&& state && !mc.hasLevel()) {
 			startActivity(null);
 		}
 	}
 
 	@EventHandler
-	public void onWorldChange(WorldLoadEvent event) {
+	public void onWorldChange(LevelLoadEvent event) {
 		if(core == null) {
 			return;
 		}
 
-		if(!state && event.world != null) {
-			startActivity(event.world);
+		if(!state && event.getLevel() != null) {
+			startActivity(event.getLevel());
 		}
 	}
 
-	private void startActivity(WorldClient world) {
-		if(world != null) {
-			if(mc.isIntegratedServerRunning()) {
+	private void startActivity(ClientLevel level) {
+		if(level != null) {
+			if(mc.hasSingleplayerServer()) {
 				setActivity("Singleplayer");
 			}
 			else {
-				if(ReplayModReplay.instance.getReplayHandler() != null) {
+				if(TODO.L /* TODO replaymod */ != null) {
 					setActivity("Replay Viewer");
 				}
 				else {
-					setActivity("Multiplayer - " + mc.getCurrentServerData().serverName);
+					setActivity("Multiplayer - " + mc.getCurrentServer().getName());
 				}
 			}
 		}

@@ -4,6 +4,9 @@ import java.io.IOException;
 
 import org.lwjgl.input.Mouse;
 
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.screen.ProxyScreen;
+import io.github.solclient.abstraction.mc.text.Text;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.access.AccessMinecraft;
@@ -13,23 +16,24 @@ import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
-public class Screen extends GuiScreen {
+public class Screen extends ProxyScreen {
 
 	@Getter
-	protected GuiScreen parentScreen;
+	protected io.github.solclient.abstraction.mc.screen.Screen parentScreen;
 	protected Component root;
 	private Component rootWrapper;
 	private int mouseX;
 	private int mouseY;
 	protected boolean background = true;
 
-	public Screen(Component root) {
-		this.parentScreen = Minecraft.getMinecraft().currentScreen;
+	public Screen(Text title, Component root) {
+		super(title);
+		parentScreen = MinecraftClient.getInstance().getScreen();
 		rootWrapper = new Component() {
 
 			@Override
 			public Rectangle getBounds() {
-				return new Rectangle(0, 0, width, height);
+				return new Rectangle(0, 0, getWidth(), getHeight());
 			}
 
 		};
@@ -47,22 +51,22 @@ public class Screen extends GuiScreen {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float tickDelta) {
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
 
 		if(background) {
-			if(mc.theWorld == null) {
-				drawRect(0, 0, width, height, Colour.BACKGROUND.getValue());
+			if(mc.hasLevel()) {
+				fillRect(0, 0, getWidth(), getHeight(), Colour.BACKGROUND.getValue());
 			}
 			else {
-				drawDefaultBackground();
+				renderTranslucentBackground();
 			}
 		}
 
-		rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, partialTicks));
+		rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, tickDelta));
 
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		super.drawScreen(mouseX, mouseY, tickDelta);
 	}
 
 	@Override

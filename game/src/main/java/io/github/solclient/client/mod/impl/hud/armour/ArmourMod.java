@@ -2,24 +2,23 @@ package io.github.solclient.client.mod.impl.hud.armour;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
+import io.github.solclient.abstraction.mc.world.item.ItemStack;
+import io.github.solclient.abstraction.mc.world.item.ItemType;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class ArmourMod extends HudMod {
 
-	private static final ItemStack HELMET = new ItemStack(Items.iron_helmet);
-	private static final ItemStack CHESTPLATE = new ItemStack(Items.iron_chestplate);
-	private static final ItemStack LEGGINGS = new ItemStack(Items.iron_leggings);
-	private static final ItemStack BOOTS = new ItemStack(Items.iron_boots);
-	private static final ItemStack HAND = new ItemStack(Items.diamond_sword);
+	private static final ItemStack HELMET = ItemStack.create(ItemType.IRON_HELMET);
+	private static final ItemStack CHESTPLATE = ItemStack.create(ItemType.IRON_CHESTPLATE);
+	private static final ItemStack LEGGINGS = ItemStack.create(ItemType.IRON_LEGGINGS);
+	private static final ItemStack BOOTS = ItemStack.create(ItemType.IRON_BOOTS);
+	private static final ItemStack HAND = ItemStack.create(ItemType.DIAMOND_SWORD);
 
 	@Expose
 	@Option
@@ -52,19 +51,17 @@ public class ArmourMod extends HudMod {
 
 	@Override
 	public void render(Position position, boolean editMode) {
-		RenderHelper.enableGUIStandardItemLighting();
-
-		if(mc.thePlayer != null && !editMode) {
-			EntityPlayerSP player = mc.thePlayer;
+		if(mc.hasPlayer() && !editMode) {
+			LocalPlayer player = mc.getPlayer();
 			if(armour) {
 				for(int i = 0; i < 4; i++) {
-					ItemStack stack = player.inventory.armorInventory[3 - i];
+					ItemStack stack = player.getInventory().getArmour(3 - i);
 					if(stack != null) {
 						renderStack(stack, position.getX(), position.getY() + (i * 15));
 					}
 				}
 			}
-			if(hand && player.inventory.getCurrentItem() != null) renderStack(player.inventory.getCurrentItem(),
+			if(hand && player.getInventory().getCurrentItem() != null) renderStack(player.getInventory().getCurrentItem(),
 					position.getX(), position.getY() + (armour ? 60 : 0));
 		}
 		else if(editMode) {
@@ -77,28 +74,26 @@ public class ArmourMod extends HudMod {
 
 			if(hand) renderStack(HAND, position.getX(), position.getY() + (armour ? 60 : 0));
 		}
-
-		RenderHelper.disableStandardItemLighting();
 	}
 
 	private void renderStack(ItemStack stack, int x, int y) {
-		mc.getRenderItem().renderItemIntoGUI(stack, x, y);
+		mc.getItemRenderer().render(stack, x, y);
 		if(stack.getMaxDamage() > 0) {
 			String text;
 			switch(durability) {
 				case FRACTION:
-					text = stack.getMaxDamage() - stack.getItemDamage() + " / " + (stack.getMaxDamage());
+					text = stack.getMaxDamage() - stack.getDamage() + " / " + (stack.getMaxDamage());
 					break;
 				case REMAINING:
-					text = Integer.toString(stack.getMaxDamage() - stack.getItemDamage());
+					text = Integer.toString(stack.getMaxDamage() - stack.getDamage());
 					break;
 				case PERCENTAGE:
-					text = ((int) (((double) stack.getMaxDamage() - stack.getItemDamage()) / (stack.getMaxDamage()) * 100)) + "%";
+					text = ((int) (((double) stack.getMaxDamage() - stack.getDamage()) / (stack.getMaxDamage()) * 100)) + "%";
 					break;
 				default:
 					text = "Invalid mode";
 			}
-			font.drawString(text, x + 20, y + 5, textColour.getValue(), shadow);
+			font.render(text, x + 20, y + 5, textColour.getValue(), shadow);
 		}
 	}
 

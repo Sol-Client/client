@@ -45,7 +45,7 @@ import io.github.solclient.client.event.impl.PostRenderTickEvent;
 import io.github.solclient.client.event.impl.PreGameOverlayRenderEvent;
 import io.github.solclient.client.event.impl.PreGuiInitEvent;
 import io.github.solclient.client.event.impl.PreRenderTickEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
+import io.github.solclient.client.event.impl.game.PreTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 

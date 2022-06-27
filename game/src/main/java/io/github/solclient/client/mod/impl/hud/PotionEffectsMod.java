@@ -5,6 +5,12 @@ import java.util.Collection;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.DrawableHelper;
+import io.github.solclient.abstraction.mc.GlStateManager;
+import io.github.solclient.abstraction.mc.lang.I18n;
+import io.github.solclient.abstraction.mc.texture.Texture;
+import io.github.solclient.abstraction.mc.world.entity.effect.StatusEffect;
+import io.github.solclient.abstraction.mc.world.entity.effect.StatusEffectType;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.mod.hud.HudMod;
@@ -15,13 +21,11 @@ import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 import io.github.solclient.client.util.data.VerticalAlignment;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ResourceLocation;
 
 public class PotionEffectsMod extends HudMod {
+
+	private static final StatusEffect SPEED = StatusEffect.create(StatusEffectType.SPEED);
+	private static final StatusEffect STRENGTH = StatusEffect.create(StatusEffectType.STRENGTH);
 
 	@Expose
 	@Option
@@ -87,14 +91,14 @@ public class PotionEffectsMod extends HudMod {
 	public void render(Position position, boolean editMode) {
 		int x = position.getX();
 		int y = position.getY();
-		Collection<PotionEffect> effects;
+		Collection<StatusEffect> effects;
 
-		if(editMode || mc.thePlayer == null) {
-			effects = Arrays.asList(new PotionEffect(1, 0), new PotionEffect(5, 0));
+		if(editMode || !mc.hasPlayer()) {
+			effects = Arrays.asList(SPEED, STRENGTH);
 		}
 		else {
 			GlStateManager.enableBlend();
-			effects = mc.thePlayer.getActivePotionEffects();
+			effects = mc.getPlayer().getStatusEffects();
 		}
 
 		switch(alignment) {
@@ -108,13 +112,11 @@ public class PotionEffectsMod extends HudMod {
 		}
 
 		if(!effects.isEmpty()) {
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.resetColour();
 			GlStateManager.disableLighting();
 
-			for(PotionEffect effect : effects) {
-				Potion potion = Potion.potionTypes[effect.getPotionID()];
-				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
+			for(StatusEffect effect : effects) {
+				StatusEffectType type = effect.getType();
 
 				int width = getWidth();
 				int iconX = x + 6;
@@ -129,36 +131,32 @@ public class PotionEffectsMod extends HudMod {
 				}
 
 				if(background) {
+					mc.getTextureManager().bind(Texture.INVENTORY_ID);
 					Utils.drawTexture(x, y, 0, 166, width / 2, 32, 0);
 					Utils.drawTexture(x + width / 2, y, 120 - width / 2, 166, width / 2, 32, 0);
 				}
 
 				int centreText = y + 12;
 
-				if(icon && potion.hasStatusIcon()) {
-					int icon = potion.getStatusIconIndex();
-					Utils.drawTexture(iconX, y + 7, icon % 8 * 18, 198 + icon / 8 * 18, 18,
-							18, 0);
+				if(icon && effect.showIcon()) {
+					mc.getTextureManager().bind(Texture.MOB_EFFECTS_ATLAS_ID);
+					
+					DrawableHelper.fillTexturedRect(iconX, y + 7, type.getAtlasU(), type.getAtlasV(), 18, 18, 18, 18);
 				}
 
 				if(title) {
-					String titleText = I18n.format(potion.getName());
+					String titleText = I18n.translate(type.getName());
 
 					if(effect.getAmplifier() > 0 && effect.getAmplifier() < 4) {
-						if(TweaksMod.enabled && TweaksMod.instance.arabicNumerals) {
-							titleText += " " + (effect.getAmplifier() + 1);
-						}
-						else {
-							titleText += " " + I18n.format("enchantment.level." + (effect.getAmplifier() + 1));
-						}
+						titleText += " " + I18n.translate(effect.getAmplifierName());
 					}
 
-					font.drawString(titleText, textX, duration ? y + 7 : centreText, titleColour.getValue(), shadow);
+					font.render(titleText, textX, duration ? y + 7 : centreText, titleColour.getValue(), shadow);
 				}
 
 				if(duration) {
-					String duration = Potion.getDurationString(effect);
-					font.drawString(duration, textX, title ? y + 17 : centreText, durationColour.getValue(), shadow);
+					String duration = effect.getDurationText();
+					font.render(duration, textX, title ? y + 17 : centreText, durationColour.getValue(), shadow);
 				}
 
 				y += getEffectHeight();

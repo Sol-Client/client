@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.text.Font;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
@@ -13,8 +14,6 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
-import lombok.Getter;
-import net.minecraft.client.gui.FontRenderer;
 
 /**
  * Represents a mod with only a single HUD.
@@ -33,7 +32,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	@Option(priority = 1)
 	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
 	public float scale = 100;
-	protected FontRenderer font;
+	protected Font font;
 
 	public HudMod() {
 		position = getDefaultPosition();
@@ -47,7 +46,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public void postStart() {
 		super.postStart();
-		this.font = mc.fontRendererObj;
+		this.font = mc.getFont();
 	}
 
 	protected float getScale() {

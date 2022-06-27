@@ -1,7 +1,7 @@
 package io.github.solclient.client.mod.impl.hud;
 
+import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.client.mod.hud.SmoothCounterHudMod;
-import net.minecraft.client.Minecraft;
 
 public class FpsMod extends SmoothCounterHudMod {
 
@@ -12,7 +12,7 @@ public class FpsMod extends SmoothCounterHudMod {
 
 	@Override
 	public int getIntValue() {
-		return Minecraft.getDebugFPS();
+		return MinecraftClient.getFps();
 	}
 
 	@Override

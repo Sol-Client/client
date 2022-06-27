@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod.impl.hud.armour;
 
-import net.minecraft.client.resources.I18n;
+import io.github.solclient.abstraction.mc.lang.I18n;
 
 public enum DurabilityDisplay {
 	FRACTION,
@@ -9,7 +9,7 @@ public enum DurabilityDisplay {
 
 	@Override
 	public String toString() {
-		return I18n.format("sol_client.mod.armour.option.durability." + name().toLowerCase());
+		return I18n.translate("sol_client.mod.armour.option.durability." + name().toLowerCase());
 	}
 
 	public int getWidth() {

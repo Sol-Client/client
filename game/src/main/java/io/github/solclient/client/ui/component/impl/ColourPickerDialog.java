@@ -74,7 +74,7 @@ public class ColourPickerDialog extends ScaledIconComponent {
 
 		updateHex();
 		hex.onUpdate((text) -> {
-			Colour parsed = Colour.fromHexString(text);
+			Colour parsed = Colour.fromHexString(font);
 
 			if(parsed != null) {
 				this.colour = parsed;
@@ -152,7 +152,7 @@ public class ColourPickerDialog extends ScaledIconComponent {
 					font.renderString(Integer.toString(i), RGB_OFFSET_LEFT + i + 1 - (font.getWidth(Integer.toString(i)) / 2), rectangle.getY() + (SolClientMod.instance.fancyFont ? 9 : 11), -1);
 				}
 
-				Utils.drawVerticalLine(RGB_OFFSET_LEFT + i, RGB_OFFSET_TOP + component * RGB_SPACING, RGB_OFFSET_TOP + (component * RGB_SPACING) + 11, stripColour.getValue());
+				Utils.renderVerticalLine(RGB_OFFSET_LEFT + i, RGB_OFFSET_TOP + component * RGB_SPACING, RGB_OFFSET_TOP + (component * RGB_SPACING) + 11, stripColour.getValue());
 			}
 		}
 	}

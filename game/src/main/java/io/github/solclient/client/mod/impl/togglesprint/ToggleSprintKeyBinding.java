@@ -2,7 +2,7 @@ package io.github.solclient.client.mod.impl.togglesprint;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PostTickEvent;
+import io.github.solclient.client.event.impl.game.PostTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 
@@ -16,7 +16,7 @@ public class ToggleSprintKeyBinding extends KeyBinding {
 	public ToggleSprintKeyBinding(ToggleSprintMod mod, String description, int keyCode, String category) {
 		super(description, keyCode, category);
 		this.mod = mod;
-		Client.INSTANCE.bus.register(this);
+		Client.INSTANCE.getBus().register(this);
 	}
 
 	@EventHandler

@@ -1,18 +1,18 @@
 package io.github.solclient.client.mod.impl.hud.keystrokes;
 
-import io.github.solclient.client.CpsMonitor;
+import org.lwjgl.opengl.GL11;
+
+import io.github.solclient.abstraction.mc.DrawableHelper;
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.option.KeyBinding;
+import io.github.solclient.client.CpsCounter;
 import io.github.solclient.client.util.Utils;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.MathHelper;
 
 @RequiredArgsConstructor
 public class Keystroke {
 
-	private final Minecraft mc = Minecraft.getMinecraft();
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 	private final KeystrokesMod mod;
 	private final KeyBinding keyBinding;
 	private final String name;
@@ -25,8 +25,8 @@ public class Keystroke {
 	public void render(int offsetX, int offsetY) {
 		int x = this.x + offsetX;
 		int y = offsetY;
-		boolean down = keyBinding.isKeyDown();
-		GlStateManager.enableBlend();
+		boolean down = keyBinding.isHeld();
+		GL11.glEnable(GL11.GL_BLEND);
 
 		if((wasDown && !down) || (!wasDown && down)) {
 			end = System.currentTimeMillis();
@@ -42,15 +42,15 @@ public class Keystroke {
 			progress = 1F - progress;
 		}
 
-		progress = MathHelper.clamp_float(progress, 0, 1);
+		progress = Utils.clamp(progress, 0, 1);
 
 		if(mod.background) {
-			GuiScreen.drawRect(x, y, x + width, y + height,
-					Utils.blendColor(mod.backgroundColourPressed.getValue(), mod.backgroundColour.getValue(), progress));
+			DrawableHelper.fillRect(x, y, x + width, y + height, Utils
+					.blendColor(mod.backgroundColourPressed.getValue(), mod.backgroundColour.getValue(), progress));
 		}
 
 		if(mod.border) {
-			Utils.drawOutline(x, y, x + width, y + height,
+			DrawableHelper.strokeRect(x, y, x + width, y + height,
 					Utils.blendColor(mod.borderColourPressed.getValue(), mod.borderColour.getValue(), progress));
 		}
 
@@ -58,21 +58,21 @@ public class Keystroke {
 		String name = this.name;
 
 		if(name.equals("Space")) {
-			GuiScreen.drawRect(x + 10, y + 3, x + width - 10, y + 4, fgColour);
+			DrawableHelper.fillRect(x + 10, y + 3, x + width - 10, y + 4, fgColour);
 
 			if(mod.shadow) {
-				GuiScreen.drawRect(x + 11, y + 4, x + width - 9, y + 5, Utils.getShadowColour(fgColour));
+				DrawableHelper.fillRect(x + 11, y + 4, x + width - 9, y + 5, Utils.getShadowColour(fgColour));
 			}
 		}
 		else {
 			if(mod.cps) {
-				CpsMonitor monitor;
+				CpsCounter monitor;
 
 				if(name.equals("LMB")) {
-					monitor = CpsMonitor.LMB;
+					monitor = CpsCounter.LMB;
 				}
 				else if(name.equals("RMB")) {
-					monitor = CpsMonitor.RMB;
+					monitor = CpsCounter.RMB;
 				}
 				else {
 					monitor = null;
@@ -82,14 +82,15 @@ public class Keystroke {
 					String cpsText = monitor.getCps() + " CPS";
 					float scale = 0.5F;
 
-					GlStateManager.pushMatrix();
-					GlStateManager.scale(scale, scale, scale);
+					GL11.glPushMatrix();
+					GL11.glScalef(scale, scale, scale);
 
-					mc.fontRendererObj.drawString(cpsText,
-							(x / scale) + (width / 2F / scale) - (mc.fontRendererObj.getStringWidth(cpsText) / 2F),
-							(y + height - (mc.fontRendererObj.FONT_HEIGHT * scale)) / scale - 3, fgColour, mod.shadow);
+					mc.getFont().render(cpsText,
+							(int) ((x / scale) + (width / 2F / scale) - (mc.getFont().getWidth(cpsText) / 2F)),
+							(int) ((y + height - (mc.getFont().getHeight() * scale)) / scale - 3), fgColour,
+							mod.shadow);
 
-					GlStateManager.popMatrix();
+					GL11.glPopMatrix();
 
 					y -= 3;
 				}
@@ -97,8 +98,8 @@ public class Keystroke {
 			}
 
 			y += 1;
-			mc.fontRendererObj.drawString(name, x + (width / 2F) - (mc.fontRendererObj.getStringWidth(name) / 2F),
-					y + (height / 2F) - (mc.fontRendererObj.FONT_HEIGHT / 2F), fgColour, mod.shadow);
+			mc.getFont().render(name, (int) (x + (width / 2F) - (mc.getFont().getWidth(name) / 2F)),
+					(int) (y + (height / 2F) - (mc.getFont().getHeight() / 2F)), fgColour, mod.shadow);
 		}
 		wasDown = down;
 	}

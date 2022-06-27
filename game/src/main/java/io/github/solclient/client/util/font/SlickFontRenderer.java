@@ -1,5 +1,5 @@
 /*
- * TODO: Digital Lego with HD font?
+ * TODO: Digital Lego with HD text?
  * TODO: With an additional library that hasn't been maintained in years?
  * TODO: "Borrowing" a large amount of code from Hyperium?
  *
@@ -167,7 +167,7 @@ public class SlickFontRenderer implements Font {
 				slickFont.addAsciiGlyphs();
 				slickFont.addNeheGlyphs();
 				slickFont.addGlyphs(0x0400, 0x04FF);
-				slickFont.getEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
+				slickFont.getStatusEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
 				slickFont.loadGlyphs();
 			}
 			catch(FontFormatException | IOException | SlickException e) {

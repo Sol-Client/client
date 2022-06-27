@@ -1,31 +1,29 @@
 package io.github.solclient.client;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 
+import io.github.solclient.abstraction.mc.Identifier;
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.world.entity.player.Player;
 import io.github.solclient.client.util.Utils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 
 public class CapeManager {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private Map<String, String> capes = new HashMap<>();
-	private Map<UUID, ResourceLocation> capeCache = new HashMap<>();
+	private Map<UUID, Identifier> capeCache = new HashMap<>();
 	private static final String BASE_URL = "https://raw.githubusercontent.com/Sol-Client/Capes/main/";
 	private static final URL BY_PLAYER_URL = Utils.sneakyParse(BASE_URL + "by_player.json");
 
@@ -45,30 +43,27 @@ public class CapeManager {
 		});
 	}
 
-	public ResourceLocation getForPlayer(EntityPlayer player) {
-		Minecraft mc = Minecraft.getMinecraft();
+	public Identifier getForPlayer(Player player) {
+		MinecraftClient mc = MinecraftClient.getInstance();
 
-		String capeUrl = capes.get(player.getUniqueID().toString().replace("-", ""));
+		String capeUrl = capes.get(player.getId().toString().replace("-", ""));
 
 		if(capeUrl == null) {
 			return null;
 		}
 
 		try {
-			if(capeCache.containsKey(player.getUniqueID())) {
-				return capeCache.get(player.getUniqueID());
+			if(capeCache.containsKey(player.getId())) {
+				return capeCache.get(player.getId());
 			}
 			else {
-				MinecraftProfileTexture texture = new MinecraftProfileTexture(capeUrl, null);
-
-				ResourceLocation cape = new ResourceLocation("sc_capes/" + texture.getHash());
+				Identifier cape = Identifier.solClient("capes/" + FilenameUtils.getBaseName(capeUrl));
 
 				if(mc.getTextureManager().getTexture(cape) == null) {
-					ThreadDownloadImageData thread = new ThreadDownloadImageData(null, texture.getUrl(), null, null);
-					mc.getTextureManager().loadTexture(cape, thread);
+					mc.getTextureManager().download(capeUrl, cape);
 				}
 
-				capeCache.put(player.getUniqueID(), cape);
+				capeCache.put(player.getId(), cape);
 
 				return cape;
 			}

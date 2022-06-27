@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.solclient.abstraction.mc.DrawableHelper;
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.text.Font;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.BaseHudElement;
 import io.github.solclient.client.mod.hud.HudPosition;
@@ -16,20 +19,17 @@ import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.AllArgsConstructor;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 
 public class DiscordVoiceChatHud extends BaseHudElement {
 
 	private static final int USER_HEIGHT = 20;
 
-	protected final FontRenderer font;
+	protected final Font text;
 	private final DiscordIntegrationMod mod;
 
 	public DiscordVoiceChatHud(DiscordIntegrationMod mod) {
 		this.mod = mod;
-		font = Minecraft.getMinecraft().fontRendererObj;
+		text = MinecraftClient.getInstance().getFont();
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 				break;
 		}
 
-		return position.offset(0, yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
+		return position.offset(0, yOffset).rectangle(20 + text.getWidth("TheKodeToad") + 4, 76);
 	}
 
 	@Override
@@ -100,13 +100,13 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 
 		for(User user : users) {
 			user.bindTexture();
-			Gui.drawModalRectWithCustomSizedTexture(position.getX(), y, 0, 0, 16, 16, 16, 16);
+			DrawableHelper.fillTexturedRect(position.getX(), y, 0, 0, 16, 16, 16, 16);
 
 			if(user.isSpeaking()) {
-				Utils.drawOutline(position.getX() - 1, y - 1, position.getX() + 17, y + 17, mod.speakingColour.getValue());
+				DrawableHelper.strokeRect(position.getX() - 1, y - 1, position.getX() + 17, y + 17, mod.speakingColour.getValue());
 			}
 
-			font.drawString(user.getName(), position.getX() + 20, y + 4, user.isMuted() ? mod.mutedColour.getValue() : mod.usernameColour.getValue(), mod.shadow);
+			text.render(user.getName(), position.getX() + 20, y + 4, user.isMuted() ? mod.mutedColour.getValue() : mod.usernameColour.getValue(), mod.shadow);
 			y += 20;
 		}
 	}

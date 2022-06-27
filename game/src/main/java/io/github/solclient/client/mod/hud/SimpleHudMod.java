@@ -1,18 +1,16 @@
 package io.github.solclient.client.mod.hud;
 
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.Optional;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.lang.I18n;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.DirtyMapper;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 
 /**
  * A simple HUD mod that rendered a simple string.
@@ -40,15 +38,15 @@ public abstract class SimpleHudMod extends HudMod {
 	@Expose
 	@Option
 	protected boolean shadow = true;
-	private DirtyMapper<String, Integer> langWidth = new DirtyMapper<>(() -> mc.getLanguageManager().getCurrentLanguage().getLanguageCode(), (key) -> {
+	private DirtyMapper<String, Integer> langWidth = new DirtyMapper<String, Integer>(() -> mc.getLanguageManager().getCode(), (key) -> {
 		String translationKey = getTranslationKey() + ".default_width";
-		String width = I18n.format(translationKey);
+		Optional<String> width = I18n.translateOpt(translationKey);
 
-		if(width.equals(translationKey)) {
+		if(!width.isPresent()) {
 			return 53;
 		}
 
-		return Integer.parseInt(width);
+		return Integer.parseInt(width.get());
 	});
 
 	@Override
@@ -76,8 +74,9 @@ public abstract class SimpleHudMod extends HudMod {
 			if(border) {
 				getBounds(position).stroke(borderColour);
 			}
- 			font.drawString(text,
-					position.getX() + (getBounds(position).getWidth() / 2F) - (font.getStringWidth(text) / 2F),
+			font.render(text,
+					(int) (position.getX() + (getBounds(position).getWidth() / 2F)
+							- (font.getWidth(text) / 2F)),
 					position.getY() + 4, textColour.getValue(), shadow);
 		}
 	}

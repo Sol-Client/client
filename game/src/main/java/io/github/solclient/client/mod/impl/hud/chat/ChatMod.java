@@ -4,34 +4,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.DrawableHelper;
+import io.github.solclient.abstraction.mc.GlStateManager;
+import io.github.solclient.abstraction.mc.hud.chat.Chat;
+import io.github.solclient.abstraction.mc.hud.chat.ChatMessage;
+import io.github.solclient.abstraction.mc.option.KeyBinding;
+import io.github.solclient.abstraction.mc.text.Text;
+import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.ChatRenderEvent;
-import io.github.solclient.client.event.impl.PostTickEvent;
-import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
-import io.github.solclient.client.event.impl.ScrollEvent;
+import io.github.solclient.client.event.impl.game.PostTickEvent;
+import io.github.solclient.client.event.impl.hud.PreHudElementRenderEvent;
+import io.github.solclient.client.event.impl.input.ScrollWheelEvent;
+import io.github.solclient.client.event.impl.network.chat.IncomingChatMessageEvent;
 import io.github.solclient.client.mod.annotation.FileOption;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessGuiChat;
-import io.github.solclient.client.util.access.AccessGuiNewChat;
+import io.github.solclient.client.util.VanillaHudElement;
 import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.gui.ChatLine;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 
 public class ChatMod extends HudMod {
 
@@ -55,7 +52,7 @@ public class ChatMod extends HudMod {
 	public boolean infiniteChat = true;
 
 	@Option
-	public KeyBinding peekKey = new KeyBinding(getTranslationKey() + ".peek", 0, Client.KEY_CATEGORY);
+	public KeyBinding peekKey = KeyBinding.create(getTranslationKey() + ".peek", 0, Client.KEY_CATEGORY);
 	private boolean wasPeeking;
 	private boolean hasScrollbar;
 
@@ -120,7 +117,7 @@ public class ChatMod extends HudMod {
 		super.onRegister();
 
 		instance = this;
-		Client.INSTANCE.registerKeyBinding(peekKey);
+		mc.getOptions().addKey(peekKey);
 	}
 
 	@Override
@@ -143,8 +140,8 @@ public class ChatMod extends HudMod {
 			Client.INSTANCE.registerChatButton(symbolsButton);
 		}
 
-		if(mc.theWorld != null) {
-			mc.ingameGUI.getChatGUI().refreshChat();
+		if(mc.hasLevel()) {
+			mc.getIngameHud().getChat().refresh();
 		}
 	}
 
@@ -154,8 +151,8 @@ public class ChatMod extends HudMod {
 		enabled = false;
 		Client.INSTANCE.unregisterChatButton(symbolsButton);
 
-		if(mc.theWorld != null) {
-			mc.ingameGUI.getChatGUI().refreshChat();
+		if(mc.hasLevel()) {
+			mc.getIngameHud().getChat().refresh();
 		}
 	}
 
@@ -179,48 +176,48 @@ public class ChatMod extends HudMod {
 		if(key.equals("closedHeight") || key.equals("openHeight")
 				|| key.equals("width") || key.equals("enabled")
 				|| key.equals("scale")) {
-			mc.ingameGUI.getChatGUI().refreshChat();
+			mc.getIngameHud().getChat().refresh();
 		}
 		return super.onOptionChange(key, value);
 	}
 
 	@EventHandler
-	public void onScroll(ScrollEvent event) {
+	public void onScroll(ScrollWheelEvent event) {
 		// Arrow key scrolling isn't implemented for various reasons, but nobody cares anyway.
 
-		if(hasScrollbar && peekKey.isKeyDown() && event.amount != 0) {
+		if(hasScrollbar && peekKey.isHeld() && event.getAmount() != 0) {
 			int amount = 1;
 
-			if(event.amount < 0) {
+			if(event.getAmount() < 0) {
 				amount = -amount;
 			}
 
-			if(!GuiScreen.isShiftKeyDown()) {
+			if(!Input.isShiftHeld()) {
 				amount *= 7;
 			}
 
-			mc.ingameGUI.getChatGUI().scroll(amount);
+			mc.getIngameHud().getChat().scroll(amount);
 
-			event.cancelled = true;
+			event.cancel();
 		}
 	}
 
 	@EventHandler
 	@SuppressWarnings("unchecked")
 	public void onTick(PostTickEvent event) {
-		if(!peekKey.isKeyDown() && wasPeeking) {
-			mc.ingameGUI.getChatGUI().resetScroll();
+		if(!peekKey.isHeld() && wasPeeking) {
+			mc.getIngameHud().getChat().resetScroll();
 		}
 
-		wasPeeking = peekKey.isKeyDown();
+		wasPeeking = peekKey.isHeld();
 
-		if(smooth && !mc.isGamePaused()) {
+		if(smooth && !mc.isPaused()) {
 			lastAnimatedOffset = animatedOffset;
 
 			animatedOffset *= ANIMATION_MULTIPLIER;
 
-			for(ChatAnimationData line : (Iterable<ChatAnimationData>) (Object) (((AccessGuiNewChat) mc.ingameGUI
-					.getChatGUI()).getDrawnChatLines())) {
+			for(ChatAnimationData line : (Iterable<ChatAnimationData>) (Object) (mc.getIngameHud().getChat()
+					.getVisibleMessages())) {
 				line.setLastTransparency(line.getTransparency());
 				line.setTransparency(line.getTransparency() * ANIMATION_MULTIPLIER);
 			}
@@ -228,73 +225,78 @@ public class ChatMod extends HudMod {
 	}
 
 	@EventHandler
-	public void onReceiveChatMessage(ReceiveChatMessageEvent event) {
+	public void onIncomingChatMessage(IncomingChatMessageEvent event) {
 		if(!chatFilter) {
 			return;
 		}
 
 		// Primarily focused on English text, as all non-ascii characters are stripped.
-		String message = strip(event.message);
+		String message = event.getMessage().getPlain();
 
 		for(String word : filteredWords) {
 			word = strip(word);
 
 			if(message.equals(word) || message.startsWith(word + " ")
 					|| message.endsWith(" " + word) || message.contains(" " + word + " ")) {
-				event.cancelled = true;
+				event.cancel();
 				return;
 			}
 		}
 	}
 
-	private static String strip(String message) {
-		return EnumChatFormatting.getTextWithoutFormattingCodes(message).toLowerCase().replaceAll("[^a-z ]", "");
+	private String strip(String word) {
+		return word.toLowerCase().codePoints().filter(Character::isLetter).mapToObj((i) -> (Character) (char) i)
+				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}
 
 	@EventHandler
-	public void onChatRender(ChatRenderEvent event) {
-		event.cancelled = true;
-		AccessGuiNewChat accessor = ((AccessGuiNewChat) event.chat);
+	public void onChatRender(PreHudElementRenderEvent event) {
+		if(event.getElement() != VanillaHudElement.CHAT) {
+			return;
+		}
+
+		event.cancel();
+		Chat chat = mc.getIngameHud().getChat();
 
 		if(visibility != ChatVisibility.HIDDEN) {
-			int linesCount = event.chat.getLineCount();
+			int linesCount = chat.getVisibleMessageCount();
 			boolean open = false;
 			int j = 0;
-			int drawnLinesCount = accessor.getDrawnChatLines().size();
+			int visibleLinesCount = chat.getVisibleMessages().size();
 
-			if(drawnLinesCount > 0) {
-				if(event.chat.getChatOpen()) {
+			if(visibleLinesCount > 0) {
+				if(chat.isOpen()) {
 					open = true;
 				}
 
-				float f1 = getScale();
-				int l = MathHelper.ceiling_float_int((float) event.chat.getChatWidth() / f1);
+				float scale = getScale();
+				int width = (int) Math.ceil(chat.getWidth() / scale);
 				GlStateManager.pushMatrix();
-				GlStateManager.translate(2.0F, 20.0F, 0.0F);
-				GlStateManager.scale(f1, f1, 1.0F);
+				GlStateManager.translate(2, 20, 0);
+				GL11.glScalef(scale, scale, 1.0F);
 
-				if(previousChatSize < accessor.getDrawnChatLines().size()) {
+				if(previousChatSize < visibleLinesCount) {
 					animatedOffset = 9;
 					lastAnimatedOffset = 9;
 				}
 
-				if(smooth && !(event.chat.getChatOpen() && accessor.getScrollPos() > 0)) {
-					float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.partialTicks;
+				if(smooth && !(chat.isOpen() && chat.getScroll() > 0)) {
+					float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.getTickDelta();
 
-					GlStateManager.translate(0, calculatedOffset, 0);
+					GL11.glTranslatef(0, calculatedOffset, 0);
 				}
 
-				for(int i = 0; i + accessor.getScrollPos() < accessor.getDrawnChatLines().size() && i < linesCount; ++i) {
-					ChatLine line = (ChatLine) accessor.getDrawnChatLines().get(i + accessor.getScrollPos());
+				for(int i = 0; i + chat.getScroll() < chat.getVisibleMessages().size() && i < linesCount; ++i) {
+					ChatMessage line = chat.getVisibleMessages().get(i + chat.getScroll());
 
 					if(line != null) {
-						int update = event.updateCounter - line.getUpdatedCounter();
+						int update = mc.getIngameHud().getTicks() - line.getUpdatedCounter();
 
 						if(open || update < 200) {
-							double percent = (double) update / 200.0D;
+							double percent = update / 200.0D;
 							percent = 1.0D - percent;
 							percent = percent * 10.0D;
-							percent = MathHelper.clamp_double(percent, 0.0D, 1.0D);
+							percent = Utils.clamp(percent, 0.0D, 1.0D);
 							percent = percent * percent;
 
 							if(open) {
@@ -307,7 +309,7 @@ public class ChatMod extends HudMod {
 								ChatAnimationData data = ((ChatAnimationData) line);
 
 								if(data.getTransparency() != 0) {
-									float calculatedTransparency = data.getLastTransparency() + (data.getTransparency() - data.getLastTransparency()) * event.partialTicks;
+									float calculatedTransparency = data.getLastTransparency() + (data.getTransparency() - data.getLastTransparency()) * event.getTickDelta();
 									percentFG *= (1 - calculatedTransparency);
 								}
 							}
@@ -319,16 +321,16 @@ public class ChatMod extends HudMod {
 								int j2 = -i * 9;
 
 								if(background) {
-									Gui.drawRect(i2 - 2, j2 - 9, i2 + l + 4, j2,
+									DrawableHelper.fillRect(i2 - 2, j2 - 9, i2 + width + 4, j2,
 											backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * percent)).getValue());
 								}
 
-								String formattedText = line.getChatComponent().getFormattedText();
-								GlStateManager.enableBlend();
+								Text formattedText = line.getMessage();
+								GL11.glEnable(GL11.GL_BLEND);
 
 								if(percentFG > 0.05F) {
-									mc.fontRendererObj.drawString(colours ? formattedText :
-											EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float) i2, (float) (j2 - 8),
+									mc.getFont().render(colours ? formattedText :
+											formattedText.withoutColour(), i2, j2 - 8,
 											defaultTextColour.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue(), shadow);
 								}
 							}
@@ -337,37 +339,37 @@ public class ChatMod extends HudMod {
 				}
 
 				if(open) {
-					int k2 = mc.fontRendererObj.FONT_HEIGHT;
-					GlStateManager.translate(-3.0F, 0.0F, 0.0F);
-					int l2 = drawnLinesCount * k2 + drawnLinesCount;
+					int k2 = mc.getFont().getHeight();
+					GL11.glTranslatef(-3, 0, 0);
+					int l2 = visibleLinesCount * k2 + visibleLinesCount;
 					int i3 = j * k2 + j;
-					int j3 = accessor.getScrollPos() * i3 / drawnLinesCount;
+					int j3 = chat.getScroll() * i3 / visibleLinesCount;
 					int k1 = i3 * i3 / l2;
 
 					if(l2 != i3) {
 						hasScrollbar = true;
 
 						int k3 = j3 > 0 ? 170 : 96;
-						int l3 = accessor.getIsScrolled() ? 13382451 : 3355562;
-						Gui.drawRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
-						Gui.drawRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
+						int l3 = chat.isScrolled() ? 13382451 : 3355562;
+						DrawableHelper.fillRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
+						DrawableHelper.fillRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
 					}
 					else {
 						hasScrollbar = false;
 					}
 				}
 
-				GlStateManager.popMatrix();
+				GL11.glPopMatrix();
 			}
 			else {
 				hasScrollbar = false;
 			}
+
+			previousChatSize = visibleLinesCount;
 		}
 		else {
 			hasScrollbar = false;
 		}
-
-		previousChatSize = accessor.getDrawnChatLines().size();
 	}
 
 }

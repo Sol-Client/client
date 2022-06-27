@@ -1,8 +1,8 @@
 package io.github.solclient.client.mod.impl.hud.timers;
 
+import io.github.solclient.abstraction.mc.world.item.ItemStack;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.item.ItemStack;
 
 /**
  * TODO: Move to ClientApi.

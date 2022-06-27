@@ -8,7 +8,7 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.CameraRotateEvent;
 import io.github.solclient.client.event.impl.PlayerHeadRotateEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
+import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;

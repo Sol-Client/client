@@ -1,27 +1,28 @@
 package io.github.solclient.client.mod.impl.hud.crosshair;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.DrawableHelper;
+import io.github.solclient.abstraction.mc.GlStateManager;
+import io.github.solclient.abstraction.mc.Identifier;
+import io.github.solclient.abstraction.mc.Window;
+import io.github.solclient.abstraction.mc.raycast.HitType;
+import io.github.solclient.abstraction.mc.texture.Texture;
+import io.github.solclient.abstraction.mc.world.entity.player.GameMode;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameOverlayElement;
-import io.github.solclient.client.event.impl.PreGameOverlayRenderEvent;
+import io.github.solclient.client.event.impl.hud.PreHudElementRenderEvent;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.VanillaHudElement;
 import io.github.solclient.client.util.data.Colour;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldSettings.GameType;
 
 public class CrosshairMod extends HudMod {
 
-	private static final ResourceLocation CLIENT_CROSSHAIRS = new ResourceLocation("textures/gui" +
-			"/sol_client_crosshairs.png");
+	private static final Identifier CROSSHAIRS = Identifier.solClient("crosshairs.png");
 
 	@Expose
 	@Option
@@ -54,17 +55,18 @@ public class CrosshairMod extends HudMod {
 	}
 
 	@EventHandler
-	public void onCrosshairRender(PreGameOverlayRenderEvent event) {
-		if(event.type == GameOverlayElement.CROSSHAIRS) {
-			event.cancelled = true;
-			if ((!debug && mc.gameSettings.showDebugInfo) ||
-					(!spectatorAlways && (mc.playerController.getCurrentGameType() == GameType.SPECTATOR && mc.objectMouseOver.typeOfHit != MovingObjectType.ENTITY)) ||
-					(!thirdPerson && mc.gameSettings.thirdPersonView != 0)) {
+	public void onCrosshairRender(PreHudElementRenderEvent event) {
+		if(event.getElement() == VanillaHudElement.CROSSHAIR) {
+			event.cancel();
+			if((!debug && mc.getOptions().debugOverlay())
+					|| (!spectatorAlways && (mc.getPlayerState().getGameMode() == GameMode.SPECTATOR
+							&& mc.getHitResult().getType() != HitType.ENTITY))
+					|| (!thirdPerson && mc.getOptions().perspective().isThirdPerson())) {
 				return;
 			}
-			ScaledResolution resolution = new ScaledResolution(mc);
-			int x = (int) (resolution.getScaledWidth() / getScale() / 2 - 7);
-			int y = (int) (resolution.getScaledHeight() / getScale() / 2 - 7);
+			Window window = mc.getWindow();
+			int x = (int) (window.getScaledWidth() / getScale() / 2 - 7);
+			int y = (int) (window.getScaledHeight() / getScale() / 2 - 7);
 
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(getScale(), getScale(), getScale());
@@ -73,29 +75,30 @@ public class CrosshairMod extends HudMod {
 
 			GlStateManager.enableBlend();
 			GlStateManager.enableAlpha();
-			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+			GlStateManager.blendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
-			if(highlightEntities && mc.objectMouseOver != null && mc.objectMouseOver.entityHit != null && !(mc.objectMouseOver.entityHit.isInvisible()
-					|| mc.objectMouseOver.entityHit.isInvisibleToPlayer(mc.thePlayer))) {
+			if(highlightEntities && mc.getHitResult().getType() == HitType.ENTITY
+					&& mc.getHitResult().getEntity() != null && !(mc.getHitResult().getEntity().isInvisible()
+							|| mc.getHitResult().getEntity().isInvisibleTo(mc.getPlayer()))) {
 				entityColour.bind();
 			}
 			else if(blending) {
-				GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
-				GlStateManager.enableAlpha();
+				GlStateManager.blendFunction(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_ONE,
+						GL11.GL_ZERO);
 			}
 
 			if (style == CrosshairStyle.DEFAULT) {
-				mc.getTextureManager().bindTexture(Gui.icons);
+				mc.getTextureManager().bind(Texture.ICONS_ID);
 				Utils.drawTexture(x, y, 0, 0, 16, 16, 0);
 			}
 			else {
-				mc.getTextureManager().bindTexture(CLIENT_CROSSHAIRS);
+				mc.getTextureManager().bind(CROSSHAIRS);
 				int v = (style.ordinal() - 2) * 16;
 				Utils.drawTexture(x, y, 0, v, 16, 16, 0);
-				mc.getTextureManager().bindTexture(Gui.icons);
+				mc.getTextureManager().bind(Texture.ICONS_ID);
 			}
-			GL11.glColor4f(1, 1, 1, 1);
 
+			GlStateManager.resetColour();
 			GlStateManager.popMatrix();
 		}
 	}

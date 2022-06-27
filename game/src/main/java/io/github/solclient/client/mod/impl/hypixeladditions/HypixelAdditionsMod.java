@@ -16,33 +16,33 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.text.ClickEvent;
+import io.github.solclient.abstraction.mc.text.ClickEvent.Action;
+import io.github.solclient.abstraction.mc.text.LiteralText;
+import io.github.solclient.abstraction.mc.text.TextColour;
+import io.github.solclient.abstraction.mc.text.TextFormatting;
+import io.github.solclient.abstraction.mc.world.item.ItemStack;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.DetectedServer;
-import io.github.solclient.client.packet.Popup;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PostTickEvent;
-import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
-import io.github.solclient.client.event.impl.ServerConnectEvent;
-import io.github.solclient.client.event.impl.SoundPlayEvent;
-import io.github.solclient.client.event.impl.WorldLoadEvent;
+import io.github.solclient.client.event.impl.game.PostTickEvent;
+import io.github.solclient.client.event.impl.network.ServerConnectEvent;
+import io.github.solclient.client.event.impl.network.chat.ActionBarPlayEvent;
+import io.github.solclient.client.event.impl.network.chat.IncomingChatMessageEvent;
+import io.github.solclient.client.event.impl.sound.SoundPlayEvent;
+import io.github.solclient.client.event.impl.world.level.LevelLoadEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.mod.impl.hypixeladditions.commands.ChatChannelCommand;
 import io.github.solclient.client.mod.impl.hypixeladditions.commands.VisitHousingCommand;
+import io.github.solclient.client.packet.Popup;
 import io.github.solclient.client.util.ApacheHttpClient;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.AutoGGMessage;
 import io.github.solclient.client.util.data.AutoGLMessage;
 import net.hypixel.api.HypixelAPI;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.event.ClickEvent.Action;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 
 public class HypixelAdditionsMod extends Mod {
 
@@ -132,7 +132,7 @@ public class HypixelAdditionsMod extends Mod {
 
 	public String getLevelhead(boolean isMainPlayer, String name, UUID id) {
 		if((!(enabled && levelhead))
-				|| (name.contains(EnumChatFormatting.OBFUSCATED.toString()) && !isMainPlayer)) {
+				|| (name.contains(TextFormatting.OBFUSCATED.toString()) && !isMainPlayer)) {
 			return null;
 		}
 
@@ -164,10 +164,11 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	public boolean isLobby() {
-		if(mc.thePlayer != null && mc.thePlayer.inventory != null) {
-			ItemStack stack = mc.thePlayer.inventory.getStackInSlot(8);
+		if(mc.hasPlayer()) {
+			ItemStack stack = mc.getPlayer().getInventory().getItem(8);
 			if(stack != null) {
-				return stack.getDisplayName().equals(EnumChatFormatting.GREEN + "Lobby Selector " + EnumChatFormatting.GRAY + "(Right Click)");
+				return stack.getLegacyDisplayName()
+						.equals(TextFormatting.GREEN + "Lobby Selector " + TextFormatting.GREY + "(Right Click)");
 			}
 		}
 		return false;
@@ -205,8 +206,8 @@ public class HypixelAdditionsMod extends Mod {
 
 		if(Client.INSTANCE.getCommand("chat") == null) {
 			if(isEffective()) {
-				if(mc.thePlayer != null) {
-					mc.thePlayer.chat("/chat a");
+				if(mc.hasPlayer()) {
+					mc.getPlayer().executeCommand("chat a");
 				}
 				Client.INSTANCE.registerCommand("chat", new ChatChannelCommand(this));
 			}
@@ -229,12 +230,10 @@ public class HypixelAdditionsMod extends Mod {
 		}
 
 		if(isEffective() && apiKey == null) {
-			IChatComponent component = new ChatComponentText("Could not find API key (required for Levelhead). Click here or run /api new.");
-			component.setChatStyle(new ChatStyle()
-					.setColor(EnumChatFormatting.RED)
-					.setChatClickEvent(new ClickEvent(Action.RUN_COMMAND, "/api new")));
-
-			mc.ingameGUI.getChatGUI().printChatMessage(component);
+			mc.getPlayer().sendSystemMessage(LiteralText.create("Could not find API key (required for Levelhead). Click here or run /api new.").withStyle((style) -> {
+				style.setColour(TextColour.RED);
+				style.setClickEvent(ClickEvent.create(Action.RUN_COMMAND, "/api"));
+			}));
 		}
 	}
 
@@ -272,7 +271,7 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	@EventHandler
-	public void onWorldLoad(WorldLoadEvent event) {
+	public void onWorldLoad(LevelLoadEvent event) {
 		donegg = donegl = false;
 		levelCache.clear();
 
@@ -285,15 +284,15 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	@EventHandler
-	public void onMessage(ReceiveChatMessageEvent event) {
+	public void onMessage(IncomingChatMessageEvent event) {
 		if(!isHypixel()) {
 			return;
 		}
 
-		if(locrawTrigger.matcher(event.message).matches()) {
+		if(locrawTrigger.matcher(event.getPlainText()).matches()) {
 			try {
-				event.cancelled = true;
-				locationData = new Gson().fromJson(event.message, HypixelLocationData.class);
+				event.cancel();
+				locationData = new Gson().fromJson(event.getPlainText(), HypixelLocationData.class);
 				return;
 			}
 			catch(Throwable error) {
@@ -303,35 +302,30 @@ public class HypixelAdditionsMod extends Mod {
 
 		if(hidegg) {
 			for(Pattern pattern : hideggTriggers) {
-				if(pattern.matcher(event.message).matches()) {
-					event.cancelled = true;
+				if(pattern.matcher(event.getPlainText()).matches()) {
+					event.cancel();
 					return;
 				}
 			}
 		}
 
-		if(hidegl && hideglTrigger.matcher(event.message).matches()) {
-			event.cancelled = true;
+		if(hidegl && hideglTrigger.matcher(event.getPlainText()).matches()) {
+			event.cancel();
 			return;
 		}
 
 
-		if(hideChannelMessageTrigger.matcher(event.message).matches()) {
-			event.cancelled = true;
+		if(hideChannelMessageTrigger.matcher(event.getPlainText()).matches()) {
+			event.cancel();
 			return;
 		}
 
-		if(event.replay) {
-			return;
-		}
-
-		if(event.actionBar && isHousing() && event.message.startsWith("Now playing:")) {
-			event.cancelled = true;
+		if(event.isReplay()) {
 			return;
 		}
 
 		if(popupEvents) {
-			for(String line : event.message.split("\\n")) {
+			for(String line : event.getPlainText().split("\\n")) {
 				Popup popup = HypixelPopupType.popupFromMessage(line);
 				if(popup != null) {
 					Client.INSTANCE.getPopupManager().add(popup);
@@ -342,35 +336,40 @@ public class HypixelAdditionsMod extends Mod {
 
 		if(autogg && !donegg) {
 			for(Pattern pattern : autoggTriggers) {
-				if(pattern.matcher(event.message).matches()) {
+				if(pattern.matcher(event.getPlainText()).matches()) {
 					donegg = true;
-					mc.thePlayer.chat("/achat " + autoggMessage);
+					mc.getPlayer().executeCommand("achat " + autoggMessage);
 					return;
 				}
 			}
 		}
 
-		if(autogl && !donegl && event.message.equals(autoglTrigger)) {
+		if(autogl && !donegl && event.getPlainText().equals(autoglTrigger)) {
 			ticksUntilAutogl = 20;
 			return;
 		}
 
-		Matcher apiKeyMatcher = apiKeyMessageTrigger.matcher(event.message);
+		Matcher apiKeyMatcher = apiKeyMessageTrigger.matcher(event.getPlainText());
 		if(apiKeyMatcher.matches()) {
 			setApiKey(apiKeyMatcher.group(1));
 		}
 	}
 
 	@EventHandler
+	public void onActionBar(ActionBarPlayEvent event) {
+		event.setCancelled(event.isCancelled() || (isHousing() && event.getPlainText().startsWith("Now playing:")));
+	}
+
+	@EventHandler
 	public void onTick(PostTickEvent event) {
-		if(mc.theWorld == null) {
+		if(!mc.hasLevel()) {
 			return;
 		}
 
 		if(ticksUntilLocraw != -1 && --ticksUntilLocraw == 0) {
 			ticksUntilLocraw = -1;
 
-			mc.thePlayer.chat("/locraw");
+			mc.getPlayer().executeCommand("locraw");
 		}
 
 		if(ticksUntilAutogl != -1 && --ticksUntilAutogl == 0) {
@@ -393,10 +392,10 @@ public class HypixelAdditionsMod extends Mod {
 					|| ("UHC".equals(locationData.getType()) && !"SOLO".equals(locationData.getType()))
 					|| ("SPEED_UHC".equals(locationData.getType()) && !"solo_nomal".equals(locationData.getType()))
 					|| "BATTLEGROUND" /* Warlords */ .equals(locationData.getType()))) {
-				mc.thePlayer.chat("/shout " + autoglMessage);
+				mc.getPlayer().executeCommand("shout " + autoglMessage);
 			}
 			else {
-				mc.thePlayer.chat("/achat " + autoglMessage);
+				mc.getPlayer().executeCommand("achat " + autoglMessage);
 			}
 
 			donegl = true;
@@ -411,25 +410,27 @@ public class HypixelAdditionsMod extends Mod {
 			return;
 		}
 
+		String soundName = event.getType().getId().path();
+
 		if(isLobby()) {
-			if(event.soundName.startsWith("mob")
-					|| event.soundName.equals("random.orb")
-					|| event.soundName.equals("random.pop")
-					|| event.soundName.equals("random.levelup")
-					|| event.soundName.equals("game.tnt.primed")
-					|| event.soundName.equals("random.explode")
-					|| event.soundName.equals("mob.chicken.plop")
-					|| event.soundName.startsWith("note")
-					|| event.soundName.equals("random.click")
-					|| event.soundName.startsWith("fireworks")
-					|| event.soundName.equals("fire.fire")
-					|| event.soundName.equals("random.bow")) {
-				event.volume *= lobbySoundsVolume / 100F;
+			if(soundName.startsWith("mob")
+					|| soundName.equals("random.orb")
+					|| soundName.equals("random.pop")
+					|| soundName.equals("random.levelup")
+					|| soundName.equals("game.tnt.primed")
+					|| soundName.equals("random.explode")
+					|| soundName.equals("mob.chicken.plop")
+					|| soundName.startsWith("note")
+					|| soundName.equals("random.click")
+					|| soundName.startsWith("fireworks")
+					|| soundName.equals("fire.fire")
+					|| soundName.equals("random.bow")) {
+				event.multiplyVolume(lobbySoundsVolume / 100F);
 			}
 		}
 		else {
-			if(isHousing() && event.soundName.startsWith("note")) {
-				event.volume *= housingMusicVolume / 100F;
+			if(isHousing() && soundName.startsWith("note")) {
+				event.multiplyVolume(housingMusicVolume / 100F);
 			}
 		}
 	}

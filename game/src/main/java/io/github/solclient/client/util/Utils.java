@@ -32,7 +32,10 @@ import com.google.gson.JsonParser;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
-import io.github.solclient.api.MinecraftClient;
+import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.Window;
+import io.github.solclient.abstraction.mc.util.MinecraftUtil;
+import io.github.solclient.abstraction.mc.util.OperatingSystem;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
@@ -70,93 +73,20 @@ import net.minecraft.util.Util.EnumOS;
 public class Utils {
 
 	private PrintStream out;
-	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
+	public final ExecutorService MAIN_EXECUTOR = Executors
+			.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
 	static {
 		try {
 			out = new PrintStream(System.out, true, "UTF-8");
-		}
-		catch(UnsupportedEncodingException error) {
+		} catch (UnsupportedEncodingException error) {
 			out = System.out;
 		}
 	}
 
 	public int getStringWidth(String text) {
-		return MinecraftClient.getInstance().getTextRenderer().getWidth(text);
-	}
-
-	public void drawHorizontalLine(double startX, double endX, double y, int colour) {
-		if(endX < startX) {
-			double swap = startX;
-			startX = endX;
-			endX = swap;
-		}
-
-		drawRectangle(startX, y, endX + 1, y + 1, colour);
-	}
-
-	public void drawVerticalLine(double x, double startY, double endY, int colour) {
-		if(endY < startY) {
-			double swap = startY;
-			startY = endY;
-			endY = swap;
-		}
-
-		drawRectangle(x, startY + 1, x + 1, endY, colour);
-	}
-
-	public void drawOutline(Rectangle rectangle, Colour colour) {
-		drawOutline(rectangle.getX(), rectangle.getY(), rectangle.getX() + rectangle.getWidth(), rectangle.getY() + rectangle.getHeight(),
-				colour.getValue());
-	}
-
-	public void drawOutline(double left, double top, double right, double bottom, int colour) {
-		drawHorizontalLine(left, right - 1, top, colour);
-		drawHorizontalLine(left, right - 1, bottom -1, colour);
-		drawVerticalLine(left, top, bottom - 1, colour);
-		drawVerticalLine(right - 1, top, bottom - 1, colour);
-	}
-
-	public void drawRectangle(double x, double y, double right, double bottom, int colour) {
-		if(x < right) {
-            double swap = x;
-            x = right;
-            right = swap;
-        }
-
-        if(y < bottom) {
-        	double swap = y;
-            y = bottom;
-            bottom = swap;
-        }
-
-		float r = (float) (colour >> 24 & 255) / 255.0F;
-		float g = (float) (colour >> 16 & 255) / 255.0F;
-		float b = (float) (colour >> 8 & 255) / 255.0F;
-		float a = (float) (colour & 255) / 255.0F;
-
-		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		GlStateManager.enableBlend();
-		GlStateManager.disableTexture2D();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-		GlStateManager.color(g, b, a, r);
-
-		worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(x, bottom, 0.0D).endVertex();
-		worldrenderer.pos(right, bottom, 0.0D).endVertex();
-		worldrenderer.pos(right, y, 0.0D).endVertex();
-		worldrenderer.pos(x, y, 0.0D).endVertex();
-		tessellator.draw();
-
-		GlStateManager.enableTexture2D();
-		GlStateManager.disableBlend();
-	}
-
-	public void drawRectangle(Rectangle rectangle, Colour colour) {
-		GuiScreen.drawRect(rectangle.getX(), rectangle.getY(), rectangle.getX() + rectangle.getWidth(), rectangle.getY() + rectangle.getHeight(),
-				colour.getValue());
+		return MinecraftClient.getInstance().getFont().getWidth(text);
 	}
 
 	public long toMegabytes(long bytes) {
@@ -164,17 +94,15 @@ public class Utils {
 	}
 
 	public int blendColor(int start, int end, float percent) {
-		if(percent >= 1) {
+		if (percent >= 1) {
 			return end;
 		}
 		Colour startColor = new Colour(start);
 		Colour endColor = new Colour(end);
-		return new Colour(
-				blendInt(startColor.getRed(), endColor.getRed(), percent),
+		return new Colour(blendInt(startColor.getRed(), endColor.getRed(), percent),
 				blendInt(startColor.getGreen(), endColor.getGreen(), percent),
 				blendInt(startColor.getBlue(), endColor.getBlue(), percent),
-				blendInt(startColor.getAlpha(), endColor.getAlpha(), percent)
-		).getValue();
+				blendInt(startColor.getAlpha(), endColor.getAlpha(), percent)).getValue();
 	}
 
 	public int blendInt(int start, int end, float percent) {
@@ -186,20 +114,20 @@ public class Utils {
 	}
 
 	public void scissor(double x, double y, double width, double height) {
-		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-		double scale = resolution.getScaleFactor();
+		Window window = MinecraftClient.getInstance().getWindow();
+		double scale = window.getScaleFactor();
 
-		GL11.glScissor((int) (x * scale),
-				(int) ((resolution.getScaledHeight() - height - y) * scale),
+		GL11.glScissor((int) (x * scale), (int) ((window.getScaledHeight() - height - y) * scale),
 				(int) (width * scale), (int) (height * scale));
 	}
 
 	public void playClickSound(boolean ui) {
-		if(ui && !SolClientMod.instance.buttonClicks) {
+		if (ui && !SolClientMod.instance.buttonClicks) {
 			return;
 		}
 
-		Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+		Minecraft.getMinecraft().getSoundHandler()
+				.playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 	}
 
 	@SneakyThrows
@@ -210,20 +138,20 @@ public class Utils {
 	/*
 	 * Single following method:
 	 *
-	 *       Copyright (C) 2018-present Hyperium <https://hyperium.cc/>
+	 * Copyright (C) 2018-present Hyperium <https://hyperium.cc/>
 	 *
-	 *       This program is free software: you can redistribute it and/or modify
-	 *       it under the terms of the GNU Lesser General Public License as published
-	 *       by the Free Software Foundation, either version 3 of the License, or
-	 *       (at your option) any later version.
+	 * This program is free software: you can redistribute it and/or modify it under
+	 * the terms of the GNU Lesser General Public License as published by the Free
+	 * Software Foundation, either version 3 of the License, or (at your option) any
+	 * later version.
 	 *
-	 *       This program is distributed in the hope that it will be useful,
-	 *       but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	 *       GNU Lesser General Public License for more details.
+	 * This program is distributed in the hope that it will be useful, but WITHOUT
+	 * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+	 * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+	 * details.
 	 *
-	 *       You should have received a copy of the GNU Lesser General Public License
-	 *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	 * You should have received a copy of the GNU Lesser General Public License
+	 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 	 */
 	public void drawCircle(float xx, float yy, int radius, int col) {
 		float f = (col >> 24 & 0xFF) / 255.0F;
@@ -238,7 +166,7 @@ public class Utils {
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glLineWidth(2);
 		GL11.glBegin(2);
-		GlStateManager.color(f2, f3, f4, f);
+		GL11.color(f2, f3, f4, f);
 
 		for (int i = 0; i < 70; i++) {
 			float x = radius * MathHelper.cos((float) (i * 0.08975979010256552D));
@@ -256,7 +184,7 @@ public class Utils {
 
 	public GuiChat getChatGui() {
 		GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
-		if(currentScreen != null && currentScreen instanceof GuiChat) {
+		if (currentScreen != null && currentScreen instanceof GuiChat) {
 			return (GuiChat) currentScreen;
 		}
 		return null;
@@ -268,12 +196,13 @@ public class Utils {
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		worldrenderer.pos(x, y + height, zLevel).tex(((textureX) * xMultiplier),
-				(textureY + height) * yMultiplier).endVertex();
-		worldrenderer.pos(x + width, y + height, zLevel).tex((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).endVertex();
-		worldrenderer.pos(x + width, y + 0, zLevel).tex((textureX + width) * xMultiplier, (textureY + 0) * yMultiplier).endVertex();
-		worldrenderer.pos(x, y, zLevel).tex(((textureX) * xMultiplier),
-				((textureY + 0) * yMultiplier)).endVertex();
+		worldrenderer.pos(x, y + height, zLevel).tex(((textureX) * xMultiplier), (textureY + height) * yMultiplier)
+				.endVertex();
+		worldrenderer.pos(x + width, y + height, zLevel)
+				.tex((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).endVertex();
+		worldrenderer.pos(x + width, y + 0, zLevel).tex((textureX + width) * xMultiplier, (textureY + 0) * yMultiplier)
+				.endVertex();
+		worldrenderer.pos(x, y, zLevel).tex(((textureX) * xMultiplier), ((textureY + 0) * yMultiplier)).endVertex();
 		tessellator.draw();
 	}
 
@@ -309,12 +238,11 @@ public class Utils {
 		return ReplayModReplay.instance.getReplayHandler() != null
 				&& !(Minecraft.getMinecraft().getRenderViewEntity() instanceof CameraEntity);
 	}
-
 	public String getTextureScale() {
-		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
+		Window window = MinecraftClient.getInstance().getWindow();
 
-		if(resolution.getScaleFactor() > 0 && resolution.getScaleFactor() < 5) {
-			return resolution.getScaleFactor() + "x";
+		if (window.getScaleFactor() > 0 && window.getScaleFactor() < 5) {
+			return window.getScaleFactor() + "x";
 		}
 
 		return "4x";
@@ -330,7 +258,7 @@ public class Utils {
 		StringBuilder result = new StringBuilder();
 
 		String line;
-		while((line = reader.readLine()) != null) {
+		while ((line = reader.readLine()) != null) {
 			result.append(line).append("\n");
 		}
 
@@ -353,10 +281,9 @@ public class Utils {
 
 			@Override
 			public void handleServerInfo(S00PacketServerInfo packetIn) {
-				if(expected) {
+				if (expected) {
 					networkManager.closeChannel(new ChatComponentText("Received unrequested status"));
-				}
-				else {
+				} else {
 					expected = true;
 					time = Minecraft.getSystemTime();
 					networkManager.sendPacket(new C01PacketPing(this.time));
@@ -390,14 +317,15 @@ public class Utils {
 	}
 
 	private void sendLauncherMessage(String type, String... arguments) {
-		out.println("message " + System.getProperty("io.github.solclient.client.secret") + " " + type + " " + String.join(" ", arguments));
+		out.println("message " + System.getProperty("io.github.solclient.client.secret") + " " + type + " "
+				+ String.join(" ", arguments));
 	}
 
 	public String getRelativeToPackFolder(File packFile) {
-		String relative = new File(Minecraft.getMinecraft().mcDataDir, "resourcepacks").toPath().toAbsolutePath()
+		String relative = MinecraftClient.getInstance().getPackFolder().toPath().toAbsolutePath()
 				.relativize(packFile.toPath().toAbsolutePath()).toString();
 
-		if(Util.getOSType() == EnumOS.WINDOWS) {
+		if (MinecraftUtil.getOperatingSystem() == OperatingSystem.WINDOWS) {
 			relative = relative.replace("\\", "/"); // Just to be safe
 		}
 
@@ -412,13 +340,13 @@ public class Utils {
 	}
 
 	public void drawFloatRectangle(float left, float top, float right, float bottom, int colour) {
-		if(left < right) {
+		if (left < right) {
 			float swap = left;
 			left = right;
 			right = swap;
 		}
 
-		if(top < bottom) {
+		if (top < bottom) {
 			float swap = top;
 			top = bottom;
 			bottom = swap;
@@ -447,10 +375,10 @@ public class Utils {
 	public static String getScoreboardTitle() {
 		Minecraft mc = Minecraft.getMinecraft();
 
-		if(mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
+		if (mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
 			ScoreObjective first = mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
 
-			if(first != null) {
+			if (first != null) {
 				return EnumChatFormatting.getTextWithoutFormattingCodes(first.getDisplayName());
 			}
 		}
@@ -459,21 +387,23 @@ public class Utils {
 	}
 
 	public static String getNativeFileExtension() {
-		switch(Util.getOSType()) {
-			case WINDOWS:
-				return "dll";
-			case OSX:
-				return "dylib";
-			default:
-				return "so";
+		OperatingSystem system = MinecraftUtil.getOperatingSystem();
+
+		if(system == OperatingSystem.WINDOWS) {
+			return "dll";
 		}
+		else if(system == OperatingSystem.OSX) {
+			return "dylib";
+		}
+
+		return "so";
 	}
 
 	public double max(double[] doubles) {
 		double max = 0;
 
-		for(double d : doubles) {
-			if(max < d) {
+		for (double d : doubles) {
+			if (max < d) {
 				max = d;
 			}
 		}
@@ -535,6 +465,33 @@ public class Utils {
 		tessellator.draw();
 
 		GlStateManager.enableCull();
+	}
+
+	public void glColour(int colour) {
+		GL11.glColor4f(((colour >> 16) & 0xFF) / 255F, ((colour >> 8) & 0xFF) / 255F, (colour & 0xFF) / 255F,
+				((colour << 24) & 0xFF) / 255F);
+	}
+
+	public float clamp(float input, float min, float max) {
+		return input > max ? max : (input < min ? min : input);
+	}
+
+	public double clamp(double input, double min, double max) {
+		return input > max ? max : (input < min ? min : input);
+	}
+
+	public double wrapYaw(double yaw) {
+		yaw %= 360;
+
+		if(yaw >= 180) {
+			yaw -= 360;
+		}
+
+		if(yaw < -180) {
+			yaw += 360;
+		}
+
+		return 0;
 	}
 
 }

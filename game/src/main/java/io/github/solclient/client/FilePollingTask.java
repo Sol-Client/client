@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModOption;
-import net.minecraft.client.Minecraft;
 
 public class FilePollingTask implements Runnable, Closeable {
 
@@ -25,7 +25,7 @@ public class FilePollingTask implements Runnable, Closeable {
 	public FilePollingTask(List<Mod> mods) throws IOException {
 		WatchService service = FileSystems.getDefault().newWatchService();
 
-		key = Minecraft.getMinecraft().mcDataDir.toPath().register(service, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
+		key = MinecraftClient.getInstance().getDataFolder().toPath().register(service, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
 
 		for(Mod mod : mods) {
 			for(ModOption option : mod.getOptions()) {

@@ -41,14 +41,14 @@ class AccountManager {
 		return prop.startsWith(KEYCHAIN_PREFIX);
 	}
 
-	async encrypt(account) {
-		account.accessToken = await this.encryptProp(account.accessToken);
+	async storeInKeychain(account) {
+		account.accessToken = await this.storeProp(account.accessToken);
 		if(account._msmc) {
-			account._msmc.refresh = await this.encryptProp(account._msmc.refresh);
+			account._msmc.refresh = await this.storeProp(account._msmc.refresh);
 		}
 	}
 
-	async encryptProp(prop, oldValue) {
+	async storeProp(prop, oldValue) {
 		if(this.isEncrypted(prop)) {
 			return prop;
 		}
@@ -61,7 +61,7 @@ class AccountManager {
 		return KEYCHAIN_PREFIX + key;
 	}
 
-	async decryptProp(prop) {
+	async retrieveProp(prop) {
 		if(!this.isEncrypted(prop)) {
 			return prop;
 		}
@@ -70,7 +70,7 @@ class AccountManager {
 	}
 
 	async realToken(account) {
-		return this.decryptProp(account.accessToken);
+		return this.retrieveProp(account.accessToken);
 	}
 
 	async realRefresh(account) {
@@ -78,7 +78,7 @@ class AccountManager {
 			return null;
 		}
 
-		return this.decryptProp(account._msmc.refresh);
+		return this.retrieveProp(account._msmc.refresh);
 	}
 
 	refreshAccount(account) {
@@ -229,7 +229,7 @@ class MicrosoftAuthService extends AuthService {
 	async authenticate(msmc) {
 		var account = new Account("msa", msmc.name, msmc.id, msmc._msmc.mcToken, null, msmc._msmc.demo, msmc._msmc);
 		msmc._msmc.mcToken = undefined;
-		await manager.encrypt(account);
+		await manager.storeInKeychain(account);
 		return account;
 	}
 
@@ -303,7 +303,7 @@ class YggdrasilAuthService extends AuthService {
 								data.accessToken,
 								data.clientToken
 						);
-						manager.encrypt(account);
+						manager.storeInKeychain(account);
 						resolve(account);
 					});
 		});
@@ -340,7 +340,7 @@ class YggdrasilAuthService extends AuthService {
 				resolve(false);
 			})
 			.then((response) => {
-				account.accessToken = manager.encryptProp(response.data.accessToken);
+				account.accessToken = manager.storeProp(response.data.accessToken);
 				resolve(true);
 			});
 		});

@@ -11,7 +11,7 @@ public class MixinLinuxKeyboard {
 	@Shadow
 	private @Final int numlock_mask, modeswitch_mask, caps_lock_mask, shift_lock_mask;
 
-	@Overwrite
+	@Overwrite(remap = false)
 	private int getKeycode(long eventp, int eventState) {
 		/*
 		 * Copyright (c) 2002-2008 LWJGL Project All rights reserved.

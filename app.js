@@ -117,7 +117,9 @@ window.addEventListener("DOMContentLoaded", async() => {
 	}
 
 	function updateAccount() {
-		document.querySelector(".account-button").innerHTML = `<img src="${launcher.accountManager.activeAccount.head}"/> <span>${launcher.accountManager.activeAccount.username} <img src="arrow.svg" class="arrow-icon"/></span>`;
+		if(launcher.accountManager.activeAccount) {
+			document.querySelector(".account-button").innerHTML = `<img src="${launcher.accountManager.activeAccount.head}"/> <span>${launcher.accountManager.activeAccount.username} <img src="arrow.svg" class="arrow-icon"/></span>`;
+		}
 	}
 
 	function updateMinecraftFolder() {
@@ -164,10 +166,10 @@ window.addEventListener("DOMContentLoaded", async() => {
 			var accountElement = document.createElement("div");
 			accountElement.classList.add("account");
 			accountElement.innerHTML = `<img src="${account.head}"/> <span>${account.username}</span> <button class="remove-account"><img src="remove.svg"/></button>`;
-			accountElement.onclick = (event) => {
+			accountElement.onclick = async(event) => {
 				if(event.target.classList.contains("remove-account")
 						|| event.target.parentElement.classList.contains("remove-account")) {
-					if(!launcher.accountManager.removeAccount(account)) {
+					if(!(await launcher.accountManager.removeAccount(account))) {
 						main.style.display = null;
 						login.style.display = "block";
 						backToMain.style.display = null;

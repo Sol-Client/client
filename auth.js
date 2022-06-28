@@ -19,7 +19,9 @@ class AccountManager {
 				this.accounts.push(Account.from(account));
 			}
 			this.activeAccount = this.accounts[data.activeAccount];
-			this.fetchSkin(this.activeAccount);
+			if(this.activeAccount) {
+				this.fetchSkin(this.activeAccount);
+			}
 		}
 		else {
 			this.accounts = [];
@@ -42,17 +44,16 @@ class AccountManager {
 	}
 
 	async storeInKeychain(account) {
-		account.accessToken = await this.storeProp(account.accessToken);
+		account.accessToken = await this.storeProp(account.accessToken, account.uuid + "_access_token");
 		if(account._msmc) {
-			account._msmc.refresh = await this.storeProp(account._msmc.refresh);
+			account._msmc.refresh = await this.storeProp(account._msmc.refresh, account.uuid + "_refresh");
 		}
 	}
 
-	async storeProp(prop, oldValue) {
+	async storeProp(prop, key) {
 		if(this.isEncrypted(prop)) {
 			return prop;
 		}
-		var key = crypto.randomBytes(32).toString("hex");
 		await keytar.setPassword(SERVICE, key, prop);
 		var test = await keytar.getPassword(SERVICE, key);
 		if(test != prop) {
@@ -184,9 +185,12 @@ class AccountManager {
 		this.switchAccount(account);
 	}
 
-	removeAccount(account) {
+	async removeAccount(account) {
 		var index = this.accounts.indexOf(this.activeAccount);
 		this.accounts = this.accounts.filter((item) => item != account);
+
+		keytar.deletePassword(SERVICE, KEYCHAIN_PREFIX + account.uuid + "_access_token");
+		keytar.deletePassword(SERVICE, KEYCHAIN_PREFIX + account.uuid + "_refresh");
 
 		if(account == this.activeAccount) {
 			this.activeAccount = this.accounts[index];
@@ -339,8 +343,8 @@ class YggdrasilAuthService extends AuthService {
 			.catch((error) => {
 				resolve(false);
 			})
-			.then((response) => {
-				account.accessToken = manager.storeProp(response.data.accessToken);
+			.then(async(response) => {
+				account.accessToken = await manager.storeProp(response.data.accessToken, account.uuid + "_access_token");
 				resolve(true);
 			});
 		});

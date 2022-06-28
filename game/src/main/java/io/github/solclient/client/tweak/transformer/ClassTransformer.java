@@ -1,18 +1,17 @@
 package io.github.solclient.client.tweak.transformer;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 
 import io.github.solclient.client.tweak.transformer.impl.TransformerGuiButton;
 import io.github.solclient.client.tweak.transformer.impl.TransformerGuiScreen;
+import io.github.solclient.client.tweak.transformer.impl.TransformerLinuxKeycodes;
 import io.github.solclient.client.tweak.transformer.impl.TransformerMinecraft;
 import io.github.solclient.client.tweak.transformer.impl.TransformerWorldClient;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -26,6 +25,7 @@ public class ClassTransformer implements IClassTransformer {
 		register(new TransformerGuiScreen());
 		register(new TransformerWorldClient());
 		register(new TransformerMinecraft());
+		register(new TransformerLinuxKeycodes());
 	}
 
 	@Override

@@ -1,38 +1,27 @@
 package io.github.solclient.client.util;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.InetAddress;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.IntConsumer;
 
-import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
-import io.github.solclient.client.lib.penner.easing.Linear;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
@@ -131,10 +120,10 @@ public class Utils {
             bottom = swap;
         }
 
-		float r = (float) (colour >> 24 & 255) / 255.0F;
-		float g = (float) (colour >> 16 & 255) / 255.0F;
-		float b = (float) (colour >> 8 & 255) / 255.0F;
-		float a = (float) (colour & 255) / 255.0F;
+		float r = (colour >> 24 & 255) / 255.0F;
+		float g = (colour >> 16 & 255) / 255.0F;
+		float b = (colour >> 8 & 255) / 255.0F;
+		float a = (colour & 255) / 255.0F;
 
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
@@ -433,10 +422,10 @@ public class Utils {
 			bottom = swap;
 		}
 
-		float f3 = (float) (colour >> 24 & 255) / 255.0F;
-		float f = (float) (colour >> 16 & 255) / 255.0F;
-		float f1 = (float) (colour >> 8 & 255) / 255.0F;
-		float f2 = (float) (colour & 255) / 255.0F;
+		float f3 = (colour >> 24 & 255) / 255.0F;
+		float f = (colour >> 16 & 255) / 255.0F;
+		float f1 = (colour >> 8 & 255) / 255.0F;
+		float f2 = (colour & 255) / 255.0F;
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 		GlStateManager.enableBlend();
@@ -444,10 +433,10 @@ public class Utils {
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 		GlStateManager.color(f, f1, f2, f3);
 		worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-		worldrenderer.pos((double) left, (double) bottom, 0.0D).endVertex();
-		worldrenderer.pos((double) right, (double) bottom, 0.0D).endVertex();
-		worldrenderer.pos((double) right, (double) top, 0.0D).endVertex();
-		worldrenderer.pos((double) left, (double) top, 0.0D).endVertex();
+		worldrenderer.pos(left, bottom, 0.0D).endVertex();
+		worldrenderer.pos(right, bottom, 0.0D).endVertex();
+		worldrenderer.pos(right, top, 0.0D).endVertex();
+		worldrenderer.pos(left, top, 0.0D).endVertex();
 		tessellator.draw();
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -76,13 +75,11 @@ import io.github.solclient.client.mod.impl.togglesprint.ToggleSprintMod;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
-import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.IResource;
@@ -138,11 +135,7 @@ public class Client {
 	private GuiMainMenu mainMenu;
 
 	public void init() {
-		Utils.resetLineWidth();
-		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
-
-		System.setProperty("http.agent", "Sol Client/" + VERSION);
-
+		MiscInit.init();
 		LOGGER.info("Initialising...");
 		bus.register(this);
 

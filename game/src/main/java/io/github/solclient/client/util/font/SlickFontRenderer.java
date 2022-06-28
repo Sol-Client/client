@@ -45,24 +45,8 @@ import net.minecraft.util.StringUtils;
 
 public class SlickFontRenderer implements Font {
 	private static final Pattern COLOR_CODE_PATTERN = Pattern.compile("§[0123456789abcdefklmnor]");
-	private final int[] colorCodes = {
-		0x000000,
-		0x0000AA,
-		0x00AA00,
-		0x00AAAA,
-		0xAA0000,
-		0xAA00AA,
-		0xFFAA00,
-		0xAAAAAA,
-		0x555555,
-		0x5555FF,
-		0x55FF55,
-		0x55FFFF,
-		0xFF5555,
-		0xFF55FF,
-		0xFFFF55,
-		0xFFFFFF
-	};
+	private final int[] colorCodes = { 0x000000, 0x0000AA, 0x00AA00, 0x00AAAA, 0xAA0000, 0xAA00AA, 0xFFAA00, 0xAAAAAA,
+			0x555555, 0x5555FF, 0x55FF55, 0x55FFFF, 0xFF5555, 0xFF55FF, 0xFFFF55, 0xFFFFFF };
 	private float scaleFactor;
 	private UnicodeFont slickFont;
 	private int prevScaleFactor;
@@ -135,8 +119,7 @@ public class SlickFontRenderer implements Font {
 				char colorCode = characters[index];
 				if(colorCode == '§') {
 					char colorChar = characters[index + 1];
-					int codeIndex = ("0123456789" +
-						"abcdef").indexOf(colorChar);
+					int codeIndex = ("0123456789" + "abcdef").indexOf(colorChar);
 					if(codeIndex < 0) {
 						if(colorChar == 'r') {
 							currentColour = colour;
@@ -214,12 +197,7 @@ public class SlickFontRenderer implements Font {
 	}
 
 	public void drawSplitString(ArrayList<String> lines, int x, int y, int color) {
-		renderString(
-			String.join("\n\r", lines),
-			x,
-			y,
-			color
-		);
+		renderString(String.join("\n\r", lines), x, y, color);
 	}
 
 	public List<String> splitString(String text, int wrapWidth) {

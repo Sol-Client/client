@@ -1,12 +1,11 @@
 package io.github.solclient.client.tweak.transformer.impl;
 
+import java.lang.reflect.Modifier;
+
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.MethodNode;
 
 import io.github.solclient.client.tweak.transformer.ClassNodeTransformer;
-
-import java.lang.reflect.Modifier;
 
 public class TransformerGuiScreen implements ClassNodeTransformer {
 

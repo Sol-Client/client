@@ -94,7 +94,7 @@ public class Tweaker implements ITweaker {
 
 	@Override
 	public String getLaunchTarget() {
-		return "net.minecraft.client.main.Main";
+		return "io.github.solclient.client.PreMain";
 	}
 
 	@Override

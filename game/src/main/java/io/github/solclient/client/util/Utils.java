@@ -38,6 +38,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.handshake.client.C00Handshake;
@@ -538,7 +539,7 @@ public class Utils {
 
 	public static void earlyLoad(String name) {
 		try {
-			Class.forName(name);
+			Class.forName(name, true, Launch.classLoader);
 		}
 		catch(Exception error) {
 			Client.LOGGER.error("Could not early load " + name + ". This may cause further issues.");

@@ -75,6 +75,7 @@ import io.github.solclient.client.mod.impl.togglesprint.ToggleSprintMod;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
+import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import lombok.Getter;
 import lombok.Setter;
@@ -135,7 +136,10 @@ public class Client {
 	private GuiMainMenu mainMenu;
 
 	public void init() {
-		MiscInit.init();
+		Utils.resetLineWidth();
+		new File(Minecraft.getMinecraft().mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
+		System.setProperty("http.agent", "Sol Client/" + Client.VERSION);
+
 		LOGGER.info("Initialising...");
 		bus.register(this);
 

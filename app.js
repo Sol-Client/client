@@ -31,7 +31,7 @@ ipcRenderer.on("quitGame", (event) => {
 	ipcRenderer.send("quit", true);
 });
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async() => {
 	if(Utils.getOsName() == "osx") {
 		document.querySelector(".drag-region").style.display = "block";
 	}
@@ -111,6 +111,10 @@ window.addEventListener("DOMContentLoaded", () => {
 			updateAccounts();
 		}
 	});
+
+	for(var account of launcher.accountManager.accounts) {
+		await launcher.accountManager.encrypt(account);
+	}
 
 	function updateAccount() {
 		document.querySelector(".account-button").innerHTML = `<img src="${launcher.accountManager.activeAccount.head}"/> <span>${launcher.accountManager.activeAccount.username} <img src="arrow.svg" class="arrow-icon"/></span>`;
@@ -212,7 +216,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		}
 	};
 
-	ipcRenderer.on("msa", (event, result) => {
+	ipcRenderer.on("msa", async(event, result) => {
 		loggingIn = false;
 		microsoftLoginButton.innerText = "Microsoft Account";
 		result = JSON.parse(result);
@@ -223,7 +227,7 @@ window.addEventListener("DOMContentLoaded", () => {
 			alert("Could not log in: " + result.type);
 			return;
 		}
-		var account = microsoftAuthService.authenticate(result.profile);
+		var account = await microsoftAuthService.authenticate(result.profile);
 		launcher.accountManager.addAccount(account);
 		login.style.display = "none";
 		main.style.display = "block";

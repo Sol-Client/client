@@ -12,7 +12,7 @@ const Patcher = require("./patcher");
 const { ipcRenderer, shell } = require("electron");
 const crypto = require("crypto");
 const url = require("url");
-const { AccountManager } = require("./auth");
+const { AccountManager } = require("./auth").AccountManager;
 
 class Launcher {
 
@@ -191,7 +191,7 @@ class Launcher {
 									fs.mkdirSync(path.dirname(destination), { recursive: true });
 								}
 
-									await entry.pipe(fs.createWriteStream(nativesFolder + "/" + fileName));
+								await entry.pipe(fs.createWriteStream(nativesFolder + "/" + fileName));
 							}
 						}
 					}
@@ -371,7 +371,7 @@ class Launcher {
 				await entry.autodrain();
 			}
 			else {
-					await entry.pipe(fs.createWriteStream(discordNativeLibrary));
+				await entry.pipe(fs.createWriteStream(discordNativeLibrary));
 			}
 		}
 		progress("Starting...");
@@ -437,7 +437,7 @@ class Launcher {
 		}
 
 		args.push("--accessToken");
-		args.push(activeAccount.accessToken);
+		args.push(await this.accountManager.realToken(activeAccount));
 
 		args.push("--versionType");
 		args.push("release");

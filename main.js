@@ -51,6 +51,10 @@ async function run() {
 		window.loadFile("app.html");
 		window.setMenu(null);
 
+		if(process.env.DEVTOOLS) {
+			window.webContents.openDevTools();
+		}
+
 		window.on("close", (event) => {
 			if(!canQuit) {
 				event.preventDefault();

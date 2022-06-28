@@ -18,6 +18,7 @@
     "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "hastebin": "^0.2.1",
+    "keytar": "^7.9.0",
     "msmc": "^3.1.1",
     "nbt": "^0.8.1",
     "tar": "^6.1.11",

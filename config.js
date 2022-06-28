@@ -19,7 +19,7 @@ class Config {
 
 	static load() {
 		if(fs.existsSync(Config.file)) {
-			Config.data = {...Config.DEFAULT, ...JSON.parse(fs.readFileSync(Config.file, "UTF-8"))};
+			Config.data = { ...Config.DEFAULT, ...JSON.parse(fs.readFileSync(Config.file, "UTF-8")) };
 		}
 	}
 

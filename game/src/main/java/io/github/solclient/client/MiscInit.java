@@ -2,21 +2,16 @@ package io.github.solclient.client;
 
 import java.io.File;
 
+import org.lwjgl.LWJGLUtil;
+
 import io.github.solclient.client.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Util;
-import net.minecraft.util.Util.EnumOS;
 
 public class MiscInit {
 
 	public static void init() {
-		if(Util.getOSType() == EnumOS.LINUX) {
-			try {
-				Class.forName("org.lwjgl.opengl.LinuxKeycodes");
-			}
-			catch(ClassNotFoundException error) {
-				error.printStackTrace();
-			}
+		if(LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_LINUX) {
+			Utils.earlyLoad("org.lwjgl.opengl.LinuxKeycodes");
 		}
 
 		Utils.resetLineWidth();

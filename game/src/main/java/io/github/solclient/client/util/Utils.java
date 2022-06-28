@@ -22,6 +22,7 @@ import org.lwjgl.opengl.GL11;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
+import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
@@ -533,6 +534,15 @@ public class Utils {
 		tessellator.draw();
 
 		GlStateManager.enableCull();
+	}
+
+	public static void earlyLoad(String name) {
+		try {
+			Class.forName(name);
+		}
+		catch(Exception error) {
+			Client.LOGGER.error("Could not early load " + name + ". This may cause further issues.");
+		}
 	}
 
 }

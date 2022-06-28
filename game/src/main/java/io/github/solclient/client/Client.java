@@ -105,7 +105,7 @@ public class Client {
 	private Map<String, Mod> modsById = new HashMap<>();
 	@Getter
 	private List<HudElement> huds = new ArrayList<HudElement>();
-	private static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger();
 
 	private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "sol_client_mods.json");
 	private final File LEGACY_DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json" /* This was the old name. */ );

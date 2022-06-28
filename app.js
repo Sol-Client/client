@@ -113,7 +113,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 	});
 
 	for(var account of launcher.accountManager.accounts) {
-		await launcher.accountManager.encrypt(account);
+		await launcher.accountManager.storeInKeychain(account);
 	}
 
 	function updateAccount() {

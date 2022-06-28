@@ -3,12 +3,14 @@ const Utils = require("./utils");
 
 class Config {
 
-	static data = {
+	static DEFAULT = {
 		maxMemory: 2048,
 		optifine: Utils.getOsName() != "osx",
 		minecraftFolder: "<use default>",
 		autoUpdate: true
 	};
+
+	static data = Config.DEFAULT;
 	static file;
 
 	static init(base) {
@@ -17,13 +19,7 @@ class Config {
 
 	static load() {
 		if(fs.existsSync(Config.file)) {
-			Config.data = JSON.parse(fs.readFileSync(Config.file, "UTF-8"));
-			if(!Config.data.minecraftFolder) {
-				Config.data.minecraftFolder = "<use default>";
-			}
-			if(Config.data.autoUpdate == undefined) {
-				Config.data.autoUpdate = true;
-			}
+			Config.data = {...Config.DEFAULT, ...JSON.parse(fs.readFileSync(Config.file, "UTF-8"))};
 		}
 	}
 

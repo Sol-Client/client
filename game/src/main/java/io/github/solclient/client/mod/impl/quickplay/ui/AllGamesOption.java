@@ -1,8 +1,8 @@
 package io.github.solclient.client.mod.impl.quickplay.ui;
 
+import io.github.solclient.abstraction.mc.world.item.ItemStack;
+import io.github.solclient.abstraction.mc.world.item.ItemType;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class AllGamesOption implements QuickPlayOption {
 
@@ -18,7 +18,7 @@ public class AllGamesOption implements QuickPlayOption {
 
 	@Override
 	public ItemStack getIcon() {
-		return new ItemStack(Items.compass);
+		return ItemStack.create(ItemType.COMPASS);
 	}
 
 }

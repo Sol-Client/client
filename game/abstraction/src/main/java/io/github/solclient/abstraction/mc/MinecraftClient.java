@@ -1,12 +1,14 @@
 package io.github.solclient.abstraction.mc;
 
-import lombok.SneakyThrows;
+import java.io.File;
+import java.util.Optional;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import io.github.solclient.abstraction.Helper;
 import io.github.solclient.abstraction.mc.hud.IngameHud;
 import io.github.solclient.abstraction.mc.lang.LanguageManager;
-import io.github.solclient.abstraction.mc.maths.Vec3d;
 import io.github.solclient.abstraction.mc.network.LocalPlayerState;
 import io.github.solclient.abstraction.mc.network.ServerData;
 import io.github.solclient.abstraction.mc.option.Options;
@@ -16,13 +18,8 @@ import io.github.solclient.abstraction.mc.text.Font;
 import io.github.solclient.abstraction.mc.texture.TextureManager;
 import io.github.solclient.abstraction.mc.world.entity.Entity;
 import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
-import io.github.solclient.abstraction.mc.world.entity.player.Player;
 import io.github.solclient.abstraction.mc.world.item.ItemRenderer;
 import io.github.solclient.abstraction.mc.world.level.ClientLevel;
-import io.github.solclient.abstraction.mc.world.level.Level;
-
-import java.io.File;
-import java.util.Optional;
 
 /**
  * A representation of the Minecraft client.
@@ -39,11 +36,17 @@ public interface MinecraftClient {
 
 	@NotNull Window getWindow();
 
-	boolean hasLevel();
+	@Helper
+	default boolean hasLevel() {
+		return getLevel() != null;
+	}
 
 	@Nullable ClientLevel getLevel();
 
-	boolean hasPlayer();
+	@Helper
+	default boolean hasPlayer() {
+		return getPlayer() != null;
+	}
 
 	@Nullable LocalPlayer getPlayer();
 
@@ -60,17 +63,28 @@ public interface MinecraftClient {
 
 	@NotNull File getDataFolder();
 
+	@Helper
 	@NotNull File getPackFolder();
 
 	@NotNull Font getFont();
 
 	@Nullable Screen getScreen();
 
-	@Nullable Optional<Screen> getScreen(Class<?> type);
+	@SuppressWarnings("unchecked")
+	@Helper
+	default @Nullable <T> Optional<T> getScreen(Class<T> type) {
+		if(type.isAssignableFrom(getScreen().getClass())) {
+			return Optional.of((T) getScreen());
+		}
+		return Optional.empty();
+	}
 
 	void setScreen(@Nullable Screen screen);
 
-	void closeScreen();
+	@Helper
+	default void closeScreen() {
+		setScreen(null);
+	}
 
 	boolean isInMenu();
 
@@ -78,6 +92,7 @@ public interface MinecraftClient {
 
 	void runSync(@NotNull Runnable runnable);
 
+	@Helper
 	void runSyncLater(@NotNull Runnable runnable, int ticks);
 
 	@NotNull TextureManager getTextureManager();

@@ -9,7 +9,7 @@ import io.github.solclient.abstraction.mc.text.Text;
  * Used to extend an interface.
  * My poor head.
  */
-public class ProxyScreen implements Screen {
+public class ProxyScreen implements Screen, DrawableHelper {
 
 	protected final MinecraftClient mc;
 	protected final Font font;
@@ -24,7 +24,37 @@ public class ProxyScreen implements Screen {
 	}
 
 	@Override
-	public void type(char character, int key) {
+	public void keyDown(char character, int key) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void keyUp(char character, int key) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void mouseDown(int x, int y, int button) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void mouseUp(int x, int y, int button) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void scroll(int by) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void init() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void close() {
 		throw new UnsupportedOperationException();
 	}
 

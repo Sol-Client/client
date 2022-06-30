@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.lwjgl.input.Keyboard;
-
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.option.KeyBinding;
+import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.DetectedServer;
 import io.github.solclient.client.event.EventHandler;
@@ -21,13 +21,11 @@ import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGameMode;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
 import io.github.solclient.client.util.Utils;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.settings.KeyBinding;
 
 public class QuickPlayMod extends Mod {
 
 	@Option
-	private final KeyBinding menuKey = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_M, Client.KEY_CATEGORY);
+	private final KeyBinding menuKey = KeyBinding.create(getTranslationKey() + ".key", Input.R, Client.KEY_CATEGORY);
 	private QuickPlayDatabase database;
 	@Expose
 	private final List<String> recentlyPlayed = new ArrayList<>();
@@ -39,7 +37,7 @@ public class QuickPlayMod extends Mod {
 		Utils.MAIN_EXECUTOR.submit(() -> {
 			database = new QuickPlayDatabase();
 		});
-		Client.INSTANCE.registerKeyBinding(menuKey);
+		mc.getOptions().addKey(menuKey);
 	}
 
 	@Override
@@ -68,9 +66,9 @@ public class QuickPlayMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(database != null && menuKey.isPressed()
+		if(database != null && menuKey.isHeld()
 				&& Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL) {
-			mc.displayGuiScreen(new QuickPlayPalette(this));
+			mc.setScreen(new QuickPlayPalette(this));
 		}
 	}
 
@@ -80,10 +78,10 @@ public class QuickPlayMod extends Mod {
 	}
 
 	public void playGame(QuickPlayGameMode mode) {
-		mc.thePlayer.chat(mode.getCommand());
+		mc.getPlayer().chat(mode.getCommand());
 
-		if(!GuiScreen.isShiftKeyDown()) {
-			mc.displayGuiScreen(null);
+		if(!Input.isShiftHeld()) {
+			mc.closeScreen();
 		}
 
 		recentlyPlayed.removeIf(mode.getFullId()::equals);

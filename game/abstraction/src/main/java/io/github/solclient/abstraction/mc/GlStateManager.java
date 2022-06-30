@@ -1,5 +1,7 @@
 package io.github.solclient.abstraction.mc;
 
+import io.github.solclient.abstraction.Helper;
+
 public class GlStateManager {
 
 	public static void enableBlend() {
@@ -42,8 +44,9 @@ public class GlStateManager {
 		throw new UnsupportedOperationException();
 	}
 
+	@Helper
 	public static void resetColour() {
-		throw new UnsupportedOperationException();
+		colour(1, 1, 1, 1);
 	}
 
 	public static void colour(float r, float g, float b, float a) {

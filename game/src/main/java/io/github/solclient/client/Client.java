@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,18 +24,13 @@ import com.google.gson.JsonParser;
 import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
-import io.github.solclient.client.packet.PacketApi;
-import io.github.solclient.client.packet.PopupManager;
-import io.github.solclient.abstraction.mc.Environment;
 import io.github.solclient.abstraction.mc.Identifier;
 import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.network.ServerData;
 import io.github.solclient.abstraction.mc.option.KeyBinding;
 import io.github.solclient.abstraction.mc.screen.TitleScreen;
-import io.github.solclient.abstraction.mc.text.TextColour;
 import io.github.solclient.abstraction.mc.text.LiteralText;
-import io.github.solclient.abstraction.mc.text.Style;
-import io.github.solclient.abstraction.mc.world.item.ItemType;
+import io.github.solclient.abstraction.mc.text.TextColour;
 import io.github.solclient.abstraction.mc.world.level.Level;
 import io.github.solclient.abstraction.mc.world.level.block.BlockPos;
 import io.github.solclient.client.command.Command;
@@ -87,6 +81,8 @@ import io.github.solclient.client.mod.impl.itemphysics.ItemPhysicsMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.mod.impl.togglesprint.ToggleSprintMod;
+import io.github.solclient.client.packet.PacketApi;
+import io.github.solclient.client.packet.PopupManager;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
@@ -97,14 +93,14 @@ import lombok.Setter;
 /**
  * Main class for Sol Client.
  */
-public class Client {
+public final class Client {
 
 	private MinecraftClient mc = MinecraftClient.getInstance();
 	public static final Client INSTANCE = new Client();
 	private JsonObject data;
 	@Getter
-	private List<Mod> mods = new ArrayList<>();
-	private Map<String, Mod> modsById = new HashMap<>();
+	private final List<Mod> mods = new ArrayList<>();
+	private final Map<String, Mod> modsById = new HashMap<>();
 	@Getter
 	private List<HudElement> huds = new ArrayList<>();
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -117,9 +113,9 @@ public class Client {
 	@Getter
 	private EventBus bus = new EventBus();
 
-	private Map<Identifier, Supplier<String>> resources = new HashMap<>();
-	private Map<String, Command> commands = new HashMap<>();
-	private List<ChatButton> chatButtons = new ArrayList<>();
+	private final Map<Identifier, Supplier<String>> resources = new HashMap<>();
+	private final Map<String, Command> commands = new HashMap<>();
+	private final List<ChatButton> chatButtons = new ArrayList<>();
 
 	private ChatChannelSystem chatChannelSystem;
 

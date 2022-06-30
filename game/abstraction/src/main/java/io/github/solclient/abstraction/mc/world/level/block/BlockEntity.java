@@ -1,9 +1,9 @@
 package io.github.solclient.abstraction.mc.world.level.block;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface BlockEntity {
 
-	BlockType getBlockType();
-
-
+	@NotNull BlockType getBlockType();
 
 }

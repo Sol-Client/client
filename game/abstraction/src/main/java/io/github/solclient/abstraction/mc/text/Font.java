@@ -4,8 +4,11 @@ import java.io.InputStream;
 
 import org.jetbrains.annotations.NotNull;
 
+import io.github.solclient.abstraction.Helper;
+
 public interface Font {
 
+	@Helper
 	static @NotNull Font createTrueType(@NotNull InputStream in) {
 		throw new UnsupportedOperationException();
 	}

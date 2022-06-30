@@ -2,11 +2,11 @@ package io.github.solclient.client.mod.impl.quickplay.database;
 
 import com.google.gson.JsonObject;
 
+import io.github.solclient.abstraction.mc.world.item.ItemStack;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
 import lombok.Getter;
-import net.minecraft.item.ItemStack;
 
 public class QuickPlayGameMode implements QuickPlayOption {
 

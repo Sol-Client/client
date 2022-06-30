@@ -1,30 +1,21 @@
 package io.github.solclient.client.mod.impl.quickplay.database;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import io.github.solclient.abstraction.mc.world.item.ItemStack;
+import io.github.solclient.abstraction.mc.world.item.ItemType;
+import io.github.solclient.abstraction.mc.world.level.block.BlockType;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
-import io.github.solclient.client.util.Utils;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.JsonToNBT;
 
 public class QuickPlayGame implements QuickPlayOption {
 
@@ -47,87 +38,88 @@ public class QuickPlayGame implements QuickPlayOption {
 			modes.put(mode.getCommand(), mode);
 		}
 
-		Item itemType = null;
+		ItemType itemType = ItemType.SLIMEBALL;
 		ItemStack item = null;
 
 		switch(id) {
 			case "mainLobby":
-				itemType = Items.oak_door;
+				itemType = BlockType.OAK_DOOR.toItem();
 				break;
 			case "arcade":
-				itemType =  Items.slime_ball;
+				itemType = ItemType.SLIMEBALL;
 				break;
 			case "bedwars":
-				itemType =  Items.bed;
+				itemType = ItemType.RED_BED;
 				break;
 			case "blitz":
-				itemType =  Items.diamond_sword;
+				itemType = ItemType.DIAMOND_SWORD;
 				break;
 			case "buildBattle":
-				itemType = Item.getItemFromBlock(Blocks.crafting_table);
+				itemType = BlockType.CRAFTING_TABLE.toItem();
 				break;
 			case "classic":
-				itemType = Item.getItemFromBlock(Blocks.jukebox);
+				itemType = BlockType.JUKEBOX.toItem();
 				break;
 			case "cvc":
-				itemType = Item.getItemFromBlock(Blocks.iron_bars);
+				itemType = BlockType.IRON_BARS.toItem();
 				break;
 			case "duels":
-				itemType = Items.fishing_rod;
+				itemType = ItemType.FISHING_ROD;
 				break;
 			case "housing":
-				itemType = Items.dark_oak_door;
+				itemType = BlockType.DARK_OAK_DOOR.toItem();
 				break;
 			case "mw":
-				itemType = Item.getItemFromBlock(Blocks.soul_sand);
+				itemType = BlockType.SOUL_SAND.toItem();
 				break;
 			case "murder":
-				itemType = Items.bow;
+				itemType = ItemType.BOW;
 				break;
 			case "prototype":
-				itemType = Item.getItemFromBlock(Blocks.anvil);
+				itemType = BlockType.ANVIL.toItem();
 				break;
 			case "skyblock":
-				item = new ItemStack(Items.skull);
-				item.setItemDamage(3);
-				item.setTagCompound(JsonToNBT.getTagFromJson(
-						"{overrideMeta:1b,HideFlags:254,SkullOwner:{Id:\"e70f48d9-56b0-2023-b32e-f48bbdd063af\",hypixelPopulated:1b,Properties:{textures:[0:{Value:\"eyJ0aW1lc3RhbXAiOjE1NTkyMTU0MTY5MDksInByb2ZpbGVJZCI6IjQxZDNhYmMyZDc0OTQwMGM5MDkwZDU0MzRkMDM4MzFiIiwicHJvZmlsZU5hbWUiOiJNZWdha2xvb24iLCJzaWduYXR1cmVSZXF1aXJlZCI6dHJ1ZSwidGV4dHVyZXMiOnsiU0tJTiI6eyJ1cmwiOiJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2Q3Y2M2Njg3NDIzZDA1NzBkNTU2YWM1M2UwNjc2Y2I1NjNiYmRkOTcxN2NkODI2OWJkZWJlZDZmNmQ0ZTdiZjgifX19\"}]}}}"));
+				itemType = BlockType.GRASS_BLCOK.toItem();
+//				item = new ItemStack(Items.skull);
+//				item.setItemDamage(3);
+//				item.setTagCompound(JsonToNBT.getTagFromJson(
+//						"{overrideMeta:1b,HideFlags:254,SkullOwner:{Id:\"e70f48d9-56b0-2023-b32e-f48bbdd063af\",hypixelPopulated:1b,Properties:{textures:[0:{Value:\"eyJ0aW1lc3RhbXAiOjE1NTkyMTU0MTY5MDksInByb2ZpbGVJZCI6IjQxZDNhYmMyZDc0OTQwMGM5MDkwZDU0MzRkMDM4MzFiIiwicHJvZmlsZU5hbWUiOiJNZWdha2xvb24iLCJzaWduYXR1cmVSZXF1aXJlZCI6dHJ1ZSwidGV4dHVyZXMiOnsiU0tJTiI6eyJ1cmwiOiJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2Q3Y2M2Njg3NDIzZDA1NzBkNTU2YWM1M2UwNjc2Y2I1NjNiYmRkOTcxN2NkODI2OWJkZWJlZDZmNmQ0ZTdiZjgifX19\"}]}}}"));
 				break;
 			case "skywars":
-				itemType = Items.ender_eye;
+				itemType = ItemType.ENDER_EYE;
 				break;
 			case "smashHeroes":
-				item = new ItemStack(Items.skull);
-				item.setItemDamage(3);
-				item.setTagCompound(JsonToNBT.getTagFromJson(
-						"{ench:[],overrideMeta:1b,HideFlags:254,SkullOwner:{Id:\"a83ccfb7-3672-281f-90da-0f78dcf95378\",hypixelPopulated:1b,Properties:{textures:[0:{Value:\"eyJ0aW1lc3RhbXAiOjE0NTIwNTgzNTA4MDcsInByb2ZpbGVJZCI6ImFhZDIzYTUwZWVkODQ3MTA5OWNmNjRiZThmZjM0ZWY0IiwicHJvZmlsZU5hbWUiOiIxUm9ndWUiLCJzaWduYXR1cmVSZXF1aXJlZCI6dHJ1ZSwidGV4dHVyZXMiOnsiU0tJTiI6eyJ1cmwiOiJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2QyOWE5ZjU3MjY3ZWQzNDJhMTNlM2FkM2EyNDBjNGM1YWY1YTFhMzZhYjJkZTBkNmMyYTMxYWYwZTNjZGRlIn19fQ==\"}]}}}"));
+//				item = new ItemStack(Items.skull);
+//				item.setItemDamage(3);
+//				item.setTagCompound(JsonToNBT.getTagFromJson(
+//						"{ench:[],overrideMeta:1b,HideFlags:254,SkullOwner:{Id:\"a83ccfb7-3672-281f-90da-0f78dcf95378\",hypixelPopulated:1b,Properties:{textures:[0:{Value:\"eyJ0aW1lc3RhbXAiOjE0NTIwNTgzNTA4MDcsInByb2ZpbGVJZCI6ImFhZDIzYTUwZWVkODQ3MTA5OWNmNjRiZThmZjM0ZWY0IiwicHJvZmlsZU5hbWUiOiIxUm9ndWUiLCJzaWduYXR1cmVSZXF1aXJlZCI6dHJ1ZSwidGV4dHVyZXMiOnsiU0tJTiI6eyJ1cmwiOiJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2QyOWE5ZjU3MjY3ZWQzNDJhMTNlM2FkM2EyNDBjNGM1YWY1YTFhMzZhYjJkZTBkNmMyYTMxYWYwZTNjZGRlIn19fQ==\"}]}}}"));
 				break;
 			case "tnt":
-				itemType = Item.getItemFromBlock(Blocks.tnt);
+				itemType = BlockType.TNT.toItem();
 				break;
 			case "uhc":
-				itemType = Items.golden_apple;
+				itemType = ItemType.GOLDEN_APPLE;
 				break;
 			case "warlords":
-				itemType = Items.stone_axe;
+				itemType = ItemType.STONE_AXE;
 				break;
 			case "thePit":
-				itemType = Item.getItemFromBlock(Blocks.dirt);
+				itemType = BlockType.DIRT.toItem();
 				break;
 			case "tournament":
-				itemType = Items.blaze_powder;
+				itemType = ItemType.BLAZE_POWDER;
 				break;
 			default:
-				itemType = Items.lava_bucket;
+				itemType = ItemType.LAVA_BUCKET;
 				break;
 		}
 
-		if(item == null) {
-			this.item = new ItemStack(itemType);
-		}
-		else {
-			this.item = item;
-		}
+//		if(item == null) {
+		this.item = ItemStack.create(itemType);
+//		}
+//		else {
+//			this.item = item;
+//		}
 	}
 
 	public QuickPlayGameMode getMode(String command) {

@@ -437,11 +437,17 @@ public class Utils {
 				((colour << 24) & 0xFF) / 255F);
 	}
 
+	// Code duplication required
+
 	public float clamp(float input, float min, float max) {
 		return input > max ? max : (input < min ? min : input);
 	}
 
 	public double clamp(double input, double min, double max) {
+		return input > max ? max : (input < min ? min : input);
+	}
+
+	public int clamp(int input, int min, int max) {
 		return input > max ? max : (input < min ? min : input);
 	}
 

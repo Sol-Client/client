@@ -1,5 +1,6 @@
 package io.github.solclient.abstraction.mc.util;
 
+import io.github.solclient.abstraction.Helper;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -11,16 +12,16 @@ public class Input {
 	public final int MINUS = 45;
 	public final int PERIOD = 46;
 	public final int SLASH = 47;
-	public final int K0 = 48;
-	public final int K1 = 49;
-	public final int K2 = 50;
-	public final int K3 = 51;
-	public final int K4 = 52;
-	public final int K5 = 53;
-	public final int K6 = 54;
-	public final int K7 = 55;
-	public final int K8 = 56;
-	public final int K9 = 57;
+	public final int N0 = 48;
+	public final int N1 = 49;
+	public final int N2 = 50;
+	public final int N3 = 51;
+	public final int N4 = 52;
+	public final int N5 = 53;
+	public final int N6 = 54;
+	public final int N7 = 55;
+	public final int N8 = 56;
+	public final int N9 = 57;
 	public final int SEMICOLON = 59;
 	public final int EQUAL = 61;
 	public final int A = 65;
@@ -131,7 +132,18 @@ public class Input {
 		throw new UnsupportedOperationException();
 	}
 
+	@Helper
+	public static boolean isCtrlHeld() {
+		return isKeyHeld(LEFT_CONTROL);
+	}
+
+	@Helper
 	public static boolean isShiftHeld() {
+		return isKeyHeld(LEFT_SHIFT);
+	}
+
+	// Should do nothing on 1.18
+	public static void enableRepeatEvents(boolean value) {
 		throw new UnsupportedOperationException();
 	}
 

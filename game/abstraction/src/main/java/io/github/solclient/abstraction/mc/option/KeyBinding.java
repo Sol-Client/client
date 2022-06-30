@@ -1,11 +1,8 @@
 package io.github.solclient.abstraction.mc.option;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import io.github.solclient.abstraction.mc.MinecraftClient;
-
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 
 public interface KeyBinding {
 

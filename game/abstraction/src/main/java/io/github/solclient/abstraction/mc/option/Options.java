@@ -2,6 +2,8 @@ package io.github.solclient.abstraction.mc.option;
 
 import org.jetbrains.annotations.NotNull;
 
+import io.github.solclient.abstraction.Helper;
+
 public interface Options {
 
 	float mouseSensitivity();
@@ -28,8 +30,14 @@ public interface Options {
 
 	@NotNull KeyBinding jumpKey();
 
+	@NotNull KeyBinding sprintKey();
+
+	void overwriteSprintKey(@NotNull KeyBinding sprint);
+
+	@Helper
 	void addKey(@NotNull KeyBinding key);
 
+	@Helper
 	void removeKey(@NotNull KeyBinding key);
 
 }

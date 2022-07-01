@@ -100,10 +100,9 @@ public class SpeedometerMod extends SimpleHudMod {
 	}
 
 	private double getSpeed() {
-		double distTraveledLastTickX = mc.thePlayer.posX - mc.thePlayer.prevPosX;
-		double distTraveledLastTickZ = mc.thePlayer.posZ - mc.thePlayer.prevPosZ;
-		return MathHelper.sqrt_double(distTraveledLastTickX * distTraveledLastTickX
-				+ distTraveledLastTickZ * distTraveledLastTickZ);
+		double xTraveled = mc.thePlayer.posX - mc.thePlayer.prevPosX;
+		double zTraveled = mc.thePlayer.posZ - mc.thePlayer.prevPosZ;
+		return MathHelper.sqrt_double(xTraveled * xTraveled + zTraveled * zTraveled);
 	}
 
 	@Override
@@ -116,11 +115,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			return "0.00 m/s";
 		}
 		else {
-			double distTraveledLastTickX = mc.thePlayer.posX - mc.thePlayer.prevPosX;
-			double distTraveledLastTickZ = mc.thePlayer.posZ - mc.thePlayer.prevPosZ;
-			double currentSpeed = MathHelper.sqrt_double(distTraveledLastTickX * distTraveledLastTickX
-					+ distTraveledLastTickZ * distTraveledLastTickZ);
-			return FORMAT.format(currentSpeed / 0.05F) + " m/s";
+			return FORMAT.format(getSpeed() / 0.05F) + " m/s";
 		}
 	}
 

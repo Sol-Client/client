@@ -20,11 +20,31 @@ public class GlStateManager {
 		throw new UnsupportedOperationException();
 	}
 
+	public static void enableDepth() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void disableDepth() {
+		throw new UnsupportedOperationException();
+	}
+
 	public static void pushMatrix() {
 		throw new UnsupportedOperationException();
 	}
 
 	public static void popMatrix() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void disableTexture2d() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void enableTexture2d() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void depthMask(boolean mask) {
 		throw new UnsupportedOperationException();
 	}
 

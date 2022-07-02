@@ -34,6 +34,8 @@ public interface Options {
 
 	void overwriteSprintKey(@NotNull KeyBinding sprint);
 
+	boolean hideGui();
+
 	@Helper
 	void addKey(@NotNull KeyBinding key);
 

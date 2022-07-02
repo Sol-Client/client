@@ -10,7 +10,7 @@ public interface Inventory {
 
 	@NotNull ItemStack getArmour(int slot);
 
-	@NotNull ItemStack getCurrentItem();
+	@NotNull ItemStack getMainHand();
 
 	@NotNull ItemStack getItem(int slot);
 

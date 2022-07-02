@@ -61,7 +61,7 @@ public class ArmourMod extends HudMod {
 					}
 				}
 			}
-			if(hand && player.getInventory().getCurrentItem() != null) renderStack(player.getInventory().getCurrentItem(),
+			if(hand && player.getInventory().getMainHand() != null) renderStack(player.getInventory().getMainHand(),
 					position.getX(), position.getY() + (armour ? 60 : 0));
 		}
 		else if(editMode) {

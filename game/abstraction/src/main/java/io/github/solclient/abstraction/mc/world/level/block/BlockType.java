@@ -2,11 +2,13 @@ package io.github.solclient.abstraction.mc.world.level.block;
 
 import org.jetbrains.annotations.NotNull;
 
+import io.github.solclient.abstraction.Helper;
 import io.github.solclient.abstraction.mc.Identifier;
 import io.github.solclient.abstraction.mc.world.item.ItemType;
 
 public interface BlockType {
 
+	BlockType AIR = null;
 	BlockType ANVIL = null;
 	BlockType BEACON = null;
 	BlockType CRAFTING_TABLE = null;
@@ -22,5 +24,11 @@ public interface BlockType {
 	@NotNull Identifier getId();
 
 	@NotNull ItemType toItem();
+
+	@Helper
+	void fillBox();
+
+	@Helper
+	void strokeBox();
 
 }

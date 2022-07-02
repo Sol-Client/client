@@ -8,4 +8,6 @@ public interface ClientLevel extends Level {
 
 	@NotNull Iterable<Entity> getRenderedEntities();
 
+	@NotNull WorldBorder getWorldBorder();
+
 }

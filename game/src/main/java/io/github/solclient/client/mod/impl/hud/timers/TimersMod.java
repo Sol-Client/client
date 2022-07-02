@@ -1,6 +1,5 @@
 package io.github.solclient.client.mod.impl.hud.timers;
 
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.abstraction.mc.world.item.ItemStack;
 import io.github.solclient.abstraction.mc.world.item.ItemType;
-import io.github.solclient.abstraction.mc.world.level.block.BlockType;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.network.ServerMessageReceiveEvent;

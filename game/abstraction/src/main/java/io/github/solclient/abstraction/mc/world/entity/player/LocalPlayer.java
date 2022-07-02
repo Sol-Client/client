@@ -61,4 +61,6 @@ public interface LocalPlayer extends ClientPlayer {
 
 	@NotNull List<StatusEffect> getStatusEffects();
 
+	Abilities getAbilities();
+
 }

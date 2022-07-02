@@ -38,4 +38,8 @@ public interface ItemStack {
 
 	@NotNull String getLegacyDisplayName();
 
+	boolean canDestroy(@NotNull BlockType block);
+
+	boolean canPlaceOn(@NotNull BlockType block);
+
 }

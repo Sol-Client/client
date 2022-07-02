@@ -19,21 +19,21 @@ public class Colour {
 	@Expose
 	private final int value;
 
-	public static final Colour WHITE = new Colour(-1);
-	public static final Colour BLACK = new Colour(0xFF << 16);
-	public static final Colour PURE_RED = new Colour(255, 0, 0);
-	public static final Colour PURE_GREEN = new Colour(0, 255, 0);
-	public static final Colour PURE_BLUE = new Colour(0, 0, 255);
-	public static final Colour RED_HOVER = new Colour(255, 80, 80);
-	public static final Colour BLUE = new Colour(0, 150, 255);
-	public static final Colour BLUE_HOVER = new Colour(30, 180, 255);
-	public static final Colour WHITE_128 = WHITE.withAlpha(128);
-	public static final Colour BLACK_128 = BLACK.withAlpha(128);
-	public static final Colour BACKGROUND = new Colour(20, 20, 20);
-	public static final Colour DISABLED_MOD = new Colour(40, 40, 40);
-	public static final Colour DISABLED_MOD_HOVER = new Colour(50, 50, 50);
-	public static final Colour TRANSPARENT = new Colour(0);
-	public static final Colour LIGHT_BUTTON = new Colour(200, 200, 200);
+	public static final Colour WHITE =				new Colour(0xFFFFFFFF);
+	public static final Colour BLACK = 				new Colour(0xFF000000);
+	public static final Colour PURE_RED = 			new Colour(0xFFFF0000);
+	public static final Colour PURE_GREEN = 		new Colour(0xFF00FF00);
+	public static final Colour PURE_BLUE = 			new Colour(0xFF0000FF);
+	public static final Colour RED_HOVER = 			new Colour(0xFFFF5050);
+	public static final Colour BLUE = 				new Colour(0xFF0096FF);
+	public static final Colour BLUE_HOVER = 		new Colour(0xFF1EB4FF);
+	public static final Colour WHITE_128 = 			WHITE.withAlpha(128);
+	public static final Colour BLACK_128 = 			BLACK.withAlpha(128);
+	public static final Colour BACKGROUND = 		new Colour(0xFF141414);
+	public static final Colour DISABLED_MOD = 		new Colour(0xFF282828);
+	public static final Colour DISABLED_MOD_HOVER = new Colour(0xFF323232);
+	public static final Colour TRANSPARENT = 		new Colour(0);
+	public static final Colour LIGHT_BUTTON = 		new Colour(0xFFC8C8C8);
 	public static final Colour LIGHT_BUTTON_HOVER = WHITE;
 
 	public Colour(int value) {

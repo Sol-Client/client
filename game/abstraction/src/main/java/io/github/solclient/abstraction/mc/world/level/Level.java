@@ -1,11 +1,7 @@
 package io.github.solclient.abstraction.mc.world.level;
 
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.jetbrains.annotations.NotNull;
 
-import io.github.solclient.abstraction.mc.world.level.block.BlockEntity;
 import io.github.solclient.abstraction.mc.world.level.block.BlockPos;
 import io.github.solclient.abstraction.mc.world.level.block.BlockState;
 import io.github.solclient.abstraction.mc.world.level.chunk.Chunk;

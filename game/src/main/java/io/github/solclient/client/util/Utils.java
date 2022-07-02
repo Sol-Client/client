@@ -29,7 +29,6 @@ import io.github.solclient.abstraction.mc.Window;
 import io.github.solclient.abstraction.mc.util.MinecraftUtil;
 import io.github.solclient.abstraction.mc.util.OperatingSystem;
 import io.github.solclient.client.mod.impl.SolClientMod;
-import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -56,18 +55,6 @@ public class Utils {
 
 	public long toMegabytes(long bytes) {
 		return bytes / 1024L / 1024L;
-	}
-
-	public int blendColor(int start, int end, float percent) {
-		if (percent >= 1) {
-			return end;
-		}
-		Colour startColor = new Colour(start);
-		Colour endColor = new Colour(end);
-		return new Colour(blendInt(startColor.getRed(), endColor.getRed(), percent),
-				blendInt(startColor.getGreen(), endColor.getGreen(), percent),
-				blendInt(startColor.getBlue(), endColor.getBlue(), percent),
-				blendInt(startColor.getAlpha(), endColor.getAlpha(), percent)).getValue();
 	}
 
 	public int blendInt(int start, int end, float percent) {

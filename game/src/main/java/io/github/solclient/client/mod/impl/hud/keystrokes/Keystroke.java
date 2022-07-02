@@ -7,6 +7,7 @@ import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.option.KeyBinding;
 import io.github.solclient.client.CpsCounter;
 import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.data.Colour;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -45,23 +46,23 @@ public class Keystroke {
 		progress = Utils.clamp(progress, 0, 1);
 
 		if(mod.background) {
-			DrawableHelper.fillRect(x, y, x + width, y + height, Utils
-					.blendColor(mod.backgroundColourPressed.getValue(), mod.backgroundColour.getValue(), progress));
+			DrawableHelper.fillRect(x, y, x + width, y + height,
+					mod.backgroundColourPressed.blend(mod.backgroundColour, progress).getValue());
 		}
 
 		if(mod.border) {
 			DrawableHelper.strokeRect(x, y, x + width, y + height,
-					Utils.blendColor(mod.borderColourPressed.getValue(), mod.borderColour.getValue(), progress));
+					mod.borderColourPressed.blend(mod.borderColour, progress).getValue());
 		}
 
-		int fgColour = Utils.blendColor(mod.textColourPressed.getValue(), mod.textColour.getValue(), progress);
+		Colour fgColour = mod.textColourPressed.blend(mod.textColour, progress);
 		String name = this.name;
 
 		if(name.equals("Space")) {
-			DrawableHelper.fillRect(x + 10, y + 3, x + width - 10, y + 4, fgColour);
+			DrawableHelper.fillRect(x + 10, y + 3, x + width - 10, y + 4, fgColour.getValue());
 
 			if(mod.shadow) {
-				DrawableHelper.fillRect(x + 11, y + 4, x + width - 9, y + 5, Utils.getShadowColour(fgColour));
+				DrawableHelper.fillRect(x + 11, y + 4, x + width - 9, y + 5, fgColour.getShadowValue());
 			}
 		}
 		else {
@@ -87,7 +88,7 @@ public class Keystroke {
 
 					mc.getFont().render(cpsText,
 							(int) ((x / scale) + (width / 2F / scale) - (mc.getFont().getWidth(cpsText) / 2F)),
-							(int) ((y + height - (mc.getFont().getHeight() * scale)) / scale - 3), fgColour,
+							(int) ((y + height - (mc.getFont().getHeight() * scale)) / scale - 3), fgColour.getValue(),
 							mod.shadow);
 
 					GL11.glPopMatrix();
@@ -99,7 +100,7 @@ public class Keystroke {
 
 			y += 1;
 			mc.getFont().render(name, (int) (x + (width / 2F) - (mc.getFont().getWidth(name) / 2F)),
-					(int) (y + (height / 2F) - (mc.getFont().getHeight() / 2F)), fgColour, mod.shadow);
+					(int) (y + (height / 2F) - (mc.getFont().getHeight() / 2F)), fgColour.getValue(), mod.shadow);
 		}
 		wasDown = down;
 	}

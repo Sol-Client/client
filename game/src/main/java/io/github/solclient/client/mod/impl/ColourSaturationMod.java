@@ -1,42 +1,31 @@
 package io.github.solclient.client.mod.impl;
 
+import java.io.IOException;
+
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.abstraction.mc.Identifier;
+import io.github.solclient.abstraction.mc.shader.ShaderChain;
+import io.github.solclient.abstraction.mc.shader.ShaderUniform;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PostProcessingEvent;
+import io.github.solclient.client.event.shader.PostProcessingEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.util.access.AccessShaderGroup;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.client.shader.ShaderUniform;
-import net.minecraft.util.ResourceLocation;
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod {
 
-	private static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(
-			"minecraft:shaders/post/" + "color_convolve.json");
+	private static final Identifier RESOURCE_LOCATION = Identifier.solClient("shader/color_convolve.json");
 
 	@Expose
 	@Option
 	@Slider(min = 0, max = 2F, step = 0.1F)
 	private float saturation = 1f;
-	private ShaderGroup group;
+	private ShaderChain group;
 	private float groupSaturation;
-
-	public ShaderGroup getGroup() {
-		return group;
-	}
 
 	@Override
 	public String getId() {
@@ -48,18 +37,46 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 		return ModCategory.VISUAL;
 	}
 
-	@Override
-	public void onRegister() {
-		super.onRegister();
-		Client.INSTANCE.addResource(RESOURCE_LOCATION, new SaturationShader());
-	}
-
 	public void update() {
 		if(group == null) {
 			groupSaturation = saturation;
 			try {
-				group = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), RESOURCE_LOCATION);
-				group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+				group = ShaderChain.create(RESOURCE_LOCATION, "{" +
+						"    \"targets\": [" +
+						"        \"swap\"," +
+						"        \"previous\"" +
+						"    ]," +
+						"    \"passes\": [" +
+						"        {" +
+						"            \"name\": \"color_convolve\"," +
+						"            \"intarget\": \"minecraft:main\"," +
+						"            \"outtarget\": \"swap\"," +
+						"            \"auxtargets\": [" +
+						"                {" +
+						"                    \"name\": \"PrevSampler\"," +
+						"                    \"id\": \"previous\"" +
+						"                }" +
+						"            ]," +
+						"            \"uniforms\": [" +
+						"                {" +
+						"                    \"name\": \"Saturation\"," +
+						"                    \"values\": [ %s ]" +
+						"                }" +
+						"            ]" +
+						"        }," +
+						"        {" +
+						"            \"name\": \"blit\"," +
+						"            \"intarget\": \"swap\"," +
+						"            \"outtarget\": \"previous\"" +
+						"        }," +
+						"        {" +
+						"            \"name\": \"blit\"," +
+						"            \"intarget\": \"swap\"," +
+						"            \"outtarget\": \"minecraft:main\"" +
+						"        }" +
+						"    ]" +
+						"}");
+				group.updateWindowSize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
 			}
 			catch(JsonSyntaxException | IOException error) {
 				logger.error("Could not load saturation shader", error);
@@ -67,8 +84,8 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 		}
 
 		if(groupSaturation != saturation) {
-			((AccessShaderGroup) group).getListShaders().forEach((shader) -> {
-				ShaderUniform saturationUniform = shader.getShaderManager().getShaderUniform("Saturation");
+			group.getShaders().forEach((shader) -> {
+				ShaderUniform saturationUniform = shader.getShaderUniform("Saturation");
 				if(saturationUniform != null) {
 					saturationUniform.set(saturation);
 				}
@@ -80,7 +97,7 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 	@EventHandler
 	public void onPostProcessing(PostProcessingEvent event) {
 		update();
-		event.groups.add(getGroup());
+		event.getShaders().add(group);
 	}
 
 	@Override
@@ -97,69 +114,6 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 	@Override
 	public void increment() {
 		saturation = Math.min(2, saturation + 0.1F);
-	}
-
-	public class SaturationShader implements IResource {
-
-		@Override
-		public ResourceLocation getResourceLocation() {
-			return null;
-		}
-
-		@Override
-		public InputStream getInputStream() {
-			return IOUtils.toInputStream(String.format("{" +
-					"    \"targets\": [" +
-					"        \"swap\"," +
-					"        \"previous\"" +
-					"    ]," +
-					"    \"passes\": [" +
-					"        {" +
-					"            \"name\": \"color_convolve\"," +
-					"            \"intarget\": \"minecraft:main\"," +
-					"            \"outtarget\": \"swap\"," +
-					"            \"auxtargets\": [" +
-					"                {" +
-					"                    \"name\": \"PrevSampler\"," +
-					"                    \"id\": \"previous\"" +
-					"                }" +
-					"            ]," +
-					"            \"uniforms\": [" +
-					"                {" +
-					"                    \"name\": \"Saturation\"," +
-					"                    \"values\": [ %s ]" +
-					"                }" +
-					"            ]" +
-					"        }," +
-					"        {" +
-					"            \"name\": \"blit\"," +
-					"            \"intarget\": \"swap\"," +
-					"            \"outtarget\": \"previous\"" +
-					"        }," +
-					"        {" +
-					"            \"name\": \"blit\"," +
-					"            \"intarget\": \"swap\"," +
-					"            \"outtarget\": \"minecraft:main\"" +
-					"        }" +
-					"    ]" +
-					"}", saturation, saturation, saturation));
-		}
-
-		@Override
-		public boolean hasMetadata() {
-			return false;
-		}
-
-		@Override
-		public <T extends IMetadataSection> T getMetadata(String p_110526_1_) {
-			return null;
-		}
-
-		@Override
-		public String getResourcePackName() {
-			return null;
-		}
-
 	}
 
 }

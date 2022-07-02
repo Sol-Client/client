@@ -149,7 +149,7 @@ public class Utils {
 
 	public GuiChat getChatGui() {
 		GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
-		if (currentScreen != null && currentScreen instanceof GuiChat) {
+		if (currentScreen instanceof GuiChat) {
 			return (GuiChat) currentScreen;
 		}
 		return null;
@@ -228,10 +228,6 @@ public class Utils {
 		}
 
 		return result.toString();
-	}
-
-	public int getShadowColour(int value) {
-		return (value & 16579836) >> 2 | value & -16777216;
 	}
 
 	public void pingServer(String address, IntConsumer callback) throws UnknownHostException {

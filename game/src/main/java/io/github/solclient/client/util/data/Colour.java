@@ -10,7 +10,6 @@ import io.github.solclient.client.util.Utils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import net.minecraft.util.MathHelper;
 
 @ToString
 @EqualsAndHashCode
@@ -20,8 +19,8 @@ public class Colour {
 	@Expose
 	private final int value;
 
-	public static final Colour WHITE = new Colour(255, 255, 255);
-	public static final Colour BLACK = new Colour(0, 0, 0);
+	public static final Colour WHITE = new Colour(-1);
+	public static final Colour BLACK = new Colour(0xFF << 16);
 	public static final Colour PURE_RED = new Colour(255, 0, 0);
 	public static final Colour PURE_GREEN = new Colour(0, 255, 0);
 	public static final Colour PURE_BLUE = new Colour(0, 0, 255);
@@ -50,7 +49,7 @@ public class Colour {
 	}
 
 	public Colour(int red, int green, int blue) {
-		this(red, green, blue, 255);
+		this(red, green, blue, 0xFF);
 	}
 
 	public Colour withAlpha(int alpha) {
@@ -65,7 +64,7 @@ public class Colour {
 	}
 
 	private void checkRange(int value, String name) {
-		if(value > 255 || value < 0) {
+		if(value > 0xFF || value < 0) {
 			throw new IllegalStateException("Invalid range for " + name + " (" + value + ")");
 		}
 	}
@@ -107,19 +106,19 @@ public class Colour {
 	}
 
 	public float getRedFloat() {
-		return getRed() / 255F;
+		return getRed() / 0xFF;
 	}
 
 	public float getGreenFloat() {
-		return getGreen() / 255F;
+		return getGreen() / 0xFF;
 	}
 
 	public float getBlueFloat() {
-		return getBlue() / 255F;
+		return getBlue() / 0xFF;
 	}
 
 	public float getAlphaFloat() {
-		return getAlpha() / 255F;
+		return getAlpha() / 0xFF;
 	}
 
 	public Color toAWT() {
@@ -135,7 +134,7 @@ public class Colour {
 	}
 
 	private int clamp(int channel) {
-		return MathHelper.clamp_int(channel, 0, 255);
+		return Utils.clamp(channel, 0, 255);
 	}
 
 	public Colour add(int amount) {
@@ -143,7 +142,7 @@ public class Colour {
 	}
 
 	public int getShadowValue() {
-		return Utils.getShadowColour(getValue());
+		return (value & 0xFCFCFC) >> 2 | value & -0x1000000;
 	}
 
 	public Colour getShadow() {
@@ -173,13 +172,13 @@ public class Colour {
 	public Colour withComponent(int component, int value) {
 		switch(component) {
 			case 0:
-				return new Colour(value, getGreen(), getBlue(), getAlpha());
+				return new Colour((value & 0xFF00FFFF) + (component << 16));
 			case 1:
-				return new Colour(getRed(), value, getBlue(), getAlpha());
+				return new Colour((value & 0xFFFF00FF) + (component << 8));
 			case 2:
-				return new Colour(getRed(), getGreen(), value, getAlpha());
+				return new Colour((value & 0xFFFFFF00) + component);
 			case 3:
-				return new Colour(getRed(), getGreen(), getBlue(), value);
+				return new Colour((value & 0xFFFFFF) + (component << 24));
 			default:
 				throw new IndexOutOfBoundsException(component + " out of bounds");
 		}

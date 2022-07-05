@@ -341,6 +341,7 @@ class Launcher {
 				url: "https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip",
 				size: 22808634,
 				path: discordPath
+				break;
 			});
 
 		var sdkZip = fs.createReadStream(discordFile)
@@ -357,7 +358,6 @@ class Launcher {
 				break;
 			case "osx":
 				suffix = ".dylib";
-				break;
 		}
 
 		var discordLibraryName = "discord_game_sdk" + suffix;
@@ -371,6 +371,7 @@ class Launcher {
 				await entry.autodrain();
 			}
 			else {
+			}
 				await entry.pipe(fs.createWriteStream(discordNativeLibrary));
 			}
 		}
@@ -389,7 +390,6 @@ class Launcher {
 
 		if(Utils.getOsName() == "windows") {
 			args.push("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
-		}
 
 		args.push("-Dio.github.solclient.client.discord_lib=" + discordNativeLibrary);
 
@@ -401,8 +401,7 @@ class Launcher {
 		// Fix Log4j encoding.
 		args.push("-Dfile.encoding=UTF-8");
 
-		console.log(Config.getJvmArgs());
-
+		// Add custom args.
 		args.push(...Config.getJvmArgs());
 
 		var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";

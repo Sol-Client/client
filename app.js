@@ -365,6 +365,13 @@ window.addEventListener("DOMContentLoaded", async() => {
 		Config.save();
 	};
 
+	var jvmArguments = document.querySelector(".jvm-arguments");
+	jvmArguments.value = Config.data.jvmArgs;
+	jvmArguments.onchange = () => {
+		Config.data.jvmArgs = jvmArguments.value;
+		Config.save();
+	};
+
 	function updateMemoryLabel() {
 		memoryLabel.innerText = (memory.value / 1024).toFixed(1) + " GB";
 		Config.data.maxMemory = memory.value;

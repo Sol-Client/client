@@ -248,7 +248,7 @@ class Launcher {
 
 
 						if(!fs.existsSync(dest)) {
-							fs.mkdirSync(dest, {recursive: true});
+							fs.mkdirSync(dest, { recursive: true });
 						}
 
 						if(name.endsWith(".tar.gz")) {
@@ -400,6 +400,10 @@ class Launcher {
 
 		// Fix Log4j encoding.
 		args.push("-Dfile.encoding=UTF-8");
+
+		console.log(Config.getJvmArgs());
+
+		args.push(...Config.getJvmArgs());
 
 		var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";
 		var classpath = "";

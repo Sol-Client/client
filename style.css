@@ -260,6 +260,12 @@
 	height: 30px;
 	margin-bottom: 30px;
 	padding: 5px;
+	background: black;
+}
+
+.settings .input {
+	padding: 5px;
+	background: rgb(30, 30, 30);
 }
 
 .label {
@@ -643,7 +649,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
 	top: 50px;
 }
 
-.news * {	
+.news * {
 	max-width: 600px;
 }
 

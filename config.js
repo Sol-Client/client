@@ -7,7 +7,8 @@ class Config {
 		maxMemory: 2048,
 		optifine: Utils.getOsName() != "osx",
 		minecraftFolder: "<use default>",
-		autoUpdate: true
+		autoUpdate: true,
+		jvmArgs: ""
 	};
 
 	static data = Config.DEFAULT;
@@ -33,6 +34,35 @@ class Config {
 		}
 
 		return defaultDirectory;
+	}
+
+	static getJvmArgs() {
+		var args = Config.data.jvmArgs;
+		var result = [];
+
+		var prevC;
+		var arg = "";
+
+		for(var c of args) {
+			if(prevC == "\\") {
+				arg = arg.substring(0, arg.length - 1);
+				arg += c;
+				prevC = 0;
+				continue;
+			}
+			else if(c == " ") {
+				result.push(arg);
+				arg = "";
+			}
+			else {
+				arg += c;
+			}
+			prevC = c;
+		}
+
+		result.push(arg);
+
+		return result;
 	}
 
 }

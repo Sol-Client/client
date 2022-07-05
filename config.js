@@ -6,9 +6,10 @@ class Config {
 	static DEFAULT = {
 		maxMemory: 2048,
 		optifine: Utils.getOsName() != "osx",
-		minecraftFolder: "<use default>",
+		minecraftFolder: null,
 		autoUpdate: true,
-		jvmArgs: ""
+		jvmArgs: "",
+		jrePath: null
 	};
 
 	static data = Config.DEFAULT;
@@ -21,6 +22,10 @@ class Config {
 	static load() {
 		if(fs.existsSync(Config.file)) {
 			Config.data = { ...Config.DEFAULT, ...JSON.parse(fs.readFileSync(Config.file, "UTF-8")) };
+
+			if(Config.data.minecraftFolder == "<use default>") {
+				Config.data.minecraftFolder = null;
+			}
 		}
 	}
 
@@ -29,7 +34,7 @@ class Config {
 	}
 
 	static getGameDirectory(defaultDirectory) {
-		if(Config.data.minecraftFolder != "<use default>") {
+		if(Config.data.minecraftFolder) {
 			return Config.data.minecraftFolder;
 		}
 
@@ -60,7 +65,9 @@ class Config {
 			prevC = c;
 		}
 
-		result.push(arg);
+		if(arg !== "") {
+			result.push(arg);
+		}
 
 		return result;
 	}

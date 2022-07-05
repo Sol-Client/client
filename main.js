@@ -64,10 +64,10 @@ async function run() {
 
 		window.once("ready-to-show", () => window.show());
 
-		ipcMain.on("directory", async(event) => {
+		ipcMain.on("directory", async(event, title, id) => {
 			var result = await dialog.showOpenDialog(window,
 				{
-					title: "Select Minecraft Folder",
+					title: title,
 					properties: ["openDirectory" ]
 				}
 			);
@@ -75,8 +75,15 @@ async function run() {
 			var file = result.filePaths[0];
 
 			if(!result.canceled && file) {
-				event.sender.send("directory", file);
+				event.sender.send("directory", file, id);
 			}
+		});
+
+		ipcMain.on("jreError", async(event) => {
+			dialog.showMessageBoxSync(window, {
+				title: "Invalid Directory",
+				message: "JRE must include bin folder."
+			});
 		});
 
 		ipcMain.on("skinFile", async(event) => {
@@ -106,9 +113,10 @@ async function run() {
 
 	ipcMain.on("msa", async(event) => {
 		msmc.fastLaunch("electron", () => {})
-				.then((result) => {
-			event.sender.send("msa", JSON.stringify(result));
-		});
+				.then(async(result) => {
+					await window.webContents.session.clearStorageData();
+					event.sender.send("msa", JSON.stringify(result));
+				});
 	});
 
 	ipcMain.on("crash", async(_event, report, file, optifine) => {
@@ -155,20 +163,21 @@ If you have private messages, try reproducing this issue again.`,
 		if(optifine) {
 			running += " with " + optifine;
 		}
+
+		running += " on " + Utils.getNiceOsName();
 		running += ".";
 
 		var url = new URL("https://github.com/TheKodeToad/Sol-Client/issues/new/")
-		url.searchParams.set("body", `## Description
+		url.searchParams.set("body", `## Description (please fill in)
 A description of the problem that is occurring.
 ## Steps to Reproduce
 1. What did you do...
 2. ...to crash the game?
-## Client Version
+## Details
 ${running}
 ## Logs/Crash Report
 ${crashReportText}
 `);
-		url.searchParams.set("title", "Short Description")
 		url.searchParams.set("labels", "bug");
 		shell.openExternal(url.toString());
 	});

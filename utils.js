@@ -24,19 +24,15 @@ class Utils {
 
 	static init() {
 		Utils.dataDirectory = os.homedir();
-		Utils.legacyDirectory = os.homedir();
 		switch(Utils.getOsName()) {
 			case "linux":
 				Utils.dataDirectory += "/.config/Sol Client";
-				Utils.legacyDirectory += "/.config/parrotclient";
 				break;
 			case "osx":
 				Utils.dataDirectory += "/Library/Application Support/Sol Client";
-				Utils.legacyDirectory += "/Library/Application Support/parrotclient";
 				break;
 			case "windows":
 				Utils.dataDirectory += "/AppData/Roaming/Sol Client";
-				Utils.legacyDirectory += "/AppData/Roaming/parrotclient";
 				break;
 		}
 
@@ -51,15 +47,6 @@ class Utils {
 			case "windows":
 				Utils.minecraftDirectory += "/AppData/Roaming/.minecraft";
 				break;
-		}
-
-		try {
-			if(fs.existsSync(Utils.legacyDirectory) && !fs.existsSync(Utils.dataDirectory)) {
-				fs.renameSync(Utils.legacyDirectory, Utils.dataDirectory);
-				fs.unlinkSync(Utils.dataDirectory + "/account.json");
-			}
-		}
-		catch(error) {
 		}
 
 		Utils.librariesDirectory = Utils.minecraftDirectory + "/libraries";
@@ -184,6 +171,17 @@ class Utils {
 				return "mac";
 			case "Windows_NT":
 				return "windows";
+		}
+	}
+
+	static getNiceOsName() {
+		switch(os.type()) {
+			case "Linux":
+				return "Linux";
+			case "Darwin":
+				return "macOS";
+			case "Windows_NT":
+				return "Windows";
 		}
 	}
 

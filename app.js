@@ -123,10 +123,18 @@ window.addEventListener("DOMContentLoaded", async() => {
 	}
 
 	function updateMinecraftFolder() {
-		document.querySelector(".minecraft-folder-path").innerText = Config.data.minecraftFolder;
+		document.querySelector(".minecraft-folder-path").innerText =
+				Config.data.minecraftFolder ?? "(use default)";
+		// wow. I didn't know you could do that in js.
+	}
+
+	function updateJre() {
+		document.querySelector(".jre-location").innerText =
+				Config.data.jrePath ?? "(download automatically)"
 	}
 
 	updateMinecraftFolder();
+	updateJre();
 
 	backToMain.onclick = () => {
 		if(loggingIn) {
@@ -286,13 +294,32 @@ window.addEventListener("DOMContentLoaded", async() => {
 	document.querySelector(".about-tab").onclick = () => switchToTab("about");
 	document.querySelector(".settings-tab").onclick = () => switchToTab("settings");
 	document.querySelector(".news-tab").onclick = () => switchToTab("news");
-	document.querySelector(".minecraft-folder").onclick = () => ipcRenderer.send("directory");
-
-	ipcRenderer.on("directory", (event, file) => {
-		Config.data.minecraftFolder = file;
+	document.querySelector(".minecraft-folder").onclick = () => ipcRenderer.send("directory", "Select Minecraft Folder", "minecraft");
+	document.querySelector(".jre-location-change").onclick = () => ipcRenderer.send("directory", "Select JRE Folder", "jre");
+	document.querySelector(".jre-location-reset").onclick = () => {
+		Config.data.jrePath = null;
 		Config.save();
-		updateMinecraftFolder();
-		updateServers();
+		updateJre();
+	};
+
+	ipcRenderer.on("directory", (event, file, id) => {
+		switch(id) {
+			case "minecraft":
+				Config.data.minecraftFolder = file;
+				Config.save();
+				updateMinecraftFolder();
+				updateServers();
+				break;
+			case "jre":
+				if(!fs.existsSync(path.join(file, "bin/java"))) {
+					ipcRenderer.send("jreError");
+					return;
+				}
+				Config.data.jrePath = file;
+				Config.save();
+				updateJre();
+				break;
+		}
 	});
 
 	document.querySelector(".devtools").onclick = () => ipcRenderer.send("devtools");

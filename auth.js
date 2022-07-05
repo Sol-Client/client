@@ -39,7 +39,7 @@ class AccountManager {
 		}));
 	}
 
-	isEncrypted(prop) {
+	isInKeychain(prop) {
 		return prop.startsWith(KEYCHAIN_PREFIX);
 	}
 
@@ -47,11 +47,12 @@ class AccountManager {
 		account.accessToken = await this.storeProp(account.accessToken, account.uuid + "_access_token");
 		if(account._msmc) {
 			account._msmc.refresh = await this.storeProp(account._msmc.refresh, account.uuid + "_refresh");
+			account._msmc.mcToken = undefined; // ah yes, the number underfined
 		}
 	}
 
 	async storeProp(prop, key) {
-		if(this.isEncrypted(prop)) {
+		if(this.isInKeychain(prop)) {
 			return prop;
 		}
 		await keytar.setPassword(SERVICE, key, prop);
@@ -63,7 +64,7 @@ class AccountManager {
 	}
 
 	async retrieveProp(prop) {
-		if(!this.isEncrypted(prop)) {
+		if(!this.isInKeychain(prop)) {
 			return prop;
 		}
 		var key = prop.substring(KEYCHAIN_PREFIX.length);

@@ -185,17 +185,19 @@ public class QuickPlayPalette extends GuiScreen {
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
 
-		if(typedChar > 31 && typedChar != '§') {
+		if(keyCode == Keyboard.KEY_BACK) {
+			if(!query.isEmpty()) {
+				if(GuiScreen.isCtrlKeyDown()) {
+					query = "";
+				}
+				else {
+					query = query.substring(0, query.length() - 1);
+				}
+			}
+		}
+		else if(typedChar > 31 && typedChar != '§') {
 			query += typedChar;
 			inAllGames = false;
-		}
-		else if(typedChar == 8 && !query.isEmpty()) {
-			if(GuiScreen.isCtrlKeyDown()) {
-				query = "";
-			}
-			else {
-				query = query.substring(0, query.length() - 1);
-			}
 		}
 
 		if(keyCode == Keyboard.KEY_DOWN) {

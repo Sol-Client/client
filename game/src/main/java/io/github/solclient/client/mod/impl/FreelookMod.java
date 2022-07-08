@@ -1,26 +1,25 @@
 package io.github.solclient.client.mod.impl;
 
-import org.lwjgl.input.Keyboard;
-
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.option.KeyBinding;
+import io.github.solclient.abstraction.mc.util.Input;
+import io.github.solclient.abstraction.mc.world.entity.Entity;
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.*;
-import io.github.solclient.client.event.impl.CameraRotateEvent;
-import io.github.solclient.client.event.impl.PlayerHeadRotateEvent;
+import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
+import io.github.solclient.client.event.impl.input.CameraRotateEvent;
+import io.github.solclient.client.event.impl.world.CameraTransformEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.Perspective;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import io.github.solclient.client.util.Utils;
 
 public class FreelookMod extends Mod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_V, Client.KEY_CATEGORY);
+	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.V, Client.KEY_CATEGORY);
 	private float yaw;
 	private float pitch;
 	private int previousPerspective;
@@ -48,12 +47,12 @@ public class FreelookMod extends Mod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-		Client.INSTANCE.registerKeyBinding(key);
+		mc.getOptions().addKey(key);
 	}
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(key.isKeyDown()) {
+		if(key.isHeld()) {
 			if(!hasStarted()) {
 				start();
 			}
@@ -71,17 +70,17 @@ public class FreelookMod extends Mod {
 
 	public void start() {
 		active = true;
-		previousPerspective = mc.gameSettings.thirdPersonView;
-		mc.gameSettings.thirdPersonView = perspective.ordinal();
-		Entity renderView = mc.getRenderViewEntity();
-		yaw = renderView.rotationYaw;
-		pitch = renderView.rotationPitch;
+		previousPerspective = mc.getOptions().ordinalPerspective();
+		mc.getOptions().setOrdinalPerspective(perspective.ordinal());
+		Entity camera = mc.getCameraEntity();
+		yaw = camera.getYaw();
+		pitch = camera.getPitch();
 	}
 
 	public void stop() {
 		active = false;
-		mc.gameSettings.thirdPersonView = previousPerspective;
-		mc.renderGlobal.setDisplayListEntitiesDirty();
+		mc.getOptions().setOrdinalPerspective(previousPerspective);
+		mc.getLevelRenderer().scheduleUpdate();
 	}
 
 	public float getYaw() {
@@ -93,24 +92,27 @@ public class FreelookMod extends Mod {
 	}
 
 	@EventHandler
-	public void setAngles(CameraRotateEvent event) {
+	public void onCameraTransform(CameraTransformEvent event) {
 		if(active) {
-			event.yaw = yaw;
-			event.pitch = pitch;
+			event.setYaw(yaw);
+			event.setPitch(pitch);
 		}
 	}
 
 	@EventHandler
-	public void setAngles(PlayerHeadRotateEvent event) {
+	public void onCameraRotate(CameraRotateEvent event) {
 		if(active) {
-			float yaw = event.yaw;
-			float pitch = event.pitch;
-			event.cancelled = true;
+			float yaw = event.getYaw();
+			float pitch = event.getPitch();
+			event.cancel();
+
 			if(!invertPitch) pitch = -pitch;
 			if(invertYaw) yaw = -yaw;
+
 			this.yaw += yaw * 0.15F;
-			this.pitch = MathHelper.clamp_float(this.pitch + (pitch * 0.15F), -90, 90);
-			mc.renderGlobal.setDisplayListEntitiesDirty();
+			this.pitch = Utils.clamp(this.pitch + (pitch * 0.15F), -90, 90);
+
+			mc.getLevelRenderer().scheduleUpdate();
 		}
 	}
 

@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CameraRotateEvent implements Cancellable {
 
-	private final float yaw;
-	private final float pitch;
+	private final float yaw, pitch;
 	private boolean cancelled;
 
 }

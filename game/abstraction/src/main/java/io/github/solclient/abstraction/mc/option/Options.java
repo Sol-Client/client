@@ -14,6 +14,12 @@ public interface Options {
 
 	@NotNull Perspective perspective();
 
+	int ordinalPerspective();
+
+	void setPerspective(@NotNull Perspective perspective);
+
+	void setOrdinalPerspective(int perspective);
+
 	@NotNull KeyBinding[] keys();
 
 	@NotNull KeyBinding forwardsKey();

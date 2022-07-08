@@ -20,6 +20,7 @@ import io.github.solclient.abstraction.mc.world.entity.Entity;
 import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
 import io.github.solclient.abstraction.mc.world.item.ItemRenderer;
 import io.github.solclient.abstraction.mc.world.level.ClientLevel;
+import io.github.solclient.abstraction.mc.world.level.LevelRenderer;
 
 /**
  * A representation of the Minecraft client.
@@ -43,6 +44,8 @@ public interface MinecraftClient {
 
 	@Nullable ClientLevel getLevel();
 
+	@NotNull LevelRenderer getLevelRenderer();
+
 	@Helper
 	default boolean hasPlayer() {
 		return getPlayer() != null;
@@ -55,7 +58,7 @@ public interface MinecraftClient {
 	/**
 	 * Gets the camera entity.
 	 * Guaranteed to return a non-null value if {@link #hasPlayer()} is <code>true</code>.
-	 * @return The focused entity, or <code>null</code> if
+	 * @return The focused entity, or <code>null</code>.
 	 */
 	@Nullable Entity getCameraEntity();
 
@@ -109,6 +112,7 @@ public interface MinecraftClient {
 
 	boolean isRunning();
 
+	// Should never be null, unlike vanilla.
 	@NotNull HitResult getHitResult();
 
 	@NotNull Timer getTimer();

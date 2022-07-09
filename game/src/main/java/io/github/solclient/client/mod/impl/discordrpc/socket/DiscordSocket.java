@@ -53,7 +53,10 @@ public class DiscordSocket extends WebSocketClient {
 	private Map<String, User> voiceCallUsers = new LinkedHashMap<>();
 
 	public DiscordSocket(DiscordIntegrationMod mod) {
-		super(SOCKET_URI, new HashMap<>() {
+		super(SOCKET_URI, new HashMap<String, String>() {
+
+			private static final long serialVersionUID = 1L;
+
 			{
 				put("Origin", STREAMKIT);
 			}

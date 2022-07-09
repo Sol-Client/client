@@ -8,9 +8,14 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.DrawableHelper;
+import io.github.solclient.abstraction.mc.render.GlStateManager;
+import io.github.solclient.abstraction.mc.text.Text;
+import io.github.solclient.abstraction.mc.world.scoreboard.PlayerTeam;
+import io.github.solclient.abstraction.mc.world.scoreboard.Score;
+import io.github.solclient.abstraction.mc.world.scoreboard.Scoreboard;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PreGameOverlayRenderEvent;
-import io.github.solclient.client.event.impl.ScoreboardRenderEvent;
+import io.github.solclient.client.event.impl.hud.PreSidebarRenderEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
@@ -19,12 +24,6 @@ import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.scoreboard.Score;
-import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.util.EnumChatFormatting;
 
 public class ScoreboardMod extends Mod {
 
@@ -95,15 +94,15 @@ public class ScoreboardMod extends Mod {
 	}
 
 	@EventHandler
-	public void onScoreboardRender(ScoreboardRenderEvent event) {
-		event.cancelled = true;
+	public void onSidebarRender(PreSidebarRenderEvent event) {
+		event.cancel();
 
 		if(hide) {
 			return;
 		}
 
-		Scoreboard scoreboard = event.objective.getScoreboard();
-		Collection<Score> scores = scoreboard.getSortedScores(event.objective);
+		Scoreboard scoreboard = event.getObjective().getScoreboard();
+		Collection<Score> scores = scoreboard.getScores(event.getObjective());
 		List<Score> filteredScores = Lists.newArrayList(Iterables.filter(scores,
 				p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#")));
 		Collections.reverse(filteredScores);
@@ -115,21 +114,18 @@ public class ScoreboardMod extends Mod {
 			scores = filteredScores;
 		}
 
-		int i = mc.fontRendererObj.getStringWidth(event.objective.getDisplayName());
+		int nameWidth = mc.getFont().getWidth(event.getObjective().getDisplayName());
 
 		for(Score score : scores) {
-			ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
-			String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName());
-			if(numbers) {
-				 s +=  ": " + EnumChatFormatting.RED + score.getScorePoints();
-			}
-			i = Math.max(i, mc.fontRendererObj.getStringWidth(s));
+			PlayerTeam team = scoreboard.getPlayersTeam(score.getPlayerName());
+			Text teamText = team.formatText(score.getPlayerName(), numbers);
+			nameWidth = Math.max(nameWidth, mc.getFont().getWidth(teamText));
 		}
 
-		int scoresHeight = (scores.size() + 1) * mc.fontRendererObj.FONT_HEIGHT + 1;
+		int scoresHeight = (scores.size() + 1) * mc.getFont().getHeight() + 1;
 
-		int scaledWidth = event.scaledRes.getScaledWidth();
-		int scaledHeight = event.scaledRes.getScaledHeight();
+		int scaledWidth = mc.getWindow().getScaledWidth();
+		int scaledHeight = mc.getWindow().getScaledHeight();
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(-3, 0, 0);
@@ -141,45 +137,45 @@ public class ScoreboardMod extends Mod {
 		GlStateManager.translate(0, (scaledHeight / 2) - (scoresHeight / 2), 0);
 
 		int k1 = 0;
-		int l1 = scaledWidth - i - k1;
+		int l1 = scaledWidth - nameWidth - k1;
 
 		int j = 0;
 
-		for(Score score1 : scores) {
+		for(Score score : scores) {
 			++j;
-			ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
-			String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
-			String s2 = "" + score1.getScorePoints();
-			int k = (j * mc.fontRendererObj.FONT_HEIGHT) + 1;
+			PlayerTeam team = scoreboard.getPlayersTeam(score.getPlayerName());
+			Text text = team.formatText(score.getPlayerName(), false);
+			String points = Integer.toString(score.getValue());
+			int k = (j * mc.getFont().getHeight()) + 1;
 			int l = scaledWidth - k1 + 2;
 
 			if(background) {
-				Gui.drawRect(l1 - 2, k, l, k + mc.fontRendererObj.FONT_HEIGHT, backgroundColour.getValue());
+				DrawableHelper.fillRect(l1 - 2, k, l, k + mc.getFont().getHeight(), backgroundColour.getValue());
 			}
 
-			mc.fontRendererObj.drawString(s1, l1, k, textColour.getValue(), shadow);
+			mc.getFont().render(text, l1, k, textColour.getValue(), shadow);
 
 			if(numbers) {
-				mc.fontRendererObj.drawString(s2, l - mc.fontRendererObj.getStringWidth(s2) - (border ? 1 : 0), k,
+				mc.getFont().render(points, l - mc.getFont().getWidth(points) - (border ? 1 : 0), k,
 						numbersColour.getValue(), shadow);
 			}
 
 			if(j == scores.size()) {
-				String s3 = event.objective.getDisplayName();
-				if (background) {
-					Gui.drawRect(l1 - 2, 0, l, mc.fontRendererObj.FONT_HEIGHT,
-							backgroundColourTop.getValue());
-					Gui.drawRect(l1 - 2, mc.fontRendererObj.FONT_HEIGHT, l, mc.fontRendererObj.FONT_HEIGHT + 1, backgroundColour.getValue());
+				Text name = event.getObjective().getDisplayName();
+				if(background) {
+					DrawableHelper.fillRect(l1 - 2, 0, l, mc.getFont().getHeight(), backgroundColourTop.getValue());
+					DrawableHelper.fillRect(l1 - 2, mc.getFont().getHeight(), l, mc.getFont().getHeight() + 1,
+							backgroundColour.getValue());
 				}
-				mc.fontRendererObj.drawString(s3, l1 + i / 2 - mc.fontRendererObj.getStringWidth(s3) / 2,
-						1, textColour.getValue(), shadow);
+				mc.getFont().render(name, l1 + nameWidth / 2 - mc.getFont().getWidth(name) / 2, 1,
+						textColour.getValue(), shadow);
 			}
 		}
 
 		if(border) {
-			int top = ((0 - j * mc.fontRendererObj.FONT_HEIGHT) - mc.fontRendererObj.FONT_HEIGHT) - 2;
-			Utils.drawOutline(l1 - 3, top, scaledWidth - k1 + 2,
-					top + mc.fontRendererObj.FONT_HEIGHT + 3 + scoresHeight, borderColour.getValue());
+			int top = ((0 - j * mc.getFont().getHeight()) - mc.getFont().getHeight()) - 2;
+			DrawableHelper.strokeRect(l1 - 3, top, scaledWidth - k1 + 2,
+					top + mc.getFont().getHeight() + 3 + scoresHeight, borderColour.getValue());
 		}
 
 		GlStateManager.popMatrix();

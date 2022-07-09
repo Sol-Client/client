@@ -23,12 +23,15 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
 import de.jcm.discordgamesdk.NetworkManager;
+import io.github.solclient.abstraction.mc.Environment;
 import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.Window;
 import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.abstraction.mc.util.MinecraftUtil;
 import io.github.solclient.abstraction.mc.util.OperatingSystem;
+import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -58,6 +61,29 @@ public class Utils {
 	}
 
 	public int lerpColour(int start, int end, float percent) {
+		if(percent >= 1) {
+			return end;
+		}
+
+		Colour startColour = new Colour(start);
+		Colour endColour = new Colour(end);
+
+		if(startColour.getAlpha() == 0) {
+			startColour = endColour.withAlpha(0);
+		}
+		else if(endColour.getAlpha() == 0) {
+			endColour = startColour.withAlpha(0);
+		}
+
+		return new Colour(
+				lerp(startColour.getRed(), endColour.getRed(), percent),
+				lerp(startColour.getGreen(), endColour.getGreen(), percent),
+				lerp(startColour.getBlue(), endColour.getBlue(), percent),
+				lerp(startColour.getAlpha(), endColour.getAlpha(), percent)
+		).getValue();
+	}
+
+	public int lerp(int start, int end, float percent) {
 		return Math.round(start + ((end - start) * percent));
 	}
 
@@ -450,11 +476,15 @@ public class Utils {
 
 	public static void earlyLoad(String name) {
 		try {
-			Class.forName(name, true, Launch.classLoader);
+			Class.forName(name, true, Environment.CLASS_LOADER);
 		}
 		catch(Exception error) {
 			Client.LOGGER.error("Could not early load " + name + ". This may cause further issues.");
 		}
+	}
+
+	public static int getShadowColour(int value) {
+		return (value & 0xFCFCFC) >> 2 | value & -0x1000000;
 	}
 
 }

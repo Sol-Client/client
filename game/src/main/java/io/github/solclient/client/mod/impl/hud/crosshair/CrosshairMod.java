@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.DrawableHelper;
 import io.github.solclient.abstraction.mc.Identifier;
 import io.github.solclient.abstraction.mc.Window;
 import io.github.solclient.abstraction.mc.raycast.HitType;
@@ -14,7 +15,6 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.hud.PreHudElementRenderEvent;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.VanillaHudElement;
 import io.github.solclient.client.util.data.Colour;
 
@@ -87,12 +87,12 @@ public class CrosshairMod extends HudMod {
 
 			if(style == CrosshairStyle.DEFAULT) {
 				mc.getTextureManager().bind(Texture.ICONS_ID);
-				Utils.drawTexture(0, 0, 0, 0, 16, 16, 0);
+				DrawableHelper.fillTexturedRect(0, 0, 0, 0, 16, 16, 16, 16);
 			}
 			else {
 				mc.getTextureManager().bind(CROSSHAIRS);
 				int v = (style.ordinal() - 2) * 16;
-				Utils.drawTexture(0, 0, 0, v, 16, 16, 0);
+				DrawableHelper.fillTexturedRect(0, 0, 0, v, 16, 16, 16, 16);
 				mc.getTextureManager().bind(Texture.ICONS_ID);
 			}
 

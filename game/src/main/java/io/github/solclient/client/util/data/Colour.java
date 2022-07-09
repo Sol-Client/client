@@ -142,7 +142,7 @@ public class Colour {
 	}
 
 	public int getShadowValue() {
-		return (value & 0xFCFCFC) >> 2 | value & -0x1000000;
+		return Utils.getShadowColour(value);
 	}
 
 	public Colour getShadow() {

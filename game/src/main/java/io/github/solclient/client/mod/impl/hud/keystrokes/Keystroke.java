@@ -61,7 +61,7 @@ public class Keystroke {
 			DrawableHelper.fillRect(x + 10, y + 3, x + width - 10, y + 4, fgColour);
 
 			if(mod.shadow) {
-				DrawableHelper.fillRect(x + 11, y + 4, x + width - 9, y + 5, fgColour.getShadowValue());
+				DrawableHelper.fillRect(x + 11, y + 4, x + width - 9, y + 5, Utils.getShadowColour(fgColour));
 			}
 		}
 		else {
@@ -87,7 +87,7 @@ public class Keystroke {
 
 					mc.getFont().render(cpsText,
 							(int) ((x / scale) + (width / 2F / scale) - (mc.getFont().getWidth(cpsText) / 2F)),
-							(int) ((y + height - (mc.getFont().getHeight() * scale)) / scale - 3), fgColour.getValue(),
+							(int) ((y + height - (mc.getFont().getHeight() * scale)) / scale - 3), fgColour,
 							mod.shadow);
 
 					GL11.glPopMatrix();
@@ -99,7 +99,7 @@ public class Keystroke {
 
 			y += 1;
 			mc.getFont().render(name, (int) (x + (width / 2F) - (mc.getFont().getWidth(name) / 2F)),
-					(int) (y + (height / 2F) - (mc.getFont().getHeight() / 2F)), fgColour.getValue(), mod.shadow);
+					(int) (y + (height / 2F) - (mc.getFont().getHeight() / 2F)), fgColour, mod.shadow);
 		}
 		wasDown = down;
 	}

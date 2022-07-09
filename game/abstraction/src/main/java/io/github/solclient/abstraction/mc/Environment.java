@@ -8,6 +8,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Environment {
 
+	public static final ClassLoader CLASS_LOADER = null;
 	/**
 	 * True if the sodium mod is installed in some form.
 	 */

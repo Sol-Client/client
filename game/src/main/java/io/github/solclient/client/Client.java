@@ -102,7 +102,7 @@ public final class Client {
 	private final Map<String, Mod> modsById = new HashMap<>();
 	@Getter
 	private List<HudElement> huds = new ArrayList<>();
-	private static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger();
 
 	private final File dataFile = new File(mc.getDataFolder(), "sol_client_mods.json");
 	private final File legacyDataFile = new File(mc.getDataFolder(), "parrot_client_mods.json" /* This was the old name. */ );

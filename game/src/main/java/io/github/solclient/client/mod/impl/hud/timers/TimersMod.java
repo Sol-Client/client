@@ -118,7 +118,7 @@ public class TimersMod extends HudMod {
 
 	@EventHandler
 	public void onServerMessage(ServerMessageReceiveEvent event) {
-		if(!CHANNEL_NAME.equals(event.getChannelId())) {
+		if(!CHANNEL_NAME.equals(event.getChannelId().path())) {
 			return;
 		}
 		String message = event.getData();

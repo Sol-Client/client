@@ -18,8 +18,10 @@ import io.github.solclient.client.util.data.Rectangle;
 /**
  * Represents a mod with only a single HUD.
  */
-@AbstractTranslationKey("sol_client.mod.hud")
+@AbstractTranslationKey(HudMod.TRANSLATION_KEY)
 public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
+
+	public static final String TRANSLATION_KEY = "sol_client.mod.hud";
 
 	/**
 	 * Represents the single element that this mod contains.

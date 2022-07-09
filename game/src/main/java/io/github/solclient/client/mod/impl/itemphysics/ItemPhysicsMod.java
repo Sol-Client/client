@@ -1,5 +1,5 @@
 /*
- * Original code by mcblueparrot,
+ * Original code by TheKodeToad,
  * but was modified to be more similar to CreativeMD's original mod.
  */
 

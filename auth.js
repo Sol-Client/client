@@ -1,7 +1,12 @@
 const axios = require("axios");
 const msmc = require("msmc");
 const fs = require("fs");
+const keytar = require("keytar");
+const crypto = require("crypto");
 const Utils = require("./utils");
+const KEYCHAIN_PREFIX = "keychain:";
+const SERVICE = "sol_client";
+var manager;
 
 class AccountManager {
 
@@ -14,18 +19,68 @@ class AccountManager {
 				this.accounts.push(Account.from(account));
 			}
 			this.activeAccount = this.accounts[data.activeAccount];
-			this.fetchSkin(this.activeAccount);
+			if(this.activeAccount) {
+				this.fetchSkin(this.activeAccount);
+			}
 		}
 		else {
 			this.accounts = [];
-			this.save();
 		}
+		this.save();
 		this.dataCallback = dataCallback;
 		this.refreshTask = {};
+		manager = this;
 	}
 
 	save() {
-		fs.writeFileSync(this.file, JSON.stringify({ accounts: this.accounts, activeAccount: this.accounts.indexOf(this.activeAccount) }));
+		fs.writeFileSync(this.file, JSON.stringify({
+			accounts: this.accounts,
+			activeAccount: this.accounts.indexOf(this.activeAccount)
+		}));
+	}
+
+	isInKeychain(prop) {
+		return prop.startsWith(KEYCHAIN_PREFIX);
+	}
+
+	async storeInKeychain(account) {
+		account.accessToken = await this.storeProp(account.accessToken, account.uuid + "_access_token");
+		if(account._msmc) {
+			account._msmc.refresh = await this.storeProp(account._msmc.refresh, account.uuid + "_refresh");
+			account._msmc.mcToken = undefined; // ah yes, the number underfined
+		}
+	}
+
+	async storeProp(prop, key) {
+		if(this.isInKeychain(prop)) {
+			return prop;
+		}
+		await keytar.setPassword(SERVICE, key, prop);
+		var test = await keytar.getPassword(SERVICE, key);
+		if(test != prop) {
+			return prop;
+		}
+		return KEYCHAIN_PREFIX + key;
+	}
+
+	async retrieveProp(prop) {
+		if(!this.isInKeychain(prop)) {
+			return prop;
+		}
+		var key = prop.substring(KEYCHAIN_PREFIX.length);
+		return keytar.getPassword(SERVICE, key);
+	}
+
+	async realToken(account) {
+		return this.retrieveProp(account.accessToken);
+	}
+
+	async realRefresh(account) {
+		if(!account._msmc) {
+			return null;
+		}
+
+		return this.retrieveProp(account._msmc.refresh);
 	}
 
 	refreshAccount(account) {
@@ -131,9 +186,12 @@ class AccountManager {
 		this.switchAccount(account);
 	}
 
-	removeAccount(account) {
+	async removeAccount(account) {
 		var index = this.accounts.indexOf(this.activeAccount);
 		this.accounts = this.accounts.filter((item) => item != account);
+
+		keytar.deletePassword(SERVICE, KEYCHAIN_PREFIX + account.uuid + "_access_token");
+		keytar.deletePassword(SERVICE, KEYCHAIN_PREFIX + account.uuid + "_refresh");
 
 		if(account == this.activeAccount) {
 			this.activeAccount = this.accounts[index];
@@ -173,34 +231,39 @@ class MicrosoftAuthService extends AuthService {
 
 	static instance = new MicrosoftAuthService();
 
-	authenticate(msmc) {
-		return new Account("msa", msmc.name, msmc.id, msmc._msmc.mcToken, null, msmc._msmc.demo, msmc._msmc);
+	async authenticate(msmc) {
+		var account = new Account("msa", msmc.name, msmc.id, msmc._msmc.mcToken, null, msmc._msmc.demo, msmc._msmc);
+		msmc._msmc.mcToken = undefined;
+		await manager.storeInKeychain(account);
+		return account;
 	}
 
-	toMsmc(account) {
+	async toMsmc(account) {
 		return {
 			name: account.username,
 			id: account.uuid,
-			_msmc: account._msmc
+			_msmc: { ...account._msmc, ...{ refresh: await manager.realRefresh(account), mcToken: await manager.realToken(account) } }
 		}
 	}
 
 	validate(account) {
-		return new Promise((resolve) => {
-			resolve(msmc.validate(this.toMsmc(account)));
+		return new Promise(async(resolve) => {
+			resolve(msmc.validate(await this.toMsmc(account)));
 		});
 	}
 
 	refresh(account) {
 		return new Promise(async(resolve) => {
-			var result = await msmc.refresh(this.toMsmc(account), () => {}, {client_id: "00000000402b5328"});
+			var startingToken = account.accessToken;
+			var startingRefresh = account._msmc.refresh;
+			var result = await msmc.refresh(await this.toMsmc(account), () => {}, {client_id: "00000000402b5328"});
 
 			if(result.type != "Success") {
-			    resolve(null);
-			    return;
+				resolve(null);
+				return;
 			}
 
-			resolve(this.authenticate(result.profile));
+			resolve(await this.authenticate(result.profile));
 		});
 	}
 
@@ -238,24 +301,24 @@ class YggdrasilAuthService extends AuthService {
 							return;
 						}
 						var data = response.data;
-						resolve(
-							new Account(
+						var account = new Account(
 								"mojang",
 								data.selectedProfile.name,
 								data.selectedProfile.id,
 								data.accessToken,
 								data.clientToken
-							)
 						);
+						manager.storeInKeychain(account);
+						resolve(account);
 					});
 		});
 	}
 
-	validate(account) {
-		return new Promise((resolve) => {
+	validate(accessToken) {
+		return new Promise(async(resolve) => {
 			const url = YggdrasilAuthService.api;
 			axios.post(url + "/validate", {
-						accessToken: account.accessToken,
+						accessToken: await manager.realToken(account),
 						clientToken: account.clientToken
 					})
 					.catch((error) => {
@@ -269,9 +332,9 @@ class YggdrasilAuthService extends AuthService {
 
 	refresh(account) {
 		const url = YggdrasilAuthService.api;
-		return new Promise((resolve) => {
+		return new Promise(async(resolve) => {
 			axios.post(url + "/refresh", {
-				accessToken: account.accessToken,
+				accessToken: await manager.realToken(account),
 				clientToken: account.clientToken,
 				selectedProfile: {
 					name: account.username,
@@ -281,8 +344,8 @@ class YggdrasilAuthService extends AuthService {
 			.catch((error) => {
 				resolve(false);
 			})
-			.then((response) => {
-				account.accessToken = response.data.accessToken;
+			.then(async(response) => {
+				account.accessToken = await manager.storeProp(response.data.accessToken, account.uuid + "_access_token");
 				resolve(true);
 			});
 		});

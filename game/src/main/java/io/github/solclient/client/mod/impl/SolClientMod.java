@@ -6,6 +6,7 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.option.KeyBinding;
+import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.ConfigOnlyMod;
 import io.github.solclient.client.mod.ModCategory;
@@ -29,10 +30,10 @@ public class SolClientMod extends ConfigOnlyMod {
 	public boolean logoInInventory;
 
 	@Option
-	public KeyBinding modsKey = KeyBinding.create(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT, Client.KEY_CATEGORY);
+	public KeyBinding modsKey = KeyBinding.create(getTranslationKey() + ".mods", Input.RIGHT_SHIFT, Client.KEY_CATEGORY);
 
 	@Option
-	public KeyBinding editHudKey = KeyBinding.create(getTranslationKey() + ".edit_hud", Keyboard.KEY_GRAVE, Client.KEY_CATEGORY);
+	public KeyBinding editHudKey = KeyBinding.create(getTranslationKey() + ".edit_hud", Input.NONE, Client.KEY_CATEGORY);
 
 	@Expose
 	@Option

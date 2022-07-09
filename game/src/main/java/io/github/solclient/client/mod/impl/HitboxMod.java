@@ -29,7 +29,7 @@ import io.github.solclient.client.util.data.Colour;
 public class HitboxMod extends Mod {
 
 	@Option
-	private final KeyBinding toggleHitboxes = KeyBinding.create(getTranslationKey() + ".key", 0, Client.KEY_CATEGORY);
+	private final KeyBinding toggleHitboxes = KeyBinding.create(getTranslationKey() + ".option.toggleHitboxes", Input.NONE, Client.KEY_CATEGORY);
 	@Expose
 	@Option
 	private boolean boundingBox = true;

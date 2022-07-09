@@ -24,19 +24,15 @@ class Utils {
 
 	static init() {
 		Utils.dataDirectory = os.homedir();
-		Utils.legacyDirectory = os.homedir();
 		switch(Utils.getOsName()) {
 			case "linux":
 				Utils.dataDirectory += "/.config/Sol Client";
-				Utils.legacyDirectory += "/.config/parrotclient";
 				break;
 			case "osx":
 				Utils.dataDirectory += "/Library/Application Support/Sol Client";
-				Utils.legacyDirectory += "/Library/Application Support/parrotclient";
 				break;
 			case "windows":
 				Utils.dataDirectory += "/AppData/Roaming/Sol Client";
-				Utils.legacyDirectory += "/AppData/Roaming/parrotclient";
 				break;
 		}
 
@@ -51,15 +47,6 @@ class Utils {
 			case "windows":
 				Utils.minecraftDirectory += "/AppData/Roaming/.minecraft";
 				break;
-		}
-
-		try {
-			if(fs.existsSync(Utils.legacyDirectory) && !fs.existsSync(Utils.dataDirectory)) {
-				fs.renameSync(Utils.legacyDirectory, Utils.dataDirectory);
-				fs.unlinkSync(Utils.dataDirectory + "/account.json");
-			}
-		}
-		catch(error) {
 		}
 
 		Utils.librariesDirectory = Utils.minecraftDirectory + "/libraries";
@@ -90,10 +77,10 @@ class Utils {
 	}
 
 	static isAlreadyDownloaded(file, size) {
-		return fs.existsSync(file) && (size == -1 || fs.statSync(file).size == size);
+		return size != -1 && fs.existsSync(file) && fs.statSync(file).size == size;
 	}
 
-	static download(url, file, size) {
+	static download(url, file, size, progressConsumer) {
 		if(!fs.existsSync(path.dirname(file))) {
 			fs.mkdirSync(path.dirname(file), { recursive: true });
 		}
@@ -106,18 +93,42 @@ class Utils {
 						return;
 					}
 
-					if(response.code == 404) {
-						reject(new Error("Server responded with error 404"));
+					var length;
+					if(response.headers["content-length"]) {
+						length = parseInt(response.headers["content-length"]);
+					}
+					else {
+						length = 0;
+					}
+
+					var receivedBytes = 0;
+
+					if(response.code > 400) {
+						reject(new Error("Server responded with error " + response.code));
 						return;
 					}
 
 					if(response.headers.location) {
-						var result = await Utils.download(response.headers.location, file, size);
+						var result = await Utils.download(response.headers.location, file, size, progressConsumer);
 						resolve(result);
 						return;
 					}
+
 					var stream = fs.createWriteStream(file);
 					response.pipe(stream);
+
+					if(progressConsumer) {
+						if(!progressConsumer(0)) {
+							stream.end();
+						}
+						response.on("data", (chunk) => {
+							receivedBytes += chunk.length;
+							if(!progressConsumer(receivedBytes / length * 100)) {
+								stream.end();
+							}
+						});
+					}
+
 					response.on("end", () => {
 						stream.close();
 						resolve(true);
@@ -160,6 +171,17 @@ class Utils {
 				return "mac";
 			case "Windows_NT":
 				return "windows";
+		}
+	}
+
+	static getNiceOsName() {
+		switch(os.type()) {
+			case "Linux":
+				return "Linux";
+			case "Darwin":
+				return "macOS";
+			case "Windows_NT":
+				return "Windows";
 		}
 	}
 

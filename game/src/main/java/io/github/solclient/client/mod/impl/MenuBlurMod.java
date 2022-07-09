@@ -94,8 +94,8 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	public void onRenderGuiBackground(RenderGuiBackgroundEvent event) {
 		event.cancelled = true;
 		ScaledResolution resolution = new ScaledResolution(mc);
-		Gui.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), Utils.blendColor(0x00000000,
-				backgroundColour.getValue(), getProgress()));
+		Gui.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(),
+				Utils.lerpColour(0, backgroundColour.getValue(), getProgress()));
 	}
 
 	public void update() {

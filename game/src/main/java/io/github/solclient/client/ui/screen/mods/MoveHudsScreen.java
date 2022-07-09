@@ -14,11 +14,13 @@ import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
+import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class MoveHudsScreen extends Screen {
 
@@ -90,14 +92,14 @@ public class MoveHudsScreen extends Screen {
 		for(HudElement hud : Client.INSTANCE.getHuds()) {
 			if(!hud.isVisible()) continue;
 
+			Rectangle bounds = hud.getMultipliedBounds();
+
 			if(mc.theWorld == null) {
 				hud.render(true);
 			}
 
-			Utils.drawOutline(mouseY, mouseY, mouseY, mouseX, mouseY);
-			float[] bounds = hud.getHighPrecisionMultipliedBounds();
 			if(bounds != null) {
-				Utils.drawOutline(bounds[0], bounds[1], bounds[0] + bounds[2], bounds[1] + bounds[3], SolClientMod.instance.uiColour.getValue());
+				bounds.stroke(SolClientMod.instance.uiColour);
 			}
 		}
 

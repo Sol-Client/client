@@ -11,6 +11,7 @@ import org.objectweb.asm.tree.ClassNode;
 
 import io.github.solclient.client.tweak.transformer.impl.TransformerGuiButton;
 import io.github.solclient.client.tweak.transformer.impl.TransformerGuiScreen;
+import io.github.solclient.client.tweak.transformer.impl.TransformerLinuxKeycodes;
 import io.github.solclient.client.tweak.transformer.impl.TransformerMinecraft;
 import io.github.solclient.client.tweak.transformer.impl.TransformerWorldClient;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -24,6 +25,7 @@ public class ClassTransformer implements IClassTransformer {
 		register(new TransformerGuiScreen());
 		register(new TransformerWorldClient());
 		register(new TransformerMinecraft());
+		register(new TransformerLinuxKeycodes());
 	}
 
 	@Override
@@ -48,6 +50,7 @@ public class ClassTransformer implements IClassTransformer {
 
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		clazz.accept(writer);
+
 		return writer.toByteArray();
 	}
 

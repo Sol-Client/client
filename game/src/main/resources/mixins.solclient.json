@@ -84,7 +84,10 @@
 		"mod.MixinV1_7VisualsMod$MixinEntityRenderer",
 		"mod.MixinV1_7VisualsMod$MixinItemRenderer",
 		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase",
-		"mod.MixinTNTTimerMod$MixinRenderTNTPrimed"
+		"mod.MixinTNTTimerMod$MixinRenderTNTPrimed",
+		"lwjgl.MixinWindowsDisplay",
+		"lwjgl.MixinLinuxKeyboard",
+		"lwjgl.MixinLinuxKeycodes"
 	],
 	"injectors": {
 		"defaultRequire": 1

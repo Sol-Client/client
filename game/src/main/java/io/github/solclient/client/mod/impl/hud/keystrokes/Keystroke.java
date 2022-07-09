@@ -47,19 +47,18 @@ public class Keystroke {
 
 		if(mod.background) {
 			DrawableHelper.fillRect(x, y, x + width, y + height,
-					mod.backgroundColourPressed.blend(mod.backgroundColour, progress).getValue());
+					Utils.lerpColour(mod.backgroundColourPressed.getValue(), mod.backgroundColour.getValue(), progress));
 		}
 
 		if(mod.border) {
 			DrawableHelper.strokeRect(x, y, x + width, y + height,
-					mod.borderColourPressed.blend(mod.borderColour, progress).getValue());
+					Utils.lerpColour(mod.borderColourPressed.getValue(), mod.borderColour.getValue(), progress));
 		}
 
-		Colour fgColour = mod.textColourPressed.blend(mod.textColour, progress);
-		String name = this.name;
+		int fgColour = Utils.lerpColour(mod.textColourPressed.getValue(), mod.textColour.getValue(), progress);
 
-		if(name.equals("Space")) {
-			DrawableHelper.fillRect(x + 10, y + 3, x + width - 10, y + 4, fgColour.getValue());
+		if(name == null) {
+			DrawableHelper.fillRect(x + 10, y + 3, x + width - 10, y + 4, fgColour);
 
 			if(mod.shadow) {
 				DrawableHelper.fillRect(x + 11, y + 4, x + width - 9, y + 5, fgColour.getShadowValue());

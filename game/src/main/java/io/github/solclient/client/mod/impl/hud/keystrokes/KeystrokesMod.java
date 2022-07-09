@@ -87,7 +87,7 @@ public class KeystrokesMod extends HudMod {
 		d = new Keystroke(this, mc.getOptions().strafeRightKey(), "D", 36, 17, 17);
 		lmb = new Keystroke(this, mc.getOptions().attackKey(), "LMB", 0, 26, 17);
 		rmb = new Keystroke(this, mc.getOptions().useKey(), "RMB", 27, 26, 17);
-		space = new Keystroke(this, mc.getOptions().jumpKey(), "Space", 0, 53, 8);
+		space = new Keystroke(this, mc.getOptions().jumpKey(), null, 0, 53, 8);
 	}
 
 	@Override

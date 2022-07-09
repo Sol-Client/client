@@ -84,15 +84,16 @@ public class SpeedometerMod extends SimpleHudMod {
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_LINE_SMOOTH);
 			GL11.glDisable(GL11.GL_SCISSOR_TEST);
+			GL11.glColor4f(1, 1, 1, 1);
 
 			Utils.resetLineWidth();
 		}
 	}
 
 	private double getSpeed() {
-		double distTraveledLastTickX = mc.getPlayer().getX() - mc.getPlayer().getPreviousX();
-		double distTraveledLastTickZ = mc.getPlayer().getZ() - mc.getPlayer().getPreviousZ();
-		return Math.sqrt(distTraveledLastTickX * distTraveledLastTickX + distTraveledLastTickZ * distTraveledLastTickZ);
+		double xTraveled = mc.getPlayer().getX() - mc.getPlayer().getPreviousX();
+		double zTraveled = mc.getPlayer().getZ() - mc.getPlayer().getPreviousZ();
+		return Math.sqrt(xTraveled * xTraveled + zTraveled * zTraveled);
 	}
 
 	@Override
@@ -105,11 +106,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			return "0.00 m/s";
 		}
 		else {
-			double distTraveledLastTickX = mc.getPlayer().getX() - mc.getPlayer().getPreviousX();
-			double distTraveledLastTickZ = mc.getPlayer().getZ() - mc.getPlayer().getPreviousZ();
-			double currentSpeed = Math.sqrt(
-					distTraveledLastTickX * distTraveledLastTickX + distTraveledLastTickZ * distTraveledLastTickZ);
-			return FORMAT.format(currentSpeed / 0.05F) + " m/s";
+			return FORMAT.format(getSpeed() / 0.05F) + " m/s";
 		}
 	}
 

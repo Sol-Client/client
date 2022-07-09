@@ -64,8 +64,13 @@
 			<div class="settings invisible">
 				<br/>
 				<div class="centred">
-					<input type="checkbox" class="optifine" id="optifine"/>
+					<input type="checkbox" class="optifine"/>
 					<label for="optifine" style="cursor: pointer;"  class="spaced-5">Install OptiFine</label>
+				</div>
+				<br/>
+				<div class="centred">
+					<input type="checkbox" class="auto-update"/>
+					<label for="auto-update" style="cursor: pointer;"  class="spaced-5">Automatic Updates</label>
 				</div>
 				<br/>
 				<br/>
@@ -84,6 +89,19 @@
 					<button class="centred button button-generic minecraft-folder spaced-15">Change</button>
 				</div>
 				<br/>
+				<br/>
+				<h2 class="centred">Advanced</h2>
+				<span class="centred">JRE Location</span>
+				<br/>
+				<span class="centred spaced-15 jre-location"></span>
+				<br/>
+				<div class="centred">
+					<button class="button button-generic jre-location-change">Change</button>
+					<button class="button button-generic jre-location-reset spaced-15">Reset</button>
+				</div>
+				<br/>
+				<p class="centred">JVM Arguments</p>
+				<input type="text" class="centred input jvm-arguments" placeholder="No additional arguments"/>
 				<br/>
 				<br/>
 				<div class="centred">

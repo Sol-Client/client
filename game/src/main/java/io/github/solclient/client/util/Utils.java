@@ -57,7 +57,7 @@ public class Utils {
 		return bytes / 1024L / 1024L;
 	}
 
-	public int blendInt(int start, int end, float percent) {
+	public int lerpColour(int start, int end, float percent) {
 		return Math.round(start + ((end - start) * percent));
 	}
 
@@ -311,10 +311,10 @@ public class Utils {
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 		GlStateManager.color(f, f1, f2, f3);
 		worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-		worldrenderer.pos((double) left, (double) bottom, 0.0D).endVertex();
-		worldrenderer.pos((double) right, (double) bottom, 0.0D).endVertex();
-		worldrenderer.pos((double) right, (double) top, 0.0D).endVertex();
-		worldrenderer.pos((double) left, (double) top, 0.0D).endVertex();
+		worldrenderer.pos(left, bottom, 0.0D).endVertex();
+		worldrenderer.pos(right, bottom, 0.0D).endVertex();
+		worldrenderer.pos(right, top, 0.0D).endVertex();
+		worldrenderer.pos(left, top, 0.0D).endVertex();
 		tessellator.draw();
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();
@@ -446,6 +446,15 @@ public class Utils {
 		}
 
 		return 0;
+	}
+
+	public static void earlyLoad(String name) {
+		try {
+			Class.forName(name, true, Launch.classLoader);
+		}
+		catch(Exception error) {
+			Client.LOGGER.error("Could not early load " + name + ". This may cause further issues.");
+		}
 	}
 
 }

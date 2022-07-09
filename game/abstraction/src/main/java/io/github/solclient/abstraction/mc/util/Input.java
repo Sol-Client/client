@@ -1,6 +1,7 @@
 package io.github.solclient.abstraction.mc.util;
 
 import io.github.solclient.abstraction.Helper;
+import io.github.solclient.abstraction.mc.RuntimeDetermined;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -127,6 +128,7 @@ public class Input {
 	public final int RIGHT_SUPER = 347;
 	public final int MENU = 348;
 	public final int LAST = MENU;
+	public final int NONE = RuntimeDetermined.value();
 
 	public boolean isKeyHeld(int code) {
 		throw new UnsupportedOperationException();

@@ -1,0 +1,37 @@
+h1 {
+	margin-left: 20px;
+	margin-top: 20px;
+}
+
+.button-generic {
+	position: fixed;
+	bottom: 15px;
+	right: 15px;
+}
+
+.button-generic-black {
+	position: fixed;
+	bottom: 15px;
+	right: 75px;
+}
+
+.progress-bar {
+	background-color: rgb(60, 60, 60);
+	position: fixed;
+	top: 70px;
+	left: 5%;
+	width: 90%;
+	height: 40px;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.progress-bar-progress {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 100%;
+	background: var(--primary-colour);
+	transition: width 0.3s ease-out;
+}

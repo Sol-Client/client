@@ -1,16 +1,27 @@
 async function run() {
 	if(require("electron-squirrel-startup")) return;
 
+    const fs = require("fs");
+
 	const Updater = require("./updater");
 	const Utils = require("./utils");
+	const Config = require("./config");
 
 	Utils.init();
+	Config.init(Utils.dataDirectory);
+	Config.load();
 
-	if(!require("electron-is-dev") && Utils.getOsName() == "windows" && (await Updater.update())) {
+	const { app, BrowserWindow, ipcMain, dialog, shell } = require("electron");
+
+	ipcMain.on("disableUpdates", async() => {
+		Config.data.autoUpdate = false;
+		Config.save();
+	});
+
+	if(Config.data.autoUpdate && await Updater.update()) {
 		return;
 	}
 
-	const { app, BrowserWindow, ipcMain, dialog, shell } = require("electron");
 	const path = require("path");
 	const msmc = require("msmc");
 	const hastebin = require("hastebin");
@@ -40,6 +51,10 @@ async function run() {
 		window.loadFile("app.html");
 		window.setMenu(null);
 
+		if(process.env.DEVTOOLS) {
+			window.webContents.openDevTools();
+		}
+
 		window.on("close", (event) => {
 			if(!canQuit) {
 				event.preventDefault();
@@ -49,10 +64,10 @@ async function run() {
 
 		window.once("ready-to-show", () => window.show());
 
-		ipcMain.on("directory", async(event) => {
+		ipcMain.on("directory", async(event, title, id) => {
 			var result = await dialog.showOpenDialog(window,
 				{
-					title: "Select Minecraft Folder",
+					title: title,
 					properties: ["openDirectory" ]
 				}
 			);
@@ -60,8 +75,15 @@ async function run() {
 			var file = result.filePaths[0];
 
 			if(!result.canceled && file) {
-				event.sender.send("directory", file);
+				event.sender.send("directory", file, id);
 			}
+		});
+
+		ipcMain.on("jreError", async(event) => {
+			dialog.showMessageBoxSync(window, {
+				title: "Invalid Directory",
+				message: "JRE must include bin folder."
+			});
 		});
 
 		ipcMain.on("skinFile", async(event) => {
@@ -91,9 +113,10 @@ async function run() {
 
 	ipcMain.on("msa", async(event) => {
 		msmc.fastLaunch("electron", () => {})
-				.then((result) => {
-			event.sender.send("msa", JSON.stringify(result));
-		});
+				.then(async(result) => {
+					await window.webContents.session.clearStorageData();
+					event.sender.send("msa", JSON.stringify(result));
+				});
 	});
 
 	ipcMain.on("crash", async(_event, report, file, optifine) => {
@@ -140,20 +163,21 @@ If you have private messages, try reproducing this issue again.`,
 		if(optifine) {
 			running += " with " + optifine;
 		}
+
+		running += " on " + Utils.getNiceOsName();
 		running += ".";
 
 		var url = new URL("https://github.com/TheKodeToad/Sol-Client/issues/new/")
-		url.searchParams.set("body", `## Description
+		url.searchParams.set("body", `## Description (please fill in)
 A description of the problem that is occurring.
 ## Steps to Reproduce
 1. What did you do...
 2. ...to crash the game?
-## Client Version
+## Details
 ${running}
 ## Logs/Crash Report
 ${crashReportText}
 `);
-		url.searchParams.set("title", "Short Description")
 		url.searchParams.set("labels", "bug");
 		shell.openExternal(url.toString());
 	});

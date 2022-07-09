@@ -1,6 +1,6 @@
 {
   "name": "Sol Client",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Simple and easy to use Minecraft client.",
   "main": "main.js",
   "scripts": {
@@ -18,7 +18,8 @@
     "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "hastebin": "^0.2.1",
-    "msmc": "^2.2.2",
+    "keytar": "^7.9.0",
+    "msmc": "^3.1.1",
     "nbt": "^0.8.1",
     "tar": "^6.1.11",
     "unzipper": "^0.10.11"
@@ -44,20 +45,6 @@
           "config": {
             "name": "sol_client_launcher",
             "loadingGif": "assets/installing.gif"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {
-            "options": {
-              "icon": "assets/icon.png",
-              "categories": [
-                "Game"
-              ],
-              "section": "games",
-              "productName": "Sol Client",
-              "maintainer": "mcblueparrot"
-            }
           }
         },
         {

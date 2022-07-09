@@ -12,7 +12,7 @@ const Patcher = require("./patcher");
 const { ipcRenderer, shell } = require("electron");
 const crypto = require("crypto");
 const url = require("url");
-const { AccountManager } = require("./auth");
+const { AccountManager } = require("./auth").AccountManager;
 
 class Launcher {
 
@@ -191,7 +191,7 @@ class Launcher {
 									fs.mkdirSync(path.dirname(destination), { recursive: true });
 								}
 
-									await entry.pipe(fs.createWriteStream(nativesFolder + "/" + fileName));
+								await entry.pipe(fs.createWriteStream(nativesFolder + "/" + fileName));
 							}
 						}
 					}
@@ -212,88 +212,93 @@ class Launcher {
 		}
 
 		console.log("Downloading client...");
+		progress("Downloading client...");
 
 		await Version.downloadJar(version);
 
-		console.log("Downloading JRE...");
-		progress("Downloading runtime...");
-
+		var jrePath = Config.data.jrePath;
 		var java;
 
-		await new Promise((resolve) => {
-			axios.get("https://api.adoptium.net/v3/assets/feature_releases/8/ga" +
-					"?release_type=ga" +
-					`&architecture=${os.arch()}` +
-					"&heap_size=normal" +
-					"&image_type=jre" +
-					"&jvm_impl=hotspot" +
-					`&os=${Utils.getJdkOsName()}` +
-					"&page=0" +
-					"&page_size=1" +
-					"&project=jdk" +
-					"&sort_method=DATE" +
-					"&sort_order=DESC" +
-					"&vendor=eclipse")
-				.then(async(response) => {
-					var jrePackage = response.data[0].binaries[0].package;
-					var name = jrePackage.name;
-					var jrePath = Utils.dataDirectory + "/jre/" + name;
-					var dest = Utils.dataDirectory + "/jre/"
-							+ name.substring(0, name.indexOf("."));
-					var doneFile = dest + "/.done";
-					if(!fs.existsSync(dest + "/.done")) {
-						await Utils.download(jrePackage.link,
-							jrePath, jrePackage.size);
+		if(jrePath) {
+			java = path.join(jrePath, "bin/java")
+		}
+
+		if(!jrePath || !java || !fs.existsSync(java)) {
+			await new Promise((resolve) => {
+				axios.get("https://api.adoptium.net/v3/assets/feature_releases/8/ga" +
+						"?release_type=ga" +
+						`&architecture=${os.arch()}` +
+						"&heap_size=normal" +
+						"&image_type=jre" +
+						"&jvm_impl=hotspot" +
+						`&os=${Utils.getJdkOsName()}` +
+						"&page=0" +
+						"&page_size=1" +
+						"&project=jdk" +
+						"&sort_method=DATE" +
+						"&sort_order=DESC" +
+						"&vendor=eclipse")
+					.then(async(response) => {
+						var jrePackage = response.data[0].binaries[0].package;
+						var name = jrePackage.name;
+						var jrePath = Utils.dataDirectory + "/jre/" + name;
+						var dest = Utils.dataDirectory + "/jre/"
+								+ name.substring(0, name.indexOf("."));
+						var doneFile = dest + "/.done";
+						if(!fs.existsSync(dest + "/.done")) {
+							await Utils.download(jrePackage.link,
+								jrePath, jrePackage.size);
 
 
-						if(!fs.existsSync(dest)) {
-							fs.mkdirSync(dest, {recursive: true});
-						}
-
-						if(name.endsWith(".tar.gz")) {
-							await tar.x({
-								file: jrePath,
-								C: dest
-							});
-						}
-						else if(name.endsWith(".zip")) {
-							var zip = fs.createReadStream(jrePath)
-									.pipe(unzipper.Parse({ forceStream: true }));
-
-							for await(const entry of zip) {
-								const fileName = entry.path;
-
-								var destination = dest + "/" + fileName;
-								if(!fs.existsSync(path.dirname(destination))) {
-									fs.mkdirSync(path.dirname(destination), { recursive: true });
-								}
-
-								await entry.pipe(fs.createWriteStream(destination));
+							if(!fs.existsSync(dest)) {
+								fs.mkdirSync(dest, { recursive: true });
 							}
+
+							if(name.endsWith(".tar.gz")) {
+								await tar.x({
+									file: jrePath,
+									C: dest
+								});
+							}
+							else if(name.endsWith(".zip")) {
+								var zip = fs.createReadStream(jrePath)
+										.pipe(unzipper.Parse({ forceStream: true }));
+
+								for await(const entry of zip) {
+									const fileName = entry.path;
+
+									var destination = dest + "/" + fileName;
+									if(!fs.existsSync(path.dirname(destination))) {
+										fs.mkdirSync(path.dirname(destination), { recursive: true });
+									}
+
+									await entry.pipe(fs.createWriteStream(destination));
+								}
+							}
+
+							fs.closeSync(fs.openSync(doneFile, "w"));
+
+							fs.unlinkSync(jrePath);
 						}
 
-						fs.closeSync(fs.openSync(doneFile, "w"));
+						java = dest + "/" + response.data[0].release_name
+								+ "-jre/";
+						switch(Utils.getOsName()) {
+							case "linux":
+								java += "bin/java";
+								break;
+							case "windows":
+								java += "bin/java.exe";
+								break;
+							case "osx":
+								java += "Contents/Home/bin/java";
+								break;
+						}
 
-						fs.unlinkSync(jrePath);
-					}
-
-					java = dest + "/" + response.data[0].release_name
-							+ "-jre/";
-					switch(Utils.getOsName()) {
-						case "linux":
-							java += "bin/java";
-							break;
-						case "windows":
-							java += "bin/java.exe";
-							break;
-						case "osx":
-							java += "Contents/Home/bin/java";
-							break;
-					}
-
-					resolve();
-				});
-		});
+						resolve();
+					});
+			});
+		}
 
 		console.log("Patching...");
 		progress("Patching...");
@@ -370,7 +375,7 @@ class Launcher {
 				await entry.autodrain();
 			}
 			else {
-					await entry.pipe(fs.createWriteStream(discordNativeLibrary));
+				await entry.pipe(fs.createWriteStream(discordNativeLibrary));
 			}
 		}
 		progress("Starting...");
@@ -399,6 +404,9 @@ class Launcher {
 
 		// Fix Log4j encoding.
 		args.push("-Dfile.encoding=UTF-8");
+
+		// Add custom args.
+		args.push(...Config.getJvmArgs());
 
 		var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";
 		var classpath = "";
@@ -436,7 +444,7 @@ class Launcher {
 		}
 
 		args.push("--accessToken");
-		args.push(activeAccount.accessToken);
+		args.push(await this.accountManager.realToken(activeAccount));
 
 		args.push("--versionType");
 		args.push("release");

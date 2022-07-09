@@ -3,11 +3,16 @@ const Utils = require("./utils");
 
 class Config {
 
-	static data = {
+	static DEFAULT = {
 		maxMemory: 2048,
 		optifine: Utils.getOsName() != "osx",
-		minecraftFolder: "<use default>"
+		minecraftFolder: null,
+		autoUpdate: true,
+		jvmArgs: "",
+		jrePath: null
 	};
+
+	static data = Config.DEFAULT;
 	static file;
 
 	static init(base) {
@@ -16,9 +21,10 @@ class Config {
 
 	static load() {
 		if(fs.existsSync(Config.file)) {
-			Config.data = JSON.parse(fs.readFileSync(Config.file, "UTF-8"));
-			if(!Config.data.minecraftFolder) {
-				Config.data.minecraftFolder = "<use default>";
+			Config.data = { ...Config.DEFAULT, ...JSON.parse(fs.readFileSync(Config.file, "UTF-8")) };
+
+			if(Config.data.minecraftFolder == "<use default>") {
+				Config.data.minecraftFolder = null;
 			}
 		}
 	}
@@ -28,11 +34,42 @@ class Config {
 	}
 
 	static getGameDirectory(defaultDirectory) {
-		if(Config.data.minecraftFolder != "<use default>") {
+		if(Config.data.minecraftFolder) {
 			return Config.data.minecraftFolder;
 		}
 
 		return defaultDirectory;
+	}
+
+	static getJvmArgs() {
+		var args = Config.data.jvmArgs;
+		var result = [];
+
+		var prevC;
+		var arg = "";
+
+		for(var c of args) {
+			if(prevC == "\\") {
+				arg = arg.substring(0, arg.length - 1);
+				arg += c;
+				prevC = 0;
+				continue;
+			}
+			else if(c == " ") {
+				result.push(arg);
+				arg = "";
+			}
+			else {
+				arg += c;
+			}
+			prevC = c;
+		}
+
+		if(arg !== "") {
+			result.push(arg);
+		}
+
+		return result;
 	}
 
 }

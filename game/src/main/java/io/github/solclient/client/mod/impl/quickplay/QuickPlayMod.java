@@ -26,6 +26,7 @@ public class QuickPlayMod extends Mod {
 
 	@Option
 	private final KeyBinding menuKey = KeyBinding.create(getTranslationKey() + ".key", Input.R, Client.KEY_CATEGORY);
+	private boolean got;
 	private QuickPlayDatabase database;
 	@Expose
 	private final List<String> recentlyPlayed = new ArrayList<>();
@@ -33,10 +34,6 @@ public class QuickPlayMod extends Mod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-
-		Utils.MAIN_EXECUTOR.submit(() -> {
-			database = new QuickPlayDatabase();
-		});
 		mc.getOptions().addKey(menuKey);
 	}
 
@@ -69,6 +66,17 @@ public class QuickPlayMod extends Mod {
 		if(database != null && menuKey.isHeld()
 				&& Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL) {
 			mc.setScreen(new QuickPlayPalette(this));
+		}
+	}
+
+	@Override
+	protected void onEnable() {
+		super.onEnable();
+		if(!got) {
+			got = true;
+			Utils.MAIN_EXECUTOR.submit(() -> {
+				database = new QuickPlayDatabase();
+			});
 		}
 	}
 

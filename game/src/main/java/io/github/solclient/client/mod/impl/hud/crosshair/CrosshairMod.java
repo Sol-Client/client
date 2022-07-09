@@ -63,11 +63,11 @@ public class CrosshairMod extends HudMod {
 				return;
 			}
 			Window window = mc.getWindow();
-			int x = (int) (window.getScaledWidth() / getScale() / 2 - 7);
-			int y = (int) (window.getScaledHeight() / getScale() / 2 - 7);
 
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(getScale(), getScale(), getScale());
+			GlStateManager.translate(window.getScaledWidth() / getScale() / 2 - 7,
+					window.getScaledHeight() / getScale() / 2 - 7, 0);
 
 			crosshairColour.bind();
 
@@ -85,16 +85,18 @@ public class CrosshairMod extends HudMod {
 						GL11.GL_ZERO);
 			}
 
-			if (style == CrosshairStyle.DEFAULT) {
+			if(style == CrosshairStyle.DEFAULT) {
 				mc.getTextureManager().bind(Texture.ICONS_ID);
-				Utils.drawTexture(x, y, 0, 0, 16, 16, 0);
+				Utils.drawTexture(0, 0, 0, 0, 16, 16, 0);
 			}
 			else {
 				mc.getTextureManager().bind(CROSSHAIRS);
 				int v = (style.ordinal() - 2) * 16;
-				Utils.drawTexture(x, y, 0, v, 16, 16, 0);
+				Utils.drawTexture(0, 0, 0, v, 16, 16, 0);
 				mc.getTextureManager().bind(Texture.ICONS_ID);
 			}
+
+			GlStateManager.resetColour();
 
 			GlStateManager.resetColour();
 			GlStateManager.popMatrix();

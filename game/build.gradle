@@ -68,7 +68,7 @@ dependencies {
 	// minimal lwjgl, simply to compile against since the version can vary
 	compileOnly "org.lwjgl:lwjgl-opengl:3.3.1"
 
-	implementation "com.google.guava:guava:31.1-jre"	
+	implementation "com.google.guava:guava:31.1-jre"
 
 	implementation project(":abstraction")
 }

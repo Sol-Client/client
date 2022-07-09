@@ -149,8 +149,8 @@ public class Colour {
 		return new Colour(getShadowValue());
 	}
 
-	public Colour blend(Colour dest, float percent) {
-		return new Colour(Utils.blendColor(value, dest.value, percent));
+	public Colour lerp(Colour dest, float percent) {
+		return new Colour(Utils.lerpColour(value, dest.value, percent));
 	}
 
 	public double getLuminance() {

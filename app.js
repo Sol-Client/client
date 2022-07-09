@@ -31,7 +31,7 @@ ipcRenderer.on("quitGame", (event) => {
 	ipcRenderer.send("quit", true);
 });
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async() => {
 	if(Utils.getOsName() == "osx") {
 		document.querySelector(".drag-region").style.display = "block";
 	}
@@ -112,15 +112,29 @@ window.addEventListener("DOMContentLoaded", () => {
 		}
 	});
 
+	for(var account of launcher.accountManager.accounts) {
+		await launcher.accountManager.storeInKeychain(account);
+	}
+
 	function updateAccount() {
-		document.querySelector(".account-button").innerHTML = `<img src="${launcher.accountManager.activeAccount.head}"/> <span>${launcher.accountManager.activeAccount.username} <img src="arrow.svg" class="arrow-icon"/></span>`;
+		if(launcher.accountManager.activeAccount) {
+			document.querySelector(".account-button").innerHTML = `<img src="${launcher.accountManager.activeAccount.head}"/> <span>${launcher.accountManager.activeAccount.username} <img src="arrow.svg" class="arrow-icon"/></span>`;
+		}
 	}
 
 	function updateMinecraftFolder() {
-		document.querySelector(".minecraft-folder-path").innerText = Config.data.minecraftFolder;
+		document.querySelector(".minecraft-folder-path").innerText =
+				Config.data.minecraftFolder ?? "(use default)";
+		// wow. I didn't know you could do that in js.
+	}
+
+	function updateJre() {
+		document.querySelector(".jre-location").innerText =
+				Config.data.jrePath ?? "(download automatically)"
 	}
 
 	updateMinecraftFolder();
+	updateJre();
 
 	backToMain.onclick = () => {
 		if(loggingIn) {
@@ -160,10 +174,10 @@ window.addEventListener("DOMContentLoaded", () => {
 			var accountElement = document.createElement("div");
 			accountElement.classList.add("account");
 			accountElement.innerHTML = `<img src="${account.head}"/> <span>${account.username}</span> <button class="remove-account"><img src="remove.svg"/></button>`;
-			accountElement.onclick = (event) => {
+			accountElement.onclick = async(event) => {
 				if(event.target.classList.contains("remove-account")
 						|| event.target.parentElement.classList.contains("remove-account")) {
-					if(!launcher.accountManager.removeAccount(account)) {
+					if(!(await launcher.accountManager.removeAccount(account))) {
 						main.style.display = null;
 						login.style.display = "block";
 						backToMain.style.display = null;
@@ -212,7 +226,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		}
 	};
 
-	ipcRenderer.on("msa", (event, result) => {
+	ipcRenderer.on("msa", async(event, result) => {
 		loggingIn = false;
 		microsoftLoginButton.innerText = "Microsoft Account";
 		result = JSON.parse(result);
@@ -223,7 +237,7 @@ window.addEventListener("DOMContentLoaded", () => {
 			alert("Could not log in: " + result.type);
 			return;
 		}
-		var account = microsoftAuthService.authenticate(result.profile);
+		var account = await microsoftAuthService.authenticate(result.profile);
 		launcher.accountManager.addAccount(account);
 		login.style.display = "none";
 		main.style.display = "block";
@@ -280,13 +294,32 @@ window.addEventListener("DOMContentLoaded", () => {
 	document.querySelector(".about-tab").onclick = () => switchToTab("about");
 	document.querySelector(".settings-tab").onclick = () => switchToTab("settings");
 	document.querySelector(".news-tab").onclick = () => switchToTab("news");
-	document.querySelector(".minecraft-folder").onclick = () => ipcRenderer.send("directory");
-
-	ipcRenderer.on("directory", (event, file) => {
-		Config.data.minecraftFolder = file;
+	document.querySelector(".minecraft-folder").onclick = () => ipcRenderer.send("directory", "Select Minecraft Folder", "minecraft");
+	document.querySelector(".jre-location-change").onclick = () => ipcRenderer.send("directory", "Select JRE Folder", "jre");
+	document.querySelector(".jre-location-reset").onclick = () => {
+		Config.data.jrePath = null;
 		Config.save();
-		updateMinecraftFolder();
-		updateServers();
+		updateJre();
+	};
+
+	ipcRenderer.on("directory", (event, file, id) => {
+		switch(id) {
+			case "minecraft":
+				Config.data.minecraftFolder = file;
+				Config.save();
+				updateMinecraftFolder();
+				updateServers();
+				break;
+			case "jre":
+				if(!fs.existsSync(path.join(file, "bin/java"))) {
+					ipcRenderer.send("jreError");
+					return;
+				}
+				Config.data.jrePath = file;
+				Config.save();
+				updateJre();
+				break;
+		}
 	});
 
 	document.querySelector(".devtools").onclick = () => ipcRenderer.send("devtools");
@@ -336,6 +369,7 @@ window.addEventListener("DOMContentLoaded", () => {
 			});
 		}
 	}
+
 	updateServers();
 
 	var memory = document.querySelector(".memory");
@@ -349,12 +383,26 @@ window.addEventListener("DOMContentLoaded", () => {
 	optifine.onchange = () => {
 		Config.data.optifine = optifine.checked;
 		Config.save();
-	}
+	};
+
+	var autoUpdate = document.querySelector(".auto-update");
+	autoUpdate.checked = Config.data.autoUpdate;
+	autoUpdate.onchange = () => {
+		Config.data.autoUpdate = autoUpdate.checked;
+		Config.save();
+	};
+
+	var jvmArguments = document.querySelector(".jvm-arguments");
+	jvmArguments.value = Config.data.jvmArgs;
+	jvmArguments.onchange = () => {
+		Config.data.jvmArgs = jvmArguments.value;
+		Config.save();
+	};
 
 	function updateMemoryLabel() {
 		memoryLabel.innerText = (memory.value / 1024).toFixed(1) + " GB";
 		Config.data.maxMemory = memory.value;
-	}
+	};
 
 	memory.oninput = updateMemoryLabel;
 	memory.onchange = Config.save;

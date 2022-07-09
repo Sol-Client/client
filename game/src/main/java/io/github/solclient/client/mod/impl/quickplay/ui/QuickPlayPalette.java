@@ -186,6 +186,7 @@ public final class QuickPlayPalette extends ProxyScreen {
 	public void keyDown(char character, int key) {
 		super.keyDown(character, key);
 
+<<<<<<< HEAD
 		if(key == Input.BACKSPACE && !query.isEmpty()) {
 			if(Input.isCtrlHeld()) {
 				query = "";
@@ -196,6 +197,20 @@ public final class QuickPlayPalette extends ProxyScreen {
 		}
 		else if(character > 31 && character != '§') {
 			query += character;
+=======
+		if(keyCode == Keyboard.KEY_BACK) {
+			if(!query.isEmpty()) {
+				if(GuiScreen.isCtrlKeyDown()) {
+					query = "";
+				}
+				else {
+					query = query.substring(0, query.length() - 1);
+				}
+			}
+		}
+		else if(typedChar > 31 && typedChar != '§') {
+			query += typedChar;
+>>>>>>> origin/main
 			inAllGames = false;
 		}
 

@@ -1,20 +1,25 @@
 package io.github.solclient.client.tweak;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
 
+import lombok.SneakyThrows;
 import net.minecraft.launchwrapper.ITweaker;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 
 public class Tweaker implements ITweaker {
 
 	public static boolean optiFine;
-	private static List<String> args = new ArrayList<>();
+	private List<String> args = new ArrayList<>();
+	private LaunchClassLoader classLoader;
+	private Set<String> exceptions;
 
 	@Override
 	public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profile) {
@@ -25,23 +30,28 @@ public class Tweaker implements ITweaker {
 		catch(ClassNotFoundException ignored) {
 		}
 
-		Tweaker.args.addAll(args);
+		this.args.addAll(args);
+
 		if(gameDir != null) {
-			Tweaker.args.add("--gameDir");
-			Tweaker.args.add(gameDir.getAbsolutePath());
+			this.args.add("--gameDir");
+			this.args.add(gameDir.getAbsolutePath());
 		}
+
 		if(assetsDir != null) {
-			Tweaker.args.add("--assetsDir");
-			Tweaker.args.add(assetsDir.getAbsolutePath());
+			this.args.add("--assetsDir");
+			this.args.add(assetsDir.getAbsolutePath());
 		}
+
 		if(profile != null) {
-			Tweaker.args.add("--version");
-			Tweaker.args.add(profile);
+			this.args.add("--version");
+			this.args.add(profile);
 		}
 	}
 
 	@Override
 	public void injectIntoClassLoader(LaunchClassLoader classLoader) {
+		this.classLoader = classLoader;
+
 		classLoader.registerTransformer("io.github.solclient.client.tweak.transformer.ClassTransformer");
 
 		MixinBootstrap.init();
@@ -59,16 +69,32 @@ public class Tweaker implements ITweaker {
 
 		MixinEnvironment env = MixinEnvironment.getDefaultEnvironment();
 
-		if(env.getObfuscationContext() == null) {
-			env.setObfuscationContext("notch");
+		env.setObfuscationContext("searge");
+		env.setSide(MixinEnvironment.Side.CLIENT);
+
+		removeClassLoaderException("org.lwjgl.");
+	}
+
+	@SneakyThrows
+	private void removeClassLoaderException(String exception) {
+		if(exceptions == null) {
+			getExceptions();
 		}
 
-		env.setSide(MixinEnvironment.Side.CLIENT);
+		exceptions.remove(exception);
+	}
+
+	@SneakyThrows
+	@SuppressWarnings("unchecked")
+	private void getExceptions() {
+		Field exceptionsField = classLoader.getClass().getDeclaredField("classLoaderExceptions");
+		exceptionsField.setAccessible(true);
+		exceptions = (Set<String>) exceptionsField.get(classLoader);
 	}
 
 	@Override
 	public String getLaunchTarget() {
-		return "net.minecraft.client.main.Main";
+		return "io.github.solclient.client.PreMain";
 	}
 
 	@Override

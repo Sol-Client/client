@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -136,7 +135,6 @@ public final class Client {
 	public void init() {
 		Utils.resetLineWidth();
 		new File(mc.getDataFolder(), "server-resource-packs").mkdirs(); // Fix crash
-
 		System.setProperty("http.agent", "Sol Client/" + VERSION);
 
 		LOGGER.info("Initialising...");

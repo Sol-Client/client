@@ -36,7 +36,7 @@ public class AnimatedColourController implements Controller<Colour> {
 			return current;
 		}
 
-		return last.blend((Colour) current, progress);
+		return last.lerp((Colour) current, progress);
 	}
 
 }

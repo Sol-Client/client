@@ -82,7 +82,6 @@ import io.github.solclient.client.mod.impl.hud.timers.TimersMod;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import io.github.solclient.client.mod.impl.itemphysics.ItemPhysicsMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
-import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.packet.PacketApi;
 import io.github.solclient.client.packet.PopupManager;
 import io.github.solclient.client.todo.TODO;

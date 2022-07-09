@@ -14,6 +14,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,6 +29,7 @@ import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.network.ServerData;
 import io.github.solclient.abstraction.mc.option.KeyBinding;
 import io.github.solclient.abstraction.mc.screen.TitleScreen;
+import io.github.solclient.abstraction.mc.text.Font;
 import io.github.solclient.abstraction.mc.text.LiteralText;
 import io.github.solclient.abstraction.mc.text.TextColour;
 import io.github.solclient.abstraction.mc.world.level.Level;
@@ -82,6 +84,7 @@ import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.packet.PacketApi;
 import io.github.solclient.client.packet.PopupManager;
+import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
@@ -105,7 +108,8 @@ public final class Client {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	private final File dataFile = new File(mc.getDataFolder(), "sol_client_mods.json");
-	private final File legacyDataFile = new File(mc.getDataFolder(), "parrot_client_mods.json" /* This was the old name. */ );
+	private final File legacyDataFile = new File(mc.getDataFolder(),
+			"parrot_client_mods.json" /* This was the old name. */ );
 
 	public DetectedServer detectedServer;
 
@@ -131,6 +135,8 @@ public final class Client {
 	@Getter
 	@Setter
 	private TitleScreen mainMenu;
+	private @NotNull Font font;
+	private boolean fontErr;
 
 	public void init() {
 		Utils.resetLineWidth();
@@ -173,7 +179,6 @@ public final class Client {
 		register(new MenuBlurMod());
 		register(new ColourSaturationMod());
 		register(new ChunkAnimatorMod());
-		register(new SCReplayMod());
 		register(new FreelookMod());
 		register(new TaplookMod());
 		register(new ToggleSprintMod());
@@ -393,7 +398,8 @@ public final class Client {
 		cacheHudList();
 
 		try {
-			mc.getOptions().removeKey((KeyBinding) mc.getOptions().getClass().getField("ofKeyBindZoom").get(mc.getOptions()));
+			mc.getOptions()
+					.removeKey((KeyBinding) mc.getOptions().getClass().getField("ofKeyBindZoom").get(mc.getOptions()));
 		}
 		catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
 			// OptiFine is not enabled.

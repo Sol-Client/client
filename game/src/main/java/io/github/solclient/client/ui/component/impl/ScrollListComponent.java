@@ -2,7 +2,7 @@ package io.github.solclient.client.ui.component.impl;
 
 import org.lwjgl.input.Keyboard;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -74,7 +74,7 @@ public abstract class ScrollListComponent extends Component {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if(!SolClientMod.instance.smoothScrolling) {
+		if(!SolClientConfig.instance.smoothScrolling) {
 			calculatedY = targetY;
 		}
 		else {

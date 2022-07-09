@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModOption;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
@@ -149,7 +149,7 @@ public class ColourPickerDialog extends ScaledIconComponent {
 				if(colour.getComponents()[component] == i) {
 					stripColour = Colour.WHITE;
 
-					font.renderString(Integer.toString(i), RGB_OFFSET_LEFT + i + 1 - (font.getWidth(Integer.toString(i)) / 2), rectangle.getY() + (SolClientMod.instance.fancyFont ? 9 : 11), -1);
+					font.renderString(Integer.toString(i), RGB_OFFSET_LEFT + i + 1 - (font.getWidth(Integer.toString(i)) / 2), rectangle.getY() + (SolClientConfig.instance.fancyFont ? 9 : 11), -1);
 				}
 
 				Utils.renderVerticalLine(RGB_OFFSET_LEFT + i, RGB_OFFSET_TOP + component * RGB_SPACING, RGB_OFFSET_TOP + (component * RGB_SPACING) + 11, stripColour.getValue());

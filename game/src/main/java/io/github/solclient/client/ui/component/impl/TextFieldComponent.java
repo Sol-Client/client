@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import com.google.common.base.Predicate;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -127,7 +127,7 @@ public class TextFieldComponent extends Component {
 
 		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
-		font.renderString(hasPlaceholder ? I18n.format(placeholder) : text, textOffset, SolClientMod.instance.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
+		font.renderString(hasPlaceholder ? I18n.format(placeholder) : text, textOffset, SolClientConfig.instance.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
 
 		if(focused && ticks / 12 % 2 == 0) {
 			float relativeCursorPosition = font.getWidth(text.substring(0, cursor));

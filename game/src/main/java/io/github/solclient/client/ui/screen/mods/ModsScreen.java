@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.Screen;
@@ -46,7 +46,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		if(mc.theWorld == null) {
-			if(SolClientMod.instance.fancyMainMenu) {
+			if(SolClientConfig.instance.fancyMainMenu) {
 				background = false;
 				drawPanorama(mouseX, mouseY, partialTicks);
 			}
@@ -73,7 +73,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 	@Override
 	public void closeAll() {
-		if(mc.theWorld == null && SolClientMod.instance.fancyMainMenu) {
+		if(mc.theWorld == null && SolClientConfig.instance.fancyMainMenu) {
 			mc.displayGuiScreen(Client.INSTANCE.getMainMenu());
 			return;
 		}
@@ -201,7 +201,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 			boolean result = super.keyPressed(info, keyCode, character);
 
-			if(!result && keyCode == SolClientMod.instance.modsKey.getKeyCode()) {
+			if(!result && keyCode == SolClientConfig.instance.modsKey.getKeyCode()) {
 				mc.displayGuiScreen(null);
 				return true;
 			}

@@ -2,7 +2,7 @@ package io.github.solclient.client.ui.component.impl;
 
 import java.util.function.Consumer;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
@@ -24,7 +24,7 @@ public class SliderComponent extends Component {
 	private final Consumer<Float> callback;
 	private boolean selected;
 	private final Controller<Colour> colour = new AnimatedColourController(
-			(component, defaultColour) -> component.isHovered() || selected ? SolClientMod.instance.uiHover : SolClientMod.instance.uiColour);
+			(component, defaultColour) -> component.isHovered() || selected ? SolClientConfig.instance.uiHover : SolClientConfig.instance.uiColour);
 	private final Component hoverController;
 
 	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback, Component hoverController) {
@@ -57,7 +57,7 @@ public class SliderComponent extends Component {
 
 		int x = (int) (100 * (((value - min) / (max - min)))) - 4;
 
-		if(SolClientMod.instance.roundedUI) {
+		if(SolClientConfig.instance.roundedUI) {
 			Colour.LIGHT_BUTTON.bind();
 			mc.getTextureManager().bindTexture(new ResourceLocation(
 					"textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));

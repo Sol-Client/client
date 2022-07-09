@@ -1,5 +1,6 @@
 package io.github.solclient.abstraction.mc.text;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +10,7 @@ import io.github.solclient.abstraction.Helper;
 public interface Font {
 
 	@Helper
-	static @NotNull Font createTrueType(@NotNull InputStream in) {
+	static @NotNull Font createTrueType(@NotNull InputStream in, float size) throws IOException {
 		throw new UnsupportedOperationException();
 	}
 

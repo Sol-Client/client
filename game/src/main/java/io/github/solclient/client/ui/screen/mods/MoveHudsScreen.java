@@ -6,7 +6,7 @@ import org.lwjgl.input.Mouse;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.Screen;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -99,7 +99,7 @@ public class MoveHudsScreen extends Screen {
 			}
 
 			if(bounds != null) {
-				bounds.stroke(SolClientMod.instance.uiColour);
+				bounds.stroke(SolClientConfig.instance.uiColour);
 			}
 		}
 
@@ -125,7 +125,7 @@ public class MoveHudsScreen extends Screen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(keyCode == 1 || keyCode == SolClientMod.instance.editHudKey.getKeyCode()) {
+		if(keyCode == 1 || keyCode == SolClientConfig.instance.editHudKey.getKeyCode()) {
 			Client.INSTANCE.save();
 			if(title != null) {
 				mc.displayGuiScreen(title);

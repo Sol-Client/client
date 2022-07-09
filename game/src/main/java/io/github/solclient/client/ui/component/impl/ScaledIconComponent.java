@@ -1,6 +1,6 @@
 package io.github.solclient.client.ui.component.impl;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.Utils;
@@ -40,7 +40,7 @@ public class ScaledIconComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if(useFallback() && !SolClientMod.instance.roundedUI) {
+		if(useFallback() && !SolClientConfig.instance.roundedUI) {
 			renderFallback(info);
 		}
 		else {

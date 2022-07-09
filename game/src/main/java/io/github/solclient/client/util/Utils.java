@@ -30,7 +30,7 @@ import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.abstraction.mc.util.MinecraftUtil;
 import io.github.solclient.abstraction.mc.util.OperatingSystem;
 import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.SneakyThrows;
@@ -100,7 +100,7 @@ public class Utils {
 	}
 
 	public void playClickSound(boolean ui) {
-		if (ui && !SolClientMod.instance.buttonClicks) {
+		if (ui && !SolClientConfig.instance.buttonClicks) {
 			return;
 		}
 

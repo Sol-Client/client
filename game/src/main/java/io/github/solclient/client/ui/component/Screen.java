@@ -7,7 +7,7 @@ import org.lwjgl.input.Mouse;
 import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.screen.ProxyScreen;
 import io.github.solclient.abstraction.mc.text.Text;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.data.Colour;
@@ -41,7 +41,7 @@ public class Screen extends ProxyScreen {
 		rootWrapper.add(root, new ParentBoundsController());
 
 		rootWrapper.setScreen(this);
-		rootWrapper.setFont(SolClientMod.getFont());
+		rootWrapper.setFont(SolClientConfig.getUIFont());
 
 		this.root = root;
 	}
@@ -116,7 +116,7 @@ public class Screen extends ProxyScreen {
 	}
 
 	public void updateFont() {
-		rootWrapper.setFont(SolClientMod.getFont());
+		rootWrapper.setFont(SolClientConfig.getUIFont());
 	}
 
 	public void close() {

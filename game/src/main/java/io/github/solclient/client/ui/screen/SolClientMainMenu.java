@@ -6,7 +6,7 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.Screen;
@@ -44,7 +44,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		drawPanorama(mouseX, mouseY, partialTicks);
 
-		Font font = SolClientMod.getFont();
+		Font font = SolClientConfig.getUIFont();
 
 		String copyrightString = "Copyright Mojang AB. Do not distribute!";
 		font.renderString(copyrightString, (int) (width - font.getWidth(copyrightString) - 10), height - 15, -1);
@@ -76,8 +76,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 		public MainMenuComponent() {
 			Controller<Colour> defaultColourController =
-					(component, defaultColour) -> component.isHovered() ? SolClientMod.instance.uiHover
-							: SolClientMod.instance.uiColour;
+					(component, defaultColour) -> component.isHovered() ? SolClientConfig.instance.uiHover
+							: SolClientConfig.instance.uiColour;
 
 			add(new ButtonComponent((component, defaultText) -> I18n.format("menu.singleplayer"),
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_player")

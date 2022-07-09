@@ -5,43 +5,29 @@
 package io.github.solclient.client.mod.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
-import com.replaymod.replay.ReplayModReplay;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.abstraction.mc.DrawableHelper;
+import io.github.solclient.abstraction.mc.Window;
+import io.github.solclient.abstraction.mc.screen.ChatScreen;
+import io.github.solclient.abstraction.mc.shader.ShaderChain;
+import io.github.solclient.abstraction.mc.shader.ShaderUniform;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.InitialOpenGuiEvent;
-import io.github.solclient.client.event.impl.PostGuiRenderEvent;
-import io.github.solclient.client.event.impl.PostProcessingEvent;
-import io.github.solclient.client.event.impl.PreGuiRenderEvent;
-import io.github.solclient.client.event.impl.RenderGuiBackgroundEvent;
+import io.github.solclient.client.event.impl.screen.ScreenBackgroundRenderEvent;
+import io.github.solclient.client.event.impl.screen.ScreenSwitchEvent;
+import io.github.solclient.client.event.impl.shader.PostProcessingEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessShaderGroup;
 import io.github.solclient.client.util.data.Colour;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.client.shader.ShaderLinkHelper;
-import net.minecraft.client.shader.ShaderUniform;
-import net.minecraft.util.ResourceLocation;
 
 public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
-
-	private static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/menu_blur.json");
 
 	@Expose
 	@Option
@@ -54,7 +40,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Expose
 	@Option
 	private Colour backgroundColour = new Colour(0, 0, 0, 100);
-	private ShaderGroup group;
+	private ShaderChain chain;
 	private long openTime;
 
 	@Override
@@ -67,52 +53,77 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 		return ModCategory.VISUAL;
 	}
 
-	@Override
-	public void onRegister() {
-		super.onRegister();
-		Client.INSTANCE.addResource(RESOURCE_LOCATION, new MenuBlurShader());
-	}
-
 	@EventHandler
-	public void onOpenGui(InitialOpenGuiEvent event) {
+	public void onScreenOpen(ScreenSwitchEvent event) {
+		if(event.getPreviousScreen() != null) {
+			return;
+		}
+
 		openTime = System.currentTimeMillis();
 	}
 
 	@EventHandler
 	public void onPostProcessing(PostProcessingEvent event) {
-		if(event.type == PostProcessingEvent.Type.UPDATE || (blur != 0
-				&& (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat)
-				&& !(mc.currentScreen.getClass().getName().startsWith("com.replaymod.lib.de.johni0702.minecraft.gui" +
-				".container." +
-				"AbstractGuiOverlay$") && ReplayModReplay.instance.getReplayHandler() != null && mc.theWorld != null)))) {
+		if(event.getType() == PostProcessingEvent.Type.UPDATE
+				|| (blur != 0 && (mc.isInMenu() && !(mc.getScreen() instanceof ChatScreen)
+						&& !(mc.getScreen().getClass().getName().startsWith(
+								"com.replaymod.lib.de.johni0702.minecraft.gui" + ".container." + "AbstractGuiOverlay$")
+								&& TODO.L /* TODO replaymod */ != null && mc.hasLevel())))) {
 			update();
-			event.groups.add(group);
+			event.getShaders().add(chain);
 		}
 	}
 
 	@EventHandler
-	public void onRenderGuiBackground(RenderGuiBackgroundEvent event) {
-		event.cancelled = true;
-		ScaledResolution resolution = new ScaledResolution(mc);
-		Gui.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(),
+	public void customScreenBackground(ScreenBackgroundRenderEvent event) {
+		event.cancel();
+		DrawableHelper.fillRect(0, 0, mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight(),
 				Utils.lerpColour(0, backgroundColour.getValue(), getProgress()));
 	}
 
 	public void update() {
-		if(group == null) {
+		if(chain == null) {
 			try {
-				group = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(),
-					   RESOURCE_LOCATION);
-				group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+				chain = ShaderChain.create("{\n" + "    \"targets\": [\n" + "        \"swap\"\n" + "    ],\n"
+						+ "    \"passes\": [\n" + "        {\n" + "            \"name\": \"menu_blur\",\n"
+						+ "            \"intarget\": \"minecraft:main\",\n" + "            \"outtarget\": \"swap\",\n"
+						+ "            \"uniforms\": [\n" + "                {\n"
+						+ "                    \"name\": \"BlurDir\",\n"
+						+ "                    \"values\": [ 1.0, 0.0 ]\n" + "                },\n"
+						+ "                {\n" + "                    \"name\": \"Radius\",\n"
+						+ "                    \"values\": [ 0.0 ]\n" + "                }\n" + "            ]\n"
+						+ "        },\n" + "        {\n" + "            \"name\": \"menu_blur\",\n"
+						+ "            \"intarget\": \"swap\",\n" + "            \"outtarget\": \"minecraft:main\",\n"
+						+ "            \"uniforms\": [\n" + "                {\n"
+						+ "                    \"name\": \"BlurDir\",\n"
+						+ "                    \"values\": [ 0.0, 1.0 ]\n" + "                },\n"
+						+ "                {\n" + "                    \"name\": \"Radius\",\n"
+						+ "                    \"values\": [ 0.0 ]\n" + "                }\n" + "            ]\n"
+						+ "        },\n" + "        {\n" + "            \"name\": \"menu_blur\",\n"
+						+ "            \"intarget\": \"minecraft:main\",\n" + "            \"outtarget\": \"swap\",\n"
+						+ "            \"uniforms\": [\n" + "                {\n"
+						+ "                    \"name\": \"BlurDir\",\n"
+						+ "                    \"values\": [ 1.0, 0.0 ]\n" + "                },\n"
+						+ "                {\n" + "                    \"name\": \"Radius\",\n"
+						+ "                    \"values\": [ 0.0 ]\n" + "                }\n" + "            ]\n"
+						+ "        },\n" + "        {\n" + "            \"name\": \"menu_blur\",\n"
+						+ "            \"intarget\": \"swap\",\n" + "            \"outtarget\": \"minecraft:main\",\n"
+						+ "            \"uniforms\": [\n" + "                {\n"
+						+ "                    \"name\": \"BlurDir\",\n"
+						+ "                    \"values\": [ 0.0, 1.0 ]\n" + "                },\n"
+						+ "                {\n" + "                    \"name\": \"Radius\",\n"
+						+ "                    \"values\": [ 0.0 ]\n" + "                }\n" + "            ]\n"
+						+ "        }\n" + "    ]\n" + "}");
+				chain.updateWindowSize(Window.displayWidth(), Window.displayHeight());
 			}
 			catch(JsonSyntaxException | IOException error) {
 				logger.error("Could not load menu blur", error);
 			}
 		}
 
-		((AccessShaderGroup) group).getListShaders().forEach((shader) -> {
-			ShaderUniform radius = shader.getShaderManager().getShaderUniform("Radius");
-			ShaderUniform progress = shader.getShaderManager().getShaderUniform("Progress");
+		chain.getShaders().forEach((shader) -> {
+			ShaderUniform radius = shader.getShaderUniform("Radius");
+			ShaderUniform progress = shader.getShaderUniform("Progress");
 
 			if(radius != null) {
 				radius.set(blur);
@@ -136,9 +147,8 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		group = null;
+		chain = null;
 	}
-
 
 	@Override
 	public void decrement() {
@@ -148,101 +158,6 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public void increment() {
 		blur = Math.min(100, blur + 1);
-	}
-
-	public class MenuBlurShader implements IResource {
-
-		@Override
-		public ResourceLocation getResourceLocation() {
-			return null;
-		}
-
-		@Override
-		public InputStream getInputStream() {
-			return IOUtils.toInputStream("{\n" +
-					"    \"targets\": [\n" +
-					"        \"swap\"\n" +
-					"    ],\n" +
-					"    \"passes\": [\n" +
-					"        {\n" +
-					"            \"name\": \"menu_blur\",\n" +
-					"            \"intarget\": \"minecraft:main\",\n" +
-					"            \"outtarget\": \"swap\",\n" +
-					"            \"uniforms\": [\n" +
-					"                {\n" +
-					"                    \"name\": \"BlurDir\",\n" +
-					"                    \"values\": [ 1.0, 0.0 ]\n" +
-					"                },\n" +
-					"                {\n" +
-					"                    \"name\": \"Radius\",\n" +
-					"                    \"values\": [ 0.0 ]\n" +
-					"                }\n" +
-					"            ]\n" +
-					"        },\n" +
-					"        {\n" +
-					"            \"name\": \"menu_blur\",\n" +
-					"            \"intarget\": \"swap\",\n" +
-					"            \"outtarget\": \"minecraft:main\",\n" +
-					"            \"uniforms\": [\n" +
-					"                {\n" +
-					"                    \"name\": \"BlurDir\",\n" +
-					"                    \"values\": [ 0.0, 1.0 ]\n" +
-					"                },\n" +
-					"                {\n" +
-					"                    \"name\": \"Radius\",\n" +
-					"                    \"values\": [ 0.0 ]\n" +
-					"                }\n" +
-					"            ]\n" +
-					"        },\n" +
-					"        {\n" +
-					"            \"name\": \"menu_blur\",\n" +
-					"            \"intarget\": \"minecraft:main\",\n" +
-					"            \"outtarget\": \"swap\",\n" +
-					"            \"uniforms\": [\n" +
-					"                {\n" +
-					"                    \"name\": \"BlurDir\",\n" +
-					"                    \"values\": [ 1.0, 0.0 ]\n" +
-					"                },\n" +
-					"                {\n" +
-					"                    \"name\": \"Radius\",\n" +
-					"                    \"values\": [ 0.0 ]\n" +
-					"                }\n" +
-					"            ]\n" +
-					"        },\n" +
-					"        {\n" +
-					"            \"name\": \"menu_blur\",\n" +
-					"            \"intarget\": \"swap\",\n" +
-					"            \"outtarget\": \"minecraft:main\",\n" +
-					"            \"uniforms\": [\n" +
-					"                {\n" +
-					"                    \"name\": \"BlurDir\",\n" +
-					"                    \"values\": [ 0.0, 1.0 ]\n" +
-					"                },\n" +
-					"                {\n" +
-					"                    \"name\": \"Radius\",\n" +
-					"                    \"values\": [ 0.0 ]\n" +
-					"                }\n" +
-					"            ]\n" +
-					"        }\n" +
-					"    ]\n" +
-					"}");
-		}
-
-		@Override
-		public boolean hasMetadata() {
-			return false;
-		}
-
-		@Override
-		public <T extends IMetadataSection> T getMetadata(String p_110526_1_) {
-			return null;
-		}
-
-		@Override
-		public String getResourcePackName() {
-			return null;
-		}
-
 	}
 
 }

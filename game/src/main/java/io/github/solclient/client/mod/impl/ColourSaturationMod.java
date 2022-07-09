@@ -6,10 +6,11 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.abstraction.mc.Identifier;
+import io.github.solclient.abstraction.mc.Window;
 import io.github.solclient.abstraction.mc.shader.ShaderChain;
 import io.github.solclient.abstraction.mc.shader.ShaderUniform;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.shader.PostProcessingEvent;
+import io.github.solclient.client.event.impl.shader.PostProcessingEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
@@ -18,14 +19,12 @@ import io.github.solclient.client.mod.annotation.Slider;
 
 public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod {
 
-	private static final Identifier RESOURCE_LOCATION = Identifier.solClient("shader/color_convolve.json");
-
 	@Expose
 	@Option
 	@Slider(min = 0, max = 2F, step = 0.1F)
 	private float saturation = 1f;
-	private ShaderChain group;
-	private float groupSaturation;
+	private ShaderChain chain;
+	private float uniformSaturation;
 
 	@Override
 	public String getId() {
@@ -38,10 +37,10 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 	}
 
 	public void update() {
-		if(group == null) {
-			groupSaturation = saturation;
+		if(chain == null) {
+			uniformSaturation = saturation;
 			try {
-				group = ShaderChain.create(RESOURCE_LOCATION, "{" +
+				chain = ShaderChain.create("{" +
 						"    \"targets\": [" +
 						"        \"swap\"," +
 						"        \"previous\"" +
@@ -76,34 +75,34 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 						"        }" +
 						"    ]" +
 						"}");
-				group.updateWindowSize(mc.getWindow().getWidth(), mc.getWindow().getHeight());
+				chain.updateWindowSize(Window.displayWidth(), Window.displayHeight());
 			}
 			catch(JsonSyntaxException | IOException error) {
 				logger.error("Could not load saturation shader", error);
 			}
 		}
 
-		if(groupSaturation != saturation) {
-			group.getShaders().forEach((shader) -> {
+		if(uniformSaturation != saturation) {
+			chain.getShaders().forEach((shader) -> {
 				ShaderUniform saturationUniform = shader.getShaderUniform("Saturation");
 				if(saturationUniform != null) {
 					saturationUniform.set(saturation);
 				}
 			});
-			groupSaturation = saturation;
+			uniformSaturation = saturation;
 		}
 	}
 
 	@EventHandler
 	public void onPostProcessing(PostProcessingEvent event) {
 		update();
-		event.getShaders().add(group);
+		event.getShaders().add(chain);
 	}
 
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		group = null;
+		chain = null;
 	}
 
 	@Override

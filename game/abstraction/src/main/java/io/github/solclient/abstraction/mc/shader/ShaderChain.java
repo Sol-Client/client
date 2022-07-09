@@ -9,7 +9,7 @@ import io.github.solclient.abstraction.mc.Identifier;
 public interface ShaderChain {
 
 	@Helper
-	static ShaderChain create(Identifier type, String content) throws IOException {
+	static ShaderChain create(String content) throws IOException {
 		throw new UnsupportedOperationException();
 	}
 

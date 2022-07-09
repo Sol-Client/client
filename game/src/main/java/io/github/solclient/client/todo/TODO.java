@@ -1,5 +1,7 @@
 package io.github.solclient.client.todo;
 
+import io.github.solclient.abstraction.mc.RuntimeDetermined;
+
 /**
  * Used to mark critical todo values. Should be paired with a comment.
  */
@@ -11,6 +13,6 @@ public class TODO {
 	}
 
 	public static final Object L = null;
-	public static final boolean Z = false;
+	public static final boolean Z = RuntimeDetermined.value();
 
 }

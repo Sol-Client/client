@@ -1,22 +1,21 @@
 package io.github.solclient.client.mod.impl;
 
-import org.lwjgl.input.Keyboard;
-
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.option.KeyBinding;
+import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.*;
+import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.Perspective;
-import net.minecraft.client.settings.KeyBinding;
 
 public class TaplookMod extends Mod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", 0, Client.KEY_CATEGORY);
+	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.NONE, Client.KEY_CATEGORY);
 	private int previousPerspective;
 	private boolean active;
 	@Expose
@@ -36,12 +35,12 @@ public class TaplookMod extends Mod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-		Client.INSTANCE.registerKeyBinding(key);
+		mc.getOptions().addKey(key);
 	}
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(key.isKeyDown()) {
+		if(key.isHeld()) {
 			if(!active) {
 				start();
 			}
@@ -53,15 +52,15 @@ public class TaplookMod extends Mod {
 
 	public void start() {
 		active = true;
-		previousPerspective = mc.gameSettings.thirdPersonView;
-		mc.gameSettings.thirdPersonView = perspective.ordinal();
-		mc.renderGlobal.setDisplayListEntitiesDirty();
+		previousPerspective = mc.getOptions().ordinalPerspective();
+		mc.getOptions().setOrdinalPerspective(perspective.ordinal());
+		mc.getLevelRenderer().scheduleUpdate();
 	}
 
 	public void stop() {
 		active = false;
-		mc.gameSettings.thirdPersonView = previousPerspective;
-		mc.renderGlobal.setDisplayListEntitiesDirty();
+		mc.getOptions().setOrdinalPerspective(previousPerspective);
+		mc.getLevelRenderer().scheduleUpdate();
 	}
 
 	@Override

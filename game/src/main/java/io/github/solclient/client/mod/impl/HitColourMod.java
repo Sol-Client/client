@@ -3,7 +3,7 @@ package io.github.solclient.client.mod.impl;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.HitOverlayEvent;
+import io.github.solclient.client.event.impl.world.entity.render.HitOverlayRenderEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
@@ -26,11 +26,11 @@ public class HitColourMod extends Mod {
 	}
 
 	@EventHandler
-	public void onHitOverlay(HitOverlayEvent event) {
-		event.r = colour.getRedFloat();
-		event.g = colour.getGreenFloat();
-		event.b = colour.getBlueFloat();
-		event.a = colour.getAlphaFloat();
+	public void onHitOverlay(HitOverlayRenderEvent event) {
+		event.setR(colour.getRedFloat());
+		event.setG(colour.getGreenFloat());
+		event.setB(colour.getBlueFloat());
+		event.setA(colour.getAlphaFloat());
 	}
 
 }

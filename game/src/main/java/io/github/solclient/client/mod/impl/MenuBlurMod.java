@@ -81,7 +81,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 				Utils.lerpColour(0, backgroundColour.getValue(), getProgress()));
 	}
 
-	public void update() {
+	private void update() {
 		if(chain == null) {
 			try {
 				chain = ShaderChain.create("{\n" + "    \"targets\": [\n" + "        \"swap\"\n" + "    ],\n"
@@ -122,8 +122,8 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 		}
 
 		chain.getShaders().forEach((shader) -> {
-			ShaderUniform radius = shader.getShaderUniform("Radius");
-			ShaderUniform progress = shader.getShaderUniform("Progress");
+			ShaderUniform radius = shader.getUniform("Radius");
+			ShaderUniform progress = shader.getUniform("Progress");
 
 			if(radius != null) {
 				radius.set(blur);

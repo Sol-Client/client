@@ -3,7 +3,7 @@ package io.github.solclient.client.mod.impl;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.TimeEvent;
+import io.github.solclient.client.event.impl.world.level.DetermineTimeEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
@@ -28,8 +28,8 @@ public class TimeChangerMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	@EventHandler
-	public void onTime(TimeEvent event) {
-		event.time = (long) time;
+	public void onTime(DetermineTimeEvent event) {
+		event.setTime((long) time);
 	}
 
 	@Override

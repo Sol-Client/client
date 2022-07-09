@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import io.github.solclient.abstraction.mc.DrawableHelper;
 import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.abstraction.mc.screen.ProxyScreen;
+import io.github.solclient.abstraction.mc.text.Font;
 import io.github.solclient.abstraction.mc.text.TextFormatting;
 import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.mod.impl.SolClientConfig;
@@ -17,7 +18,6 @@ import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.font.Font;
 import io.github.solclient.client.util.font.SlickFontRenderer;
 
 // Dirty code alert
@@ -26,7 +26,7 @@ import io.github.solclient.client.util.font.SlickFontRenderer;
 public final class QuickPlayPalette extends ProxyScreen {
 
 	private final QuickPlayMod mod;
-	private Font font = SolClientConfig.getUIFont();
+	private Font font = SolClientConfig.instance.getUIFont();
 	private String query = "";
 	private int selectedIndex;
 	private boolean inAllGames;

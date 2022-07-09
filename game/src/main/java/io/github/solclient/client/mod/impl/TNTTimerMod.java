@@ -2,14 +2,16 @@ package io.github.solclient.client.mod.impl;
 
 import java.text.DecimalFormat;
 
+import io.github.solclient.abstraction.mc.text.LiteralText;
+import io.github.solclient.abstraction.mc.text.Text;
+import io.github.solclient.abstraction.mc.text.TextColour;
+import io.github.solclient.abstraction.mc.text.TextFormatting;
+import io.github.solclient.abstraction.mc.world.entity.PrimedTnt;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.DetectedServer;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.util.Utils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.util.EnumChatFormatting;
 
 public class TNTTimerMod extends Mod {
 
@@ -27,27 +29,29 @@ public class TNTTimerMod extends Mod {
 	}
 
 	// Unfortunately doesn't work with TNT chains due to their random nature.
-	public static String getText(EntityTNTPrimed tnt) {
-		float fuse = tnt.fuse;
+	public static Text getText(PrimedTnt tnt) {
+		float fuse = tnt.getFuse();
 
 		// Based on Sk1er's mod
 		if(Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL && "BED WARS".equals(Utils.getScoreboardTitle())) {
 			fuse -= 28;
 		}
 
-		EnumChatFormatting colour = EnumChatFormatting.GREEN;
+		TextColour colour = TextColour.GREEN;
 
 		if(fuse < 20) {
-			colour = EnumChatFormatting.DARK_RED;
+			colour = TextColour.DARK_RED;
 		}
 		else if(fuse < 40) {
-			colour = EnumChatFormatting.RED;
+			colour = TextColour.RED;
 		}
 		else if (fuse < 60) {
-			colour = EnumChatFormatting.GOLD;
+			colour = TextColour.GOLD;
 		}
 
-		return colour + FORMAT.format(fuse / 20);
+		final TextColour finalColour = colour;
+
+		return LiteralText.create(FORMAT.format(fuse / 20)).withStyle((style) -> style.setColour(finalColour));
 	}
 
 	@Override

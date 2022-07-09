@@ -2,6 +2,8 @@ package io.github.solclient.abstraction.mc.text;
 
 import org.jetbrains.annotations.NotNull;
 
+import io.github.solclient.abstraction.Helper;
+
 public interface LiteralText extends Text {
 
 	static @NotNull LiteralText create(@NotNull String text) {
@@ -13,4 +15,5 @@ public interface LiteralText extends Text {
 	}
 
 	@NotNull String getText();
+
 }

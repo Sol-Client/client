@@ -1,4 +1,4 @@
-package io.github.solclient.abstraction.mc;
+package io.github.solclient.abstraction.mc.render;
 
 import io.github.solclient.abstraction.Helper;
 
@@ -25,6 +25,30 @@ public class GlStateManager {
 	}
 
 	public static void disableDepth() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void enableCull() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void disableCull() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void enableTexture2D() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void disableTexture2D() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void enableLighting() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void disableLighting() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -70,10 +94,6 @@ public class GlStateManager {
 	}
 
 	public static void colour(float r, float g, float b, float a) {
-		throw new UnsupportedOperationException();
-	}
-
-	public static void disableLighting() {
 		throw new UnsupportedOperationException();
 	}
 

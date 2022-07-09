@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.GlStateManager;
+import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.util.Utils;

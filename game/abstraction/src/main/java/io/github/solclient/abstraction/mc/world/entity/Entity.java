@@ -47,4 +47,10 @@ public interface Entity {
 
 	Vec3d getEyePosition(float tickDelta);
 
+	float getWidth();
+
+	float getEyeHeight();
+
+	Vec3d getView(float tickDelta);
+
 }

@@ -1,8 +1,5 @@
 package io.github.solclient.client.event.impl.network;
 
-import java.util.Optional;
-
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonArray;

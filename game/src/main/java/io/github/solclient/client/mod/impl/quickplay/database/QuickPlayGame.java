@@ -39,7 +39,6 @@ public class QuickPlayGame implements QuickPlayOption {
 		}
 
 		ItemType itemType = ItemType.SLIMEBALL;
-		ItemStack item = null;
 
 		switch(id) {
 			case "mainLobby":

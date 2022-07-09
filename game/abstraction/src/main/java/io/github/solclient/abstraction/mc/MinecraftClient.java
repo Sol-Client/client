@@ -17,6 +17,7 @@ import io.github.solclient.abstraction.mc.screen.Screen;
 import io.github.solclient.abstraction.mc.text.Font;
 import io.github.solclient.abstraction.mc.texture.TextureManager;
 import io.github.solclient.abstraction.mc.world.entity.Entity;
+import io.github.solclient.abstraction.mc.world.entity.EntityRenderDispatcher;
 import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
 import io.github.solclient.abstraction.mc.world.item.ItemRenderer;
 import io.github.solclient.abstraction.mc.world.level.ClientLevel;
@@ -116,5 +117,7 @@ public interface MinecraftClient {
 	@NotNull HitResult getHitResult();
 
 	@NotNull Timer getTimer();
+
+	@NotNull EntityRenderDispatcher getEntityRenderDispatcher();
 
 }

@@ -4,9 +4,6 @@ import io.github.solclient.client.event.impl.RenderEvent;
 import io.github.solclient.client.util.VanillaHudElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -3,15 +3,8 @@ package io.github.solclient.client.mod;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystems;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -27,7 +20,6 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.FileOption;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.util.Utils;
 import lombok.Getter;
 
 public class ModOption {
@@ -145,6 +137,7 @@ public class ModOption {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static List<ModOption> add(Mod mod, Class<? extends Mod> clazz, List<ModOption> list) throws IOException {
 		List<Field> fields = new ArrayList<Field>();
 

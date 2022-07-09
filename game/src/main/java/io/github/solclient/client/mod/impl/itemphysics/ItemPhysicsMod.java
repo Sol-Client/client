@@ -8,7 +8,7 @@ package io.github.solclient.client.mod.impl.itemphysics;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import io.github.solclient.abstraction.mc.GlStateManager;
+import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.abstraction.mc.world.entity.Entity;
 import io.github.solclient.abstraction.mc.world.item.ItemStack;
 import io.github.solclient.abstraction.mc.world.item.ItemType;

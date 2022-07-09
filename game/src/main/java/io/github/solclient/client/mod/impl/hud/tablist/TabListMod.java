@@ -5,9 +5,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.util.data.Colour;
-import lombok.AllArgsConstructor;
 
 public class TabListMod extends Mod {
 

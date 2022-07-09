@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod.hud;
 
-import io.github.solclient.abstraction.mc.GlStateManager;
+import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;

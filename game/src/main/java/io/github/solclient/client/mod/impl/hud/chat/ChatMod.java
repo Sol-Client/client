@@ -9,10 +9,10 @@ import org.lwjgl.opengl.GL11;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.abstraction.mc.DrawableHelper;
-import io.github.solclient.abstraction.mc.GlStateManager;
 import io.github.solclient.abstraction.mc.hud.chat.Chat;
 import io.github.solclient.abstraction.mc.hud.chat.ChatMessage;
 import io.github.solclient.abstraction.mc.option.KeyBinding;
+import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.abstraction.mc.text.Text;
 import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.Client;

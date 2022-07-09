@@ -1,8 +1,8 @@
 package io.github.solclient.client.event.impl.network.chat;
 
-import io.github.solclient.client.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 
+import io.github.solclient.client.event.Cancellable;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.lwjgl.opengl.GL11;
 
 import io.github.solclient.abstraction.mc.DrawableHelper;
-import io.github.solclient.abstraction.mc.GlStateManager;
+import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.abstraction.mc.screen.ProxyScreen;
 import io.github.solclient.abstraction.mc.text.TextFormatting;
 import io.github.solclient.abstraction.mc.util.Input;

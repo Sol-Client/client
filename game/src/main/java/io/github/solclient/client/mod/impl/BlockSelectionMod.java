@@ -4,9 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.GlStateManager;
 import io.github.solclient.abstraction.mc.raycast.HitResult;
 import io.github.solclient.abstraction.mc.raycast.HitType;
+import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.abstraction.mc.world.entity.Entity;
 import io.github.solclient.abstraction.mc.world.entity.player.GameMode;
 import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;

@@ -23,9 +23,9 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
 import de.jcm.discordgamesdk.NetworkManager;
-import io.github.solclient.abstraction.mc.GlStateManager;
 import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.Window;
+import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.abstraction.mc.util.MinecraftUtil;
 import io.github.solclient.abstraction.mc.util.OperatingSystem;
 import io.github.solclient.client.mod.impl.SolClientMod;

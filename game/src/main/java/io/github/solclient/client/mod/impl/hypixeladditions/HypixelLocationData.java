@@ -3,7 +3,6 @@ package io.github.solclient.client.mod.impl.hypixeladditions;
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
-import net.hypixel.api.data.type.GameType;
 
 @Data
 public class HypixelLocationData {

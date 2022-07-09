@@ -1,7 +1,6 @@
 package io.github.solclient.client.packet;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Data

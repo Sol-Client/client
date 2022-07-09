@@ -2,7 +2,6 @@ package io.github.solclient.client.mod.impl.hud;
 
 import java.text.DecimalFormat;
 
-import io.github.solclient.abstraction.mc.raycast.HitType;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.world.entity.EntityAttackEvent;
 import io.github.solclient.client.mod.hud.SimpleHudMod;

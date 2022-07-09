@@ -6,9 +6,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.JsonObject;
 
-import io.github.solclient.abstraction.mc.GlStateManager;
 import io.github.solclient.abstraction.mc.Identifier;
 import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.abstraction.mc.render.GlStateManager;
 import io.github.solclient.abstraction.mc.texture.Texture;
 import io.github.solclient.abstraction.mc.texture.TextureManager;
 import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;

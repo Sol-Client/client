@@ -8,11 +8,12 @@ public interface StatusEffectType {
 
 	StatusEffectType SPEED = null;
 	StatusEffectType STRENGTH = null;
+	StatusEffectType BLINDNESS = null;
 
 	static String getDurationString(int ticks) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@NotNull Identifier getId();
 
 	float getAtlasU();

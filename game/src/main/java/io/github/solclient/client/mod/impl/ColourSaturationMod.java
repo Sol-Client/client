@@ -36,7 +36,7 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 		return ModCategory.VISUAL;
 	}
 
-	public void update() {
+	private void update() {
 		if(chain == null) {
 			uniformSaturation = saturation;
 			try {
@@ -84,7 +84,7 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 
 		if(uniformSaturation != saturation) {
 			chain.getShaders().forEach((shader) -> {
-				ShaderUniform saturationUniform = shader.getShaderUniform("Saturation");
+				ShaderUniform saturationUniform = shader.getUniform("Saturation");
 				if(saturationUniform != null) {
 					saturationUniform.set(saturation);
 				}

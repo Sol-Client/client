@@ -3,10 +3,14 @@ package io.github.solclient.abstraction.mc.world.entity;
 import java.util.UUID;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import io.github.solclient.abstraction.Helper;
 import io.github.solclient.abstraction.mc.maths.Box;
 import io.github.solclient.abstraction.mc.maths.Vec3d;
 import io.github.solclient.abstraction.mc.world.entity.player.Player;
+import io.github.solclient.abstraction.mc.world.item.ItemStack;
+import io.github.solclient.abstraction.mc.world.level.chunk.ChunkPos;
 
 public interface Entity {
 
@@ -52,5 +56,33 @@ public interface Entity {
 	float getEyeHeight();
 
 	Vec3d getView(float tickDelta);
+
+	/**
+	 * Gets the X position of the current chunk.
+	 * @return The X.
+	 */
+	int getChunkX();
+
+	/**
+	 * Gets the Z position of the current chunk.
+	 * @return The Z.
+	 */
+	int getChunkZ();
+
+	/**
+	 * Gets the current chunk position.
+	 * @return The position.
+	 */
+	@NotNull ChunkPos getChunkPos();
+
+	boolean isPassenger();
+
+	boolean isOnGround();
+
+	boolean isInWeb();
+
+	boolean isInWater();
+
+	boolean isSprinting();
 
 }

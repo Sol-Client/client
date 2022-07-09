@@ -7,6 +7,6 @@ import io.github.solclient.abstraction.Helper;
 public interface Shader {
 
 	@Helper
-	@Nullable ShaderUniform getShaderUniform(String name);
+	@Nullable ShaderUniform getUniform(String name);
 
 }

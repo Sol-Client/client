@@ -6,6 +6,10 @@ package io.github.solclient.client.todo;
 @Deprecated
 public class TODO {
 
+	static {
+		System.err.println("Warning: TODO class loaded");
+	}
+
 	public static final Object L = null;
 	public static final boolean Z = false;
 

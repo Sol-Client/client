@@ -22,6 +22,7 @@ import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
 import io.github.solclient.abstraction.mc.world.item.ItemRenderer;
 import io.github.solclient.abstraction.mc.world.level.ClientLevel;
 import io.github.solclient.abstraction.mc.world.level.LevelRenderer;
+import io.github.solclient.abstraction.mc.world.particle.ParticleEngine;
 
 /**
  * A representation of the Minecraft client.
@@ -119,5 +120,7 @@ public interface MinecraftClient {
 	@NotNull Timer getTimer();
 
 	@NotNull EntityRenderDispatcher getEntityRenderDispatcher();
+
+	@NotNull ParticleEngine getParticleEngine();
 
 }

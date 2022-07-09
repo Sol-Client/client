@@ -9,8 +9,4 @@ public interface ItemEntity extends Entity {
 
 	@NotNull ItemStack getItem();
 
-	boolean isOnGround();
-
-	boolean isInWeb();
-
 }

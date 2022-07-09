@@ -2,18 +2,18 @@ package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.Environment;
+import io.github.solclient.abstraction.mc.world.entity.LivingEntity;
+import io.github.solclient.abstraction.mc.world.entity.effect.StatusEffectType;
+import io.github.solclient.abstraction.mc.world.item.enchantment.EnchantmentHelper;
+import io.github.solclient.abstraction.mc.world.particle.ParticleType;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.EntityAttackEvent;
+import io.github.solclient.client.event.impl.world.entity.EntityAttackEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.EnumParticleTypes;
 
 public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 
@@ -56,45 +56,48 @@ public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void onAttack(EntityAttackEvent event) {
-		EntityPlayer player = mc.thePlayer;
-
-		if(!(event.victim instanceof EntityLivingBase)) {
+		if(!(event.getEntity() instanceof LivingEntity)) {
 			return;
 		}
 
-		boolean crit = player.fallDistance > 0.0F && !player.onGround && !player.isOnLadder() && !player.isInWater()
-				&& !player.isPotionActive(Potion.blindness) && player.ridingEntity == null;
+		boolean crit = mc.getPlayer().getFallDistance() > 0 && !mc.getPlayer().isOnGround()
+				&& !mc.getPlayer().isClimbing() && !mc.getPlayer().isInWater()
+				&& !mc.getPlayer().hasStatusEffect(StatusEffectType.BLINDNESS) && !mc.getPlayer().isPassenger();
+
+		if(Environment.MINOR_RELEASE <= 9) {
+			crit = crit && !mc.getPlayer().isSprinting();
+		}
 
 		if(crit) {
 			for(int i = 0; i < multiplier - 1; i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.CRIT);
+				mc.getParticleEngine().emit(event.getEntity(), ParticleType.CRIT);
 			}
 		}
 
-		boolean usuallySharpness = EnchantmentHelper.getModifierForCreature(player.getHeldItem(),
-				((EntityLivingBase) event.victim).getCreatureAttribute()) > 0;
+		boolean alreadySharp = EnchantmentHelper.getExtraDamage(mc.getPlayer().getMainHandItem(),
+				((LivingEntity) event.getEntity()).getLivingEntityType()) > 0;
 
-		if(sharpness || usuallySharpness) {
-			for(int i = 0; i < (usuallySharpness ? multiplier - 1 : multiplier); i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.CRIT_MAGIC);
+		if(sharpness || alreadySharp) {
+			for(int i = 0; i < (alreadySharp ? multiplier - 1 : multiplier); i++) {
+				mc.getParticleEngine().emit(event.getEntity(), ParticleType.MAGIC);
 			}
 		}
 
 		if(snow) {
 			for(int i = 0; i < multiplier; i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.SNOWBALL);
+				mc.getParticleEngine().emit(event.getEntity(), ParticleType.SNOWBALL);
 			}
 		}
 
 		if(slime) {
 			for(int i = 0; i < multiplier; i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.SLIME);
+				mc.getParticleEngine().emit(event.getEntity(), ParticleType.SLIME);
 			}
 		}
 
 		if(flames) {
 			for(int i = 0; i < multiplier; i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.FLAME);
+				mc.getParticleEngine().emit(event.getEntity(), ParticleType.FLAME);
 			}
 		}
 	}

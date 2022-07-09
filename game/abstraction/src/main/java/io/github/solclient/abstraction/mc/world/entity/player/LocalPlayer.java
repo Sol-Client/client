@@ -8,6 +8,7 @@ import io.github.solclient.abstraction.mc.network.Connection;
 import io.github.solclient.abstraction.mc.text.Text;
 import io.github.solclient.abstraction.mc.world.entity.effect.StatusEffect;
 import io.github.solclient.abstraction.mc.world.inventory.Inventory;
+import io.github.solclient.abstraction.mc.world.item.ItemStack;
 import io.github.solclient.abstraction.mc.world.level.chunk.ChunkPos;
 
 public interface LocalPlayer extends ClientPlayer {
@@ -38,29 +39,5 @@ public interface LocalPlayer extends ClientPlayer {
 	}
 
 	boolean isSpectator();
-
-	/**
-	 * Gets the X position of the current chunk.
-	 * @return The X.
-	 */
-	int getChunkX();
-
-	/**
-	 * Gets the Z position of the current chunk.
-	 * @return The Z.
-	 */
-	int getChunkZ();
-
-	/**
-	 * Gets the current chunk position.
-	 * @return The position.
-	 */
-	@NotNull ChunkPos getChunkPos();
-
-	@NotNull Inventory getInventory();
-
-	@NotNull List<StatusEffect> getStatusEffects();
-
-	Abilities getAbilities();
 
 }

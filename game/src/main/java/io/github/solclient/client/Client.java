@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -54,7 +55,7 @@ import io.github.solclient.client.mod.impl.HitboxMod;
 import io.github.solclient.client.mod.impl.MenuBlurMod;
 import io.github.solclient.client.mod.impl.MotionBlurMod;
 import io.github.solclient.client.mod.impl.ParticlesMod;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.mod.impl.TNTTimerMod;
 import io.github.solclient.client.mod.impl.TaplookMod;
 import io.github.solclient.client.mod.impl.TimeChangerMod;
@@ -135,8 +136,6 @@ public final class Client {
 	@Getter
 	@Setter
 	private TitleScreen mainMenu;
-	private @NotNull Font font;
-	private boolean fontErr;
 
 	public void init() {
 		Utils.resetLineWidth();
@@ -158,7 +157,7 @@ public final class Client {
 
 		LOGGER.info("Loading mods...");
 
-		register(new SolClientMod());
+		register(new SolClientConfig());
 		register(new FpsMod());
 		register(new CoordinatesMod());
 		register(new KeystrokesMod());
@@ -442,10 +441,10 @@ public final class Client {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(SolClientMod.instance.modsKey.isHeld()) {
+		if(SolClientConfig.instance.modsKey.isHeld()) {
 			mc.setScreen(new ModsScreen());
 		}
-		else if(SolClientMod.instance.editHudKey.isHeld()) {
+		else if(SolClientConfig.instance.editHudKey.isHeld()) {
 			mc.setScreen(new ModsScreen());
 			mc.setScreen(new MoveHudsScreen());
 		}

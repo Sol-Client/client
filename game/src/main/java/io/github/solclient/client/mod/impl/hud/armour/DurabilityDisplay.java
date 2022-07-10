@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod.impl.hud.armour;
 
-import io.github.solclient.abstraction.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.lang.I18n;
 
 public enum DurabilityDisplay {
 	FRACTION,

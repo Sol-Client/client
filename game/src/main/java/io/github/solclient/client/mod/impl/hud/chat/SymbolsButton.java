@@ -1,7 +1,7 @@
 package io.github.solclient.client.mod.impl.hud.chat;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.text.Font;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;

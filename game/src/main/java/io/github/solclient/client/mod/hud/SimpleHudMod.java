@@ -4,9 +4,9 @@ import java.util.Optional;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.lang.I18n;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.util.DirtyMapper;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;

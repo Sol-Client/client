@@ -4,17 +4,17 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.DrawableHelper;
-import io.github.solclient.abstraction.mc.Identifier;
-import io.github.solclient.abstraction.mc.Window;
-import io.github.solclient.abstraction.mc.raycast.HitType;
-import io.github.solclient.abstraction.mc.render.GlStateManager;
-import io.github.solclient.abstraction.mc.texture.Texture;
-import io.github.solclient.abstraction.mc.world.entity.player.GameMode;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.hud.PreHudElementRenderEvent;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.Identifier;
+import io.github.solclient.client.platform.mc.Window;
+import io.github.solclient.client.platform.mc.raycast.HitType;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
+import io.github.solclient.client.platform.mc.texture.Texture;
+import io.github.solclient.client.platform.mc.world.entity.player.GameMode;
 import io.github.solclient.client.util.VanillaHudElement;
 import io.github.solclient.client.util.data.Colour;
 

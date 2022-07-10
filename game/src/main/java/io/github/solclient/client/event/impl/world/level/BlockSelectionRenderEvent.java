@@ -1,8 +1,8 @@
 package io.github.solclient.client.event.impl.world.level;
 
-import io.github.solclient.abstraction.mc.raycast.HitResult;
 import io.github.solclient.client.event.Cancellable;
 import io.github.solclient.client.event.impl.RenderEvent;
+import io.github.solclient.client.platform.mc.raycast.HitResult;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

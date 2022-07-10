@@ -7,7 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.github.solclient.abstraction.mc.Identifier;
+import io.github.solclient.client.platform.mc.Identifier;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

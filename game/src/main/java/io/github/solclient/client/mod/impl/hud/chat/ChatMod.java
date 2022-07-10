@@ -8,13 +8,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.DrawableHelper;
-import io.github.solclient.abstraction.mc.hud.chat.Chat;
-import io.github.solclient.abstraction.mc.hud.chat.ChatMessage;
-import io.github.solclient.abstraction.mc.option.KeyBinding;
-import io.github.solclient.abstraction.mc.render.GlStateManager;
-import io.github.solclient.abstraction.mc.text.Text;
-import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
@@ -26,6 +19,13 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.hud.chat.Chat;
+import io.github.solclient.client.platform.mc.hud.chat.ChatMessage;
+import io.github.solclient.client.platform.mc.option.KeyBinding;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
+import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.VanillaHudElement;
 import io.github.solclient.client.util.data.Colour;

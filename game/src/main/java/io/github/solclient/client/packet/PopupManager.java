@@ -3,15 +3,15 @@ package io.github.solclient.client.packet;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.Window;
-import io.github.solclient.abstraction.mc.option.KeyBinding;
-import io.github.solclient.abstraction.mc.text.TextFormatting;
-import io.github.solclient.abstraction.mc.util.Input;
-import io.github.solclient.abstraction.mc.util.MinecraftUtil;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.hud.PostHudRenderEvent;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.Window;
+import io.github.solclient.client.platform.mc.option.KeyBinding;
+import io.github.solclient.client.platform.mc.text.TextFormatting;
+import io.github.solclient.client.platform.mc.util.Input;
+import io.github.solclient.client.platform.mc.util.MinecraftUtil;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 

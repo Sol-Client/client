@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.lwjgl.input.Mouse;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.screen.ProxyScreen;
-import io.github.solclient.abstraction.mc.text.Text;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.screen.ProxyScreen;
+import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.data.Colour;
@@ -19,7 +19,7 @@ import net.minecraft.client.gui.GuiScreen;
 public class Screen extends ProxyScreen {
 
 	@Getter
-	protected io.github.solclient.abstraction.mc.screen.Screen parentScreen;
+	protected io.github.solclient.client.platform.mc.screen.Screen parentScreen;
 	protected Component root;
 	private Component rootWrapper;
 	private int mouseX;

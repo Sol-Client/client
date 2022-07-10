@@ -1,10 +1,10 @@
 package io.github.solclient.client.mod.impl.hud;
 
-import io.github.solclient.abstraction.mc.lang.I18n;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.world.entity.EntityAttackEvent;
 import io.github.solclient.client.event.impl.world.entity.EntityDamageEffectEvent;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.util.data.Position;
 
 public class ComboCounterMod extends SimpleHudMod {

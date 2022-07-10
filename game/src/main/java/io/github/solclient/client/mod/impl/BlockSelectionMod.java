@@ -4,16 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.raycast.HitResult;
-import io.github.solclient.abstraction.mc.raycast.HitType;
-import io.github.solclient.abstraction.mc.render.GlStateManager;
-import io.github.solclient.abstraction.mc.world.entity.Entity;
-import io.github.solclient.abstraction.mc.world.entity.player.GameMode;
-import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
-import io.github.solclient.abstraction.mc.world.item.ItemStack;
-import io.github.solclient.abstraction.mc.world.level.block.BlockPos;
-import io.github.solclient.abstraction.mc.world.level.block.BlockState;
-import io.github.solclient.abstraction.mc.world.level.block.BlockType;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.world.level.BlockSelectionRenderEvent;
 import io.github.solclient.client.mod.Mod;
@@ -21,6 +11,16 @@ import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.platform.mc.raycast.HitResult;
+import io.github.solclient.client.platform.mc.raycast.HitType;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
+import io.github.solclient.client.platform.mc.world.entity.Entity;
+import io.github.solclient.client.platform.mc.world.entity.player.GameMode;
+import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
+import io.github.solclient.client.platform.mc.world.item.ItemStack;
+import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
+import io.github.solclient.client.platform.mc.world.level.block.BlockState;
+import io.github.solclient.client.platform.mc.world.level.block.BlockType;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 

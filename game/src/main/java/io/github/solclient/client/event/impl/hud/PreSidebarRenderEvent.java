@@ -1,6 +1,6 @@
 package io.github.solclient.client.event.impl.hud;
 
-import io.github.solclient.abstraction.mc.world.scoreboard.Objective;
+import io.github.solclient.client.platform.mc.world.scoreboard.Objective;
 import io.github.solclient.client.util.VanillaHudElement;
 import lombok.Getter;
 

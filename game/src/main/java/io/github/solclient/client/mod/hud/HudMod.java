@@ -5,13 +5,13 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.text.Font;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 

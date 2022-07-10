@@ -1,6 +1,6 @@
 package io.github.solclient.client.ui;
 
-import io.github.solclient.abstraction.mc.Identifier;
+import io.github.solclient.client.platform.mc.Identifier;
 import io.github.solclient.client.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

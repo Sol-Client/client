@@ -2,11 +2,6 @@ package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.Environment;
-import io.github.solclient.abstraction.mc.world.entity.LivingEntity;
-import io.github.solclient.abstraction.mc.world.entity.effect.StatusEffectType;
-import io.github.solclient.abstraction.mc.world.item.enchantment.EnchantmentHelper;
-import io.github.solclient.abstraction.mc.world.particle.ParticleType;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.world.entity.EntityAttackEvent;
 import io.github.solclient.client.mod.Mod;
@@ -14,6 +9,11 @@ import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.platform.mc.Environment;
+import io.github.solclient.client.platform.mc.world.entity.LivingEntity;
+import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectType;
+import io.github.solclient.client.platform.mc.world.item.enchantment.EnchantmentHelper;
+import io.github.solclient.client.platform.mc.world.particle.ParticleType;
 
 public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 

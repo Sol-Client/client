@@ -9,14 +9,14 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.lang.I18n;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.hud.PostHudRenderEvent;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudElement;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 
 @AbstractTranslationKey("sol_client.mod.generic")

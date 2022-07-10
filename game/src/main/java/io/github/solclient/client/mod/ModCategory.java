@@ -3,8 +3,8 @@ package io.github.solclient.client.mod;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.github.solclient.abstraction.mc.lang.I18n;
 import io.github.solclient.client.Client;
+import io.github.solclient.client.platform.mc.lang.I18n;
 import lombok.RequiredArgsConstructor;
 
 /**

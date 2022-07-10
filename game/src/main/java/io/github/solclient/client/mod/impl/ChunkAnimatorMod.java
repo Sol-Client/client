@@ -5,8 +5,6 @@ import java.util.WeakHashMap;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.render.GlStateManager;
-import io.github.solclient.abstraction.mc.world.level.chunk.CompiledChunk;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.world.level.chunk.CompiledChunkPositionEvent;
 import io.github.solclient.client.event.impl.world.level.chunk.PreRenderChunkEvent;
@@ -15,6 +13,8 @@ import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
+import io.github.solclient.client.platform.mc.world.level.chunk.CompiledChunk;
 import io.github.solclient.client.util.data.EasingFunction;
 
 // Based on lumien231's chunk animator.

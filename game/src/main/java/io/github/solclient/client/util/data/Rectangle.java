@@ -1,6 +1,6 @@
 package io.github.solclient.client.util.data;
 
-import io.github.solclient.abstraction.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

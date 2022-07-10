@@ -2,10 +2,10 @@ package io.github.solclient.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.DrawableHelper;
 import io.github.solclient.client.CpsCounter;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 

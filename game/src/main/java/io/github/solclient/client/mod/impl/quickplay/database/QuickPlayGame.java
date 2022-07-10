@@ -8,12 +8,12 @@ import java.util.Map;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import io.github.solclient.abstraction.mc.world.item.ItemStack;
-import io.github.solclient.abstraction.mc.world.item.ItemType;
-import io.github.solclient.abstraction.mc.world.level.block.BlockType;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
+import io.github.solclient.client.platform.mc.world.item.ItemStack;
+import io.github.solclient.client.platform.mc.world.item.ItemType;
+import io.github.solclient.client.platform.mc.world.level.block.BlockType;
 import lombok.Getter;
 import lombok.SneakyThrows;
 

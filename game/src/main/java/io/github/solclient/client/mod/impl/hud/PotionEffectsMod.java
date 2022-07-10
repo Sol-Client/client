@@ -5,16 +5,16 @@ import java.util.Collection;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.DrawableHelper;
-import io.github.solclient.abstraction.mc.lang.I18n;
-import io.github.solclient.abstraction.mc.render.GlStateManager;
-import io.github.solclient.abstraction.mc.texture.Texture;
-import io.github.solclient.abstraction.mc.world.entity.effect.StatusEffect;
-import io.github.solclient.abstraction.mc.world.entity.effect.StatusEffectType;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
+import io.github.solclient.client.platform.mc.texture.Texture;
+import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffect;
+import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectType;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;

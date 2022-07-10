@@ -2,8 +2,8 @@ package io.github.solclient.client.mod.hud;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.Window;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.Window;
 import io.github.solclient.client.util.data.Position;
 import lombok.AllArgsConstructor;
 import lombok.Data;

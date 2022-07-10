@@ -1,6 +1,6 @@
 package io.github.solclient.client.event.impl.sound;
 
-import io.github.solclient.abstraction.mc.sound.SoundType;
+import io.github.solclient.client.platform.mc.sound.SoundType;
 import lombok.Data;
 
 @Data

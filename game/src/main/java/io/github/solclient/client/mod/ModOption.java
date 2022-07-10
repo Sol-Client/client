@@ -13,13 +13,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.lang.I18n;
-import io.github.solclient.abstraction.mc.option.KeyBinding;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.FileOption;
 import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.option.KeyBinding;
 import lombok.Getter;
 
 public class ModOption {

@@ -2,7 +2,7 @@ package io.github.solclient.client.event.impl.shader;
 
 import java.util.List;
 
-import io.github.solclient.abstraction.mc.shader.ShaderChain;
+import io.github.solclient.client.platform.mc.shader.ShaderChain;
 import lombok.Data;
 
 @Data

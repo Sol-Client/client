@@ -4,13 +4,13 @@ import java.io.IOException;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.option.KeyBinding;
-import io.github.solclient.abstraction.mc.text.Font;
-import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.ConfigOnlyMod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.platform.mc.option.KeyBinding;
+import io.github.solclient.client.platform.mc.text.Font;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.data.Colour;
 

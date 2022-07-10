@@ -1,0 +1,15 @@
+package io.github.solclient.client.platform.mc.world.particle;
+
+import org.jetbrains.annotations.Nullable;
+
+import io.github.solclient.client.platform.mc.Direction;
+import io.github.solclient.client.platform.mc.world.entity.Entity;
+import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
+
+public interface ParticleEngine {
+
+	void emit(Entity entity, ParticleType particle);
+
+	void emitDestruction(@Nullable BlockPos blockPos, @Nullable Direction side);
+
+}

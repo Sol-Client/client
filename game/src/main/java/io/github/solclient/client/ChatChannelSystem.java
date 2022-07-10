@@ -3,12 +3,12 @@ package io.github.solclient.client;
 import java.util.List;
 import java.util.Objects;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.network.C2SChatMessagePacket;
-import io.github.solclient.abstraction.mc.text.Font;
-import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
-import io.github.solclient.abstraction.mc.world.entity.player.Player;
 import io.github.solclient.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.network.C2SChatMessagePacket;
+import io.github.solclient.client.platform.mc.text.Font;
+import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
+import io.github.solclient.client.platform.mc.world.entity.player.Player;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;

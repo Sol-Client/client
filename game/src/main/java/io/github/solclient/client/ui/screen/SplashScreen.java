@@ -1,7 +1,7 @@
 package io.github.solclient.client.ui.screen;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.Window;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.Window;
 import io.github.solclient.client.util.Rects;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.Minecraft;

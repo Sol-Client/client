@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.github.solclient.abstraction.mc.DrawableHelper;
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.text.Font;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.BaseHudElement;
 import io.github.solclient.client.mod.hud.HudPosition;
 import io.github.solclient.client.mod.impl.discordrpc.socket.User;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;

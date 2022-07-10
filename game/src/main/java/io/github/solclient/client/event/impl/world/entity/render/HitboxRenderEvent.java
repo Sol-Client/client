@@ -1,8 +1,8 @@
 package io.github.solclient.client.event.impl.world.entity.render;
 
-import io.github.solclient.abstraction.mc.world.entity.Entity;
 import io.github.solclient.client.event.Cancellable;
 import io.github.solclient.client.event.impl.RenderEvent;
+import io.github.solclient.client.platform.mc.world.entity.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

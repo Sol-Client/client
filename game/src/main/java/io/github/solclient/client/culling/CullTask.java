@@ -38,15 +38,15 @@ import org.apache.logging.log4j.Logger;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 import com.logisticscraft.occlusionculling.util.Vec3d;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.maths.Box;
-import io.github.solclient.abstraction.mc.util.MinecraftUtil;
-import io.github.solclient.abstraction.mc.world.entity.Entity;
-import io.github.solclient.abstraction.mc.world.entity.decoration.ArmourStand;
-import io.github.solclient.abstraction.mc.world.level.block.BlockEntity;
-import io.github.solclient.abstraction.mc.world.level.block.BlockPos;
-import io.github.solclient.abstraction.mc.world.level.block.BlockType;
-import io.github.solclient.abstraction.mc.world.level.chunk.Chunk;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.maths.Box;
+import io.github.solclient.client.platform.mc.util.MinecraftUtil;
+import io.github.solclient.client.platform.mc.world.entity.Entity;
+import io.github.solclient.client.platform.mc.world.entity.decoration.ArmourStand;
+import io.github.solclient.client.platform.mc.world.level.block.BlockEntity;
+import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
+import io.github.solclient.client.platform.mc.world.level.block.BlockType;
+import io.github.solclient.client.platform.mc.world.level.chunk.Chunk;
 
 public class CullTask implements Runnable {
 
@@ -71,7 +71,7 @@ public class CullTask implements Runnable {
 	public void run() {
 		try {
 			if (mc.hasPlayer() && mc.getCameraEntity() != null) {
-				io.github.solclient.abstraction.mc.maths.Vec3d cameraVec = MinecraftUtil.getCameraPos();
+				io.github.solclient.client.platform.mc.maths.Vec3d cameraVec = MinecraftUtil.getCameraPos();
 
 				if (requestCull || !(cameraVec.x() == lastPos.x && cameraVec.y() == lastPos.y
 						&& cameraVec.z() == lastPos.z)) {

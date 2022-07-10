@@ -1,6 +1,6 @@
 package io.github.solclient.client.util.data;
 
-import io.github.solclient.abstraction.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.lang.I18n;
 
 public enum VerticalAlignment {
 	TOP,

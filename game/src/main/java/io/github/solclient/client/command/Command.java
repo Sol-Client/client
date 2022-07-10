@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
+import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
 
 // TODO replace with brigadier, and incorporate a client-sided brigadier in 1.8.
 // TODO command translations.

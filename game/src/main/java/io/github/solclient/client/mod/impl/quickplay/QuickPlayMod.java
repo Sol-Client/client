@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.abstraction.mc.option.KeyBinding;
-import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.DetectedServer;
 import io.github.solclient.client.event.EventHandler;
@@ -20,6 +18,8 @@ import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
 import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGameMode;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
+import io.github.solclient.client.platform.mc.option.KeyBinding;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Utils;
 
 public class QuickPlayMod extends Mod {

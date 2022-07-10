@@ -2,16 +2,16 @@ package io.github.solclient.client.mod.impl;
 
 import java.text.DecimalFormat;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.text.LiteralText;
-import io.github.solclient.abstraction.mc.text.Text;
-import io.github.solclient.abstraction.mc.text.TextColour;
-import io.github.solclient.abstraction.mc.text.TextFormatting;
-import io.github.solclient.abstraction.mc.world.entity.PrimedTnt;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.DetectedServer;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.text.LiteralText;
+import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.text.TextColour;
+import io.github.solclient.client.platform.mc.text.TextFormatting;
+import io.github.solclient.client.platform.mc.world.entity.PrimedTnt;
 import io.github.solclient.client.util.Utils;
 
 public class TNTTimerMod extends Mod {

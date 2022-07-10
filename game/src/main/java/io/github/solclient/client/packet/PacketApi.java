@@ -8,11 +8,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.github.solclient.abstraction.mc.Identifier;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.network.ServerMessageReceiveEvent;
 import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.platform.mc.Identifier;
 
 public class PacketApi {
 

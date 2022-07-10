@@ -2,9 +2,9 @@ package io.github.solclient.client.mod.impl.hypixeladditions.commands;
 
 import java.util.List;
 
-import io.github.solclient.abstraction.mc.world.entity.player.LocalPlayer;
 import io.github.solclient.client.command.CommandException;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
+import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
 import io.github.solclient.client.util.Utils;
 
 public class VisitHousingCommand extends HypixelAdditionsCommand {

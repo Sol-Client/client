@@ -2,10 +2,10 @@ package io.github.solclient.client.mod.impl.hud.keystrokes;
 
 import org.lwjgl.opengl.GL11;
 
-import io.github.solclient.abstraction.mc.DrawableHelper;
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.option.KeyBinding;
 import io.github.solclient.client.CpsCounter;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import lombok.RequiredArgsConstructor;

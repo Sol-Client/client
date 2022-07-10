@@ -1,6 +1,6 @@
 package io.github.solclient.client.todo;
 
-import io.github.solclient.abstraction.mc.RuntimeDetermined;
+import io.github.solclient.client.platform.mc.RuntimeDetermined;
 
 /**
  * Used to mark critical todo values. Should be paired with a comment.

@@ -16,15 +16,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.lwjgl.opengl.GL11;
 
-import io.github.solclient.abstraction.mc.Environment;
-import io.github.solclient.abstraction.mc.MinecraftClient;
-import io.github.solclient.abstraction.mc.Window;
-import io.github.solclient.abstraction.mc.sound.SoundInstance;
-import io.github.solclient.abstraction.mc.sound.SoundType;
-import io.github.solclient.abstraction.mc.util.MinecraftUtil;
-import io.github.solclient.abstraction.mc.util.OperatingSystem;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.Environment;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.Window;
+import io.github.solclient.client.platform.mc.sound.SoundInstance;
+import io.github.solclient.client.platform.mc.sound.SoundType;
+import io.github.solclient.client.platform.mc.util.MinecraftUtil;
+import io.github.solclient.client.platform.mc.util.OperatingSystem;
 import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;

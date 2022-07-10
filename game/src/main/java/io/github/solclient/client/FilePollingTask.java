@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModOption;
+import io.github.solclient.client.platform.mc.MinecraftClient;
 
 public class FilePollingTask implements Runnable, Closeable {
 

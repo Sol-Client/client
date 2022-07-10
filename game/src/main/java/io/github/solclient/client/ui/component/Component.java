@@ -9,7 +9,7 @@ import java.util.function.BiPredicate;
 
 import org.lwjgl.opengl.GL11;
 
-import io.github.solclient.abstraction.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.ui.component.controller.Controller;

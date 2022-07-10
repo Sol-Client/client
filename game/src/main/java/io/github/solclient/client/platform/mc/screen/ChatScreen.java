@@ -1,5 +1,7 @@
 package io.github.solclient.client.platform.mc.screen;
 
-public interface ChatScreen {
+import io.github.solclient.client.chat.ChatAccessor;
+
+public interface ChatScreen extends ChatAccessor {
 
 }

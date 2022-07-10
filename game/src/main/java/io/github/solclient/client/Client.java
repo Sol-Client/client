@@ -25,6 +25,7 @@ import com.google.gson.JsonParser;
 import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
+import io.github.solclient.client.chat.ChatButton;
 import io.github.solclient.client.command.Command;
 import io.github.solclient.client.command.CommandException;
 import io.github.solclient.client.config.ConfigVersion;
@@ -86,7 +87,6 @@ import io.github.solclient.client.platform.mc.text.TextColour;
 import io.github.solclient.client.platform.mc.world.level.Level;
 import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
 import io.github.solclient.client.todo.TODO;
-import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import io.github.solclient.client.util.Utils;

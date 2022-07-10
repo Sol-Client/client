@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Objects;
 
 import io.github.solclient.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
+import io.github.solclient.client.chat.ChatAccessor;
+import io.github.solclient.client.chat.ChatButton;
 import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.hud.chat.Chat;
 import io.github.solclient.client.platform.mc.network.C2SChatMessagePacket;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
 import io.github.solclient.client.platform.mc.world.entity.player.Player;
-import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
@@ -132,7 +134,7 @@ public abstract class ChatChannelSystem {
 				optionBounds.fill(hovered ? Colour.WHITE_128 : Colour.BLACK_128);
 				if(hovered && wasMouseClicked) {
 					Utils.playClickSound(false);
-					AccessGuiChat.getInstance().setSelectedChatButton(null);
+					Chat.requireInstance().setSelectedButton(null);
 					Client.INSTANCE.getChatChannelSystem().setChannel(channel);
 				}
 

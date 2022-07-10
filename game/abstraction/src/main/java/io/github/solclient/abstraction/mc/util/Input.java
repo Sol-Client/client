@@ -149,4 +149,8 @@ public class Input {
 		throw new UnsupportedOperationException();
 	}
 
+	public static boolean isMouseButtonHeld(int code) {
+		throw new UnsupportedOperationException();
+	}
+
 }

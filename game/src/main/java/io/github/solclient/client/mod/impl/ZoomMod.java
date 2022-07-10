@@ -1,24 +1,22 @@
 package io.github.solclient.client.mod.impl;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.abstraction.mc.option.KeyBinding;
+import io.github.solclient.abstraction.mc.util.Input;
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.*;
-import io.github.solclient.client.event.impl.FovEvent;
-import io.github.solclient.client.event.impl.MouseClickEvent;
-import io.github.solclient.client.event.impl.ScrollEvent;
+import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
+import io.github.solclient.client.event.impl.input.MouseDownEvent;
+import io.github.solclient.client.event.impl.input.ScrollWheelEvent;
+import io.github.solclient.client.event.impl.world.FovEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.MathHelper;
+import io.github.solclient.client.util.Utils;
 
 public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
@@ -26,11 +24,9 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	public static ZoomMod instance;
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C, Client.KEY_CATEGORY);
-	@Option
-	private final KeyBinding zoomOutKey = new KeyBinding(getTranslationKey() + ".zoom_out", Keyboard.KEY_MINUS, Client.KEY_CATEGORY);
-	@Option
-	private final KeyBinding zoomInKey = new KeyBinding(getTranslationKey() + ".zoom_in", Keyboard.KEY_EQUALS, Client.KEY_CATEGORY);
+	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.C, Client.KEY_CATEGORY),
+			zoomOutKey = KeyBinding.create(getTranslationKey() + ".zoom_out", Input.MINUS, Client.KEY_CATEGORY),
+			zoomInKey = KeyBinding.create(getTranslationKey() + ".zoom_in", Input.EQUAL, Client.KEY_CATEGORY);
 
 	@Expose
 	@Option
@@ -70,31 +66,31 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-		Client.INSTANCE.registerKeyBinding(key);
-		Client.INSTANCE.registerKeyBinding(zoomOutKey);
-		Client.INSTANCE.registerKeyBinding(zoomInKey);
+		mc.getOptions().addKey(key);
+		mc.getOptions().addKey(zoomOutKey);
+		mc.getOptions().addKey(zoomInKey);
 	}
 
 	public void start() {
 		active = true;
-		lastSensitivity = mc.gameSettings.mouseSensitivity;
+		lastSensitivity = mc.getOptions().mouseSensitivity();
 		resetFactor();
 		updateSensitivity();
-		wasCinematic = this.mc.gameSettings.smoothCamera;
-		mc.gameSettings.smoothCamera = cinematic;
-		mc.renderGlobal.setDisplayListEntitiesDirty();
+		wasCinematic = mc.getOptions().smoothCamera();
+		mc.getOptions().setSmoothCamera(cinematic);
+		mc.getLevelRenderer().scheduleUpdate();
 	}
 
 	public void stop() {
 		active = false;
 		setFactor(1);
-		mc.gameSettings.mouseSensitivity = lastSensitivity;
-		mc.gameSettings.smoothCamera = wasCinematic;
+		mc.getOptions().setMouseSensitivity(lastSensitivity);
+		mc.getOptions().setSmoothCamera(wasCinematic);
 	}
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(key.isKeyDown()) {
+		if(key.isHeld()) {
 			if(!active) {
 				start();
 			}
@@ -103,10 +99,10 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 			stop();
 		}
 		if(active) {
-			if(zoomOutKey.isKeyDown()) {
+			if(zoomOutKey.isHeld()) {
 				zoomOut();
 			}
-			else if(zoomInKey.isKeyDown()) {
+			else if(zoomInKey.isHeld()) {
 				zoomIn();
 			}
 		}
@@ -125,20 +121,20 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	@EventHandler
 	public void onFov(FovEvent event) {
 		if(smooth) {
-			float calculatedAnimatedFactor = lastAnimatedFactor + (animatedFactor - lastAnimatedFactor) * event.partialTicks;
+			float calculatedAnimatedFactor = lastAnimatedFactor + (animatedFactor - lastAnimatedFactor) * event.getTickDelta();
 
 			if(calculatedAnimatedFactor != lastCalculatedAnimatedFactor) {
-				mc.renderGlobal.setDisplayListEntitiesDirty();
+				mc.getLevelRenderer().scheduleUpdate();
 			}
 
 			lastCalculatedAnimatedFactor = calculatedAnimatedFactor;
-			event.fov *= calculatedAnimatedFactor;
+			event.setFov(event.getFov() * calculatedAnimatedFactor);
 			return;
 		}
 		if(!active) {
 			return;
 		}
-		event.fov *= currentFactor;
+		event.setFov(event.getFov() * currentFactor);
 	}
 
 	@Override
@@ -147,24 +143,24 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	@EventHandler
-	public void onMouseClick(MouseClickEvent event) {
-		if(active && scrolling && event.button == 2) {
-			event.cancelled = true;
+	public void onMouseClick(MouseDownEvent event) {
+		if(active && scrolling && event.getButton() == 2) {
+			event.cancel();
 			resetFactor();
 		}
 	}
 
 	@EventHandler
-	public boolean onScroll(ScrollEvent event) {
+	public boolean onScroll(ScrollWheelEvent event) {
 		if(active && scrolling) {
-			event.cancelled = true;
-			if(MouseHandler.isButtonDown(2)) {
+			event.cancel();
+			if(Input.isMouseButtonHeld(2)) {
 				return true;
 			}
-			if(event.amount < 0) {
+			if(event.getAmount() < 0) {
 				zoomOut();
 			}
-			else if(event.amount > 0) {
+			else if(event.getAmount() > 0) {
 				zoomIn();
 			}
 		}
@@ -185,7 +181,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public void setFactor(float factor) {
 		if(factor != currentFactor) {
-			mc.renderGlobal.setDisplayListEntitiesDirty();
+			mc.getLevelRenderer().scheduleUpdate();
 			updateSensitivity();
 		}
 		currentFactor = factor;
@@ -206,12 +202,12 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 
 	public float clamp(float factor) {
-		return MathHelper.clamp_float(factor, 0, 0.5F);
+		return Utils.clamp(factor, 0, 0.5F);
 	}
 
 	public void updateSensitivity() {
 		if(reduceSensitivity) {
-			mc.gameSettings.mouseSensitivity = lastSensitivity * currentFactor;
+			mc.getOptions().setMouseSensitivity(lastSensitivity * currentFactor);
 		}
 	}
 

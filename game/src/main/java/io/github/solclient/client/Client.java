@@ -42,6 +42,7 @@ import io.github.solclient.client.culling.CullTask;
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PostStartEvent;
+import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.event.impl.network.ServerConnectEvent;
 import io.github.solclient.client.event.impl.network.chat.OutgoingChatMessageEvent;
 import io.github.solclient.client.mod.Mod;

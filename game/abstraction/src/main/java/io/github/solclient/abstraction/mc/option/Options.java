@@ -8,6 +8,8 @@ public interface Options {
 
 	float mouseSensitivity();
 
+	void setMouseSensitivity(float sensitivity);
+
 	boolean invertMouse();
 
 	boolean debugOverlay();
@@ -47,5 +49,9 @@ public interface Options {
 
 	@Helper
 	void removeKey(@NotNull KeyBinding key);
+
+	boolean smoothCamera();
+
+	void setSmoothCamera(boolean camera);
 
 }

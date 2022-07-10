@@ -2,6 +2,7 @@ package io.github.solclient.client.mod.impl;
 
 import java.text.DecimalFormat;
 
+import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.text.LiteralText;
 import io.github.solclient.abstraction.mc.text.Text;
 import io.github.solclient.abstraction.mc.text.TextColour;
@@ -33,7 +34,8 @@ public class TNTTimerMod extends Mod {
 		float fuse = tnt.getFuse();
 
 		// Based on Sk1er's mod
-		if(Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL && "BED WARS".equals(Utils.getScoreboardTitle())) {
+		if(Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL
+				&& "BED WARS".equals(MinecraftClient.getInstance().getLevel().getScoreboardTitle())) {
 			fuse -= 28;
 		}
 
@@ -45,12 +47,11 @@ public class TNTTimerMod extends Mod {
 		else if(fuse < 40) {
 			colour = TextColour.RED;
 		}
-		else if (fuse < 60) {
+		else if(fuse < 60) {
 			colour = TextColour.GOLD;
 		}
 
 		final TextColour finalColour = colour;
-
 		return LiteralText.create(FORMAT.format(fuse / 20)).withStyle((style) -> style.setColour(finalColour));
 	}
 

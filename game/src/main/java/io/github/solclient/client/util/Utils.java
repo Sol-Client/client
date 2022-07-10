@@ -7,30 +7,25 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.UnknownHostException;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.IntConsumer;
 
 import org.lwjgl.opengl.GL11;
 
-import com.replaymod.replay.ReplayModReplay;
-import com.replaymod.replay.camera.CameraEntity;
-
-import de.jcm.discordgamesdk.NetworkManager;
 import io.github.solclient.abstraction.mc.Environment;
 import io.github.solclient.abstraction.mc.MinecraftClient;
 import io.github.solclient.abstraction.mc.Window;
-import io.github.solclient.abstraction.mc.render.GlStateManager;
+import io.github.solclient.abstraction.mc.sound.SoundInstance;
+import io.github.solclient.abstraction.mc.sound.SoundType;
 import io.github.solclient.abstraction.mc.util.MinecraftUtil;
 import io.github.solclient.abstraction.mc.util.OperatingSystem;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.SneakyThrows;
@@ -104,8 +99,7 @@ public class Utils {
 			return;
 		}
 
-		Minecraft.getMinecraft().getSoundHandler()
-				.playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+		MinecraftClient.getInstance().getSoundEngine().play(SoundInstance.ui(SoundType.BUTTON_CLICK, 1.0F));
 	}
 
 	@SneakyThrows
@@ -113,109 +107,12 @@ public class Utils {
 		return new URL(url);
 	}
 
-	/*
-	 * Single following method:
-	 *
-	 * Copyright (C) 2018-present Hyperium <https://hyperium.cc/>
-	 *
-	 * This program is free software: you can redistribute it and/or modify it under
-	 * the terms of the GNU Lesser General Public License as published by the Free
-	 * Software Foundation, either version 3 of the License, or (at your option) any
-	 * later version.
-	 *
-	 * This program is distributed in the hope that it will be useful, but WITHOUT
-	 * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-	 * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-	 * details.
-	 *
-	 * You should have received a copy of the GNU Lesser General Public License
-	 * along with this program. If not, see <http://www.gnu.org/licenses/>.
-	 */
-	public void drawCircle(float xx, float yy, int radius, int col) {
-		float f = (col >> 24 & 0xFF) / 255.0F;
-		float f2 = (col >> 16 & 0xFF) / 255.0F;
-		float f3 = (col >> 8 & 0xFF) / 255.0F;
-		float f4 = (col & 0xFF) / 255.0F;
-		GL11.glPushMatrix();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glEnable(GL11.GL_LINE_SMOOTH);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		GL11.glLineWidth(2);
-		GL11.glBegin(2);
-		GL11.color(f2, f3, f4, f);
-
-		for (int i = 0; i < 70; i++) {
-			float x = radius * MathHelper.cos((float) (i * 0.08975979010256552D));
-			float y = radius * MathHelper.sin((float) (i * 0.08975979010256552D));
-			GL11.glVertex2f(xx + x, yy + y);
-		}
-
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glEnd();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_LINE_SMOOTH);
-		GL11.glPopMatrix();
-	}
-
-	public GuiChat getChatGui() {
-		GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
-		if (currentScreen instanceof GuiChat) {
-			return (GuiChat) currentScreen;
-		}
-		return null;
-	}
-
-	public void drawTexture(int x, int y, int textureX, int textureY, int width, int height, int zLevel) {
-		float xMultiplier = 0.00390625F;
-		float yMultiplier = 0.00390625F;
-		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		worldrenderer.pos(x, y + height, zLevel).tex(((textureX) * xMultiplier), (textureY + height) * yMultiplier)
-				.endVertex();
-		worldrenderer.pos(x + width, y + height, zLevel)
-				.tex((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).endVertex();
-		worldrenderer.pos(x + width, y + 0, zLevel).tex((textureX + width) * xMultiplier, (textureY + 0) * yMultiplier)
-				.endVertex();
-		worldrenderer.pos(x, y, zLevel).tex(((textureX) * xMultiplier), ((textureY + 0) * yMultiplier)).endVertex();
-		tessellator.draw();
-	}
-
-	public void drawGradientRect(int left, int top, int right, int bottom, int startColour, int endColour) {
-		float alpha1 = (startColour >> 24 & 255) / 255.0F;
-		float red1 = (startColour >> 16 & 255) / 255.0F;
-		float green1 = (startColour >> 8 & 255) / 255.0F;
-		float blue1 = (startColour & 255) / 255.0F;
-		float alpha2 = (endColour >> 24 & 255) / 255.0F;
-		float red2 = (endColour >> 16 & 255) / 255.0F;
-		float green2 = (endColour >> 8 & 255) / 255.0F;
-		float blue2 = (endColour & 255) / 255.0F;
-		GlStateManager.disableTexture2D();
-		GlStateManager.enableBlend();
-		GlStateManager.disableAlpha();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-		GlStateManager.shadeModel(7425);
-		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-		worldrenderer.pos(right, top, 0).color(red1, green1, blue1, alpha1).endVertex();
-		worldrenderer.pos(left, top, 0).color(red1, green1, blue1, alpha1).endVertex();
-		worldrenderer.pos(left, bottom, 0).color(red2, green2, blue2, alpha2).endVertex();
-		worldrenderer.pos(right, bottom, 0).color(red2, green2, blue2, alpha2).endVertex();
-		tessellator.draw();
-		GlStateManager.shadeModel(7424);
-		GlStateManager.disableBlend();
-		GlStateManager.enableAlpha();
-		GlStateManager.enableTexture2D();
-	}
 
 	public boolean isSpectatingEntityInReplay() {
-		return ReplayModReplay.instance.getReplayHandler() != null
-				&& !(Minecraft.getMinecraft().getRenderViewEntity() instanceof CameraEntity);
+		return TODO.L /* TODO replaymod */ != null
+				&& !(MinecraftClient.getInstance().getCameraEntity() instanceof TODO /* TODO replaymod */ );
 	}
+
 	public String getTextureScale() {
 		Window window = MinecraftClient.getInstance().getWindow();
 
@@ -241,45 +138,6 @@ public class Utils {
 		}
 
 		return result.toString();
-	}
-
-	public void pingServer(String address, IntConsumer callback) throws UnknownHostException {
-		ServerAddress serverAddress = ServerAddress.fromString(address);
-		NetworkManager networkManager = NetworkManager.createNetworkManagerAndConnect(
-				InetAddress.getByName(serverAddress.getIP()), serverAddress.getPort(), false);
-
-		networkManager.setNetHandler(new INetHandlerStatusClient() {
-
-			private boolean expected = false;
-			private long time = 0L;
-
-			@Override
-			public void handleServerInfo(S00PacketServerInfo packetIn) {
-				if (expected) {
-					networkManager.closeChannel(new ChatComponentText("Received unrequested status"));
-				} else {
-					expected = true;
-					time = Minecraft.getSystemTime();
-					networkManager.sendPacket(new C01PacketPing(this.time));
-				}
-			}
-
-			@Override
-			public void handlePong(S01PacketPong packetIn) {
-				long systemTime = Minecraft.getSystemTime();
-				callback.accept((int) (systemTime - time));
-				networkManager.closeChannel(new ChatComponentText("Finished"));
-			}
-
-			@Override
-			public void onDisconnect(IChatComponent reason) {
-				callback.accept(-1);
-			}
-		});
-
-		networkManager.sendPacket(
-				new C00Handshake(47, serverAddress.getIP(), serverAddress.getPort(), EnumConnectionState.STATUS));
-		networkManager.sendPacket(new C00PacketServerQuery());
 	}
 
 	public int randomInt(int from, int to) {
@@ -313,53 +171,6 @@ public class Utils {
 		GL11.glLineWidth(2);
 	}
 
-	public void drawFloatRectangle(float left, float top, float right, float bottom, int colour) {
-		if (left < right) {
-			float swap = left;
-			left = right;
-			right = swap;
-		}
-
-		if (top < bottom) {
-			float swap = top;
-			top = bottom;
-			bottom = swap;
-		}
-
-		float f3 = (colour >> 24 & 255) / 255.0F;
-		float f = (colour >> 16 & 255) / 255.0F;
-		float f1 = (colour >> 8 & 255) / 255.0F;
-		float f2 = (colour & 255) / 255.0F;
-		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		GlStateManager.enableBlend();
-		GlStateManager.disableTexture2D();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-		GlStateManager.color(f, f1, f2, f3);
-		worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(left, bottom, 0.0D).endVertex();
-		worldrenderer.pos(right, bottom, 0.0D).endVertex();
-		worldrenderer.pos(right, top, 0.0D).endVertex();
-		worldrenderer.pos(left, top, 0.0D).endVertex();
-		tessellator.draw();
-		GlStateManager.enableTexture2D();
-		GlStateManager.disableBlend();
-	}
-
-	public static String getScoreboardTitle() {
-		Minecraft mc = Minecraft.getMinecraft();
-
-		if (mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
-			ScoreObjective first = mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
-
-			if (first != null) {
-				return EnumChatFormatting.getTextWithoutFormattingCodes(first.getDisplayName());
-			}
-		}
-
-		return null;
-	}
-
 	public static String getNativeFileExtension() {
 		OperatingSystem system = MinecraftUtil.getOperatingSystem();
 
@@ -383,62 +194,6 @@ public class Utils {
 		}
 
 		return max;
-	}
-
-	public void fillBox(AxisAlignedBB box) {
-		GlStateManager.disableCull();
-		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
-		tessellator.draw();
-
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
-		tessellator.draw();
-
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
-		tessellator.draw();
-
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
-		tessellator.draw();
-
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
-		tessellator.draw();
-
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
-		tessellator.draw();
-
-		GlStateManager.enableCull();
 	}
 
 	public void glColour(int colour) {

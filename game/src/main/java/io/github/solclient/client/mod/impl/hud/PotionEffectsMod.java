@@ -131,15 +131,16 @@ public class PotionEffectsMod extends HudMod {
 
 				if(background) {
 					mc.getTextureManager().bind(Texture.INVENTORY_ID);
-					Utils.drawTexture(x, y, 0, 166, width / 2, 32, 0);
-					Utils.drawTexture(x + width / 2, y, 120 - width / 2, 166, width / 2, 32, 0);
+					int halfWidth = width / 2;
+					DrawableHelper.fillTexturedRect(x, y, 0, 166, halfWidth, 32, halfWidth, 32);
+					DrawableHelper.fillTexturedRect(x + width / 2, y, 120 - halfWidth, 166, halfWidth, 32, halfWidth, 32);
 				}
 
 				int centreText = y + 12;
 
 				if(icon && effect.showIcon()) {
 					mc.getTextureManager().bind(Texture.MOB_EFFECTS_ATLAS_ID);
-					
+
 					DrawableHelper.fillTexturedRect(iconX, y + 7, type.getAtlasU(), type.getAtlasV(), 18, 18, 18, 18);
 				}
 

@@ -57,15 +57,13 @@ public class CapeManager {
 				return capeCache.get(player.getId());
 			}
 			else {
-				Identifier cape = Identifier.solClient("capes/" + FilenameUtils.getBaseName(capeUrl));
+				mc.getTextureManager().download(capeUrl).thenAccept((tex) -> {
+					mc.runSync(() -> {
+						capeCache.put(player.getId(), tex.getId());
+					});
+				});
 
-				if(mc.getTextureManager().getTexture(cape) == null) {
-					mc.getTextureManager().download(capeUrl, cape);
-				}
-
-				capeCache.put(player.getId(), cape);
-
-				return cape;
+				return null;
 			}
 		}
 		catch(Exception error) {

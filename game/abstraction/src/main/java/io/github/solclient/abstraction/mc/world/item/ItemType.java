@@ -2,6 +2,7 @@ package io.github.solclient.abstraction.mc.world.item;
 
 import org.jetbrains.annotations.NotNull;
 
+import io.github.solclient.abstraction.Helper;
 import io.github.solclient.abstraction.mc.Identifier;
 
 public interface ItemType {
@@ -24,6 +25,11 @@ public interface ItemType {
 			SLIMEBALL = null,
 			STONE_AXE = null,
 			COMPASS = null;
+
+	@Helper
+	static ItemType bukkit(String id) {
+		throw new UnsupportedOperationException();
+	}
 
 	@NotNull Identifier getId();
 

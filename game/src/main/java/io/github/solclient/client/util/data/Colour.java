@@ -149,13 +149,8 @@ public class Colour {
 		return new Colour(getShadowValue());
 	}
 
-<<<<<<< Updated upstream
 	public Colour lerp(Colour dest, float percent) {
 		return new Colour(Utils.lerpColour(value, dest.value, percent));
-=======
-	public Colour blend(Colour dest, float percent) {
-		return new Colour(Utils.blendColour(value, dest.value, percent));
->>>>>>> Stashed changes
 	}
 
 	public double getLuminance() {

@@ -6,6 +6,8 @@ import io.github.solclient.abstraction.mc.Identifier;
 
 public interface SoundType {
 
+	SoundType BUTTON_CLICK = null;
+
 	@NotNull Identifier getId();
 
 }

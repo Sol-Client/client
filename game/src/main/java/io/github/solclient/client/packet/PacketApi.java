@@ -20,10 +20,10 @@ public class PacketApi {
 
 	@EventHandler
 	public void onServerMessage(ServerMessageReceiveEvent payload) {
-		if(payload.getChannelId() != null && payload.getChannelId().getNamespace().equals("solclient")) {
+		if(payload.getChannelId() != null && payload.getChannelId().namespace().equals("solclient")) {
 			JsonElement message = payload.getJson();
 
-			if(payload.getChannelId().getPath().equals("block_mods")) {
+			if(payload.getChannelId().path().equals("block_mods")) {
 				JsonArray array = message.getAsJsonArray();
 
 				Client.INSTANCE.getMods().forEach(Mod::unblock);
@@ -41,7 +41,7 @@ public class PacketApi {
 					}
 				}
 			}
-			else if(payload.getChannelId().getPath().equals("popup")) {
+			else if(payload.getChannelId().path().equals("popup")) {
 				JsonObject data = message.getAsJsonObject();
 
 				String text = data.get("text").getAsString();

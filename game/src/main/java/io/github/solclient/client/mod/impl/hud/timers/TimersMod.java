@@ -18,7 +18,6 @@ import io.github.solclient.client.event.impl.world.level.LevelLoadEvent;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.util.BukkitMaterial;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
@@ -143,7 +142,7 @@ public class TimersMod extends HudMod {
 		else if(type.equals("ADD_TIMER")) {
 			JsonObject item = data.get("item").getAsJsonObject();
 			Timer tickTock = new Timer(data.get("name").getAsString(),
-					ItemStack.create(BukkitMaterial.valueOf(item.get("type").getAsString()).getItem(),
+					ItemStack.create(ItemType.bukkit(item.get("type").getAsString()),
 							item.has("amount") ? item.get("amount").getAsInt() : 1));
 			timers.put(id, tickTock);
 			tickTock.setId(id);

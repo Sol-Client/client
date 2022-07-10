@@ -14,6 +14,7 @@ import io.github.solclient.abstraction.mc.network.ServerData;
 import io.github.solclient.abstraction.mc.option.Options;
 import io.github.solclient.abstraction.mc.raycast.HitResult;
 import io.github.solclient.abstraction.mc.screen.Screen;
+import io.github.solclient.abstraction.mc.sound.SoundEngine;
 import io.github.solclient.abstraction.mc.text.Font;
 import io.github.solclient.abstraction.mc.texture.TextureManager;
 import io.github.solclient.abstraction.mc.world.entity.Entity;
@@ -128,5 +129,7 @@ public interface MinecraftClient {
 	boolean isFullscreen();
 
 	void toggleFullscreen();
+
+	@NotNull SoundEngine getSoundEngine();
 
 }

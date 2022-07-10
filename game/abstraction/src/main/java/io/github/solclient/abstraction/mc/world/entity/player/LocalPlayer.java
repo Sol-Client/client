@@ -40,4 +40,6 @@ public interface LocalPlayer extends ClientPlayer {
 
 	boolean isSpectator();
 
+	void clientSwing();
+
 }

@@ -2,22 +2,22 @@ package io.github.solclient.abstraction.mc.text;
 
 public interface TextColour {
 
-	TextColour BLACK = null;
-	TextColour DARK_BLUE = null;
-	TextColour DARK_GREEN = null;
-	TextColour DARK_AQUA = null;
-	TextColour DARK_RED = null;
-	TextColour DARK_PURPLE = null;
-	TextColour GOLD = null;
-	TextColour GREY = null;
-	TextColour DARK_GREY = null;
-	TextColour BLUE = null;
-	TextColour GREEN = null;
-	TextColour AQUA = null;
-	TextColour RED = null;
-	TextColour LIGHT_PURPLE = null;
-	TextColour YELLOW = null;
-	TextColour WHITE = null;
+	TextColour BLACK = null,
+			DARK_BLUE = null,
+			DARK_GREEN = null,
+			DARK_AQUA = null,
+			DARK_RED = null,
+			DARK_PURPLE = null,
+			GOLD = null,
+			GREY = null,
+			DARK_GREY = null,
+			BLUE = null,
+			GREEN = null,
+			AQUA = null,
+			RED = null,
+			LIGHT_PURPLE = null,
+			YELLOW = null,
+			WHITE = null;
 
 	static TextColour create(int rgb) {
 		throw new UnsupportedOperationException();

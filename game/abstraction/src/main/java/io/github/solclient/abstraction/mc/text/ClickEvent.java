@@ -16,12 +16,12 @@ public interface ClickEvent {
 
 	interface Action extends VirtualEnum {
 
-		Action OPEN_URL = null;
-		Action OPEN_FILE = null;
-		Action RUN_COMMAND = null;
-		Action SUGGEST_COMMAND = null;
-		Action CHANGE_PAGE = null;
-		Action COPY_TO_CLIPBOARD = null;
+		Action OPEN_URL = null,
+				OPEN_FILE = null,
+				RUN_COMMAND = null,
+				SUGGEST_COMMAND = null,
+				CHANGE_PAGE = null,
+				COPY_TO_CLIPBOARD = null;
 
 	}
 

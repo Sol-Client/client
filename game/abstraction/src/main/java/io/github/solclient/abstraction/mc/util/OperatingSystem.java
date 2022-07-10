@@ -6,9 +6,9 @@ import io.github.solclient.abstraction.VirtualEnum;
 
 public interface OperatingSystem extends VirtualEnum {
 
-	OperatingSystem WINDOWS = null;
-	OperatingSystem LINUX = null;
-	OperatingSystem OSX = null;
+	OperatingSystem WINDOWS = null,
+			LINUX = null,
+			OSX = null;
 
 	@Nullable String getTelemetryName();
 

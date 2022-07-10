@@ -17,4 +17,8 @@ public interface Player extends LivingEntity {
 
 	@NotNull Abilities getAbilities();
 
+	boolean isUsingItem();
+
+	int getItemUsageRemaining();
+
 }

@@ -4,8 +4,8 @@ import io.github.solclient.abstraction.VirtualEnum;
 
 public interface HitType extends VirtualEnum {
 
-	HitType MISS = null;
-	HitType ENTITY = null;
-	HitType BLOCK = null;
+	HitType MISS = null,
+			ENTITY = null,
+			BLOCK = null;
 
 }

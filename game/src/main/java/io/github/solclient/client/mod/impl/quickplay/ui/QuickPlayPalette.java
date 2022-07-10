@@ -18,7 +18,6 @@ import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.font.SlickFontRenderer;
 
 // Dirty code alert
 // TODO new UI
@@ -125,8 +124,8 @@ public final class QuickPlayPalette extends ProxyScreen {
 				mc.getItemRenderer().render(game.getIcon(), x + 3, gameBounds.getY() + 1);
 			}
 
-			font.renderString(game.getText(), x + 25,
-					gameBounds.getY() + 4 + (font instanceof SlickFontRenderer ? 0 : 1), -1);
+			font.render(game.getText(), x + 25,
+					gameBounds.getY() + 4 + (SolClientConfig.instance.fancyFont ? 0 : 1), -1);
 
 			y += gameBounds.getHeight();
 		}

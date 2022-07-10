@@ -42,4 +42,6 @@ public interface ItemStack {
 
 	boolean canPlaceOn(@NotNull BlockType block);
 
+	int getMaxItemUseTime();
+
 }

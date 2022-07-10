@@ -4,9 +4,9 @@ import io.github.solclient.abstraction.VirtualEnum;
 
 public interface Perspective extends VirtualEnum {
 
-	Perspective FIRST_PERSON = null;
-	Perspective THIRD_PERSON_BACK = null;
-	Perspective THIRD_PERSON_FRONT = null;
+	Perspective FIRST_PERSON = null,
+			THIRD_PERSON_BACK = null,
+			THIRD_PERSON_FRONT = null;
 
 	boolean isFirstPerson();
 

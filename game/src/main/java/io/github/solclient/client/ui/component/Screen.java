@@ -73,8 +73,8 @@ public class Screen extends ProxyScreen {
 	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 
-		if(Mouse.getEventDWheel() != 0) {
-			rootWrapper.mouseScroll(getInfo(), Mouse.getEventDWheel());
+		if(MouseHandler.getEventDWheel() != 0) {
+			rootWrapper.mouseScroll(getInfo(), MouseHandler.getEventDWheel());
 		}
 	}
 

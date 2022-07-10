@@ -104,7 +104,7 @@ public class MoveHudsScreen extends Screen {
 		}
 
 		HudElement selectedHud = getSelectedHud(mouseX, mouseY);
-		if(Mouse.isButtonDown(0)) {
+		if(MouseHandler.isButtonDown(0)) {
 			if(movingHud == null) {
 				if(selectedHud != null) {
 					movingHud = selectedHud;

@@ -158,7 +158,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	public boolean onScroll(ScrollEvent event) {
 		if(active && scrolling) {
 			event.cancelled = true;
-			if(Mouse.isButtonDown(2)) {
+			if(MouseHandler.isButtonDown(2)) {
 				return true;
 			}
 			if(event.amount < 0) {

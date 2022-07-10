@@ -69,8 +69,8 @@ public final class QuickPlayPalette extends ProxyScreen {
 
 		box.fill(Colour.BACKGROUND);
 
-		font.renderString(query.isEmpty() ? "Search" : query, box.getX() + 10 + (query.isEmpty() ? 2 : 0),
-				box.getY() + 10 + (font instanceof SlickFontRenderer ? 0 : 1), query.isEmpty() ? 0xFF666666 : -1);
+		font.render(query.isEmpty() ? "Search" : query, box.getX() + 10 + (query.isEmpty() ? 2 : 0),
+				box.getY() + 10 + (SolClientConfig.instance.fancyFont ? 0 : 1), query.isEmpty() ? 0xFF666666 : -1);
 
 		DrawableHelper.fillRect((int) (box.getX() + 10 + font.getWidth(query)), box.getY() + 10,
 				(int) (box.getX() + 11 + font.getWidth(query)), box.getY() + 20, -1);

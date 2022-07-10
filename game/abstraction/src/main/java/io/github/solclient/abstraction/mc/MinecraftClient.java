@@ -123,4 +123,10 @@ public interface MinecraftClient {
 
 	@NotNull ParticleEngine getParticleEngine();
 
+	@NotNull MouseHandler getMouseHandler();
+
+	boolean isFullscreen();
+
+	void toggleFullscreen();
+
 }

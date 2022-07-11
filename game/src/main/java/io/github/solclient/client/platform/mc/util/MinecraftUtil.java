@@ -17,7 +17,11 @@ public class MinecraftUtil {
 		throw new UnsupportedOperationException();
 	}
 
-	public static @Nullable String getKeyName(int code) {
+	public static void copy(@NotNull String text) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static String getClipboardContent() {
 		throw new UnsupportedOperationException();
 	}
 

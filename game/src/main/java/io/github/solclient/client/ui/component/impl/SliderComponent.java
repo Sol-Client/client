@@ -3,6 +3,9 @@ package io.github.solclient.client.ui.component.impl;
 import java.util.function.Consumer;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.Identifier;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
@@ -10,10 +13,6 @@ import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 
 public class SliderComponent extends Component {
 
@@ -59,22 +58,22 @@ public class SliderComponent extends Component {
 
 		if(SolClientConfig.instance.roundedUI) {
 			Colour.LIGHT_BUTTON.bind();
-			mc.getTextureManager().bindTexture(new ResourceLocation(
+			mc.getTextureManager().bind(Identifier.minecraft(
 					"textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 4, 0, 0, 100, 2, 100, 2);
+			DrawableHelper.fillTexturedRect(0, 4, 0, 0, 100, 2, 100, 2);
 
 			colour.get(this, null).bind();
-			mc.getTextureManager().bindTexture(new ResourceLocation(
+			mc.getTextureManager().bind(Identifier.minecraft(
 					"textures/gui/sol_client_slider_thumb_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(x, 1, 0, 0, 8, 8, 8, 8);
+			DrawableHelper.fillTexturedRect(x, 1, 0, 0, 8, 8, 8, 8);
 		}
 		else {
-			Utils.drawRectangle(new Rectangle(0, 4, 100, 2), Colour.LIGHT_BUTTON);
-			Utils.drawRectangle(new Rectangle(x, 1, 8, 8), colour.get(this, null));
+			new Rectangle(0, 4, 100, 2).fill(Colour.LIGHT_BUTTON);
+			new Rectangle(x, 1, 8, 8).fill(colour.get(this, null));
 		}
 
 		if(selected) {
-			value = MathHelper.clamp_float((float) (min + Math.floor(((info.getRelativeMouseX() / 100F) * (max - min)) / step) * step), min, max);
+			value = Utils.clamp((float) (min + Math.floor(((info.getRelativeMouseX() / 100F) * (max - min)) / step) * step), min, max);
 			callback.accept(value);
 		}
 

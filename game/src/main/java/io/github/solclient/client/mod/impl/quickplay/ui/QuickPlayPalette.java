@@ -11,7 +11,7 @@ import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
-import io.github.solclient.client.platform.mc.screen.ProxyScreen;
+import io.github.solclient.client.platform.mc.screen.ExtensibleScreen;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.text.TextFormatting;
 import io.github.solclient.client.platform.mc.util.Input;
@@ -22,7 +22,7 @@ import io.github.solclient.client.util.data.Rectangle;
 // Dirty code alert
 // TODO new UI
 // TODO translation
-public final class QuickPlayPalette extends ProxyScreen {
+public final class QuickPlayPalette extends ExtensibleScreen {
 
 	private final QuickPlayMod mod;
 	private Font font = SolClientConfig.instance.getUIFont();
@@ -74,7 +74,7 @@ public final class QuickPlayPalette extends ProxyScreen {
 		DrawableHelper.fillRect((int) (box.getX() + 10 + font.getWidth(query)), box.getY() + 10,
 				(int) (box.getX() + 11 + font.getWidth(query)), box.getY() + 20, -1);
 
-		DrawableHelper.renderVerticalLine(box.getX(), box.getX() + box.getWidth() - 1, box.getY() + 30, 0xFF000000);
+		DrawableHelper.renderHorizontalLine(box.getX(), box.getX() + box.getWidth() - 1, box.getY() + 30, 0xFF000000);
 
 		Rectangle entriesBox = new Rectangle(box.getX(), box.getY() + 31, box.getWidth(), box.getHeight() - 31);
 		Rectangle base = new Rectangle(entriesBox.getX(), entriesBox.getY(), entriesBox.getWidth(), 20);

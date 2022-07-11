@@ -5,10 +5,11 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
-import com.replaymod.replaystudio.util.I18n;
-
 import io.github.solclient.client.mod.ModOption;
 import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.platform.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.option.KeyBinding;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -25,9 +26,6 @@ import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
 
 public class ModOptionComponent extends ScaledIconComponent {
 
@@ -70,7 +68,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 		else if(option.getType() == KeyBinding.class) {
 			KeyBinding binding = (KeyBinding) option.getValue();
 
-			add(new LabelComponent((component, defaultText) -> GameSettings.getKeyDisplayString(binding.getKeyCode()),
+			add(new LabelComponent((component, defaultText) -> Input.getKeyName(binding.getKeyCode()),
 					new AnimatedColourController((component, defaultColour) -> {
 						if(listening) {
 							return new Colour(255, 255, 85);
@@ -90,12 +88,12 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 					listening = true;
 					screen.getRoot().onClickAnwhere((ignoredInfo, pressedButton) -> {
-						mc.gameSettings.setOptionKeyBinding(binding, pressedButton - 100);
+						mc.getOptions().setKey(binding, pressedButton - 100);
 
 						listening = false;
 
-						mc.gameSettings.saveOptions();
-						KeyBinding.resetKeyBindingArrayAndHash();
+						mc.getOptions().save();
+						KeyBinding.reload();
 
 						screen.getRoot().onKeyPressed(null);
 						screen.getRoot().onClickAnwhere(null);
@@ -105,19 +103,19 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 					screen.getRoot().onKeyPressed((ignoredInfo, key, character) -> {
 						if(key == 1) {
-							mc.gameSettings.setOptionKeyBinding(binding, 0);
+							mc.getOptions().setKey(binding, Input.NONE);
 						}
 						else if(key != 0) {
-							mc.gameSettings.setOptionKeyBinding(binding, key);
+							mc.getOptions().setKey(binding, key);
 						}
 						else if(character > 0) {
-							mc.gameSettings.setOptionKeyBinding(binding, character + 256);
+							mc.getOptions().setKey(binding, character + 256);
 						}
 
 						listening = false;
 
-						mc.gameSettings.saveOptions();
-						KeyBinding.resetKeyBindingArrayAndHash();
+						mc.getOptions().save();
+						KeyBinding.reload();
 						screen.getRoot().onKeyPressed(null);
 						screen.getRoot().onClickAnwhere(null);
 						return true;
@@ -173,7 +171,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 						boolean direction = false;
 
-						if(GuiScreen.isShiftKeyDown()) {
+						if(Input.isShiftHeld()) {
 							direction = !direction;
 						}
 
@@ -211,7 +209,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 			Slider sliderAnnotation = option.getField().getAnnotation(Slider.class);
 
 			if(sliderAnnotation.showValue()) {
-				add(new LabelComponent((component, defaultText) -> I18n.format(sliderAnnotation.format(), new DecimalFormat("0.##").format(option.getValue()))), (component, defaultBounds) -> {
+				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderAnnotation.format(), new DecimalFormat("0.##").format(option.getValue()))), (component, defaultBounds) -> {
 					Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 					return new Rectangle((int) (getBounds().getWidth() - font.getWidth(((LabelComponent) component).getText()) - 117), defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
 				});
@@ -249,7 +247,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 	@Override
 	public void renderFallback(ComponentRenderInfo info) {
-		Utils.drawRectangle(getRelativeBounds(), getColour());
+		getRelativeBounds().fill(getColour());
 	}
 
 	@Override
@@ -259,7 +257,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 	private boolean isConflicting(KeyBinding binding) {
 		if(binding.getKeyCode() != 0) {
-			for(KeyBinding testKey : mc.gameSettings.keyBindings) {
+			for(KeyBinding testKey : mc.getOptions().keys()) {
 				if(testKey != binding
 						&& testKey.getKeyCode() == binding.getKeyCode()) {
 					return true;

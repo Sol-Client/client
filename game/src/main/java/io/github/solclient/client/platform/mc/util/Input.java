@@ -1,7 +1,10 @@
 package io.github.solclient.client.platform.mc.util;
 
+import org.jetbrains.annotations.Nullable;
+
 import io.github.solclient.client.platform.Helper;
 import io.github.solclient.client.platform.mc.RuntimeDetermined;
+import io.github.solclient.client.platform.mc.text.TextFormatting;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -144,12 +147,37 @@ public class Input {
 		return isKeyHeld(LEFT_SHIFT);
 	}
 
+	@Helper
+	public static boolean isAltHeld() {
+		return isKeyHeld(LEFT_ALT);
+	}
+
 	// Should do nothing on 1.18
 	public static void enableRepeatEvents(boolean value) {
 		throw new UnsupportedOperationException();
 	}
 
 	public static boolean isMouseButtonHeld(int code) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static boolean isCopy(int code) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static boolean isPaste(int code) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static boolean isCut(int code) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static boolean isSelectAll(int code) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static @Nullable String getKeyName(int code) {
 		throw new UnsupportedOperationException();
 	}
 

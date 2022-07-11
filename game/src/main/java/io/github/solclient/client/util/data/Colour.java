@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.util.Utils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -201,7 +202,7 @@ public class Colour {
 	}
 
 	public void bind() {
-		GL11.glColor4ub((byte) getRed(), (byte) getGreen(), (byte) getBlue(), (byte) getAlpha());
+		GlStateManager.colour(getRedFloat(), getGreenFloat(), getBlueFloat(), getAlphaFloat());
 	}
 
 	public static Colour fromHexString(String text) {

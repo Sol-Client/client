@@ -1,17 +1,15 @@
 package io.github.solclient.client.ui.component.impl;
 
-import org.lwjgl.input.Keyboard;
-
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.screen.mods.ModListing;
+import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.MathHelper;
 
 public abstract class ScrollListComponent extends Component {
 
@@ -149,10 +147,10 @@ public abstract class ScrollListComponent extends Component {
 
 	@Override
 	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-		if(keyCode == Keyboard.KEY_DOWN) {
+		if(keyCode == Input.DOWN) {
 			targetY += getScrollStep();
 		}
-		else if(keyCode == Keyboard.KEY_UP) {
+		else if(keyCode == Input.UP) {
 			targetY -= getScrollStep();
 		}
 
@@ -171,7 +169,7 @@ public abstract class ScrollListComponent extends Component {
 	}
 
 	private void clamp() {
-		targetY = MathHelper.clamp_double(targetY, 0, maxScrolling);
+		targetY = Utils.clamp(targetY, 0, maxScrolling);
 	}
 
 	@Override

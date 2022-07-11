@@ -1,12 +1,10 @@
 package io.github.solclient.client.ui.component.impl;
 
-import java.awt.Color;
 import java.util.function.Consumer;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModOption;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
@@ -14,10 +12,8 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.util.MathHelper;
 
-public class ColourPickerDialog extends ScaledIconComponent {
+public class ColourPickerDialog	 extends ScaledIconComponent {
 
 	private Colour colour;
 	private final Consumer<Colour> callback;
@@ -74,7 +70,7 @@ public class ColourPickerDialog extends ScaledIconComponent {
 
 		updateHex();
 		hex.onUpdate((text) -> {
-			Colour parsed = Colour.fromHexString(font);
+			Colour parsed = Colour.fromHexString(text);
 
 			if(parsed != null) {
 				this.colour = parsed;
@@ -97,7 +93,7 @@ public class ColourPickerDialog extends ScaledIconComponent {
 
 	@Override
 	public void renderFallback(ComponentRenderInfo info) {
-		Utils.drawRectangle(getRelativeBounds(), getColour());
+		getRelativeBounds().fill(getColour());
 	}
 
 	@Override
@@ -105,7 +101,7 @@ public class ColourPickerDialog extends ScaledIconComponent {
 		super.render(info);
 
 		if(selectedSlider != -1) {
-			colour = colour.withComponent(selectedSlider, MathHelper.clamp_int(info.getRelativeMouseX() - RGB_OFFSET_LEFT, 0, 255));
+			colour = colour.withComponent(selectedSlider, Utils.clamp(info.getRelativeMouseX() - RGB_OFFSET_LEFT, 0, 255));
 			callback.accept(colour);
 			updateHex();
 		}
@@ -141,7 +137,7 @@ public class ColourPickerDialog extends ScaledIconComponent {
 					break;
 			}
 
-			font.renderString(name, rectangle.getX() - 10, rectangle.getY() + 5 - (font.getHeight() / 2), -1);
+			font.render(name, rectangle.getX() - 10, rectangle.getY() + 5 - (font.getHeight() / 2), -1);
 
 			for(int i = 0; i < 256; i++) {
 				Colour stripColour = Colour.BLACK.withComponent(component, i);
@@ -149,10 +145,10 @@ public class ColourPickerDialog extends ScaledIconComponent {
 				if(colour.getComponents()[component] == i) {
 					stripColour = Colour.WHITE;
 
-					font.renderString(Integer.toString(i), RGB_OFFSET_LEFT + i + 1 - (font.getWidth(Integer.toString(i)) / 2), rectangle.getY() + (SolClientConfig.instance.fancyFont ? 9 : 11), -1);
+					font.render(Integer.toString(i), RGB_OFFSET_LEFT + i + 1 - (font.getWidth(Integer.toString(i)) / 2), rectangle.getY() + (SolClientConfig.instance.fancyFont ? 9 : 11), -1);
 				}
 
-				Utils.renderVerticalLine(RGB_OFFSET_LEFT + i, RGB_OFFSET_TOP + component * RGB_SPACING, RGB_OFFSET_TOP + (component * RGB_SPACING) + 11, stripColour.getValue());
+				DrawableHelper.renderVerticalLine(RGB_OFFSET_LEFT + i, RGB_OFFSET_TOP + component * RGB_SPACING, RGB_OFFSET_TOP + (component * RGB_SPACING) + 11, stripColour.getValue());
 			}
 		}
 	}

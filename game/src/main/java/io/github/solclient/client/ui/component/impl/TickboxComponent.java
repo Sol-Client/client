@@ -64,7 +64,7 @@ public class TickboxComponent extends ScaledIconComponent {
 
 	@Override
 	public void renderFallback(ComponentRenderInfo info) {
-		Utils.drawOutline(getRelativeBounds(), getColour());
+		getRelativeBounds().stroke(getColour());
 	}
 
 }

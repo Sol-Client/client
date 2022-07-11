@@ -1,22 +1,16 @@
 package io.github.solclient.client.ui.component;
 
-import java.io.IOException;
-
-import org.lwjgl.input.Mouse;
-
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.MinecraftClient;
-import io.github.solclient.client.platform.mc.screen.ProxyScreen;
+import io.github.solclient.client.platform.mc.screen.ExtensibleScreen;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
-import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 
-public class Screen extends ProxyScreen {
+public class Screen extends ExtensibleScreen {
 
 	@Getter
 	protected io.github.solclient.client.platform.mc.screen.Screen parentScreen;
@@ -41,7 +35,7 @@ public class Screen extends ProxyScreen {
 		rootWrapper.add(root, new ParentBoundsController());
 
 		rootWrapper.setScreen(this);
-		rootWrapper.setFont(SolClientConfig.getUIFont());
+		rootWrapper.setFont(SolClientConfig.instance.getUIFont());
 
 		this.root = root;
 	}
@@ -57,7 +51,7 @@ public class Screen extends ProxyScreen {
 
 		if(background) {
 			if(mc.hasLevel()) {
-				fillRect(0, 0, getWidth(), getHeight(), Colour.BACKGROUND.getValue());
+				DrawableHelper.fillRect(0, 0, getWidth(), getHeight(), Colour.BACKGROUND.getValue());
 			}
 			else {
 				renderTranslucentBackground();
@@ -66,69 +60,68 @@ public class Screen extends ProxyScreen {
 
 		rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, tickDelta));
 
-		super.drawScreen(mouseX, mouseY, tickDelta);
+		super.render(mouseX, mouseY, tickDelta);
 	}
 
 	@Override
-	public void handleMouseInput() throws IOException {
-		super.handleMouseInput();
-
-		if(MouseHandler.getEventDWheel() != 0) {
-			rootWrapper.mouseScroll(getInfo(), MouseHandler.getEventDWheel());
-		}
+	public void scroll(int by) {
+		super.scroll(by);
+		rootWrapper.mouseScroll(getInfo(), by);
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(!rootWrapper.keyPressed(getInfo(), keyCode, typedChar)) {
-			if(keyCode == 1) {
+	public void keyDown(char character, int key) {
+		if(!rootWrapper.keyPressed(getInfo(), key, character)) {
+			if(key == 1) {
 				closeAll();
 			}
 			else {
-				super.keyTyped(typedChar, keyCode);
+				super.keyDown(character, key);
 			}
 		}
 	}
 
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		if(!rootWrapper.mouseClickedAnywhere(getInfo(), mouseButton, true, false)) {
-			super.mouseClicked(mouseX, mouseY, mouseButton);
+	public void mouseDown(int x, int y, int button) {
+		if(!rootWrapper.mouseClickedAnywhere(getInfo(), button, true, false)) {
+			super.mouseDown(x, y, button);
 		}
 	}
 
 	@Override
-	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		if(!rootWrapper.mouseReleasedAnywhere(getInfo(), state, true)) {
-			super.mouseReleased(mouseX, mouseY, state);
+	public void mouseUp(int x, int y, int button) {
+		if(!rootWrapper.mouseReleasedAnywhere(getInfo(), button, true)) {
+			super.mouseUp(x, y, button);
 		}
 	}
 
 	@Override
-	public void updateScreen() {
-		super.updateScreen();
+	public void tick() {
+		super.tick();
 		rootWrapper.tick();
 	}
 
 	@Override
-	public boolean doesGuiPauseGame() {
+	public boolean shouldPauseGame() {
 		return false;
 	}
 
 	public void updateFont() {
-		rootWrapper.setFont(SolClientConfig.getUIFont());
+		rootWrapper.setFont(SolClientConfig.instance.getUIFont());
 	}
 
+	@Override
 	public void close() {
-		mc.displayGuiScreen(parentScreen);
+		mc.setScreen(parentScreen);
 	}
 
 	public void closeAll() {
-		mc.displayGuiScreen(null);
+		mc.setScreen(null);
 	}
 
 	private ComponentRenderInfo getInfo() {
-		return new ComponentRenderInfo(mouseX, mouseY, AccessMinecraft.getInstance().getTimerSC().renderPartialTicks);
+		return new ComponentRenderInfo(mouseX, mouseY, mc.getTimer().getTickDelta());
 	}
+
 
 }

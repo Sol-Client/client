@@ -5,6 +5,9 @@ import java.net.URI;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.Identifier;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -17,9 +20,6 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
 
 public class ModListing extends ColouredComponent {
 
@@ -73,17 +73,16 @@ public class ModListing extends ColouredComponent {
 
 		if(SolClientConfig.instance.roundedUI) {
 			Colour.BLACK_128.bind();
-			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_mod_listing_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
+			mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_mod_listing_" + Utils.getTextureScale() + ".png"));
+			DrawableHelper.fillTexturedRect(0, 0, 0, 0, 300, 30, 300, 30);
 
 			getColour().bind();
-			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_mod_listing_outline_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
+			mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_mod_listing_outline_" + Utils.getTextureScale() + ".png"));
+			DrawableHelper.fillTexturedRect(0, 0, 0, 0, 300, 30, 300, 30);
 		}
 		else {
-
-			Utils.drawRectangle(getRelativeBounds(), Colour.BLACK_128);
-			Utils.drawOutline(getRelativeBounds(), getColour());
+			getRelativeBounds().fill(Colour.BLACK_128);
+			getRelativeBounds().stroke(getColour());
 		}
 
 		super.render(info);

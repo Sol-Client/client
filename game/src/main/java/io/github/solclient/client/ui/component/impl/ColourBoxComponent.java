@@ -28,7 +28,7 @@ public class ColourBoxComponent extends ScaledIconComponent {
 
 			@Override
 			public void renderFallback(ComponentRenderInfo info) {
-				Utils.drawOutline(getRelativeBounds(), getColour());
+				getRelativeBounds().stroke(getColour());
 			}
 
 		}, (component, defaultBounds) -> defaultBounds);
@@ -46,7 +46,7 @@ public class ColourBoxComponent extends ScaledIconComponent {
 
 	@Override
 	public void renderFallback(ComponentRenderInfo info) {
-		Utils.drawRectangle(getRelativeBounds(), getColour());
+		getRelativeBounds().fill(getColour());
 	}
 
 }

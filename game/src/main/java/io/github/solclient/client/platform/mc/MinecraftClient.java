@@ -14,6 +14,7 @@ import io.github.solclient.client.platform.mc.network.ServerData;
 import io.github.solclient.client.platform.mc.option.Options;
 import io.github.solclient.client.platform.mc.raycast.HitResult;
 import io.github.solclient.client.platform.mc.screen.Screen;
+import io.github.solclient.client.platform.mc.screen.TitleScreen;
 import io.github.solclient.client.platform.mc.sound.SoundEngine;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.texture.TextureManager;
@@ -131,5 +132,10 @@ public interface MinecraftClient {
 	void toggleFullscreen();
 
 	@NotNull SoundEngine getSoundEngine();
+
+	@Helper
+	@Nullable TitleScreen getMainMenu();
+
+	void quit();
 
 }

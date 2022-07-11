@@ -40,4 +40,12 @@ public interface TextFormatting {
 	@Override
 	@NotNull String toString();
 
+	static String filterTextBoxInput(@NotNull String text) {
+		throw new UnsupportedOperationException();
+	}
+
+	static boolean isAllowedInTextBox(char character) {
+		throw new UnsupportedOperationException();
+	}
+
 }

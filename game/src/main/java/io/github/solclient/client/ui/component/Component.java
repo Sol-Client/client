@@ -9,7 +9,10 @@ import java.util.function.BiPredicate;
 
 import org.lwjgl.opengl.GL11;
 
+import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
+import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.ui.component.controller.Controller;
@@ -20,12 +23,8 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.font.Font;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
 
 // 7 months later, I finally reintroduced the component API...
 public abstract class Component {
@@ -179,8 +178,8 @@ public abstract class Component {
 	}
 
 	private void drawDialogOverlay() {
-		GlStateManager.color(1, 1, 1);
-		Gui.drawRect(0, 0, screen.width, screen.height, overlayColour.get(this, Colour.WHITE).getValue());
+		GlStateManager.resetColour();
+		DrawableHelper.fillRect(0, 0, screen.getWidth(), screen.getHeight(), overlayColour.get(this, Colour.WHITE).getValue());
 	}
 
 	protected Rectangle getDefaultBounds() {

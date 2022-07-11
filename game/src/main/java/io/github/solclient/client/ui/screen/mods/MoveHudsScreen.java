@@ -2,11 +2,13 @@ package io.github.solclient.client.ui.screen.mods;
 
 import java.io.IOException;
 
-import org.lwjgl.input.Mouse;
-
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.screen.TitleScreen;
+import io.github.solclient.client.platform.mc.text.I18nText;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.Screen;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -14,27 +16,22 @@ import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
 
 public class MoveHudsScreen extends Screen {
 
-	private GuiScreen title;
+	private io.github.solclient.client.platform.mc.screen.Screen title;
 	private HudElement movingHud;
 	private Position moveOffset;
 
 	public MoveHudsScreen() {
-		super(new MoveHudsComponent());
+		super(I18nText.create("sol_client.hud.edit"), new MoveHudsComponent());
 		background = false;
 		if(parentScreen instanceof Screen) {
-			GuiScreen grandparentScreen = ((Screen) parentScreen).getParentScreen();
+			io.github.solclient.client.platform.mc.screen.Screen grandparentScreen = ((Screen) parentScreen).getParentScreen();
 
-			if(grandparentScreen instanceof GuiMainMenu || grandparentScreen instanceof SolClientMainMenu) {
+			if(grandparentScreen instanceof TitleScreen || grandparentScreen instanceof SolClientMainMenu) {
 				title = grandparentScreen;
 			}
 		}
@@ -52,41 +49,41 @@ public class MoveHudsScreen extends Screen {
 	}
 
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		super.mouseClicked(mouseX, mouseY, mouseButton);
-		if(mouseButton == 1) {
-			HudElement hud = getSelectedHud(mouseX, mouseY);
+	public void mouseDown(int x, int y, int button) {
+		super.mouseDown(x, y, button);
+		if(button == 1) {
+			HudElement hud = getSelectedHud(x, y);
 
 			if(hud != null) {
 				if (parentScreen instanceof ModsScreen) {
 					Utils.playClickSound(true);
-
 					((ModsScreen) parentScreen).switchMod(hud.getMod());
-
-					Minecraft.getMinecraft().displayGuiScreen(parentScreen);
+					mc.setScreen(parentScreen);
 				}
 			}
 		}
 	}
 
-	@Override
-	public void setWorldAndResolution(Minecraft mc, int width, int height) {
-		super.setWorldAndResolution(mc, width, height);
 
-		if(title != null) title.setWorldAndResolution(mc, width, height);
+
+	@Override
+	public void update(MinecraftClient mc, int width, int height) {
+		super.update(mc, width, height);
+
+		if(title != null) title.update(mc, width, height);
 	}
 
 	@Override
-	public void updateScreen() {
-		super.updateScreen();
+	public void tick() {
+		super.tick();
 
-		if(title != null) title.updateScreen();
+		if(title != null) title.tick();
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void render(int x, int y, float tickDelta) {
 		if(title != null) {
-			title.drawScreen(0, 0, partialTicks);
+			title.render(0, 0, tickDelta);
 		}
 
 		for(HudElement hud : Client.INSTANCE.getHuds()) {
@@ -94,7 +91,7 @@ public class MoveHudsScreen extends Screen {
 
 			Rectangle bounds = hud.getMultipliedBounds();
 
-			if(mc.theWorld == null) {
+			if(!mc.hasLevel()) {
 				hud.render(true);
 			}
 
@@ -103,35 +100,35 @@ public class MoveHudsScreen extends Screen {
 			}
 		}
 
-		HudElement selectedHud = getSelectedHud(mouseX, mouseY);
-		if(MouseHandler.isButtonDown(0)) {
+		HudElement selectedHud = getSelectedHud(x, y);
+		if(Input.isMouseButtonHeld(0)) {
 			if(movingHud == null) {
 				if(selectedHud != null) {
 					movingHud = selectedHud;
-					moveOffset = new Position(selectedHud.getPosition().getX() - mouseX,
-							selectedHud.getPosition().getY() - mouseY);
+					moveOffset = new Position(selectedHud.getPosition().getX() - x,
+							selectedHud.getPosition().getY() - y);
 				}
 			}
 			else {
-				movingHud.setPosition(new Position(mouseX + moveOffset.getX(), mouseY + moveOffset.getY()));
+				movingHud.setPosition(new Position(x + moveOffset.getX(), y + moveOffset.getY()));
 			}
 		}
 		else {
 			movingHud = null;
 		}
 
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		super.render(x, y, tickDelta);
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(keyCode == 1 || keyCode == SolClientConfig.instance.editHudKey.getKeyCode()) {
+	public void keyDown(char character, int key) {
+		if(key == 1 || key == SolClientConfig.instance.editHudKey.getKeyCode()) {
 			Client.INSTANCE.save();
 			if(title != null) {
-				mc.displayGuiScreen(title);
+				mc.setScreen(title);
 			}
 			else {
-				mc.displayGuiScreen(null);
+				mc.closeScreen();
 			}
 		}
 	}

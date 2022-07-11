@@ -3,7 +3,9 @@ package io.github.solclient.client.ui.component.impl;
 import org.lwjgl.opengl.GL11;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.Identifier;
+import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
@@ -14,10 +16,6 @@ import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
 
 public class ButtonComponent extends ColouredComponent {
 
@@ -26,7 +24,7 @@ public class ButtonComponent extends ColouredComponent {
 	private ButtonType type = ButtonType.NORMAL;
 
 	public ButtonComponent(String text, Controller<Colour> colour) {
-		this((component, defaultText) -> I18n.format(text), colour);
+		this((component, defaultText) -> I18n.translate(text), colour);
 	}
 
 	public ButtonComponent(Controller<String> text, Controller<Colour> colour) {
@@ -44,13 +42,14 @@ public class ButtonComponent extends ColouredComponent {
 
 			getColour().bind();
 
-			mc.getTextureManager().bindTexture(
-					new ResourceLocation("textures/gui/sol_client_button_" + type + "_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, type.getWidth(), 20, type.getWidth(), 20);
+			mc.getTextureManager().bind(Identifier
+					.minecraft("textures/gui/sol_client_button_" + type + "_" + Utils.getTextureScale() + ".png"));
+			DrawableHelper.fillTexturedRect(0, 0, 0, 0, type.getWidth(), 20, type.getWidth(), 20);
 		}
 		else {
-			Utils.drawRectangle(getRelativeBounds(), getColour().withAlpha(140));
-			Utils.drawOutline(getRelativeBounds(), getColour().withAlpha(140));
+			Colour colour = getColour().withAlpha(140);
+			getRelativeBounds().fill(colour);
+			getRelativeBounds().stroke(colour);
 		}
 
 		super.render(info);
@@ -64,7 +63,6 @@ public class ButtonComponent extends ColouredComponent {
 	@Override
 	public ButtonComponent onClick(ClickHandler onClick) {
 		super.onClick(onClick);
-
 		return this;
 	}
 
@@ -85,7 +83,7 @@ public class ButtonComponent extends ColouredComponent {
 		return new ButtonComponent("gui.done", new AnimatedColourController(
 				(component, defaultColour) -> component.isHovered() ? new Colour(20, 120, 20) : new Colour(0, 100, 0)))
 						.onClick((info, button) -> {
-							if (button == 0) {
+							if(button == 0) {
 								Utils.playClickSound(true);
 								onClick.run();
 

@@ -1,10 +1,13 @@
 package io.github.solclient.client.ui.component.impl;
 
-import java.util.function.Consumer;
-
 import com.google.common.base.Predicate;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.text.TextFormatting;
+import io.github.solclient.client.platform.mc.util.Input;
+import io.github.solclient.client.platform.mc.util.MinecraftUtil;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -16,11 +19,6 @@ import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.MathHelper;
 
 public class TextFieldComponent extends Component {
 
@@ -74,7 +72,7 @@ public class TextFieldComponent extends Component {
 	}
 
 	private int clamp(int value) {
-		return MathHelper.clamp_int(value, 0, text.length());
+		return Utils.clamp(value, 0, text.length());
 	}
 
 	@Override
@@ -122,16 +120,19 @@ public class TextFieldComponent extends Component {
 			float selectionWidth = font.getWidth(text.substring(start, end));
 			float offset = font.getWidth(text.substring(0, start));
 
-			Utils.drawFloatRectangle(textOffset + offset, 0, textOffset + offset + selectionWidth, 10, Colour.BLUE.getValue());
+			DrawableHelper.fillRect(textOffset + offset, 0, textOffset + offset + selectionWidth, 10,
+					Colour.BLUE.getValue());
 		}
 
 		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
-		font.renderString(hasPlaceholder ? I18n.format(placeholder) : text, textOffset, SolClientConfig.instance.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
+		font.render(hasPlaceholder ? I18n.translate(placeholder) : text, textOffset,
+				SolClientConfig.instance.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
 
 		if(focused && ticks / 12 % 2 == 0) {
 			float relativeCursorPosition = font.getWidth(text.substring(0, cursor));
-			Utils.drawFloatRectangle(textOffset + relativeCursorPosition, 0, textOffset + relativeCursorPosition + 1, 10, -1);
+			DrawableHelper.fillRect(textOffset + relativeCursorPosition, 0, textOffset + relativeCursorPosition + 1, 10,
+					-1);
 		}
 
 		new Rectangle(0, getBounds().getHeight() - 1, getBounds().getWidth(), 1).fill(colour.get(this, null));
@@ -148,27 +149,27 @@ public class TextFieldComponent extends Component {
 			return false;
 		}
 
-		if(GuiScreen.isKeyComboCtrlA(keyCode)) {
+		if(Input.isSelectAll(keyCode)) {
 			setCursorPositionEnd();
 			setSelectionPosition(0);
 			return true;
 		}
 
-		if(GuiScreen.isKeyComboCtrlC(keyCode)) {
-			GuiScreen.setClipboardString(getSelectedText());
+		if(Input.isCopy(keyCode)) {
+			MinecraftUtil.copy(getSelectedText());
 			return true;
 		}
 
-		if(GuiScreen.isKeyComboCtrlV(keyCode)) {
+		if(Input.isPaste(keyCode)) {
 			if(enabled) {
-				writeText(GuiScreen.getClipboardString());
+				writeText(MinecraftUtil.getClipboardContent());
 			}
 
 			return true;
 		}
 
-		if(GuiScreen.isKeyComboCtrlX(keyCode)) {
-			GuiScreen.setClipboardString(getSelectedText());
+		if(Input.isCut(keyCode)) {
+			MinecraftUtil.copy(getSelectedText());
 
 			if(enabled) {
 				writeText("");
@@ -178,8 +179,8 @@ public class TextFieldComponent extends Component {
 		}
 
 		switch(keyCode) {
-			case 14:
-				if(GuiScreen.isCtrlKeyDown()) {
+			case Input.BACKSPACE:
+				if(Input.isCtrlHeld()) {
 					if(enabled) {
 						deleteWords(-1);
 					}
@@ -189,9 +190,8 @@ public class TextFieldComponent extends Component {
 				}
 
 				return true;
-
-			case 199:
-				if(GuiScreen.isShiftKeyDown()) {
+			case Input.HOME:
+				if(Input.isShiftHeld()) {
 					setSelectionPosition(0);
 				}
 				else {
@@ -199,17 +199,16 @@ public class TextFieldComponent extends Component {
 				}
 
 				return true;
-
-			case 203:
-				if (GuiScreen.isShiftKeyDown()) {
-					if(GuiScreen.isCtrlKeyDown()) {
+			case Input.LEFT:
+				if(Input.isShiftHeld()) {
+					if(Input.isCtrlHeld()) {
 						setSelectionPosition(getWordFromPosition(-1, selectionEnd));
 					}
 					else {
 						setSelectionPosition(selectionEnd - 1);
 					}
 				}
-				else if(GuiScreen.isCtrlKeyDown()) {
+				else if(Input.isCtrlHeld()) {
 					setCursorPosition(getWordFromCursor(-1));
 				}
 				else {
@@ -217,17 +216,17 @@ public class TextFieldComponent extends Component {
 				}
 
 				return true;
+			case Input.RIGHT:
 
-			case 205:
-				if(GuiScreen.isShiftKeyDown()) {
-					if(GuiScreen.isCtrlKeyDown()) {
+				if(Input.isShiftHeld()) {
+					if(Input.isCtrlHeld()) {
 						this.setSelectionPosition(getWordFromPosition(1, selectionEnd));
 					}
 					else {
 						this.setSelectionPosition(selectionEnd + 1);
 					}
 				}
-				else if(GuiScreen.isCtrlKeyDown()) {
+				else if(Input.isCtrlHeld()) {
 					setCursorPosition(getWordFromCursor(1));
 				}
 				else {
@@ -235,9 +234,8 @@ public class TextFieldComponent extends Component {
 				}
 
 				return true;
-
-			case 207:
-				if(GuiScreen.isShiftKeyDown()) {
+			case Input.END:
+				if(Input.isShiftHeld()) {
 					setSelectionPosition(text.length());
 				}
 				else {
@@ -245,9 +243,8 @@ public class TextFieldComponent extends Component {
 				}
 
 				return true;
-
-			case 211:
-				if(GuiScreen.isCtrlKeyDown()) {
+			case Input.DELETE:
+				if(Input.isCtrlHeld()) {
 					if(enabled) {
 						deleteWords(1);
 					}
@@ -258,12 +255,12 @@ public class TextFieldComponent extends Component {
 
 				return true;
 
-			case 28:
+			case Input.ENTER:
 				flush();
 				return true;
 
 			default:
-				if(ChatAllowedCharacters.isAllowedCharacter(character)) {
+				if(TextFormatting.isAllowedInTextBox(character)) {
 					if(enabled) {
 						writeText(Character.toString(character));
 					}
@@ -281,8 +278,8 @@ public class TextFieldComponent extends Component {
 	}
 
 	private int getWordFromPosition(int word, int from) {
-        boolean negative = word < 0;
-        int positive = Math.abs(word);
+		boolean negative = word < 0;
+		int positive = Math.abs(word);
 
 		for(int i = 0; i < positive; ++i) {
 			if(!negative) {
@@ -310,9 +307,8 @@ public class TextFieldComponent extends Component {
 			}
 		}
 
-        return from;
+		return from;
 	}
-
 
 	private void deleteFromCursor(int move) {
 		if(text.length() != 0) {
@@ -355,14 +351,13 @@ public class TextFieldComponent extends Component {
 
 	private void writeText(String text) {
 		String result = "";
-		String filtered = ChatAllowedCharacters.filterAllowedCharacters(text);
+		String filtered = TextFormatting.filterTextBoxInput(text);
 		int start = cursor < selectionEnd ? cursor : selectionEnd;
 		int end = cursor < selectionEnd ? selectionEnd : cursor;
 		int k = 32 - text.length() - (start - end);
 		int l = 0;
 
-		if (this.text.length() > 0)
-		{
+		if(this.text.length() > 0) {
 			result = result + this.text.substring(0, start);
 		}
 

@@ -1,32 +1,25 @@
 package io.github.solclient.client.ui.screen.mods;
 
-import java.io.IOException;
-
-import org.lwjgl.input.Keyboard;
-
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.text.I18nText;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.Screen;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.handler.KeyHandler;
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.component.impl.LabelComponent;
-import io.github.solclient.client.ui.component.impl.ScaledIconComponent;
 import io.github.solclient.client.ui.component.impl.TextFieldComponent;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
-import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
 
 public class ModsScreen extends PanoramaBackgroundScreen {
 
@@ -37,28 +30,28 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	public ModsScreen(Mod mod) {
-		super(new ModsScreenComponent(mod));
+		super(I18nText.create("sol_client.mod.screen.title"), new ModsScreenComponent(mod));
 
 		component = (ModsScreenComponent) root;
 		background = false;
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		if(mc.theWorld == null) {
+	public void render(int x, int y, float tickDelta) {
+		if(!mc.hasLevel()) {
 			if(SolClientConfig.instance.fancyMainMenu) {
 				background = false;
-				drawPanorama(mouseX, mouseY, partialTicks);
+				renderPanorama(x, y, tickDelta);
 			}
 			else {
 				background = true;
 			}
 		}
 		else {
-			drawDefaultBackground();
+			renderTranslucentBackground();
 		}
 
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		super.render(x, y, tickDelta);
 	}
 
 	public void switchMod(Mod mod) {
@@ -66,15 +59,15 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void onGuiClosed() {
-		super.onGuiClosed();
+	public void close() {
+		super.close();
 		Client.INSTANCE.save();
 	}
 
 	@Override
 	public void closeAll() {
-		if(mc.theWorld == null && SolClientConfig.instance.fancyMainMenu) {
-			mc.displayGuiScreen(Client.INSTANCE.getMainMenu());
+		if(!mc.hasLevel() && SolClientConfig.instance.fancyMainMenu) {
+			mc.setScreen(Client.INSTANCE.getMainMenu());
 			return;
 		}
 
@@ -95,10 +88,11 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				singleModMode = true;
 			}
 
-			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName() : I18n.format("sol_client.mod.screen.title")),
+			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName()
+					: I18n.translate("sol_client.mod.screen.title")),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
-							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), 10, defaultBounds.getWidth(),
-									defaultBounds.getHeight())));
+							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), 10,
+									defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 			add(ButtonComponent.done(() -> {
 				if(mod == null || singleModMode) {
@@ -122,24 +116,24 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 							getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
 
 			if(!singleModMode) {
-				add(new ButtonComponent("sol_client.hud.edit",
-						new AnimatedColourController(
-								(component, defaultColour) -> component.isHovered() ? new Colour(255, 165, 65)
-										: new Colour(255, 120, 20))).onClick((info, button) -> {
-											if(button == 0) {
-												Utils.playClickSound(true);
-												mc.displayGuiScreen(new MoveHudsScreen());
-												return true;
-											}
+				add(new ButtonComponent("sol_client.hud.edit", new AnimatedColourController((component,
+						defaultColour) -> component.isHovered() ? new Colour(255, 165, 65) : new Colour(255, 120, 20)))
+								.onClick((info, button) -> {
+									if(button == 0) {
+										Utils.playClickSound(true);
+										mc.setScreen(new MoveHudsScreen());
+										return true;
+									}
 
-											return false;
-										}).withIcon("sol_client_hud"),
+									return false;
+								}).withIcon("sol_client_hud"),
 						new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 								(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 51,
-								getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
+										getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
 			}
 
-			add(scroll = new ModsScroll(this), (component, defaultBounds) -> new Rectangle(0, 25, getBounds().getWidth(), getBounds().getHeight() - 62));
+			add(scroll = new ModsScroll(this), (component, defaultBounds) -> new Rectangle(0, 25,
+					getBounds().getWidth(), getBounds().getHeight() - 62));
 
 			search = new TextFieldComponent(100, false).autoFlush().onUpdate((value) -> {
 				scroll.snapTo(0);
@@ -178,17 +172,20 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-			if((screen.getRoot().getDialog() == null && (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER)) && !scroll.getSubComponents().isEmpty()) {
+			if((screen.getRoot().getDialog() == null && (keyCode == Input.ENTER || keyCode == Input.KP_ENTER))
+					&& !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
 
-				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true, false);
+				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true,
+						false);
 			}
-			else if(mod == null && keyCode == Keyboard.KEY_F && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown()) {
+			else if(mod == null && keyCode == Input.F && Input.isCtrlHeld() && !Input.isShiftHeld()
+					&& !Input.isAltHeld()) {
 				search.setFocused(true);
 				return true;
 			}
-			else if (mod != null && (keyCode == Keyboard.KEY_BACK
-					|| (keyCode == Keyboard.KEY_LEFT && isAltKeyDown() && !isCtrlKeyDown() && !isShiftKeyDown()))
+			else if(mod != null && (keyCode == Input.BACKSPACE
+					|| (keyCode == Input.LEFT && Input.isAltHeld() && !Input.isCtrlHeld() && !Input.isShiftHeld()))
 					&& screen.getRoot().getDialog() == null) {
 				switchMod(null);
 				return true;
@@ -202,7 +199,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			boolean result = super.keyPressed(info, keyCode, character);
 
 			if(!result && keyCode == SolClientConfig.instance.modsKey.getKeyCode()) {
-				mc.displayGuiScreen(null);
+				mc.closeScreen();
 				return true;
 			}
 

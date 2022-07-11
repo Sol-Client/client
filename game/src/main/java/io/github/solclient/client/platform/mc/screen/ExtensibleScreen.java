@@ -5,16 +5,12 @@ import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.text.Text;
 
-/**
- * Used to extend an interface.
- * My poor head.
- */
-public class ProxyScreen implements Screen, DrawableHelper {
+public class ExtensibleScreen implements Screen {
 
 	protected final MinecraftClient mc;
 	protected final Font font;
 
-	public ProxyScreen(Text title) {
+	public ExtensibleScreen(Text title) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -49,6 +45,11 @@ public class ProxyScreen implements Screen, DrawableHelper {
 	}
 
 	@Override
+	public void update(MinecraftClient mc, int width, int height) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void init() {
 		throw new UnsupportedOperationException();
 	}
@@ -66,12 +67,24 @@ public class ProxyScreen implements Screen, DrawableHelper {
 		throw new UnsupportedOperationException();
 	}
 
-	protected int getWidth() {
+	@Override
+	public int getWidth() {
 		throw new UnsupportedOperationException();
 	}
 
-	protected int getHeight() {
+	@Override
+	public int getHeight() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void tick() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean shouldPauseGame() {
+		return true;
 	}
 
 }

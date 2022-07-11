@@ -28,4 +28,8 @@ public interface KeyBinding {
 
 	@NotNull List<KeyBinding> getConflictingKeys();
 
+	static void reload() {
+		throw new UnsupportedOperationException();
+	}
+
 }

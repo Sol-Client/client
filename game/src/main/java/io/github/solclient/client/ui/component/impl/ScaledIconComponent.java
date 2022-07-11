@@ -1,14 +1,14 @@
 package io.github.solclient.client.ui.component.impl;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.platform.mc.DrawableHelper;
+import io.github.solclient.client.platform.mc.Identifier;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
 
 public class ScaledIconComponent extends ColouredComponent {
 
@@ -49,9 +49,9 @@ public class ScaledIconComponent extends ColouredComponent {
 
 			getColour().bind();
 
-			mc.getTextureManager().bindTexture(new ResourceLocation(
-					"textures/gui/" + iconName.get(this, "sol_client_confusion") + "_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, width, height, width, height);
+			mc.getTextureManager().bind(Identifier.minecraft("textures/gui/"
+					+ iconName.get(this, "sol_client_confusion") + "_" + Utils.getTextureScale() + ".png"));
+			DrawableHelper.fillTexturedRect(0, 0, 0, 0, width, height, width, height);
 		}
 
 		super.render(info);

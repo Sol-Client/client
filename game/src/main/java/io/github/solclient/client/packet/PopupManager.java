@@ -19,15 +19,15 @@ public class PopupManager {
 
 	private final MinecraftClient mc = MinecraftClient.getInstance();
 
-	private final KeyBinding keyAcceptRequest = KeyBinding.create(Client.KEY_TRANSLATION_KEY + ".accept_request", Input.Y, Client.KEY_CATEGORY);
-	private final KeyBinding keyDismissRequest = KeyBinding.create(Client.KEY_TRANSLATION_KEY + ".dismiss_request", Input.N, Client.KEY_CATEGORY);
+	private final KeyBinding acceptRequestKey = KeyBinding.create(Client.KEY_TRANSLATION_KEY + ".accept_request", Input.Y, Client.KEY_CATEGORY);
+	private final KeyBinding dismissRequestKey = KeyBinding.create(Client.KEY_TRANSLATION_KEY + ".dismiss_request", Input.N, Client.KEY_CATEGORY);
 
 	private final Deque<Popup> popups = new ArrayDeque<>();
 	private Popup currentPopup;
 
 	public PopupManager() {
-		mc.getOptions().addKey(keyAcceptRequest);
-		mc.getOptions().addKey(keyDismissRequest);
+		mc.getOptions().addKey(acceptRequestKey);
+		mc.getOptions().addKey(dismissRequestKey);
 	}
 
 	@EventHandler
@@ -39,9 +39,9 @@ public class PopupManager {
 			}
 			else {
 				String message = currentPopup.getText();
-				String keys = TextFormatting.GREEN + " [ " + MinecraftUtil.getKeyName(keyAcceptRequest.getKeyCode())
+				String keys = TextFormatting.GREEN + " [ " + Input.getKeyName(acceptRequestKey.getKeyCode())
 						+ " ] Accept" + TextFormatting.RED + "  [ "
-						+ MinecraftUtil.getKeyName(keyDismissRequest.getKeyCode()) + " ] Dismiss ";
+						+ Input.getKeyName(dismissRequestKey.getKeyCode()) + " ] Dismiss ";
 				int width = Math.max(mc.getFont().getWidth(message), mc.getFont().getWidth(keys)) + 15;
 
 				Window window = mc.getWindow();
@@ -61,11 +61,11 @@ public class PopupManager {
 						popupBounds.getX() + (popupBounds.getWidth() / 2) - (mc.getFont().getWidth(keys) / 2), 40,
 						-1);
 
-				if(keyAcceptRequest.consumePress()) {
+				if(acceptRequestKey.consumePress()) {
 					mc.getPlayer().chat(currentPopup.getCommand());
 					currentPopup = null;
 				}
-				else if(keyDismissRequest.consumePress()) {
+				else if(dismissRequestKey.consumePress()) {
 					currentPopup = null;
 				}
 			}
@@ -75,8 +75,8 @@ public class PopupManager {
 			currentPopup = popups.pop();
 			currentPopup.setTime();
 		}
-		keyAcceptRequest.clearPresses();
-		keyDismissRequest.clearPresses();
+		acceptRequestKey.clearPresses();
+		dismissRequestKey.clearPresses();
 	}
 
 	public void add(Popup popup) {

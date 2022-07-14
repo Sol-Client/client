@@ -1,11 +1,13 @@
 package io.github.solclient.client.ui.component.impl;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
+import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.ui.screen.mods.ModListing;
 import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
@@ -21,12 +23,17 @@ public abstract class ScrollListComponent extends Component {
 	private double calculatedY;
 	private int maxScrolling;
 	private double scrollPercent;
+	private Component scrollbar;
+	private int scrolling = -1;
+	private int lastMouseY;
+	private double grabStartY = -1;
+	private int grabMouseY;
 
 	@Override
 	public void setParent(Component parent) {
 		super.setParent(parent);
 
-		parent.add(new BlockComponent(Colour.LIGHT_BUTTON) {
+		parent.add(scrollbar = new BlockComponent(Colour.LIGHT_BUTTON) {
 
 			@Override
 			public void render(ComponentRenderInfo info) {
@@ -40,7 +47,7 @@ public abstract class ScrollListComponent extends Component {
 			}
 
 		}, (component, defaultBounds) -> {
-			return new Rectangle(getBounds().getX() + getBounds().getWidth() - 5, getBounds().getY(), 3,
+			return new Rectangle(getBounds().getX() + getBounds().getWidth() - 8, getBounds().getY(), 5,
 					(int) (getBounds().getHeight() * scrollPercent));
 		});
 	}
@@ -88,7 +95,71 @@ public abstract class ScrollListComponent extends Component {
 			maxScrolling = 0;
 		}
 
+		if(scrolling > 0 && (lastMouseY != info.getRelativeMouseY())) {
+			int targetCompY = info.getRelativeMouseY() - scrolling;
+			jumpTo((int) (targetCompY / (getBounds().getHeight() / (double) getContentHeight())));
+			clamp();
+		}
+		else if(grabStartY != -1) {
+			jumpTo(grabStartY - (info.getRelativeMouseY() - grabMouseY));
+			clamp();
+		}
+
+		lastMouseY = info.getRelativeMouseY();
+
 		super.render(translate(info));
+	}
+
+	private int mouseInScrollbar(ComponentRenderInfo info) {
+		Rectangle scrollBounds = scrollbar.getBounds().offset(-getBounds().getX(), -getBounds().getY() + (int) (calculatedY * scrollPercent));
+
+		if(new Rectangle(scrollBounds.getX(), 0, scrollBounds.getWidth(),
+				getBounds().getHeight()).contains(info.getRelativeMouseX(), info.getRelativeMouseY())) {
+			if(!scrollBounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY())) {
+				return scrollbar.getBounds().getHeight() / 2;
+			}
+
+			return info.getRelativeMouseY() - scrollBounds.getY();
+		}
+
+		return -1;
+	}
+
+	@Override
+	public boolean mouseClicked(ComponentRenderInfo info, int button) {
+		if(button == 0) {
+			scrolling = mouseInScrollbar(reverseTranslation(info));
+			lastMouseY = -1;
+			if(scrolling != -1) {
+				return true;
+			}
+		}
+
+		boolean superResult = super.mouseClicked(info, button);
+
+
+		if(!superResult && grabStartY == -1) {
+			grabStartY = targetY;
+			grabMouseY = reverseTranslation(info).getRelativeMouseY();
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
+		if(button == 0) {
+			if(scrolling != -1) {
+				scrolling = -1;
+				return true;
+			}
+			if(grabStartY != -1) {
+				grabStartY = -1;
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override
@@ -107,7 +178,7 @@ public abstract class ScrollListComponent extends Component {
 		targetY = animatedY = lastAnimatedY = calculatedY = maxScrolling = scroll;
 	}
 
-	public void jumpTo(int scroll) {
+	public void jumpTo(double scroll) {
 		targetY = scroll;
 	}
 

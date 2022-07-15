@@ -39,6 +39,7 @@ sol_client.mod.simple_hud.option.border=Border
 sol_client.mod.simple_hud.option.borderColour=Border Color
 sol_client.mod.simple_hud.option.textColour=Text Color
 sol_client.mod.simple_hud.option.shadow=Text Shadow
+sol_client.mod.smooth_counter_hud.option.smoothNumbers=Smooth Numbers
 
 sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=General settings for Sol Client.
@@ -90,6 +91,11 @@ sol_client.mod.cps.option.separatorColour=Separator Color
 
 sol_client.mod.ping.name=Ping
 sol_client.mod.ping.description=Display the latency to the current server.
+
+sol_client.mod.ping.option.source=Source
+sol_client.mod.ping.option.source.auto=Auto
+sol_client.mod.ping.option.source.multiplayer_screen=Multiplayer Screen
+sol_client.mod.ping.option.source.tab_list=Tab List
 
 sol_client.mod.speedometer.name=Speedometer
 sol_client.mod.speedometer.description=Display your speed.

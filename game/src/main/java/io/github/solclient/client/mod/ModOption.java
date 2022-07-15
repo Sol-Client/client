@@ -48,10 +48,6 @@ public class ModOption {
 		this.mod = mod;
 		this.field = field;
 
-		if(Modifier.isFinal(field.getModifiers()) && !(field.getType() == KeyBinding.class)) {
-			LOGGER.warn("mod option " + field.getName() + " is final");
-		}
-
 		if(field != null) {
 			field.setAccessible(true);
 
@@ -60,6 +56,16 @@ public class ModOption {
 
 				file = new File(Minecraft.getMinecraft().mcDataDir, configFile.file());
 				readFile();
+			}
+
+			String name = field.getDeclaringClass() + "." + field.getName();
+
+			if(Modifier.isFinal(field.getModifiers()) && !(field.getType() == KeyBinding.class)) {
+				LOGGER.warn("Mod option {} is final", name);
+			}
+
+			if(getValue() == null) {
+				LOGGER.warn("Mod option {} has no default value. This may cause a crash.", name);
 			}
 		}
 

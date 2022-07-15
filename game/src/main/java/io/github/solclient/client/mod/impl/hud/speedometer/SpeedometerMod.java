@@ -1,4 +1,4 @@
-package io.github.solclient.client.mod.impl.hud;
+package io.github.solclient.client.mod.impl.hud.speedometer;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;

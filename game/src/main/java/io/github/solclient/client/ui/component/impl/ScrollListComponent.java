@@ -95,14 +95,16 @@ public abstract class ScrollListComponent extends Component {
 			maxScrolling = 0;
 		}
 
-		if(scrolling > 0 && (lastMouseY != info.getRelativeMouseY())) {
-			int targetCompY = info.getRelativeMouseY() - scrolling;
-			jumpTo((int) (targetCompY / (getBounds().getHeight() / (double) getContentHeight())));
-			clamp();
-		}
-		else if(grabStartY != -1) {
-			jumpTo(grabStartY - (info.getRelativeMouseY() - grabMouseY));
-			clamp();
+		if(lastMouseY != info.getRelativeMouseY()) {
+			if(scrolling > 0) {
+				int targetCompY = info.getRelativeMouseY() - scrolling;
+				jumpTo((int) (targetCompY / (getBounds().getHeight() / (double) getContentHeight())));
+				clamp();
+			}
+			else if(grabStartY != -1) {
+				jumpTo(grabStartY - (info.getRelativeMouseY() - grabMouseY));
+				clamp();
+			}
 		}
 
 		lastMouseY = info.getRelativeMouseY();
@@ -138,7 +140,7 @@ public abstract class ScrollListComponent extends Component {
 		boolean superResult = super.mouseClicked(info, button);
 
 
-		if(!superResult && grabStartY == -1) {
+		if(button == 0 && !superResult && grabStartY == -1) {
 			grabStartY = targetY;
 			grabMouseY = reverseTranslation(info).getRelativeMouseY();
 		}

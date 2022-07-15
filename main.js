@@ -39,7 +39,8 @@ async function run() {
 			},
 			title: "Sol Client " + Utils.version,
 			show: false,
-			backgroundColor: "#1e1e1e"
+			backgroundColor: "#1e1e1e",
+			darkTheme: true
 		};
 
 		if(Utils.getOsName() == "osx") {

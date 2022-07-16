@@ -1,0 +1,9 @@
+include ":1.8.9"
+
+if(new File(rootDir, "launch").exists()) {
+	for(File file : new File(rootDir, "launch").listFiles()) {
+		if(file.name.startsWith("client-")) {
+			include(':launch:' + file.name)
+		}
+	}
+}

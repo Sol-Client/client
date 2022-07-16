@@ -1,0 +1,4 @@
+dependencies {
+	implementation project(":")
+	implementation "net.minecraft:client-1.8.9:yarn"
+}

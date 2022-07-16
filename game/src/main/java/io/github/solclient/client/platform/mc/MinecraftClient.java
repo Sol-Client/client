@@ -70,7 +70,6 @@ public interface MinecraftClient {
 
 	@NotNull File getDataFolder();
 
-	@Helper
 	@NotNull File getPackFolder();
 
 	@NotNull Font getFont();

@@ -1,11 +1,55 @@
+import com.github.glassmc.kiln.standard.*
+import com.github.glassmc.kiln.standard.environment.*
+
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url "https://glassmc.ml/repository/" }
+		maven { url "https://jitpack.io/" }
+		maven { url "https://libraries.minecraft.net/" }
+	}
+
+	dependencies {
+		classpath "com.github.glassmc:kiln:0.9.2"
+	}
+}
+
 plugins {
-	id "com.github.johnrengelman.shadow" apply false
 	id "io.freefair.lombok" version "6.4.3" apply false
+}
+
+apply plugin: "kiln-main"
+
+class SolClientKilnEnvironment implements Environment {
+
+	@Override
+	public String getMainClass() {
+		return "io.github.solclient.client.wrapper.BootstrapMain";
+	}
+
+	@Override
+	public String[] getProgramArguments(String environment, String version) {
+		return new String[] { "--bootstrap:minecraftVersion", version, "--bootstrap:dev", "true" };
+	}
+
+	@Override
+	public String[] getRuntimeDependencies(File file) {
+		return new String[0];
+	}
+
+	@Override
+	public String getVersion(String mcVersion) {
+		return "Sol-Client-" + mcVersion;
+	}
+
+}
+
+subprojects {
+	apply plugin: "kiln-standard"
 }
 
 allprojects {
 	apply plugin: "java"
-	apply plugin: "com.github.johnrengelman.shadow"
 	apply plugin: "io.freefair.lombok"
 
 	repositories {
@@ -17,48 +61,35 @@ allprojects {
 		maven { url "https://jitpack.io" }
 		maven { url "https://glassmc.ml/repository/" }
 	}
-
+	
+	kiln {
+		environment = new SolClientKilnEnvironment()
+		transformers = [ new com.github.glassmc.kiln.standard.MixinRemapper() ]
+	}
+	
 	dependencies {
+		shadowImplementation files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
+		
+		implementation "net.hypixel:hypixel-api-core:4.0"
+		implementation "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
+		implementation "org.java-websocket:Java-WebSocket:1.5.3"
+		implementation "org.apache.httpcomponents:httpclient:4.5.13"
+	
+		shadowImplementation "com.google.guava:guava:31.1-jre"
+		shadowImplementation "org.ow2.asm:asm-tree:9.3"
+		shadowImplementation "org.spongepowered:mixin:0.8.5"
+		shadowImplementation "org.ow2.asm:asm-commons:9.3"
+		shadowImplementation "org.ow2.asm:asm-util:9.3"
+		
 		implementation "org.apache.logging.log4j:log4j-api:2.17.2"
 		implementation "org.apache.logging.log4j:log4j-core:2.17.2"
 		implementation "commons-io:commons-io:2.7"
 		implementation "org.apache.commons:commons-lang3:3.3.2"
-	}
-
-	configurations {
-		shadowImplementation
-		implementation.extendsFrom(shadowImplementation)
-	}
-
-	jar {
-		enabled = false
-		dependsOn shadowJar
-	}
-
-	shadowJar {
-		configurations = [project.configurations.shadowImplementation]
-	}
-
-	dependencies {
 		implementation "org.jetbrains:annotations:23.0.0"
 	}
 }
 
-//kiln {
-//	environment = new SolClientKilnEnvironment()
-//	transformers += new MixinRemapper()
-//}
-
 dependencies {
-	shadowImplementation files("libs/occlusionculling.jar")
-	implementation "net.hypixel:hypixel-api-core:4.0"
-
-	implementation "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
-	implementation "org.java-websocket:Java-WebSocket:1.5.3"
-	implementation "org.apache.httpcomponents:httpclient:4.5.13"
-
 	// minimal lwjgl, simply to compile against since the version can vary
 	compileOnly "org.lwjgl:lwjgl-opengl:3.3.1"
-	
-	implementation "com.google.guava:guava:31.1-jre"
 }

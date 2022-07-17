@@ -23,7 +23,7 @@ jobs:
         distribution: temurin
         java-version: 8
     - name: Build Game
-      run: cd game && ./gradlew --no-daemon setupCIWorkspace && ./gradlew --no-daemon build && cd ..
+      run: cd game && ./gradlew --no-daemon build && cd ..
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:

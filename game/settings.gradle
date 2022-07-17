@@ -1,4 +1,5 @@
 include ":1.8.9"
+include ":1.19"
 
 if(new File(rootDir, "launch").exists()) {
 	for(File file : new File(rootDir, "launch").listFiles()) {

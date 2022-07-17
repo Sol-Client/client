@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"verbose": true,
+	"compatibilityLevel": "JAVA_8",
+	"package": "io.github.solclient.client.v1_8_9.mixins",
+	"minVersion": "0.8.5",
+	"mixins": [
+		"resource.ReloadableResourceManagerImplMixin",
+		"resource.I18nMixin",
+		"screen.TitleScreenMixin"
+	]
+}

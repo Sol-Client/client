@@ -1,9 +1,6 @@
 name: build
 
-on:
-  push:
-    branches:
-      - main
+on: [ push, pull_request ]
 
 jobs:
   game:
@@ -84,7 +81,7 @@ jobs:
         path: out/make/*.dmg
 
   upload:
-    if: "startsWith(github.event.head_commit.message, '[create release] ')"
+    if: "github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, '[create release] ')"
 
     runs-on: ubuntu-latest
   

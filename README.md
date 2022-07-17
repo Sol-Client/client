@@ -82,23 +82,29 @@ The code for this client is available, meaning that you can see what it does.
 This client has been tested by multiple people on Hypixel, and it disables disallowed mods automatically. There may be some unknown servers, but just disable the correct mods and you should be fine, as all Sol Client mods are designed to not change the behaviour of the player.
 
 ## Credits
-[TheKodeToad](https://github.com/TheKodeToad) ([Discord User](https://discord.com/users/706152404072267788)): Programmer (turning tea into code).
+[TheKodeToad](https://github.com/TheKodeToad) ([Discord User](https://discord.com/users/706152404072267788)): Maintainer and developer of this project.
 
 [i9Dolphin](https://github.com/i9Dolphin): Helped create Discord, came up with the name (and changed his own one many times) and tested the client.
+
+[danterus](https://github.com/danterusdev/): Maintainer of kiln, the Gradle plugin this project now uses.
+
+[ArtDev](https://github.com/artdeell): Installer developer.
+
+[Toneh](https://github.com/TonehDev) and [ArtDev](https://github.com/artdeell): Translations.
 
 [sp614x](https://github.com/sp614x): OptiFine mod.
 
 [Sk1er LLC](https://github.com/Sk1erLLC): Mod inspiration.
 
-[Hyperium](https://github.com/HyperiumClient/Hyperium): Some rendering and launching code.
+<!-- hopefully Hyperium code will no longer be used... -->
 
-[Eric Golde](https://www.youtube.com/c/egold555): My older private client followed his tutorials (stole his code). This client was written from scratch (but not in Scratch).
+[Eric Golde](https://www.youtube.com/c/egold555): My older private client followed his tutorials (aka stole his code). This client was written from scratch (but not in Scratch).
 
 [tr7zw](https://github.com/tr7zw/EntityCulling): Original EntityCulling mod. A modified version is used in this client.
 
 [OrangeMarshall](https://namemc.com/profile/OrangeMarshall.1): Original 1.7 Animations mod.
 
-[Johni0702](https://github.com/Johni0702) and [CrushedPixel](https://github.com/CrushedPixel): Replay Mod. Again, a modified version is used in this client.
+[Johni0702](https://github.com/Johni0702) and [CrushedPixel](https://github.com/CrushedPixel): Maintainers of Replay Mod. Again, a modified version is used in this client.
 
 [robere2](https://github.com/robere2): QuickPlay Mod servers. The mod itself is a totally different creature. Sorry for not providing you with analytics.
 

@@ -1,0 +1,431 @@
+{
+	"passthrough": "%s",
+	"slider.percent": "%s%%",
+	"slider.factor": "%sx",
+	"slider.seconds": "%s сек",
+
+	"vertical_alignment.top": "Вверх",
+	"vertical_alignment.middle": "По центру",
+	"vertical_alignment.bottom": "Вниз",
+
+	"perspective.first_person": "От 1-го лица",
+	"perspective.third_person_back": "От 3-го лица сзади",
+	"perspective.third_person_front": "От 3-го лица спереди",
+
+	"easing.linear": "Линейная",
+	"easing.quad": "Квадратная",
+	"easing.cubic": "Кубическая",
+	"easing.quart": "Квартовая",
+	"easing.quint": "Квинтовая",
+	"easing.expo": "Экспоненциальная",
+	"easing.sine": "Синусоидальная",
+	"easing.circ": "Круговая",
+	"easing.back": "Задняя",
+	"easing.bounce": "Прыгучая",
+	"easing.elastic": "Эластичная",
+
+	"file.edit": "Редактировать файл",
+
+	"servers": "Сервера",
+
+	"key.category": "Sol Client",
+	"key.accept_request": "Принять запрос",
+	"key.dismiss_request": "Отклонить запрос",
+
+	"mod.generic.option.enabled": "Включено",
+	"mod.hud.option.scale": "Масштаб",
+	"mod.simple_hud.option.background": "Фон",
+	"mod.simple_hud.option.backgroundColour": "Цвет фона",
+	"mod.simple_hud.option.border": "Бордюр",
+	"mod.simple_hud.option.borderColour": "Цвет бордюра",
+	"mod.simple_hud.option.textColour": "Цвет текста",
+	"mod.simple_hud.option.shadow": "Тень текста",
+
+	"mod.sol_client.name": "Sol Client",
+	"mod.sol_client.description": "Общие настройки Sol Client.",
+
+	"mod.sol_client.option.fancyMainMenu": "Красивое главное меню",
+	"mod.sol_client.option.logoInInventory": "Показывать логотип в инвентаре",
+	"mod.sol_client.mods": "Модификации",
+	"mod.sol_client.option.modsKey": "Кнопка модификаций",
+	"mod.sol_client.edit_hud": "Редактировать интерфейс",
+	"mod.sol_client.option.editHudKey": "Кнопка интерфейса",
+	"mod.sol_client.option.uiColour": "Второй цвет",
+	"mod.sol_client.option.smoothUIColours": "Плавная смена цветов",
+	"mod.sol_client.option.roundedUI": "Скруглённый интерфейс",
+	"mod.sol_client.option.buttonClicks": "Щелчки кнопок",
+	"mod.sol_client.option.smoothScrolling": "Плавная промотка",
+	"mod.sol_client.option.fancyFont": "Шрифт высокого разрешения",
+
+	"mod.fps.name": "FPS",
+	"mod.fps.description": "Отображает FPS (кадры в секунду).",
+
+	"mod.coordinates.name": "Координаты",
+	"mod.coordinates.description": "Показывает ваши координаты.",
+
+	"mod.coordinates.option.axisLabelColour": "Цвет названия оси",
+	"mod.coordinates.option.axisValueColour": "Цвет значения оси",
+	"mod.coordinates.option.cardinalDirection": "Общая ориентация",
+	"mod.coordinates.option.cardinalDirectionColour": "Цвет общей ориентации",
+	"mod.coordinates.option.axisDirection": "Точное направление",
+	"mod.coordinates.option.axisDirectionColour": "Цвет точного направления",
+
+	"mod.keystrokes.name": "Клавиши",
+	"mod.keystrokes.description": "Отображает в данный момент нажатые клавиши.",
+
+	"mod.keystrokes.option.movement": "Кнопки движения",
+	"mod.keystrokes.option.mouse": "Кнопки мыши",
+	"mod.keystrokes.option.mouseMovement": "Смещение мыши",
+	"mod.keystrokes.option.showSpace": "Пробел",
+	"mod.keystrokes.option.cps": "CPS на кнопках",
+	"mod.keystrokes.option.backgroundColourPressed": "Фон при нажатии",
+	"mod.keystrokes.option.borderColourPressed": "Бордюр при нажатии",
+	"mod.keystrokes.option.textColourPressed": "Цвет текста при нажатии",
+	"mod.keystrokes.option.smoothColours": "Плавная смена цветов",
+
+	"mod.cps.name": "CPS",
+	"mod.cps.description": "Отображает ваш CPS (нажатия в секунду).",
+
+	"mod.cps.option.rmb": "CPS правой кнопки мыши",
+	"mod.cps.option.separatorColour": "Цвет разделителя",
+
+	"mod.ping.name": "Пинг",
+	"mod.ping.description": "Отображает задержку приёмопередачи.",
+
+	"mod.speedometer.name": "Спидометр",
+	"mod.speedometer.description": "Отображает вашу скорость.",
+
+	"mod.speedometer.option.graphMode": "График",
+
+	"mod.reach_display.name": "Расстояние",
+	"mod.reach_display.description": "Отображает расстояние при ударе существ.",
+
+	"mod.combo_counter.name": "Счётчик комбо",
+	"mod.combo_counter.description": "Показывает количество ударов в ряд.",
+	"mod.combo_counter.no_hits": "Нет ударов",
+	"mod.combo_counter.one_hit": "1 удар",
+	"mod.combo_counter.n_hits": "%s ударов",
+
+	"mod.potion_effects.name": "Эффекты",
+	"mod.potion_effects.description": "Показывает активные эффекты с обратным отсчётом.",
+
+	"mod.potion_effects.option.alignment": "Выравнивание",
+	"mod.potion_effects.option.icon": "Иконка",
+	"mod.potion_effects.option.background": "Фон",
+	"mod.potion_effects.option.title": "Метка",
+	"mod.potion_effects.option.titleColour": "Цвет названия",
+	"mod.potion_effects.option.duration": "Время",
+	"mod.potion_effects.option.durationColour": "Цвет обр. отсчёта",
+	"mod.potion_effects.option.spacing": "Расстояние",
+
+	"mod.armour.name": "Броня и инструмент",
+	"mod.armour.description": "Показывает текущую броню, инструмент и их запас прочности.",
+
+	"mod.armour.option.durability": "Прочность",
+	"mod.armour.option.durability.remaining": "Остаток",
+	"mod.armour.option.durability.percentage": "Проценты",
+	"mod.armour.option.durability.fraction": "Дробь",
+
+	"mod.armour.option.armour": "Показывать броню",
+	"mod.armour.option.hand": "Показывать инструмент",
+
+	"mod.timers.name": "Таймеры",
+	"mod.timers.description": "Показывает таймеры для внутриигровых событий.",
+
+	"mod.timers.option.alignment": "Выравнивание",
+	"mod.timers.option.icon": "Иконка",
+	"mod.timers.option.nameColour": "Цвет наименования",
+	"mod.timers.option.timeColour": "Цвет таймера",
+
+	"mod.chat.name": "Чат",
+	"mod.chat.description": "Помогает дополнительно настроить чат.",
+
+	"mod.chat.peek": "Подсмотр",
+	"mod.chat.option.preventClose": "Предотвратить скрытие",
+	"mod.chat.option.smooth": "Анимация сообщений",
+	"mod.chat.option.infiniteChat": "Бесконечный чат",
+	"mod.chat.option.peekKey": "Кнопка подсмотра",
+
+	"mod.chat.option.visibility": "Видимость",
+	"mod.chat.option.visibility.shown": "Виден",
+	"mod.chat.option.visibility.commands": "Только команды",
+	"mod.chat.option.visibility.hidden": "Скрыт",
+
+	"mod.chat.option.defaultTextColour": "Цвет текста по умолчанию",
+	"mod.chat.option.colours": "Цвета",
+	"mod.chat.option.width": "Ширина",
+	"mod.chat.option.closedHeight": "Высота закрытого чата",
+	"mod.chat.option.openHeight": "Высота открытого чата",
+	"mod.chat.option.links": "Ссылки",
+	"mod.chat.option.promptLinks": "Запрашивать разрешение на открытие ссылок ",
+	"mod.chat.option.chatFilter": "Фильтр чата",
+	"mod.chat.option.filteredWordsContent": "Слова для фильтра",
+
+	"mod.tab_list.name": "Список игроков",
+	"mod.tab_list.description": "Настраивает список игроков.",
+
+	"mod.tab_list.option.hideHeader": "Скрыть верх",
+	"mod.tab_list.option.hideFooter": "Скрыть низ",
+
+	"mod.tab_list.option.pingType": "Индикатор соединения",
+	"mod.tab_list.option.pingType.none": "Скрыт",
+	"mod.tab_list.option.pingType.icon": "Иконка",
+	"mod.tab_list.option.pingType.numeral": "Цифра",
+
+	"mod.tab_list.option.backgroundColour": "Цвет фона списка",
+	"mod.tab_list.option.entryBackgroundColour": "Цвет фона игрока",
+	"mod.tab_list.option.hidePlayerHeads": "Скрыть головы",
+	"mod.tab_list.option.textShadow": "Тень текста",
+
+	"mod.crosshair.name": "Прицел",
+	"mod.crosshair.description": "Настраивает ваш прицел.",
+
+	"mod.crosshair.option.style": "Стиль",
+	"mod.crosshair.option.style.default": "По умолчанию",
+	"mod.crosshair.option.style.none": "Без прицела",
+	"mod.crosshair.option.style.dot": "Точка",
+	"mod.crosshair.option.style.plus": "Плюс",
+	"mod.crosshair.option.style.plus_dot": "Плюс с точкой",
+	"mod.crosshair.option.style.square": "Квадрат",
+	"mod.crosshair.option.style.square_dot": "Квадрат с точкой",
+	"mod.crosshair.option.style.circle": "Круг",
+	"mod.crosshair.option.style.circle_dot": "Круг с точкой",
+	"mod.crosshair.option.style.four_angled": "Ракетный",
+	"mod.crosshair.option.style.four_angled_dot": "Ракетный с точкой",
+	"mod.crosshair.option.style.triangle": "Треугольный",
+
+	"mod.crosshair.option.thirdPerson": "Показывать в режиме от 3-го лица",
+	"mod.crosshair.option.spectatorAlways": "Показывать в режиме обозревателя",
+	"mod.crosshair.option.debug": "Показывать в отладочном режиме",
+	"mod.crosshair.option.blending": "Смешивание",
+	"mod.crosshair.option.crosshairColour": "Цвет прицела",
+	"mod.crosshair.option.highlightEntities": "Подсвечивать существа",
+	"mod.crosshair.option.entityColour": "Цвет существ",
+
+	"mod.scoreboard.name": "Боковая таблица очков",
+	"mod.scoreboard.description": "Настраивает боковую таблицу очков.",
+
+	"mod.scoreboard.option.backgroundColourTop": "Фон верха",
+	"mod.scoreboard.option.numbers": "Цифры",
+	"mod.scoreboard.option.numbersColour": "Цвет цифр",
+
+	"mod.tweaks.name": "Твики",
+	"mod.tweaks.description": "Различные мелкие улучшения, включающие в себя Fullbright.",
+
+	"mod.tweaks.option.fullbright": "Fullbright",
+	"mod.tweaks.option.showOwnTag": "Показывать свой ник",
+	"mod.tweaks.option.arabicNumerals": "Арабские цифры на чарах",
+	"mod.tweaks.option.betterTooltips": "Улучшить подсказки",
+	"mod.tweaks.option.minimalViewBobbing": "Уменьшить покачивание камеры",
+	"mod.tweaks.option.minimalDamageShake": "Уменьшить качание при уроне",
+	"mod.tweaks.option.damageShakeIntensity": "Сила качания при уроне",
+	"mod.tweaks.option.confirmDisconnect": "Спрашивать при отключении",
+	"mod.tweaks.option.betterKeyBindings": "Улучшенные приивязки клавиш",
+	"mod.tweaks.option.disableHotbarScrolling": "Отключить колёсико в хотбаре",
+	"mod.tweaks.option.borderlessFullscreen": "Оконный полный экран",
+
+	"mod.tweaks.confirm_disconnect": "Нажмите ещё раз для подтверждения",
+
+	"mod.freelook.name": "Свободный просмотр",
+	"mod.freelook.description": "Разрешает смотреть вокруг не двигая головой.",
+
+	"mod.freelook.key": "Свободный просмотр",
+	"mod.freelook.option.key": "Кнопка",
+
+	"mod.freelook.option.perspective": "Перспектива",
+	"mod.freelook.option.invertPitch": "Инверсия мыши по вертикали",
+	"mod.freelook.option.invertYaw": "Инверсия мыши по горизонтали",
+
+	"mod.taplook.name": "Быстрая смена перспективы",
+	"mod.taplook.description": "Изменяет перспективу на время удержания кнопки.",
+
+	"mod.taplook.key": "Быстрая перспектива",
+	"mod.taplook.option.key": "Кнопка",
+	"mod.taplook.option.perspective": "Перспектива",
+
+	"mod.toggle_sprint.name": "Переключатель бега",
+	"mod.toggle_sprint.description": "Заставляет кнопку бега работать как переключатель.",
+
+	"mod.toggle_sprint.option.hud": "HUD",
+
+	"mod.toggle_sprint.held": "Бег (Зажат)",
+	"mod.toggle_sprint.toggled": "Бег (Включен)",
+
+	"mod.zoom.name": "Зум",
+	"mod.zoom.description": "Приблизить мир при нажатии на клавишу.",
+
+	"mod.zoom.key": "Приближение",
+	"mod.zoom.option.key": "Кнопка",
+	"mod.zoom.zoom_out": "Отдалить",
+	"mod.zoom.option.zoomOutKey": "Кнопка отдаления",
+	"mod.zoom.zoom_in": "Приблизить",
+	"mod.zoom.option.zoomInKey": "Кнопка приближения",
+	"mod.zoom.option.cinematic": "Кинематографическая камера",
+	"mod.zoom.option.reduceSensitivity": "Снизить чувствительность",
+	"mod.zoom.option.scrolling": "Приближение колёсиком",
+	"mod.zoom.option.smooth": "Плавное приближение",
+	"mod.zoom.option.factor": "Фактор приближения",
+
+	"mod.replay.name": "Запись",
+	"mod.replay.description": "Запись и воспроизведение геймплея.",
+
+	"mod.replay.option.enableNotifications": "Включить уведомления",
+	"mod.replay.option.recordSingleplayer": "Запись в одиночной игре",
+	"mod.replay.option.recordServer": "Запись на сервере",
+	"mod.replay.option.recordingIndicator": "Индикатор записи",
+	"mod.replay.option.recordingIndicatorColour": "Цвет индикатора записи",
+	"mod.replay.option.recordingIndicatorScale": "Масштаб индикатора записи",
+	"mod.replay.option.recordingIndicatorTextColour": "Цвет текста индикатора",
+	"mod.replay.option.recordingIndicatorTextShadow": "Тень текста индикатора",
+	"mod.replay.option.automaticRecording": "Автозапись",
+	"mod.replay.option.renameDialog": "Диалог переименования",
+	"mod.replay.option.showChat": "Показывать чат",
+
+	"mod.replay.option.camera": "Камера",
+	"mod.replay.option.camera.classic": "Классическая",
+	"mod.replay.option.camera.vanilla_ish": "\"Ванильная\"",
+
+	"mod.replay.option.showPathPreview": "Показывать предпросмотр пути",
+
+	"mod.replay.option.defaultInterpolator": "Режим интерполяции",
+	"mod.replay.interpolator.catmull": "Сплайн Кэтмуля-Рома",
+	"mod.replay.interpolator.cubic": "Кубический",
+	"mod.replay.interpolator.linear": "Линейный",
+
+	"mod.replay.option.showServerIPs": "Показывать адреса серверов",
+
+	"mod.quickplay.name": "Быстрый переход",
+	"mod.quickplay.description": "Быстрый переход в миниигры с клавиатуры.",
+
+	"mod.quickplay.key": "Быстрый переход",
+	"mod.quickplay.option.menuKey": "Кнопка",
+
+	"mod.hypixel_util.name": "Дополнения для Hypixel",
+	"mod.hypixel_util.description": "Разлиные дополнения для игры на Hypixel.",
+
+	"mod.hypixel_util.option.visitHousingCommand": "/visithousing",
+	"mod.hypixel_util.option.lobbySoundsVolume": "Громкость звука в лобби",
+	"mod.hypixel_util.option.housingMusicVolume": "громкость музыки в Housing",
+	"mod.hypixel_util.option.popupEvents": "Уведомления событий",
+	"mod.hypixel_util.option.autogg": "Авто-GG",
+	"mod.hypixel_util.option.autoggMessage": "Сообщение Авто-GG",
+	"mod.hypixel_util.option.hidegg": "Скрывать GG",
+	"mod.hypixel_util.option.autogl": "Авто-GL",
+	"mod.hypixel_util.option.autoglMessage": "Сообщение Авто-GL",
+	"mod.hypixel_util.option.hidegl": "Скрывать GL",
+	"mod.hypixel_util.option.levelhead": "Голова уровня",
+
+	"mod.tnt_timer.name": "Таймер динамита",
+	"mod.tnt_timer.description": "Показывает таймер взрыва динамита.",
+
+	"mod.motion_blur.name": "Размытие движения",
+	"mod.motion_blur.description": "Включает эффект плавного размытия движения.",
+
+	"mod.motion_blur.option.blur": "Сила размытия",
+
+	"mod.menu_blur.name": "Размытие фона меню",
+	"mod.menu_blur.description": "Размывает фон в меню.",
+
+	"mod.menu_blur.option.blur": "Сила размытия",
+	"mod.menu_blur.option.fadeTime": "Время размытия",
+	"mod.menu_blur.option.backgroundColour": "Цвет фона",
+
+	"mod.colour_saturation.name": "Резкость",
+	"mod.colour_saturation.description": "Настраивает резкость цветов в мире.",
+
+	"mod.colour_saturation.option.saturation": "Резкость",
+
+	"mod.chunk_animator.name": "Анимация прогрузки",
+	"mod.chunk_animator.description": "Анимирует мир по мере прогрузки.",
+
+	"mod.chunk_animator.option.duration": "Время",
+	"mod.chunk_animator.option.animation": "Анимация",
+
+	"mod.1.7_visuals.name": "Оформление 1.7",
+	"mod.1.7_visuals.description": "Частично возвращает ощущения от 1.7",
+
+	"mod.1.7_visuals.option.useAndMine": "Копание при использовании предмета",
+	"mod.1.7_visuals.option.particles": "Частицы",
+	"mod.1.7_visuals.option.blocking": "Блокирование мечом",
+	"mod.1.7_visuals.option.eatingAndDrinking": "Еда и питьё",
+	"mod.1.7_visuals.option.rod": "Удочка",
+	"mod.1.7_visuals.option.bow": "Лук",
+	"mod.1.7_visuals.option.armourDamage": "Эффект урона по броне",
+	"mod.1.7_visuals.option.sneaking": "Плавное приседание",
+
+	"mod.item_physics.name": "Физика предметов",
+	"mod.item_physics.description": "Добавляет физику падения предметов.",
+
+	"mod.item_physics.option.rotationSpeed": "Скорость вращения",
+
+	"mod.particles.name": "Частицы",
+	"mod.particles.description": "Настраивает и умножает некоторые виды частиц.",
+
+	"mod.particles.option.multiplier": "Множитель",
+	"mod.particles.option.sharpness": "Всегда показывать остроту",
+	"mod.particles.option.snow": "Добавить снег",
+	"mod.particles.option.slime": "Добавить слаймы",
+	"mod.particles.option.flames": "Добавить огоньки",
+
+	"mod.time_changer.name": "Изменение времени",
+	"mod.time_changer.description": "Изменяет видимое время, не изменяя геймплей.",
+
+	"mod.time_changer.option.time": "Время",
+
+	"mod.block_selection.name": "Рамка блоков",
+	"mod.block_selection.description": "Настраивает рамку выбора блоков.",
+
+	"mod.block_selection.option.outline": "Обводка",
+	"mod.block_selection.option.outlineWidth": "Ширина обводки",
+	"mod.block_selection.option.outlineColour": "Цвет обводки",
+	"mod.block_selection.option.fill": "Заливка",
+	"mod.block_selection.option.fillColour": "Цвет заливки",
+	"mod.block_selection.option.depth": "Глубина",
+	"mod.block_selection.option.persistent": "Отображается всегда",
+
+	"mod.hit_colour.name": "Цвет удара",
+	"mod.hit_colour.description": "Изменяет цвет удара.",
+
+	"mod.hit_colour.option.colour": "Цвет",
+
+	"mod.hitbox.name": "Хитбоксы",
+	"mod.hitbox.description": "Настраивает и включает отображение хитбоксов.",
+
+	"mod.hitbox.option.toggleHitboxes": "Включить хитбоксы",
+	"mod.hitbox.option.boundingBox": "Показывать хитбокс",
+	"mod.hitbox.option.boundingBoxColour": "Цвет хитбокса",
+	"mod.hitbox.option.eyeHeight": "Показывать высоту глаз",
+	"mod.hitbox.option.eyeHeightColour": "Цвет высоты глаз",
+	"mod.hitbox.option.lookVector": "Показывать вектор поворота",
+	"mod.hitbox.option.lookVectorColour": "Цвет вектора поворота",
+	"mod.hitbox.option.lineWidth": "Ширина линий",
+
+	"mod.category.general.name": "Общие",
+	"mod.category.hud.name": "Интерфейс",
+	"mod.category.utility.name": "Инструменты",
+	"mod.category.visual.name": "Вид",
+	"mod.category.integration.name": "Интеграция",
+
+	"mod.discord_integration.name": "Интеграция с Discord",
+	"mod.discord_integration.description": "Добавляет интеграцию с Discord, включающую в себя оверлей и другие функции",
+
+	"mod.discord_integration.option.voiceChatHud": "Интерфейс голосового чата",
+	"mod.discord_integration.option.voiceChatHudScale": "Размер интерфейса голосового чата",
+	"mod.discord_integration.option.voiceChatHudAlignment": "Выравнивание интерфейса голосового чата",
+	"mod.discord_integration.option.usernameColour": "Цвет имени пользователя",
+	"mod.discord_integration.option.mutedColour": "Цвет имени заглушенного пользователя",
+	"mod.discord_integration.option.speakingColour": "Цвет имени говорящего пользователя",
+
+	"mod.screen.title": "Модификации",
+	"mod.screen.search": "Начните печатать...",
+	"mod.screen.apply_to_all": "Применить конфигурацию",
+
+	"hud.edit": "Редактировать интерфейс",
+
+	"packs.apply": "Применить",
+	"packs.open_folder": "Папка пакетов",
+	"packs.folder": "Папка (%d элементов)",
+
+	"screenshot.view": "Посмотреть",
+	"screenshot.open_folder": "Показать в папке"
+}

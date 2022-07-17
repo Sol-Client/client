@@ -5,8 +5,13 @@ import java.util.function.Supplier;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * A "chain" cache - if I changes, O is recalculated.
+ * @param <I> The control value.
+ * @param <O> The output function.
+ */
 @RequiredArgsConstructor
-public class DirtyMapper<I, O> {
+public class ChainCache<I, O> {
 
 	private final Supplier<I> controlValueSupplier;
 	private final Function<I, O> mapper;

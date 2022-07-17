@@ -7,7 +7,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.platform.mc.lang.I18n;
-import io.github.solclient.client.util.DirtyMapper;
+import io.github.solclient.client.util.ChainCache;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
@@ -38,7 +38,7 @@ public abstract class SimpleHudMod extends HudMod {
 	@Expose
 	@Option
 	protected boolean shadow = true;
-	private DirtyMapper<String, Integer> langWidth = new DirtyMapper<String, Integer>(() -> mc.getLanguageManager().getCode(), (key) -> {
+	private ChainCache<String, Integer> langWidth = new ChainCache<String, Integer>(() -> mc.getLanguageManager().getCode(), (key) -> {
 		String translationKey = getTranslationKey() + ".default_width";
 		Optional<String> width = I18n.translateOpt(translationKey);
 

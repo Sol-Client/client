@@ -187,8 +187,10 @@ dist/
 **/.project
 **/.classpath
 
-# Minecraft
+# Kiln
 game/run/
+game/launch/
+
 # For symlinks
 game/run
 

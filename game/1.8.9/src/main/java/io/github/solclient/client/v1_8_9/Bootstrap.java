@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixins;
 public class Bootstrap {
 
 	public static void init() {
-		Mixins.addConfiguration("sol-client.mixins.json");
+		Mixins.addConfiguration("sol-client-mixins-1.8.9.json");
 	}
 
 }

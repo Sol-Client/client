@@ -81,6 +81,8 @@
 		"mod.MixinSCReplayMod$MixinPacketListener",
 		"mod.MixinSCReplayMod$MixinReplayMod",
 		"mod.MixinSCReplayMod$MixinVanillaCameraController",
+	  	"mod.MixinScrollableTooltipsMod$MixinGuiScreen",
+	  "mod.MixinScrollableTooltipsMod$MixinGuiContainer",
 		"mod.MixinV1_7VisualsMod$MixinEntityRenderer",
 		"mod.MixinV1_7VisualsMod$MixinItemRenderer",
 		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase",

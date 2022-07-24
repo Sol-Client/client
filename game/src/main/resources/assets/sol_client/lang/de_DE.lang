@@ -100,8 +100,6 @@ sol_client.mod.reach_display.description=Distanz beim Treffen von Kreaturen anze
 sol_client.mod.combo_counter.name=Kombi Zähler
 sol_client.mod.combo_counter.description=Zähle die Nummer von nachfolgenden Treffer.
 
-sol_client.mod.combo_counter.default_width=63
-
 sol_client.mod.combo_counter.no_hits=Keine Kombi
 sol_client.mod.combo_counter.one_hit=1 Treffer
 sol_client.mod.combo_counter.n_hits=%s Treffer
@@ -367,6 +365,10 @@ sol_client.mod.particles.option.snow=Schnee
 sol_client.mod.particles.option.slime=Schleim
 sol_client.mod.particles.option.flames=Flammen
 
+sol_client.mod.tooltip_scroll.name=Scrollable Tooltips
+sol_client.mod.tooltip_scroll.description=Verschiebe Tooltips um sie besser lesen zu können.
+sol_client.mod.tooltip_scroll.option.scrollStep=Scrollgröße
+
 sol_client.mod.time_changer.name=Zeitwechsler
 sol_client.mod.time_changer.description=Ändere die visuelle Zeit, ohne das Gameplay zu beeinträchtigen.
 
@@ -426,3 +428,13 @@ sol_client.packs.folder=Ordner (%d items)
 
 sol_client.screenshot.view=Ansehen
 sol_client.screenshot.open_folder=Im Ordner anzeigen
+sol_client.mod.smooth_counter_hud.option.smoothNumbers=Fließende Zahlenübergänge
+sol_client.mod.ping.option.source=Quelle
+sol_client.mod.ping.option.source.auto=Auto
+sol_client.mod.ping.option.source.multiplayer_screen=Mehrspielerbildschirm
+sol_client.mod.ping.option.source.tab_list=Tab Liste
+sol_client.mod.speedometer.option.graphMode=Graph Modus
+sol_client.mod.scoreboard.option.hide=Verstecken
+sol_client.mod.toggle_sprint.default_width=113
+sol_client.mod.hitbox.name=Hitbox
+sol_client.mod.screen.apply_to_all=Auf alle anwenden

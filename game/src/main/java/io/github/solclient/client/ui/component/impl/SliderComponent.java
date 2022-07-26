@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.DrawableHelper;
-import io.github.solclient.client.platform.mc.Identifier;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
+import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;

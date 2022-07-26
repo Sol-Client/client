@@ -15,7 +15,6 @@ import java.util.function.Supplier;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -76,13 +75,12 @@ import io.github.solclient.client.mod.impl.itemphysics.ItemPhysicsMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.packet.PacketApi;
 import io.github.solclient.client.packet.PopupManager;
-import io.github.solclient.client.platform.mc.Identifier;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.network.ServerData;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
+import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
-import io.github.solclient.client.platform.mc.text.Font;
-import io.github.solclient.client.platform.mc.text.LiteralText;
+import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.text.TextColour;
 import io.github.solclient.client.platform.mc.world.level.Level;
 import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
@@ -421,13 +419,13 @@ public final class Client {
 					commands.get(commandKey).execute(mc.getPlayer(), args);
 				}
 				catch(CommandException error) {
-					mc.getPlayer().sendSystemMessage(LiteralText.create(error.getMessage())
+					mc.getPlayer().sendSystemMessage(Text.literal(error.getMessage())
 							.withStyle((style) -> style.setColour(TextColour.RED)));
 				}
 				catch(Exception error) {
 					mc.getPlayer()
-							.sendSystemMessage(LiteralText
-									.create("Could " + "not execute client-sided command. See log for extra details.")
+							.sendSystemMessage(Text
+									.literal("Could " + "not execute client-sided command. See log for extra details.")
 									.withStyle((style) -> style.setColour(TextColour.RED)));
 					LOGGER.info("Could not execute client-sided command: " + event.getMessage() + ", error: ", error);
 				}

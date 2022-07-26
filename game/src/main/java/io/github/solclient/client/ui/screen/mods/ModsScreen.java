@@ -4,7 +4,7 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.lang.I18n;
-import io.github.solclient.client.platform.mc.text.I18nText;
+import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
@@ -30,7 +30,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	public ModsScreen(Mod mod) {
-		super(I18nText.create("sol_client.mod.screen.title"), new ModsScreenComponent(mod));
+		super(Text.translation("sol_client.mod.screen.title"), new ModsScreenComponent(mod));
 
 		component = (ModsScreenComponent) root;
 		background = false;
@@ -145,7 +145,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		}
 
 		public void singleModMode() {
-			this.singleModMode = true;
+			singleModMode = true;
 		}
 
 		public void switchMod(Mod mod) {

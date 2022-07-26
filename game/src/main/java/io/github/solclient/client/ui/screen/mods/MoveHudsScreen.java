@@ -1,13 +1,11 @@
 package io.github.solclient.client.ui.screen.mods;
 
-import java.io.IOException;
-
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
-import io.github.solclient.client.platform.mc.text.I18nText;
+import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.Screen;
@@ -26,7 +24,7 @@ public class MoveHudsScreen extends Screen {
 	private Position moveOffset;
 
 	public MoveHudsScreen() {
-		super(I18nText.create("sol_client.hud.edit"), new MoveHudsComponent());
+		super(Text.translation("sol_client.hud.edit"), new MoveHudsComponent());
 		background = false;
 		if(parentScreen instanceof Screen) {
 			io.github.solclient.client.platform.mc.screen.Screen grandparentScreen = ((Screen) parentScreen).getParentScreen();

@@ -33,10 +33,10 @@ import io.github.solclient.client.mod.impl.hypixeladditions.commands.ChatChannel
 import io.github.solclient.client.mod.impl.hypixeladditions.commands.VisitHousingCommand;
 import io.github.solclient.client.packet.Popup;
 import io.github.solclient.client.platform.mc.text.ClickEvent;
-import io.github.solclient.client.platform.mc.text.LiteralText;
+import io.github.solclient.client.platform.mc.text.ClickEvent.Action;
+import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.text.TextColour;
 import io.github.solclient.client.platform.mc.text.TextFormatting;
-import io.github.solclient.client.platform.mc.text.ClickEvent.Action;
 import io.github.solclient.client.platform.mc.world.item.ItemStack;
 import io.github.solclient.client.util.ApacheHttpClient;
 import io.github.solclient.client.util.Utils;
@@ -230,7 +230,7 @@ public class HypixelAdditionsMod extends Mod {
 		}
 
 		if(isEffective() && apiKey == null) {
-			mc.getPlayer().sendSystemMessage(LiteralText.create("Could not find API key (required for Levelhead). Click here or run /api new.").withStyle((style) -> {
+			mc.getPlayer().sendSystemMessage(Text.literal("Could not find API key (required for Levelhead). Click here or run /api new.").withStyle((style) -> {
 				style.setColour(TextColour.RED);
 				style.setClickEvent(ClickEvent.create(Action.RUN_COMMAND, "/api"));
 			}));

@@ -5,6 +5,13 @@
 	"package": "io.github.solclient.client.v1_8_9.mixins",
 	"minVersion": "0.8.5",
 	"mixins": [
+		"platform.option.OptionsImpl",
+		"platform.resource.IdentifierImpl",
+		"platform.resource.IdentifierImpl$Static",
+		"platform.resource.ResourceImpl",
+		"platform.resource.ResourceManagerImpl",
+		"platform.MinecraftClientImpl",
+		"platform.MinecraftClientImpl$Static",
 		"resource.ReloadableResourceManagerImplMixin",
 		"resource.I18nMixin",
 		"screen.TitleScreenMixin"

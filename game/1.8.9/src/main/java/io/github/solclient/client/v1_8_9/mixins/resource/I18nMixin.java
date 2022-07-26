@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.solclient.client.util.TranslationProvider;
+import io.github.solclient.client.util.Utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.resource.language.TranslationStorage;
@@ -19,7 +20,7 @@ public class I18nMixin {
 	@Inject(method = "translate", at = @At("HEAD"), cancellable = true)
 	private static void translate(String key, Object[] args, CallbackInfoReturnable<String> callback) {
 		if(key.startsWith(KEY_PREFIX)) {
-			callback.setReturnValue(TranslationProvider.translate(key.substring(KEY_PREFIX.length()), args));
+			callback.setReturnValue(Utils.format(TranslationProvider.translate(key.substring(KEY_PREFIX.length())), args));
 		}
 	}
 

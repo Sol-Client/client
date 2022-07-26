@@ -5,7 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import io.github.solclient.client.platform.mc.Identifier;
+import io.github.solclient.client.platform.mc.resource.Identifier;
 
 public interface TextureManager {
 

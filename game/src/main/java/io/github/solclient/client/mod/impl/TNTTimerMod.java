@@ -7,7 +7,6 @@ import io.github.solclient.client.DetectedServer;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.platform.mc.MinecraftClient;
-import io.github.solclient.client.platform.mc.text.LiteralText;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.text.TextColour;
 import io.github.solclient.client.platform.mc.text.TextFormatting;
@@ -52,7 +51,7 @@ public class TNTTimerMod extends Mod {
 		}
 
 		final TextColour finalColour = colour;
-		return LiteralText.create(FORMAT.format(fuse / 20)).withStyle((style) -> style.setColour(finalColour));
+		return Text.literal(FORMAT.format(fuse / 20)).withStyle((style) -> style.setColour(finalColour));
 	}
 
 	@Override

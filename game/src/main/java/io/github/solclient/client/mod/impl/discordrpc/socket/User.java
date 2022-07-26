@@ -7,9 +7,9 @@ import org.lwjgl.opengl.GL11;
 import com.google.gson.JsonObject;
 
 import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
-import io.github.solclient.client.platform.mc.Identifier;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
+import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.texture.Texture;
 import io.github.solclient.client.platform.mc.texture.TextureManager;
 import io.github.solclient.client.util.data.Colour;

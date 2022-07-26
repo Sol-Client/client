@@ -14,8 +14,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import io.github.solclient.client.platform.mc.Identifier;
 import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.world.entity.player.Player;
 import io.github.solclient.client.util.Utils;
 

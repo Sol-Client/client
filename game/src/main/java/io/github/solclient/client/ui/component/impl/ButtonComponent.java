@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.DrawableHelper;
-import io.github.solclient.client.platform.mc.Identifier;
 import io.github.solclient.client.platform.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;

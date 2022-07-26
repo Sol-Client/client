@@ -14,8 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.google.common.base.MoreObjects;
-
 import io.github.solclient.client.util.TranslationProvider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.FallbackResourceManager;
@@ -39,31 +37,8 @@ public abstract class ReloadableResourceManagerImplMixin {
 	}
 
 	@Inject(method = "reload", at = @At("RETURN"))
-	public void loadLanguage(CallbackInfo callback) {
-		try {
-			String languageId = MoreObjects.firstNonNull(MinecraftClient.getInstance().options.language, "en_US");
-			Identifier id = getLanguageResource(languageId);
-
-			List<Resource> resources;
-
-			try {
-				resources = getAllResources(id);
-			}
-			catch(FileNotFoundException error) {
-				resources = getAllResources(id = getLanguageResource("en_US"));
-			}
-
-			for(Resource resource : resources) {
-				TranslationProvider.accept(IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8));
-			}
-		}
-		catch(IOException ignored) {
-			ignored.printStackTrace();
-		}
-	}
-
-	private static Identifier getLanguageResource(String id) {
-		return new Identifier("sol_client", "lang/" + id + ".json");
+	public void loadSCLanguage(CallbackInfo callback) {
+		TranslationProvider.load();
 	}
 
 	@Shadow

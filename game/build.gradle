@@ -23,23 +23,23 @@ plugins {
 class SolClientKilnEnvironment implements Environment {
 
 	@Override
-	public String getMainClass() {
-		return "io.github.solclient.client.wrapper.BootstrapMain";
+	String getMainClass() {
+		return "io.github.solclient.client.wrapper.BootstrapMain"
 	}
 
 	@Override
-	public String[] getProgramArguments(String environment, String version) {
-		return new String[] { "--bootstrap:minecraftVersion", version, "--bootstrap:dev", "true" };
+	String[] getProgramArguments(String environment, String version) {
+		return new String[] { "--bootstrap:minecraftVersion", version, "--bootstrap:dev", "true" }
 	}
 
 	@Override
-	public String[] getRuntimeDependencies(File file) {
-		return new String[0];
+	String[] getRuntimeDependencies(File file) {
+		return new String[0]
 	}
 
 	@Override
-	public String getVersion(String mcVersion) {
-		return "Sol-Client-" + mcVersion;
+	String getVersion(String mcVersion) {
+		return "Sol-Client-" + mcVersion
 	}
 
 }
@@ -61,32 +61,45 @@ allprojects {
 	
 	kiln {
 		environment = new SolClientKilnEnvironment()
-		transformers = [ new com.github.glassmc.kiln.MixinRemapper() ]
+		transformers = [ new MixinRemapper() ]
 	}
+}
+
+subprojects {
 	
 	dependencies {
-		shadowImplementation files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
-		
-		implementation "net.hypixel:hypixel-api-core:4.0"
-		implementation "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
-		implementation "org.java-websocket:Java-WebSocket:1.5.3"
-		implementation "org.apache.httpcomponents:httpclient:4.5.13"
-	
-		shadowImplementation "com.google.guava:guava:31.1-jre"
-		shadowImplementation "org.ow2.asm:asm-tree:9.3"
-		shadowImplementation "org.spongepowered:mixin:0.8.5"
-		shadowImplementation "org.ow2.asm:asm-commons:9.3"
-		shadowImplementation "org.ow2.asm:asm-util:9.3"
-		
-		implementation "org.apache.logging.log4j:log4j-api:2.17.2"
-		implementation "org.apache.logging.log4j:log4j-core:2.17.2"
-		implementation "commons-io:commons-io:2.7"
-		implementation "org.apache.commons:commons-lang3:3.3.2"
-		implementation "org.jetbrains:annotations:23.0.0"
+		implementation(project(":")) {
+			for(def subproject : rootProject.subprojects) {
+				exclude module: subproject.name
+			}
+			exclude group: "org.lwjgl"
+		}
 	}
+	
 }
 
 dependencies {
 	// minimal lwjgl, simply to compile against since the version can vary
 	compileOnly "org.lwjgl:lwjgl-opengl:3.3.1"
+
+	shadowImplementation files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
+
+	api "net.hypixel:hypixel-api-core:4.0"
+	api "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
+	api "org.java-websocket:Java-WebSocket:1.5.3"
+	api "org.apache.httpcomponents:httpclient:4.5.13"
+
+	api "org.spongepowered:mixin:0.8.5"
+	api "org.ow2.asm:asm-tree:9.3"
+	api "org.ow2.asm:asm-commons:9.3"
+	api "org.ow2.asm:asm-util:9.3"
+
+	compileOnly "org.apache.logging.log4j:log4j-api:2.17.2"
+	compileOnly "org.apache.logging.log4j:log4j-core:2.17.2"
+	compileOnly "commons-io:commons-io:2.7"
+	compileOnly "org.apache.commons:commons-lang3:3.12.0"
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+	compileOnly "com.google.guava:guava:31.1-jre"
+	
+	api "org.jetbrains:annotations:23.0.0"
 }

@@ -1,9 +1,9 @@
 package io.github.solclient.client.platform.mc.lang;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nullable;
 
 public interface LanguageManager {
 
-	@NotNull String getCode();
+	@Nullable String getCode();
 
 }

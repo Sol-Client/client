@@ -7,6 +7,18 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Text extends Cloneable {
 
+	static @NotNull Text literal(@NotNull String text) {
+		throw new UnsupportedOperationException();
+	}
+
+	static @NotNull Text format(@NotNull String fmt, Object... args) {
+		throw new UnsupportedOperationException();
+	}
+
+	static @NotNull Text translation(String key, Object... args) {
+		throw new UnsupportedOperationException();
+	}
+
 	@NotNull List<Text> getSiblings();
 
 	void append(@NotNull Text text);

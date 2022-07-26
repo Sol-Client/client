@@ -9,7 +9,7 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.command.CommandException;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelChatChannels;
-import io.github.solclient.client.platform.mc.text.LiteralText;
+import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
 
 public class ChatChannelCommand extends HypixelAdditionsCommand {
@@ -54,7 +54,7 @@ public class ChatChannelCommand extends HypixelAdditionsCommand {
 		else {
 			throw new CommandException(USAGE);
 		}
-		player.sendSystemMessage(LiteralText.format("Chat channel: %s", system.getChannelName()));
+		player.sendSystemMessage(Text.format("Chat channel: %s", system.getChannelName()));
 	}
 
 }

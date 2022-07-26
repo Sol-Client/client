@@ -14,7 +14,7 @@ public class WrappedMain {
 		String version = require(argsList, "minecraftVersion");
 		args = argsList.toArray(new String[0]);
 		try {
-			WrapperClassLoader.INSTANCE.loadClass("io.github.solclient.client.v" + version.replace(".", "_") + ".Bootstrap").getMethod("init").invoke(null);
+			WrapperClassLoader.INSTANCE.loadClass("io.github.solclient.client.v" + version.replace(".", "_") + ".Bootstrap").getMethod("init", WrapperClassLoader.class).invoke(null, WrapperClassLoader.INSTANCE);
 			WrapperClassLoader.INSTANCE.loadClass("net.minecraft.client.main.Main").getMethod("main", String[].class).invoke(null,
 					(Object) args);
 		}

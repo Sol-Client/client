@@ -4,14 +4,14 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.Environment;
-import io.github.solclient.client.platform.mc.Identifier;
 import io.github.solclient.client.platform.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.screen.LanguageScreen;
 import io.github.solclient.client.platform.mc.screen.MultiplayerScreen;
 import io.github.solclient.client.platform.mc.screen.OptionsScreen;
 import io.github.solclient.client.platform.mc.screen.SingleplayerScreen;
 import io.github.solclient.client.platform.mc.text.Font;
-import io.github.solclient.client.platform.mc.text.I18nText;
+import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
@@ -26,7 +26,7 @@ import io.github.solclient.client.util.data.Rectangle;
 public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 	public SolClientMainMenu() {
-		super(I18nText.create(Environment.MINOR_RELEASE >= 12 ? "narrator.screen.title" : "deathScreen.titleScreen"),
+		super(Text.translation(Environment.MINOR_RELEASE >= 12 ? "narrator.screen.title" : "deathScreen.titleScreen"),
 				new MainMenuComponent());
 	}
 

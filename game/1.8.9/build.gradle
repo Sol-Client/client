@@ -1,4 +1,5 @@
+sourceCompatibility = targetCompatibility = 8
+
 dependencies {
-	implementation project(":")
-	implementation "net.minecraft:client-1.8.9:yarn"
+	implementation "net.minecraft:client-1.8.9:yarn-202206171821"
 }

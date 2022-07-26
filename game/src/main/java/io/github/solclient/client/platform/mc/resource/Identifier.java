@@ -1,4 +1,4 @@
-package io.github.solclient.client.platform.mc;
+package io.github.solclient.client.platform.mc.resource;
 
 import io.github.solclient.client.platform.Helper;
 
@@ -13,12 +13,12 @@ public interface Identifier {
 	}
 
 	static Identifier minecraft(String path) {
-		throw new UnsupportedOperationException();
+		return create("minecraft", path);
 	}
 
 	@Helper
 	static Identifier solClient(String path) {
-		return create("solclient", path);
+		return create("sol_client", path);
 	}
 
 	@Helper

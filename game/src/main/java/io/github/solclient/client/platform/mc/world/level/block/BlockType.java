@@ -3,7 +3,7 @@ package io.github.solclient.client.platform.mc.world.level.block;
 import org.jetbrains.annotations.NotNull;
 
 import io.github.solclient.client.platform.Helper;
-import io.github.solclient.client.platform.mc.Identifier;
+import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.world.item.ItemType;
 
 public interface BlockType {

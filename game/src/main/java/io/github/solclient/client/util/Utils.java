@@ -242,4 +242,14 @@ public class Utils {
 		return (value & 0xFCFCFC) >> 2 | value & -0x1000000;
 	}
 
+	/**
+	 * A version of {@link String#format(String, Object...)} that doesn't allocate an object if there are no arguments passed.
+	 * @param fmt The format.
+	 * @param args The args.
+	 * @return The formatted string.
+	 */
+	public static String format(String fmt, Object... args) {
+		return args.length == 0 ? fmt : String.format(fmt, args);
+	}
+
 }

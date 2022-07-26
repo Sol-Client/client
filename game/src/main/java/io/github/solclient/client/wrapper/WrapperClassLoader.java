@@ -67,13 +67,12 @@ public class WrapperClassLoader extends ClassLoader {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private final List<String> exclusions = new ArrayList<>();
-	private final List<URL> urls = new ArrayList<>();
 	private final ClassLoader parent = WrapperClassLoader.class.getClassLoader();
 	private final List<Transformer> transformers = new ArrayList<>();
 
 	private WrapperClassLoader() {
 		addDefaultExclusions();
-		addDefaultTransformers();
+		registerDefaultTransformers();
 
 		MixinBootstrap.init();
 	}
@@ -95,15 +94,20 @@ public class WrapperClassLoader extends ClassLoader {
 		exclusions.add("io.github.solclient.client.wrapper");
 
 		exclusions.add("org.spongepowered.asm");
+		exclusions.add("org.objectweb.asm");
 	}
 
-	private void addDefaultTransformers() {
+	private void registerDefaultTransformers() {
 		// Patch guava classes to support old Minecraft versions.
-		transformers.add(new LegacyObjectsTransformer());
-		transformers.add(new LegacyFuturesTransformer());
-		transformers.add(new LegacyIteratorsTransformer());
+		registerTransformer(new LegacyObjectsTransformer());
+		registerTransformer(new LegacyFuturesTransformer());
+		registerTransformer(new LegacyIteratorsTransformer());
 
-		transformers.add(new PackageAccessFixer());
+		registerTransformer(new PackageAccessFixer());
+	}
+
+	public void registerTransformer(Transformer transformer) {
+		transformers.add(transformer);
 	}
 
 	private final Map<String, Class<?>> cache = new HashMap<>();
@@ -111,7 +115,7 @@ public class WrapperClassLoader extends ClassLoader {
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
 		for(String exclusion : exclusions) {
-			if(name.startsWith(exclusion.concat("."))) {
+			if(name.startsWith(exclusion + '.')) {
 				try {
 					return parent.loadClass(name);
 				}
@@ -202,33 +206,11 @@ public class WrapperClassLoader extends ClassLoader {
 
 	@Override
 	public Enumeration<URL> getResources(String name) throws IOException {
-		List<URL> parentResources = Collections.list(parent.getResources(name));
-
-		List<URL> filteredURLs = new ArrayList<>(parentResources);
-
-		for(URL pathUrl : Collections.list(findResources(name))) {
-			for(URL url : urls) {
-				if(pathUrl.getFile().contains(url.getFile())) {
-					filteredURLs.add(pathUrl);
-				}
-			}
-		}
-
-		return Collections.enumeration(filteredURLs);
+		return parent.getResources(name);
 	}
 
 	@Override
 	public URL getResource(String name) {
-		try {
-			Enumeration<URL> resources = getResources(name);
-			if(resources.hasMoreElements()) {
-				return resources.nextElement();
-			}
-		}
-		catch(IOException error) {
-			LOGGER.error(error);
-		}
-
 		return parent.getResource(name);
 	}
 

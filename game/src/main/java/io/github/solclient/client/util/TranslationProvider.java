@@ -1,21 +1,33 @@
 package io.github.solclient.client.util;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.resource.Identifier;
+import io.github.solclient.client.platform.mc.resource.Resource;
+import io.github.solclient.client.platform.mc.resource.ResourceManager;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class TranslationProvider {
 
-	private Map<String, String> translations = new HashMap<>();
+	private static final Map<String, String> TRANSLATIONS = new HashMap<>();
 
 	public void clear() {
-		translations.clear();
+		TRANSLATIONS.clear();
 	}
 
 	public void accept(String jsonStr) {
@@ -23,20 +35,42 @@ public class TranslationProvider {
 		for(Map.Entry<String, JsonElement> entry : obj.entrySet()) {
 			String key = entry.getKey();
 			String value = entry.getValue().getAsString();
-			translations.put(key, value);
+			TRANSLATIONS.put(key, value);
 		}
 	}
 
-	public String translate(String str) {
-		return translations.getOrDefault(str, "sol_client." + str);
+	public String translate(String key) {
+		return TRANSLATIONS.getOrDefault(key, "sol_client." + key);
 	}
 
-	public String translate(String str, Object... args) {
-		if(args.length == 0) {
-			return translate(str);
-		}
+	public static Boolean hasTranslation(String key) {
+		return TRANSLATIONS.containsKey(key);
+	}
 
-		return String.format(translate(str), args);
+	public static Identifier getLanguageId(String id) {
+		return Identifier.solClient("lang/" + id + ".json");
+	}
+
+	public static void load() {
+		clear();
+
+		try {
+			MinecraftClient mc = MinecraftClient.getInstance();
+			ResourceManager resourceManager = mc.getResourceManager();
+
+			List<Resource> resources = new ArrayList<>();
+
+			resources.addAll(resourceManager.getResources(Identifier.solClient("lang/en_us.json")));
+			resources.addAll(resourceManager.getResources(Identifier.solClient("lang/" + mc.getOptions().languageCode() + ".json")));
+
+			for(Resource resource : resources) {
+				try(InputStream in = resource.getInput()) {
+					accept(IOUtils.toString(in, StandardCharsets.UTF_8));
+				}
+			}
+		}
+		catch(IOException ignored) {
+		}
 	}
 
 }

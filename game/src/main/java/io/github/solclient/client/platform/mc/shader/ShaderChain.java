@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import io.github.solclient.client.platform.Helper;
-import io.github.solclient.client.platform.mc.Identifier;
+import io.github.solclient.client.platform.mc.resource.Identifier;
 
 public interface ShaderChain {
 

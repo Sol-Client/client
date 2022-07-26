@@ -58,4 +58,10 @@ public interface Options {
 
 	void save();
 
+	/**
+	 *
+	 * @return Language code in lower-case format. For example <code>en_us</code>.
+	 */
+	@NotNull String languageCode();
+
 }

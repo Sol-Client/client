@@ -13,6 +13,7 @@ import io.github.solclient.client.platform.mc.network.LocalPlayerState;
 import io.github.solclient.client.platform.mc.network.ServerData;
 import io.github.solclient.client.platform.mc.option.Options;
 import io.github.solclient.client.platform.mc.raycast.HitResult;
+import io.github.solclient.client.platform.mc.resource.ResourceManager;
 import io.github.solclient.client.platform.mc.screen.Screen;
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
 import io.github.solclient.client.platform.mc.sound.SoundEngine;
@@ -102,6 +103,8 @@ public interface MinecraftClient {
 	void runSyncLater(@NotNull Runnable runnable, int ticks);
 
 	@NotNull TextureManager getTextureManager();
+
+	@NotNull ResourceManager getResourceManager();
 
 	@NotNull LanguageManager getLanguageManager();
 

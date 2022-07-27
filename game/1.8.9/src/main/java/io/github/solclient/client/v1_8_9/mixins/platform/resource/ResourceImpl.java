@@ -1,6 +1,5 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.resource;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.jetbrains.annotations.NotNull;

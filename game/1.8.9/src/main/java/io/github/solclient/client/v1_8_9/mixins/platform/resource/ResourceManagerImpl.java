@@ -1,6 +1,5 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.resource;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;

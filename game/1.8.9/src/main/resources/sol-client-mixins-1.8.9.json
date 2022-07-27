@@ -12,6 +12,7 @@
 		"platform.resource.ResourceManagerImpl",
 		"platform.MinecraftClientImpl",
 		"platform.MinecraftClientImpl$Static",
+		"platform.WindowImpl",
 		"resource.ReloadableResourceManagerImplMixin",
 		"resource.I18nMixin",
 		"screen.TitleScreenMixin"

@@ -3,14 +3,11 @@ package io.github.solclient.client.v1_8_9.mixins.resource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.solclient.client.util.TranslationProvider;
 import io.github.solclient.client.util.Utils;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.resource.language.TranslationStorage;
 
 @Mixin(I18n.class)
 public class I18nMixin {

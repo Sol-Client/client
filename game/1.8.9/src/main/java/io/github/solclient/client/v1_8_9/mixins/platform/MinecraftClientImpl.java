@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.MouseHandler;
@@ -34,7 +36,6 @@ import io.github.solclient.client.platform.mc.world.level.LevelRenderer;
 import io.github.solclient.client.platform.mc.world.particle.ParticleEngine;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.resource.ReloadableResourceManager;
-import net.minecraft.resource.ReloadableResourceManagerImpl;
 
 @Mixin(net.minecraft.client.MinecraftClient.class)
 public class MinecraftClientImpl implements MinecraftClient {
@@ -48,6 +49,11 @@ public class MinecraftClientImpl implements MinecraftClient {
 	@Override
 	public @NotNull Window getWindow() {
 		return (Window) window;
+	}
+
+	@Inject(method = "method_2923", at = @At("RETURN"))
+	public void updateWindow() {
+		window = new net.minecraft.client.util.Window((net.minecraft.client.MinecraftClient) (Object) this);
 	}
 
 	@Override

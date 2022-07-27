@@ -42,11 +42,12 @@ public class MinecraftClientImpl implements MinecraftClient {
 	private @Final ReloadableResourceManagerImpl resourceManager;
 	@Shadow
 	public @Final GameOptions options;
+	@Shadow
+	private @Final net.minecraft.client.util.Window window;
 
 	@Override
 	public @NotNull Window getWindow() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Window) (Object) window;
 	}
 
 	@Override

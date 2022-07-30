@@ -29,6 +29,7 @@ import io.github.solclient.client.platform.mc.world.particle.ParticleEngine;
 
 /**
  * A representation of the Minecraft client.
+ * @NotNull can mean not null if the client is initialised.
  */
 public interface MinecraftClient {
 

@@ -8,8 +8,8 @@ public interface ChunkPos {
 		throw new UnsupportedOperationException();
 	}
 
-	int getX();
+	int x();
 
-	int getZ();
+	int z();
 
 }

@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.MouseHandler;
@@ -52,7 +53,7 @@ public class MinecraftClientImpl implements MinecraftClient {
 	}
 
 	@Inject(method = "method_2923", at = @At("RETURN"))
-	public void updateWindow() {
+	public void updateWindow(CallbackInfo callback) {
 		window = new net.minecraft.client.util.Window((net.minecraft.client.MinecraftClient) (Object) this);
 	}
 

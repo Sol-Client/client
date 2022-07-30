@@ -10,8 +10,4 @@ public interface BlockPos extends Vec3i {
 		throw new UnsupportedOperationException();
 	}
 
-	double distanceSquared(double x, double y, double z);
-
-	double distanceSquared(@NotNull Vec3i other);
-
 }

@@ -14,4 +14,8 @@ public interface Vec3i {
 
 	int z();
 
+	double distanceSquared(double x, double y, double z);
+
+	double distanceSquared(@NotNull Vec3i other);
+
 }

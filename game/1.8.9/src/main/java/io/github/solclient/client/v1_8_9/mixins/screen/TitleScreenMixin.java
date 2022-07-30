@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import io.github.solclient.client.platform.mc.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -19,6 +20,7 @@ public class TitleScreenMixin extends Screen {
 
 	@Inject(method = "initWidgetsNormal", at = @At("RETURN"))
 	public void customButtons(CallbackInfo callback) {
+		System.out.println(MinecraftClient.getInstance().getWindow().getWidth());
 		buttons.remove(realmsButton);
 		buttons.add(new ButtonWidget(realmsButton.id, realmsButton.x, realmsButton.y, I18n.translate("sol_client.mod.screen.title")));
 	}

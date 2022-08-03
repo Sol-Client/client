@@ -21,19 +21,31 @@ class Launcher {
 	games = [];
 
 	async launch(callback, progress, server) {
-		console.log("Downloading manifest...");
-		progress("Loading manifest...");
-		let manifest = await Manifest.getManifest();
-		console.log("Downloading version manifest...");
-		let version = await Manifest.getVersion(manifest, "1.8.9");
-		let jars = [];
-		let versionFolder = Version.getPath(version);
-		let versionJar = Version.getJar(version);
-		let nativesFolder = Version.getNatives(version);
-		let optifineRelative = "net/optifine/optifine/1.8.9_HD_U_M5/optifine-1.8.9_HD_U_M5.jar";
-		let optifine = Utils.librariesDirectory + "/" + optifineRelative;
-		let secret = crypto.randomBytes(32).toString("hex");
-		let alreadyRunning = this.games.length > 0;
+		const versionId = "1.8.9";
+		const jars = [];
+		const versionFolder = Version.getPath(versionId);
+		const versionJar = Version.getJar(versionId);
+		const versionJson = Version.getJson(versionId);
+
+		fs.mkdirSync(versionFolder, { recursive: true });
+
+		let version;
+		if(!fs.existsSync(versionJson)) {
+			console.log("Downloading version data...");
+			progress("Downloading version data...");
+			const manifest = await Manifest.getManifest();
+			version = await Manifest.getVersion(manifest, versionId);
+			fs.writeFileSync(versionJson, JSON.stringify(version), "UTF-8");
+		}
+		else {
+			version = JSON.parse(fs.readFileSync(versionJson, "UTF-8"))
+		}
+		
+		const nativesFolder = Version.getNatives(versionId);
+		const optifineRelative = "net/optifine/optifine/1.8.9_HD_U_M5/optifine-1.8.9_HD_U_M5.jar";
+		const optifine = Utils.librariesDirectory + "/" + optifineRelative;
+		const secret = crypto.randomBytes(32).toString("hex");
+		const alreadyRunning = this.games.length > 0;
 
 		if(!alreadyRunning && fs.existsSync(nativesFolder)) {
 			fs.rmdirSync(nativesFolder, { recursive: true });
@@ -357,7 +369,7 @@ class Launcher {
 			});
 
 		let sdkZip = fs.createReadStream(discordFile)
-					.pipe(unzipper.Parse({ forceStream: true }));
+				.pipe(unzipper.Parse({ forceStream: true }));
 
 		let suffix;
 
@@ -387,6 +399,7 @@ class Launcher {
 				await entry.pipe(fs.createWriteStream(discordNativeLibrary));
 			}
 		}
+		console.log("Starting...");
 		progress("Starting...");
 
 		let args = [];
@@ -617,19 +630,23 @@ class Version {
 	}
 
 	static getPath(version) {
-		return Utils.versionsDirectory + "/" + version.id;
+		return Utils.versionsDirectory + "/" + version;
 	}
 
 	static getJar(version) {
-		return Version.getPath(version) + "/" + version.id + ".jar";
+		return Version.getPath(version) + "/" + version + ".jar";
+	}
+
+	static getJson(version) {
+		return Version.getPath(version) + "/" + version + ".json";
 	}
 
 	static getNatives(version) {
-		return Version.getPath(version) + "/" + version.id + "-natives";
+		return Version.getPath(version) + "/" + version + "-natives";
 	}
 
 	static downloadJar(version) {
-		return Utils.download(version.downloads.client.url, Version.getJar(version), version.downloads.client.size);
+		return Utils.download(version.downloads.client.url, Version.getJar(version.id), version.downloads.client.size);
 	}
 
 }

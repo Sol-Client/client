@@ -216,6 +216,9 @@ class Launcher {
 
 		await Version.downloadJar(version);
 
+		console.log("Downloading JRE...");
+		progress("Downloading runtime...");
+
 		let jrePath = Config.data.jrePath;
 		let java;
 
@@ -239,12 +242,13 @@ class Launcher {
 						"&sort_order=DESC" +
 						"&vendor=eclipse")
 					.then(async(response) => {
-						let jrePackage = response.data[0].binaries[0].package;
-						let name = jrePackage.name;
-						let jrePath = Utils.dataDirectory + "/jre/" + name;
-						let dest = Utils.dataDirectory + "/jre/"
-								+ name.substring(0, name.indexOf("."));
-						let doneFile = dest + "/.done";
+						const jreBinary = response.data[0].binaries[0];
+						const jrePackage = jreBinary.package;
+						const packageName = jrePackage.name;
+						const jrePath = Utils.dataDirectory + "/jre/" + packageName;
+						const dest = Utils.dataDirectory + "/jre/" + jrePackage.checksum;
+						const doneFile = dest + "/.done";
+
 						if(!fs.existsSync(dest + "/.done")) {
 							await Utils.download(jrePackage.link,
 								jrePath, jrePackage.size);
@@ -254,20 +258,25 @@ class Launcher {
 								fs.mkdirSync(dest, { recursive: true });
 							}
 
-							if(name.endsWith(".tar.gz")) {
+							if(packageName.endsWith(".tar.gz")) {
 								await tar.x({
 									file: jrePath,
 									C: dest
 								});
 							}
-							else if(name.endsWith(".zip")) {
-								let zip = fs.createReadStream(jrePath)
+							else if(packageName.endsWith(".zip")) {
+								const zip = fs.createReadStream(jrePath)
 										.pipe(unzipper.Parse({ forceStream: true }));
 
 								for await(const entry of zip) {
 									const fileName = entry.path;
 
-									let destination = dest + "/" + fileName;
+									if(fileName.endsWith("/")) {
+										continue;
+									}
+
+									const destination = dest + "/" + fileName;
+									
 									if(!fs.existsSync(path.dirname(destination))) {
 										fs.mkdirSync(path.dirname(destination), { recursive: true });
 									}
@@ -281,17 +290,16 @@ class Launcher {
 							fs.unlinkSync(jrePath);
 						}
 
-						java = dest + "/" + response.data[0].release_name
-								+ "-jre/";
+						java = dest + "/" + jreBinary.scm_ref.substring(0, jreBinary.scm_ref.lastIndexOf("_")) + "-jre";
 						switch(Utils.getOsName()) {
 							case "linux":
-								java += "bin/java";
+								java = path.join(java, "bin/java");
 								break;
 							case "windows":
-								java += "bin/java.exe";
+								java = path.join(java, "bin/java.exe");
 								break;
 							case "osx":
-								java += "Contents/Home/bin/java";
+								java = path.join(java, "Contents/Home/bin/java");
 								break;
 						}
 
@@ -304,11 +312,12 @@ class Launcher {
 		progress("Patching...");
 
 		let versionToAdd;
+		let optifineVersion;
 
 		if(Config.data.optifine) {
 			let optifinePatchedJar = versionFolder + "/" + version.id + "-patched-optifine.jar";
 			let optifineSize = 2585014;
-			let optifineVersion = "1.8.9_HD_U_M5";
+			optifineVersion = "1.8.9_HD_U_M5";
 
 			await Library.download({
 					url: await Utils.getOptiFine(optifineVersion),
@@ -323,7 +332,7 @@ class Launcher {
 			versionToAdd = optifinePatchedJar;
 		}
 		else {
-			let mappedJar = versionFolder + "/" + version.id + "-searge.jar";
+			const mappedJar = versionFolder + "/" + version.id + "-searge.jar";
 
 			if(!fs.existsSync(mappedJar)) {
 				await Patcher.patch(java, versionFolder, versionJar, mappedJar);
@@ -385,9 +394,8 @@ class Launcher {
 
 		args.push("-Dio.github.solclient.client.version=" + Utils.version);
 		args.push("-Dio.github.solclient.client.secret=" + secret);
-		args.push("-Dmixin.target.mapid=searge");
 
-		args.push("-Dlog4j2.formatMsgNoLookups=true"); // See https://hypixel.net/threads/understanding-the-recent-rce-exploit-for-minecraft-and-what-it-actually-means.4703643/. Thank you Draconish and danterus on Discord for informing me of this.
+		args.push("-Dlog4j2.formatMsgNoLookups=true");
 
 		args.push("-Xmx" + Config.data.maxMemory + "M");
 
@@ -399,6 +407,7 @@ class Launcher {
 
 		// Fix crashing on some non-English setups. Basically, Mixin is broken in the current version.
 		// This shouldn't (at least I hope it doesn't) interfere with anything, and you can still select your own language from the menu.
+		// Update: it can conflict with decimal formatting - 1.3 will always appear in that format rather than 1,3.
 		args.push("-Duser.language=en");
 		args.push("-Duser.country=US");
 
@@ -513,8 +522,11 @@ class Launcher {
 		process.on("exit", (code) => {
 			if(code != 0) {
 				console.error("Game crashed with exit code " + code);
+				
+				let optifineName;
+				
 				if(optifineVersion) {
-					let optifineName = "OptiFine " + optifineVersion.replace(/_/g, " ");
+					optifineName = "OptiFine " + optifineVersion.replace(/_/g, " ");
 				}
 
 				ipcRenderer.send("crash", fullOutput, Config.getGameDirectory(Utils.gameDirectory) + "/logs/latest.log", optifineName);

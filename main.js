@@ -135,8 +135,6 @@ If you have private messages, try reproducing this issue again.`,
 			]
 		});
 
-		// Indentation matters.
-
 		if(option == 1) {
 			shell.openPath(file);
 		}

@@ -2,7 +2,6 @@ const axios = require("axios");
 const msmc = require("msmc");
 const fs = require("fs");
 const keytar = require("keytar");
-const crypto = require("crypto");
 const Utils = require("./utils");
 const KEYCHAIN_PREFIX = "keychain:";
 const SERVICE = "sol_client";
@@ -212,7 +211,7 @@ class AccountManager {
 
 class AuthService {
 
-	authenticate(key) {
+	authenticate(_key) {
 		throw new Error("Unimplemented");
 	}
 
@@ -254,8 +253,6 @@ class MicrosoftAuthService extends AuthService {
 
 	refresh(account) {
 		return new Promise(async(resolve) => {
-			let startingToken = account.accessToken;
-			let startingRefresh = account._msmc.refresh;
 			let result = await msmc.refresh(await this.toMsmc(account), () => {}, {client_id: "00000000402b5328"});
 
 			if(result.type != "Success") {
@@ -314,17 +311,17 @@ class YggdrasilAuthService extends AuthService {
 		});
 	}
 
-	validate(accessToken) {
+	validate(_accessToken) {
 		return new Promise(async(resolve) => {
 			const url = YggdrasilAuthService.api;
 			axios.post(url + "/validate", {
 						accessToken: await manager.realToken(account),
 						clientToken: account.clientToken
 					})
-					.catch((error) => {
+					.catch((_error) => {
 						resolve(false);
 					})
-					.then((response) => {
+					.then((_response) => {
 						resolve(true);
 					});
 		});
@@ -341,7 +338,7 @@ class YggdrasilAuthService extends AuthService {
 					id: account.uuid
 				}
 			})
-			.catch((error) => {
+			.catch((_error) => {
 				resolve(false);
 			})
 			.then(async(response) => {

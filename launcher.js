@@ -23,17 +23,17 @@ class Launcher {
 	async launch(callback, progress, server) {
 		console.log("Downloading manifest...");
 		progress("Loading manifest...");
-		var manifest = await Manifest.getManifest();
+		let manifest = await Manifest.getManifest();
 		console.log("Downloading version manifest...");
-		var version = await Manifest.getVersion(manifest, "1.8.9");
-		var jars = [];
-		var versionFolder = Version.getPath(version);
-		var versionJar = Version.getJar(version);
-		var nativesFolder = Version.getNatives(version);
-		var optifineRelative = "net/optifine/optifine/1.8.9_HD_U_M5/optifine-1.8.9_HD_U_M5.jar";
-		var optifine = Utils.librariesDirectory + "/" + optifineRelative;
-		var secret = crypto.randomBytes(32).toString("hex");
-		var alreadyRunning = this.games.length > 0;
+		let version = await Manifest.getVersion(manifest, "1.8.9");
+		let jars = [];
+		let versionFolder = Version.getPath(version);
+		let versionJar = Version.getJar(version);
+		let nativesFolder = Version.getNatives(version);
+		let optifineRelative = "net/optifine/optifine/1.8.9_HD_U_M5/optifine-1.8.9_HD_U_M5.jar";
+		let optifine = Utils.librariesDirectory + "/" + optifineRelative;
+		let secret = crypto.randomBytes(32).toString("hex");
+		let alreadyRunning = this.games.length > 0;
 
 		if(!alreadyRunning && fs.existsSync(nativesFolder)) {
 			fs.rmdirSync(nativesFolder, { recursive: true });
@@ -154,7 +154,7 @@ class Launcher {
 			}
 		});
 
-		for(var library of version.libraries) {
+		for(let library of version.libraries) {
 			if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"
 					|| library.name == "org.apache.logging.log4j:log4j-core:2.0-beta9"
 					|| library.name == "com.google.code.gson:gson:2.2.4") {
@@ -171,12 +171,12 @@ class Launcher {
 			}
 
 			if(!alreadyRunning && library.natives != null) {
-				var nativeName = library.natives[Utils.getOsName()];
+				let nativeName = library.natives[Utils.getOsName()];
 				if(nativeName != null) {
-					var download = library.downloads.classifiers[nativeName];
+					let download = library.downloads.classifiers[nativeName];
 					if(download != null) {
 						await Library.download(download);
-						var zip = fs.createReadStream(Library.getPath(download))
+						let zip = fs.createReadStream(Library.getPath(download))
 							.pipe(unzipper.Parse({ forceStream: true }));
 
 						for await(const entry of zip) {
@@ -186,7 +186,7 @@ class Launcher {
 								await entry.autodrain();
 							}
 							else {
-								var destination = nativesFolder + "/" + fileName;
+								let destination = nativesFolder + "/" + fileName;
 								if(!fs.existsSync(path.dirname(destination))) {
 									fs.mkdirSync(path.dirname(destination), { recursive: true });
 								}
@@ -202,12 +202,12 @@ class Launcher {
 		console.log("Downloading assets...");
 		progress("Downloading assets...");
 
-		var assetIndex = await Version.getAssetIndex(version);
+		let assetIndex = await Version.getAssetIndex(version);
 		assetIndex.id = version.assetIndex.id;
 
 		AssetIndex.save(assetIndex);
 
-		for(var object of Object.values(assetIndex.objects)) {
+		for(let object of Object.values(assetIndex.objects)) {
 			await AssetIndex.download(object);
 		}
 
@@ -216,8 +216,8 @@ class Launcher {
 
 		await Version.downloadJar(version);
 
-		var jrePath = Config.data.jrePath;
-		var java;
+		let jrePath = Config.data.jrePath;
+		let java;
 
 		if(jrePath) {
 			java = path.join(jrePath, "bin/java")
@@ -239,12 +239,12 @@ class Launcher {
 						"&sort_order=DESC" +
 						"&vendor=eclipse")
 					.then(async(response) => {
-						var jrePackage = response.data[0].binaries[0].package;
-						var name = jrePackage.name;
-						var jrePath = Utils.dataDirectory + "/jre/" + name;
-						var dest = Utils.dataDirectory + "/jre/"
+						let jrePackage = response.data[0].binaries[0].package;
+						let name = jrePackage.name;
+						let jrePath = Utils.dataDirectory + "/jre/" + name;
+						let dest = Utils.dataDirectory + "/jre/"
 								+ name.substring(0, name.indexOf("."));
-						var doneFile = dest + "/.done";
+						let doneFile = dest + "/.done";
 						if(!fs.existsSync(dest + "/.done")) {
 							await Utils.download(jrePackage.link,
 								jrePath, jrePackage.size);
@@ -261,13 +261,13 @@ class Launcher {
 								});
 							}
 							else if(name.endsWith(".zip")) {
-								var zip = fs.createReadStream(jrePath)
+								let zip = fs.createReadStream(jrePath)
 										.pipe(unzipper.Parse({ forceStream: true }));
 
 								for await(const entry of zip) {
 									const fileName = entry.path;
 
-									var destination = dest + "/" + fileName;
+									let destination = dest + "/" + fileName;
 									if(!fs.existsSync(path.dirname(destination))) {
 										fs.mkdirSync(path.dirname(destination), { recursive: true });
 									}
@@ -303,12 +303,12 @@ class Launcher {
 		console.log("Patching...");
 		progress("Patching...");
 
-		var versionToAdd;
+		let versionToAdd;
 
 		if(Config.data.optifine) {
-			var optifinePatchedJar = versionFolder + "/" + version.id + "-patched-optifine.jar";
-			var optifineSize = 2585014;
-			var optifineVersion = "1.8.9_HD_U_M5";
+			let optifinePatchedJar = versionFolder + "/" + version.id + "-patched-optifine.jar";
+			let optifineSize = 2585014;
+			let optifineVersion = "1.8.9_HD_U_M5";
 
 			await Library.download({
 					url: await Utils.getOptiFine(optifineVersion),
@@ -323,7 +323,7 @@ class Launcher {
 			versionToAdd = optifinePatchedJar;
 		}
 		else {
-			var mappedJar = versionFolder + "/" + version.id + "-searge.jar";
+			let mappedJar = versionFolder + "/" + version.id + "-searge.jar";
 
 			if(!fs.existsSync(mappedJar)) {
 				await Patcher.patch(java, versionFolder, versionJar, mappedJar);
@@ -335,11 +335,11 @@ class Launcher {
 		console.log("Preparing Discord library...");
 		progress("Downloading Discord library...");
 
-		var discordNativeLibrary;
+		let discordNativeLibrary;
 
-		var discordVersion = "2.5.6";
-		var discordPath = `com/discord/game-sdk/${discordVersion}/game-sdk-${discordVersion}.zip`;
-		var discordFile = Utils.librariesDirectory + "/" + discordPath;
+		let discordVersion = "2.5.6";
+		let discordPath = `com/discord/game-sdk/${discordVersion}/game-sdk-${discordVersion}.zip`;
+		let discordFile = Utils.librariesDirectory + "/" + discordPath;
 
 		await Library.download({
 				url: "https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip",
@@ -347,10 +347,10 @@ class Launcher {
 				path: discordPath
 			});
 
-		var sdkZip = fs.createReadStream(discordFile)
+		let sdkZip = fs.createReadStream(discordFile)
 					.pipe(unzipper.Parse({ forceStream: true }));
 
-		var suffix;
+		let suffix;
 
 		switch(Utils.getOsName()) {
 			case "windows":
@@ -364,9 +364,9 @@ class Launcher {
 				break;
 		}
 
-		var discordLibraryName = "discord_game_sdk" + suffix;
+		let discordLibraryName = "discord_game_sdk" + suffix;
 		discordNativeLibrary = nativesFolder + "/" + discordLibraryName;
-		var searchPath = "lib/x86_64/" + discordLibraryName;
+		let searchPath = "lib/x86_64/" + discordLibraryName;
 
 		for await(const entry of sdkZip) {
 			const fileName = entry.path;
@@ -380,7 +380,7 @@ class Launcher {
 		}
 		progress("Starting...");
 
-		var args = [];
+		let args = [];
 		args.push("-Djava.library.path=" + nativesFolder);
 
 		args.push("-Dio.github.solclient.client.version=" + Utils.version);
@@ -408,12 +408,12 @@ class Launcher {
 		// Add custom args.
 		args.push(...Config.getJvmArgs());
 
-		var classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";
-		var classpath = "";
+		let classpathSeparator = Utils.getOsName() == "windows" ? ";" : ":";
+		let classpath = "";
 
 		args.push("-cp");
 
-		for(var jar of jars) {
+		for(let jar of jars) {
 			classpath += jar;
 			classpath += classpathSeparator;
 		}
@@ -430,7 +430,7 @@ class Launcher {
 		args.push("--version");
 		args.push("Sol Client");
 
-		var activeAccount = this.accountManager.activeAccount;
+		let activeAccount = this.accountManager.activeAccount;
 
 		args.push("--username");
 		args.push(activeAccount.username);
@@ -459,7 +459,7 @@ class Launcher {
 		args.push("--assetIndex");
 		args.push(version.assetIndex.id);
 
-		var gameDirectory = Config.getGameDirectory(Utils.gameDirectory);
+		let gameDirectory = Config.getGameDirectory(Utils.gameDirectory);
 
 		args.push("--gameDir");
 		args.push(gameDirectory);
@@ -467,13 +467,13 @@ class Launcher {
 		args.push("--tweakClass");
 		args.push("io.github.solclient.client.tweak.Tweaker");
 
-		var process = childProcess.spawn(java, args, { cwd: gameDirectory });
+		let process = childProcess.spawn(java, args, { cwd: gameDirectory });
 		this.games.push(process);
 
 		let fullOutput = "";
 
 		process.stdout.on("data", (data) => {
-			var dataString = data.toString("UTF-8");
+			let dataString = data.toString("UTF-8");
 			fullOutput += dataString;
 
 			if(dataString.endsWith("\n")) {
@@ -481,10 +481,10 @@ class Launcher {
 			}
 
 			if(dataString.indexOf("message ") == 0) {
-				var splitDataString = dataString.split(" ");
+				let splitDataString = dataString.split(" ");
 				if(splitDataString[1] === secret) {
 					if(splitDataString[2] == "openUrl") {
-						var openUrl = splitDataString[3];
+						let openUrl = splitDataString[3];
 
 						if(Utils.getOsName() == "windows") {
 							openUrl = openUrl.substring(0, openUrl.length - 1);
@@ -505,7 +505,7 @@ class Launcher {
 			}
 		});
 		process.stderr.on("data", (data) => {
-			var dataString = data.toString("UTF-8");
+			let dataString = data.toString("UTF-8");
 			fullOutput += dataString;
 			console.error("[Game/STDERR] " + dataString);
 		});
@@ -514,7 +514,7 @@ class Launcher {
 			if(code != 0) {
 				console.error("Game crashed with exit code " + code);
 				if(optifineVersion) {
-					var optifineName = "OptiFine " + optifineVersion.replace(/_/g, " ");
+					let optifineName = "OptiFine " + optifineVersion.replace(/_/g, " ");
 				}
 
 				ipcRenderer.send("crash", fullOutput, Config.getGameDirectory(Utils.gameDirectory) + "/logs/latest.log", optifineName);
@@ -548,7 +548,7 @@ class Manifest {
 					return;
 				}
 
-				var body = "";
+				let body = "";
 				response.on("data", (data) => {
 					body += data;
 				});
@@ -561,7 +561,7 @@ class Manifest {
 
 	static getVersion(manifest, id) {
 		return new Promise((resolve, reject) => {
-			for(var version of manifest.versions) {
+			for(let version of manifest.versions) {
 				if(version.id == id) {
 					https.get(version.url, (response, error) => {
 						if(error) {
@@ -569,7 +569,7 @@ class Manifest {
 							return;
 						}
 
-						var body = "";
+						let body = "";
 						response.on("data", (data) => {
 							body += data;
 						});
@@ -593,7 +593,7 @@ class Version {
 				if(response.code == 404) {
 					resolve(null);
 				}
-				var body = "";
+				let body = "";
 				response.on("data", (data) => {
 					body += data;
 				});
@@ -633,8 +633,8 @@ class Library {
 			return true;
 		}
 
-		var result = false;
-		for(var rule of rules) {
+		let result = false;
+		for(let rule of rules) {
 			if(rule.os != null) {
 				if(rule.os.name == Utils.getOsName()) {
 					return rule.action == "allow";
@@ -668,7 +668,7 @@ class AssetIndex {
 	}
 
 	static save(index) {
-		var indexPath = AssetIndex.getIndexPath(index);
+		let indexPath = AssetIndex.getIndexPath(index);
 
 		if(!fs.existsSync(path.dirname(indexPath))) {
 			fs.mkdirSync(path.dirname(indexPath), { recursive: true });

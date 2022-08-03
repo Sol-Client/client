@@ -57,24 +57,24 @@ window.addEventListener("DOMContentLoaded", async() => {
 				}
 			})
 			.then(async(response, error) => {
-				var today = new Date();
+				let today = new Date();
 
 				news.innerHTML = "<br/>" + await response.text();
-				for(var timeElement of news.getElementsByTagName("time")) {
-					var datetime = timeElement.getAttribute("datetime");
+				for(let timeElement of news.getElementsByTagName("time")) {
+					let datetime = timeElement.getAttribute("datetime");
 
 					if(datetime == "future") {
 						timeElement.innerText = "The Future";
 						continue;
 					}
 
-					var todayYear = today.getFullYear();
-					var todayMonth = today.getMonth() + 1;
-					var todayDay = today.getDate();
+					let todayYear = today.getFullYear();
+					let todayMonth = today.getMonth() + 1;
+					let todayDay = today.getDate();
 
-					var year = parseInt(datetime.substring(0, 4));
-					var month = parseInt(datetime.substring(5, 7));
-					var day = parseInt(datetime.substring(8, 10));
+					let year = parseInt(datetime.substring(0, 4));
+					let month = parseInt(datetime.substring(5, 7));
+					let day = parseInt(datetime.substring(8, 10));
 
 					if(todayYear == year && todayMonth == month) {
 						if(todayDay == day) {
@@ -88,7 +88,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 					}
 
 
-					var friendlyName = day + " " + monthNames[month - 1];
+					let friendlyName = day + " " + monthNames[month - 1];
 
 					if(today.getFullYear() != year) {
 						friendlyName += " " + year;
@@ -112,7 +112,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 		}
 	});
 
-	for(var account of launcher.accountManager.accounts) {
+	for(let account of launcher.accountManager.accounts) {
 		await launcher.accountManager.storeInKeychain(account);
 	}
 
@@ -154,8 +154,8 @@ window.addEventListener("DOMContentLoaded", async() => {
 		backToMain.style.display = null;
 	}
 
-	var launching = false;
-	var loggingIn = false;
+	let launching = false;
+	let loggingIn = false;
 
 	document.onmousedown = (event) => {
 		if(!main.style.display) {
@@ -171,7 +171,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 		accounts.innerHTML = "";
 
 		for(let account of launcher.accountManager.accounts) {
-			var accountElement = document.createElement("div");
+			let accountElement = document.createElement("div");
 			accountElement.classList.add("account");
 			accountElement.innerHTML = `<img src="${account.head}"/> <span>${account.username}</span> <button class="remove-account"><img src="remove.svg"/></button>`;
 			accountElement.onclick = async(event) => {
@@ -195,7 +195,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 			accounts.appendChild(accountElement);
 		}
 
-		var addElement = document.createElement("div");
+		let addElement = document.createElement("div");
 		addElement.classList.add("account");
 		addElement.innerHTML = `<img src="add.svg"/> <span>Add Account</span>`;
 		addElement.onclick = () => {
@@ -237,7 +237,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 			alert("Could not log in: " + result.type);
 			return;
 		}
-		var account = await microsoftAuthService.authenticate(result.profile);
+		let account = await microsoftAuthService.authenticate(result.profile);
 		launcher.accountManager.addAccount(account);
 		login.style.display = "none";
 		main.style.display = "block";
@@ -325,9 +325,9 @@ window.addEventListener("DOMContentLoaded", async() => {
 	document.querySelector(".devtools").onclick = () => ipcRenderer.send("devtools");
 
 	function updateServers() {
-		var serversList = document.querySelector(".quick-servers");
-		var serversFile = Config.getGameDirectory(Utils.gameDirectory) + "/servers.dat";
-		var serverText = document.querySelector(".quick-join-text");
+		let serversList = document.querySelector(".quick-servers");
+		let serversFile = Config.getGameDirectory(Utils.gameDirectory) + "/servers.dat";
+		let serverText = document.querySelector(".quick-join-text");
 
 		if(fs.existsSync(serversFile)) {
 			nbt.parse(fs.readFileSync(serversFile), (error, data) => {
@@ -335,13 +335,13 @@ window.addEventListener("DOMContentLoaded", async() => {
 					throw error;
 				}
 
-				var servers = data.value.servers.value.value;
+				let servers = data.value.servers.value.value;
 
 				if(servers.length > 0) {
 					serversList.innerHTML = "";
 				}
 
-				for(var i = 0; i < servers.length && i < 5; i++) {
+				for(let i = 0; i < servers.length && i < 5; i++) {
 					// first time I've ever needed to use the let keyword
 					let server = servers[i];
 					let serverIndex = i;
@@ -372,27 +372,27 @@ window.addEventListener("DOMContentLoaded", async() => {
 
 	updateServers();
 
-	var memory = document.querySelector(".memory");
-	var memoryLabel = document.querySelector(".memory-label");
+	let memory = document.querySelector(".memory");
+	let memoryLabel = document.querySelector(".memory-label");
 
 	memory.max = os.totalmem() / 1024 / 1024;
 	memory.value = Config.data.maxMemory;
 
-	var optifine = document.querySelector(".optifine");
+	let optifine = document.querySelector(".optifine");
 	optifine.checked = Config.data.optifine;
 	optifine.onchange = () => {
 		Config.data.optifine = optifine.checked;
 		Config.save();
 	};
 
-	var autoUpdate = document.querySelector(".auto-update");
+	let autoUpdate = document.querySelector(".auto-update");
 	autoUpdate.checked = Config.data.autoUpdate;
 	autoUpdate.onchange = () => {
 		Config.data.autoUpdate = autoUpdate.checked;
 		Config.save();
 	};
 
-	var jvmArguments = document.querySelector(".jvm-arguments");
+	let jvmArguments = document.querySelector(".jvm-arguments");
 	jvmArguments.value = Config.data.jvmArgs;
 	jvmArguments.onchange = () => {
 		Config.data.jvmArgs = jvmArguments.value;
@@ -409,7 +409,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 
 	updateMemoryLabel();
 
-	var currentTab = "about";
+	let currentTab = "about";
 
 	function switchToTab(tab) {
 		document.querySelector("." + currentTab).style.display = "none";
@@ -435,7 +435,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 			loggingIn = true;
 			loginButtonMojang.innerText = "...";
 			try {
-				var account = await yggdrasilAuthService.authenticateUsernamePassword(emailField.value, passwordField.value);
+				let account = await yggdrasilAuthService.authenticateUsernamePassword(emailField.value, passwordField.value);
 				launcher.accountManager.addAccount(account);
 				mojangLogin.style.display = "none";
 				main.style.display = "block";
@@ -453,7 +453,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 		}
 	};
 
-	for(var element of document.querySelectorAll(".open-in-browser")) {
+	for(let element of document.querySelectorAll(".open-in-browser")) {
 		const href = element.href;
 		element.href = "javascript:void(0);";
 		element.onclick = function(event) {

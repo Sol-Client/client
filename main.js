@@ -26,11 +26,11 @@ async function run() {
 	const msmc = require("msmc");
 	const hastebin = require("hastebin");
 
-	var window;
-	var canQuit = false;
+	let window;
+	let canQuit = false;
 
 	function createWindow() {
-		var options = {
+		let options = {
 			width: 800,
 			height: 650,
 			icon: __dirname + "/assets/icon.png",
@@ -66,14 +66,14 @@ async function run() {
 		window.once("ready-to-show", () => window.show());
 
 		ipcMain.on("directory", async(event, title, id) => {
-			var result = await dialog.showOpenDialog(window,
+			let result = await dialog.showOpenDialog(window,
 				{
 					title: title,
 					properties: ["openDirectory" ]
 				}
 			);
 
-			var file = result.filePaths[0];
+			let file = result.filePaths[0];
 
 			if(!result.canceled && file) {
 				event.sender.send("directory", file, id);
@@ -88,7 +88,7 @@ async function run() {
 		});
 
 		ipcMain.on("skinFile", async(event) => {
-			var result = await dialog.showOpenDialog(window,
+			let result = await dialog.showOpenDialog(window,
 				{
 					title: "Select Skin File",
 					filters: [
@@ -104,7 +104,7 @@ async function run() {
 				}
 			);
 
-			var file = result.filePaths[0];
+			let file = result.filePaths[0];
 
 			if(!result.canceled && file) {
 				event.sender.send("skinFile", file);
@@ -121,7 +121,7 @@ async function run() {
 	});
 
 	ipcMain.on("crash", async(_event, report, file, optifine) => {
-		var option = dialog.showMessageBoxSync(window, {
+		let option = dialog.showMessageBoxSync(window, {
 			title: "Game Crashed",
 			message: `The game has crashed.
 You may submit a report on GitHub, so it can be fixed.
@@ -144,7 +144,7 @@ If you have private messages, try reproducing this issue again.`,
 			return;
 		}
 
-		var crashReportText = "Add any applicable crash reports, making sure not to include any personal information. It is most important that you do not include the session id.";
+		let crashReportText = "Add any applicable crash reports, making sure not to include any personal information. It is most important that you do not include the session id.";
 		if(report) {
 			report = report.replace(/\[.*\] \[.*\]: \(Session ID is .{3,}\)/gm, "<censored>");
 
@@ -159,7 +159,7 @@ If you have private messages, try reproducing this issue again.`,
 [Game Log on Hastebin](${hasteUrl})`
 		}
 
-		var running = `Running Sol Client v${Utils.version}`;
+		let running = `Running Sol Client v${Utils.version}`;
 
 		if(optifine) {
 			running += " with " + optifine;
@@ -168,7 +168,7 @@ If you have private messages, try reproducing this issue again.`,
 		running += " on " + Utils.getNiceOsName();
 		running += ".";
 
-		var url = new URL("https://github.com/TheKodeToad/Sol-Client/issues/new/")
+		let url = new URL("https://github.com/TheKodeToad/Sol-Client/issues/new/")
 		url.searchParams.set("body", `## Description (please fill in)
 A description of the problem that is occurring.
 ## Steps to Reproduce

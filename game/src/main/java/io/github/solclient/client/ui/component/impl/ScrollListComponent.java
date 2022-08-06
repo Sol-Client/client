@@ -161,7 +161,7 @@ public abstract class ScrollListComponent extends Component {
 			}
 		}
 
-		return false;
+		return super.mouseReleasedAnywhere(info, button, inside);
 	}
 
 	@Override

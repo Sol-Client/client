@@ -21,7 +21,7 @@ public class SolClientMod extends ConfigOnlyMod {
 
 	@Expose
 	@Option
-	public boolean fancyMainMenu;
+	public boolean fancyMainMenu = true;
 
 	@Expose
 	@Option

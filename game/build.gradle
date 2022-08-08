@@ -1,52 +1,15 @@
-import com.github.glassmc.kiln.*
-import com.github.glassmc.kiln.environment.*
-
-buildscript {
-	repositories {
-		mavenCentral()
-		mavenLocal()
-		maven { url "https://glassmc.ml/repository/" }
-		maven { url "https://jitpack.io/" }
-		maven { url "https://libraries.minecraft.net/" }
-	}
-
-	dependencies {
-		// local build of kiln f76eab4c
-		classpath "com.github.glassmc:kiln:0.9.3-SNAPSHOT"
-	}
-}
+import net.fabricmc.loom.LoomGradleExtension
 
 plugins {
+	id "fabric-loom" version "0.12-SNAPSHOT" apply false
 	id "io.freefair.lombok" version "6.4.3" apply false
-}
-
-class SolClientKilnEnvironment implements Environment {
-
-	@Override
-	String getMainClass() {
-		return "io.github.solclient.client.wrapper.BootstrapMain"
-	}
-
-	@Override
-	String[] getProgramArguments(String environment, String version) {
-		return new String[] { "--bootstrap:minecraftVersion", version, "--bootstrap:dev", "true" }
-	}
-
-	@Override
-	String[] getRuntimeDependencies(File file) {
-		return new String[0]
-	}
-
-	@Override
-	String getVersion(String mcVersion) {
-		return "Sol-Client-" + mcVersion
-	}
-
+	id "com.github.johnrengelman.shadow" version "7.1.2" apply false
 }
 
 allprojects {
-	apply plugin: "kiln"
 	apply plugin: "java"
+	apply plugin: "java-library"
+	apply plugin: "com.github.johnrengelman.shadow"
 	apply plugin: "io.freefair.lombok"
 
 	repositories {
@@ -56,33 +19,32 @@ allprojects {
 		maven { url "https://repo.codemc.io/repository/maven-public" }
 		maven { url "https://repo.hypixel.net/repository/Hypixel" }
 		maven { url "https://jitpack.io" }
-		maven { url "https://glassmc.ml/repository/" }
-	}
-	
-	kiln {
-		environment = new SolClientKilnEnvironment()
-		transformers = [ new MixinRemapper() ]
+		maven { url "https://maven.legacyfabric.net" }
 	}
 }
 
 subprojects {
+	apply plugin: "fabric-loom"
 	
 	dependencies {
-		implementation(project(":")) {
-			for(def subproject : rootProject.subprojects) {
-				exclude module: subproject.name
-			}
-			exclude group: "org.lwjgl"
-		}
+		implementation project(":")
+		annotationProcessor "org.ow2.asm:asm:${project.asmVersion}"
+		annotationProcessor "org.ow2.asm:asm-analysis:${project.asmVersion}"
+		annotationProcessor "org.ow2.asm:asm-commons:${project.asmVersion}"
+		annotationProcessor "org.ow2.asm:asm-tree:${project.asmVersion}"
+		annotationProcessor "org.ow2.asm:asm-util:${project.asmVersion}"
 	}
-	
+
+	for (runConfig in LoomGradleExtension.get(project).getRunConfigs()) {
+		runConfig.defaultMainClass "io.github.solclient.client.wrapper.BootstrapMain"
+	}
 }
 
 dependencies {
 	// minimal lwjgl, simply to compile against since the version can vary
 	compileOnly "org.lwjgl:lwjgl-opengl:3.3.1"
 
-	shadowImplementation files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
+	api files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
 
 	api "net.hypixel:hypixel-api-core:4.0"
 	api "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
@@ -90,12 +52,12 @@ dependencies {
 	api "org.apache.httpcomponents:httpclient:4.5.13"
 
 	api "org.spongepowered:mixin:0.8.5"
-	api "org.ow2.asm:asm-tree:9.3"
-	api "org.ow2.asm:asm-commons:9.3"
-	api "org.ow2.asm:asm-util:9.3"
+	api "org.ow2.asm:asm-tree:${project.asmVersion}"
+	api "org.ow2.asm:asm-commons:${project.asmVersion}"
+	api "org.ow2.asm:asm-util:${project.asmVersion}"
 
-	compileOnly "org.apache.logging.log4j:log4j-api:2.17.2"
-	compileOnly "org.apache.logging.log4j:log4j-core:2.17.2"
+	compileOnly "org.apache.logging.log4j:log4j-api:${project.log4jVersion}"
+	compileOnly "org.apache.logging.log4j:log4j-core:${project.log4jVersion}"
 	compileOnly "commons-io:commons-io:2.7"
 	compileOnly "org.apache.commons:commons-lang3:3.12.0"
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"

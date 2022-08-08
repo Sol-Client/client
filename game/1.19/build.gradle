@@ -1,5 +1,0 @@
-sourceCompatibility = targetCompatibility = 17
-
-dependencies {
-	implementation "net.minecraft:client-1.19:yarn-4"
-}

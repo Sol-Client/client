@@ -258,7 +258,7 @@ public class MinecraftClientImpl implements MinecraftClient {
 @Mixin(MinecraftClient.class)
 interface MinecraftClientImpl$Static {
 
-	@Overwrite
+	@Overwrite(remap = false)
 	static MinecraftClient getInstance() {
 		return (MinecraftClient) net.minecraft.client.MinecraftClient.getInstance();
 	}

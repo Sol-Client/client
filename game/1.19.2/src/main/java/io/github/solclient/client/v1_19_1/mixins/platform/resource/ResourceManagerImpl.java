@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19.mixins.platform.resource;
+package io.github.solclient.client.v1_19_1.mixins.platform.resource;
 
 import java.io.FileNotFoundException;
 import java.util.List;

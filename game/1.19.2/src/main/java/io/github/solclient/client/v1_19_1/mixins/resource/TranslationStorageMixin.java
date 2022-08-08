@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19.mixins.resource;
+package io.github.solclient.client.v1_19_1.mixins.resource;
 
 import org.apache.logging.log4j.LogManager;
 import org.spongepowered.asm.mixin.Mixin;

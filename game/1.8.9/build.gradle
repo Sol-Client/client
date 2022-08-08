@@ -1,5 +1,10 @@
 sourceCompatibility = targetCompatibility = 8
 
+loom {
+	setIntermediaryUrl "https://maven.legacyfabric.net/net/legacyfabric/intermediary/%1\$s/intermediary-%1\$s-v2.jar"
+}
+
 dependencies {
-	implementation "net.minecraft:client-1.8.9:yarn-202206171821"
+	minecraft "com.mojang:minecraft:1.8.9"
+	mappings "net.legacyfabric:yarn:1.8.9+build.382:v2"
 }

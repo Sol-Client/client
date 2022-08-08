@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19.mixins.screen;
+package io.github.solclient.client.v1_19_1.mixins.screen;
 
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;

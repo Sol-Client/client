@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19.mixins.platform;
+package io.github.solclient.client.v1_19_1.mixins.platform;
 
 import java.io.File;
 

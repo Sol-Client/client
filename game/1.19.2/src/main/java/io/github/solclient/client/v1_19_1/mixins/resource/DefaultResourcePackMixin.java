@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19.mixins.resource;
+package io.github.solclient.client.v1_19_1.mixins.resource;
 
 import java.util.HashSet;
 import java.util.Set;

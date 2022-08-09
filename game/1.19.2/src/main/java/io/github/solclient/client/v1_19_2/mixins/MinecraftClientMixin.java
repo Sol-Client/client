@@ -14,7 +14,7 @@ public class MinecraftClientMixin {
 
 	@Inject(method = "getWindowTitle", at = @At("HEAD"), cancellable = true)
 	public void setTitle(CallbackInfoReturnable<String> callback) {
-		callback.setReturnValue(Client.NAME + " | " + SharedConstants.getGameVersion().getName());
+		callback.setReturnValue(Client.NAME + " | Minecraft " + SharedConstants.getGameVersion().getName());
 	}
 
 }

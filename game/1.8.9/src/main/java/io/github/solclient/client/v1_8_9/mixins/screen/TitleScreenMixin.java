@@ -20,7 +20,8 @@ public class TitleScreenMixin extends Screen {
 	@Inject(method = "initWidgetsNormal", at = @At("RETURN"))
 	public void customButtons(CallbackInfo callback) {
 		buttons.remove(realmsButton);
-		buttons.add(new ButtonWidget(realmsButton.id, realmsButton.x, realmsButton.y, I18n.translate("sol_client.mod.screen.title")));
+		buttons.add(new ButtonWidget(realmsButton.id, realmsButton.x, realmsButton.y,
+				I18n.translate("sol_client.mod.screen.title")));
 	}
 
 }

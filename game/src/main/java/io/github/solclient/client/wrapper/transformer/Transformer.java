@@ -13,6 +13,10 @@ public abstract class Transformer {
 
 	private ClassNode self;
 
+	public boolean isEnabled() {
+		return true;
+	}
+
 	/**
 	 * @return <code>true</code> if the transformer will modify its input class node.
 	 */

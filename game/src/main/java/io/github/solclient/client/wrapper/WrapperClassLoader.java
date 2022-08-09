@@ -107,7 +107,9 @@ public class WrapperClassLoader extends ClassLoader {
 	}
 
 	public void registerTransformer(Transformer transformer) {
-		transformers.add(transformer);
+		if(transformer.isEnabled()) {
+			transformers.add(transformer);
+		}
 	}
 
 	private final Map<String, Class<?>> cache = new HashMap<>();

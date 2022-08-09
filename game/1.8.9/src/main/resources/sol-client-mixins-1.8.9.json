@@ -10,6 +10,7 @@
 		"platform.resource.IdentifierImpl$Static",
 		"platform.resource.ResourceImpl",
 		"platform.resource.ResourceManagerImpl",
+		"platform.EnvironmentImpl",
 		"platform.MinecraftClientImpl",
 		"platform.MinecraftClientImpl$Static",
 		"platform.WindowImpl",

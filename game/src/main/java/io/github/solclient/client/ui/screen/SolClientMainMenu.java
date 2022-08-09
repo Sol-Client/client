@@ -26,7 +26,7 @@ import io.github.solclient.client.util.data.Rectangle;
 public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 	public SolClientMainMenu() {
-		super(Text.translation(Environment.MINOR_RELEASE >= 12 ? "narrator.screen.title" : "deathScreen.titleScreen"),
+		super(Text.translation(Environment.MAJOR_RELEASE > 1 || Environment.MINOR_RELEASE >= 12 ? "narrator.screen.title" : "deathScreen.titleScreen"),
 				new MainMenuComponent());
 	}
 
@@ -36,7 +36,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 		Font font = SolClientConfig.instance.getUIFont();
 
-		String copyrightString = "Copyright Mojang " + (Environment.MINOR_RELEASE >= 16 ? "Studios" : "AB") + ". Do not distribute!";
+		String copyrightString = "Copyright Mojang " + (Environment.MAJOR_RELEASE > 1 || Environment.MINOR_RELEASE >= 16 ? "Studios" : "AB") + ". Do not distribute!";
 		font.render(copyrightString, (int) (getWidth() - font.getWidth(copyrightString) - 10), getHeight() - 15, -1);
 		String versionString = "Minecraft 1.8.9";
 		font.render(versionString, (int) (getWidth() - font.getWidth(versionString) - 10), getHeight() - 25, -1);

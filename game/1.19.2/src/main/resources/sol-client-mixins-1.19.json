@@ -13,9 +13,10 @@
 		"platform.MinecraftClientImpl",
 		"platform.MinecraftClientImpl$Static",
 		"platform.WindowImpl",
-		"screen.TitleScreenMixin",
 		"resource.DefaultResourcePackMixin",
 		"resource.TranslationStorageMixin",
-		"resource.LanguageManagerMixin"
+		"resource.LanguageManagerMixin",
+		"screen.TitleScreenMixin",
+		"MinecraftClientMixin"
 	]
 }

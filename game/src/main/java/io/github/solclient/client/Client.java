@@ -121,7 +121,7 @@ public final class Client {
 
 	private ChatChannelSystem chatChannelSystem;
 
-	public static final String VERSION = System.getProperty("io.github.solclient.client.version", "unknown");
+	public static final String VERSION = replaceGit(System.getProperty("io.github.solclient.client.version", ""));
 	public static final String NAME = "Sol Client " + VERSION;
 	public static final String KEY_TRANSLATION_KEY = "sol_client.key";
 	public static final String KEY_CATEGORY = KEY_TRANSLATION_KEY + ".category";
@@ -478,6 +478,22 @@ public final class Client {
 	public void optionChanged() {
 		if(!(MinecraftClient.getInstance().getScreen() instanceof ModsScreen)) {
 			save();
+		}
+	}
+
+
+
+	private static String replaceGit(String value) {
+		if(!"dev".equalsIgnoreCase(value)) {
+			return value;
+		}
+
+		try {
+			return "git " + Utils.getGitBranch();
+		}
+		catch(Throwable error) {
+			LOGGER.error("Could not determine git branch", error);
+			return value;
 		}
 	}
 

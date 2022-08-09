@@ -10,10 +10,10 @@ import lombok.experimental.StandardException;
 public class WrappedMain {
 
 	public static void main(String[] args) throws ReflectiveOperationException {
-		String version = System.getProperty("io.github.solclient.client.version");
+		String version = System.getProperty("io.github.solclient.client.mc_version");
 
 		if(version == null) {
-			System.err.println("No Minecraft version specified - please do so with -Dio.github.solclient.client.version=x.x.x");
+			System.err.println("No Minecraft version specified - please do so with -Dio.github.solclient.client.mc_version=x.x.x");
 			System.exit(1);
 		}
 

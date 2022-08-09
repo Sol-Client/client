@@ -15,6 +15,7 @@
 		"platform.WindowImpl",
 		"resource.ReloadableResourceManagerImplMixin",
 		"resource.I18nMixin",
-		"screen.TitleScreenMixin"
+		"screen.TitleScreenMixin",
+		"MinecraftClientMixin"
 	]
 }

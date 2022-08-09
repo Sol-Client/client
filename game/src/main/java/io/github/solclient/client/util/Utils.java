@@ -252,4 +252,23 @@ public class Utils {
 		return args.length == 0 ? fmt : String.format(fmt, args);
 	}
 
+	public static String getGitBranch() throws IOException, InterruptedException {
+		String root = System.getProperty("io.github.solclient.client.project_root");
+
+		if(root == null) {
+			throw new UnsupportedOperationException("No source root found");
+		}
+
+		Process process = new ProcessBuilder("git", "branch", "--show-current").start();
+		process.waitFor();
+
+		if(process.exitValue() > 0) {
+			throw new IllegalStateException("git command exited with code " + process.exitValue());
+		}
+
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+			return reader.readLine();
+		}
+	}
+
 }

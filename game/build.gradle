@@ -11,13 +11,27 @@ plugins {
 configurations {
 	mixin
 	api.extendsFrom mixin
+	shadow
+	shadowApi
+	api.extendsFrom shadowApi
+	shadow.extendsFrom shadowApi
+}
+
+jar {
+	enabled = false
+	dependsOn shadowJar
+}
+
+shadowJar {
+	classifier = null
+	configurations = [ project.configurations.shadow ]
 }
 
 dependencies {
 	// minimal lwjgl, simply to compile against since the version can vary
 	compileOnly "org.lwjgl:lwjgl-opengl:3.3.1"
 
-	api files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
+	shadowApi files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
 
 	api "net.hypixel:hypixel-api-core:4.0"
 	api "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
@@ -38,6 +52,9 @@ dependencies {
 	api "com.google.code.findbugs:jsr305:3.0.2"
 	
 	api "org.jetbrains:annotations:23.0.0"
+
+	shadow project(":1.8.9")
+	shadow project(":1.19.2")
 }
 
 allprojects {

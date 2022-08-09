@@ -187,12 +187,7 @@ dist/
 **/.project
 **/.classpath
 
-# Kiln
-game/run/
-game/launch/
-
-# For symlinks
-game/run
+**/run/**
 
 # JetBrains IDEs
 

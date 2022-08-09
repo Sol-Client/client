@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19_1.mixins.platform.option;
+package io.github.solclient.client.v1_19_2.mixins.platform.option;
 
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;

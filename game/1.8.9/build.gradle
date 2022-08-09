@@ -1,4 +1,4 @@
-sourceCompatibility = targetCompatibility = 8
+sourceCompatibility = targetCompatibility = 17 // TODO: change this
 
 loom {
 	setIntermediaryUrl "https://maven.legacyfabric.net/net/legacyfabric/intermediary/%1\$s/intermediary-%1\$s-v2.jar"
@@ -7,4 +7,14 @@ loom {
 dependencies {
 	minecraft "com.mojang:minecraft:1.8.9"
 	mappings "net.legacyfabric:yarn:1.8.9+build.382:v2"
+	if(currentOs.contains("mac")) {
+		implementation "org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209"
+		implementation "org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209"
+		implementation "org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209"
+	}
+	else if(currentOs.contains("linux")) {
+		implementation "org.lwjgl.lwjgl:lwjgl_util:2.9.4-babric.1"
+		implementation "org.lwjgl.lwjgl:lwjgl:2.9.4-babric.1"
+		implementation "org.lwjgl.lwjgl:lwjgl-platform:2.9.4-babric.1"
+	}
 }

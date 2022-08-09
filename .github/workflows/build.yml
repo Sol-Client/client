@@ -21,7 +21,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: temurin
-        java-version: 8
+        java-version: 17
     - name: Build Game
       run: cd game && ./gradlew --no-daemon --stacktrace build && cd ..
     - name: Upload Artifact
@@ -81,7 +81,7 @@ jobs:
         path: out/make/*.dmg
 
   upload:
-    if: "github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, '[create release] ')"
+    if: "github.ref_name == 'main' && github.event_name != 'pull_request' && startsWith(github.event.head_commit.message, '[create release] ')"
 
     runs-on: ubuntu-latest
   

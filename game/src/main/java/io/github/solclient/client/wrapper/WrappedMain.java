@@ -10,9 +10,13 @@ import lombok.experimental.StandardException;
 public class WrappedMain {
 
 	public static void main(String[] args) throws ReflectiveOperationException {
-		List<String> argsList = new ArrayList<>(Arrays.asList(args));
-		String version = require(argsList, "minecraftVersion");
-		args = argsList.toArray(new String[0]);
+		String version = System.getProperty("io.github.solclient.client.version");
+
+		if(version == null) {
+			System.err.println("No Minecraft version specified - please do so with -Dio.github.solclient.client.version=x.x.x");
+			System.exit(1);
+		}
+
 		try {
 			WrapperClassLoader.INSTANCE.loadClass("io.github.solclient.client.v" + version.replace(".", "_") + ".Bootstrap").getMethod("init", WrapperClassLoader.class).invoke(null, WrapperClassLoader.INSTANCE);
 			WrapperClassLoader.INSTANCE.loadClass("net.minecraft.client.main.Main").getMethod("main", String[].class).invoke(null,
@@ -23,34 +27,6 @@ public class WrappedMain {
 			System.err.println("Please ensure Minecraft and the client impl is on the classpath.");
 			throw error;
 		}
-	}
-
-	private static String require(List<String> args, String label) {
-		return get(args, label).orElseThrow(() -> BootstrapArgumentError.label(label));
-	}
-
-	private static Optional<String> get(List<String> args, String label) {
-		label = "-bootstrap:" + label;
-		int index = args.indexOf(label);
-
-		if(index == -1) {
-			index = args.indexOf("-" + label);
-		}
-
-		if(index == -1 || index >= args.size() - 1) {
-			return Optional.empty();
-		}
-		args.remove(index);
-		return Optional.of(args.remove(index));
-	}
-
-	@StandardException
-	private static class BootstrapArgumentError extends Error {
-
-		public static BootstrapArgumentError label(String label) {
-			return new BootstrapArgumentError("Missing --" + label + " in args");
-		}
-
 	}
 
 }

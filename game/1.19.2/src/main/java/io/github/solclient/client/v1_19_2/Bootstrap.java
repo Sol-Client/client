@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19_1;
+package io.github.solclient.client.v1_19_2;
 
 import org.spongepowered.asm.mixin.Mixins;
 

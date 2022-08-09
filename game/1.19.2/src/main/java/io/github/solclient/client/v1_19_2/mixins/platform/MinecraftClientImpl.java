@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19_1.mixins.platform;
+package io.github.solclient.client.v1_19_2.mixins.platform;
 
 import java.io.File;
 
@@ -251,7 +251,7 @@ public class MinecraftClientImpl implements MinecraftClient {
 @Mixin(MinecraftClient.class)
 interface MinecraftClientImpl$Static {
 
-	@Overwrite
+	@Overwrite(remap = false)
 	static MinecraftClient getInstance() {
 		return (MinecraftClient) net.minecraft.client.MinecraftClient.getInstance();
 	}

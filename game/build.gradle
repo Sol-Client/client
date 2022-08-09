@@ -1,15 +1,14 @@
 import net.fabricmc.loom.LoomGradleExtension
 
 plugins {
-	id "fabric-loom" version "0.12-SNAPSHOT" apply false
+	id "fabric-loom" version "0.13-SNAPSHOT" apply false
 	id "io.freefair.lombok" version "6.4.3" apply false
-	id "com.github.johnrengelman.shadow" version "7.1.2" apply false
+	id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 allprojects {
 	apply plugin: "java"
 	apply plugin: "java-library"
-	apply plugin: "com.github.johnrengelman.shadow"
 	apply plugin: "io.freefair.lombok"
 
 	repositories {
@@ -20,6 +19,7 @@ allprojects {
 		maven { url "https://repo.hypixel.net/repository/Hypixel" }
 		maven { url "https://jitpack.io" }
 		maven { url "https://maven.legacyfabric.net" }
+		maven { url "https://maven.glass-launcher.net/babric" }
 	}
 }
 
@@ -27,7 +27,7 @@ subprojects {
 	apply plugin: "fabric-loom"
 	
 	dependencies {
-		implementation project(":")
+		api project(":")
 		annotationProcessor "org.ow2.asm:asm:${project.asmVersion}"
 		annotationProcessor "org.ow2.asm:asm-analysis:${project.asmVersion}"
 		annotationProcessor "org.ow2.asm:asm-commons:${project.asmVersion}"
@@ -35,8 +35,19 @@ subprojects {
 		annotationProcessor "org.ow2.asm:asm-util:${project.asmVersion}"
 	}
 
-	for (runConfig in LoomGradleExtension.get(project).getRunConfigs()) {
-		runConfig.defaultMainClass "io.github.solclient.client.wrapper.BootstrapMain"
+	def configs = LoomGradleExtension.get(project).getRunConfigs();
+	
+	configs.removeIf((config) -> config.environment != "client");
+	
+	for (config in configs) {
+		config.vmArgs.add "-Dio.github.solclient.client.version=" + project.name
+		config.vmArgs.add "-Dio.github.solclient.client.dev=true"
+		config.programArgs.add "--accessToken"
+		config.programArgs.add "0"
+		config.programArgs.add "--version"
+		config.programArgs.add project.name
+		config.defaultMainClass "io.github.solclient.client.wrapper.BootstrapMain"
+		config.ideConfigGenerated true
 	}
 }
 
@@ -56,12 +67,13 @@ dependencies {
 	api "org.ow2.asm:asm-commons:${project.asmVersion}"
 	api "org.ow2.asm:asm-util:${project.asmVersion}"
 
-	compileOnly "org.apache.logging.log4j:log4j-api:${project.log4jVersion}"
-	compileOnly "org.apache.logging.log4j:log4j-core:${project.log4jVersion}"
-	compileOnly "commons-io:commons-io:2.7"
-	compileOnly "org.apache.commons:commons-lang3:3.12.0"
-	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
-	compileOnly "com.google.guava:guava:31.1-jre"
+	implementation "org.apache.logging.log4j:log4j-api:${project.log4jVersion}"
+	implementation "org.apache.logging.log4j:log4j-core:${project.log4jVersion}"
+	api "com.google.guava:guava:31.1-jre"
+
+	api "commons-io:commons-io:2.7"
+	api "org.apache.commons:commons-lang3:3.12.0"
+	api "com.google.code.findbugs:jsr305:3.0.2"
 	
 	api "org.jetbrains:annotations:23.0.0"
 }

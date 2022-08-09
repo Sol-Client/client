@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19_1.mixins.platform.resource;
+package io.github.solclient.client.v1_19_2.mixins.platform.resource;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,12 +30,12 @@ public class IdentifierImpl implements Identifier {
 @Mixin(Identifier.class)
 interface IdentifierImpl$Static {
 
-	@Overwrite
+	@Overwrite(remap = false)
 	static Identifier parse(String path) {
 		return (Identifier) new net.minecraft.util.Identifier(path);
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	static Identifier create(String namespace, String path) {
 		return (Identifier) new net.minecraft.util.Identifier(namespace, path);
 	}

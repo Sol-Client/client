@@ -1,55 +1,16 @@
 import net.fabricmc.loom.LoomGradleExtension
 
 plugins {
+	id "java"
+	id "java-library"
 	id "fabric-loom" version "0.13-SNAPSHOT" apply false
-	id "io.freefair.lombok" version "6.4.3" apply false
+	id "io.freefair.lombok" version "6.4.3"
 	id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
-allprojects {
-	apply plugin: "java"
-	apply plugin: "java-library"
-	apply plugin: "io.freefair.lombok"
-
-	repositories {
-		mavenCentral()
-		maven { url "https://libraries.minecraft.net" }
-		maven { url "https://repo.spongepowered.org/maven" }
-		maven { url "https://repo.codemc.io/repository/maven-public" }
-		maven { url "https://repo.hypixel.net/repository/Hypixel" }
-		maven { url "https://jitpack.io" }
-		maven { url "https://maven.legacyfabric.net" }
-		maven { url "https://maven.glass-launcher.net/babric" }
-	}
-}
-
-subprojects {
-	apply plugin: "fabric-loom"
-	
-	dependencies {
-		api project(":")
-		annotationProcessor "org.ow2.asm:asm:${project.asmVersion}"
-		annotationProcessor "org.ow2.asm:asm-analysis:${project.asmVersion}"
-		annotationProcessor "org.ow2.asm:asm-commons:${project.asmVersion}"
-		annotationProcessor "org.ow2.asm:asm-tree:${project.asmVersion}"
-		annotationProcessor "org.ow2.asm:asm-util:${project.asmVersion}"
-	}
-
-	def configs = LoomGradleExtension.get(project).getRunConfigs();
-	
-	configs.removeIf((config) -> config.environment != "client");
-	
-	for (config in configs) {
-		config.vmArgs.add "-Dio.github.solclient.client.mc_version=" + project.name
-		config.vmArgs.add "-Dio.github.solclient.client.version=dev"
-		config.vmArgs.add "-Dio.github.solclient.client.project_root=" + rootProject.projectDir.getAbsolutePath()
-		config.programArgs.add "--accessToken"
-		config.programArgs.add "0"
-		config.programArgs.add "--version"
-		config.programArgs.add project.name
-		config.defaultMainClass "io.github.solclient.client.wrapper.BootstrapMain"
-		config.ideConfigGenerated true
-	}
+configurations {
+	mixin
+	api.extendsFrom mixin
 }
 
 dependencies {
@@ -63,7 +24,7 @@ dependencies {
 	api "org.java-websocket:Java-WebSocket:1.5.3"
 	api "org.apache.httpcomponents:httpclient:4.5.13"
 
-	api "org.spongepowered:mixin:0.8.5"
+	mixin "org.spongepowered:mixin:0.8.5"
 	api "org.ow2.asm:asm-tree:${project.asmVersion}"
 	api "org.ow2.asm:asm-commons:${project.asmVersion}"
 	api "org.ow2.asm:asm-util:${project.asmVersion}"
@@ -77,4 +38,50 @@ dependencies {
 	api "com.google.code.findbugs:jsr305:3.0.2"
 	
 	api "org.jetbrains:annotations:23.0.0"
+}
+
+allprojects {
+	repositories {
+		mavenCentral()
+		maven { url "https://libraries.minecraft.net" }
+		maven { url "https://repo.spongepowered.org/maven" }
+		maven { url "https://repo.codemc.io/repository/maven-public" }
+		maven { url "https://repo.hypixel.net/repository/Hypixel" }
+		maven { url "https://jitpack.io" }
+		maven { url "https://maven.legacyfabric.net" }
+		maven { url "https://maven.glass-launcher.net/babric" }
+	}
+}
+
+subprojects {
+	apply plugin: "java"
+	apply plugin: "java-library"
+	apply plugin: "io.freefair.lombok"
+	apply plugin: "fabric-loom"
+	
+	dependencies {
+		api project(":")
+		annotationProcessor "org.ow2.asm:asm:${project.asmVersion}"
+		annotationProcessor "org.ow2.asm:asm-analysis:${project.asmVersion}"
+		annotationProcessor "org.ow2.asm:asm-commons:${project.asmVersion}"
+		annotationProcessor "org.ow2.asm:asm-tree:${project.asmVersion}"
+		annotationProcessor "org.ow2.asm:asm-util:${project.asmVersion}"
+	}
+
+	def configs = LoomGradleExtension.get(project).getRunConfigs()
+	
+	configs.removeIf((config) -> config.environment != "client")
+
+	for (config in configs) {
+		config.vmArgs.add "-Dio.github.solclient.client.mc_version=" + project.name
+		config.vmArgs.add "-Dio.github.solclient.client.version=dev"
+		config.vmArgs.add "-Dio.github.solclient.client.project_root=" + rootProject.projectDir.getAbsolutePath()
+		config.vmArgs.add "-javaagent:" + rootProject.configurations.mixin[0]
+		config.programArgs.add "--accessToken"
+		config.programArgs.add "0"
+		config.programArgs.add "--version"
+		config.programArgs.add project.name
+		config.defaultMainClass "io.github.solclient.client.wrapper.BootstrapMain"
+		config.ideConfigGenerated true
+	}
 }

@@ -151,21 +151,16 @@ The installer will be in a directory named "out".
 
 ### Game
 
-Make sure to build it with Java 8 and not any newer versions.
-
 Move into folder:
 ```sh
 cd game
-```
-
-Setup:
-```sh
-./gradlew setupDecompWorkspace
 ```
 
 Build JAR:
 ```sh
 ./gradlew build
 ```
-You will find the result in build/libs/game.jar.
+On Windows, you must omit the "./".
+
+The resulting JAR will be build/libs/game.jar.
 

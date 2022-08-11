@@ -9,8 +9,6 @@ public interface BlockState {
 
 	@NotNull BlockType getType();
 
-	boolean isOpaqueFullCube(@NotNull Level level, @NotNull BlockPos pos);
-
-	boolean hasMenu(@NotNull ClientLevel level, @NotNull BlockPos blockPos);
+	boolean hasMenu(@NotNull Level level, @NotNull BlockPos pos);
 
 }

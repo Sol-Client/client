@@ -6,7 +6,7 @@ import io.github.solclient.client.platform.mc.maths.Vec3i;
 
 public interface BlockPos extends Vec3i {
 
-	static @NotNull BlockPos create(int x, int y, int z) {
+	static @NotNull BlockPos create(double x, double y, double z) {
 		throw new UnsupportedOperationException();
 	}
 

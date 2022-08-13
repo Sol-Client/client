@@ -207,53 +207,6 @@ public class Utils {
 		return new URL(url);
 	}
 
-	/*
-	 * Single following method:
-	 *
-	 *       Copyright (C) 2018-present Hyperium <https://hyperium.cc/>
-	 *
-	 *       This program is free software: you can redistribute it and/or modify
-	 *       it under the terms of the GNU Lesser General Public License as published
-	 *       by the Free Software Foundation, either version 3 of the License, or
-	 *       (at your option) any later version.
-	 *
-	 *       This program is distributed in the hope that it will be useful,
-	 *       but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	 *       GNU Lesser General Public License for more details.
-	 *
-	 *       You should have received a copy of the GNU Lesser General Public License
-	 *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
-	 */
-	public void drawCircle(float xx, float yy, int radius, int col) {
-		float f = (col >> 24 & 0xFF) / 255.0F;
-		float f2 = (col >> 16 & 0xFF) / 255.0F;
-		float f3 = (col >> 8 & 0xFF) / 255.0F;
-		float f4 = (col & 0xFF) / 255.0F;
-		GL11.glPushMatrix();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glEnable(GL11.GL_LINE_SMOOTH);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		GL11.glLineWidth(2);
-		GL11.glBegin(2);
-		GlStateManager.color(f2, f3, f4, f);
-
-		for (int i = 0; i < 70; i++) {
-			float x = radius * MathHelper.cos((float) (i * 0.08975979010256552D));
-			float y = radius * MathHelper.sin((float) (i * 0.08975979010256552D));
-			GL11.glVertex2f(xx + x, yy + y);
-		}
-
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glEnd();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_LINE_SMOOTH);
-		GL11.glPopMatrix();
-	}
-
 	public GuiChat getChatGui() {
 		GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
 		if(currentScreen != null && currentScreen instanceof GuiChat) {

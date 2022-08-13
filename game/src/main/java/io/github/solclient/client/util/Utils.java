@@ -537,13 +537,4 @@ public class Utils {
 		GlStateManager.enableCull();
 	}
 
-	public static void earlyLoad(String name) {
-		try {
-			Class.forName(name, true, Launch.classLoader);
-		}
-		catch(Exception error) {
-			Client.LOGGER.error("Could not early load " + name + ". This may cause further issues.");
-		}
-	}
-
 }

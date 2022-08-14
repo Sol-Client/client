@@ -3,9 +3,9 @@ sol_client.slider.percent=%s%%
 sol_client.slider.factor=%sx
 sol_client.slider.seconds=%ss
 
-sol_client.vertical_alignment.top=Top
-sol_client.vertical_alignment.middle=Center
-sol_client.vertical_alignment.bottom=Bottom
+sol_client.vertical_alignment.top=Trên
+sol_client.vertical_alignment.middle=Giữa
+sol_client.vertical_alignment.bottom=Cuối
 
 sol_client.perspective.first_person=Góc nhìn thứ nhất
 sol_client.perspective.third_person_back=Góc nhìn thứ 3 phía sau

@@ -112,7 +112,7 @@ sol_client.mod.combo_counter.no_hits=Chưa đánh trúng
 sol_client.mod.combo_counter.one_hit=1 lần đánh trúng liên tục
 sol_client.mod.combo_counter.n_hits=%s lần đánh trúng liên tục
 
-sol_client.mod.potion_effects.name=Potion Effects
+sol_client.mod.potion_effects.name=Hiệu ứng thuốc
 sol_client.mod.potion_effects.description=Hiển thị hiệu ứng thuốc đang có hiệu lực và thời gian còn lại.
 
 sol_client.mod.potion_effects.option.alignment=Căn lề
@@ -260,7 +260,7 @@ sol_client.mod.toggle_sprint.option.hud=HUD
 sol_client.mod.toggle_sprint.held=Đang chạy (Giữ)
 sol_client.mod.toggle_sprint.toggled=Đang chạy (Khoá phím)
 
-sol_client.mod.zoom.name=Zoom
+sol_client.mod.zoom.name=Phóng to
 sol_client.mod.zoom.description=Phóng to màn hình
 
 sol_client.mod.zoom.key=Phóng to
@@ -275,7 +275,7 @@ sol_client.mod.zoom.option.scrolling=Thay đổi độ lớn bằng cuộn chu�
 sol_client.mod.zoom.option.smooth=Hiệu ứng thu phóng
 sol_client.mod.zoom.option.factor=Độ lớn thu phóng
 
-sol_client.mod.replay.name=Replay
+sol_client.mod.replay.name=Phát lại
 sol_client.mod.replay.description=Ghi lại diễn biến trò chơi và xem lại khi bạn muốn.
 
 sol_client.mod.replay.option.enableNotifications=Thông báo hoạt động
@@ -350,7 +350,7 @@ sol_client.mod.chunk_animator.description=Hoạt hoạ khi tải thế giới.
 sol_client.mod.chunk_animator.option.duration=Tốc độ hoạt hoạ
 sol_client.mod.chunk_animator.option.animation=Hoạt hoạ
 
-sol_client.mod.1.7_visuals.name=1.7 Visuals
+sol_client.mod.1.7_visuals.name=Hiệu ứng 1.7
 sol_client.mod.1.7_visuals.description=Mang trở lại hiệu ứng phiên bản 1.7.
 
 sol_client.mod.1.7_visuals.option.useAndMine=Hiệu ứng đập khi dùng vật phẩm
@@ -362,8 +362,8 @@ sol_client.mod.1.7_visuals.option.bow=Cung tên
 sol_client.mod.1.7_visuals.option.armourDamage=Hiệu ứng sát thương trên giáp
 sol_client.mod.1.7_visuals.option.sneaking=Làm mượt hiệu ứng đi rón rén
 
-sol_client.mod.item_physics.name=Item Physics
-sol_client.mod.item_physics.description=Hoạt hoạ vật phẩm trên mặt đất.
+sol_client.mod.item_physics.name=Hiệu ứng vật lí vật phẩm
+sol_client.mod.item_physics.description=Hoạt hoạ vật phẩm rơi trên mặt đất.
 
 sol_client.mod.item_physics.option.rotationSpeed=Tốc độ Quay
 
@@ -376,7 +376,7 @@ sol_client.mod.particles.option.snow=Tuyết
 sol_client.mod.particles.option.slime=Chất nhầy
 sol_client.mod.particles.option.flames=Lửa
 
-sol_client.mod.time_changer.name=Time Changer
+sol_client.mod.time_changer.name=Thay đổi thời gian
 sol_client.mod.time_changer.description=Thay đổi thời gian thế giới.
 
 sol_client.mod.time_changer.option.time=Thời gian

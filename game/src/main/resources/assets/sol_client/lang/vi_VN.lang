@@ -47,7 +47,7 @@ sol_client.mod.sol_client.description=Các thiết lập chung của Sol Client.
 sol_client.mod.sol_client.option.fancyMainMenu=Màn hình chính
 sol_client.mod.sol_client.option.logoInInventory=Hiện Logo ở giao diện Túi đồ
 sol_client.mod.sol_client.mods=Mods
-sol_client.mod.sol_client.option.modsKey=Phims tắt Mods
+sol_client.mod.sol_client.option.modsKey=Phím tắt Mods
 sol_client.mod.sol_client.edit_hud=Chỉnh sửa HUD
 sol_client.mod.sol_client.option.editHudKey=Chỉnh sửa phím tắt HUD
 sol_client.mod.sol_client.option.uiColour=Màu sắc chủ đạo
@@ -97,7 +97,7 @@ sol_client.mod.ping.option.source.auto=Tự động
 sol_client.mod.ping.option.source.multiplayer_screen=Ở màn hình Chọn máy chủ
 sol_client.mod.ping.option.source.tab_list=Ở Tab
 
-sol_client.mod.speedometer.name=Speedometer
+sol_client.mod.speedometer.name=Bộ đếm tốc độ
 sol_client.mod.speedometer.description=Hiển thị tốc độ di chuyển.
 
 sol_client.mod.speedometer.option.graphMode=Chế độ đồ thị
@@ -105,7 +105,7 @@ sol_client.mod.speedometer.option.graphMode=Chế độ đồ thị
 sol_client.mod.reach_display.name=Reach Display
 sol_client.mod.reach_display.description=Hiển thị khoảng cách khi PVP.
 
-sol_client.mod.combo_counter.name=Combo Counter
+sol_client.mod.combo_counter.name=Bộ đếm Combo
 sol_client.mod.combo_counter.description=Hiển thị số lần đánh trúng liên tiếp.
 
 sol_client.mod.combo_counter.no_hits=Chưa đánh trúng
@@ -135,7 +135,7 @@ sol_client.mod.armour.option.durability.fraction=Phân số
 sol_client.mod.armour.option.armour=Hiển thị giáp
 sol_client.mod.armour.option.hand=Hiển thị công cụ
 
-sol_client.mod.timers.name=Timers
+sol_client.mod.timers.name=Bộ đếm
 sol_client.mod.timers.description=Hiển thị thời gian còn lại của các sự kiện.
 
 sol_client.mod.timers.option.alignment=Căn lề
@@ -143,14 +143,14 @@ sol_client.mod.timers.option.icon=Biểu tượng
 sol_client.mod.timers.option.nameColour=Màu chữ
 sol_client.mod.timers.option.timeColour=Màu thời gian
 
-sol_client.mod.chat.name=Chat
-sol_client.mod.chat.description=Tuỳ chỉnh khung chat.
+sol_client.mod.chat.name=Trò chuyện
+sol_client.mod.chat.description=Tuỳ chỉnh khung trò chuyện.
 
-sol_client.mod.chat.peek=Đọc chat nhanh
-sol_client.mod.chat.option.preventClose=Ngăn việc đóng chat tự động
-sol_client.mod.chat.option.smooth=Hiệu ứng chat mới
-sol_client.mod.chat.option.infiniteChat=Lịch sử chat không giới hạn
-sol_client.mod.chat.option.peekKey=Phím tắt đọc chat nhanh
+sol_client.mod.chat.peek=Mở trò chuyện nhanh
+sol_client.mod.chat.option.preventClose=Ngăn việc đóng khung trò chuyện tự động
+sol_client.mod.chat.option.smooth=Hiệu ứng khi có trò chuyện mới
+sol_client.mod.chat.option.infiniteChat=Lịch sử trò chuyện không giới hạn
+sol_client.mod.chat.option.peekKey=Phím tắt đọc trò chuyện nhanh
 
 sol_client.mod.chat.option.visibility=Hiển thị
 sol_client.mod.chat.option.visibility.shown=Mở
@@ -183,7 +183,7 @@ sol_client.mod.tab_list.option.entryBackgroundColour=Màu nền từng dòng
 sol_client.mod.tab_list.option.hidePlayerHeads=Ẩn biểu tượng đầu người chơi
 sol_client.mod.tab_list.option.textShadow=Bóng đổ chữ
 
-sol_client.mod.crosshair.name=Crosshair
+sol_client.mod.crosshair.name=Hồng tâm
 sol_client.mod.crosshair.description=Tuỳ chỉnh hồng tâm.
 
 sol_client.mod.crosshair.option.style=Kiểu hồng tâm.
@@ -216,7 +216,7 @@ sol_client.mod.scoreboard.option.backgroundColourTop=Màu tiêu đề
 sol_client.mod.scoreboard.option.numbers=Hiển thị số ở cuối hàng
 sol_client.mod.scoreboard.option.numbersColour=Màu số
 
-sol_client.mod.tweaks.name=Tweaks
+sol_client.mod.tweaks.name=Tinh chỉnh khác
 sol_client.mod.tweaks.description=Các tinh chỉnh khác, bao gồm fullbright.
 
 sol_client.mod.tweaks.option.fullbright=Fullbright
@@ -290,13 +290,13 @@ sol_client.mod.replay.option.automaticRecording=Tự động bắt đầu ghi h�
 sol_client.mod.replay.option.renameDialog=Cửa sổ đổi tên bản ghi khi hoàn tất ghi hình
 sol_client.mod.replay.option.showChat=Hiển thị Chat
 
-sol_client.mod.replay.option.camera=Camera
-sol_client.mod.replay.option.camera.classic=Classic
+sol_client.mod.replay.option.camera=Dạng Camera
+sol_client.mod.replay.option.camera.classic=Cổ điển
 sol_client.mod.replay.option.camera.vanilla_ish=Vanilla-ish
 
-sol_client.mod.replay.option.showPathPreview=Show Path Preview
+sol_client.mod.replay.option.showPathPreview=Hiển thị đường di chuyển máy quay
 
-sol_client.mod.replay.option.defaultInterpolator=Default Interpolator
+sol_client.mod.replay.option.defaultInterpolator=Interpolator mặc định
 sol_client.mod.replay.interpolator.catmull=Catmull-Rom Spline
 sol_client.mod.replay.interpolator.cubic=Cubic Spline
 sol_client.mod.replay.interpolator.linear=Linear
@@ -381,7 +381,7 @@ sol_client.mod.time_changer.description=Thay đổi thời gian thế giới.
 
 sol_client.mod.time_changer.option.time=Thời gian
 
-sol_client.mod.block_selection.name=Block Selection
+sol_client.mod.block_selection.name=Hiệu ứng chọn khối
 sol_client.mod.block_selection.description=Tuỳ chỉnh hiệu ứng khối đang chọn.
 
 sol_client.mod.block_selection.option.outline=Viền
@@ -393,7 +393,7 @@ sol_client.mod.block_selection.option.depth=Ẩn các mặt bị che
 sol_client.mod.block_selection.option.persistent=Luôn hiển thị ở mọi chế độ
 
 sol_client.mod.hit_colour.name=Hit Color
-sol_client.mod.hit_colour.description=Đổi màu cú đánh.
+sol_client.mod.hit_colour.description=Đổi màu hit.
 
 sol_client.mod.hit_colour.option.colour=Màu
 
@@ -415,7 +415,7 @@ sol_client.mod.category.utility.name=Khác
 sol_client.mod.category.visual.name=Hiển thị
 sol_client.mod.category.integration.name=Tương tác
 
-sol_client.mod.discord_integration.name=Discord Integration
+sol_client.mod.discord_integration.name=Tương tác với Discord
 sol_client.mod.discord_integration.description=Các tính năng liên kết với Discord, bao gồm trạng thái đang chơi và Game Overlay.
 
 sol_client.mod.discord_integration.option.voiceChatHud=Hiển thị Voice chat HUD

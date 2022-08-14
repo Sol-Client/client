@@ -63,12 +63,12 @@ sol_client.mod.fps.description=Hiện FPS (Số lượng khung hình mỗi giây
 sol_client.mod.coordinates.name=Toạ độ
 sol_client.mod.coordinates.description=Hiện toạ độ của bạn.
 
-sol_client.mod.coordinates.option.axisLabelColour=Axis Label Color
-sol_client.mod.coordinates.option.axisValueColour=Axis Value Color
-sol_client.mod.coordinates.option.cardinalDirection=Cardinal Direction
-sol_client.mod.coordinates.option.cardinalDirectionColour=Cardinal Direction Color
-sol_client.mod.coordinates.option.axisDirection=Axis Direction
-sol_client.mod.coordinates.option.axisDirectionColour=Axis Direction Color
+sol_client.mod.coordinates.option.axisLabelColour=Màu tiêu đề của toạ độ
+sol_client.mod.coordinates.option.axisValueColour=Màu giá trị toạ độ
+sol_client.mod.coordinates.option.cardinalDirection=Hướng đang nhìn
+sol_client.mod.coordinates.option.cardinalDirectionColour=Màu hướng đang nhìn
+sol_client.mod.coordinates.option.axisDirection=Hướng thay đổi giá trị
+sol_client.mod.coordinates.option.axisDirectionColour=Màu hướng thay đổi giá trị
 
 sol_client.mod.keystrokes.name=Keystrokes
 sol_client.mod.keystrokes.description=Hiển thị phím đang được ấn.

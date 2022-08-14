@@ -31,11 +31,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.font.effects.Effect;
 
+import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -44,6 +48,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StringUtils;
 
 public class SlickFontRenderer implements Font {
+
+	private static final Logger LOGGER = LogManager.getLogger();
+
 	private static final Pattern COLOR_CODE_PATTERN = Pattern.compile("§[0123456789abcdefklmnor]");
 	private final int[] colorCodes = { 0x000000, 0x0000AA, 0x00AA00, 0x00AAAA, 0xAA0000, 0xAA00AA, 0xFFAA00, 0xAAAAAA,
 			0x555555, 0x5555FF, 0x55FF55, 0x55FFFF, 0xFF5555, 0xFF55FF, 0xFFFF55, 0xFFFFFF };
@@ -67,7 +74,7 @@ public class SlickFontRenderer implements Font {
 
 	@Override
 	public int renderString(String text, float x, float y, int colour) {
-		if(text == null) return 0;
+		if(text == null || slickFont == null) return 0;
 
 		x = (int) x;
 		y = (int) y;
@@ -139,6 +146,7 @@ public class SlickFontRenderer implements Font {
 		return (int) x;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void loadFont() {
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 		scaleFactor = resolution.getScaleFactor();
@@ -149,12 +157,41 @@ public class SlickFontRenderer implements Font {
 				slickFont = new UnicodeFont(getFontFromInput(name).deriveFont(size * prevScaleFactor / 2));
 				slickFont.addAsciiGlyphs();
 				slickFont.addNeheGlyphs();
+
+				// Cyrillic
 				slickFont.addGlyphs(0x0400, 0x04FF);
-				slickFont.getEffects().add(new ColorEffect(Colour.WHITE.toAWT()));
+
+				// Vietnamese
+				slickFont.addGlyphs(0x0041, 0x005A);
+				slickFont.addGlyphs(0x0061, 0x007A);
+				slickFont.addGlyphs(0x00C0, 0x00C3);
+				slickFont.addGlyphs(0x00C8, 0x00CA);
+				slickFont.addGlyphs(0x00CC, 0x00CD);
+				slickFont.addGlyphs(0x00D2, 0x00D5);
+				slickFont.addGlyphs(0x00D9, 0x00DA);
+				slickFont.addGlyphs(0x00DD, 0x00DD);
+				slickFont.addGlyphs(0x00E0, 0x00E3);
+				slickFont.addGlyphs(0x00E8, 0x00EA);
+				slickFont.addGlyphs(0x00EC, 0x00ED);
+				slickFont.addGlyphs(0x00F2, 0x00F5);
+				slickFont.addGlyphs(0x00F9, 0x00FA);
+				slickFont.addGlyphs(0x00FD, 0x00FD);
+				slickFont.addGlyphs(0x0102, 0x0103);
+				slickFont.addGlyphs(0x0110, 0x0111);
+				slickFont.addGlyphs(0x0128, 0x0129);
+				slickFont.addGlyphs(0x0168, 0x0169);
+				slickFont.addGlyphs(0x01A0, 0x01A1);
+				slickFont.addGlyphs(0x01AF, 0x01B0);
+				slickFont.addGlyphs(0x1EA0, 0x1EF9);
+
+				((List<Effect>) slickFont.getEffects()).add(new ColorEffect(Colour.WHITE.toAWT()));
 				slickFont.loadGlyphs();
 			}
-			catch(FontFormatException | IOException | SlickException e) {
-				e.printStackTrace();
+			catch(FontFormatException | IOException | SlickException error) {
+				// fallback to vanilla font
+				slickFont = null;
+				SolClientMod.instance.fancyFont = false;
+				LOGGER.error("Could not load font", error);
 			}
 		}
 	}
@@ -176,24 +213,24 @@ public class SlickFontRenderer implements Font {
 	}
 
 	public float getAscent() {
+		if(slickFont == null) return 0;
 		return slickFont.getAscent();
 	}
 
 	@Override
 	public float getWidth(String text) {
+		if(slickFont == null) return 0;
 		return slickFont.getWidth(EnumChatFormatting.getTextWithoutFormattingCodes(text)) / scaleFactor;
 	}
 
 	public float getCharWidth(char c) {
+		if(slickFont == null) return 0;
 		return slickFont.getWidth(String.valueOf(c));
 	}
 
 	public float getHeight(String s) {
+		if(slickFont == null) return 0;
 		return slickFont.getHeight(s) / 2.0F;
-	}
-
-	public UnicodeFont getFont() {
-		return slickFont;
 	}
 
 	public void drawSplitString(ArrayList<String> lines, int x, int y, int color) {
@@ -225,4 +262,9 @@ public class SlickFontRenderer implements Font {
 	public int getHeight() {
 		return 11;
 	}
+
+	public void free() {
+		slickFont.destroy();
+	}
+
 }

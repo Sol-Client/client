@@ -324,18 +324,18 @@ sol_client.mod.hypixel_util.option.autoglMessage=Tin nhắn GL
 sol_client.mod.hypixel_util.option.hidegl=Ẩn tin nhắn GL
 sol_client.mod.hypixel_util.option.levelhead=Level Head
 
-sol_client.mod.tnt_timer.name=Bộ đếm thời gian nTNT
+sol_client.mod.tnt_timer.name=Bộ đếm thời gian TNT
 sol_client.mod.tnt_timer.description=Hiển thị thời gian nổ của TNT.
 
 sol_client.mod.motion_blur.name=Làm mờ chuyển động.
 sol_client.mod.motion_blur.description=Hiệu ứng mờ khi màn hình di chuyển.
 
-sol_client.mod.motion_blur.option.blur=Blur
+sol_client.mod.motion_blur.option.blur=Độ mờ
 
 sol_client.mod.menu_blur.name=Menu Blur
-sol_client.mod.menu_blur.description=Làm mờ giao diện menu.
+sol_client.mod.menu_blur.description=Làm mờ nền khi đang mở túi đồ hay giao diện bất kì.
 
-sol_client.mod.menu_blur.option.blur=Blur
+sol_client.mod.menu_blur.option.blur=Độ mờ
 sol_client.mod.menu_blur.option.fadeTime=Thời gian bắt đầu làm mờ
 sol_client.mod.menu_blur.option.backgroundColour=Màu nền
 

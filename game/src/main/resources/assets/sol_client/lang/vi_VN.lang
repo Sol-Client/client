@@ -38,7 +38,8 @@ sol_client.mod.simple_hud.option.backgroundColour=Màu nền
 sol_client.mod.simple_hud.option.border=Viền
 sol_client.mod.simple_hud.option.borderColour=Màu viền
 sol_client.mod.simple_hud.option.textColour=Màu chữ
-sol_client.mod.simple_hud.option.shadow=Bóng đổ chữ
+sol_client.mod.simple_hud.option.shadow=Bóng chữ
+sol_client.mod.smooth_counter_hud.option.smoothNumbers=Smooth Numbers
 
 sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=Các thiết lập chung của Sol Client.
@@ -91,6 +92,11 @@ sol_client.mod.cps.option.separatorColour=Màu phân cách
 sol_client.mod.ping.name=Ping
 sol_client.mod.ping.description=Hiển thị độ trễ của kết nối đến máy chủ.
 
+sol_client.mod.ping.option.source=Nguồn thông tin
+sol_client.mod.ping.option.source.auto=Tự động
+sol_client.mod.ping.option.source.multiplayer_screen=Ở màn hình Chọn máy chủ
+sol_client.mod.ping.option.source.tab_list=Ở Tab
+
 sol_client.mod.speedometer.name=Speedometer
 sol_client.mod.speedometer.description=Hiển thị tốc độ di chuyển.
 
@@ -107,13 +113,16 @@ sol_client.mod.combo_counter.one_hit=1 hit
 sol_client.mod.combo_counter.n_hits=%s hit
 
 sol_client.mod.potion_effects.name=Potion Effects
-sol_client.mod.potion_effects.description=Hiển thị hiệu ứng thuốc đang hiệu lực và thời gian còn lại.
+sol_client.mod.potion_effects.description=Hiển thị hiệu ứng thuốc đang có hiệu lực và thời gian còn lại.
 
 sol_client.mod.potion_effects.option.alignment=Căn lề
 sol_client.mod.potion_effects.option.icon=Biểu tượng
 sol_client.mod.potion_effects.option.background=Nền
+sol_client.mod.potion_effects.option.title=Tên thuốc
 sol_client.mod.potion_effects.option.titleColour=Màu chữ
+sol_client.mod.potion_effects.option.duration=Thời gian còn lại
 sol_client.mod.potion_effects.option.durationColour=Màu thời gian
+sol_client.mod.potion_effects.option.spacing=Khoảng cách giữa các hiệu ứng
 
 sol_client.mod.armour.name=Giáp và công cụ
 sol_client.mod.armour.description=Hiển thị giáp và công cụ cùng với độ bền hiện tại.
@@ -364,7 +373,7 @@ sol_client.mod.particles.description=Tuỳ chỉnh hạt hiệu ứng sát thư�
 sol_client.mod.particles.option.multiplier=Số lượng hạt hiệu ứng
 sol_client.mod.particles.option.sharpness=Luôn hiện hiệu ứng Sắc bén
 sol_client.mod.particles.option.snow=Tuyết
-sol_client.mod.particles.option.slime=Slime
+sol_client.mod.particles.option.slime=Chất nhầy
 sol_client.mod.particles.option.flames=Lửa
 
 sol_client.mod.time_changer.name=Time Changer
@@ -409,16 +418,16 @@ sol_client.mod.category.integration.name=Tương tác
 sol_client.mod.discord_integration.name=Discord Integration
 sol_client.mod.discord_integration.description=Các tính năng liên kết với Discord, bao gồm trạng thái đang chơi và Game Overlay.
 
-sol_client.mod.discord_integration.option.voiceChatHud=Voice chat HUD
-sol_client.mod.discord_integration.option.voiceChatHudScale=Kích thước Voice Chat HUD
-sol_client.mod.discord_integration.option.voiceChatHudAlignment=Căn lề Voice Chat HUD
-sol_client.mod.discord_integration.option.usernameColour=Màu tài khoản
-sol_client.mod.discord_integration.option.mutedColour=Màu tài khoản đã tắt âm
-sol_client.mod.discord_integration.option.speakingColour=Màu tài khoản đang nói
+sol_client.mod.discord_integration.option.voiceChatHud=Hiển thị Voice chat HUD
+sol_client.mod.discord_integration.option.voiceChatHudScale=Kích thước HUD
+sol_client.mod.discord_integration.option.voiceChatHudAlignment=Căn lề HUD
+sol_client.mod.discord_integration.option.usernameColour=Màu tên tài khoản mặc định
+sol_client.mod.discord_integration.option.mutedColour=Màu tên tài khoản đã tắt Mic
+sol_client.mod.discord_integration.option.speakingColour=Màu tên tài khoản đang nói
 
 sol_client.mod.screen.title=Mods
 sol_client.mod.screen.search=Gõ để tìm kiếm
-sol_client.mod.screen.apply_to_all=Áp dụng chung cho toàn bộ
+sol_client.mod.screen.apply_to_all=Áp dụng cho toàn bộ mod khác
 
 sol_client.hud.edit=Chỉnh sửa HUD
 

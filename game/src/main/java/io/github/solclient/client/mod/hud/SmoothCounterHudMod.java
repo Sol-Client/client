@@ -23,6 +23,8 @@ public abstract class SmoothCounterHudMod extends SimpleHudMod {
 
 	@EventHandler
 	public void onTick(PostTickEvent event) {
+		if(mc.theWorld == null) return;
+
 		int actualValue = getIntValue();
 
 		if(!smoothNumbers) {

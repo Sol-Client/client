@@ -29,6 +29,7 @@ import io.github.solclient.client.config.ConfigVersion;
 import io.github.solclient.client.culling.CullTask;
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.impl.GameQuitEvent;
 import io.github.solclient.client.event.impl.PostGameStartEvent;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.event.impl.SendChatMessageEvent;
@@ -77,6 +78,7 @@ import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessMinecraft;
+import io.github.solclient.client.util.font.SlickFontRenderer;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -454,6 +456,11 @@ public class Client {
 			mc.displayGuiScreen(new ModsScreen());
 			mc.displayGuiScreen(new MoveHudsScreen());
 		}
+	}
+
+	@EventHandler
+	public void onQuit(GameQuitEvent event) {
+		SlickFontRenderer.DEFAULT.free();
 	}
 
 	public void registerChatButton(ChatButton button) {

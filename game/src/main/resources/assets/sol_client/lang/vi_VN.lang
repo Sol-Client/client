@@ -39,7 +39,7 @@ sol_client.mod.simple_hud.option.border=Viền
 sol_client.mod.simple_hud.option.borderColour=Màu viền
 sol_client.mod.simple_hud.option.textColour=Màu chữ
 sol_client.mod.simple_hud.option.shadow=Bóng chữ
-sol_client.mod.smooth_counter_hud.option.smoothNumbers=Smooth Numbers
+sol_client.mod.smooth_counter_hud.option.smoothNumbers=Hiệu ứng thay đổi số
 
 sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=Các thiết lập chung của Sol Client.
@@ -109,8 +109,8 @@ sol_client.mod.combo_counter.name=Combo Counter
 sol_client.mod.combo_counter.description=Hiển thị số lần đánh trúng liên tiếp.
 
 sol_client.mod.combo_counter.no_hits=Chưa đánh trúng
-sol_client.mod.combo_counter.one_hit=1 hit
-sol_client.mod.combo_counter.n_hits=%s hit
+sol_client.mod.combo_counter.one_hit=1 lần đánh trúng liên tục
+sol_client.mod.combo_counter.n_hits=%s lần đánh trúng liên tục
 
 sol_client.mod.potion_effects.name=Potion Effects
 sol_client.mod.potion_effects.description=Hiển thị hiệu ứng thuốc đang có hiệu lực và thời gian còn lại.
@@ -164,11 +164,11 @@ sol_client.mod.chat.option.closedHeight=Chiều cao chat khi đóng
 sol_client.mod.chat.option.openHeight=Chiều cao chat khi mở
 sol_client.mod.chat.option.links=Liên kết
 sol_client.mod.chat.option.promptLinks=Nhắc nhở khi ấn vào liên kết
-sol_client.mod.chat.option.chatFilter=Enable Chat Filter Bật bộ lọc chat
+sol_client.mod.chat.option.chatFilter=Bật bộ lọc chat
 sol_client.mod.chat.option.filteredWordsContent=Danh sách các từ bị lọc
 
 sol_client.mod.tab_list.name=Tab List
-sol_client.mod.tab_list.description=Customize the tab/player list. Tuỳ chỉnh tab/danh sách người chơi.
+sol_client.mod.tab_list.description=Tuỳ chỉnh tab/danh sách người chơi.
 
 sol_client.mod.tab_list.option.hideHeader=Ẩn Header
 sol_client.mod.tab_list.option.hideFooter=Ẩn Footer
@@ -222,13 +222,13 @@ sol_client.mod.tweaks.description=Các tinh chỉnh khác, bao gồm fullbright.
 sol_client.mod.tweaks.option.fullbright=Fullbright
 sol_client.mod.tweaks.option.showOwnTag=Hiển thị tên của chính mình
 sol_client.mod.tweaks.option.arabicNumerals=Sử dụng Số La Mã
-sol_client.mod.tweaks.option.betterTooltips=Chú giải tốt hơn
+sol_client.mod.tweaks.option.betterTooltips=Chú giải vật phẩm tốt hơn
 sol_client.mod.tweaks.option.minimalViewBobbing=Hạn chế lay động tầm nhìn
 sol_client.mod.tweaks.option.minimalDamageShake=Hạn chế rung màn hình khi nhận sát thương
 sol_client.mod.tweaks.option.damageShakeIntensity=Độ rung màn hình khi nhận sát thương
 sol_client.mod.tweaks.option.confirmDisconnect=Xác nhận khi thoát khỏi máy chủ
 sol_client.mod.tweaks.option.borderlessFullscreen=Toàn màn hình không viền
-sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
+sol_client.mod.tweaks.option.betterKeyBindings=Nhận diện phím tắt tốt hơn
 sol_client.mod.tweaks.option.disableHotbarScrolling=Vô hiệu hoá thanh cuộn Hotbar
 
 sol_client.mod.tweaks.confirm_disconnect=Ấn vào đây một lần nữa để xác nhận thoát khỏi máy chủ.
@@ -304,7 +304,7 @@ sol_client.mod.replay.interpolator.linear=Linear
 sol_client.mod.replay.option.showServerIPs=Hiển thị địa chỉ máy chủ
 
 sol_client.mod.quickplay.name=Quick Play
-sol_client.mod.quickplay.description=Quickly queue games using your keyboard.
+sol_client.mod.quickplay.description=Tự động tham gia game mới bằng phím tắt trên bàn phím.
 
 sol_client.mod.quickplay.key=Quick Play
 sol_client.mod.quickplay.option.menuKey=Phím tắt
@@ -324,11 +324,11 @@ sol_client.mod.hypixel_util.option.autoglMessage=Tin nhắn GL
 sol_client.mod.hypixel_util.option.hidegl=Ẩn tin nhắn GL
 sol_client.mod.hypixel_util.option.levelhead=Level Head
 
-sol_client.mod.tnt_timer.name=TNT Timer
+sol_client.mod.tnt_timer.name=Bộ đếm thời gian nTNT
 sol_client.mod.tnt_timer.description=Hiển thị thời gian nổ của TNT.
 
-sol_client.mod.motion_blur.name=Motion Blur
-sol_client.mod.motion_blur.description=Làm mờ chuyển động.
+sol_client.mod.motion_blur.name=Làm mờ chuyển động.
+sol_client.mod.motion_blur.description=Hiệu ứng mờ khi màn hình di chuyển.
 
 sol_client.mod.motion_blur.option.blur=Blur
 
@@ -393,7 +393,7 @@ sol_client.mod.block_selection.option.depth=Ẩn các mặt bị che
 sol_client.mod.block_selection.option.persistent=Luôn hiển thị ở mọi chế độ
 
 sol_client.mod.hit_colour.name=Hit Color
-sol_client.mod.hit_colour.description=Đổi màu hit.
+sol_client.mod.hit_colour.description=Đổi màu cú đánh.
 
 sol_client.mod.hit_colour.option.colour=Màu
 

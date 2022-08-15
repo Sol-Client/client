@@ -340,7 +340,7 @@ public class Utils {
 
 		// ensure that the url starts with file:/// as opposed to file://
 		if(url.startsWith("file://") && url.charAt(url.indexOf('/') + 2) != '/') {
-			url = url.substring(0, url.indexOf('/')) + '/' + url.substring(url.indexOf('/') + 1);
+			url = url.substring(0, url.indexOf('/')) + '/' + url.substring(url.indexOf('/'));
 		}
 
 		switch(Util.getOSType()) {

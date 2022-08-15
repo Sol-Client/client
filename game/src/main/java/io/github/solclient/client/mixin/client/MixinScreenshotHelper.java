@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 
 import com.replaymod.replay.ReplayModReplay;
 
+import io.github.solclient.client.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -110,12 +111,12 @@ public class MixinScreenshotHelper {
 									new ChatComponentText(" ").appendSibling(new ChatComponentText("[" + I18n.format("sol_client.screenshot.open_folder") + "]")
 											.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)
 													.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE,
-															screenshot.getAbsolutePath() + "§scshowinfolder§")))));
+															screenshot.getAbsolutePath() + Utils.REVEAL_SUFFIX)))));
 
 					Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(secondaryText);
 				}
 				catch(Exception error) {
-					logger.warn("Couldn\'t save screenshot", error);
+					logger.warn("Couldn't save screenshot", error);
 					Minecraft.getMinecraft().ingameGUI.getChatGUI()
 							.printChatMessage(new ChatComponentTranslation("screenshot.failure", error.getMessage()));
 				}
@@ -131,7 +132,7 @@ public class MixinScreenshotHelper {
 			return null;
 		}
 		catch(Exception exception) {
-			logger.warn("Couldn\'t save screenshot", exception);
+			logger.warn("Couldn't save screenshot", exception);
 			return new ChatComponentTranslation("screenshot.failure", exception.getMessage());
 		}
 	}

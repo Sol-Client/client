@@ -97,9 +97,11 @@ public class ModListing extends ColouredComponent {
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
 		if(button == 0 || (!mod.isBlocked() && (button == 0 || button == 1))) {
+			Utils.playClickSound(true);
+
 			if(mod.isBlocked()) {
 				if(Client.INSTANCE.detectedServer == null) {
-					return false;
+					return true;
 				}
 
 				URI blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage();
@@ -108,10 +110,8 @@ public class ModListing extends ColouredComponent {
 					Utils.openUrl(blockedModPage.toString());
 				}
 
-				return false;
+				return true;
 			}
-
-			Utils.playClickSound(true);
 
 			if(settingsButton.isHovered() || mod.isLocked() || button == 1) {
 				screen.switchMod(mod);

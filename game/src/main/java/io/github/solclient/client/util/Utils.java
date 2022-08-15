@@ -67,6 +67,7 @@ import net.minecraft.util.Util.EnumOS;
 @UtilityClass
 public class Utils {
 
+	public static final String REVEAL_SUFFIX = "§sol_client:showinfolder";
 	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
@@ -335,17 +336,72 @@ public class Utils {
 		return ThreadLocalRandom.current().nextInt(from, to + 1); // https://stackoverflow.com/a/363692
 	}
 
+	private String urlDirname(String url) {
+		int lastSlash = url.lastIndexOf('/');
+		int lastBacklash = url.lastIndexOf('\\');
+
+		if(lastBacklash > lastSlash) {
+			lastSlash = lastBacklash;
+		}
+
+		return url.substring(0, lastSlash);
+	}
+
 	public void openUrl(String url) {
 		String[] command;
+		boolean reveal = false;
 
 		// ensure that the url starts with file:/// as opposed to file://
-		if(url.startsWith("file://") && url.charAt(url.indexOf('/') + 2) != '/') {
+		if(url.startsWith("file:")) {
+			url = url.replace("file:", "file://");
 			url = url.substring(0, url.indexOf('/')) + '/' + url.substring(url.indexOf('/'));
+
+			if(url.endsWith(REVEAL_SUFFIX)) {
+				url = url.substring(0, url.length() - REVEAL_SUFFIX.length());
+				reveal = true;
+			}
 		}
 
 		switch(Util.getOSType()) {
 			case LINUX:
-				// just in case xdg-open is not present
+				if(reveal) {
+					if(new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
+						try {
+							Process process = new ProcessBuilder("xdg-mime", "query", "default", "inode/directory").start();
+							int code = process.waitFor();
+
+							if(code > 0) {
+								throw new IllegalStateException("xdg-mime exited with code " + code);
+							}
+
+							String file;
+							try(BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+								file = reader.readLine();
+							}
+
+							if(file != null) {
+								url = url.substring(7);
+
+								if(!file.endsWith(".desktop")) {
+									command = new String[] { file, url };
+									break;
+								}
+
+								if(!file.startsWith("/")) {
+									file = "/usr/share/applications/" + file;
+								}
+
+								command = new String[] { "gio", "launch", file, url };
+								break;
+							}
+						}
+						catch(IOException | InterruptedException | IllegalStateException error) {
+							Client.LOGGER.error("Could not determine directory handler:", error);
+						}
+					}
+					url = urlDirname(url);
+				}
+
 				if(new File("/usr/bin/xdg-open").exists()) {
 					command = new String[] { "xdg-open", url };
 					break;
@@ -356,10 +412,21 @@ public class Utils {
 				command = null;
 				break;
 			case OSX:
-				command = new String[] { "open", url };
+				if(reveal) {
+					command = new String[] { "open", "-R", url.substring(7) };
+				}
+				else {
+					command = new String[] { "open", url };
+				}
 				break;
 			case WINDOWS:
-				command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
+				if(reveal) {
+					command = new String[] { "Explorer", "/select," + url.substring(8).replace('/', '\\') };
+				}
+				else {
+					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
+				}
+
 				break;
 		}
 

@@ -502,29 +502,7 @@ class Launcher {
 				dataString = dataString.substring(0, dataString.length - 1);
 			}
 
-			if(dataString.indexOf("message ") == 0) {
-				let splitDataString = dataString.split(" ");
-				if(splitDataString[1] === secret) {
-					if(splitDataString[2] == "openUrl") {
-						let openUrl = splitDataString[3];
-
-						if(Utils.getOsName() == "windows") {
-							openUrl = openUrl.substring(0, openUrl.length - 1);
-						}
-
-						if(openUrl.endsWith("§scshowinfolder§")) {
-							openUrl = openUrl.substring(0, openUrl.length - 16);
-							shell.showItemInFolder(url.fileURLToPath(openUrl));
-						}
-						else {
-							shell.openExternal(openUrl);
-						}
-					}
-				}
-			}
-			else {
-				console.log("[Game/STDOUT] " + dataString);
-			}
+			console.log("[Game/STDOUT] " + dataString);
 		});
 		process.stderr.on("data", (data) => {
 			let dataString = data.toString("UTF-8");

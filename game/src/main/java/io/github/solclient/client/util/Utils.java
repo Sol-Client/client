@@ -1,5 +1,6 @@
 package io.github.solclient.client.util;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -21,6 +24,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
+import com.replaymod.replaystudio.lib.viaversion.libs.kyori.adventure.text.event.ClickEvent.Action;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientMod;
@@ -31,6 +35,7 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.ServerAddress;
@@ -38,6 +43,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.event.ClickEvent;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetworkManager;
@@ -50,6 +56,7 @@ import net.minecraft.network.status.server.S01PacketPong;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
@@ -60,18 +67,8 @@ import net.minecraft.util.Util.EnumOS;
 @UtilityClass
 public class Utils {
 
-	private PrintStream out;
 	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
-
-	static {
-		try {
-			out = new PrintStream(System.out, true, "UTF-8");
-		}
-		catch(UnsupportedEncodingException error) {
-			out = System.out;
-		}
-	}
 
 	private int getStringWidth(String text) {
 		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
@@ -312,7 +309,7 @@ public class Utils {
 				else {
 					expected = true;
 					time = Minecraft.getSystemTime();
-					networkManager.sendPacket(new C01PacketPing(this.time));
+					networkManager.sendPacket(new C01PacketPing(time));
 				}
 			}
 
@@ -339,11 +336,66 @@ public class Utils {
 	}
 
 	public void openUrl(String url) {
-		sendLauncherMessage("openUrl", url);
-	}
+		String[] command;
 
-	private void sendLauncherMessage(String type, String... arguments) {
-		out.println("message " + System.getProperty("io.github.solclient.client.secret") + " " + type + " " + String.join(" ", arguments));
+		// ensure that the url starts with file:/// as opposed to file://
+		if(url.startsWith("file://") && url.charAt(url.indexOf('/') + 2) != '/') {
+			url = url.substring(0, url.indexOf('/')) + '/' + url.substring(url.indexOf('/') + 1);
+		}
+
+		switch(Util.getOSType()) {
+			case LINUX:
+				// just in case xdg-open is not present
+				if(new File("/usr/bin/xdg-open").exists()) {
+					command = new String[] { "xdg-open", url };
+					break;
+				}
+				// fall through to default
+			default:
+				// fall back to AWT, but without a message
+				command = null;
+				break;
+			case OSX:
+				command = new String[] { "open", url };
+				break;
+			case WINDOWS:
+				command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
+				break;
+		}
+
+		if(command != null) {
+			try {
+				Process proc = new ProcessBuilder(command).start();
+				proc.getInputStream().close();
+				proc.getErrorStream().close();
+				proc.getOutputStream().close();
+				return;
+			}
+			catch(IOException error) {
+				Client.LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:", error);
+			}
+		}
+
+		try {
+			Desktop.getDesktop().browse(URI.create(url));
+		}
+		catch(IOException error) {
+			Client.LOGGER.error("Could not open " + url + " with AWT:", error);
+
+			// null checks in case a link is opened before Minecraft is fully initialised
+
+			Minecraft mc = Minecraft.getMinecraft();
+			if(mc == null) {
+				return;
+			}
+
+			GuiIngame gui = mc.ingameGUI;
+			if(gui == null) {
+				return;
+			}
+
+			gui.getChatGUI().printChatMessage(new ChatComponentText("§cCould not open " + url + ". Please open it manually."));
+		}
 	}
 
 	public String getRelativeToPackFolder(File packFile) {

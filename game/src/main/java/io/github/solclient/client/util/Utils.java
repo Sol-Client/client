@@ -13,7 +13,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -336,6 +338,16 @@ public class Utils {
 		return ThreadLocalRandom.current().nextInt(from, to + 1); // https://stackoverflow.com/a/363692
 	}
 
+	private String decodeUrl(String url) {
+		try {
+			return URLDecoder.decode(url, "UTF-8");
+		}
+		catch(UnsupportedEncodingException error) {
+			// UTF-8 is required
+			throw new Error(error);
+		}
+	}
+
 	private String urlDirname(String url) {
 		int lastSlash = url.lastIndexOf('/');
 		int lastBacklash = url.lastIndexOf('\\');
@@ -380,12 +392,8 @@ public class Utils {
 							}
 
 							if(file != null) {
+								url = decodeUrl(url);
 								url = url.substring(7);
-
-								if(!file.endsWith(".desktop")) {
-									command = new String[] { file, url };
-									break;
-								}
 
 								if(!file.startsWith("/")) {
 									file = "/usr/share/applications/" + file;
@@ -413,7 +421,7 @@ public class Utils {
 				break;
 			case OSX:
 				if(reveal) {
-					command = new String[] { "open", "-R", url.substring(7) };
+					command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
 				}
 				else {
 					command = new String[] { "open", url };
@@ -421,7 +429,7 @@ public class Utils {
 				break;
 			case WINDOWS:
 				if(reveal) {
-					command = new String[] { "Explorer", "/select," + url.substring(8).replace('/', '\\') };
+					command = new String[] { "Explorer", "/select," + decodeUrl(url).substring(8).replace('/', '\\') };
 				}
 				else {
 					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };

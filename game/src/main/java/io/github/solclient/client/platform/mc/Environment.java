@@ -59,8 +59,12 @@ public class Environment {
 	 * The protocol/networking version.
 	 */
 	public final int PROTOCOL_VERSION = get("PROTOCOL_VERSION");
+	/**
+	 * Mojang studios/AB depending on the game version.
+	 */
+	public final String MOJANG = null;
 
-	private static <T> T get(String key) {
+	private <T> T get(String key) {
 		throw new UnsupportedOperationException();
 	}
 

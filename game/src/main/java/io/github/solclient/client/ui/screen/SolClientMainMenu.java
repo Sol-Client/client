@@ -1,6 +1,6 @@
 package io.github.solclient.client.ui.screen;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.Environment;
@@ -31,24 +31,24 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void render(int x, int y, float tickDelta) {
+	public void renderScreen(int x, int y, float tickDelta) {
 		renderPanorama(x, y, tickDelta);
 
 		Font font = SolClientConfig.instance.getUIFont();
 
-		String copyrightString = "Copyright Mojang " + (Environment.MAJOR_RELEASE > 1 || Environment.MINOR_RELEASE >= 16 ? "Studios" : "AB") + ". Do not distribute!";
-		font.render(copyrightString, (int) (getWidth() - font.getWidth(copyrightString) - 10), getHeight() - 15, -1);
+		String copyrightString = "Copyright " + Environment.MOJANG + ". Do not distribute!";
+		font.render(copyrightString, (int) (width - font.getWidth(copyrightString) - 10), height - 15, -1);
 		String versionString = "Minecraft 1.8.9";
-		font.render(versionString, (int) (getWidth() - font.getWidth(versionString) - 10), getHeight() - 25, -1);
+		font.render(versionString, (int) (width - font.getWidth(versionString) - 10), height - 25, -1);
 
-		font.render("Copyright TheKodeToad and contributors.", 10, getHeight() - 15, -1);
-		font.render(Client.NAME, 10, getHeight() - 25, -1);
+		font.render("Copyright TheKodeToad and contributors.", 10, height - 15, -1);
+		font.render(Constants.NAME, 10, height - 25, -1);
 
 		mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_logo_with_text_" +
 						Utils.getTextureScale() + ".png"));
-		DrawableHelper.fillTexturedRect(getWidth() / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
+		DrawableHelper.fillTexturedRect(width / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
 
-		super.render(x, y, tickDelta);
+		super.renderScreen(x, y, tickDelta);
 	}
 
 	@Override

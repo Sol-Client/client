@@ -37,7 +37,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void render(int x, int y, float tickDelta) {
+	public void renderScreen(int x, int y, float tickDelta) {
 		if(!mc.hasLevel()) {
 			if(SolClientConfig.instance.fancyMainMenu) {
 				background = false;
@@ -51,7 +51,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			renderTranslucentBackground();
 		}
 
-		super.render(x, y, tickDelta);
+		super.renderScreen(x, y, tickDelta);
 	}
 
 	public void switchMod(Mod mod) {
@@ -59,8 +59,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void close() {
-		super.close();
+	public void onClose() {
+		super.onClose();
 		Client.INSTANCE.save();
 	}
 
@@ -102,7 +102,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						scroll.load();
 					}
 					else {
-						getScreen().close();
+						getScreen().onClose();
 						if(getScreen().getParentScreen() instanceof Screen) {
 							((Screen) getScreen().getParentScreen()).getRoot().setFont(font);
 						}

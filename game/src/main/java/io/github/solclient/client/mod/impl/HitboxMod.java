@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.event.impl.input.HitboxToggleEvent;
@@ -29,7 +30,7 @@ import io.github.solclient.client.util.data.Colour;
 public class HitboxMod extends Mod {
 
 	@Option
-	private final KeyBinding toggleHitboxes = KeyBinding.create(getTranslationKey() + ".option.toggleHitboxes", Input.NONE, Client.KEY_CATEGORY);
+	private final KeyBinding toggleHitboxes = KeyBinding.create(getTranslationKey() + ".option.toggleHitboxes", Input.NONE, Constants.KEY_CATEGORY);
 	@Expose
 	@Option
 	private boolean boundingBox = true;

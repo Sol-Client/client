@@ -1,7 +1,6 @@
 package io.github.solclient.client.event.impl.world;
 
 import io.github.solclient.client.event.impl.RenderEvent;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

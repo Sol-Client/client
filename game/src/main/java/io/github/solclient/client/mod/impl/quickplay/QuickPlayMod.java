@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.DetectedServer;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
@@ -25,7 +26,7 @@ import io.github.solclient.client.util.Utils;
 public class QuickPlayMod extends Mod {
 
 	@Option
-	private final KeyBinding menuKey = KeyBinding.create(getTranslationKey() + ".key", Input.R, Client.KEY_CATEGORY);
+	private final KeyBinding menuKey = KeyBinding.create(getTranslationKey() + ".key", Input.R, Constants.KEY_CATEGORY);
 	private boolean got;
 	private QuickPlayDatabase database;
 	@Expose

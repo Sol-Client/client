@@ -12,7 +12,7 @@ import de.jcm.discordgamesdk.CreateParams;
 import de.jcm.discordgamesdk.CreateParams.Flags;
 import de.jcm.discordgamesdk.activity.Activity;
 import de.jcm.discordgamesdk.activity.ActivityType;
-import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.event.impl.game.QuitEvent;
@@ -80,7 +80,7 @@ public class DiscordIntegrationMod extends Mod {
 	@Override
 	public void onRegister() {
 		try {
-			if(!Client.DEV) {
+			if(!Constants.DEV) {
 				Core.init(new File(System.getProperty("io.github.solclient.client.discord_lib")));
 			}
 			else {
@@ -229,7 +229,7 @@ public class DiscordIntegrationMod extends Mod {
 		activity = new Activity();
 		activity.setState(text);
 
-		if(Client.DEV) {
+		if(Constants.DEV) {
 			activity.setDetails("Development Test");
 		}
 

@@ -44,6 +44,8 @@ public class EnvironmentImpl {
 				return (T) (Object) versionComponent(2);
 			case "PROTOCOL_VERSION":
 				return (T) (Object) SharedConstants.getGameVersion().getProtocolVersion();
+			case "MOJANG":
+				return (T) "Mojang Studios";
 		}
 
 		throw new UnsupportedOperationException(key + " has no value");

@@ -95,7 +95,7 @@ public class Utils {
 	}
 
 	public void playClickSound(boolean ui) {
-		if (ui && !SolClientConfig.instance.buttonClicks) {
+		if(ui && !SolClientConfig.instance.buttonClicks) {
 			return;
 		}
 
@@ -133,7 +133,7 @@ public class Utils {
 		StringBuilder result = new StringBuilder();
 
 		String line;
-		while ((line = reader.readLine()) != null) {
+		while((line = reader.readLine()) != null) {
 			result.append(line).append("\n");
 		}
 

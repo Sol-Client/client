@@ -3,7 +3,7 @@ package io.github.solclient.client.packet;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.hud.PostHudRenderEvent;
 import io.github.solclient.client.platform.mc.MinecraftClient;
@@ -19,8 +19,8 @@ public class PopupManager {
 
 	private final MinecraftClient mc = MinecraftClient.getInstance();
 
-	private final KeyBinding acceptRequestKey = KeyBinding.create(Client.KEY_TRANSLATION_KEY + ".accept_request", Input.Y, Client.KEY_CATEGORY);
-	private final KeyBinding dismissRequestKey = KeyBinding.create(Client.KEY_TRANSLATION_KEY + ".dismiss_request", Input.N, Client.KEY_CATEGORY);
+	private final KeyBinding acceptRequestKey = KeyBinding.create(Constants.KEY_TRANSLATION_KEY + ".accept_request", Input.Y, Constants.KEY_CATEGORY);
+	private final KeyBinding dismissRequestKey = KeyBinding.create(Constants.KEY_TRANSLATION_KEY + ".dismiss_request", Input.N, Constants.KEY_CATEGORY);
 
 	private final Deque<Popup> popups = new ArrayDeque<>();
 	private Popup currentPopup;

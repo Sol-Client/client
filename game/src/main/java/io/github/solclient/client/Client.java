@@ -121,12 +121,6 @@ public final class Client {
 
 	private ChatChannelSystem chatChannelSystem;
 
-	public static final String VERSION = replaceGit(System.getProperty("io.github.solclient.client.version", ""));
-	public static final String NAME = "Sol Client " + VERSION;
-	public static final String KEY_TRANSLATION_KEY = "sol_client.key";
-	public static final String KEY_CATEGORY = KEY_TRANSLATION_KEY + ".category";
-	public static final boolean DEV = Boolean.getBoolean("io.github.solclient.client.dev");
-
 	@Getter
 	private PopupManager popupManager;
 	@Getter
@@ -138,7 +132,7 @@ public final class Client {
 	public void init() {
 		Utils.resetLineWidth();
 		new File(mc.getDataFolder(), "server-resource-packs").mkdirs(); // Fix crash
-		System.setProperty("http.agent", "Sol Client/" + VERSION);
+		System.setProperty("http.agent", "Sol Client/" + Constants.VERSION);
 
 		LOGGER.info("Initialising...");
 		bus.register(this);
@@ -478,22 +472,6 @@ public final class Client {
 	public void optionChanged() {
 		if(!(MinecraftClient.getInstance().getScreen() instanceof ModsScreen)) {
 			save();
-		}
-	}
-
-
-
-	private static String replaceGit(String value) {
-		if(!"dev".equalsIgnoreCase(value)) {
-			return value;
-		}
-
-		try {
-			return "git " + Utils.getGitBranch();
-		}
-		catch(Throwable error) {
-			LOGGER.error("Could not determine git branch", error);
-			return value;
 		}
 	}
 

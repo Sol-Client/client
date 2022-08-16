@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.hud.PreHudElementRenderEvent;
@@ -52,7 +53,7 @@ public class ChatMod extends HudMod {
 	public boolean infiniteChat = true;
 
 	@Option
-	public KeyBinding peekKey = KeyBinding.create(getTranslationKey() + ".peek", 0, Client.KEY_CATEGORY);
+	public KeyBinding peekKey = KeyBinding.create(getTranslationKey() + ".peek", 0, Constants.KEY_CATEGORY);
 	private boolean wasPeeking;
 	private boolean hasScrollbar;
 

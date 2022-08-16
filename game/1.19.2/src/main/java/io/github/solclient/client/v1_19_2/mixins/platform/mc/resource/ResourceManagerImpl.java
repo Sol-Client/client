@@ -1,6 +1,5 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.resource;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;

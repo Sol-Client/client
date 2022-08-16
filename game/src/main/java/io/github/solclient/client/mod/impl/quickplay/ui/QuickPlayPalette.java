@@ -11,7 +11,7 @@ import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
-import io.github.solclient.client.platform.mc.screen.ExtensibleScreen;
+import io.github.solclient.client.platform.mc.screen.ProxyScreen;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.text.TextFormatting;
 import io.github.solclient.client.platform.mc.util.Input;
@@ -22,7 +22,7 @@ import io.github.solclient.client.util.data.Rectangle;
 // Dirty code alert
 // TODO new UI
 // TODO translation
-public final class QuickPlayPalette extends ExtensibleScreen {
+public final class QuickPlayPalette extends ProxyScreen {
 
 	private final QuickPlayMod mod;
 	private Font font = SolClientConfig.instance.getUIFont();
@@ -46,25 +46,25 @@ public final class QuickPlayPalette extends ExtensibleScreen {
 	}
 
 	@Override
-	public void init() {
-		super.init();
+	public void initScreen() {
+		super.initScreen();
 		Input.enableRepeatEvents(true);
 	}
 
 	@Override
-	public void close() {
-		super.close();
+	public void onClose() {
+		super.onClose();
 		Input.enableRepeatEvents(false);
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float tickDelta) {
-		super.render(mouseX, mouseY, tickDelta);
+	public void renderScreen(int mouseX, int mouseY, float tickDelta) {
+		super.renderScreen(mouseX, mouseY, tickDelta);
 
 		GlStateManager.enableBlend();
 
 		Rectangle box = new Rectangle(0, 0, 200, 250);
-		box = box.offset(getWidth() / 2 - (box.getWidth() / 2), getHeight() / 2 - (box.getHeight() / 2));
+		box = box.offset(width / 2 - (box.getWidth() / 2), getHeight() / 2 - (box.getHeight() / 2));
 
 		box.fill(Colour.BACKGROUND);
 

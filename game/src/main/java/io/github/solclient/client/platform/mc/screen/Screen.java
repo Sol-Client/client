@@ -7,28 +7,22 @@ public interface Screen {
 
 	void update(MinecraftClient mc, int width, int height);
 
-	void init();
+	void initScreen();
 
-	void close();
+	void onClose();
 
-	void render(int mouseX, int mouseY, float tickDelta);
+	void renderScreen(int mouseX, int mouseY, float tickDelta);
 
 	void keyDown(char character, int key);
-
-	void keyUp(char character, int key);
 
 	void mouseDown(int x, int y, int button);
 
 	void mouseUp(int x, int y, int button);
 
-	void scroll(int by);
-
 	int getWidth();
 
 	int getHeight();
 
-	void tick();
-
-	boolean shouldPauseGame();
+	void tickScreen();
 
 }

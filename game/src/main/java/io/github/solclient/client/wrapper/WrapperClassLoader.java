@@ -49,6 +49,7 @@ import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.Proxy;
 
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.wrapper.mixin.ClientMixinService;
 import io.github.solclient.client.wrapper.transformer.Transformer;
 import io.github.solclient.client.wrapper.transformer.impl.guava.LegacyFuturesTransformer;
@@ -103,7 +104,9 @@ public class WrapperClassLoader extends ClassLoader {
 		registerTransformer(new LegacyFuturesTransformer());
 		registerTransformer(new LegacyIteratorsTransformer());
 
-		registerTransformer(new PackageAccessFixer());
+		if(Constants.DEV) {
+			registerTransformer(new PackageAccessFixer());
+		}
 	}
 
 	public void registerTransformer(Transformer transformer) {

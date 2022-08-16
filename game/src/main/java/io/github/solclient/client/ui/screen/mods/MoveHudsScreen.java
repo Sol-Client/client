@@ -72,16 +72,16 @@ public class MoveHudsScreen extends Screen {
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
+	public void tickScreen() {
+		super.tickScreen();
 
-		if(title != null) title.tick();
+		if(title != null) title.tickScreen();
 	}
 
 	@Override
-	public void render(int x, int y, float tickDelta) {
+	public void renderScreen(int x, int y, float tickDelta) {
 		if(title != null) {
-			title.render(0, 0, tickDelta);
+			title.renderScreen(0, 0, tickDelta);
 		}
 
 		for(HudElement hud : Client.INSTANCE.getHuds()) {
@@ -115,7 +115,7 @@ public class MoveHudsScreen extends Screen {
 			movingHud = null;
 		}
 
-		super.render(x, y, tickDelta);
+		super.renderScreen(x, y, tickDelta);
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class MoveHudsScreen extends Screen {
 	public static class MoveHudsComponent extends Component {
 
 		public MoveHudsComponent() {
-			add(ButtonComponent.done(() -> screen.close()),
+			add(ButtonComponent.done(() -> screen.onClose()),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() - 30,
 									defaultBounds.getWidth(), defaultBounds.getHeight())));

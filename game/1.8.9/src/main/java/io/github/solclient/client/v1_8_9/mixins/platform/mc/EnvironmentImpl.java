@@ -42,6 +42,8 @@ public class EnvironmentImpl {
 				return (T) (Object) 9;
 			case "PROTOCOL_VERSION":
 				return (T) (Object) 47;
+			case "MOJANG":
+				return (T) "Mojang AB";
 		}
 
 		throw new UnsupportedOperationException(key + " has no value");

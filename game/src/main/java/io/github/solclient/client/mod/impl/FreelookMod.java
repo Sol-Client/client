@@ -2,7 +2,7 @@ package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.event.impl.input.CameraRotateEvent;
@@ -19,7 +19,7 @@ import io.github.solclient.client.util.Utils;
 public class FreelookMod extends Mod {
 
 	@Option
-	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.V, Client.KEY_CATEGORY);
+	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.V, Constants.KEY_CATEGORY);
 	private float yaw;
 	private float pitch;
 	private int previousPerspective;

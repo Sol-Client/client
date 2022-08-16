@@ -4,8 +4,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -20,8 +22,14 @@ public class TitleScreenMixin extends Screen {
 	@Inject(method = "initWidgetsNormal", at = @At("RETURN"))
 	public void customButtons(CallbackInfo callback) {
 		buttons.remove(realmsButton);
-		buttons.add(new ButtonWidget(realmsButton.id, realmsButton.x, realmsButton.y,
+		buttons.add(realmsButton = new ButtonWidget(realmsButton.id, realmsButton.x, realmsButton.y,
 				I18n.translate("sol_client.mod.screen.title")));
+	}
+
+	@Redirect(method = "buttonClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;"
+			+ "switchToRealms()V"))
+	public void openModsMenu(TitleScreen screen) {
+		client.openScreen((Screen) (Object) new ModsScreen());
 	}
 
 }

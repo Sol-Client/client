@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.mod.ConfigOnlyMod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
@@ -24,8 +24,8 @@ public class SolClientConfig extends ConfigOnlyMod {
 
 	@Option
 	public KeyBinding modsKey = KeyBinding.create(getTranslationKey() + ".mods", Input.RIGHT_SHIFT,
-			Client.KEY_CATEGORY),
-			editHudKey = KeyBinding.create(getTranslationKey() + ".edit_hud", Input.NONE, Client.KEY_CATEGORY);
+			Constants.KEY_CATEGORY),
+			editHudKey = KeyBinding.create(getTranslationKey() + ".edit_hud", Input.NONE, Constants.KEY_CATEGORY);
 
 	@Expose
 	@Option

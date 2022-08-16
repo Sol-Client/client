@@ -2,7 +2,7 @@ package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
@@ -24,9 +24,9 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	public static ZoomMod instance;
 
 	@Option
-	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.C, Client.KEY_CATEGORY),
-			zoomOutKey = KeyBinding.create(getTranslationKey() + ".zoom_out", Input.MINUS, Client.KEY_CATEGORY),
-			zoomInKey = KeyBinding.create(getTranslationKey() + ".zoom_in", Input.EQUAL, Client.KEY_CATEGORY);
+	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.C, Constants.KEY_CATEGORY),
+			zoomOutKey = KeyBinding.create(getTranslationKey() + ".zoom_out", Input.MINUS, Constants.KEY_CATEGORY),
+			zoomInKey = KeyBinding.create(getTranslationKey() + ".zoom_in", Input.EQUAL, Constants.KEY_CATEGORY);
 
 	@Expose
 	@Option

@@ -1,7 +1,6 @@
 package io.github.solclient.client.event.impl.game;
 
 import io.github.solclient.client.event.Cancellable;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

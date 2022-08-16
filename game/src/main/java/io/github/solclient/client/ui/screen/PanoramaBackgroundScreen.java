@@ -28,9 +28,9 @@ public abstract class PanoramaBackgroundScreen extends Screen {
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
-		titleScreen.tick();
+	public void tickScreen() {
+		super.tickScreen();
+		titleScreen.tickScreen();
 	}
 
 	protected void renderPanorama(int x, int y, float tickDelta) {

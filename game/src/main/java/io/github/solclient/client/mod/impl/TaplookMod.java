@@ -2,7 +2,7 @@ package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.Constants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.mod.Mod;
@@ -15,7 +15,7 @@ import io.github.solclient.client.util.Perspective;
 public class TaplookMod extends Mod {
 
 	@Option
-	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.NONE, Client.KEY_CATEGORY);
+	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.NONE, Constants.KEY_CATEGORY);
 	private int previousPerspective;
 	private boolean active;
 	@Expose

@@ -11,7 +11,7 @@
 		"platform.mc.resource.IdentifierImpl$Static",
 		"platform.mc.resource.ResourceImpl",
 		"platform.mc.resource.ResourceManagerImpl",
-		"platform.mc.world.level.block.BlockPosImpl",
+		"platform.mc.world.level.block.BlockStateImpl",
 		"platform.mc.world.level.chunk.ChunkImpl",
 		"platform.mc.world.level.LevelImpl",
 		"platform.mc.EnvironmentImpl",

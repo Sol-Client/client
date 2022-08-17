@@ -42,13 +42,13 @@ class Config {
 	}
 
 	static getJvmArgs() {
-		var args = Config.data.jvmArgs;
-		var result = [];
+		let args = Config.data.jvmArgs;
+		let result = [];
 
-		var prevC;
-		var arg = "";
+		let prevC;
+		let arg = "";
 
-		for(var c of args) {
+		for(let c of args) {
 			if(prevC == "\\") {
 				arg = arg.substring(0, arg.length - 1);
 				arg += c;

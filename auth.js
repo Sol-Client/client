@@ -2,20 +2,19 @@ const axios = require("axios");
 const msmc = require("msmc");
 const fs = require("fs");
 const keytar = require("keytar");
-const crypto = require("crypto");
 const Utils = require("./utils");
 const KEYCHAIN_PREFIX = "keychain:";
 const SERVICE = "sol_client";
-var manager;
+let manager;
 
 class AccountManager {
 
 	constructor(file, dataCallback) {
 		this.file = file;
 		if(fs.existsSync(file)) {
-			var data = JSON.parse(fs.readFileSync(file, "UTF-8"));
+			let data = JSON.parse(fs.readFileSync(file, "UTF-8"));
 			this.accounts = [];
-			for(var account of data.accounts) {
+			for(let account of data.accounts) {
 				this.accounts.push(Account.from(account));
 			}
 			this.activeAccount = this.accounts[data.activeAccount];
@@ -56,7 +55,7 @@ class AccountManager {
 			return prop;
 		}
 		await keytar.setPassword(SERVICE, key, prop);
-		var test = await keytar.getPassword(SERVICE, key);
+		let test = await keytar.getPassword(SERVICE, key);
 		if(test != prop) {
 			return prop;
 		}
@@ -67,7 +66,7 @@ class AccountManager {
 		if(!this.isInKeychain(prop)) {
 			return prop;
 		}
-		var key = prop.substring(KEYCHAIN_PREFIX.length);
+		let key = prop.substring(KEYCHAIN_PREFIX.length);
 		return keytar.getPassword(SERVICE, key);
 	}
 
@@ -88,10 +87,10 @@ class AccountManager {
 			return this.refreshTask;
 		}
 
-		var task = new Promise(async(resolve, reject) => {
-			var valid = await this.activeAccount.getService().validate(this.activeAccount);
+		let task = new Promise(async(resolve, reject) => {
+			let valid = await this.activeAccount.getService().validate(this.activeAccount);
 			if(!valid) {
-				var result = await this.activeAccount.getService().refresh(this.activeAccount);
+				let result = await this.activeAccount.getService().refresh(this.activeAccount);
 				if(!result) {
 					this.removeAccount(this.activeAccount);
 					reject();
@@ -125,16 +124,16 @@ class AccountManager {
 	}
 
 	async fetchSkin(account) {
-		var textures = await Utils.getTextures(account.uuid);
+		let textures = await Utils.getTextures(account.uuid);
 
 		if(textures) {
 			if(textures.SKIN) {
 				account.skin = await Utils.expandImageURL(textures.SKIN.url);
 
-				var image = await Utils.loadImage(account.skin);
+				let image = await Utils.loadImage(account.skin);
 
-				var canvas = document.createElement("canvas");
-				var context = canvas.getContext("2d");
+				let canvas = document.createElement("canvas");
+				let context = canvas.getContext("2d");
 
 				canvas.width = 8;
 				canvas.height = 8;
@@ -167,10 +166,10 @@ class AccountManager {
 	}
 
 	addAccount(account) {
-		var sameUUIDIndex = -1;
+		let sameUUIDIndex = -1;
 
-		for(var i = 0; i < this.accounts.length; i++) {
-			var item = this.accounts[i];
+		for(let i = 0; i < this.accounts.length; i++) {
+			let item = this.accounts[i];
 			if(item.uuid == account.uuid) {
 				sameUUIDIndex = i;
 			}
@@ -187,7 +186,7 @@ class AccountManager {
 	}
 
 	async removeAccount(account) {
-		var index = this.accounts.indexOf(this.activeAccount);
+		let index = this.accounts.indexOf(this.activeAccount);
 		this.accounts = this.accounts.filter((item) => item != account);
 
 		keytar.deletePassword(SERVICE, KEYCHAIN_PREFIX + account.uuid + "_access_token");
@@ -212,7 +211,7 @@ class AccountManager {
 
 class AuthService {
 
-	authenticate(key) {
+	authenticate(_key) {
 		throw new Error("Unimplemented");
 	}
 
@@ -232,7 +231,7 @@ class MicrosoftAuthService extends AuthService {
 	static instance = new MicrosoftAuthService();
 
 	async authenticate(msmc) {
-		var account = new Account("msa", msmc.name, msmc.id, msmc._msmc.mcToken, null, msmc._msmc.demo, msmc._msmc);
+		let account = new Account("msa", msmc.name, msmc.id, msmc._msmc.mcToken, null, msmc._msmc.demo, msmc._msmc);
 		msmc._msmc.mcToken = undefined;
 		await manager.storeInKeychain(account);
 		return account;
@@ -254,9 +253,7 @@ class MicrosoftAuthService extends AuthService {
 
 	refresh(account) {
 		return new Promise(async(resolve) => {
-			var startingToken = account.accessToken;
-			var startingRefresh = account._msmc.refresh;
-			var result = await msmc.refresh(await this.toMsmc(account), () => {}, {client_id: "00000000402b5328"});
+			let result = await msmc.refresh(await this.toMsmc(account), () => {}, {client_id: "00000000402b5328"});
 
 			if(result.type != "Success") {
 				resolve(null);
@@ -300,8 +297,8 @@ class YggdrasilAuthService extends AuthService {
 						if(response == null) {
 							return;
 						}
-						var data = response.data;
-						var account = new Account(
+						let data = response.data;
+						let account = new Account(
 								"mojang",
 								data.selectedProfile.name,
 								data.selectedProfile.id,
@@ -314,17 +311,17 @@ class YggdrasilAuthService extends AuthService {
 		});
 	}
 
-	validate(accessToken) {
+	validate(_accessToken) {
 		return new Promise(async(resolve) => {
 			const url = YggdrasilAuthService.api;
 			axios.post(url + "/validate", {
 						accessToken: await manager.realToken(account),
 						clientToken: account.clientToken
 					})
-					.catch((error) => {
+					.catch((_error) => {
 						resolve(false);
 					})
-					.then((response) => {
+					.then((_response) => {
 						resolve(true);
 					});
 		});
@@ -341,7 +338,7 @@ class YggdrasilAuthService extends AuthService {
 					id: account.uuid
 				}
 			})
-			.catch((error) => {
+			.catch((_error) => {
 				resolve(false);
 			})
 			.then(async(response) => {

@@ -7,7 +7,7 @@ const archiver = require("archiver");
 class Patcher {
 
 	static async patch(java, versionFolder, versionJar, outputFile, optiFine) {
-		var tempFolder = versionFolder + "/patch/";
+		let tempFolder = versionFolder + "/patch/";
 		
 		if(fs.existsSync(tempFolder)) {
 			fs.rmdirSync(tempFolder, { recursive: true });
@@ -15,12 +15,12 @@ class Patcher {
 		
 		fs.mkdirSync(tempFolder);
 
-		var inputJar = versionJar;
+		let inputJar = versionJar;
 		if(optiFine) {
-			var optiFineMod = tempFolder + "/optifine-mod.jar";
+			let optiFineMod = tempFolder + "/optifine-mod.jar";
 			inputJar = tempFolder + "/optifine-patched.jar";
 			await new Promise((resolve) => {
-				var process = childProcess.spawn(java, [
+				let process = childProcess.spawn(java, [
 					"-cp",
 					optiFine,
 					"optifine.Patcher",
@@ -36,12 +36,12 @@ class Patcher {
 			});
 
 			await new Promise(async(resolve) => {
-				var optiFinePatchedArchiver = archiver("zip");
+				let optiFinePatchedArchiver = archiver("zip");
 
 				optiFinePatchedArchiver.pipe(fs.createWriteStream(inputJar));
 
 				async function insert(jar) {
-					var zip = fs.createReadStream(jar).pipe(
+					let zip = fs.createReadStream(jar).pipe(
 							unzipper.Parse({ forceStream: true }));
 
 					for await(const entry of zip) {
@@ -67,16 +67,16 @@ class Patcher {
 			});
 		}
 
-		var mapped = tempFolder + "/mapped.jar";
-		var specialSource = tempFolder + "/SpecialSource.jar";
-		var joinedSrg = tempFolder + "/joined.srg";
-		var mcpZip = tempFolder + "/mcp.zip";
+		let mapped = tempFolder + "/mapped.jar";
+		let specialSource = tempFolder + "/SpecialSource.jar";
+		let joinedSrg = tempFolder + "/joined.srg";
+		let mcpZip = tempFolder + "/mcp.zip";
 
 		await Utils.download("https://repo.maven.apache.org/maven2/net/md-5/SpecialSource/1.7.4/SpecialSource-1.7.4-shaded.jar", specialSource, 1526537);
 
 		await Utils.download("https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/1.8.9/mcp-1.8.9-srg.zip", mcpZip, 471509);
 
-		var zip = fs.createReadStream(mcpZip).pipe(
+		let zip = fs.createReadStream(mcpZip).pipe(
 				unzipper.Parse({ forceStream: true }));
 
 		for await(const entry of zip) {
@@ -91,7 +91,7 @@ class Patcher {
 		}
 
 		await new Promise((resolve) => {
-			var process = childProcess.spawn(java, [
+			let process = childProcess.spawn(java, [
 				"-jar",
 				specialSource,
 				"--in-jar",

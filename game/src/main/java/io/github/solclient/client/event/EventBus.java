@@ -1,5 +1,8 @@
 package io.github.solclient.client.event;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.WrongMethodTypeException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -26,21 +29,29 @@ public class EventBus {
 	private static class MethodData {
 
 		public final Object instance;
-		public final Method target;
+		public final String name;
+		public final MethodHandle target;
+
+		public MethodData(Object instance, Method method) throws IllegalAccessException {
+			this.instance = instance;
+			name = method.getName();
+			target = MethodHandles.lookup().unreflect(method);
+		}
 
 	}
+
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	private boolean inPost;
 	private final List<Object> toRemove = new ArrayList<>();
 	private final Map<Class<?>, List<MethodData>> handlers = new HashMap<Class<?>, List<MethodData>>();
-	private final Logger logger = LogManager.getLogger();
 
 	private Set<Method> getMethods(Class<?> clazz) {
 		Set<Method> methods = new HashSet<>();
 
 		Collections.addAll(methods, clazz.getMethods());
 		Collections.addAll(methods, clazz.getDeclaredMethods());
-
+		// without this, Lookup throws an exception
 		methods.forEach((method) -> method.setAccessible(true));
 
 		return methods;
@@ -49,8 +60,13 @@ public class EventBus {
 	public void register(Object obj) {
 		for(Method method : getMethods(obj.getClass())) {
 			if(validate(method)) {
-				handlers.computeIfAbsent(method.getParameters()[0].getType(), (ignore) -> new ArrayList<>())
-						.add(new MethodData(obj, method));
+				try {
+					handlers.computeIfAbsent(method.getParameters()[0].getType(), (ignore) -> new ArrayList<>())
+							.add(new MethodData(obj, method));
+				}
+				catch(IllegalAccessException error) {
+					LOGGER.error("Could not register " + method.getName(), error);
+				}
 			}
 		}
 	}
@@ -78,11 +94,11 @@ public class EventBus {
 				try {
 					method.target.invoke(method.instance, event);
 				}
-				catch(IllegalAccessException | IllegalArgumentException error) {
-					logger.error("Failed to invoke " + method.target.getName() + ":", error);
+				catch(WrongMethodTypeException error) {
+					LOGGER.error("Failed to invoke " + method.name + ":", error);
 				}
-				catch(InvocationTargetException error) {
-					logger.error("Error while executing " + method.target.getName() + ":", error.getCause());
+				catch(Throwable error) {
+					LOGGER.error("Error while executing " + method.name + ":", error);
 				}
 			}
 			inPost = false;

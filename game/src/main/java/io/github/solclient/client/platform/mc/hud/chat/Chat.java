@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import io.github.solclient.client.chat.ChatAccessor;
 import io.github.solclient.client.platform.Helper;
 import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.text.Text;
 
 public interface Chat extends ChatAccessor {
 
@@ -40,5 +41,9 @@ public interface Chat extends ChatAccessor {
 	static @NotNull Optional<Chat> getInstance() {
 		return MinecraftClient.getInstance().getScreen(Chat.class);
 	}
+
+	void addMessage(@NotNull String text);
+
+	void addMessage(@NotNull Text text);
 
 }

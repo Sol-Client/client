@@ -1,0 +1,441 @@
+{
+	"sol_client.passthrough": "%s",
+	"slider.percent": "%s%%",
+	"slider.factor": "%sx",
+	"slider.seconds": "%ss",
+
+	"vertical_alignment.top": "Trên",
+	"vertical_alignment.middle": "Giữa",
+	"vertical_alignment.bottom": "Cuối",
+
+	"perspective.first_person": "Góc nhìn thứ nhất",
+	"perspective.third_person_back": "Góc nhìn thứ 3 phía sau",
+	"perspective.third_person_front": "Góc nhìn thứ 3 phía trước",
+
+	"easing.linear": "Linear",
+	"easing.quad": "Quad",
+	"easing.cubic": "Cubic",
+	"easing.quart": "Quart",
+	"easing.quint": "Quint",
+	"easing.expo": "Expo",
+	"easing.sine": "Sine",
+	"easing.circ": "Circ",
+	"easing.back": "Back",
+	"easing.bounce": "Bounce",
+	"easing.elastic": "Elastic",
+
+	"file.edit": "Chỉnh sửa tập tin...",
+
+	"servers": "Danh sách máy chủ",
+
+	"key.category": "Sol Client",
+	"key.accept_request": "Chấp nhận yêu cầu",
+	"key.dismiss_request": "Từ chối yêu cầu",
+
+	"mod.generic.option.enabled": "Đã bật",
+	"mod.hud.option.scale": "Độ phóng đại",
+	"mod.simple_hud.option.background": "Nền",
+	"mod.simple_hud.option.backgroundColour": "Màu nền",
+	"mod.simple_hud.option.border": "Viền",
+	"mod.simple_hud.option.borderColour": "Màu viền",
+	"mod.simple_hud.option.textColour": "Màu chữ",
+	"mod.simple_hud.option.shadow": "Bóng chữ",
+	"mod.smooth_counter_hud.option.smoothNumbers": "Hiệu ứng thay đổi số",
+
+	"mod.sol_client.name": "Sol Client",
+	"mod.sol_client.description": "Các thiết lập chung của Sol Client.",
+
+	"mod.sol_client.option.fancyMainMenu": "Màn hình chính",
+	"mod.sol_client.option.logoInInventory": "Hiện Logo ở giao diện Túi đồ",
+	"mod.sol_client.mods": "Mods",
+	"mod.sol_client.option.modsKey": "Phím tắt Mods",
+	"mod.sol_client.edit_hud": "Chỉnh sửa HUD",
+	"mod.sol_client.option.editHudKey": "Chỉnh sửa phím tắt HUD",
+	"mod.sol_client.option.uiColour": "Màu sắc chủ đạo",
+	"mod.sol_client.option.smoothUIColours": "Làm mượt màu sắc chủ đạo",
+	"mod.sol_client.option.roundedUI": "Giao diện bo tròn",
+	"mod.sol_client.option.buttonClicks": "Âm thanh khi nhấn nút",
+	"mod.sol_client.option.smoothScrolling": "Làm mượt cuộn trang",
+	"mod.sol_client.option.fancyFont": "Phông chữ HD",
+
+	"mod.fps.name": "FPS",
+	"mod.fps.description": "Hiện FPS (Số lượng khung hình mỗi giây).",
+
+	"mod.coordinates.name": "Toạ độ",
+	"mod.coordinates.description": "Hiện toạ độ của bạn.",
+
+	"mod.coordinates.option.axisLabelColour": "Màu tiêu đề của toạ độ",
+	"mod.coordinates.option.axisValueColour": "Màu giá trị toạ độ",
+	"mod.coordinates.option.cardinalDirection": "Hướng đang nhìn",
+	"mod.coordinates.option.cardinalDirectionColour": "Màu hướng đang nhìn",
+	"mod.coordinates.option.axisDirection": "Hướng thay đổi giá trị",
+	"mod.coordinates.option.axisDirectionColour": "Màu hướng thay đổi giá trị",
+
+	"mod.keystrokes.name": "Keystrokes",
+	"mod.keystrokes.description": "Hiển thị phím đang được ấn.",
+
+	"mod.keystrokes.option.movement": "Di chuyển",
+	"mod.keystrokes.option.mouse": "Chuột",
+	"mod.keystrokes.option.mouseMovement": "Di chuyển chuột",
+	"mod.keystrokes.option.showSpace": "Dấu cách",
+	"mod.keystrokes.option.cps": "Hiện CPS cho phím",
+	"mod.keystrokes.option.backgroundColourPressed": "Màu nền (Khi ấn)",
+	"mod.keystrokes.option.borderColourPressed": "Màu viền (Khi ấn)",
+	"mod.keystrokes.option.textColourPressed": "Màu chữ (Khi ấn)",
+	"mod.keystrokes.option.smoothColours": "Làm mượt màu sắc",
+
+	"mod.cps.name": "CPS",
+	"mod.cps.description": "Hiển thị CPS (Số lần click mỗi giây).",
+
+	"mod.cps.option.rmb": "CPS chuột phải",
+	"mod.cps.option.separatorColour": "Màu phân cách",
+
+	"mod.ping.name": "Ping",
+	"mod.ping.description": "Hiển thị độ trễ của kết nối đến máy chủ.",
+
+	"mod.ping.option.source": "Nguồn thông tin",
+	"mod.ping.option.source.auto": "Tự động",
+	"mod.ping.option.source.multiplayer_screen": "Ở màn hình Chọn máy chủ",
+	"mod.ping.option.source.tab_list": "Ở Tab",
+
+	"mod.speedometer.name": "Bộ đếm tốc độ",
+	"mod.speedometer.description": "Hiển thị tốc độ di chuyển.",
+
+	"mod.speedometer.option.graphMode": "Chế độ đồ thị",
+
+	"mod.reach_display.name": "Reach Display",
+	"mod.reach_display.description": "Hiển thị khoảng cách khi PVP.",
+
+	"mod.combo_counter.name": "Bộ đếm Combo",
+	"mod.combo_counter.description": "Hiển thị số lần đánh trúng liên tiếp.",
+
+	"mod.combo_counter.no_hits": "Chưa đánh trúng",
+	"mod.combo_counter.one_hit": "1 lần đánh trúng liên tục",
+	"mod.combo_counter.n_hits": "%s lần đánh trúng liên tục",
+
+	"mod.potion_effects.name": "Hiệu ứng thuốc",
+	"mod.potion_effects.description": "Hiển thị hiệu ứng thuốc đang có hiệu lực và thời gian còn lại.",
+
+	"mod.potion_effects.option.alignment": "Căn lề",
+	"mod.potion_effects.option.icon": "Biểu tượng",
+	"mod.potion_effects.option.background": "Nền",
+	"mod.potion_effects.option.title": "Tên thuốc",
+	"mod.potion_effects.option.titleColour": "Màu chữ",
+	"mod.potion_effects.option.duration": "Thời gian còn lại",
+	"mod.potion_effects.option.durationColour": "Màu thời gian",
+	"mod.potion_effects.option.spacing": "Khoảng cách giữa các hiệu ứng",
+
+	"mod.armour.name": "Giáp và công cụ",
+	"mod.armour.description": "Hiển thị giáp và công cụ cùng với độ bền hiện tại.",
+
+	"mod.armour.option.durability": "Độ bền",
+	"mod.armour.option.durability.remaining": "Còn lại",
+	"mod.armour.option.durability.percentage": "Phần trăm",
+	"mod.armour.option.durability.fraction": "Phân số",
+
+	"mod.armour.option.armour": "Hiển thị giáp",
+	"mod.armour.option.hand": "Hiển thị công cụ",
+
+	"mod.timers.name": "Bộ đếm",
+	"mod.timers.description": "Hiển thị thời gian còn lại của các sự kiện.",
+
+	"mod.timers.option.alignment": "Căn lề",
+	"mod.timers.option.icon": "Biểu tượng",
+	"mod.timers.option.nameColour": "Màu chữ",
+	"mod.timers.option.timeColour": "Màu thời gian",
+
+	"mod.chat.name": "Trò chuyện",
+	"mod.chat.description": "Tuỳ chỉnh khung trò chuyện.",
+
+	"mod.chat.peek": "Mở trò chuyện nhanh",
+	"mod.chat.option.preventClose": "Ngăn việc đóng khung trò chuyện tự động",
+	"mod.chat.option.smooth": "Hiệu ứng khi có trò chuyện mới",
+	"mod.chat.option.infiniteChat": "Lịch sử trò chuyện không giới hạn",
+	"mod.chat.option.peekKey": "Phím tắt đọc trò chuyện nhanh",
+
+	"mod.chat.option.visibility": "Hiển thị",
+	"mod.chat.option.visibility.shown": "Mở",
+	"mod.chat.option.visibility.commands": "Chỉ khi nhập lệnh",
+	"mod.chat.option.visibility.hidden": "Đóng",
+
+	"mod.chat.option.defaultTextColour": "Màu chữ mặc định",
+	"mod.chat.option.colours": "Màu sắc",
+	"mod.chat.option.width": "Độ rộng",
+	"mod.chat.option.closedHeight": "Chiều cao chat khi đóng",
+	"mod.chat.option.openHeight": "Chiều cao chat khi mở",
+	"mod.chat.option.links": "Liên kết",
+	"mod.chat.option.promptLinks": "Nhắc nhở khi ấn vào liên kết",
+	"mod.chat.option.chatFilter": "Bật bộ lọc chat",
+	"mod.chat.option.filteredWordsContent": "Danh sách các từ bị lọc",
+
+	"mod.tab_list.name": "Tab List",
+	"mod.tab_list.description": "Tuỳ chỉnh tab/danh sách người chơi.",
+
+	"mod.tab_list.option.hideHeader": "Ẩn Header",
+	"mod.tab_list.option.hideFooter": "Ẩn Footer",
+
+	"mod.tab_list.option.pingType": "Ping",
+	"mod.tab_list.option.pingType.none": "Ẩn",
+	"mod.tab_list.option.pingType.icon": "Biểu tượng",
+	"mod.tab_list.option.pingType.numeral": "Số",
+
+	"mod.tab_list.option.backgroundColour": "Màu nền chung",
+	"mod.tab_list.option.entryBackgroundColour": "Màu nền từng dòng",
+	"mod.tab_list.option.hidePlayerHeads": "Ẩn biểu tượng đầu người chơi",
+	"mod.tab_list.option.textShadow": "Bóng đổ chữ",
+
+	"mod.crosshair.name": "Hồng tâm",
+	"mod.crosshair.description": "Tuỳ chỉnh hồng tâm.",
+
+	"mod.crosshair.option.style": "Kiểu hồng tâm.",
+	"mod.crosshair.option.style.default": "Mặc định",
+	"mod.crosshair.option.style.none": "Ẩn hoàn toàn",
+	"mod.crosshair.option.style.dot": "Chấm",
+	"mod.crosshair.option.style.plus": "Dấu cộng",
+	"mod.crosshair.option.style.plus_dot": "Dấu cộng chấm",
+	"mod.crosshair.option.style.square": "Hình vuông",
+	"mod.crosshair.option.style.square_dot": "Hình vuông chấm",
+	"mod.crosshair.option.style.circle": "Hình tròn",
+	"mod.crosshair.option.style.circle_dot": "Hình tròn chấm",
+	"mod.crosshair.option.style.four_angled": "Gạch chéo",
+	"mod.crosshair.option.style.four_angled_dot": "Gạch chéo chấm",
+	"mod.crosshair.option.style.triangle": "Tam giác",
+
+	"mod.crosshair.option.thirdPerson": "Hiển thị ở góc nhìn thứ 3",
+	"mod.crosshair.option.spectatorAlways": "Hiển thị ở chế độ Khán giả",
+	"mod.crosshair.option.debug": "Hiển thị ở Màn hình Gỡ rối",
+	"mod.crosshair.option.blending": "Hoà trộn màu",
+	"mod.crosshair.option.crosshairColour": "Màu hồng tâm",
+	"mod.crosshair.option.highlightEntities": "Đổi màu khi đưa vào thực thể",
+	"mod.crosshair.option.entityColour": "Màu khi đưa vào thực thể",
+
+	"mod.scoreboard.name": "Scoreboard",
+	"mod.scoreboard.description": "Tuỳ chỉnh scoreboard.",
+
+	"mod.scoreboard.option.hide": "Tắt scoreboard",
+	"mod.scoreboard.option.backgroundColourTop": "Màu tiêu đề",
+	"mod.scoreboard.option.numbers": "Hiển thị số ở cuối hàng",
+	"mod.scoreboard.option.numbersColour": "Màu số",
+
+	"mod.tweaks.name": "Tinh chỉnh khác",
+	"mod.tweaks.description": "Các tinh chỉnh khác, bao gồm fullbright.",
+
+	"mod.tweaks.option.fullbright": "Fullbright",
+	"mod.tweaks.option.showOwnTag": "Hiển thị tên của chính mình",
+	"mod.tweaks.option.arabicNumerals": "Sử dụng Số La Mã",
+	"mod.tweaks.option.betterTooltips": "Chú giải vật phẩm tốt hơn",
+	"mod.tweaks.option.minimalViewBobbing": "Hạn chế lay động tầm nhìn",
+	"mod.tweaks.option.minimalDamageShake": "Hạn chế rung màn hình khi nhận sát thương",
+	"mod.tweaks.option.damageShakeIntensity": "Độ rung màn hình khi nhận sát thương",
+	"mod.tweaks.option.confirmDisconnect": "Xác nhận khi thoát khỏi máy chủ",
+	"mod.tweaks.option.borderlessFullscreen": "Toàn màn hình không viền",
+	"mod.tweaks.option.betterKeyBindings": "Nhận diện phím tắt tốt hơn",
+	"mod.tweaks.option.disableHotbarScrolling": "Vô hiệu hoá thanh cuộn Hotbar",
+
+	"mod.tweaks.confirm_disconnect": "Ấn vào đây một lần nữa để xác nhận thoát khỏi máy chủ.",
+
+	"mod.freelook.name": "Freelook",
+	"mod.freelook.description": "Tự do nhìn xung quanh.",
+
+	"mod.freelook.key": "Freelook",
+	"mod.freelook.option.key": "Phím tắt",
+
+	"mod.freelook.option.perspective": "Hướng nhìn",
+	"mod.freelook.option.invertPitch": "Đảo ngược hướng dọc của chuột",
+	"mod.freelook.option.invertYaw": "Đảo ngược hướng ngang của chuột",
+
+	"mod.taplook.name": "Taplook",
+	"mod.taplook.description": "Chuyển đổi góc nhìn nhanh bằng phím tắt.",
+
+	"mod.taplook.key": "Taplook",
+	"mod.taplook.option.key": "Phím tắt",
+	"mod.taplook.option.perspective": "Góc nhìn khi ấn",
+
+	"mod.toggle_sprint.name": "Toggle Sprint",
+	"mod.toggle_sprint.description": "Khoá phím chạy.",
+
+	"mod.toggle_sprint.default_width": "113",
+
+	"mod.toggle_sprint.option.hud": "HUD",
+
+	"mod.toggle_sprint.held": "Đang chạy (Giữ)",
+	"mod.toggle_sprint.toggled": "Đang chạy (Khoá phím)",
+
+	"mod.zoom.name": "Phóng to",
+	"mod.zoom.description": "Phóng to màn hình",
+
+	"mod.zoom.key": "Phóng to",
+	"mod.zoom.option.key": "Phím tắt",
+	"mod.zoom.zoom_out": "Thu nhỏ",
+	"mod.zoom.option.zoomOutKey": "Phím tắt thu nhỏ",
+	"mod.zoom.zoom_in": "Phóng to",
+	"mod.zoom.option.zoomInKey": "Phím tắt phóng to",
+	"mod.zoom.option.cinematic": "Camera kịch tính",
+	"mod.zoom.option.reduceSensitivity": "Giảm tốc độ chuột",
+	"mod.zoom.option.scrolling": "Thay đổi độ lớn bằng cuộn chuột",
+	"mod.zoom.option.smooth": "Hiệu ứng thu phóng",
+	"mod.zoom.option.factor": "Độ lớn thu phóng",
+
+	"mod.replay.name": "Phát lại",
+	"mod.replay.description": "Ghi lại diễn biến trò chơi và xem lại khi bạn muốn.",
+
+	"mod.replay.option.enableNotifications": "Thông báo hoạt động",
+	"mod.replay.option.recordSingleplayer": "Ghi hình chơi đơn",
+	"mod.replay.option.recordServer": "Ghi hình chơi nhiều người",
+	"mod.replay.option.recordingIndicator": "Hiển thị Chỉ báo Ghi hình",
+	"mod.replay.option.recordingIndicatorColour": "Màu sắc Chỉ báo",
+	"mod.replay.option.recordingIndicatorScale": "Kích thước Chỉ báo",
+	"mod.replay.option.recordingIndicatorTextColour": "Màu sắc chữ",
+	"mod.replay.option.recordingIndicatorTextShadow": "Bóng đổ chữ",
+	"mod.replay.option.automaticRecording": "Tự động bắt đầu ghi hình",
+	"mod.replay.option.renameDialog": "Cửa sổ đổi tên bản ghi khi hoàn tất ghi hình",
+	"mod.replay.option.showChat": "Hiển thị Chat",
+
+	"mod.replay.option.camera": "Dạng Camera",
+	"mod.replay.option.camera.classic": "Cổ điển",
+	"mod.replay.option.camera.vanilla_ish": "Vanilla-ish",
+
+	"mod.replay.option.showPathPreview": "Hiển thị đường di chuyển máy quay",
+
+	"mod.replay.option.defaultInterpolator": "Interpolator mặc định",
+	"mod.replay.interpolator.catmull": "Catmull-Rom Spline",
+	"mod.replay.interpolator.cubic": "Cubic Spline",
+	"mod.replay.interpolator.linear": "Linear",
+
+	"mod.replay.option.showServerIPs": "Hiển thị địa chỉ máy chủ",
+
+	"mod.quickplay.name": "Quick Play",
+	"mod.quickplay.description": "Tự động tham gia game mới bằng phím tắt trên bàn phím.",
+
+	"mod.quickplay.key": "Quick Play",
+	"mod.quickplay.option.menuKey": "Phím tắt",
+
+	"mod.hypixel_util.name": "Hypixel Additions",
+	"mod.hypixel_util.description": "Các tuỳ chỉnh cải thiện trải nghiệm khi chơi Hypixel.",
+
+	"mod.hypixel_util.option.visitHousingCommand": "/visithousing",
+	"mod.hypixel_util.option.lobbySoundsVolume": "Độ lớn âm thanh Lobby",
+	"mod.hypixel_util.option.housingMusicVolume": "Độ lớn âm nhạc Housing",
+	"mod.hypixel_util.option.popupEvents": "Popup Events",
+	"mod.hypixel_util.option.autogg": "Tự động GG",
+	"mod.hypixel_util.option.autoggMessage": "Tin nhắn GG",
+	"mod.hypixel_util.option.hidegg": "Ẩn tin nhắn GG",
+	"mod.hypixel_util.option.autogl": "Tự động GL",
+	"mod.hypixel_util.option.autoglMessage": "Tin nhắn GL",
+	"mod.hypixel_util.option.hidegl": "Ẩn tin nhắn GL",
+	"mod.hypixel_util.option.levelhead": "Level Head",
+
+	"mod.tnt_timer.name": "Bộ đếm thời gian TNT",
+	"mod.tnt_timer.description": "Hiển thị thời gian nổ của TNT.",
+
+	"mod.motion_blur.name": "Làm mờ chuyển động.",
+	"mod.motion_blur.description": "Hiệu ứng mờ khi màn hình di chuyển.",
+
+	"mod.motion_blur.option.blur": "Độ mờ",
+
+	"mod.menu_blur.name": "Menu Blur",
+	"mod.menu_blur.description": "Làm mờ nền khi đang mở túi đồ hay giao diện bất kì.",
+
+	"mod.menu_blur.option.blur": "Độ mờ",
+	"mod.menu_blur.option.fadeTime": "Thời gian bắt đầu làm mờ",
+	"mod.menu_blur.option.backgroundColour": "Màu nền",
+
+	"mod.colour_saturation.name": "Color Saturation",
+	"mod.colour_saturation.description": "Tuỳ chỉnh độ bão hoà của màu sắc game.",
+
+	"mod.colour_saturation.option.saturation": "Độ bão hoà",
+
+	"mod.chunk_animator.name": "Chunk Animator",
+	"mod.chunk_animator.description": "Hoạt hoạ khi tải thế giới.",
+
+	"mod.chunk_animator.option.duration": "Tốc độ hoạt hoạ",
+	"mod.chunk_animator.option.animation": "Hoạt hoạ",
+
+	"mod.1.7_visuals.name": "Hiệu ứng 1.7",
+	"mod.1.7_visuals.description": "Mang trở lại hiệu ứng phiên bản 1.7.",
+
+	"mod.1.7_visuals.option.useAndMine": "Hiệu ứng đập khi dùng vật phẩm",
+	"mod.1.7_visuals.option.particles": "Hạt hiệu ứng",
+	"mod.1.7_visuals.option.blocking": "Chặn kiếm",
+	"mod.1.7_visuals.option.eatingAndDrinking": "Ăn uống",
+	"mod.1.7_visuals.option.rod": "Cần câu",
+	"mod.1.7_visuals.option.bow": "Cung tên",
+	"mod.1.7_visuals.option.armourDamage": "Hiệu ứng sát thương trên giáp",
+	"mod.1.7_visuals.option.sneaking": "Làm mượt hiệu ứng đi rón rén",
+
+	"mod.item_physics.name": "Hiệu ứng vật lí vật phẩm",
+	"mod.item_physics.description": "Hoạt hoạ vật phẩm rơi trên mặt đất.",
+
+	"mod.item_physics.option.rotationSpeed": "Tốc độ Quay",
+
+	"mod.particles.name": "Particles",
+	"mod.particles.description": "Tuỳ chỉnh hạt hiệu ứng sát thương.",
+
+	"mod.particles.option.multiplier": "Số lượng hạt hiệu ứng",
+	"mod.particles.option.sharpness": "Luôn hiện hiệu ứng Sắc bén",
+	"mod.particles.option.snow": "Tuyết",
+	"mod.particles.option.slime": "Chất nhầy",
+	"mod.particles.option.flames": "Lửa",
+
+	"mod.time_changer.name": "Thay đổi thời gian",
+	"mod.time_changer.description": "Thay đổi thời gian thế giới.",
+
+	"mod.time_changer.option.time": "Thời gian",
+
+	"mod.block_selection.name": "Hiệu ứng chọn khối",
+	"mod.block_selection.description": "Tuỳ chỉnh hiệu ứng khối đang chọn.",
+
+	"mod.block_selection.option.outline": "Viền",
+	"mod.block_selection.option.outlineWidth": "Độ lớn viền",
+	"mod.block_selection.option.outlineColour": "Màu viền",
+	"mod.block_selection.option.fill": "Nền",
+	"mod.block_selection.option.fillColour": "Màu nền",
+	"mod.block_selection.option.depth": "Ẩn các mặt bị che",
+	"mod.block_selection.option.persistent": "Luôn hiển thị ở mọi chế độ",
+
+	"mod.hit_colour.name": "Hit Color",
+	"mod.hit_colour.description": "Đổi màu hit.",
+
+	"mod.hit_colour.option.colour": "Màu",
+
+	"mod.hitbox.name": "Hitbox",
+	"mod.hitbox.description": "Tuỳ chỉnh, hiển thị hitbox người chơi.",
+
+	"mod.hitbox.option.toggleHitboxes": "Hiển thị Hitbox",
+	"mod.hitbox.option.boundingBox": "Hiển thị viền Hitbox",
+	"mod.hitbox.option.boundingBoxColour": "Màu sắc viền Hitbox",
+	"mod.hitbox.option.eyeHeight": "Hiển thị độ cao mắt",
+	"mod.hitbox.option.eyeHeightColour": "Màu độ cao mắt",
+	"mod.hitbox.option.lookVector": "Hiển thị hướng nhìn",
+	"mod.hitbox.option.lookVectorColour": "Màu hướng hình",
+	"mod.hitbox.option.lineWidth": "Độ lớn đường viền",
+
+	"mod.category.general.name": "Chung",
+	"mod.category.hud.name": "Giao diện",
+	"mod.category.utility.name": "Khác",
+	"mod.category.visual.name": "Hiển thị",
+	"mod.category.integration.name": "Tương tác",
+
+	"mod.discord_integration.name": "Tương tác với Discord",
+	"mod.discord_integration.description": "Các tính năng liên kết với Discord, bao gồm trạng thái đang chơi và Game Overlay.",
+
+	"mod.discord_integration.option.voiceChatHud": "Hiển thị Voice chat HUD",
+	"mod.discord_integration.option.voiceChatHudScale": "Kích thước HUD",
+	"mod.discord_integration.option.voiceChatHudAlignment": "Căn lề HUD",
+	"mod.discord_integration.option.usernameColour": "Màu tên tài khoản mặc định",
+	"mod.discord_integration.option.mutedColour": "Màu tên tài khoản đã tắt Mic",
+	"mod.discord_integration.option.speakingColour": "Màu tên tài khoản đang nói",
+
+	"mod.screen.title": "Mods",
+	"mod.screen.search": "Gõ để tìm kiếm",
+	"mod.screen.apply_to_all": "Áp dụng cho toàn bộ mod khác",
+
+	"hud.edit": "Chỉnh sửa HUD",
+
+	"packs.apply": "Áp dụng",
+	"packs.open_folder": "Thư mục tài nguyên",
+	"packs.folder": "Thư mục (%d gói tài nguyên)",
+
+	"screenshot.view": "Mở ảnh",
+	"screenshot.open_folder": "Hiển thị trong Thư mục"
+}

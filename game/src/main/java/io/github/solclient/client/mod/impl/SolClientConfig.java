@@ -20,7 +20,7 @@ public class SolClientConfig extends ConfigOnlyMod {
 
 	@Expose
 	@Option
-	public boolean fancyMainMenu, logoInInventory;
+	public boolean fancyMainMenu = true, logoInInventory;
 
 	@Option
 	public KeyBinding modsKey = KeyBinding.create(getTranslationKey() + ".mods", Input.RIGHT_SHIFT,

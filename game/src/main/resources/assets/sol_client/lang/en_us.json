@@ -43,6 +43,7 @@
 	"mod.simple_hud.option.borderColour": "Border Color",
 	"mod.simple_hud.option.textColour": "Text Color",
 	"mod.simple_hud.option.shadow": "Text Shadow",
+	"sol_client.mod.smooth_counter_hud.option.smoothNumbers": "Smooth Numbers",
 
 	"mod.sol_client.name": "Sol Client",
 	"mod.sol_client.description": "General settings for Sol Client.",
@@ -94,6 +95,11 @@
 
 	"mod.ping.name": "Ping",
 	"mod.ping.description": "Display the latency to the current server.",
+
+	"mod.ping.option.source": "Source",
+	"mod.ping.option.source.auto": "Auto",
+	"mod.ping.option.source.multiplayer_screen": "Multiplayer Screen",
+	"mod.ping.option.source.tab_list": "Tab List",
 
 	"mod.speedometer.name": "Speedometer",
 	"mod.speedometer.description": "Display your speed.",

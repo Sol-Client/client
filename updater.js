@@ -11,10 +11,10 @@ class Updater {
 	static update() {
 		return new Promise(async(resolve) => {
 			try {
-				var fileExtension;
-				var destFile;
-				var currentVersion = require("./package.json").version;
-				var appimage = process.env.APPIMAGE;
+				let fileExtension;
+				let destFile;
+				let currentVersion = require("./package.json").version;
+				let appimage = process.env.APPIMAGE;
 
 				if(Utils.getOsName() == "windows") {
 					fileExtension = ".exe";
@@ -43,7 +43,7 @@ class Updater {
 
 				console.log("Checking for update...");
 
-				var latestRelease = (await axios.get("https://api.github.com/repos/TheKodeToad/Sol-Client/releases/latest")).data;
+				let latestRelease = (await axios.get("https://api.github.com/repos/TheKodeToad/Sol-Client/releases/latest")).data;
 
 				if(latestRelease.name == currentVersion) {
 					console.log("No updates found");
@@ -51,8 +51,8 @@ class Updater {
 					return;
 				}
 
-				var selectedAsset;
-				for(var asset of latestRelease.assets) {
+				let selectedAsset;
+				for(let asset of latestRelease.assets) {
 					if(asset.name.endsWith(fileExtension)) {
 						selectedAsset = asset;
 					}
@@ -68,7 +68,7 @@ class Updater {
 				await app.whenReady();
 				app.on("window-all-closed", (event) => event.preventDefault());
 
-				var window = new BrowserWindow({
+				let window = new BrowserWindow({
 					width: 600,
 					height: 210,
 					icon: __dirname + "/assets/icon.png",
@@ -85,7 +85,7 @@ class Updater {
 				window.setMenu(null);
 				window.show();
 
-				var wasClosed = false;
+				let wasClosed = false;
 
 				window.on("close", () => {
 					if(!wasClosed) {
@@ -107,13 +107,13 @@ class Updater {
 
 				await sleep(1000);
 
-				var command = destFile;
+				let command = destFile;
 
 				if(Utils.getOsName() == "linux") {
 					fs.renameSync(destFile, appimage);
 					fs.chmodSync(appimage, 0o755);
 					if(path.basename(appimage).includes(currentVersion)) {
-						var newName = path.join(path.dirname(appimage),
+						let newName = path.join(path.dirname(appimage),
 								path.basename(appimage).replace(currentVersion, latestRelease.name));
 						fs.renameSync(appimage, newName);
 						appimage = newName;

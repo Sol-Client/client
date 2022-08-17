@@ -59,15 +59,15 @@ import io.github.solclient.client.mod.impl.hud.ComboCounterMod;
 import io.github.solclient.client.mod.impl.hud.CoordinatesMod;
 import io.github.solclient.client.mod.impl.hud.CpsMod;
 import io.github.solclient.client.mod.impl.hud.FpsMod;
-import io.github.solclient.client.mod.impl.hud.PingMod;
 import io.github.solclient.client.mod.impl.hud.PotionEffectsMod;
 import io.github.solclient.client.mod.impl.hud.ReachDisplayMod;
 import io.github.solclient.client.mod.impl.hud.ScoreboardMod;
-import io.github.solclient.client.mod.impl.hud.SpeedometerMod;
 import io.github.solclient.client.mod.impl.hud.armour.ArmourMod;
 import io.github.solclient.client.mod.impl.hud.chat.ChatMod;
 import io.github.solclient.client.mod.impl.hud.crosshair.CrosshairMod;
 import io.github.solclient.client.mod.impl.hud.keystrokes.KeystrokesMod;
+import io.github.solclient.client.mod.impl.hud.ping.PingMod;
+import io.github.solclient.client.mod.impl.hud.speedometer.SpeedometerMod;
 import io.github.solclient.client.mod.impl.hud.tablist.TabListMod;
 import io.github.solclient.client.mod.impl.hud.timers.TimersMod;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
@@ -84,7 +84,6 @@ import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.text.TextColour;
 import io.github.solclient.client.platform.mc.world.level.Level;
 import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
-import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import io.github.solclient.client.util.Utils;
@@ -96,8 +95,9 @@ import lombok.Setter;
  */
 public final class Client {
 
-	private MinecraftClient mc = MinecraftClient.getInstance();
 	public static final Client INSTANCE = new Client();
+
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 	private JsonObject data;
 	@Getter
 	private final List<Mod> mods = new ArrayList<>();
@@ -107,8 +107,8 @@ public final class Client {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	private final File dataFile = new File(mc.getDataFolder(), "sol_client_mods.json");
-	private final File legacyDataFile = new File(mc.getDataFolder(),
-			"parrot_client_mods.json" /* This was the old name. */ );
+	// data file for beta versions - this is no longer very neccessary.
+	private final File legacyDataFile = new File(mc.getDataFolder(), "parrot_client_mods.json");
 
 	public DetectedServer detectedServer;
 
@@ -470,7 +470,7 @@ public final class Client {
 	 * Saves if the mod screen is not opened.
 	 */
 	public void optionChanged() {
-		if(!(MinecraftClient.getInstance().getScreen() instanceof ModsScreen)) {
+		if(!(mc.getScreen() instanceof ModsScreen)) {
 			save();
 		}
 	}

@@ -1,14 +1,16 @@
 package io.github.solclient.client.util;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,6 +23,7 @@ import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.Environment;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.Window;
+import io.github.solclient.client.platform.mc.hud.IngameHud;
 import io.github.solclient.client.platform.mc.sound.SoundInstance;
 import io.github.solclient.client.platform.mc.sound.SoundType;
 import io.github.solclient.client.platform.mc.util.MinecraftUtil;
@@ -34,18 +37,10 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Utils {
 
-	private PrintStream out;
+	public static final String REVEAL_SUFFIX = "§sol_client:showinfolder";
 	public final ExecutorService MAIN_EXECUTOR = Executors
 			.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
-
-	static {
-		try {
-			out = new PrintStream(System.out, true, "UTF-8");
-		} catch (UnsupportedEncodingException error) {
-			out = System.out;
-		}
-	}
 
 	public int getStringWidth(String text) {
 		return MinecraftClient.getInstance().getFont().getWidth(text);
@@ -107,7 +102,6 @@ public class Utils {
 		return new URL(url);
 	}
 
-
 	public boolean isSpectatingEntityInReplay() {
 		return TODO.L /* TODO replaymod */ != null
 				&& !(MinecraftClient.getInstance().getCameraEntity() instanceof TODO /* TODO replaymod */ );
@@ -144,13 +138,144 @@ public class Utils {
 		return ThreadLocalRandom.current().nextInt(from, to + 1); // https://stackoverflow.com/a/363692
 	}
 
-	public void openUrl(String url) {
-		sendLauncherMessage("openUrl", url);
+	private String decodeUrl(String url) {
+		try {
+			return URLDecoder.decode(url, "UTF-8");
+		}
+		catch(UnsupportedEncodingException error) {
+			// UTF-8 is required
+			throw new Error(error);
+		}
 	}
 
-	private void sendLauncherMessage(String type, String... arguments) {
-		out.println("message " + System.getProperty("io.github.solclient.client.secret") + " " + type + " "
-				+ String.join(" ", arguments));
+	private String urlDirname(String url) {
+		int lastSlash = url.lastIndexOf('/');
+		int lastBacklash = url.lastIndexOf('\\');
+
+		if(lastBacklash > lastSlash) {
+			lastSlash = lastBacklash;
+		}
+
+		return url.substring(0, lastSlash);
+	}
+
+	public void openUrl(String url) {
+		String[] command;
+		boolean reveal = false;
+
+		// ensure that the url starts with file:/// as opposed to file://
+		if(url.startsWith("file:")) {
+			url = url.replace("file:", "file://");
+			url = url.substring(0, url.indexOf('/')) + '/' + url.substring(url.indexOf('/'));
+
+			if(url.endsWith(REVEAL_SUFFIX)) {
+				url = url.substring(0, url.length() - REVEAL_SUFFIX.length());
+				reveal = true;
+			}
+		}
+
+		switch(MinecraftUtil.getOperatingSystem().ordinal()) {
+			case 0: // Linux
+				if(reveal) {
+					if(new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
+						try {
+							Process process = new ProcessBuilder("xdg-mime", "query", "default", "inode/directory").start();
+							int code = process.waitFor();
+
+							if(code > 0) {
+								throw new IllegalStateException("xdg-mime exited with code " + code);
+							}
+
+							String file;
+							try(BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+								file = reader.readLine();
+							}
+
+							if(file != null) {
+								url = decodeUrl(url);
+								url = url.substring(7);
+
+								if(!file.startsWith("/")) {
+									file = "/usr/share/applications/" + file;
+								}
+
+								if(file.endsWith("org.gnome.Nautilus.desktop") || file.endsWith("org.kde.dolphin.desktop")) {
+									command = new String[] { "gio", "launch", file, "--select", url };
+								}
+								else {
+									command = new String[] { "gio", "launch", file, url };
+								}
+								break;
+							}
+						}
+						catch(IOException | InterruptedException | IllegalStateException error) {
+							Client.LOGGER.error("Could not determine directory handler:", error);
+						}
+					}
+					url = urlDirname(url);
+				}
+
+				if(new File("/usr/bin/xdg-open").exists()) {
+					command = new String[] { "xdg-open", url };
+					break;
+				}
+				// fall through to default
+			default:
+				// fall back to AWT, but without a message
+				command = null;
+				break;
+			case 3: // OSX
+				if(reveal) {
+					command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
+				}
+				else {
+					command = new String[] { "open", url };
+				}
+				break;
+			case 2: // Windows
+				if(reveal) {
+					command = new String[] { "Explorer", "/select," + decodeUrl(url).substring(8).replace('/', '\\') };
+				}
+				else {
+					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
+				}
+
+				break;
+		}
+
+		if(command != null) {
+			try {
+				Process proc = new ProcessBuilder(command).start();
+				proc.getInputStream().close();
+				proc.getErrorStream().close();
+				proc.getOutputStream().close();
+				return;
+			}
+			catch(IOException error) {
+				Client.LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:", error);
+			}
+		}
+
+		try {
+			Desktop.getDesktop().browse(URI.create(url));
+		}
+		catch(IOException error) {
+			Client.LOGGER.error("Could not open " + url + " with AWT:", error);
+
+			// null checks in case a link is opened before Minecraft is fully initialised
+
+			MinecraftClient mc = MinecraftClient.getInstance();
+			if(mc == null) {
+				return;
+			}
+
+			IngameHud hud = mc.getIngameHud();
+			if(hud == null) {
+				return;
+			}
+
+			hud.getChat().addMessage("§cCould not open " + url + ". Please open it manually.");
+		}
 	}
 
 	public String getRelativeToPackFolder(File packFile) {

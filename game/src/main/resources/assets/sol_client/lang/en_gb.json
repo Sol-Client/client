@@ -1,69 +1,69 @@
 {
 	"vertical_alignment.middle": "Centre",
-	
+
 	"mod.simple_hud.option.backgroundColour": "Background Colour",
 	"mod.simple_hud.option.borderColour": "Border Colour",
 	"mod.simple_hud.option.textColour": "Text Colour",
-	
+
 	"mod.sol_client.option.uiColour": "Accent Colour",
-	
+
 	"mod.sol_client.option.smoothUIColours": "Smooth UI Colours",
-	
+
 	"mod.coordinates.option.axisLabelColour": "Axis Label Colour",
 	"mod.coordinates.option.axisValueColour": "Axis Value Colour",
 	"mod.coordinates.option.cardinalDirectionColour": "Cardinal Direction Colour",
 	"mod.coordinates.option.axisDirectionColour": "Axis Direction Colour",
-	
+
 	"mod.keystrokes.option.backgroundColourPressed": "Background Colour (Held)",
 	"mod.keystrokes.option.borderColourPressed": "Border Colour (Held)",
 	"mod.keystrokes.option.textColourPressed": "Text Colour (Held)",
 	"mod.keystrokes.option.smoothColours": "Smooth Colours",
-	
+
 	"mod.cps.option.separatorColour": "Separator Colour",
-	
+
 	"mod.potion_effects.option.titleColour": "Label Colour",
 	"mod.potion_effects.option.durationColour": "Duration Colour",
-	
+
 	"mod.armour.name": "Armour and Equipment",
 	"mod.armour.description": "Display your armour and equipment with durability.",
 	"mod.armour.option.armour": "Show Armour",
-	
+
 	"mod.timers.option.nameColour": "Label Colour",
 	"mod.timers.option.timeColour": "Time Colour",
-	
+
 	"mod.chat.description": "Customise ingame chat.",
 	"mod.chat.option.defaultTextColour": "Default Text Colour",
 	"mod.chat.option.colours": "Colours",
-	
+
 	"mod.tab_list.description": "Customise the tab/player list.",
-	
+
 	"mod.crosshair.description": "Customise the crosshair.",
 	"mod.crosshair.option.crosshairColour": "Colour",
 	"mod.crosshair.option.entityColour": "Entity Colour",
-	
+
 	"mod.scoreboard.description": "Customise the scoreboard.",
 	"mod.scoreboard.option.numbersColour": "Numbers Colour",
-	
+
 	"mod.replay.option.recordingIndicatorColour": "Recording Indicator Colour",
 	"mod.replay.option.recordingIndicatorTextColour": "Recording Indicator Text Colour",
-	
+
 	"mod.menu_blur.option.backgroundColour": "Background Colour",
-	
+
 	"mod.colour_saturation.name": "Colour Saturation",
 	"mod.colour_saturation.description": "Adjust the colour saturation of the world.",
-	
+
 	"mod.1.7_visuals.option.armourDamage": "Damage Effect on Armour",
-	
+
 	"mod.block_selection.description": "Customise the block selection.",
 	"mod.block_selection.option.outlineColour": "Outline Colour",
 	"mod.block_selection.option.fillColour": "Fill Colour",
-	
+
 	"mod.hit_colour.name": "Hit Colour",
 	"mod.hit_colour.description": "Change the hit colour.",
 	"mod.hit_colour.option.colour": "Colour",
-	
+
 	"mod.hitbox.description": "Customise and easily toggle entity hitbox displays.",
-	
+
 	"mod.hitbox.option.boundingBoxColour": "Bounding Box Colour",
 	"mod.hitbox.option.eyeHeightColour": "Eye Height Colour",
 	"mod.hitbox.option.lookVectorColour": "Look Vector Colour"

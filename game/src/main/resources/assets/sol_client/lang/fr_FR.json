@@ -1,0 +1,435 @@
+{
+	"passthrough": "%s",
+	"slider.percent": "%s%%",
+	"slider.factor": "%sx",
+	"slider.seconds": "%ss",
+
+	"vertical_alignment.top": "Haut",
+	"vertical_alignment.middle": "Centre",
+	"vertical_alignment.bottom": "Fond",
+
+	"perspective.first_person": "Première personne",
+	"perspective.third_person_back": "Retour à la troisième personne",
+	"perspective.third_person_front": "Avant à la troisième personne",
+
+	"easing.linear": "Linéaire",
+	"easing.quad": "Quadruple",
+	"easing.cubic": "Cubique",
+	"easing.quart": "Quart",
+	"easing.quint": "Quint",
+	"easing.expo": "Expo",
+	"easing.sine": "Sine",
+	"easing.circ": "Circ",
+	"easing.back": "Retour",
+	"easing.bounce": "Rebondir",
+	"easing.elastic": "Élastique",
+
+	"file.edit": "Modifier le fichier...",
+
+	"servers": "Les serveurs",
+
+	"key.category": "Sol Client",
+	"key.accept_request": "Accepter la requête",
+	"key.dismiss_request": "Ignorer la demande",
+
+	"mod.generic.option.enabled": "Activé",
+	"mod.hud.option.scale": "Échelle",
+	"mod.simple_hud.option.background": "Arrière plan",
+	"mod.simple_hud.option.backgroundColour": "Couleur de l'arrière plan",
+	"mod.simple_hud.option.border": "Bordure",
+	"mod.simple_hud.option.borderColour": "Couleur de la bordure",
+	"mod.simple_hud.option.textColour": "Couleur du texte",
+	"mod.simple_hud.option.shadow": "Ombre de texte",
+
+	"mod.sol_client.name": "Sol Client",
+	"mod.sol_client.description": "Paramètres généraux pour Sol Client.",
+
+	"mod.sol_client.option.fancyMainMenu": "Menu principal",
+	"mod.sol_client.option.logoInInventory": "Afficher le logo dans l'inventaire",
+	"mod.sol_client.mods": "Mods",
+	"mod.sol_client.option.modsKey": "Clé de mods",
+	"mod.sol_client.edit_hud": "Modifier l'HUD",
+	"mod.sol_client.option.editHudKey": "Modifier la clé HUD",
+	"mod.sol_client.option.uiColour": "Couleur d'accentuation",
+	"mod.sol_client.option.smoothUIColours": "Couleurs lisses de l'interface utilisateur",
+	"mod.sol_client.option.roundedUI": "Interface utilisateur arrondie",
+	"mod.sol_client.option.buttonClicks": "Clics sur les boutons",
+	"mod.sol_client.option.smoothScrolling": "Défilement fluide",
+	"mod.sol_client.option.fancyFont": "Police HD",
+
+	"mod.fps.name": "FPS",
+	"mod.fps.description": "Affichez les FPS (images par seconde).",
+
+	"mod.coordinates.name": "Coordonnés",
+	"mod.coordinates.description": "Affichez vos coordonnées.",
+
+	"mod.coordinates.option.axisLabelColour": "Couleur de l'étiquette de l'axe",
+	"mod.coordinates.option.axisValueColour": "Couleur de la valeur de l'axe",
+	"mod.coordinates.option.cardinalDirection": "Direction cardinale",
+	"mod.coordinates.option.cardinalDirectionColour": "Couleur de la direction cardinale",
+	"mod.coordinates.option.axisDirection": "Direction de l'axe",
+	"mod.coordinates.option.axisDirectionColour": "Couleur de la direction de l'axe",
+
+	"mod.keystrokes.name": "Frappes",
+	"mod.keystrokes.description": "Afficher les clés actuellement détenues.",
+
+	"mod.keystrokes.option.movement": "Mouvement",
+	"mod.keystrokes.option.mouse": "Souris",
+	"mod.keystrokes.option.mouseMovement": "Mouvement de la souris",
+	"mod.keystrokes.option.showSpace": "Espace",
+	"mod.keystrokes.option.cps": "CPS sur les clés",
+	"mod.keystrokes.option.backgroundColourPressed": "Couleur de l'arrière plan (maintenu)",
+	"mod.keystrokes.option.borderColourPressed": "Couleur de la bordure (maintenu)",
+	"mod.keystrokes.option.textColourPressed": "Couleur du texte (maintenu)",
+	"mod.keystrokes.option.smoothColours": "Smooth Colors",
+
+	"mod.cps.name": "CPS",
+	"mod.cps.description": "Affichez votre CPS (clics par seconde).",
+
+	"mod.cps.option.rmb": "Bouton droit de la souris CPS",
+	"mod.cps.option.separatorColour": "Couleur du séparateur",
+
+	"mod.ping.name": "Ping",
+	"mod.ping.description": "Affiche la latence sur le serveur actuel.",
+
+	"mod.speedometer.name": "Compteur de vitesse",
+	"mod.speedometer.description": "Affichez votre vitesse.",
+
+	"mod.speedometer.option.graphMode": "Mode graphique",
+
+	"mod.reach_display.name": "Affichage de la portée",
+	"mod.reach_display.description": "Affichez la distance lorsque vous frappez des entités.",
+
+	"mod.combo_counter.name": "Compteur combiné",
+	"mod.combo_counter.description": "Comptez le nombre de hits suivants.",
+
+	"mod.combo_counter.no_hits": "Pas de combo",
+	"mod.combo_counter.one_hit": "1 hit",
+	"mod.combo_counter.n_hits": "%s hits",
+
+	"mod.potion_effects.name": "Effets des potions",
+	"mod.potion_effects.description": "Affichez vos potions actives avec des comptes à rebours.",
+
+	"mod.potion_effects.option.alignment": "Alignement",
+	"mod.potion_effects.option.icon": "Icône",
+	"mod.potion_effects.option.background": "Arrière plan",
+	"mod.potion_effects.option.title": "Étiquette",
+	"mod.potion_effects.option.titleColour": "Couleur de l'étiquette",
+	"mod.potion_effects.option.duration": "Durée",
+	"mod.potion_effects.option.durationColour": "Durée Couleur",
+	"mod.potion_effects.option.spacing": "Espacement",
+
+	"mod.armour.name": "Armure et équipement",
+	"mod.armour.description": "Affichez votre armure et votre équipement avec durabilité.",
+
+	"mod.armour.option.durability": "Durabilité",
+	"mod.armour.option.durability.remaining": "Restant",
+	"mod.armour.option.durability.percentage": "Pourcentage",
+	"mod.armour.option.durability.fraction": "Fraction",
+
+	"mod.armour.option.armour": "Afficher l'armure",
+	"mod.armour.option.hand": "Afficher l'élément",
+
+	"mod.timers.name": "Minuteries",
+	"mod.timers.description": "Afficher les minuteries pour les événements en jeu.",
+
+	"mod.timers.option.alignment": "Alignement",
+	"mod.timers.option.icon": "Icône",
+	"mod.timers.option.nameColour": "Couleur de l'étiquette",
+	"mod.timers.option.timeColour": "Couleur de l'heure",
+
+	"mod.chat.name": "Discuter",
+	"mod.chat.description": "Personnalisez le Discuter en jeu.",
+
+	"mod.chat.peek": "Aperçu du chat",
+	"mod.chat.option.preventClose": "Empêcher la fermeture",
+	"mod.chat.option.smooth": "Animations de messages",
+	"mod.chat.option.infiniteChat": "Chat infini",
+	"mod.chat.option.peekKey": "Clé d'aperçu",
+
+	"mod.chat.option.visibility": "Visibilité",
+	"mod.chat.option.visibility.shown": "Montré",
+	"mod.chat.option.visibility.commands": "Commandes uniquement",
+	"mod.chat.option.visibility.hidden": "Caché",
+
+	"mod.chat.option.defaultTextColour": "Couleur du texte par défaut",
+	"mod.chat.option.colours": "Couleurs",
+	"mod.chat.option.width": "Largeur",
+	"mod.chat.option.closedHeight": "Hauteur fermée",
+	"mod.chat.option.openHeight": "Hauteur ouverte",
+	"mod.chat.option.links": "Liens",
+	"mod.chat.option.promptLinks": "Liens rapides",
+	"mod.chat.option.chatFilter": "Activer le filtre de discussion",
+	"mod.chat.option.filteredWordsContent": "Mots filtrés",
+
+	"mod.tab_list.name": "Liste des onglets",
+	"mod.tab_list.description": "Personnalisez la liste des onglets/joueurs.",
+
+	"mod.tab_list.option.hideHeader": "Masquer l'en-tête",
+	"mod.tab_list.option.hideFooter": "Masquer le pied de page",
+
+	"mod.tab_list.option.pingType": "Ping",
+	"mod.tab_list.option.pingType.none": "Caché",
+	"mod.tab_list.option.pingType.icon": "Icône",
+	"mod.tab_list.option.pingType.numeral": "Numéro",
+
+	"mod.tab_list.option.backgroundColour": "Couleur d'arrière-plan de la liste",
+	"mod.tab_list.option.entryBackgroundColour": "Couleur d'arrière-plan de l'entrée",
+	"mod.tab_list.option.hidePlayerHeads": "Masquer les têtes des joueurs",
+	"mod.tab_list.option.textShadow": "Ombre de texte",
+
+	"mod.crosshair.name": "Réticule",
+	"mod.crosshair.description": "Personnalisez le réticule.",
+
+	"mod.crosshair.option.style": "Style",
+	"mod.crosshair.option.style.default": "Défaut",
+	"mod.crosshair.option.style.none": "Aucun",
+	"mod.crosshair.option.style.dot": "Point",
+	"mod.crosshair.option.style.plus": "Plus",
+	"mod.crosshair.option.style.plus_dot": "Plus point",
+	"mod.crosshair.option.style.square": "Carré",
+	"mod.crosshair.option.style.square_dot": "Point carré",
+	"mod.crosshair.option.style.circle": "Cercle",
+	"mod.crosshair.option.style.circle_dot": "Point de cercle",
+	"mod.crosshair.option.style.four_angled": "4 Coudé",
+	"mod.crosshair.option.style.four_angled_dot": "4 points inclinés",
+	"mod.crosshair.option.style.triangle": "Triangle",
+
+	"mod.crosshair.option.thirdPerson": "Afficher à la troisième personne",
+	"mod.crosshair.option.spectatorAlways": "Afficher en mode spectateur",
+	"mod.crosshair.option.debug": "Afficher dans la superposition de débogage",
+	"mod.crosshair.option.blending": "Mélange",
+	"mod.crosshair.option.crosshairColour": "Couleur",
+	"mod.crosshair.option.highlightEntities": "Mettre en surbrillance les entités",
+	"mod.crosshair.option.entityColour": "Couleur de l'entité",
+
+	"mod.scoreboard.name": "Tableau de bord",
+	"mod.scoreboard.description": "Personnalisez le tableau de bord.",
+
+	"mod.scoreboard.option.hide": "cacher",
+	"mod.scoreboard.option.backgroundColourTop": "Couleur d'arrière-plan du haut",
+	"mod.scoreboard.option.numbers": "Nombres",
+	"mod.scoreboard.option.numbersColour": "Couleur des chiffres",
+
+	"mod.tweaks.name": "Ajustements",
+	"mod.tweaks.description": "Divers réglages de jeu, y compris fullbright.",
+
+	"mod.tweaks.option.fullbright": "Très brillant",
+	"mod.tweaks.option.showOwnTag": "Afficher l'étiquette de son propre nom",
+	"mod.tweaks.option.arabicNumerals": "chiffres arabes",
+	"mod.tweaks.option.betterTooltips": "De meilleures info-bulles",
+	"mod.tweaks.option.minimalViewBobbing": "Bobbing de vue minimal",
+	"mod.tweaks.option.minimalDamageShake": "Dégâts minimaux",
+	"mod.tweaks.option.damageShakeIntensity": "Dégâts Shake Intensity",
+	"mod.tweaks.option.confirmDisconnect": "Confirmer la déconnexion",
+	"mod.tweaks.option.borderlessFullscreen": "Plein écran sans bordure",
+	"mod.tweaks.option.betterKeyBindings": "Meilleures liaisons de clé",
+	"mod.tweaks.option.disableHotbarScrolling": "Désactiver le défilement de la barre de raccourcis",
+
+	"mod.tweaks.confirm_disconnect": "Appuyez à nouveau pour confirmer",
+
+	"mod.freelook.name": "Regard libre",
+	"mod.freelook.description": "Déverrouillez la rotation de la caméra depuis la tête du joueur.",
+
+	"mod.freelook.key": "Regard libre",
+	"mod.freelook.option.key": "Clé",
+
+	"mod.freelook.option.perspective": "Perspective",
+	"mod.freelook.option.invertPitch": "Inverser la souris verticalement",
+	"mod.freelook.option.invertYaw": "Inverser la souris horizontalement",
+
+	"mod.taplook.name": "Appuyez sur regarder",
+	"mod.taplook.description": "Changez votre perspective en maintenant un bouton.",
+
+	"mod.taplook.key": "Appuyez sur regarder",
+	"mod.taplook.option.key": "Clé",
+	"mod.taplook.option.perspective": "Perspective",
+
+	"mod.toggle_sprint.name": "Basculer le sprint",
+	"mod.toggle_sprint.description": "Basculez la touche de sprint.",
+
+	"mod.toggle_sprint.default_width": "113(cent treize)",
+
+	"mod.toggle_sprint.option.hud": "HUD",
+
+	"mod.toggle_sprint.held": "Sprint (tenu)",
+	"mod.toggle_sprint.toggled": "Sprint (basculé)",
+
+	"mod.zoom.name": "Zoom",
+	"mod.zoom.description": "Zoom avant en appuyant sur un bouton.",
+
+	"mod.zoom.key": "Zoom",
+	"mod.zoom.option.key": "Clé",
+	"mod.zoom.zoom_out": "Dézoomer",
+	"mod.zoom.option.zoomOutKey": "Touche de zoom arrière",
+	"mod.zoom.zoom_in": "agrandir",
+	"mod.zoom.option.zoomInKey": "Touche Zoom avant",
+	"mod.zoom.option.cinematic": "Caméra cinématographique",
+	"mod.zoom.option.reduceSensitivity": "Réduire la sensibilité",
+	"mod.zoom.option.scrolling": "Faites défiler pour zoomer",
+	"mod.zoom.option.smooth": "Zoomer les animations",
+	"mod.zoom.option.factor": "Facteur de zoom",
+
+	"mod.replay.name": "Rejouer",
+	"mod.replay.description": "Enregistrez et rejouez votre gameplay.",
+
+	"mod.replay.option.enableNotifications": "Activer les notifications",
+	"mod.replay.option.recordSingleplayer": "Enregistrer un joueur",
+	"mod.replay.option.recordServer": "Serveur d'enregistrement",
+	"mod.replay.option.recordingIndicator": "Indicateur d'enregistrement",
+	"mod.replay.option.recordingIndicatorColour": "Couleur de l'indicateur d'enregistrement",
+	"mod.replay.option.recordingIndicatorScale": "Échelle de l'indicateur d'enregistrement",
+	"mod.replay.option.recordingIndicatorTextColour": "Couleur du texte de l'indicateur d'enregistrement",
+	"mod.replay.option.recordingIndicatorTextShadow": "Ombre du texte de l'indicateur d'enregistrement",
+	"mod.replay.option.automaticRecording": "Enregistrement automatique",
+	"mod.replay.option.renameDialog": "Boîte de dialogue Renommer",
+	"mod.replay.option.showChat": "Afficher la conversation",
+
+	"mod.replay.option.camera": "Caméra",
+	"mod.replay.option.camera.classic": "Classique",
+	"mod.replay.option.camera.vanilla_ish": "À la vanille",
+
+	"mod.replay.option.showPathPreview": "Afficher l'aperçu du chemin",
+
+	"mod.replay.option.defaultInterpolator": "Interpolateur par défaut",
+	"mod.replay.interpolator.catmull": "Spline Catmull-Rom",
+	"mod.replay.interpolator.cubic": "Spline cubique",
+	"mod.replay.interpolator.linear": "Linéaire",
+
+	"mod.replay.option.showServerIPs": "Afficher l'IP du serveur",
+
+	"mod.quickplay.name": "Jeu rapide",
+	"mod.quickplay.description": "Mettez rapidement les jeux en file d'attente à l'aide de votre clavier.",
+
+	"mod.quickplay.key": "Jeu rapide",
+	"mod.quickplay.option.menuKey": "Clé",
+
+	"mod.hypixel_util.name": "Ajouts d'Hypixels",
+	"mod.hypixel_util.description": "Diverses améliorations de l'expérience sur Hypixel.",
+
+	"mod.hypixel_util.option.visitHousingCommand": "/visiterlelogement",
+	"mod.hypixel_util.option.lobbySoundsVolume": "Volume des sons du hall",
+	"mod.hypixel_util.option.housingMusicVolume": "Volume de la musique du logement",
+	"mod.hypixel_util.option.popupEvents": "Événements contextuels",
+	"mod.hypixel_util.option.autogg": "GG automatique",
+	"mod.hypixel_util.option.autoggMessage": "Message GG",
+	"mod.hypixel_util.option.hidegg": "Masquer GG",
+	"mod.hypixel_util.option.autogl": "GL automatique",
+	"mod.hypixel_util.option.autoglMessage": "Message GL",
+	"mod.hypixel_util.option.hidegl": "Masquer GL",
+	"mod.hypixel_util.option.levelhead": "Tête de niveau",
+
+	"mod.tnt_timer.name": "Minuterie TNT",
+	"mod.tnt_timer.description": "Afficher le temps d'explosion de TNT.",
+
+	"mod.motion_blur.name": "Flou de mouvement",
+	"mod.motion_blur.description": "Effet de flou de mouvement fluide.",
+
+	"mod.motion_blur.option.blur": "Se brouiller",
+
+	"mod.menu_blur.name": "Menu flou",
+	"mod.menu_blur.description": "Flou l'arrière-plan des menus.",
+
+	"mod.menu_blur.option.blur": "Se brouiller",
+	"mod.menu_blur.option.fadeTime": "Temps de fondu",
+	"mod.menu_blur.option.backgroundColour": "Couleur de l'arrière plan",
+
+	"mod.colour_saturation.name": "Saturation de couleur",
+	"mod.colour_saturation.description": "Ajustez la saturation des couleurs du monde.",
+
+	"mod.colour_saturation.option.saturation": "Saturation",
+
+	"mod.chunk_animator.name": "Animateur de morceaux",
+	"mod.chunk_animator.description": "Animez le monde pendant qu'il se charge.",
+
+	"mod.chunk_animator.option.duration": "Durée",
+	"mod.chunk_animator.option.animation": "Animation",
+
+	"mod.1.7_visuals.name": "1.7 Visuels",
+	"mod.1.7_visuals.description": "Ramenez une partie de l'aspect et de la convivialité de 1.7.",
+
+	"mod.1.7_visuals.option.useAndMine": "Creusez en utilisant l'objet",
+	"mod.1.7_visuals.option.particles": "Particules",
+	"mod.1.7_visuals.option.blocking": "Blocage de l'épée",
+	"mod.1.7_visuals.option.eatingAndDrinking": "Manger et boire",
+	"mod.1.7_visuals.option.rod": "Canne à pêche",
+	"mod.1.7_visuals.option.bow": "Arc",
+	"mod.1.7_visuals.option.armourDamage": "Effet des dégâts sur l'armure",
+	"mod.1.7_visuals.option.sneaking": "Se faufiler en douceur",
+
+	"mod.item_physics.name": "Physique de l'objet",
+	"mod.item_physics.description": "Ajoutez une animation tournante aux éléments.",
+
+	"mod.item_physics.option.rotationSpeed": "Vitesse de rotation",
+
+	"mod.particles.name": "Particules",
+	"mod.particles.description": "Ajustez et multipliez les particules d'attaque.",
+
+	"mod.particles.option.multiplier": "Multiplicateur",
+	"mod.particles.option.sharpness": "Toujours afficher la netteté",
+	"mod.particles.option.snow": "Neiger",
+	"mod.particles.option.slime": "Vase",
+	"mod.particles.option.flames": "Flammes",
+
+	"mod.time_changer.name": "Changeur d'heure",
+	"mod.time_changer.description": "Changez le temps visuel sans affecter le gameplay.",
+
+	"mod.time_changer.option.time": "Temps",
+
+	"mod.block_selection.name": "Sélection de bloc",
+	"mod.block_selection.description": "Personnalisez la sélection de blocs.",
+
+	"mod.block_selection.option.outline": "Présenter",
+	"mod.block_selection.option.outlineWidth": "Largeur du contour",
+	"mod.block_selection.option.outlineColour": "Couleur du contour",
+	"mod.block_selection.option.fill": "Remplir",
+	"mod.block_selection.option.fillColour": "La couleur de remplissage",
+	"mod.block_selection.option.depth": "Profondeur",
+	"mod.block_selection.option.persistent": "Persistant",
+
+	"mod.hit_colour.name": "Frapper la couleur",
+	"mod.hit_colour.description": "Changez la couleur du coup.",
+
+	"mod.hit_colour.option.colour": "Couleur",
+
+	"mod.hitbox.name": "Hitbox",
+	"mod.hitbox.description": "Personnalisez et basculez facilement les affichages de la hitbox des entités.",
+
+	"mod.hitbox.option.toggleHitboxes": "Basculer les hitbox",
+	"mod.hitbox.option.boundingBox": "Afficher la boîte englobante",
+	"mod.hitbox.option.boundingBoxColour": "Couleur de la boîte englobante",
+	"mod.hitbox.option.eyeHeight": "Afficher la hauteur des yeux",
+	"mod.hitbox.option.eyeHeightColour": "Couleur de la hauteur des yeux",
+	"mod.hitbox.option.lookVector": "Afficher le vecteur de look",
+	"mod.hitbox.option.lookVectorColour": "Regardez la couleur du vecteur",
+	"mod.hitbox.option.lineWidth": "Largeur de ligne",
+
+	"mod.category.general.name": "Général",
+	"mod.category.hud.name": "HUD",
+	"mod.category.utility.name": "Utilitaire",
+	"mod.category.visual.name": "Visuel",
+	"mod.category.integration.name": "l'intégration",
+
+	"mod.discord_integration.name": "Intégration Discord",
+	"mod.discord_integration.description": "Fonctionnalités d'intégration pour Discord, y compris les activités et la superposition.",
+
+	"mod.discord_integration.option.voiceChatHud": "HUD de chat vocal",
+	"mod.discord_integration.option.voiceChatHudScale": "Échelle HUD de chat vocal",
+	"mod.discord_integration.option.voiceChatHudAlignment": "Alignement du HUD du chat vocal",
+	"mod.discord_integration.option.usernameColour": "Couleur du nom d'utilisateur",
+	"mod.discord_integration.option.mutedColour": "Couleur en sourdine",
+	"mod.discord_integration.option.speakingColour": "Couleur parlante",
+
+	"mod.screen.title": "Mods",
+	"mod.screen.search": "Tapez pour rechercher",
+	"mod.screen.apply_to_all": "S'applique à tous",
+
+	"hud.edit": "Modifier l'HUD",
+
+	"packs.apply": "Appliquer",
+	"packs.open_folder": "Dossier de pack",
+	"packs.folder": "Dossier (%d items)",
+
+	"screenshot.view": "Voir",
+	"screenshot.open_folder": "Afficher dans le dossier"
+}

@@ -14,19 +14,21 @@ public interface KeyBinding {
 
 	@NotNull String getName();
 
-	int getKeyCode();
-
-	void setKeyCode(int code);
+	int getCode();
 
 	boolean isHeld();
 
 	boolean consumePress();
 
 	default void clearPresses() {
-		while(consumePress());
+		while(consumePress()) {
+			;
+		}
 	}
 
 	@NotNull List<KeyBinding> getConflictingKeys();
+
+	boolean conflicts();
 
 	static void reload() {
 		throw new UnsupportedOperationException();

@@ -68,12 +68,12 @@ public class ModOptionComponent extends ScaledIconComponent {
 		else if(option.getType() == KeyBinding.class) {
 			KeyBinding binding = (KeyBinding) option.getValue();
 
-			add(new LabelComponent((component, defaultText) -> Input.getKeyName(binding.getKeyCode()),
+			add(new LabelComponent((component, defaultText) -> Input.getKeyName(binding.getCode()),
 					new AnimatedColourController((component, defaultColour) -> {
 						if(listening) {
 							return new Colour(255, 255, 85);
 						}
-						else if(isConflicting(binding)) {
+						else if(!binding.getConflictingKeys().isEmpty()) {
 							return new Colour(255, 85, 85);
 						}
 
@@ -253,19 +253,6 @@ public class ModOptionComponent extends ScaledIconComponent {
 	@Override
 	public boolean useFallback() {
 		return true;
-	}
-
-	private boolean isConflicting(KeyBinding binding) {
-		if(binding.getKeyCode() != 0) {
-			for(KeyBinding testKey : mc.getOptions().keys()) {
-				if(testKey != binding
-						&& testKey.getKeyCode() == binding.getKeyCode()) {
-					return true;
-				}
-			}
-		}
-
-		return false;
 	}
 
 }

@@ -156,7 +156,7 @@ public class HitboxMod extends Mod {
 	public void onTick(PreTickEvent event) {
 		while(toggleHitboxes.consumePress()) {
 			// If debug shortcut is used, don't conflict.
-			if(toggleHitboxes.getKeyCode() == Input.B && Input.isKeyHeld(Input.F3)) {
+			if(toggleHitboxes.getCode() == Input.B && Input.isKeyHeld(Input.F3)) {
 				continue;
 			}
 

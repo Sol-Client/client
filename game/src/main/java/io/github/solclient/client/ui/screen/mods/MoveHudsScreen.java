@@ -120,7 +120,7 @@ public class MoveHudsScreen extends Screen {
 
 	@Override
 	public void keyDown(char character, int key) {
-		if(key == 1 || key == SolClientConfig.instance.editHudKey.getKeyCode()) {
+		if(key == 1 || key == SolClientConfig.instance.editHudKey.getCode()) {
 			Client.INSTANCE.save();
 			if(title != null) {
 				mc.setScreen(title);

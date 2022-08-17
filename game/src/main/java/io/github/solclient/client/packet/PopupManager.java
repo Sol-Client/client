@@ -39,9 +39,9 @@ public class PopupManager {
 			}
 			else {
 				String message = currentPopup.getText();
-				String keys = TextFormatting.GREEN + " [ " + Input.getKeyName(acceptRequestKey.getKeyCode())
+				String keys = TextFormatting.GREEN + " [ " + Input.getKeyName(acceptRequestKey.getCode())
 						+ " ] Accept" + TextFormatting.RED + "  [ "
-						+ Input.getKeyName(dismissRequestKey.getKeyCode()) + " ] Dismiss ";
+						+ Input.getKeyName(dismissRequestKey.getCode()) + " ] Dismiss ";
 				int width = Math.max(mc.getFont().getWidth(message), mc.getFont().getWidth(keys)) + 15;
 
 				Window window = mc.getWindow();

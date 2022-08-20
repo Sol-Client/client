@@ -30,6 +30,7 @@ import io.github.solclient.client.config.ConfigVersion;
 import io.github.solclient.client.culling.CullTask;
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.impl.GameQuitEvent;
 import io.github.solclient.client.event.impl.PostGameStartEvent;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.event.impl.SendChatMessageEvent;
@@ -62,6 +63,7 @@ import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessMinecraft;
+import io.github.solclient.client.util.font.SlickFontRenderer;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -83,8 +85,9 @@ import net.minecraft.util.ResourceLocation;
  */
 public class Client {
 
-	private Minecraft mc = Minecraft.getMinecraft();
 	public static final Client INSTANCE = new Client();
+
+	private final Minecraft mc = Minecraft.getMinecraft();
 	private JsonObject data;
 	@Getter
 	private List<Mod> mods = new ArrayList<Mod>();
@@ -93,8 +96,9 @@ public class Client {
 	private List<HudElement> huds = new ArrayList<HudElement>();
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private final File DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "sol_client_mods.json");
-	private final File LEGACY_DATA_FILE = new File(Minecraft.getMinecraft().mcDataDir, "parrot_client_mods.json" /* This was the old name. */ );
+	private final File DATA_FILE = new File(mc.mcDataDir, "sol_client_mods.json");
+	// data file for beta versions - this is no longer very neccessary.
+	private final File LEGACY_DATA_FILE = new File(mc.mcDataDir, "parrot_client_mods.json");
 
 	public DetectedServer detectedServer;
 
@@ -122,7 +126,7 @@ public class Client {
 
 	public void init() {
 		Utils.resetLineWidth();
-		new File(Minecraft.getMinecraft().mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
+		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
 		System.setProperty("http.agent", "Sol Client/" + Client.VERSION);
 
 		LOGGER.info("Initialising...");
@@ -440,6 +444,11 @@ public class Client {
 		}
 	}
 
+	@EventHandler
+	public void onQuit(GameQuitEvent event) {
+		SlickFontRenderer.DEFAULT.free();
+	}
+
 	public void registerChatButton(ChatButton button) {
 		chatButtons.add(button);
 		chatButtons.sort(Comparator.comparingInt(ChatButton::getPriority));
@@ -478,7 +487,7 @@ public class Client {
 	 * Saves if the mod screen is not opened.
 	 */
 	public void optionChanged() {
-		if(!(Minecraft.getMinecraft().currentScreen instanceof ModsScreen)) {
+		if(!(mc.currentScreen instanceof ModsScreen)) {
 			save();
 		}
 	}

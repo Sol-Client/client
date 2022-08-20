@@ -1,7 +1,7 @@
 const { ipcRenderer } = require("electron");
 
-var domLoaded = false;
-var deferredProgress;
+let domLoaded = false;
+let deferredProgress;
 
 ipcRenderer.on("progress", (event, progress) => {
 	if(!domLoaded) {

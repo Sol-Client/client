@@ -56,10 +56,10 @@ class Utils {
 		Utils.assetIndexesDirectory = Utils.assetsDirectory + "/indexes";
 		Utils.accountsFile = Utils.dataDirectory + "/accounts.json";
 
-		var accountFile = Utils.dataDirectory + "/account.json";
+		let accountFile = Utils.dataDirectory + "/account.json";
 		if(fs.existsSync(accountFile) && !fs.existsSync(Utils.accountsFile)) {
-			var oldAccount = JSON.parse(fs.readFileSync(accountFile, "UTF-8"));
-			var converted = { accounts: [oldAccount], activeAccount: 0 }
+			let oldAccount = JSON.parse(fs.readFileSync(accountFile, "UTF-8"));
+			let converted = { accounts: [oldAccount], activeAccount: 0 }
 			fs.writeFileSync(Utils.accountsFile, JSON.stringify(converted));
 			fs.rmSync(accountFile);
 		}
@@ -93,7 +93,7 @@ class Utils {
 						return;
 					}
 
-					var length;
+					let length;
 					if(response.headers["content-length"]) {
 						length = parseInt(response.headers["content-length"]);
 					}
@@ -101,7 +101,7 @@ class Utils {
 						length = 0;
 					}
 
-					var receivedBytes = 0;
+					let receivedBytes = 0;
 
 					if(response.code > 400) {
 						reject(new Error("Server responded with error " + response.code));
@@ -109,12 +109,12 @@ class Utils {
 					}
 
 					if(response.headers.location) {
-						var result = await Utils.download(response.headers.location, file, size, progressConsumer);
+						let result = await Utils.download(response.headers.location, file, size, progressConsumer);
 						resolve(result);
 						return;
 					}
 
-					var stream = fs.createWriteStream(file);
+					let stream = fs.createWriteStream(file);
 					response.pipe(stream);
 
 					if(progressConsumer) {
@@ -143,7 +143,7 @@ class Utils {
 		return new Promise((resolve) => {
 			axios.get("https://optifine.net/adloadx?f=OptiFine_" + version + ".jar")
 				.then((response) => {
-					var link = "https://optifine.net/downloadx?f=" +
+					let link = "https://optifine.net/downloadx?f=" +
 							response.data.substring(response.data
 									.indexOf("<a href='downloadx?f=")
 									 		+ "<a href='downloadx?f=".length, response.data.indexOf("' onclick='onDownload()'>"))
@@ -189,8 +189,8 @@ class Utils {
 	// Heavily based around https://stackoverflow.com/a/64929732
 	static expandImageURL(url) {
 		return new Promise(async(resolve) => {
-			var data = await fetch(url);
-			var reader = new FileReader();
+			let data = await fetch(url);
+			let reader = new FileReader();
 			reader.readAsDataURL(await data.blob());
 			reader.onloadend = () => {
 				resolve(reader.result);
@@ -204,7 +204,7 @@ class Utils {
 
 	static loadImage(url) {
 		return new Promise(async(resolve) => {
-			var image = new Image();
+			let image = new Image();
 			image.onload = () => {
 				resolve(image);
 			};
@@ -214,13 +214,13 @@ class Utils {
 
 	static getTextures(uuid) {
 		return new Promise(async(resolve) => {
-			var profile = await axios.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
+			let profile = await axios.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
 
 			if(!profile.data) {
 				return;
 			}
 			else {
-				for(var property of profile.data.properties) {
+				for(let property of profile.data.properties) {
 					if(property.name == "textures") {
 						resolve(JSON.parse(atob(property.value)).textures);
 						return;

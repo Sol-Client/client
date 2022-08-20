@@ -1,5 +1,6 @@
 package io.github.solclient.client.util;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,9 +9,13 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,6 +26,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
+import com.replaymod.replaystudio.lib.viaversion.libs.kyori.adventure.text.event.ClickEvent.Action;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientMod;
@@ -31,6 +37,7 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.ServerAddress;
@@ -38,6 +45,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.event.ClickEvent;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetworkManager;
@@ -50,6 +58,7 @@ import net.minecraft.network.status.server.S01PacketPong;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
@@ -60,18 +69,9 @@ import net.minecraft.util.Util.EnumOS;
 @UtilityClass
 public class Utils {
 
-	private PrintStream out;
+	public static final String REVEAL_SUFFIX = "§sol_client:showinfolder";
 	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
-
-	static {
-		try {
-			out = new PrintStream(System.out, true, "UTF-8");
-		}
-		catch(UnsupportedEncodingException error) {
-			out = System.out;
-		}
-	}
 
 	private int getStringWidth(String text) {
 		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
@@ -207,53 +207,6 @@ public class Utils {
 		return new URL(url);
 	}
 
-	/*
-	 * Single following method:
-	 *
-	 *       Copyright (C) 2018-present Hyperium <https://hyperium.cc/>
-	 *
-	 *       This program is free software: you can redistribute it and/or modify
-	 *       it under the terms of the GNU Lesser General Public License as published
-	 *       by the Free Software Foundation, either version 3 of the License, or
-	 *       (at your option) any later version.
-	 *
-	 *       This program is distributed in the hope that it will be useful,
-	 *       but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	 *       GNU Lesser General Public License for more details.
-	 *
-	 *       You should have received a copy of the GNU Lesser General Public License
-	 *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
-	 */
-	public void drawCircle(float xx, float yy, int radius, int col) {
-		float f = (col >> 24 & 0xFF) / 255.0F;
-		float f2 = (col >> 16 & 0xFF) / 255.0F;
-		float f3 = (col >> 8 & 0xFF) / 255.0F;
-		float f4 = (col & 0xFF) / 255.0F;
-		GL11.glPushMatrix();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glEnable(GL11.GL_LINE_SMOOTH);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		GL11.glLineWidth(2);
-		GL11.glBegin(2);
-		GlStateManager.color(f2, f3, f4, f);
-
-		for (int i = 0; i < 70; i++) {
-			float x = radius * MathHelper.cos((float) (i * 0.08975979010256552D));
-			float y = radius * MathHelper.sin((float) (i * 0.08975979010256552D));
-			GL11.glVertex2f(xx + x, yy + y);
-		}
-
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glEnd();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_LINE_SMOOTH);
-		GL11.glPopMatrix();
-	}
-
 	public GuiChat getChatGui() {
 		GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
 		if(currentScreen != null && currentScreen instanceof GuiChat) {
@@ -359,7 +312,7 @@ public class Utils {
 				else {
 					expected = true;
 					time = Minecraft.getSystemTime();
-					networkManager.sendPacket(new C01PacketPing(this.time));
+					networkManager.sendPacket(new C01PacketPing(time));
 				}
 			}
 
@@ -385,12 +338,144 @@ public class Utils {
 		return ThreadLocalRandom.current().nextInt(from, to + 1); // https://stackoverflow.com/a/363692
 	}
 
-	public void openUrl(String url) {
-		sendLauncherMessage("openUrl", url);
+	private String decodeUrl(String url) {
+		try {
+			return URLDecoder.decode(url, "UTF-8");
+		}
+		catch(UnsupportedEncodingException error) {
+			// UTF-8 is required
+			throw new Error(error);
+		}
 	}
 
-	private void sendLauncherMessage(String type, String... arguments) {
-		out.println("message " + System.getProperty("io.github.solclient.client.secret") + " " + type + " " + String.join(" ", arguments));
+	private String urlDirname(String url) {
+		int lastSlash = url.lastIndexOf('/');
+		int lastBacklash = url.lastIndexOf('\\');
+
+		if(lastBacklash > lastSlash) {
+			lastSlash = lastBacklash;
+		}
+
+		return url.substring(0, lastSlash);
+	}
+
+	public void openUrl(String url) {
+		String[] command;
+		boolean reveal = false;
+
+		// ensure that the url starts with file:/// as opposed to file://
+		if(url.startsWith("file:")) {
+			url = url.replace("file:", "file://");
+			url = url.substring(0, url.indexOf('/')) + '/' + url.substring(url.indexOf('/'));
+
+			if(url.endsWith(REVEAL_SUFFIX)) {
+				url = url.substring(0, url.length() - REVEAL_SUFFIX.length());
+				reveal = true;
+			}
+		}
+
+		switch(Util.getOSType()) {
+			case LINUX:
+				if(reveal) {
+					if(new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
+						try {
+							Process process = new ProcessBuilder("xdg-mime", "query", "default", "inode/directory").start();
+							int code = process.waitFor();
+
+							if(code > 0) {
+								throw new IllegalStateException("xdg-mime exited with code " + code);
+							}
+
+							String file;
+							try(BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+								file = reader.readLine();
+							}
+
+							if(file != null) {
+								url = decodeUrl(url);
+								url = url.substring(7);
+
+								if(!file.startsWith("/")) {
+									file = "/usr/share/applications/" + file;
+								}
+
+								if(file.endsWith("org.gnome.Nautilus.desktop") || file.endsWith("org.kde.dolphin.desktop")) {
+									command = new String[] { "gio", "launch", file, "--select", url };
+								}
+								else {
+									command = new String[] { "gio", "launch", file, url };
+								}
+								break;
+							}
+						}
+						catch(IOException | InterruptedException | IllegalStateException error) {
+							Client.LOGGER.error("Could not determine directory handler:", error);
+						}
+					}
+					url = urlDirname(url);
+				}
+
+				if(new File("/usr/bin/xdg-open").exists()) {
+					command = new String[] { "xdg-open", url };
+					break;
+				}
+				// fall through to default
+			default:
+				// fall back to AWT, but without a message
+				command = null;
+				break;
+			case OSX:
+				if(reveal) {
+					command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
+				}
+				else {
+					command = new String[] { "open", url };
+				}
+				break;
+			case WINDOWS:
+				if(reveal) {
+					command = new String[] { "Explorer", "/select," + decodeUrl(url).substring(8).replace('/', '\\') };
+				}
+				else {
+					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
+				}
+
+				break;
+		}
+
+		if(command != null) {
+			try {
+				Process proc = new ProcessBuilder(command).start();
+				proc.getInputStream().close();
+				proc.getErrorStream().close();
+				proc.getOutputStream().close();
+				return;
+			}
+			catch(IOException error) {
+				Client.LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:", error);
+			}
+		}
+
+		try {
+			Desktop.getDesktop().browse(URI.create(url));
+		}
+		catch(IOException error) {
+			Client.LOGGER.error("Could not open " + url + " with AWT:", error);
+
+			// null checks in case a link is opened before Minecraft is fully initialised
+
+			Minecraft mc = Minecraft.getMinecraft();
+			if(mc == null) {
+				return;
+			}
+
+			GuiIngame gui = mc.ingameGUI;
+			if(gui == null) {
+				return;
+			}
+
+			gui.getChatGUI().printChatMessage(new ChatComponentText("§cCould not open " + url + ". Please open it manually."));
+		}
 	}
 
 	public String getRelativeToPackFolder(File packFile) {
@@ -535,15 +620,6 @@ public class Utils {
 		tessellator.draw();
 
 		GlStateManager.enableCull();
-	}
-
-	public static void earlyLoad(String name) {
-		try {
-			Class.forName(name, true, Launch.classLoader);
-		}
-		catch(Exception error) {
-			Client.LOGGER.error("Could not early load " + name + ". This may cause further issues.");
-		}
 	}
 
 }

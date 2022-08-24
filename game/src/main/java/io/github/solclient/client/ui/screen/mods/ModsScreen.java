@@ -178,14 +178,14 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true,
 						false);
 			}
-			else if(mod == null && code == Input.F && (mods & Input.CONTROL_MODIFIER) != 0
+			else if(mod == null && code == Input.F && (mods & Input.COMMAND_MODIFIER) != 0
 					&& (mods & Input.SHIFT_MODIFIER) == 0 && (mods & Input.ALT_MODIFIER) == 0) {
 				search.setFocused(true);
 				return true;
 			}
 			else if(mod != null
 					&& (code == Input.BACKSPACE || (code == Input.LEFT && (mods & Input.ALT_MODIFIER) != 0
-							&& (mods & Input.CONTROL_MODIFIER) == 0 && (mods & Input.SHIFT_MODIFIER) == 0))
+							&& (mods & Input.COMMAND_MODIFIER) == 0 && (mods & Input.SHIFT_MODIFIER) == 0))
 					&& screen.getRoot().getDialog() == null) {
 				switchMod(null);
 				return true;

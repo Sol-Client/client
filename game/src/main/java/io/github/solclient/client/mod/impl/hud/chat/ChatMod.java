@@ -193,7 +193,7 @@ public class ChatMod extends HudMod {
 				amount = -amount;
 			}
 
-			if(!Input.isShiftHeld()) {
+			if(!Input.isShiftDown()) {
 				amount *= 7;
 			}
 

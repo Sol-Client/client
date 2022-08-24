@@ -6,6 +6,7 @@
 	"mixins": [
 		"platform.mc.maths.Vec3iImpl",
 		"platform.mc.option.KeyBindingImpl",
+		"platform.mc.option.KeyBindingImpl$Static",
 		"platform.mc.option.OptionsImpl",
 		"platform.mc.resource.IdentifierImpl",
 		"platform.mc.resource.IdentifierImpl$Static",
@@ -15,6 +16,7 @@
 		"platform.mc.screen.ProxyScreenImpl",
 		"platform.mc.text.TextImpl",
 		"platform.mc.text.TextImpl$Static",
+		"platform.mc.util.InputImpl",
 		"platform.mc.world.level.block.BlockPosImpl$Static",
 		"platform.mc.world.level.block.BlockStateImpl",
 		"platform.mc.world.level.chunk.ChunkImpl",

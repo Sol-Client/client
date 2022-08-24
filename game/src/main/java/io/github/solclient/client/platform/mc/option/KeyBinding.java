@@ -3,6 +3,7 @@ package io.github.solclient.client.platform.mc.option;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface KeyBinding {
 
@@ -15,6 +16,8 @@ public interface KeyBinding {
 	@NotNull String getName();
 
 	int getKeyCode();
+
+	@Nullable String getBoundKeyName();
 
 	boolean isHeld();
 

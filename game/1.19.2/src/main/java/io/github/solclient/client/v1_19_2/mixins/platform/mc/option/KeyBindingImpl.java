@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -17,6 +18,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 @Mixin(net.minecraft.client.option.KeyBinding.class)
 @Implements(@Interface(iface = KeyBinding.class, prefix = "platform$"))
@@ -35,6 +38,13 @@ public abstract class KeyBindingImpl {
 
 	@Shadow
 	private @Final String translationKey;
+
+	public @Nullable String platform$getBoundKeyName() {
+		return Formatting.strip(getBoundKeyLocalizedText().getString());
+	}
+
+	@Shadow
+	public abstract Text getBoundKeyLocalizedText();
 
 	public int platform$getKeyCode() {
 		return boundKey.getCode();

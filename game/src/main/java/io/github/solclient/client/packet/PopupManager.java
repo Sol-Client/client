@@ -11,7 +11,6 @@ import io.github.solclient.client.platform.mc.Window;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.text.TextFormatting;
 import io.github.solclient.client.platform.mc.util.Input;
-import io.github.solclient.client.platform.mc.util.MinecraftUtil;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 
@@ -39,9 +38,8 @@ public class PopupManager {
 			}
 			else {
 				String message = currentPopup.getText();
-				String keys = TextFormatting.GREEN + " [ " + Input.getKeyName(acceptRequestKey.getKeyCode())
-						+ " ] Accept" + TextFormatting.RED + "  [ "
-						+ Input.getKeyName(dismissRequestKey.getKeyCode()) + " ] Dismiss ";
+				String keys = TextFormatting.GREEN + " [ " + acceptRequestKey.getBoundKeyName() + " ] Accept"
+						+ TextFormatting.RED + "  [ " + dismissRequestKey.getBoundKeyName() + " ] Dismiss ";
 				int width = Math.max(mc.getFont().getWidth(message), mc.getFont().getWidth(keys)) + 15;
 
 				Window window = mc.getWindow();

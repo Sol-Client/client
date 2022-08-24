@@ -186,7 +186,7 @@ public final class QuickPlayPalette extends ProxyScreen {
 
 		if(code == Input.BACKSPACE) {
 			if(!query.isEmpty()) {
-				if((mods & Input.CONTROL_MODIFIER) != 0) {
+				if((mods & Input.COMMAND_MODIFIER) != 0) {
 					query = "";
 				}
 				else {

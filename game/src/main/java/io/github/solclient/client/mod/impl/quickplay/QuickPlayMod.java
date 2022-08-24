@@ -89,7 +89,7 @@ public class QuickPlayMod extends Mod {
 	public void playGame(QuickPlayGameMode mode) {
 		mc.getPlayer().chat(mode.getCommand());
 
-		if(!Input.isShiftHeld()) {
+		if(!Input.isShiftDown()) {
 			mc.closeScreen();
 		}
 

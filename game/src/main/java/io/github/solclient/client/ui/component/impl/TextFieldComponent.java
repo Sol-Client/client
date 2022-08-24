@@ -178,89 +178,86 @@ public class TextFieldComponent extends Component {
 			return true;
 		}
 
-		switch(code) {
-			case Input.BACKSPACE:
-				if((mods & Input.CONTROL_MODIFIER) != 0) {
-					if(enabled) {
-						deleteWords(-1);
-					}
+		if(code == Input.BACKSPACE) {
+			if((mods & Input.COMMAND_MODIFIER) != 0) {
+				if(enabled) {
+					deleteWords(-1);
 				}
-				else if(enabled) {
-					deleteFromCursor(-1);
-				}
-
-				return true;
-			case Input.HOME:
-				if((mods & Input.SHIFT_MODIFIER) != 0) {
-					setSelectionPosition(0);
-				}
-				else {
-					setCursorPosition(0);
-				}
-
-				return true;
-			case Input.LEFT:
-				if((mods & Input.SHIFT_MODIFIER) != 0) {
-					if((mods & Input.CONTROL_MODIFIER) != 0) {
-						setSelectionPosition(getWordFromPosition(-1, selectionEnd));
-					}
-					else {
-						setSelectionPosition(selectionEnd - 1);
-					}
-				}
-				else if((mods & Input.CONTROL_MODIFIER) != 0) {
-					setCursorPosition(getWordFromCursor(-1));
-				}
-				else {
-					moveCursorBy(-1);
-				}
-
-				return true;
-			case Input.RIGHT:
-				if((mods & Input.SHIFT_MODIFIER) != 0) {
-					if((mods & Input.CONTROL_MODIFIER) != 0) {
-						setSelectionPosition(getWordFromPosition(1, selectionEnd));
-					}
-					else {
-						setSelectionPosition(selectionEnd + 1);
-					}
-				}
-				else if((mods & Input.CONTROL_MODIFIER) != 0) {
-					setCursorPosition(getWordFromCursor(1));
-				}
-				else {
-					moveCursorBy(1);
-				}
-
-				return true;
-			case Input.END:
-				if((mods & Input.SHIFT_MODIFIER) != 0) {
-					setSelectionPosition(text.length());
-				}
-				else {
-					setCursorPositionEnd();
-				}
-
-				return true;
-			case Input.DELETE:
-				if((mods & Input.CONTROL_MODIFIER) != 0) {
-					if(enabled) {
-						deleteWords(1);
-					}
-				}
-				else if(enabled) {
-					deleteFromCursor(1);
-				}
-
-				return true;
-
-			case Input.ENTER:
-				flush();
-				return true;
-
-			default:
-				return false;
+			}
+			else if(enabled) {
+				deleteFromCursor(-1);
+			}
+			return true;
 		}
+		else if(code == Input.HOME) {
+			if((mods & Input.SHIFT_MODIFIER) != 0) {
+				setSelectionPosition(0);
+			}
+			else {
+				setCursorPosition(0);
+			}
+			return true;
+		}
+		else if(code == Input.LEFT) {
+			if((mods & Input.SHIFT_MODIFIER) != 0) {
+				if((mods & Input.COMMAND_MODIFIER) != 0) {
+					setSelectionPosition(getWordFromPosition(-1, selectionEnd));
+				}
+				else {
+					setSelectionPosition(selectionEnd - 1);
+				}
+			}
+			else if((mods & Input.COMMAND_MODIFIER) != 0) {
+				setCursorPosition(getWordFromCursor(-1));
+			}
+			else {
+				moveCursorBy(-1);
+			}
+			return true;
+		}
+		else if(code == Input.RIGHT) {
+			if((mods & Input.SHIFT_MODIFIER) != 0) {
+				if((mods & Input.COMMAND_MODIFIER) != 0) {
+					setSelectionPosition(getWordFromPosition(1, selectionEnd));
+				}
+				else {
+					setSelectionPosition(selectionEnd + 1);
+				}
+			}
+			else if((mods & Input.COMMAND_MODIFIER) != 0) {
+				setCursorPosition(getWordFromCursor(1));
+			}
+			else {
+				moveCursorBy(1);
+			}
+			return true;
+		}
+		else if(code == Input.END) {
+			if((mods & Input.SHIFT_MODIFIER) != 0) {
+				setSelectionPosition(text.length());
+			}
+			else {
+				setCursorPositionEnd();
+			}
+			return true;
+		}
+		else if(code == Input.DELETE) {
+			if((mods & Input.COMMAND_MODIFIER) != 0) {
+				if(enabled) {
+					deleteWords(1);
+				}
+			}
+			else if(enabled) {
+				deleteFromCursor(1);
+			}
+			return true;
+		}
+		else if(code == Input.ENTER) {
+			flush();
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

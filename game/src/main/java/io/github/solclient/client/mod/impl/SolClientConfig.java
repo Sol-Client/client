@@ -25,7 +25,7 @@ public class SolClientConfig extends ConfigOnlyMod {
 	@Option
 	public KeyBinding modsKey = KeyBinding.create(getTranslationKey() + ".mods", Input.RIGHT_SHIFT,
 			Constants.KEY_CATEGORY),
-			editHudKey = KeyBinding.create(getTranslationKey() + ".edit_hud", Input.NONE, Constants.KEY_CATEGORY);
+			editHudKey = KeyBinding.create(getTranslationKey() + ".edit_hud", Input.UNKNOWN, Constants.KEY_CATEGORY);
 
 	@Expose
 	@Option

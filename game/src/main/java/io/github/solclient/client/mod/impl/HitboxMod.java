@@ -30,7 +30,7 @@ import io.github.solclient.client.util.data.Colour;
 public class HitboxMod extends Mod {
 
 	@Option
-	private final KeyBinding toggleHitboxes = KeyBinding.create(getTranslationKey() + ".option.toggleHitboxes", Input.NONE, Constants.KEY_CATEGORY);
+	private final KeyBinding toggleHitboxes = KeyBinding.create(getTranslationKey() + ".option.toggleHitboxes", Input.UNKNOWN, Constants.KEY_CATEGORY);
 	@Expose
 	@Option
 	private boolean boundingBox = true;
@@ -156,7 +156,7 @@ public class HitboxMod extends Mod {
 	public void onTick(PreTickEvent event) {
 		while(toggleHitboxes.consumePress()) {
 			// If debug shortcut is used, don't conflict.
-			if(toggleHitboxes.getKeyCode() == Input.B && Input.isKeyHeld(Input.F3)) {
+			if(toggleHitboxes.getKeyCode() == Input.B && Input.isKeyDown(Input.F3)) {
 				continue;
 			}
 

@@ -85,7 +85,7 @@ public class SymbolsButton implements ChatButton {
 
 				if(selected && wasMouseClicked) {
 					Utils.playClickSound(false);
-					mc.getScreen().characterTyped(character, Input.NONE);
+					mc.getScreen().characterTyped(character, Input.UNKNOWN);
 				}
 				x += 13;
 			}

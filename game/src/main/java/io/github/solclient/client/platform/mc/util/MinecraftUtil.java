@@ -3,6 +3,7 @@ package io.github.solclient.client.platform.mc.util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import io.github.solclient.client.platform.Helper;
 import io.github.solclient.client.platform.mc.maths.Vec3d;
 import lombok.experimental.UtilityClass;
 
@@ -17,12 +18,17 @@ public class MinecraftUtil {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void copy(@NotNull String text) {
+	public void copy(@NotNull String text) {
 		throw new UnsupportedOperationException();
 	}
 
-	public static String getClipboardContent() {
+	public String getClipboardContent() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Helper
+	public boolean isMac() {
+		return getOperatingSystem() == OperatingSystem.OSX;
 	}
 
 }

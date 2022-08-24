@@ -86,7 +86,7 @@ public abstract class ProxyScreenImpl extends Screen {
 	public void initScreen() {
 		super.init();
 		mc = (MinecraftClient) client;
-//		font = (Font) textRenderer;
+		font = (Font) textRenderer;
 		width = super.width;
 		height = super.height;
 	}

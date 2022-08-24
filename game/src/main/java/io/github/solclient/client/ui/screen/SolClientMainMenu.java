@@ -52,12 +52,12 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void keyDown(char character, int key) {
-		if(key == 1) {
+	public void keyDown(int code, int scancode, int mods) {
+		if(code == 1) {
 			return;
 		}
 
-		super.keyDown(character, key);
+		super.keyDown(code, scancode, mods);
 	}
 
 	private static class MainMenuComponent extends Component {

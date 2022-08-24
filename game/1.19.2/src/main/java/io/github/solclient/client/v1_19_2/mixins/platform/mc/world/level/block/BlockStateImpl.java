@@ -14,22 +14,22 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.world.World;
 
 @Mixin(AbstractBlock.AbstractBlockState.class)
-public interface BlockStateImpl extends BlockState {
+public abstract class BlockStateImpl implements BlockState {
 
 	@Override
-	default @NotNull BlockType getType() {
+	public @NotNull BlockType getType() {
 		return (BlockType) getBlock();
 	}
 
 	@Shadow
-	Block getBlock();
+	public abstract Block getBlock();
 
 	@Override
-	default boolean hasMenu(@NotNull Level level, @NotNull BlockPos pos) {
+	public boolean hasMenu(@NotNull Level level, @NotNull BlockPos pos) {
 		return createScreenHandlerFactory((World) level, (net.minecraft.util.math.BlockPos) pos) != null;
 	}
 
 	@Shadow
-	NamedScreenHandlerFactory createScreenHandlerFactory(World world, net.minecraft.util.math.BlockPos blockPos);
+	public abstract NamedScreenHandlerFactory createScreenHandlerFactory(World world, net.minecraft.util.math.BlockPos blockPos);
 
 }

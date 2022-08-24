@@ -26,6 +26,7 @@
 
 package io.github.solclient.client.wrapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,23 +81,27 @@ public class WrapperClassLoader extends ClassLoader {
 	}
 
 	private void addDefaultExclusions() {
-		exclusions.add("java");
-		exclusions.add("jdk");
-		exclusions.add("javax");
+		excludePackage("java");
+		excludePackage("jdk");
+		excludePackage("javax");
 
-		exclusions.add("sun");
-		exclusions.add("com.sun");
-		exclusions.add("org.xml");
-		exclusions.add("org.w3c");
+		excludePackage("sun");
+		excludePackage("com.sun");
+		excludePackage("org.xml");
+		excludePackage("org.w3c");
 
-		exclusions.add("org.apache");
-		exclusions.add("org.slf4j");
-		exclusions.add("com.mojang.blocklist");
+		excludePackage("org.apache");
+		excludePackage("org.slf4j");
+		excludePackage("com.mojang.blocklist");
 
-		exclusions.add("io.github.solclient.client.wrapper");
+		excludePackage("io.github.solclient.client.wrapper");
 
-		exclusions.add("org.spongepowered.asm");
-		exclusions.add("org.objectweb.asm");
+		excludePackage("org.spongepowered.asm");
+		excludePackage("org.objectweb.asm");
+	}
+
+	public void excludePackage(String name) {
+		exclusions.add(name);
 	}
 
 	private void registerDefaultTransformers() {
@@ -174,6 +180,13 @@ public class WrapperClassLoader extends ClassLoader {
 				ClassWriter writer = new ClassWriter(0);
 				node.accept(writer);
 				data = writer.toByteArray();
+
+				try {
+					File file = new File("./" + internalName + ".class");
+					file.getParentFile().mkdirs();
+					FileUtils.writeByteArrayToFile(file, data);
+				}
+				catch(IOException error) {}
 			}
 			catch(ClassNotFoundException | IOException error) {
 				throw new ClassNotFoundException(name, error);
@@ -183,7 +196,7 @@ public class WrapperClassLoader extends ClassLoader {
 		try {
 			data = ClientMixinService.getInstance().getTransformer().transformClass(MixinEnvironment.getDefaultEnvironment(), name, data);
 		}
-		catch(Exception error) {
+		catch(Throwable error) {
 			throw new ClassNotFoundException(name, error);
 		}
 

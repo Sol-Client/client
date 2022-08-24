@@ -1,6 +1,5 @@
 package io.github.solclient.client.platform.mc.screen;
 
-import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 
 public interface Screen {
@@ -9,11 +8,11 @@ public interface Screen {
 
 	void initScreen();
 
-	void onClose();
-
 	void renderScreen(int mouseX, int mouseY, float tickDelta);
 
-	void keyDown(char character, int key);
+	void characterTyped(char character, int key);
+
+	void keyDown(int code, int scancode, int mods);
 
 	void mouseDown(int x, int y, int button);
 

@@ -6,9 +6,9 @@ import io.github.solclient.client.platform.mc.text.Text;
 
 public class ProxyScreen implements Screen {
 
-	protected final int width, height;
-	protected final MinecraftClient mc;
-	protected final Font font;
+	protected int width, height;
+	protected MinecraftClient mc;
+	protected Font font;
 
 	public ProxyScreen(Text title) {
 		throw new UnsupportedOperationException();
@@ -20,7 +20,12 @@ public class ProxyScreen implements Screen {
 	}
 
 	@Override
-	public void keyDown(char character, int key) {
+	public void characterTyped(char character, int key) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void keyDown(int code, int scancode, int mods) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -34,30 +39,26 @@ public class ProxyScreen implements Screen {
 		throw new UnsupportedOperationException();
 	}
 
-	public void scroll(int by) {
-		throw new UnsupportedOperationException();
+	/**
+	 * Called when the mouse is scrolled.
+	 * You should not call super.
+	 * @param by Scroll amount.
+	 */
+	protected void scroll(int by) {
 	}
 
 	@Override
-	public void update(MinecraftClient mc, int width, int height) {
-		throw new UnsupportedOperationException();
-	}
+	public final void update(MinecraftClient mc, int width, int height) {}
 
 	@Override
 	public void initScreen() {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public void onClose() {
-		throw new UnsupportedOperationException();
+	protected void onClose() {
 	}
 
-	protected void renderBackground() {
-		throw new UnsupportedOperationException();
-	}
-
-	protected void renderTranslucentBackground() {
+	protected final void renderDefaultBackground() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -66,17 +67,17 @@ public class ProxyScreen implements Screen {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean shouldPauseGame() {
+	protected boolean pausesGame() {
 		return true;
 	}
 
 	@Override
-	public int getWidth() {
+	public final int getWidth() {
 		return width;
 	}
 
 	@Override
-	public int getHeight() {
+	public final int getHeight() {
 		return height;
 	}
 

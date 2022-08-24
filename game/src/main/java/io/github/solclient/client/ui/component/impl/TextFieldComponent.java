@@ -144,23 +144,23 @@ public class TextFieldComponent extends Component {
 	}
 
 	@Override
-	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
+	public boolean keyPressed(ComponentRenderInfo info, int code, int scancode, int mods) {
 		if(!focused) {
 			return false;
 		}
 
-		if(Input.isSelectAll(keyCode)) {
+		if(Input.isSelectAll(code)) {
 			setCursorPositionEnd();
 			setSelectionPosition(0);
 			return true;
 		}
 
-		if(Input.isCopy(keyCode)) {
+		if(Input.isCopy(code)) {
 			MinecraftUtil.copy(getSelectedText());
 			return true;
 		}
 
-		if(Input.isPaste(keyCode)) {
+		if(Input.isPaste(code)) {
 			if(enabled) {
 				writeText(MinecraftUtil.getClipboardContent());
 			}
@@ -168,7 +168,7 @@ public class TextFieldComponent extends Component {
 			return true;
 		}
 
-		if(Input.isCut(keyCode)) {
+		if(Input.isCut(code)) {
 			MinecraftUtil.copy(getSelectedText());
 
 			if(enabled) {
@@ -178,9 +178,9 @@ public class TextFieldComponent extends Component {
 			return true;
 		}
 
-		switch(keyCode) {
+		switch(code) {
 			case Input.BACKSPACE:
-				if(Input.isCtrlHeld()) {
+				if((mods & Input.CONTROL_MODIFIER) != 0) {
 					if(enabled) {
 						deleteWords(-1);
 					}
@@ -191,7 +191,7 @@ public class TextFieldComponent extends Component {
 
 				return true;
 			case Input.HOME:
-				if(Input.isShiftHeld()) {
+				if((mods & Input.SHIFT_MODIFIER) != 0) {
 					setSelectionPosition(0);
 				}
 				else {
@@ -200,15 +200,15 @@ public class TextFieldComponent extends Component {
 
 				return true;
 			case Input.LEFT:
-				if(Input.isShiftHeld()) {
-					if(Input.isCtrlHeld()) {
+				if((mods & Input.SHIFT_MODIFIER) != 0) {
+					if((mods & Input.CONTROL_MODIFIER) != 0) {
 						setSelectionPosition(getWordFromPosition(-1, selectionEnd));
 					}
 					else {
 						setSelectionPosition(selectionEnd - 1);
 					}
 				}
-				else if(Input.isCtrlHeld()) {
+				else if((mods & Input.CONTROL_MODIFIER) != 0) {
 					setCursorPosition(getWordFromCursor(-1));
 				}
 				else {
@@ -217,16 +217,15 @@ public class TextFieldComponent extends Component {
 
 				return true;
 			case Input.RIGHT:
-
-				if(Input.isShiftHeld()) {
-					if(Input.isCtrlHeld()) {
-						this.setSelectionPosition(getWordFromPosition(1, selectionEnd));
+				if((mods & Input.SHIFT_MODIFIER) != 0) {
+					if((mods & Input.CONTROL_MODIFIER) != 0) {
+						setSelectionPosition(getWordFromPosition(1, selectionEnd));
 					}
 					else {
-						this.setSelectionPosition(selectionEnd + 1);
+						setSelectionPosition(selectionEnd + 1);
 					}
 				}
-				else if(Input.isCtrlHeld()) {
+				else if((mods & Input.CONTROL_MODIFIER) != 0) {
 					setCursorPosition(getWordFromCursor(1));
 				}
 				else {
@@ -235,7 +234,7 @@ public class TextFieldComponent extends Component {
 
 				return true;
 			case Input.END:
-				if(Input.isShiftHeld()) {
+				if((mods & Input.SHIFT_MODIFIER) != 0) {
 					setSelectionPosition(text.length());
 				}
 				else {
@@ -244,7 +243,7 @@ public class TextFieldComponent extends Component {
 
 				return true;
 			case Input.DELETE:
-				if(Input.isCtrlHeld()) {
+				if((mods & Input.CONTROL_MODIFIER) != 0) {
 					if(enabled) {
 						deleteWords(1);
 					}
@@ -260,17 +259,21 @@ public class TextFieldComponent extends Component {
 				return true;
 
 			default:
-				if(TextFormatting.isAllowedInTextBox(character)) {
-					if(enabled) {
-						writeText(Character.toString(character));
-					}
-
-					return true;
-				}
-				else {
-					return false;
-				}
+				return false;
 		}
+	}
+
+	@Override
+	public boolean characterTyped(ComponentRenderInfo info, char character) {
+		if(TextFormatting.isAllowedInTextBox(character)) {
+			if(enabled) {
+				writeText(Character.toString(character));
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private int getWordFromCursor(int word) {
@@ -291,17 +294,17 @@ public class TextFieldComponent extends Component {
 					from = length;
 				}
 				else {
-					while(from < length && this.text.charAt(from) == 32) {
+					while(from < length && text.charAt(from) == 32) {
 						++from;
 					}
 				}
 			}
 			else {
-				while(from > 0 && this.text.charAt(from - 1) == 32) {
+				while(from > 0 && text.charAt(from - 1) == 32) {
 					--from;
 				}
 
-				while(from > 0 && this.text.charAt(from - 1) != 32) {
+				while(from > 0 && text.charAt(from - 1) != 32) {
 					--from;
 				}
 			}
@@ -313,7 +316,7 @@ public class TextFieldComponent extends Component {
 	private void deleteFromCursor(int move) {
 		if(text.length() != 0) {
 			if(selectionEnd != cursor) {
-				this.writeText("");
+				writeText("");
 			}
 			else {
 				boolean negativeMovement = move < 0;
@@ -325,7 +328,7 @@ public class TextFieldComponent extends Component {
 					result = text.substring(0, start);
 				}
 
-				if(end < this.text.length()) {
+				if(end < text.length()) {
 					result = result + text.substring(end);
 				}
 
@@ -375,11 +378,11 @@ public class TextFieldComponent extends Component {
 		}
 
 		setTextInternal(result);
-		moveCursorBy(start - this.selectionEnd + l);
+		moveCursorBy(start - selectionEnd + l);
 	}
 
 	private void moveCursorBy(int by) {
-		setCursorPosition(this.selectionEnd + by);
+		setCursorPosition(selectionEnd + by);
 	}
 
 	private String getSelectedText() {
@@ -399,7 +402,7 @@ public class TextFieldComponent extends Component {
 	}
 
 	private void setSelectionPosition(int position) {
-		int length = this.text.length();
+		int length = text.length();
 
 		if(position > length) {
 			position = length;

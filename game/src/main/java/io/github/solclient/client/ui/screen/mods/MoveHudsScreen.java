@@ -62,11 +62,9 @@ public class MoveHudsScreen extends Screen {
 		}
 	}
 
-
-
 	@Override
-	public void update(MinecraftClient mc, int width, int height) {
-		super.update(mc, width, height);
+	public void initScreen() {
+		super.initScreen();
 
 		if(title != null) title.update(mc, width, height);
 	}
@@ -119,8 +117,8 @@ public class MoveHudsScreen extends Screen {
 	}
 
 	@Override
-	public void keyDown(char character, int key) {
-		if(key == 1 || key == SolClientConfig.instance.editHudKey.getCode()) {
+	public void keyDown(int key, int scancode, int mods) {
+		if(key == 1 || key == SolClientConfig.instance.editHudKey.getKeyCode()) {
 			Client.INSTANCE.save();
 			if(title != null) {
 				mc.setScreen(title);
@@ -134,7 +132,7 @@ public class MoveHudsScreen extends Screen {
 	public static class MoveHudsComponent extends Component {
 
 		public MoveHudsComponent() {
-			add(ButtonComponent.done(() -> screen.onClose()),
+			add(ButtonComponent.done(() -> ((MoveHudsScreen) screen).close()),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() - 30,
 									defaultBounds.getWidth(), defaultBounds.getHeight())));

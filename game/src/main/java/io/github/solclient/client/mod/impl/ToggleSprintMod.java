@@ -24,7 +24,7 @@ public class ToggleSprintMod extends SimpleHudMod {
 		super.onRegister();
 		mc.getOptions().removeKey(mc.getOptions().sprintKey());
 		mc.getOptions().overwriteSprintKey(ToggleKeyBinding.create(mc.getOptions().sprintKey().getName(), 29,
-				mc.getOptions().sprintKey().getCategory(), this::isEnabled, 250));
+				mc.getOptions().sprintKey().getKeyCategory(), this::isEnabled, 250));
 		mc.getOptions().addKey(mc.getOptions().sprintKey());
 	}
 

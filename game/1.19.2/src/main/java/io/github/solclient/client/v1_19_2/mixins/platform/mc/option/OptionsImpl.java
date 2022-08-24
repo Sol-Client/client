@@ -8,12 +8,10 @@ import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.option.Options;
 import io.github.solclient.client.platform.mc.option.Perspective;
 import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.util.InputUtil;
 
 @Mixin(GameOptions.class)
-public class OptionsImpl implements Options {
-
-	@Shadow
-	public String language;
+public abstract class OptionsImpl implements Options {
 
 	@Override
 	public float mouseSensitivity() {
@@ -154,10 +152,17 @@ public class OptionsImpl implements Options {
 	}
 
 	@Override
-	public void setKey(@NotNull KeyBinding binding, int code) {
-		// TODO Auto-generated method stub
-
+	public void setKey(@NotNull KeyBinding binding, int code, int scancode) {
+		setKeyCode((net.minecraft.client.option.KeyBinding) binding, InputUtil.fromKeyCode(code, scancode));
 	}
+
+	@Override
+	public void setMouseButton(@NotNull KeyBinding binding, int button) {
+		setKeyCode((net.minecraft.client.option.KeyBinding) binding, InputUtil.Type.MOUSE.createFromCode(button));
+	}
+
+	@Shadow
+	public abstract void setKeyCode(net.minecraft.client.option.KeyBinding keyBinding, InputUtil.Key key);
 
 	@Override
 	public void save() {
@@ -169,5 +174,8 @@ public class OptionsImpl implements Options {
 	public @NotNull String languageCode() {
 		return language;
 	}
+
+	@Shadow
+	public String language;
 
 }

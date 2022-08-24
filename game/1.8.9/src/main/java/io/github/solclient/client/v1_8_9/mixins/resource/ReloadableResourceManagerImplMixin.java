@@ -37,7 +37,4 @@ public abstract class ReloadableResourceManagerImplMixin {
 		TranslationProvider.load();
 	}
 
-	@Shadow
-	public abstract List<Resource> getAllResources(Identifier id) throws IOException;
-
 }

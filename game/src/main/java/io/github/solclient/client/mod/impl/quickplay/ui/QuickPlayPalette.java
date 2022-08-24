@@ -52,8 +52,7 @@ public final class QuickPlayPalette extends ProxyScreen {
 	}
 
 	@Override
-	public void onClose() {
-		super.onClose();
+	protected void onClose() {
 		Input.enableRepeatEvents(false);
 	}
 
@@ -182,33 +181,30 @@ public final class QuickPlayPalette extends ProxyScreen {
 	}
 
 	@Override
-	public void keyDown(char character, int key) {
-		super.keyDown(character, key);
+	public void keyDown(int code, int scancode, int mods) {
+		super.keyDown(code, scancode, mods);
 
-		if(key == Input.BACKSPACE && !query.isEmpty()) {
-			if(Input.isCtrlHeld()) {
-				query = "";
-			}
-			else {
-				query = query.substring(0, query.length() - 1);
+		if(code == Input.BACKSPACE) {
+			if(!query.isEmpty()) {
+				if((mods & Input.CONTROL_MODIFIER) != 0) {
+					query = "";
+				}
+				else {
+					query = query.substring(0, query.length() - 1);
+				}
 			}
 		}
-		else if(character > 31 && character != '§') {
-			query += character;
-			inAllGames = false;
-		}
-
-		if(key == Input.DOWN) {
+		else if(code == Input.DOWN) {
 			selectedIndex++;
 			scroll += 20;
 			clampIndex();
 		}
-		else if(key == Input.UP) {
+		else if(code == Input.UP) {
 			selectedIndex--;
 			scroll -= 20;
 			clampIndex();
 		}
-		else if(key == Input.ENTER || key == Input.RIGHT) {
+		else if(code == Input.ENTER || code == Input.RIGHT) {
 			try {
 				getGames().get(selectedIndex).onClick(this, mod);
 			}
@@ -216,8 +212,18 @@ public final class QuickPlayPalette extends ProxyScreen {
 				// Prevent crash in the rare case that the index is desynchronised.
 			}
 		}
-		else if(key == Input.LEFT) {
+		else if(code == Input.LEFT) {
 			back();
+		}
+	}
+
+	@Override
+	public void characterTyped(char character, int key) {
+		super.characterTyped(character, key);
+
+		if(character != '§') {
+			query += character;
+			inAllGames = false;
 		}
 	}
 

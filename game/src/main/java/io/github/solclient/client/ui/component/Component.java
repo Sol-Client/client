@@ -16,6 +16,7 @@ import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.ui.component.controller.Controller;
+import io.github.solclient.client.ui.component.handler.CharacterHandler;
 import io.github.solclient.client.ui.component.handler.ClickHandler;
 import io.github.solclient.client.ui.component.handler.KeyHandler;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;
@@ -26,7 +27,8 @@ import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 
-// 7 months later, I finally reintroduced the component API...
+// Class for GUI components.
+// May be replaced by Aether UI in the future when it's stable enough.
 public abstract class Component {
 
 	protected MinecraftClient mc = MinecraftClient.getInstance();
@@ -50,6 +52,7 @@ public abstract class Component {
 			(component, defaultColour) -> dialog == null ? Colour.TRANSPARENT : new Colour(0, 0, 0, 150));
 	private ClickHandler onRelease;
 	private KeyHandler onKeyPressed;
+	private CharacterHandler onCharacterTyped;
 	private ClickHandler onClickAnywhere;
 	private ClickHandler onReleaseAnywhere;
 	private Controller<Boolean> visibilityController;
@@ -193,8 +196,8 @@ public abstract class Component {
 	/**
 	 * @return <code>true</code> if event has been processed.
 	 */
-	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-		if(onKeyPressed != null && onKeyPressed.keyPressed(info, keyCode, character)) {
+	public boolean keyPressed(ComponentRenderInfo info, int code, int scancode, int mods) {
+		if(onKeyPressed != null && onKeyPressed.keyPressed(info, code, scancode, mods)) {
 			return true;
 		}
 
@@ -203,7 +206,28 @@ public abstract class Component {
 				continue;
 			}
 
-			if(component.keyPressed(transform(info, getBounds(component)), keyCode, character)) {
+			if(component.keyPressed(transform(info, getBounds(component)), code, scancode, mods)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @return <code>true</code> if event has been processed.
+	 */
+	public boolean characterTyped(ComponentRenderInfo info, char character) {
+		if(onCharacterTyped != null && onCharacterTyped.characterTyped(info, character)) {
+			return true;
+		}
+
+		for(Component component : subComponents) {
+			if(component.shouldSkip()) {
+				continue;
+			}
+
+			if(component.characterTyped(transform(info, getBounds(component)), character)) {
 				return true;
 			}
 		}
@@ -341,10 +365,6 @@ public abstract class Component {
 		}
 	}
 
-	public Screen getScreen() {
-		return screen;
-	}
-
 	public Component onClick(ClickHandler onClick) {
 		this.onClick = onClick;
 		return this;
@@ -366,7 +386,7 @@ public abstract class Component {
 	}
 
 	public Component onKeyPressed(KeyHandler onKeyTyped) {
-		this.onKeyPressed = onKeyTyped;
+		onKeyPressed = onKeyTyped;
 		return this;
 	}
 

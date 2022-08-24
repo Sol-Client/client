@@ -48,7 +48,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			}
 		}
 		else {
-			renderTranslucentBackground();
+			renderDefaultBackground();
 		}
 
 		super.renderScreen(x, y, tickDelta);
@@ -59,8 +59,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void onClose() {
-		super.onClose();
+	protected void onClose() {
 		Client.INSTANCE.save();
 	}
 
@@ -102,9 +101,9 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						scroll.load();
 					}
 					else {
-						getScreen().onClose();
-						if(getScreen().getParentScreen() instanceof Screen) {
-							((Screen) getScreen().getParentScreen()).getRoot().setFont(font);
+						((ModsScreen) screen).onClose();
+						if(screen.getParentScreen() instanceof Screen) {
+							((Screen) screen.getParentScreen()).getRoot().setFont(font);
 						}
 					}
 				}
@@ -171,39 +170,46 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		}
 
 		@Override
-		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-			if((screen.getRoot().getDialog() == null && (keyCode == Input.ENTER || keyCode == Input.KP_ENTER))
+		public boolean keyPressed(ComponentRenderInfo info, int code, int scancode, int mods) {
+			if((screen.getRoot().getDialog() == null && (code == Input.ENTER || code == Input.KP_ENTER))
 					&& !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
 
 				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true,
 						false);
 			}
-			else if(mod == null && keyCode == Input.F && Input.isCtrlHeld() && !Input.isShiftHeld()
-					&& !Input.isAltHeld()) {
+			else if(mod == null && code == Input.F && (mods & Input.CONTROL_MODIFIER) != 0
+					&& (mods & Input.SHIFT_MODIFIER) == 0 && (mods & Input.ALT_MODIFIER) == 0) {
 				search.setFocused(true);
 				return true;
 			}
-			else if(mod != null && (keyCode == Input.BACKSPACE
-					|| (keyCode == Input.LEFT && Input.isAltHeld() && !Input.isCtrlHeld() && !Input.isShiftHeld()))
+			else if(mod != null
+					&& (code == Input.BACKSPACE || (code == Input.LEFT && (mods & Input.ALT_MODIFIER) != 0
+							&& (mods & Input.CONTROL_MODIFIER) == 0 && (mods & Input.SHIFT_MODIFIER) == 0))
 					&& screen.getRoot().getDialog() == null) {
 				switchMod(null);
 				return true;
 			}
 
-			if(character > 31 && !search.isFocused() && mod == null) {
-				search.setFocused(true);
-				search.setText("");
-			}
+			boolean result = super.keyPressed(info, code, scancode, mods);
 
-			boolean result = super.keyPressed(info, keyCode, character);
-
-			if(!result && keyCode == SolClientConfig.instance.modsKey.getCode()) {
+			if(!result && code == SolClientConfig.instance.modsKey.getKeyCode()) {
 				mc.closeScreen();
 				return true;
 			}
 
 			return result;
+		}
+
+		@Override
+		public boolean characterTyped(ComponentRenderInfo info, char character) {
+			if(!search.isFocused() && mod == null) {
+				search.setFocused(true);
+				search.setText("");
+
+				return true;
+			}
+			return super.characterTyped(info, character);
 		}
 
 		public String getQuery() {

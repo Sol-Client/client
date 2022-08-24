@@ -3,6 +3,7 @@ package io.github.solclient.client.mod.impl.hud.chat;
 import io.github.solclient.client.chat.ChatButton;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.text.Font;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
@@ -84,7 +85,7 @@ public class SymbolsButton implements ChatButton {
 
 				if(selected && wasMouseClicked) {
 					Utils.playClickSound(false);
-					mc.getScreen().keyDown(character, 0);
+					mc.getScreen().characterTyped(character, Input.NONE);
 				}
 				x += 13;
 			}

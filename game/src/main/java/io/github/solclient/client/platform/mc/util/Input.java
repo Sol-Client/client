@@ -132,6 +132,12 @@ public class Input {
 	public final int MENU = 348;
 	public final int LAST = MENU;
 	public final int NONE = RuntimeDetermined.value();
+	public final int SHIFT_MODIFIER = 1;
+	public final int CONTROL_MODIFIER = 2;
+	public final int ALT_MODIFIER = 4;
+	public final int SUPER_MODIFIER = 8;
+	public final int CAPS_LOCK_MODIFIER = 16;
+	public final int NUM_LOCK_MODIFIER = 32;
 
 	public boolean isKeyHeld(int code) {
 		throw new UnsupportedOperationException();

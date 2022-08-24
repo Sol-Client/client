@@ -54,7 +54,7 @@ public class Screen extends ProxyScreen {
 				DrawableHelper.fillRect(0, 0, width, height, Colour.BACKGROUND.getValue());
 			}
 			else {
-				renderTranslucentBackground();
+				renderDefaultBackground();
 			}
 		}
 
@@ -70,14 +70,21 @@ public class Screen extends ProxyScreen {
 	}
 
 	@Override
-	public void keyDown(char character, int key) {
-		if(!rootWrapper.keyPressed(getInfo(), key, character)) {
-			if(key == 1) {
+	public void keyDown(int code, int scancode, int mods) {
+		if(!rootWrapper.keyPressed(getInfo(), code, scancode, mods)) {
+			if(code == 1) {
 				closeAll();
 			}
 			else {
-				super.keyDown(character, key);
+				super.keyDown(code, scancode, mods);
 			}
+		}
+	}
+
+	@Override
+	public void characterTyped(char character, int key) {
+		if(!rootWrapper.characterTyped(getInfo(), character)) {
+			super.characterTyped(character, key);
 		}
 	}
 
@@ -102,7 +109,7 @@ public class Screen extends ProxyScreen {
 	}
 
 	@Override
-	public boolean shouldPauseGame() {
+	protected boolean pausesGame() {
 		return false;
 	}
 

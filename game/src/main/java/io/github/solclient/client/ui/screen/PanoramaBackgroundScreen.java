@@ -19,9 +19,8 @@ public abstract class PanoramaBackgroundScreen extends Screen {
 	}
 
 	@Override
-	public void update(MinecraftClient mc, int width, int height) {
-		super.update(mc, width, height);
-
+	public void initScreen() {
+		super.initScreen();
 		if(!mc.hasLevel()) {
 			titleScreen.update(mc, width, height);
 		}

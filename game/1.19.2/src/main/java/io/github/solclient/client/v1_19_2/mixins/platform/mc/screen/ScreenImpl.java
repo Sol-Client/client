@@ -1,13 +1,16 @@
-package io.github.solclient.client.v1_8_9.mixins.platform.mc.screen;
+package io.github.solclient.client.v1_19_2.mixins.platform.mc.screen;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.screen.Screen;
+import io.github.solclient.client.v1_19_2.SharedObjects;
+import net.minecraft.client.gui.AbstractParentElement;
+import net.minecraft.client.util.math.MatrixStack;
 
 @Mixin(net.minecraft.client.gui.screen.Screen.class)
-public abstract class ScreenImpl implements Screen {
+public abstract class ScreenImpl extends AbstractParentElement implements Screen {
 
 	@Override
 	public void update(MinecraftClient mc, int width, int height) {
@@ -27,19 +30,16 @@ public abstract class ScreenImpl implements Screen {
 
 	@Override
 	public void renderScreen(int mouseX, int mouseY, float tickDelta) {
-		render(mouseX, mouseY, tickDelta);
+		render(SharedObjects.primary2dMatrixStack, mouseX, mouseY, tickDelta);
 	}
 
 	@Shadow
-	public abstract void render(int mouseX, int mouseY, float tickDelta);
+	public abstract void render(MatrixStack stack, int mouseX, int mouseY, float tickDelta);
 
 	@Override
-	public void characterTyped(char character, int key) {
-		keyPressed(character, key);
+	public void keyDown(int key, int scancode, int mods) {
+		keyDown(key, scancode, mods);
 	}
-
-	@Shadow
-	protected abstract void keyPressed(char character, int code);
 
 	@Override
 	public void mouseDown(int x, int y, int button) {
@@ -47,20 +47,9 @@ public abstract class ScreenImpl implements Screen {
 	}
 
 	@Override
-	public void keyDown(int code, int scancode, int mods) {
-		keyPressed('\0', code);
-	}
-
-	@Shadow
-	protected abstract void mouseClicked(int mouseX, int mouseY, int button);
-
-	@Override
 	public void mouseUp(int x, int y, int button) {
 		mouseReleased(x, y, button);
 	}
-
-	@Shadow
-	protected abstract void mouseReleased(int mouseX, int mouseY, int button);
 
 	@Override
 	public int getWidth() {

@@ -1,9 +1,14 @@
 package io.github.solclient.client.platform.mc.text;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import io.github.solclient.client.platform.Helper;
 
 public interface Text extends Cloneable {
 
@@ -17,6 +22,17 @@ public interface Text extends Cloneable {
 
 	static @NotNull Text translation(String key, Object... args) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Helper
+	static boolean plainEquals(@Nullable Text text, @NotNull String to) {
+		Objects.requireNonNull(to);
+
+		if(text == null) {
+			return false;
+		}
+
+		return text.getPlain().equals(to);
 	}
 
 	@NotNull List<Text> getSiblings();

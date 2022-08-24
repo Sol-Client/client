@@ -154,8 +154,13 @@ public class OptionsImpl implements Options {
 	}
 
 	@Override
-	public void setKey(@NotNull KeyBinding binding, int code) {
+	public void setKey(@NotNull KeyBinding binding, int code, int scancode) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setMouseButton(@NotNull KeyBinding binding, int button) {
 
 	}
 

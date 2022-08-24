@@ -7,11 +7,11 @@ import org.objectweb.asm.tree.ClassNode;
 
 import io.github.solclient.client.wrapper.transformer.Transformer;
 
-public class ExtensibleScreenTransformer extends Transformer {
+public class ProxyScreenTransformer extends Transformer {
 
 	@Override
 	public boolean willModify(@NotNull String className) {
-		return className.equals("io/github/solclient/client/platform/mc/screen/ExtensibleScreen");
+		return className.equals("io/github/solclient/client/platform/mc/screen/ProxyScreen");
 	}
 
 	@Override

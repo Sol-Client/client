@@ -10,11 +10,11 @@ public interface KeyBinding {
 		throw new UnsupportedOperationException();
 	}
 
-	@NotNull String getCategory();
+	@NotNull String getKeyCategory();
 
 	@NotNull String getName();
 
-	int getCode();
+	int getKeyCode();
 
 	boolean isHeld();
 

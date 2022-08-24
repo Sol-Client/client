@@ -54,7 +54,9 @@ public interface Options {
 
 	void setSmoothCamera(boolean camera);
 
-	void setKey(@NotNull KeyBinding binding, int code);
+	void setMouseButton(@NotNull KeyBinding binding, int button);
+
+	void setKey(@NotNull KeyBinding binding, int code, int scancode);
 
 	void save();
 

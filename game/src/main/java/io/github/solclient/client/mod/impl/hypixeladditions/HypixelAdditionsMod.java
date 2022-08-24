@@ -175,7 +175,7 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	public boolean isHousing() {
-		return "HOUSING".equals(mc.getLevel().getScoreboardTitle());
+		return Text.plainEquals(mc.getLevel().getScoreboardTitle(), "HOUSING");
 	}
 
 	public static boolean isHypixel() {

@@ -3,8 +3,8 @@ package io.github.solclient.client.ui.component.handler;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 
 @FunctionalInterface
-public interface KeyHandler {
+public interface CharacterHandler {
 
-	boolean keyPressed(ComponentRenderInfo info, int code, int scancode, int mods);
+	boolean characterTyped(ComponentRenderInfo info, char character);
 
 }

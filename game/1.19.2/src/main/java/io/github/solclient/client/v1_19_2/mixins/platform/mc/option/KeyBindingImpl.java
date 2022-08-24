@@ -22,7 +22,7 @@ import net.minecraft.client.util.InputUtil;
 @Implements(@Interface(iface = KeyBinding.class, prefix = "platform$"))
 public abstract class KeyBindingImpl {
 
-	public @NotNull String platform$getCategory() {
+	public @NotNull String platform$getKeyCategory() {
 		return category;
 	}
 
@@ -36,7 +36,7 @@ public abstract class KeyBindingImpl {
 	@Shadow
 	private @Final String translationKey;
 
-	public int platform$getCode() {
+	public int platform$getKeyCode() {
 		return boundKey.getCode();
 	}
 
@@ -60,12 +60,12 @@ public abstract class KeyBindingImpl {
 	@SuppressWarnings("resource")
 	private Stream<net.minecraft.client.option.KeyBinding> conflictingStream() {
 		return Arrays.stream(MinecraftClient.getInstance().options.allKeys)
-				.filter((key) -> key != (Object) this && ((KeyBinding) key).getCode() == platform$getCode());
+				.filter((key) -> key != (Object) this && ((KeyBinding) key).getKeyCode() == platform$getKeyCode());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public @NotNull List<KeyBinding> platform$getConflictingKeys() {
-		if(platform$getCode() == 0) {
+		if(platform$getKeyCode() == 0) {
 			return Collections.emptyList();
 		}
 

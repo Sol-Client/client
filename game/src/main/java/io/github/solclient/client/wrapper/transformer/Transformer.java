@@ -2,6 +2,7 @@ package io.github.solclient.client.wrapper.transformer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,7 @@ public abstract class Transformer {
 			}
 
 			if(capturedNames == null) {
-				capturedNames = new ArrayList<>();
+				capturedNames = Collections.emptyList();
 			}
 		}
 

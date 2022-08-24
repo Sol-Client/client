@@ -20,7 +20,7 @@ import net.minecraft.client.MinecraftClient;
 @Implements(@Interface(iface = KeyBinding.class, prefix = "platform$"))
 public abstract class KeyBindingImpl {
 
-	public @NotNull String platform$getCategory() {
+	public @NotNull String platform$getKeyCategory() {
 		return getCategory();
 	}
 
@@ -34,7 +34,7 @@ public abstract class KeyBindingImpl {
 	@Shadow
 	public abstract String getTranslationKey();
 
-	public int platform$getCode() {
+	public int platform$getKeyCode() {
 		return getCode();
 	}
 

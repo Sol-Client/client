@@ -68,7 +68,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 		else if(option.getType() == KeyBinding.class) {
 			KeyBinding binding = (KeyBinding) option.getValue();
 
-			add(new LabelComponent((component, defaultText) -> Input.getKeyName(binding.getCode()),
+			add(new LabelComponent((component, defaultText) -> Input.getKeyName(binding.getKeyCode()),
 					new AnimatedColourController((component, defaultColour) -> {
 						if(listening) {
 							return new Colour(255, 255, 85);
@@ -88,7 +88,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 					listening = true;
 					screen.getRoot().onClickAnwhere((ignoredInfo, pressedButton) -> {
-						mc.getOptions().setKey(binding, pressedButton - 100);
+						mc.getOptions().setMouseButton(binding, pressedButton);
 
 						listening = false;
 
@@ -101,15 +101,12 @@ public class ModOptionComponent extends ScaledIconComponent {
 						return true;
 					});
 
-					screen.getRoot().onKeyPressed((ignoredInfo, key, character) -> {
-						if(key == 1) {
-							mc.getOptions().setKey(binding, Input.NONE);
+					screen.getRoot().onKeyPressed((ignored, code, scancode, mods) -> {
+						if(code == Input.ESCAPE) {
+							mc.getOptions().setKey(binding, Input.NONE, 0);
 						}
-						else if(key != 0) {
-							mc.getOptions().setKey(binding, key);
-						}
-						else if(character > 0) {
-							mc.getOptions().setKey(binding, character + 256);
+						else if(code != 0) {
+							mc.getOptions().setKey(binding, code, scancode);
 						}
 
 						listening = false;

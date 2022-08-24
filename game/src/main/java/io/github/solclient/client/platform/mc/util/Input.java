@@ -138,7 +138,7 @@ public class Input {
 	public final int COMMAND_MODIFIER = MinecraftUtil.isMac() ? SUPER_MODIFIER : CONTROL_MODIFIER;
 
 	/**
-	 * 	 the native key code from the GLFW one. Defaults to returning the same
+	 * Gets the native key code from the GLFW one. Defaults to returning the same
 	 * code, but also provides uncertainty that prevents the compiler from getting
 	 * too excited.
 	 *

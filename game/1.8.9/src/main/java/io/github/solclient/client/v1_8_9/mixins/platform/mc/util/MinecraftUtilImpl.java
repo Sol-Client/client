@@ -45,7 +45,7 @@ public class MinecraftUtilImpl {
 
 		// Documentation doesn't seem to guarantee that the string is not-null.
 		if(result == null) {
-			return "".intern();
+			return "";
 		}
 
 		return result;

@@ -17,6 +17,8 @@
 		"platform.mc.text.TextImpl",
 		"platform.mc.text.TextImpl$Static",
 		"platform.mc.util.InputImpl",
+		"platform.mc.util.MinecraftUtilImpl",
+		"platform.mc.util.OperatingSystemImpl",
 		"platform.mc.world.level.block.BlockPosImpl$Static",
 		"platform.mc.world.level.block.BlockStateImpl",
 		"platform.mc.world.level.chunk.ChunkImpl",

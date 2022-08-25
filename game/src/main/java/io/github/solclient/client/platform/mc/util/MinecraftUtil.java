@@ -18,11 +18,11 @@ public class MinecraftUtil {
 		throw new UnsupportedOperationException();
 	}
 
-	public void copy(@NotNull String text) {
+	public void copy(@Nullable String text) {
 		throw new UnsupportedOperationException();
 	}
 
-	public String getClipboardContent() {
+	public @NotNull String getClipboardContent() {
 		throw new UnsupportedOperationException();
 	}
 

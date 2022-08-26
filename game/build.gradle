@@ -52,7 +52,6 @@ dependencies {
 	
 	api "org.jetbrains:annotations:23.0.0"
 
-	// embed multiple versions in main jar
 	shadow project(":1.8.9")
 	shadow project(":1.19.2")
 }

@@ -52,6 +52,7 @@ dependencies {
 	
 	api "org.jetbrains:annotations:23.0.0"
 
+	// embed multiple versions in main jar
 	shadow project(":1.8.9")
 	shadow project(":1.19.2")
 }
@@ -75,7 +76,7 @@ subprojects {
 	apply plugin: "fabric-loom"
 	
 	dependencies {
-		api project(":")
+		implementation project(":")
 		annotationProcessor "org.ow2.asm:asm:${project.asmVersion}"
 		annotationProcessor "org.ow2.asm:asm-analysis:${project.asmVersion}"
 		annotationProcessor "org.ow2.asm:asm-commons:${project.asmVersion}"
@@ -87,7 +88,7 @@ subprojects {
 	
 	configs.removeIf((config) -> config.environment != "client")
 
-	for (config in configs) {
+	for(config in configs) {
 		config.vmArgs.add "-Dio.github.solclient.client.mc_version=" + project.name
 		config.vmArgs.add "-Dio.github.solclient.client.version=dev"
 		config.vmArgs.add "-Dio.github.solclient.client.project_root=" + rootProject.projectDir.getAbsolutePath()

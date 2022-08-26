@@ -247,7 +247,7 @@ sol_client.mod.taplook.option.perspective=Perspective
 sol_client.mod.toggle_sprint.name=Basculer le sprint
 sol_client.mod.toggle_sprint.description=Basculez la touche de sprint.
 
-sol_client.mod.toggle_sprint.default_width=113(cent treize)
+sol_client.mod.toggle_sprint.default_width=113
 
 sol_client.mod.toggle_sprint.option.hud=HUD
 

@@ -5,33 +5,18 @@ plugins {
 	id "java-library"
 	id "fabric-loom" version "0.13-SNAPSHOT" apply false
 	id "io.freefair.lombok" version "6.4.3"
-	id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 configurations {
 	mixin
 	api.extendsFrom mixin
-	shadow
-	shadowApi
-	api.extendsFrom shadowApi
-	shadow.extendsFrom shadowApi
-}
-
-jar {
-	enabled = false
-	dependsOn shadowJar
-}
-
-shadowJar {
-	classifier null
-	configurations = [ project.configurations.shadow ]
 }
 
 dependencies {
 	// minimal lwjgl, simply to compile against since the version can vary
 	compileOnly "org.lwjgl:lwjgl-opengl:3.3.1"
 
-	shadowApi files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
+	api files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
 
 	api "net.hypixel:hypixel-api-core:4.0"
 	api "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
@@ -51,9 +36,6 @@ dependencies {
 	api "org.apache.commons:commons-lang3:3.12.0"
 	
 	api "org.jetbrains:annotations:23.0.0"
-
-	shadow project(":1.8.9")
-	shadow project(":1.19.2")
 }
 
 allprojects {
@@ -69,34 +51,49 @@ allprojects {
 }
 
 subprojects {
+	def versionProject = name != "bundle"
+
 	apply plugin: "java"
 	apply plugin: "java-library"
-	apply plugin: "io.freefair.lombok"
-	apply plugin: "fabric-loom"
+
+	if(versionProject) {
+		apply plugin: "io.freefair.lombok"
+		apply plugin: "fabric-loom"
+	}
 	
 	dependencies {
 		implementation project(":")
-		annotationProcessor "org.ow2.asm:asm:${project.asmVersion}"
-		annotationProcessor "org.ow2.asm:asm-analysis:${project.asmVersion}"
-		annotationProcessor "org.ow2.asm:asm-commons:${project.asmVersion}"
-		annotationProcessor "org.ow2.asm:asm-tree:${project.asmVersion}"
-		annotationProcessor "org.ow2.asm:asm-util:${project.asmVersion}"
+
+		if(versionProject) {
+			annotationProcessor "org.ow2.asm:asm:${project.asmVersion}"
+			annotationProcessor "org.ow2.asm:asm-analysis:${project.asmVersion}"
+			annotationProcessor "org.ow2.asm:asm-commons:${project.asmVersion}"
+			annotationProcessor "org.ow2.asm:asm-tree:${project.asmVersion}"
+			annotationProcessor "org.ow2.asm:asm-util:${project.asmVersion}"
+		}
 	}
 
-	def configs = LoomGradleExtension.get(project).getRunConfigs()
-	
-	configs.removeIf((config) -> config.environment != "client")
+	if(versionProject) {
+		def configs = LoomGradleExtension.get(project).getRunConfigs()
+		configs.removeIf((config) -> config.environment != "client")
 
-	for(config in configs) {
-		config.vmArgs.add "-Dio.github.solclient.client.mc_version=" + project.name
-		config.vmArgs.add "-Dio.github.solclient.client.version=dev"
-		config.vmArgs.add "-Dio.github.solclient.client.project_root=" + rootProject.projectDir.getAbsolutePath()
-		config.vmArgs.add "-javaagent:" + rootProject.configurations.mixin[0]
-		config.programArgs.add "--accessToken"
-		config.programArgs.add "0"
-		config.programArgs.add "--version"
-		config.programArgs.add project.name
-		config.defaultMainClass "io.github.solclient.client.wrapper.BootstrapMain"
-		config.ideConfigGenerated true
+		for(def config in configs) {
+			config.vmArgs.add "-Dio.github.solclient.client.mc_version=" + project.name
+			config.vmArgs.add "-Dio.github.solclient.client.version=dev"
+			config.vmArgs.add "-Dio.github.solclient.client.project_root=" + rootProject.projectDir.getAbsolutePath()
+			config.vmArgs.add "-javaagent:" + rootProject.configurations.mixin[0]
+			config.programArgs.add "--accessToken"
+			config.programArgs.add "0"
+			config.programArgs.add "--version"
+			config.programArgs.add project.name
+			config.defaultMainClass "io.github.solclient.client.wrapper.BootstrapMain"
+			config.ideConfigGenerated true
+		}
+
+		loom {
+			mixin {
+				useLegacyMixinAp = false
+			}
+		}
 	}
 }

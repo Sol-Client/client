@@ -1,0 +1,24 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+configurations {
+    flatShadow
+    flatShadow.transitive false
+}
+
+jar {
+    enabled = false
+    dependsOn shadowJar
+}
+
+shadowJar {
+    classifier null
+    configurations = [ project.configurations.flatShadow ]
+}
+
+dependencies {
+    flatShadow project(":")
+    flatShadow project(":1.8.9")
+    flatShadow project(":1.19.2")
+}

@@ -10,3 +10,4 @@ rootProject.name = "game"
 
 include ":1.8.9"
 include ":1.19.2"
+include ":bundle"

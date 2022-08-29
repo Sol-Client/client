@@ -35,9 +35,14 @@ public class OperatingSystemImpl implements OperatingSystem {
 		return Util.OperatingSystem.values();
 	}
 
+}
+
+@Mixin(OperatingSystem.class)
+interface OperatingSystemImpl$Static {
+
 	@Overwrite
-	private static OperatingSystem get(String name) {
-		return (OperatingSystem) Util.OperatingSystem.valueOf(name);
+	static OperatingSystem get(String name) {
+		return (OperatingSystem) (Object) Util.OperatingSystem.valueOf(name);
 	}
 
 }

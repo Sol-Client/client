@@ -15,19 +15,19 @@ import net.minecraft.util.Util;
 @Mixin(MinecraftUtil.class)
 public class MinecraftUtilImpl {
 
-	public @NotNull OperatingSystem getOperatingSystem() {
-		return (OperatingSystem) Util.getOperatingSystem();
+	private @NotNull OperatingSystem getOperatingSystem() {
+		return (OperatingSystem) (Object) Util.getOperatingSystem();
 	}
 
-	public @Nullable Vec3d getCameraPos() {
+	private @Nullable Vec3d getCameraPos() {
 		return (Vec3d) MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
 	}
 
-	public void copy(@NotNull String text) {
+	private void copy(@NotNull String text) {
 		MinecraftClient.getInstance().keyboard.setClipboard(text);
 	}
 
-	public String getClipboardContent() {
+	private String getClipboardContent() {
 		return MinecraftClient.getInstance().keyboard.getClipboard();
 	}
 

@@ -199,4 +199,5 @@ dist/
 # Electron Forge
 out/
 
-game/replaymod/
+# VSCode
+**/.vscode/**

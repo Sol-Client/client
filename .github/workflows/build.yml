@@ -27,8 +27,8 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
-        name: Game
-        path: game/build/libs/game.jar
+        name: Bundle
+        path: game/bundle/build/libs/bundle.jar
 
   launcher:
     runs-on: ${{ matrix.os }}
@@ -118,4 +118,4 @@ jobs:
           Sol-Client-Launcher-Linux/*.AppImage
           Sol-Client-Launcher-Windows/*.exe
           Sol-Client-Launcher-MacOS/*.dmg
-          Game/game.jar
+          Bundle/bundle.jar

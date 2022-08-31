@@ -95,5 +95,9 @@ subprojects {
 				useLegacyMixinAp = false
 			}
 		}
+		
+		remapJar {
+			targetNamespace = "official"
+		}
 	}
 }

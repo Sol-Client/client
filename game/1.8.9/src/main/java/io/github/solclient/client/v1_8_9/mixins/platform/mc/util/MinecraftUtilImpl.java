@@ -9,9 +9,9 @@ import io.github.solclient.client.platform.mc.maths.Vec3d;
 import io.github.solclient.client.platform.mc.util.MinecraftUtil;
 import io.github.solclient.client.platform.mc.util.OperatingSystem;
 import lombok.experimental.UtilityClass;
-import net.minecraft.class_321;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.Util;
@@ -30,7 +30,7 @@ public class MinecraftUtilImpl {
 		Entity entity = MinecraftClient.getInstance().getCameraEntity();
 
 		if(entity != null) {
-			return (Vec3d) class_321.method_9372(entity, 0);
+			return (Vec3d) Camera.getEntityPos(entity, 1);
 		}
 
 		return null;

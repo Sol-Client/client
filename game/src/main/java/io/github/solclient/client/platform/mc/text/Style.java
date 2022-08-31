@@ -9,23 +9,23 @@ public interface Style {
 
 	@NotNull Style withColour(@Nullable TextColour colour);
 
-	boolean isBold();
+	boolean boldFlag();
 
 	@NotNull Style withBold(@Nullable Boolean bold);
 
-	boolean isItalic();
+	boolean italicFlag();
 
 	@NotNull Style withItalic(@Nullable Boolean italic);
 
-	boolean isUnderlined();
+	boolean underlinedFlag();
 
 	@NotNull Style withUnderlined(@Nullable Boolean underlined);
 
-	boolean isStrikethrough();
+	boolean strikethroughFlag();
 
 	@NotNull Style withStrikethrough(@Nullable Boolean strikethrough);
 
-	boolean isObfuscated();
+	boolean obfuscatedFlag();
 
 	@NotNull Style withObfuscated(@Nullable Boolean obfuscated);
 

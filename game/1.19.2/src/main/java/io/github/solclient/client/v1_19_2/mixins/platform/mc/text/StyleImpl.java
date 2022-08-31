@@ -30,7 +30,7 @@ public abstract class StyleImpl {
 	@Shadow
 	public abstract net.minecraft.text.Style withColor(TextColor textColor);
 
-	public boolean platform$isBold() {
+	public boolean platform$boldFlag() {
 		return isBold();
 	}
 
@@ -44,7 +44,7 @@ public abstract class StyleImpl {
 	@Shadow
 	public abstract net.minecraft.text.Style withBold(Boolean bold);
 
-	public boolean platform$isItalic() {
+	public boolean platform$italicFlag() {
 		return isItalic();
 	}
 
@@ -58,7 +58,7 @@ public abstract class StyleImpl {
 	@Shadow
 	public abstract net.minecraft.text.Style withItalic(Boolean italic);
 
-	public boolean platform$isUnderlined() {
+	public boolean platform$underlinedFlag() {
 		return isUnderlined();
 	}
 
@@ -66,13 +66,13 @@ public abstract class StyleImpl {
 	public abstract boolean isUnderlined();
 
 	public @NotNull Style platform$withUnderlined(@Nullable Boolean underlined) {
-		return (Style) withUnderlined(underlined);
+		return (Style) withUnderline(underlined);
 	}
 
 	@Shadow
-	public abstract net.minecraft.text.Style withUnderlined(Boolean underlined);
+	public abstract net.minecraft.text.Style withUnderline(Boolean underlined);
 
-	public boolean platform$isStrikethrough() {
+	public boolean platform$strikethroughFlag() {
 		return isStrikethrough();
 	}
 
@@ -86,7 +86,7 @@ public abstract class StyleImpl {
 	@Shadow
 	public abstract net.minecraft.text.Style withStrikethrough(Boolean strikethrough);
 
-	public boolean platform$isObfuscated() {
+	public boolean platform$obfuscatedFlag() {
 		return isObfuscated();
 	}
 

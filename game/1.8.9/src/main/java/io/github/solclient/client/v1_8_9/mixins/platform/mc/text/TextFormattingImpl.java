@@ -3,6 +3,7 @@ package io.github.solclient.client.v1_8_9.mixins.platform.mc.text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 
 import io.github.solclient.client.platform.VirtualEnum;
 import io.github.solclient.client.platform.mc.text.TextColour;
@@ -50,6 +51,7 @@ public class TextFormattingImpl implements TextFormatting {
 @Mixin(TextFormatting.class)
 interface TextFormattingImpl$Static {
 
+	@Overwrite(remap = false)
 	static String strip(String message) {
 		return Formatting.strip(message);
 	}

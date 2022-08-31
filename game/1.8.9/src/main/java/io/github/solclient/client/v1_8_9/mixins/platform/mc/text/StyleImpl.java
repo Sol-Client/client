@@ -42,7 +42,7 @@ public abstract class StyleImpl {
 		return (Style) deepCopy().setFormatting(((TextColourImpl) colour).getFormatting());
 	}
 
-	public boolean platform$isBold() {
+	public boolean platform$boldFlag() {
 		return isBold();
 	}
 
@@ -53,7 +53,7 @@ public abstract class StyleImpl {
 		return (Style) deepCopy().setBold(bold);
 	}
 
-	public boolean platform$isItalic() {
+	public boolean platform$italicFlag() {
 		return isItalic();
 	}
 
@@ -64,7 +64,7 @@ public abstract class StyleImpl {
 		return (Style) deepCopy().setItalic(italic);
 	}
 
-	public boolean platform$isUnderlined() {
+	public boolean platform$underlinedFlag() {
 		return isUnderlined();
 	}
 
@@ -75,7 +75,7 @@ public abstract class StyleImpl {
 		return (Style) deepCopy().setUnderline(underlined);
 	}
 
-	public boolean platform$isStrikethrough() {
+	public boolean platform$strikethroughFlag() {
 		return isStrikethrough();
 	}
 
@@ -86,7 +86,7 @@ public abstract class StyleImpl {
 		return (Style) deepCopy().setStrikethrough(strikethrough);
 	}
 
-	public boolean platform$isObfuscated() {
+	public boolean platform$obfuscatedFlag() {
 		return isObfuscated();
 	}
 

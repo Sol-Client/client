@@ -18,7 +18,7 @@ public class InputImpl {
 	}
 
 	@Overwrite(remap = false)
-	private boolean isKeyHeld(int code) {
+	public boolean isKeyDown(int code) {
 		return InputUtil.isKeyPressed(windowId(), code);
 	}
 

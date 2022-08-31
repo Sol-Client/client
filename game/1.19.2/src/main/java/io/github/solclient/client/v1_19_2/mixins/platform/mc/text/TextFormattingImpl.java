@@ -1,12 +1,14 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.text;
 
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+
 import io.github.solclient.client.platform.VirtualEnum;
 import io.github.solclient.client.platform.mc.text.TextColour;
 import io.github.solclient.client.platform.mc.text.TextFormatting;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Formatting.class)
 public class TextFormattingImpl implements TextFormatting {
@@ -45,6 +47,7 @@ public class TextFormattingImpl implements TextFormatting {
 @Mixin(TextFormatting.class)
 interface TextFormattingImpl$Static {
 
+	@Overwrite(remap = false)
 	static String strip(String message) {
 		return Formatting.strip(message);
 	}

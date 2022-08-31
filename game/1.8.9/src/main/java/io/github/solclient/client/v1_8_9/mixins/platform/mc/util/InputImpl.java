@@ -13,7 +13,7 @@ import lombok.experimental.UtilityClass;
 public class InputImpl {
 
 	@Overwrite(remap = false)
-	private int getKeyCode(int glfw) {
+	public int getKeyCode(int glfw) {
 		// old-style switch for Java 8 compat.
 		switch(glfw) {
 			case 32:	return Keyboard.KEY_SPACE;
@@ -132,12 +132,12 @@ public class InputImpl {
 	}
 
 	@Overwrite(remap = false)
-	private boolean isKeyHeld(int code) {
+	public boolean isKeyDown(int code) {
 		return Keyboard.isKeyDown(code);
 	}
 
 	@Overwrite(remap = false)
-	private void enableRepeatEvents(boolean value) {
+	public void enableRepeatEvents(boolean value) {
 		Keyboard.enableRepeatEvents(value);
 	}
 

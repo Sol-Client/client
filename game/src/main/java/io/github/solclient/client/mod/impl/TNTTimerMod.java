@@ -51,7 +51,7 @@ public class TNTTimerMod extends Mod {
 		}
 
 		final TextColour finalColour = colour;
-		return Text.literal(FORMAT.format(fuse / 20)).withStyle((style) -> style.setColour(finalColour));
+		return Text.literal(FORMAT.format(fuse / 20)).style((style) -> style.withColour(finalColour));
 	}
 
 	@Override

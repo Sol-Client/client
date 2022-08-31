@@ -1,5 +1,6 @@
 package io.github.solclient.client.platform.mc.text;
 
+import io.github.solclient.client.platform.mc.util.OperatingSystem;
 import org.jetbrains.annotations.NotNull;
 
 import io.github.solclient.client.platform.VirtualEnum;
@@ -16,12 +17,15 @@ public interface ClickEvent {
 
 	interface Action extends VirtualEnum {
 
-		Action OPEN_URL = null,
-				OPEN_FILE = null,
-				RUN_COMMAND = null,
-				SUGGEST_COMMAND = null,
-				CHANGE_PAGE = null,
-				COPY_TO_CLIPBOARD = null;
+		Action OPEN_URL = get("OPEN_URL"),
+				OPEN_FILE = get("OPEN_FILE"),
+				RUN_COMMAND = get("RUN_COMMAND"),
+				SUGGEST_COMMAND = get("SUGGEST_COMMAND"),
+				CHANGE_PAGE = get("CHANGE_PAGE");
+
+		static Action get(String name) {
+			throw new UnsupportedOperationException();
+		}
 
 	}
 

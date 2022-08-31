@@ -2,10 +2,13 @@ package io.github.solclient.client.platform.mc.text;
 
 import org.jetbrains.annotations.NotNull;
 
+import io.github.solclient.client.platform.VirtualEnum;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Legacy chat colour codes.
  */
-public interface TextFormatting {
+public interface TextFormatting extends VirtualEnum {
 
 	TextFormatting BLACK = null,
 			DARK_BLUE = null,
@@ -28,11 +31,9 @@ public interface TextFormatting {
 			STRIKETHROUGH = null,
 			OBFUSCATED = null;
 
-	static String strip(String message) {
+	static @NotNull String strip(@NotNull String message) {
 		throw new UnsupportedOperationException();
 	}
-
-	char getChar();
 
 	/**
 	 * @return §0123456789abcdef
@@ -40,12 +41,6 @@ public interface TextFormatting {
 	@Override
 	@NotNull String toString();
 
-	static String filterTextBoxInput(@NotNull String text) {
-		throw new UnsupportedOperationException();
-	}
-
-	static boolean isAllowedInTextBox(char character) {
-		throw new UnsupportedOperationException();
-	}
+	@Nullable TextColour getColour();
 
 }

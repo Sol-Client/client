@@ -1,6 +1,5 @@
 package io.github.solclient.client.v1_8_9.mixins.resource;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,9 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import io.github.solclient.client.util.TranslationProvider;
 import net.minecraft.client.resource.FallbackResourceManager;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
-import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourcePack;
-import net.minecraft.util.Identifier;
 
 @Mixin(ReloadableResourceManagerImpl.class)
 public abstract class ReloadableResourceManagerImplMixin {

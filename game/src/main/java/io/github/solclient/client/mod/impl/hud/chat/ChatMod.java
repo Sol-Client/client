@@ -330,9 +330,10 @@ public class ChatMod extends HudMod {
 								GL11.glEnable(GL11.GL_BLEND);
 
 								if(percentFG > 0.05F) {
-									mc.getFont().render(colours ? formattedText :
-											formattedText.withoutColour(), i2, j2 - 8,
-											defaultTextColour.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue(), shadow);
+									mc.getFont().render(
+											colours ? formattedText : Text.literal(formattedText.getPlain()), i2,
+											j2 - 8, defaultTextColour.withAlpha(
+													(int) (defaultTextColour.getAlpha() * percentFG)).getValue(), shadow);
 								}
 							}
 						}

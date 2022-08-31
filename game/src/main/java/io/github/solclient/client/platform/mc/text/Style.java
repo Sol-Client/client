@@ -1,35 +1,36 @@
 package io.github.solclient.client.platform.mc.text;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface Style {
 
-	@NotNull TextColour getColour();
+	@Nullable TextColour getColour();
 
-	void setColour(@NotNull TextColour colour);
+	@NotNull Style withColour(@Nullable TextColour colour);
 
 	boolean isBold();
 
-	void setBold(boolean bold);
+	@NotNull Style withBold(@Nullable Boolean bold);
 
 	boolean isItalic();
 
-	void setItalic(boolean italic);
+	@NotNull Style withItalic(@Nullable Boolean italic);
 
 	boolean isUnderlined();
 
-	void setUnderlined(boolean underlined);
+	@NotNull Style withUnderlined(@Nullable Boolean underlined);
 
 	boolean isStrikethrough();
 
-	void setStrikethrough(boolean strikethrough);
+	@NotNull Style withStrikethrough(@Nullable Boolean strikethrough);
 
 	boolean isObfuscated();
 
-	void setObfuscated(boolean obfuscated);
+	@NotNull Style withObfuscated(@Nullable Boolean obfuscated);
 
-	ClickEvent getClickEvent();
+	@Nullable ClickEvent getClickEvent();
 
-	void setClickEvent(ClickEvent event);
+	@NotNull Style withClickEvent(@Nullable ClickEvent event);
 
 }

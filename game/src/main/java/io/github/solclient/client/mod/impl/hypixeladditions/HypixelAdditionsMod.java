@@ -12,6 +12,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
@@ -69,7 +70,7 @@ public class HypixelAdditionsMod extends Mod {
 	@Option
 	private AutoGGMessage autoggMessage = AutoGGMessage.GG;
 	// Borrowed (nicked) and updated from https://static.sk1er.club/autogg/regex_triggers_3.json.
-	private final List<Pattern> autoggTriggers = Arrays.asList(
+	private final List<Pattern> autoggTriggers = Stream.of(
 			"^ +1st Killer - ?\\[?\\w*\\+*\\]? \\w+ - \\d+(?: Kills?)?$",
 			"^ *1st (?:Place ?)?(?:-|:)? ?\\[?\\w*\\+*\\]? \\w+(?: : \\d+| - \\d+(?: Points?)?| - \\d+(?: x .)?| \\(\\w+ .{1,6}\\) - \\d+ Kills?|: \\d+:\\d+| - \\d+ (?:Zombie )?(?:Kills?|Blocks? Destroyed)| - \\[LINK\\])?$",
 			"^ +Winn(?:er #1 \\(\\d+ Kills\\): \\w+ \\(\\w+\\)|er(?::| - )(?:Hiders|Seekers|Defenders|Attackers|PLAYERS?|MURDERERS?|Red|Blue|RED|BLU|\\w+)(?: Team)?|ers?: ?\\[?\\w*\\+*\\]? \\w+(?:, ?\\[?\\w*\\+*\\]? \\w+)?|ing Team ?[\\:-] (?:Animals|Hunters|Red|Green|Blue|Yellow|RED|BLU|Survivors|Vampires))$",
@@ -86,13 +87,13 @@ public class HypixelAdditionsMod extends Mod {
 			"^ +. YOUR STATISTICS .$",
 			"^ {36}Winner(s?)$",
 			"^ {21}Bridge CTF [a-zA-Z]+ - \\d\\d:\\d\\d$"
-	).stream().map(Pattern::compile).collect(Collectors.toList());
+	).map(Pattern::compile).collect(Collectors.toList());
 	@Expose
 	@Option
 	private boolean hidegg = false;
-	private final List<Pattern> hideggTriggers = Arrays.asList(
+	private final List<Pattern> hideggTriggers = Stream.of(
 			".*: (([gG]{2})|([gG]ood [gG]ame))",
-			"\\+\\d* Karma!").stream().map(Pattern::compile).collect(Collectors.toList());
+			"\\+\\d* Karma!").map(Pattern::compile).collect(Collectors.toList());
 	private boolean donegg;
 	private final Pattern hideChannelMessageTrigger = Pattern.compile("(You are now in the (ALL|PARTY|GUILD|OFFICER) channel|You're already in this channel!)");
 	private final Pattern apiKeyMessageTrigger = Pattern.compile("Your new API key is (.*)");
@@ -230,10 +231,10 @@ public class HypixelAdditionsMod extends Mod {
 		}
 
 		if(isEffective() && apiKey == null) {
-			mc.getPlayer().sendSystemMessage(Text.literal("Could not find API key (required for Levelhead). Click here or run /api new.").withStyle((style) -> {
-				style.setColour(TextColour.RED);
-				style.setClickEvent(ClickEvent.create(Action.RUN_COMMAND, "/api"));
-			}));
+			mc.getPlayer().sendSystemMessage(
+					Text.literal("Could not find API key (required for Levelhead). Click here or run /api new.")
+							.style((style) -> style.withColour(TextColour.RED)
+									.withClickEvent(ClickEvent.create(Action.RUN_COMMAND, "/api"))));
 		}
 	}
 

@@ -8,7 +8,7 @@ public interface VirtualEnum {
 	/**
 	 * @see Enum#name()
 	 */
-	String name();
+	String getName();
 
 	/**
 	 * @see Enum#toString()
@@ -19,7 +19,7 @@ public interface VirtualEnum {
 	/**
 	 * @see Enum#ordinal()
 	 */
-	int ordinal();
+	int getOrdinal();
 
 	/**
 	 * Gets the "real" enum object.
@@ -31,13 +31,12 @@ public interface VirtualEnum {
 	 * Return the other values in this virtual enum.
 	 * @return The other values.
 	 */
-	VirtualEnum[] values();
+	VirtualEnum[] getValues();
 
 	/**
 	 * Return the other values in the actual enum.
 	 * @return The values.
 	 */
-
-	Enum<?>[] enumValues();
+	Enum<?>[] getEnumValues();
 
 }

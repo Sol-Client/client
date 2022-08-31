@@ -174,7 +174,7 @@ public class Utils {
 			}
 		}
 
-		switch(MinecraftUtil.getOperatingSystem().ordinal()) {
+		switch(MinecraftUtil.getOperatingSystem().getOrdinal()) {
 			case 0: // Linux
 				if(reveal) {
 					if(new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {

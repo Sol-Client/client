@@ -33,7 +33,7 @@ public abstract class Vec3iImpl implements Vec3i {
 	}
 
 	@Shadow
-	public abstract double getSquaredDistance(final double x, final double y, final double z);
+	public abstract double getSquaredDistance(double x, double y, double z);
 
 	@Override
 	public double distanceSquared(@NotNull Vec3i other) {

@@ -11,12 +11,12 @@ import net.minecraft.util.Util;
 public class OperatingSystemImpl implements OperatingSystem {
 
 	@Override
-	public String name() {
+	public String getName() {
 		return toEnum().name();
 	}
 
 	@Override
-	public int ordinal() {
+	public int getOrdinal() {
 		return toEnum().ordinal();
 	}
 
@@ -26,12 +26,12 @@ public class OperatingSystemImpl implements OperatingSystem {
 	}
 
 	@Override
-	public VirtualEnum[] values() {
+	public VirtualEnum[] getValues() {
 		return (VirtualEnum[]) (Object) Util.OperatingSystem.values();
 	}
 
 	@Override
-	public Enum<?>[] enumValues() {
+	public Enum<?>[] getEnumValues() {
 		return Util.OperatingSystem.values();
 	}
 

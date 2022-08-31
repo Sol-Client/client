@@ -31,4 +31,11 @@ public class MinecraftUtil {
 		return getOperatingSystem() == OperatingSystem.OSX;
 	}
 
+	public boolean isAllowedInTextBox(char character) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static @NotNull String filterTextBoxInput(@NotNull String text) {
+		throw new UnsupportedOperationException();
+	}
 }

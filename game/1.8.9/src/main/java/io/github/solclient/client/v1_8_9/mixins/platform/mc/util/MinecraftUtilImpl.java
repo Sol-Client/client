@@ -13,6 +13,7 @@ import net.minecraft.class_321;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.SharedConstants;
 import net.minecraft.util.Util;
 
 @UtilityClass
@@ -40,6 +41,7 @@ public class MinecraftUtilImpl {
 		Screen.setClipboard(text);
 	}
 
+	@Overwrite(remap = false)
 	public @NotNull String getClipboardContent() {
 		String result = Screen.getClipboard();
 
@@ -49,6 +51,16 @@ public class MinecraftUtilImpl {
 		}
 
 		return result;
+	}
+
+	@Overwrite(remap = false)
+	public boolean isAllowedInTextBox(char character) {
+		return SharedConstants.isValidChar(character);
+	}
+
+	@Overwrite(remap = false)
+	public @NotNull String filterTextBoxInput(@NotNull final String text) {
+		return SharedConstants.stripInvalidChars(text);
 	}
 
 }

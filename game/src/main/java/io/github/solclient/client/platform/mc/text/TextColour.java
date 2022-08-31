@@ -2,31 +2,21 @@ package io.github.solclient.client.platform.mc.text;
 
 public interface TextColour {
 
-	TextColour BLACK = null,
-			DARK_BLUE = null,
-			DARK_GREEN = null,
-			DARK_AQUA = null,
-			DARK_RED = null,
-			DARK_PURPLE = null,
-			GOLD = null,
-			GREY = null,
-			DARK_GREY = null,
-			BLUE = null,
-			GREEN = null,
-			AQUA = null,
-			RED = null,
-			LIGHT_PURPLE = null,
-			YELLOW = null,
-			WHITE = null;
-
-	static TextColour create(int rgb) {
-		throw new UnsupportedOperationException();
-	}
-
-	static TextColour create(int r, int g, int b) {
-		throw new UnsupportedOperationException();
-	}
-
-	int getColour();
+	TextColour BLACK = TextFormatting.BLACK.getColour(),
+			DARK_BLUE = TextFormatting.DARK_BLUE.getColour(),
+			DARK_GREEN = TextFormatting.DARK_GREEN.getColour(),
+			DARK_AQUA = TextFormatting.DARK_AQUA.getColour(),
+			DARK_RED = TextFormatting.DARK_RED.getColour(),
+			DARK_PURPLE = TextFormatting.DARK_PURPLE.getColour(),
+			GOLD = TextFormatting.GOLD.getColour(),
+			GREY = TextFormatting.GREY.getColour(),
+			DARK_GREY = TextFormatting.DARK_GREY.getColour(),
+			BLUE = TextFormatting.BLUE.getColour(),
+			GREEN = TextFormatting.GREEN.getColour(),
+			AQUA = TextFormatting.AQUA.getColour(),
+			RED = TextFormatting.RED.getColour(),
+			LIGHT_PURPLE = TextFormatting.LIGHT_PURPLE.getColour(),
+			YELLOW = TextFormatting.YELLOW.getColour(),
+			WHITE = TextFormatting.WHITE.getColour();
 
 }

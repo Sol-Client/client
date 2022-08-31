@@ -26,7 +26,7 @@ public interface Font {
 
 	int renderWithShadow(@NotNull Text text, int x, int y, int rgb);
 
-	int getWidth(char c);
+	int getWidth(char character);
 
 	int getWidth(@NotNull String text);
 

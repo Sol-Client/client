@@ -1,11 +1,8 @@
 package io.github.solclient.client.ui.component.impl;
 
-import com.google.common.base.Predicate;
-
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.lang.I18n;
-import io.github.solclient.client.platform.mc.text.TextFormatting;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.platform.mc.util.MinecraftUtil;
 import io.github.solclient.client.ui.component.Component;
@@ -19,6 +16,8 @@ import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.function.Predicate;
 
 public class TextFieldComponent extends Component {
 
@@ -56,7 +55,7 @@ public class TextFieldComponent extends Component {
 			text = text.substring(0, 32);
 		}
 
-		boolean different = this.text != text;
+		boolean different = !this.text.equals(text);
 
 		this.text = text;
 
@@ -106,7 +105,7 @@ public class TextFieldComponent extends Component {
 		int textOffset = 2;
 
 		if(centred) {
-			textOffset = (int) ((getBounds().getWidth() / 2) - (font.getWidth(text) / 2));
+			textOffset = (getBounds().getWidth() / 2) - (font.getWidth(text) / 2);
 		}
 
 		if(hasIcon) {
@@ -114,8 +113,8 @@ public class TextFieldComponent extends Component {
 		}
 
 		if(selectionEnd != cursor) {
-			int start = selectionEnd > cursor ? cursor : selectionEnd;
-			int end = selectionEnd > cursor ? selectionEnd : cursor;
+			int start = Math.min(selectionEnd, cursor);
+			int end = Math.max(selectionEnd, cursor);
 
 			float selectionWidth = font.getWidth(text.substring(start, end));
 			float offset = font.getWidth(text.substring(0, start));
@@ -262,7 +261,7 @@ public class TextFieldComponent extends Component {
 
 	@Override
 	public boolean characterTyped(ComponentRenderInfo info, char character) {
-		if(TextFormatting.isAllowedInTextBox(character)) {
+		if(MinecraftUtil.isAllowedInTextBox(character)) {
 			if(enabled) {
 				writeText(Character.toString(character));
 			}
@@ -351,11 +350,11 @@ public class TextFieldComponent extends Component {
 
 	private void writeText(String text) {
 		String result = "";
-		String filtered = TextFormatting.filterTextBoxInput(text);
-		int start = cursor < selectionEnd ? cursor : selectionEnd;
-		int end = cursor < selectionEnd ? selectionEnd : cursor;
+		String filtered = MinecraftUtil.filterTextBoxInput(text);
+		int start = Math.min(cursor, selectionEnd);
+		int end = Math.max(cursor, selectionEnd);
 		int k = 32 - text.length() - (start - end);
-		int l = 0;
+		int l;
 
 		if(this.text.length() > 0) {
 			result = result + this.text.substring(0, start);
@@ -383,8 +382,8 @@ public class TextFieldComponent extends Component {
 	}
 
 	private String getSelectedText() {
-		int start = cursor < selectionEnd ? cursor : selectionEnd;
-		int end = cursor < selectionEnd ? selectionEnd : cursor;
+		int start = Math.min(cursor, selectionEnd);
+		int end = Math.max(cursor, selectionEnd);
 		return text.substring(start, end);
 	}
 
@@ -418,7 +417,7 @@ public class TextFieldComponent extends Component {
 	}
 
 	public void flush() {
-		if(text == lastText) {
+		if(text.equals(lastText)) {
 			return;
 		}
 
@@ -426,7 +425,7 @@ public class TextFieldComponent extends Component {
 			return;
 		}
 
-		if(!onUpdate.apply(text)) {
+		if(!onUpdate.test(text)) {
 			setTextInternal(lastText);
 			setCursorPositionEnd();
 		}

@@ -404,13 +404,13 @@ public final class Client {
 				}
 				catch(CommandException error) {
 					mc.getPlayer().sendSystemMessage(Text.literal(error.getMessage())
-							.withStyle((style) -> style.setColour(TextColour.RED)));
+							.style((style) -> style.withColour(TextColour.RED)));
 				}
 				catch(Exception error) {
 					mc.getPlayer()
 							.sendSystemMessage(Text
 									.literal("Could " + "not execute client-sided command. See log for extra details.")
-									.withStyle((style) -> style.setColour(TextColour.RED)));
+									.style((style) -> style.withColour(TextColour.RED)));
 					LOGGER.info("Could not execute client-sided command: " + event.getMessage() + ", error: ", error);
 				}
 			}

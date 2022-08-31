@@ -60,7 +60,7 @@ public interface TextImpl {
 	net.minecraft.text.Text setStyle(net.minecraft.text.Style par1);
 
 	default @NotNull MutableText mut$style(@NotNull UnaryOperator<Style> styler) {
-		return platform$mut$setStyle(styler.apply(platform$getStyle()));
+		return mut$setStyle(styler.apply(platform$getStyle()));
 	}
 
 }

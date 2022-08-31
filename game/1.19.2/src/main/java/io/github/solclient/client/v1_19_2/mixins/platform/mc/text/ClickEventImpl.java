@@ -28,35 +28,6 @@ public abstract class ClickEventImpl {
 	@Shadow
 	public abstract String getValue();
 
-	@Mixin(net.minecraft.text.ClickEvent.Action.class)
-	public static class ActionImpl implements ClickEvent.Action {
-
-		@Override
-		public String getName() {
-			return toEnum().name();
-		}
-
-		@Override
-		public int getOrdinal() {
-			return toEnum().ordinal();
-		}
-
-		@Override
-		public Enum<?> toEnum() {
-			return (Enum<?>) (Object) this;
-		}
-
-		@Override
-		public VirtualEnum[] getValues() {
-			return (VirtualEnum[]) (Object) net.minecraft.text.ClickEvent.Action.values();
-		}
-
-		@Override
-		public Enum<?>[] getEnumValues() {
-			return net.minecraft.text.ClickEvent.Action.values();
-		}
-	}
-
 }
 
 @Mixin(ClickEvent.class)
@@ -67,6 +38,35 @@ interface ClickEventImpl$Static {
 		return (ClickEvent) new net.minecraft.text.ClickEvent((net.minecraft.text.ClickEvent.Action) (Object) action, value);
 	}
 
+}
+
+@Mixin(net.minecraft.text.ClickEvent.Action.class)
+class ClickEventImpl$ActionImpl implements ClickEvent.Action {
+
+	@Override
+	public String getName() {
+		return toEnum().name();
+	}
+
+	@Override
+	public int getOrdinal() {
+		return toEnum().ordinal();
+	}
+
+	@Override
+	public Enum<?> toEnum() {
+		return (Enum<?>) (Object) this;
+	}
+
+	@Override
+	public VirtualEnum[] getValues() {
+		return (VirtualEnum[]) (Object) net.minecraft.text.ClickEvent.Action.values();
+	}
+
+	@Override
+	public Enum<?>[] getEnumValues() {
+		return net.minecraft.text.ClickEvent.Action.values();
+	}
 }
 
 @Mixin(ClickEvent.Action.class)

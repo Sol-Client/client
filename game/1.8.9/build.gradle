@@ -8,7 +8,7 @@ def currentOs = System.getProperty("os.name").toLowerCase()
 
 dependencies {
 	minecraft "com.mojang:minecraft:1.8.9"
-	mappings "net.legacyfabric:yarn:1.8.9+build.382:v2"
+	mappings "net.legacyfabric:yarn:1.8.9+build.386:v2"
 	// from legacy-fabric
 	if(currentOs.contains("mac")) {
 		implementation "org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209"

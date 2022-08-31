@@ -75,7 +75,7 @@ subprojects {
 
 	if(versionProject) {
 		def configs = LoomGradleExtension.get(project).getRunConfigs()
-		//configs.removeIf((config) -> config.environment != "client")
+		configs.removeIf((config) -> config.environment != "client")
 
 		for(def config in configs) {
 			config.vmArgs.add "-Dio.github.solclient.client.mc_version=" + project.name

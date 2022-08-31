@@ -19,6 +19,6 @@ shadowJar {
 
 dependencies {
     flatShadow project(":")
-    flatShadow project(":1.8.9")
+    //flatShadow project(":1.8.9")
     flatShadow project(":1.19.2")
 }

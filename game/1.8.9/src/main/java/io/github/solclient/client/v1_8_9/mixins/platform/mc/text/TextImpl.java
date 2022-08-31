@@ -19,7 +19,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 @Mixin(net.minecraft.text.Text.class)
-@Implements({ @Interface(iface = Text.class, prefix = "platform$"), @Interface(iface = MutableText.class, prefix = "platform$mut$") })
+@Implements({ @Interface(iface = Text.class, prefix = "platform$"), @Interface(iface = MutableText.class, prefix = "mut$") })
 public interface TextImpl {
 
 	@NotNull
@@ -52,14 +52,14 @@ public interface TextImpl {
 	@Shadow
 	net.minecraft.text.Style getStyle();
 
-	default @NotNull MutableText platform$mut$setStyle(@NotNull Style style) {
+	default @NotNull MutableText mut$setStyle(@NotNull Style style) {
 		return (MutableText) setStyle((net.minecraft.text.Style) style);
 	}
 
 	@Shadow
 	net.minecraft.text.Text setStyle(net.minecraft.text.Style par1);
 
-	default @NotNull MutableText platform$mut$style(@NotNull UnaryOperator<Style> styler) {
+	default @NotNull MutableText mut$style(@NotNull UnaryOperator<Style> styler) {
 		return platform$mut$setStyle(styler.apply(platform$getStyle()));
 	}
 

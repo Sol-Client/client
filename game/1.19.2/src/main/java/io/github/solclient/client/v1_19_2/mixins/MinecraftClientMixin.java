@@ -17,4 +17,5 @@ public class MinecraftClientMixin {
 		callback.setReturnValue(Constants.NAME + " | Minecraft " + SharedConstants.getGameVersion().getName());
 	}
 
+
 }

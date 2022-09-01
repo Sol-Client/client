@@ -33,7 +33,7 @@ public interface Text extends Cloneable {
 		return text.getPlain().equals(to);
 	}
 
-	@NotNull List<Text> getSiblings();
+	@NotNull List<Text> getExtraText();
 
 	@NotNull Text clone();
 

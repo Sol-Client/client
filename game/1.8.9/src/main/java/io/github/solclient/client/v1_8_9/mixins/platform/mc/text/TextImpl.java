@@ -24,7 +24,7 @@ public interface TextImpl {
 
 	@NotNull
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	default List<Text> platform$getSiblings() {
+	default List<Text> platform$getExtraText() {
 		return (List) getSiblings();
 	}
 

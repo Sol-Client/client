@@ -14,14 +14,14 @@ import io.github.solclient.client.platform.mc.text.ClickEvent;
 @Implements(@Interface(iface = ClickEvent.class, prefix = "platform$"))
 public abstract class ClickEventImpl {
 
-	public @NotNull ClickEvent.Action platform$getAction() {
+	public @NotNull ClickEvent.Action platform$action() {
 		return (ClickEvent.Action) (Object) getAction();
 	}
 
 	@Shadow
 	public abstract net.minecraft.text.ClickEvent.Action getAction();
 
-	public @NotNull String platform$getValue() {
+	public @NotNull String platform$value() {
 		return getValue();
 	}
 

@@ -1,6 +1,5 @@
 package io.github.solclient.client.platform.mc.text;
 
-import io.github.solclient.client.platform.mc.util.OperatingSystem;
 import org.jetbrains.annotations.NotNull;
 
 import io.github.solclient.client.platform.VirtualEnum;
@@ -11,9 +10,9 @@ public interface ClickEvent {
 		throw new UnsupportedOperationException();
 	}
 
-	@NotNull Action getAction();
+	@NotNull Action action();
 
-	@NotNull String getValue();
+	@NotNull String value();
 
 	interface Action extends VirtualEnum {
 

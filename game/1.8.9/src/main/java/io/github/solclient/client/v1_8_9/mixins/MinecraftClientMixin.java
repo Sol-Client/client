@@ -19,8 +19,7 @@ public class MinecraftClientMixin {
 		return Constants.NAME + " | " + title;
 	}
 
-	@Inject(method = "initializeGame", at = @At(value = "INVOKE",
-			target = "Lnet/minecraft/client/MinecraftClient;initializeStream()V", shift = At.Shift.AFTER))
+	@Inject(method = "initializeGame", at = @At(value = "HEAD"))
 	public void init(CallbackInfo callback) {
 		Client.INSTANCE.init();
 	}

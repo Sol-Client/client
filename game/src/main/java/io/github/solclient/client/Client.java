@@ -52,7 +52,6 @@ import io.github.solclient.client.platform.mc.world.level.Level;
 import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
-import io.github.solclient.client.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -96,7 +95,6 @@ public final class Client {
 	private TitleScreen mainMenu;
 
 	public void init() {
-		Utils.resetLineWidth();
 		new File(mc.getDataFolder(), "server-resource-packs").mkdirs(); // Fix crash
 		System.setProperty("http.agent", "Sol Client/" + Constants.VERSION);
 

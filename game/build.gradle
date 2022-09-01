@@ -23,7 +23,7 @@ dependencies {
 	api "org.java-websocket:Java-WebSocket:1.5.3"
 	api "org.apache.httpcomponents:httpclient:4.5.13"
 
-	mixin "org.spongepowered:mixin:0.8.5"
+	mixin "net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5"
 	api "org.ow2.asm:asm-tree:${project.asmVersion}"
 	api "org.ow2.asm:asm-commons:${project.asmVersion}"
 	api "org.ow2.asm:asm-util:${project.asmVersion}"
@@ -45,6 +45,7 @@ allprojects {
 		maven { url "https://repo.spongepowered.org/maven" }
 		maven { url "https://repo.hypixel.net/repository/Hypixel" }
 		maven { url "https://jitpack.io" }
+		maven { url "https://maven.fabricmc.net" }
 		maven { url "https://maven.legacyfabric.net" }
 		maven { url "https://maven.glass-launcher.net/babric" }
 	}

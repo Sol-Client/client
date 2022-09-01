@@ -36,7 +36,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	public float scale = 100;
 	protected Font font;
 
-	public HudMod() {
+	protected HudMod() {
 		position = getDefaultPosition();
 	}
 
@@ -48,7 +48,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public void postStart() {
 		super.postStart();
-		this.font = mc.getFont();
+		font = mc.getFont();
 	}
 
 	protected float getScale() {

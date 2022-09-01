@@ -9,8 +9,7 @@ import io.github.solclient.client.util.data.Colour;
 
 public class TabListMod extends Mod {
 
-	public static boolean enabled;
-	public static TabListMod instance;
+	public static final TabListMod INSTANCE = new TabListMod();
 
 	@Expose
 	@Option
@@ -42,24 +41,6 @@ public class TabListMod extends Mod {
 	@Override
 	public ModCategory getCategory() {
 		return ModCategory.HUD;
-	}
-
-	@Override
-	public void onRegister() {
-		super.onRegister();
-		instance = this;
-	}
-
-	@Override
-	public void onEnable() {
-		super.onEnable();
-		enabled = true;
-	}
-
-	@Override
-	public void onDisable() {
-		super.onDisable();
-		enabled = false;
 	}
 
 	@Override

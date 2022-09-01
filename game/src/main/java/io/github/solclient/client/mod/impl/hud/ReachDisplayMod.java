@@ -8,6 +8,7 @@ import io.github.solclient.client.mod.hud.SimpleHudMod;
 
 public class ReachDisplayMod extends SimpleHudMod {
 
+	public static final ReachDisplayMod INSTANCE = new ReachDisplayMod();
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 
 	private double distance = 0;

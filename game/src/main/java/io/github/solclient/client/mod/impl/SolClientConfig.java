@@ -16,7 +16,7 @@ import io.github.solclient.client.util.data.Colour;
 
 public class SolClientConfig extends ConfigOnlyMod {
 
-	public static SolClientConfig instance;
+	public static final SolClientConfig INSTANCE = new SolClientConfig();
 
 	@Expose
 	@Option
@@ -56,8 +56,6 @@ public class SolClientConfig extends ConfigOnlyMod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-
-		instance = this;
 		mc.getOptions().addKey(modsKey);
 		mc.getOptions().addKey(editHudKey);
 		uiHover = getUiHover();

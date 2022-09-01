@@ -126,7 +126,7 @@ public class TextFieldComponent extends Component {
 		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
 		font.render(hasPlaceholder ? I18n.translate(placeholder) : text, textOffset,
-				SolClientConfig.instance.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
+				SolClientConfig.INSTANCE.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
 
 		if(focused && ticks / 12 % 2 == 0) {
 			float relativeCursorPosition = font.getWidth(text.substring(0, cursor));

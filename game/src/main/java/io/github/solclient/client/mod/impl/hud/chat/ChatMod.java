@@ -33,10 +33,14 @@ import io.github.solclient.client.util.data.Colour;
 
 public class ChatMod extends HudMod {
 
-	private static final float ANIMATION_MULTIPLIER = 0.5F;
+	public static final ChatMod INSTANCE = new ChatMod();
 
-	public static boolean enabled;
-	public static ChatMod instance;
+	private static final float ANIMATION_MULTIPLIER = 0.5F;
+	private static final String CHAT_FILTER_FILE = "Chat Filter.txt";
+	private static final String CHAT_FILTER_HEADER = "# List words on each line for them to be blocked.\n"
+			+ "# The chat mod and chat filter must be enabled for this to work.\n"
+			+ "# This may not work well for all languages.\n"
+			+ "# Any lines starting with \"#\" will be ignored.";
 
 	@Expose
 	@Option
@@ -98,10 +102,7 @@ public class ChatMod extends HudMod {
 	@Option
 	private boolean chatFilter = true;
 	@Option
-	@FileOption(file = "Chat Filter.txt", header = "# List words on each line for them to be blocked.\n"
-			+ "# The chat mod and chat filter must be enabled for this to work.\n"
-			+ "# This may not work well for all languages.\n"
-			+ "# Any lines starting with \"#\" will be ignored.")
+	@FileOption(file = CHAT_FILTER_FILE, header = CHAT_FILTER_HEADER)
 	private String filteredWordsContent;
 	private List<String> filteredWords = new ArrayList<>();
 
@@ -116,18 +117,15 @@ public class ChatMod extends HudMod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-
-		instance = this;
 		mc.getOptions().addKey(peekKey);
 	}
 
 	@Override
 	public void postStart() {
 		super.postStart();
-
 		symbolsButton = new SymbolsButton(this);
 
-		if(enabled) {
+		if(isEnabled()) {
 			Client.INSTANCE.registerChatButton(symbolsButton);
 		}
 	}
@@ -135,8 +133,6 @@ public class ChatMod extends HudMod {
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		enabled = true;
-
 		if(symbolsButton != null) {
 			Client.INSTANCE.registerChatButton(symbolsButton);
 		}
@@ -149,7 +145,6 @@ public class ChatMod extends HudMod {
 	@Override
 	protected void onDisable() {
 		super.onDisable();
-		enabled = false;
 		Client.INSTANCE.unregisterChatButton(symbolsButton);
 
 		if(mc.hasLevel()) {
@@ -259,119 +254,124 @@ public class ChatMod extends HudMod {
 		event.cancel();
 		Chat chat = mc.getIngameHud().getChat();
 
-		if(visibility != ChatVisibility.HIDDEN) {
-			int linesCount = chat.getVisibleMessageCount();
-			boolean open = false;
-			int j = 0;
-			int visibleLinesCount = chat.getVisibleMessages().size();
+		if(visibility == ChatVisibility.HIDDEN) {
+			hasScrollbar = false;
+			return;
+		}
 
-			if(visibleLinesCount > 0) {
-				if(chat.isOpen()) {
-					open = true;
+		int linesCount = chat.getVisibleMessageCount();
+		int j = 0;
+		int visibleLinesCount = chat.getVisibleMessages().size();
+
+		if(visibleLinesCount <= 0) {
+			hasScrollbar = false;
+			return;
+		}
+
+		boolean open = chat.isOpen();
+
+		float scale = getScale();
+		int width = (int) Math.ceil(chat.getWidth() / scale);
+
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(2, 20, 0);
+
+		GL11.glScalef(scale, scale, 1.0F);
+
+		if(previousChatSize < visibleLinesCount) {
+			animatedOffset = 9;
+			lastAnimatedOffset = 9;
+		}
+
+		if(smooth && !(chat.isOpen() && chat.getScroll() > 0)) {
+			float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.getTickDelta();
+
+			GL11.glTranslatef(0, calculatedOffset, 0);
+		}
+
+		for(int i = 0; i + chat.getScroll() < chat.getVisibleMessages().size() && i < linesCount; ++i) {
+			ChatMessage line = chat.getVisibleMessages().get(i + chat.getScroll());
+
+			if(line == null) {
+				continue;
+			}
+
+			int update = mc.getIngameHud().getTicks() - line.getUpdatedCounter();
+
+			if(!(open || update < 200)) {
+				continue;
+			}
+
+			double percent = update / 200.0D;
+			percent = 1.0D - percent;
+			percent = percent * 10.0D;
+			percent = Utils.clamp(percent, 0.0D, 1.0D);
+			percent = percent * percent;
+
+			if(open) {
+				percent = 1;
+			}
+
+			double percentFG = percent;
+
+			if(smooth) {
+				ChatAnimationData data = ((ChatAnimationData) line);
+
+				if(data.getTransparency() != 0) {
+					float calculatedTransparency = data.getLastTransparency() + (data.getTransparency() - data.getLastTransparency()) * event.getTickDelta();
+					percentFG *= (1 - calculatedTransparency);
 				}
+			}
 
-				float scale = getScale();
-				int width = (int) Math.ceil(chat.getWidth() / scale);
-				GlStateManager.pushMatrix();
-				GlStateManager.translate(2, 20, 0);
-				GL11.glScalef(scale, scale, 1.0F);
+			j++;
 
-				if(previousChatSize < visibleLinesCount) {
-					animatedOffset = 9;
-					lastAnimatedOffset = 9;
-				}
+			if(percent <= 0.05F) {
+				continue;
+			}
 
-				if(smooth && !(chat.isOpen() && chat.getScroll() > 0)) {
-					float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.getTickDelta();
+			int i2 = 0;
+			int j2 = -i * 9;
 
-					GL11.glTranslatef(0, calculatedOffset, 0);
-				}
+			if(background) {
+				DrawableHelper.fillRect(i2 - 2, j2 - 9, i2 + width + 4, j2,
+						backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * percent)).getValue());
+			}
 
-				for(int i = 0; i + chat.getScroll() < chat.getVisibleMessages().size() && i < linesCount; ++i) {
-					ChatMessage line = chat.getVisibleMessages().get(i + chat.getScroll());
+			Text formattedText = line.getMessage();
+			GL11.glEnable(GL11.GL_BLEND);
 
-					if(line != null) {
-						int update = mc.getIngameHud().getTicks() - line.getUpdatedCounter();
+			if(percentFG > 0.05F) {
+				mc.getFont().render(colours ? formattedText : Text.literal(formattedText.getPlain()), i2, j2 - 8,
+						defaultTextColour
+								.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue(), shadow);
+			}
+		}
 
-						if(open || update < 200) {
-							double percent = update / 200.0D;
-							percent = 1.0D - percent;
-							percent = percent * 10.0D;
-							percent = Utils.clamp(percent, 0.0D, 1.0D);
-							percent = percent * percent;
+		if(open) {
+			int k2 = mc.getFont().getHeight();
+			GL11.glTranslatef(-3, 0, 0);
 
-							if(open) {
-								percent = 1;
-							}
+			int l2 = visibleLinesCount * k2 + visibleLinesCount;
+			int i3 = j * k2 + j;
+			int j3 = chat.getScroll() * i3 / visibleLinesCount;
+			int k1 = i3 * i3 / l2;
 
-							double percentFG = percent;
+			if(l2 != i3) {
+				hasScrollbar = true;
 
-							if(smooth) {
-								ChatAnimationData data = ((ChatAnimationData) line);
+				int k3 = j3 > 0 ? 170 : 96;
+				int l3 = chat.isScrolled() ? 13382451 : 3355562;
 
-								if(data.getTransparency() != 0) {
-									float calculatedTransparency = data.getLastTransparency() + (data.getTransparency() - data.getLastTransparency()) * event.getTickDelta();
-									percentFG *= (1 - calculatedTransparency);
-								}
-							}
-
-							++j;
-
-							if(percent > 0.05F) {
-								int i2 = 0;
-								int j2 = -i * 9;
-
-								if(background) {
-									DrawableHelper.fillRect(i2 - 2, j2 - 9, i2 + width + 4, j2,
-											backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * percent)).getValue());
-								}
-
-								Text formattedText = line.getMessage();
-								GL11.glEnable(GL11.GL_BLEND);
-
-								if(percentFG > 0.05F) {
-									mc.getFont().render(
-											colours ? formattedText : Text.literal(formattedText.getPlain()), i2,
-											j2 - 8, defaultTextColour.withAlpha(
-													(int) (defaultTextColour.getAlpha() * percentFG)).getValue(), shadow);
-								}
-							}
-						}
-					}
-				}
-
-				if(open) {
-					int k2 = mc.getFont().getHeight();
-					GL11.glTranslatef(-3, 0, 0);
-					int l2 = visibleLinesCount * k2 + visibleLinesCount;
-					int i3 = j * k2 + j;
-					int j3 = chat.getScroll() * i3 / visibleLinesCount;
-					int k1 = i3 * i3 / l2;
-
-					if(l2 != i3) {
-						hasScrollbar = true;
-
-						int k3 = j3 > 0 ? 170 : 96;
-						int l3 = chat.isScrolled() ? 13382451 : 3355562;
-						DrawableHelper.fillRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
-						DrawableHelper.fillRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
-					}
-					else {
-						hasScrollbar = false;
-					}
-				}
-
-				GL11.glPopMatrix();
+				DrawableHelper.fillRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
+				DrawableHelper.fillRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
 			}
 			else {
 				hasScrollbar = false;
 			}
+		}
 
-			previousChatSize = visibleLinesCount;
-		}
-		else {
-			hasScrollbar = false;
-		}
+		GL11.glPopMatrix();
+		previousChatSize = visibleLinesCount;
 	}
 
 }

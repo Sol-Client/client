@@ -15,14 +15,16 @@ import io.github.solclient.client.util.data.Rectangle;
 
 public class SpeedometerMod extends SimpleHudMod {
 
-	private static final int SPEED_COUNT = 200;
+	public static final SpeedometerMod INSTANCE = new SpeedometerMod();
+
+	private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
+	private static final int MAX_SPEEDS = 200;
 
 	@Expose
 	@Option
 	private boolean graphMode;
 
-	private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
-	private double[] speeds = new double[SPEED_COUNT];
+	private double[] speeds = new double[MAX_SPEEDS];
 	private long lastUpdate;
 
 	@Override
@@ -31,8 +33,8 @@ public class SpeedometerMod extends SimpleHudMod {
 	}
 
 	public void addSpeed(double speed) {
-		System.arraycopy(speeds, 1, speeds, 0, SPEED_COUNT - 1);
-		speeds[SPEED_COUNT - 1] = speed;
+		System.arraycopy(speeds, 1, speeds, 0, MAX_SPEEDS - 1);
+		speeds[MAX_SPEEDS - 1] = speed;
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			double[] speeds = this.speeds;
 
 			if(editMode) {
-				speeds = new double[SPEED_COUNT];
+				speeds = new double[MAX_SPEEDS];
 			}
 
 			float[] bounds = element.getHighPrecisionMultipliedBounds();
@@ -75,8 +77,8 @@ public class SpeedometerMod extends SimpleHudMod {
 
 			GL11.glBegin(GL11.GL_LINE_STRIP);
 
-			for(int i = 0; i < SPEED_COUNT; i++) {
-				GL11.glVertex2d(position.getX() + (i * (((getBounds(position).getWidth() + 0.4) / SPEED_COUNT))),
+			for(int i = 0; i < MAX_SPEEDS; i++) {
+				GL11.glVertex2d(position.getX() + (i * (((getBounds(position).getWidth() + 0.4) / MAX_SPEEDS))),
 						position.getY() - 2 + getBounds(position).getHeight() - (speeds[i] * 16));
 			}
 

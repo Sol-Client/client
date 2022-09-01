@@ -22,6 +22,8 @@ import io.github.solclient.client.platform.mc.world.item.ItemType;
 
 public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 
+	public static final ItemPhysicsMod INSTANCE = new ItemPhysicsMod();
+
 	@Option
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	private float rotationSpeed = 100;

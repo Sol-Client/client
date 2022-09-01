@@ -18,6 +18,8 @@ import io.github.solclient.client.util.Utils;
 
 public class FreelookMod extends Mod {
 
+	public static final FreelookMod INSTANCE = new FreelookMod();
+
 	@Option
 	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.V, Constants.KEY_CATEGORY);
 	private float yaw;

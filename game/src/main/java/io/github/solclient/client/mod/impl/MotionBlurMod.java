@@ -18,6 +18,8 @@ import io.github.solclient.client.platform.mc.shader.ShaderUniform;
 
 public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
+	public static final MotionBlurMod INSTANCE = new MotionBlurMod();
+
 	@Expose
 	@Option
 	@Slider(min = 0, max = 0.99F, step = 0.01F)

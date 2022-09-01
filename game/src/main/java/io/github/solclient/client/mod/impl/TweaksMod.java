@@ -13,8 +13,7 @@ import io.github.solclient.client.mod.annotation.Slider;
 
 public class TweaksMod extends Mod {
 
-	public static boolean enabled;
-	public static TweaksMod instance;
+	public static final TweaksMod INSTANCE = new TweaksMod();
 
 	@Expose
 	@Option
@@ -63,15 +62,8 @@ public class TweaksMod extends Mod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
-		instance = this;
-	}
-
-	@Override
 	protected void onEnable() {
 		super.onEnable();
-		enabled = true;
 		if(borderlessFullscreen && mc.isFullscreen()) {
 			setBorderlessFullscreen(true);
 		}
@@ -80,7 +72,6 @@ public class TweaksMod extends Mod {
 	@Override
 	protected void onDisable() {
 		super.onDisable();
-		enabled = false;
 		if(borderlessFullscreen && mc.isFullscreen()) {
 			setBorderlessFullscreen(false);
 			mc.toggleFullscreen();

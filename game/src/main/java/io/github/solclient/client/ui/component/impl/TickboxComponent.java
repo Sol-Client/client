@@ -17,8 +17,8 @@ public class TickboxComponent extends ScaledIconComponent {
 
 	public TickboxComponent(boolean value, Consumer<Boolean> booleanConsumer, Component hoverController) {
 		super("sol_client_tickbox", 16, 16,
-				new AnimatedColourController((component, defaultColour) -> component.isHovered() ? SolClientConfig.instance.uiHover
-						: SolClientConfig.instance.uiColour));
+				new AnimatedColourController((component, defaultColour) -> component.isHovered() ? SolClientConfig.INSTANCE.uiHover
+						: SolClientConfig.INSTANCE.uiColour));
 
 		this.value = value;
 		this.booleanConsumer = booleanConsumer;
@@ -34,7 +34,7 @@ public class TickboxComponent extends ScaledIconComponent {
 
 		add(new ScaledIconComponent("sol_client_small_tick", 16, 16,
 				new AnimatedColourController((component, defaultColour) -> this.value
-						? (isHovered() ? SolClientConfig.instance.uiHover : SolClientConfig.instance.uiColour)
+						? (isHovered() ? SolClientConfig.INSTANCE.uiHover : SolClientConfig.INSTANCE.uiColour)
 						: Colour.TRANSPARENT)),
 				(component, defaultBounds) -> defaultBounds);
 	}

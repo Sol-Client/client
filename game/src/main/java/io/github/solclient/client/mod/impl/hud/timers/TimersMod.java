@@ -27,6 +27,8 @@ import io.github.solclient.client.util.data.VerticalAlignment;
 // Works with any server that supports Badlion timers.
 public class TimersMod extends HudMod {
 
+	public static final TimersMod INSTANCE = new TimersMod();
+
 	private static final String CHANNEL_NAME = "badlion:timers";
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("mm:ss");
 	private static final int TIMER_HEIGHT = 19;

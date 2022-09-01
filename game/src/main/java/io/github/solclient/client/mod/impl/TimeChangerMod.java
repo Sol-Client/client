@@ -12,6 +12,8 @@ import io.github.solclient.client.mod.annotation.Slider;
 
 public class TimeChangerMod extends Mod implements PrimaryIntegerSettingMod {
 
+	public static final TimeChangerMod INSTANCE = new TimeChangerMod();
+
 	@Expose
 	@Option
 	@Slider(min = 0, max = 24000, step = 1, showValue = false)

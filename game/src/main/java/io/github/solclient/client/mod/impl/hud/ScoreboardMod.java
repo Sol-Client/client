@@ -22,13 +22,11 @@ import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.world.scoreboard.PlayerTeam;
 import io.github.solclient.client.platform.mc.world.scoreboard.Score;
 import io.github.solclient.client.platform.mc.world.scoreboard.Scoreboard;
-import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 
 public class ScoreboardMod extends Mod {
 
-	public static ScoreboardMod instance;
-	public static boolean enabled;
+	public static final ScoreboardMod INSTANCE = new ScoreboardMod();
 
 	@Expose
 	@Option(translationKey = HudMod.TRANSLATION_KEY)
@@ -73,24 +71,6 @@ public class ScoreboardMod extends Mod {
 	@Override
 	public ModCategory getCategory() {
 		return ModCategory.HUD;
-	}
-
-	@Override
-	public void onRegister() {
-		super.onRegister();
-		instance = this;
-	}
-
-	@Override
-	protected void onEnable() {
-		super.onEnable();
-		enabled = true;
-	}
-
-	@Override
-	protected void onDisable() {
-		super.onDisable();
-		enabled = false;
 	}
 
 	@EventHandler

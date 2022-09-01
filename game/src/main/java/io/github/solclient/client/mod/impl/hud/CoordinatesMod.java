@@ -12,6 +12,8 @@ import io.github.solclient.client.util.data.Rectangle;
 
 public class CoordinatesMod extends HudMod {
 
+	public static final CoordinatesMod INSTANCE = new CoordinatesMod();
+
 	private static final String[] CARDINAL_DIRECTIONS = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
 
 	@Expose
@@ -86,11 +88,14 @@ public class CoordinatesMod extends HudMod {
 			z = mc.getPlayer().getZ();
 			yaw = mc.getPlayer().getYaw();
 		}
+
 		int width = 80;
 		int cardinalDirectionIndex = (int) Math.floor(
 				((Utils.wrapYaw(yaw) + 180D + 22.5D) % 360D) / 45D);
+
 		String xDirection = null;
 		String zDirection = null;
+
 		switch(cardinalDirectionIndex) {
 			case 0:
 				zDirection = "--";
@@ -121,7 +126,9 @@ public class CoordinatesMod extends HudMod {
 				xDirection = "-";
 				break;
 		}
+
 		String facing = CARDINAL_DIRECTIONS[cardinalDirectionIndex];
+
 		font.render(Integer.toString((int) x),
 				font.render("X ", position.getX() + 4, position.getY() + 4, axisLabelColour.getValue(), shadow) - subtract,
 				position.getY() + 4, axisValueColour.getValue(), shadow);

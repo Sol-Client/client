@@ -37,7 +37,7 @@ import io.github.solclient.client.util.data.VerticalAlignment;
 
 public class DiscordIntegrationMod extends Mod {
 
-	public static DiscordIntegrationMod instance;
+	public static final DiscordIntegrationMod INSTANCE = new DiscordIntegrationMod();
 
 	private CreateParams params;
 	private Core core;
@@ -90,8 +90,6 @@ public class DiscordIntegrationMod extends Mod {
 		catch(Exception error) {
 			logger.error("Could not load natives", error);
 		}
-
-		instance = this;
 
 		super.onRegister();
 	}

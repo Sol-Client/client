@@ -26,6 +26,8 @@ import io.github.solclient.client.util.data.Colour;
 
 public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
+	public static final BlockSelectionMod INSTANCE = new BlockSelectionMod();
+
 	@Expose
 	@Option
 	private boolean outline = true;

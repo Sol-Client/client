@@ -9,14 +9,12 @@ import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.text.TextColour;
-import io.github.solclient.client.platform.mc.text.TextFormatting;
 import io.github.solclient.client.platform.mc.world.entity.PrimedTnt;
-import io.github.solclient.client.util.Utils;
 
 public class TNTTimerMod extends Mod {
 
+	public static final TNTTimerMod INSTANCE = new TNTTimerMod();
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
-	public static boolean enabled;
 
 	@Override
 	public String getId() {
@@ -34,7 +32,7 @@ public class TNTTimerMod extends Mod {
 
 		// Based on Sk1er's mod
 		if(Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL
-				&& "BED WARS".equals(MinecraftClient.getInstance().getLevel().getScoreboardTitle())) {
+				&& Text.plainEquals(MinecraftClient.getInstance().getLevel().getScoreboardTitle(), "BED WARS")) {
 			fuse -= 28;
 		}
 
@@ -52,18 +50,6 @@ public class TNTTimerMod extends Mod {
 
 		final TextColour finalColour = colour;
 		return Text.literal(FORMAT.format(fuse / 20)).style((style) -> style.withColour(finalColour));
-	}
-
-	@Override
-	protected void onEnable() {
-		super.onEnable();
-		enabled = true;
-	}
-
-	@Override
-	protected void onDisable() {
-		super.onDisable();
-		enabled = false;
 	}
 
 }

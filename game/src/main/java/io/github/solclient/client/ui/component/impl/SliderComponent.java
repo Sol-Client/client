@@ -23,7 +23,7 @@ public class SliderComponent extends Component {
 	private final Consumer<Float> callback;
 	private boolean selected;
 	private final Controller<Colour> colour = new AnimatedColourController(
-			(component, defaultColour) -> component.isHovered() || selected ? SolClientConfig.instance.uiHover : SolClientConfig.instance.uiColour);
+			(component, defaultColour) -> component.isHovered() || selected ? SolClientConfig.INSTANCE.uiHover : SolClientConfig.INSTANCE.uiColour);
 	private final Component hoverController;
 
 	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback, Component hoverController) {
@@ -56,7 +56,7 @@ public class SliderComponent extends Component {
 
 		int x = (int) (100 * (((value - min) / (max - min)))) - 4;
 
-		if(SolClientConfig.instance.roundedUI) {
+		if(SolClientConfig.INSTANCE.roundedUI) {
 			Colour.LIGHT_BUTTON.bind();
 			mc.getTextureManager().bind(Identifier.minecraft(
 					"textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));

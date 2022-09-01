@@ -11,6 +11,8 @@ import io.github.solclient.client.util.data.Position;
 
 public class CpsMod extends SimpleHudMod {
 
+	public static final CpsMod INSTANCE = new CpsMod();
+
 	@Expose
 	@Option
 	private boolean rmb;

@@ -38,6 +38,7 @@ public abstract class SimpleHudMod extends HudMod {
 	@Expose
 	@Option
 	protected boolean shadow = true;
+
 	private ChainCache<String, Integer> langWidth = new ChainCache<String, Integer>(() -> mc.getLanguageManager().getCode(), (key) -> {
 		String translationKey = getTranslationKey() + ".default_width";
 		Optional<String> width = I18n.translateOpt(translationKey);

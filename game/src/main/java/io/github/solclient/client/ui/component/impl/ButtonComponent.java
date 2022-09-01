@@ -36,7 +36,7 @@ public class ButtonComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if(SolClientConfig.instance.roundedUI) {
+		if(SolClientConfig.INSTANCE.roundedUI) {
 			GL11.glEnable(GL11.GL_ALPHA);
 			GL11.glEnable(GL11.GL_BLEND);
 

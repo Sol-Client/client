@@ -15,13 +15,14 @@ import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.texture.Texture;
 import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffect;
 import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectType;
-import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 import io.github.solclient.client.util.data.VerticalAlignment;
 
 public class PotionEffectsMod extends HudMod {
+
+	public static final PotionEffectsMod INSTANCE = new PotionEffectsMod();
 
 	private static final StatusEffect SPEED = StatusEffect.create(StatusEffectType.SPEED);
 	private static final StatusEffect STRENGTH = StatusEffect.create(StatusEffectType.STRENGTH);

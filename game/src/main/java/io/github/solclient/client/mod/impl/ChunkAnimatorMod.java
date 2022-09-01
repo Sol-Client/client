@@ -20,6 +20,8 @@ import io.github.solclient.client.util.data.EasingFunction;
 // Based on lumien231's chunk animator.
 public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
+	public static final ChunkAnimatorMod INSTANCE = new ChunkAnimatorMod();
+
 	private final Map<CompiledChunk, Long> chunks = new WeakHashMap<>();
 
 	@Expose

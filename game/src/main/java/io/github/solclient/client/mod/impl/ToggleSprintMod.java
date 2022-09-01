@@ -10,6 +10,8 @@ import io.github.solclient.client.platform.mc.option.ToggleKeyBinding;
 
 public class ToggleSprintMod extends SimpleHudMod {
 
+	public static final ToggleSprintMod INSTANCE = new ToggleSprintMod();
+
 	private static final String TOGGLED = "sol_client.mod.toggle_sprint.toggled";
 	private static final String HELD = "sol_client.mod.toggle_sprint.held";
 

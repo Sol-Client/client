@@ -14,6 +14,8 @@ import io.github.solclient.client.util.Perspective;
 
 public class TaplookMod extends Mod {
 
+	public static final TaplookMod INSTANCE = new TaplookMod();
+
 	@Option
 	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.UNKNOWN, Constants.KEY_CATEGORY);
 	private int previousPerspective;

@@ -35,7 +35,7 @@ public class Screen extends ProxyScreen {
 		rootWrapper.add(root, new ParentBoundsController());
 
 		rootWrapper.setScreen(this);
-		rootWrapper.setFont(SolClientConfig.instance.getUIFont());
+		rootWrapper.setFont(SolClientConfig.INSTANCE.getUIFont());
 
 		this.root = root;
 	}
@@ -114,7 +114,7 @@ public class Screen extends ProxyScreen {
 	}
 
 	public void updateFont() {
-		rootWrapper.setFont(SolClientConfig.instance.getUIFont());
+		rootWrapper.setFont(SolClientConfig.INSTANCE.getUIFont());
 	}
 
 	public void close() {

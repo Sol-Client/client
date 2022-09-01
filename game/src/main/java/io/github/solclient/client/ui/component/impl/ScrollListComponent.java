@@ -77,7 +77,7 @@ public abstract class ScrollListComponent extends Component {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if(!SolClientConfig.instance.smoothScrolling) {
+		if(!SolClientConfig.INSTANCE.smoothScrolling) {
 			calculatedY = targetY;
 		}
 		else {

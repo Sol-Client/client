@@ -35,44 +35,10 @@ import io.github.solclient.client.event.impl.game.PostStartEvent;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.event.impl.network.ServerConnectEvent;
 import io.github.solclient.client.event.impl.network.chat.OutgoingChatMessageEvent;
+import io.github.solclient.client.mod.DefaultMods;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.BlockSelectionMod;
-import io.github.solclient.client.mod.impl.ChunkAnimatorMod;
-import io.github.solclient.client.mod.impl.ColourSaturationMod;
-import io.github.solclient.client.mod.impl.FreelookMod;
-import io.github.solclient.client.mod.impl.HitColourMod;
-import io.github.solclient.client.mod.impl.HitboxMod;
-import io.github.solclient.client.mod.impl.MenuBlurMod;
-import io.github.solclient.client.mod.impl.MotionBlurMod;
-import io.github.solclient.client.mod.impl.ParticlesMod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.mod.impl.TNTTimerMod;
-import io.github.solclient.client.mod.impl.TaplookMod;
-import io.github.solclient.client.mod.impl.TimeChangerMod;
-import io.github.solclient.client.mod.impl.ToggleSprintMod;
-import io.github.solclient.client.mod.impl.TweaksMod;
-import io.github.solclient.client.mod.impl.V1_7VisualsMod;
-import io.github.solclient.client.mod.impl.ZoomMod;
-import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
-import io.github.solclient.client.mod.impl.hud.ComboCounterMod;
-import io.github.solclient.client.mod.impl.hud.CoordinatesMod;
-import io.github.solclient.client.mod.impl.hud.CpsMod;
-import io.github.solclient.client.mod.impl.hud.FpsMod;
-import io.github.solclient.client.mod.impl.hud.PotionEffectsMod;
-import io.github.solclient.client.mod.impl.hud.ReachDisplayMod;
-import io.github.solclient.client.mod.impl.hud.ScoreboardMod;
-import io.github.solclient.client.mod.impl.hud.armour.ArmourMod;
-import io.github.solclient.client.mod.impl.hud.chat.ChatMod;
-import io.github.solclient.client.mod.impl.hud.crosshair.CrosshairMod;
-import io.github.solclient.client.mod.impl.hud.keystrokes.KeystrokesMod;
-import io.github.solclient.client.mod.impl.hud.ping.PingMod;
-import io.github.solclient.client.mod.impl.hud.speedometer.SpeedometerMod;
-import io.github.solclient.client.mod.impl.hud.tablist.TabListMod;
-import io.github.solclient.client.mod.impl.hud.timers.TimersMod;
-import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
-import io.github.solclient.client.mod.impl.itemphysics.ItemPhysicsMod;
-import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.packet.PacketApi;
 import io.github.solclient.client.packet.PopupManager;
 import io.github.solclient.client.platform.mc.MinecraftClient;
@@ -148,44 +114,7 @@ public final class Client {
 		load();
 
 		LOGGER.info("Loading mods...");
-
-		register(new SolClientConfig());
-		register(new FpsMod());
-		register(new CoordinatesMod());
-		register(new KeystrokesMod());
-		register(new CpsMod());
-		register(new PingMod());
-		register(new SpeedometerMod());
-		register(new ReachDisplayMod());
-		register(new ComboCounterMod());
-		register(new PotionEffectsMod());
-		register(new ArmourMod());
-		register(new TimersMod());
-		register(new ChatMod());
-		register(new TabListMod());
-		register(new CrosshairMod());
-		register(new ScoreboardMod());
-		register(new TweaksMod());
-		register(new MotionBlurMod());
-		register(new MenuBlurMod());
-		register(new ColourSaturationMod());
-		register(new ChunkAnimatorMod());
-		register(new FreelookMod());
-		register(new TaplookMod());
-		register(new ToggleSprintMod());
-		register(new TNTTimerMod());
-		register(new V1_7VisualsMod());
-		register(new ItemPhysicsMod());
-		register(new ZoomMod());
-		register(new ParticlesMod());
-		register(new TimeChangerMod());
-		register(new BlockSelectionMod());
-		register(new HitboxMod());
-		register(new HitColourMod());
-		register(new HypixelAdditionsMod());
-		register(new QuickPlayMod());
-		register(new DiscordIntegrationMod());
-
+		DefaultMods.register();
 		LOGGER.info("Loaded {} mods", mods.size());
 
 		LOGGER.info("Saving settings...");
@@ -302,20 +231,22 @@ public final class Client {
 		}
 	}
 
-	private void register(Mod mod) {
-		try {
-			if(data.has(mod.getId())) {
-				getGson(mod).fromJson(data.get(mod.getId()), mod.getClass());
+	public void register(Mod... mods) {
+		for(Mod mod : mods) {
+			try {
+				if(data.has(mod.getId())) {
+					getGson(mod).fromJson(data.get(mod.getId()), mod.getClass());
+				}
+				this.mods.add(mod);
+
+				modsById.put(mod.getId(), mod);
+
+				mod.onRegister();
 			}
-			mods.add(mod);
-
-			modsById.put(mod.getId(), mod);
-
-			mod.onRegister();
-		}
-		catch(Throwable error) {
-			LOGGER.error("Could not register mod " + mod.getId(), error);
-			mods.remove(mod);
+			catch(Throwable error) {
+				LOGGER.error("Could not register mod " + mod.getId(), error);
+				this.mods.remove(mod);
+			}
 		}
 	}
 
@@ -423,10 +354,10 @@ public final class Client {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(SolClientConfig.instance.modsKey.isHeld()) {
+		if(SolClientConfig.INSTANCE.modsKey.isHeld()) {
 			mc.setScreen(new ModsScreen());
 		}
-		else if(SolClientConfig.instance.editHudKey.isHeld()) {
+		else if(SolClientConfig.INSTANCE.editHudKey.isHeld()) {
 			mc.setScreen(new ModsScreen());
 			mc.setScreen(new MoveHudsScreen());
 		}

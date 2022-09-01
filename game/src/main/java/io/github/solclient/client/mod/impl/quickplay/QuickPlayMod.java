@@ -25,12 +25,15 @@ import io.github.solclient.client.util.Utils;
 
 public class QuickPlayMod extends Mod {
 
+	public static final QuickPlayMod INSTANCE = new QuickPlayMod();
+
 	@Option
 	private final KeyBinding menuKey = KeyBinding.create(getTranslationKey() + ".key", Input.R, Constants.KEY_CATEGORY);
-	private boolean got;
-	private QuickPlayDatabase database;
 	@Expose
 	private final List<String> recentlyPlayed = new ArrayList<>();
+
+	private boolean got;
+	private QuickPlayDatabase database;
 
 	@Override
 	public void onRegister() {

@@ -90,7 +90,7 @@ public class Utils {
 	}
 
 	public void playClickSound(boolean ui) {
-		if(ui && !SolClientConfig.instance.buttonClicks) {
+		if(ui && !SolClientConfig.INSTANCE.buttonClicks) {
 			return;
 		}
 

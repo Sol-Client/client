@@ -29,6 +29,8 @@ import io.github.solclient.client.util.data.Colour;
 
 public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
+	public static final MenuBlurMod INSTANCE = new MenuBlurMod();
+
 	@Expose
 	@Option
 	@Slider(min = 0, max = 100, step = 1)
@@ -40,6 +42,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Expose
 	@Option
 	private Colour backgroundColour = new Colour(0, 0, 0, 100);
+
 	private ShaderChain chain;
 	private long openTime;
 

@@ -31,7 +31,7 @@ public class ModListing extends ColouredComponent {
 		super(new AnimatedColourController((component,
 				defaultColour) -> {
 					if(mod.isEnabled()) {
-						return component.isHovered() ? SolClientConfig.instance.uiHover : SolClientConfig.instance.uiColour;
+						return component.isHovered() ? SolClientConfig.INSTANCE.uiHover : SolClientConfig.INSTANCE.uiColour;
 					}
 					else if(mod.isBlocked()) {
 						return component.isHovered() ? Colour.RED_HOVER : Colour.PURE_RED;
@@ -60,10 +60,10 @@ public class ModListing extends ColouredComponent {
 		add(new LabelComponent((component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : "")),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
-								defaultBounds.getY() - (font.getHeight() / 2) - (SolClientConfig.instance.fancyFont ? 0 : 1), defaultBounds.getWidth(), defaultBounds.getHeight())));
+								defaultBounds.getY() - (font.getHeight() / 2) - (SolClientConfig.INSTANCE.fancyFont ? 0 : 1), defaultBounds.getWidth(), defaultBounds.getHeight())));
 		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
 				(component, defaultColour) -> new Colour(160, 160, 160)), new AlignedBoundsController(Alignment.START, Alignment.CENTRE, (component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
-						defaultBounds.getY() + (font.getHeight() / 2) + (SolClientConfig.instance.fancyFont ? 0 : 1), defaultBounds.getWidth(), defaultBounds.getHeight())));
+						defaultBounds.getY() + (font.getHeight() / 2) + (SolClientConfig.INSTANCE.fancyFont ? 0 : 1), defaultBounds.getWidth(), defaultBounds.getHeight())));
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class ModListing extends ColouredComponent {
 		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
 
-		if(SolClientConfig.instance.roundedUI) {
+		if(SolClientConfig.INSTANCE.roundedUI) {
 			Colour.BLACK_128.bind();
 			mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_mod_listing_" + Utils.getTextureScale() + ".png"));
 			DrawableHelper.fillTexturedRect(0, 0, 0, 0, 300, 30, 300, 30);

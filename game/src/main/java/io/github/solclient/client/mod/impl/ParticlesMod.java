@@ -17,6 +17,8 @@ import io.github.solclient.client.platform.mc.world.particle.ParticleType;
 
 public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 
+	public static final ParticlesMod INSTANCE = new ParticlesMod();
+
 	@Expose
 	@Option
 	@Slider(min = 1, max = 10, step = 1)

@@ -20,6 +20,8 @@ import io.github.solclient.client.util.data.Rectangle;
 
 public class KeystrokesMod extends HudMod {
 
+	public static final KeystrokesMod INSTANCE = new KeystrokesMod();
+
 	@Expose
 	@Option
 	private boolean movement = true;
@@ -66,11 +68,7 @@ public class KeystrokesMod extends HudMod {
 	@Option
 	protected boolean smoothColours = true;
 
-	private float mouseX;
-	private float mouseY;
-	private float lastMouseX;
-	private float lastMouseY;
-
+	private float mouseX, mouseY, lastMouseX, lastMouseY;
 	private Keystroke w, a, s, d, lmb, rmb, space;
 
 	@Override

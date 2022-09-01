@@ -11,13 +11,15 @@ import io.github.solclient.client.platform.mc.network.PlayerListEntry;
 
 public class PingMod extends SmoothCounterHudMod {
 
-	private int ping;
+	public static final PingMod INSTANCE = new PingMod();
+
 	private static final int PING_INTERVAL = 600;
-	private int nextPing;
 
 	@Expose
 	@Option
 	private PingSource source = PingSource.AUTO;
+
+	private int ping, nextPing;
 
 	@Override
 	public String getId() {

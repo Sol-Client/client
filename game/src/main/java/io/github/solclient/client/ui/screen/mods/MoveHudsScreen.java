@@ -92,7 +92,7 @@ public class MoveHudsScreen extends Screen {
 			}
 
 			if(bounds != null) {
-				bounds.stroke(SolClientConfig.instance.uiColour);
+				bounds.stroke(SolClientConfig.INSTANCE.uiColour);
 			}
 		}
 
@@ -118,7 +118,7 @@ public class MoveHudsScreen extends Screen {
 
 	@Override
 	public void keyDown(int key, int scancode, int mods) {
-		if(key == 1 || key == SolClientConfig.instance.editHudKey.getKeyCode()) {
+		if(key == 1 || key == SolClientConfig.INSTANCE.editHudKey.getKeyCode()) {
 			Client.INSTANCE.save();
 			if(title != null) {
 				mc.setScreen(title);

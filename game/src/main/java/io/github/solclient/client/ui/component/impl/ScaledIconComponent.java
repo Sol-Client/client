@@ -40,7 +40,7 @@ public class ScaledIconComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if(useFallback() && !SolClientConfig.instance.roundedUI) {
+		if(useFallback() && !SolClientConfig.INSTANCE.roundedUI) {
 			renderFallback(info);
 		}
 		else {

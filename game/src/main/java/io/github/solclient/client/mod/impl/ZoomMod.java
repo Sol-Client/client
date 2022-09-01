@@ -20,8 +20,7 @@ import io.github.solclient.client.util.Utils;
 
 public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
-	public static boolean enabled;
-	public static ZoomMod instance;
+	public static final ZoomMod INSTANCE = new ZoomMod();
 
 	@Option
 	private final KeyBinding key = KeyBinding.create(getTranslationKey() + ".key", Input.C, Constants.KEY_CATEGORY),

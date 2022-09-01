@@ -9,6 +9,8 @@ import io.github.solclient.client.util.data.Position;
 
 public class ComboCounterMod extends SimpleHudMod {
 
+	public static final ComboCounterMod INSTANCE = new ComboCounterMod();
+
 	private long hitTime = -1;
 	private int combo;
 	private int possibleTarget;

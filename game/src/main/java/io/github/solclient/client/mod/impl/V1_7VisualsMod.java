@@ -21,6 +21,8 @@ import io.github.solclient.client.platform.mc.world.item.ItemType;
 
 public class V1_7VisualsMod extends Mod {
 
+	public static final V1_7VisualsMod INSTANCE = new V1_7VisualsMod();
+
 	@Expose
 	@Option
 	public boolean useAndMine = true;
@@ -46,9 +48,6 @@ public class V1_7VisualsMod extends Mod {
 	@Option
 	public boolean sneaking = true;
 
-	public static V1_7VisualsMod instance;
-	public static boolean enabled;
-
 	@Override
 	public String getId() {
 		return "1.7_visuals";
@@ -57,24 +56,6 @@ public class V1_7VisualsMod extends Mod {
 	@Override
 	public ModCategory getCategory() {
 		return ModCategory.VISUAL;
-	}
-
-	@Override
-	public void onRegister() {
-		super.onRegister();
-		instance = this;
-	}
-
-	@Override
-	protected void onEnable() {
-		super.onEnable();
-		enabled = true;
-	}
-
-	@Override
-	protected void onDisable() {
-		super.onDisable();
-		enabled = false;
 	}
 
 	@Override

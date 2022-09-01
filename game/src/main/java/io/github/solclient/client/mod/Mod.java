@@ -30,6 +30,8 @@ public abstract class Mod {
 	private boolean enabled = isEnabledByDefault();
 	protected final Logger logger = LogManager.getLogger();
 
+	protected Mod() {}
+
 	public void postStart() {
 	}
 
@@ -41,7 +43,7 @@ public abstract class Mod {
 			throw new IllegalStateException(error);
 		}
 
-		if(this.enabled) {
+		if(enabled) {
 			tryEnable();
 		}
 	}

@@ -34,7 +34,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 	public void renderScreen(int x, int y, float tickDelta) {
 		renderPanorama(x, y, tickDelta);
 
-		Font font = SolClientConfig.instance.getUIFont();
+		Font font = SolClientConfig.INSTANCE.getUIFont();
 
 		String copyrightString = "Copyright " + Environment.MOJANG + ". Do not distribute!";
 		font.render(copyrightString, (int) (width - font.getWidth(copyrightString) - 10), height - 15, -1);
@@ -66,8 +66,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 		public MainMenuComponent() {
 			Controller<Colour> defaultColourController =
-					(component, defaultColour) -> component.isHovered() ? SolClientConfig.instance.uiHover
-							: SolClientConfig.instance.uiColour;
+					(component, defaultColour) -> component.isHovered() ? SolClientConfig.INSTANCE.uiHover
+							: SolClientConfig.INSTANCE.uiColour;
 
 			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.singleplayer"),
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_player")

@@ -4,7 +4,6 @@
 
 package io.github.solclient.client.mod.impl.hypixeladditions;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +46,8 @@ import net.hypixel.api.HypixelAPI;
 
 public class HypixelAdditionsMod extends Mod {
 
-	private static boolean enabled;
-	public static HypixelAdditionsMod instance;
+	public static final HypixelAdditionsMod INSTANCE = new HypixelAdditionsMod();
+
 	@Expose
 	@Option
 	public boolean visitHousingCommand = true;
@@ -117,6 +116,7 @@ public class HypixelAdditionsMod extends Mod {
 	private final Map<UUID, String> levelCache = new HashMap<>();
 	@Expose
 	private String apiKey;
+
 	private HypixelAPI api;
 	private HypixelLocationData locationData;
 	private final Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
@@ -132,7 +132,7 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	public String getLevelhead(boolean isMainPlayer, String name, UUID id) {
-		if((!(enabled && levelhead))
+		if((!(isEnabled() && levelhead))
 				|| (name.contains(TextFormatting.OBFUSCATED.toString()) && !isMainPlayer)) {
 			return null;
 		}
@@ -184,8 +184,8 @@ public class HypixelAdditionsMod extends Mod {
 		return Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL;
 	}
 
-	public static boolean isEffective() {
-		return enabled && isHypixel();
+	public boolean isEffective() {
+		return isEnabled() && isHypixel();
 	}
 
 	@Override
@@ -249,20 +249,17 @@ public class HypixelAdditionsMod extends Mod {
 	public void onRegister() {
 		super.onRegister();
 		setApiKey(apiKey);
-		instance = this;
 	}
 
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		enabled = true;
 		updateState();
 	}
 
 	@Override
 	protected void onDisable() {
 		super.onDisable();
-		enabled = false;
 		updateState();
 	}
 

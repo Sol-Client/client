@@ -376,9 +376,11 @@ sol_client.mod.particles.option.snow=Snow
 sol_client.mod.particles.option.slime=Slime
 sol_client.mod.particles.option.flames=Flames
 
-sol_client.mod.tooltip_scroll.name=Scrollable Tooltips
-sol_client.mod.tooltip_scroll.description=Move tooltips around to read them easier.
-sol_client.mod.tooltip_scroll.option.scrollStep=Scroll Step
+sol_client.mod.scrollable_tooltips.name=Scrollable Tooltips
+sol_client.mod.scrollable_tooltips.description=Use the mouse wheel to move inventory item tooltips.
+
+sol_client.mod.scrollable_tooltips.option.scrollSensitivity=Scroll Sensitivity
+sol_client.mod.scrollable_tooltips.option.reverse=Reverse
 
 sol_client.mod.time_changer.name=Time Changer
 sol_client.mod.time_changer.description=Change the visual time without affecting gameplay.

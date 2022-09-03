@@ -1,77 +1,92 @@
 package io.github.solclient.client.mod.impl;
 
+import org.lwjgl.input.Mouse;
+
 import com.google.gson.annotations.Expose;
+
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
 import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.input.Mouse;
 
 public class ScrollableTooltipsMod extends Mod {
 
-    public static String Id = "tooltip_scroll";
-    public int offsetX;
-    public int offsetY;
+	public static ScrollableTooltipsMod instance;
+	public static boolean enabled;
+	
+	@Expose
+	@Option
+	@Slider(min = 0.5F, max = 5, step = 0.5F)
+	private float scrollSensitivity = 1;
+	@Expose
+	@Option
+	private boolean reverse;
 
+	public int offsetX;
+	public int offsetY;
 
-    @Expose
-    @Option
-    @Slider(min = 1.0f, max = 20f, step = 0.2F)
-    public float scrollStep = 5f;
+	@Override
+	public String getId() {
+		return "scrollable_tooltips";
+	}
 
-    @Override
-    public String getId() {
-        return Id;
-    }
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
+	}
 
-    @Override
-    public ModCategory getCategory() {
-        return ModCategory.UTILITY;
-    }
+	@Override
+	public void onRegister() {
+		super.onRegister();
+		instance = this;
+	}
+	
+	@Override
+	protected void onEnable() {
+		super.onEnable();
+		enabled = true;
+	}
+	
+	@Override
+	protected void onDisable() {
+		super.onDisable();
+		enabled = false;
+	}
+	
+	public void onRenderTooltip(){
+		if(!isEnabled()) {
+			return;
+		}
 
-    public void onRenderTooltip(){
-        if(isEnabled()) {
+		int wheel = Mouse.getDWheel();
 
-            int i = Mouse.getDWheel();
-            if (i != 0) {
+		if(wheel != 0) {
+			onScroll(wheel > 0);
+		}
+	}
 
-                if (i < 0) {
-                    onScroll(false);
-                }
+	public void onScroll(boolean direction) {
+		int scrollStep = (int) (12 * this.scrollSensitivity);
 
-                if (i > 0) {
-                    onScroll(true);
-                }
-            }
-        }
-    }
+		if(direction) {
+			scrollStep = -scrollStep;
+		}
+		
+		if(!reverse) {
+			scrollStep = -scrollStep;
+		}
 
-    public void onScroll(boolean reverse){
+		if(GuiScreen.isShiftKeyDown()) {
+			offsetX += scrollStep;
+		}
+		else {
+			offsetY += scrollStep;
+		}
+	}
 
-        if (GuiScreen.isShiftKeyDown()) {
-            if(reverse){
-                offsetX -= scrollStep;
-
-            } else {
-                offsetX += scrollStep;
-
-            }
-
-        } else {
-            if (reverse) {
-                offsetY -= scrollStep;
-
-            } else {
-                offsetY += scrollStep;
-
-            }
-        }
-    }
-
-    public void resetScroll(){
-        offsetX = 0;
-        offsetY = 0;
-    }
+	public void resetScroll(){
+		offsetX = offsetY = 0;
+	}
 
 }

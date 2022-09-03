@@ -54,7 +54,7 @@ public class ScrollableTooltipsMod extends Mod {
 		enabled = false;
 	}
 	
-	public void onRenderTooltip(){
+	public void onRenderTooltip() {
 		if(!isEnabled()) {
 			return;
 		}
@@ -85,7 +85,7 @@ public class ScrollableTooltipsMod extends Mod {
 		}
 	}
 
-	public void resetScroll(){
+	public void resetScroll() {
 		offsetX = offsetY = 0;
 	}
 

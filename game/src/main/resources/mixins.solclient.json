@@ -1,9 +1,9 @@
 {
-  "required": true,
-  "package": "io.github.solclient.client.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "refmap": "mixins.solclient.refmap.json",
-  "mixins": [
+	"required": true,
+	"package": "io.github.solclient.client.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "mixins.solclient.refmap.json",
+	"mixins": [
 		"MixinEntity",
 		"MixinEntityLivingBase",
 		"MixinEntityPlayer",
@@ -81,8 +81,8 @@
 		"mod.MixinSCReplayMod$MixinPacketListener",
 		"mod.MixinSCReplayMod$MixinReplayMod",
 		"mod.MixinSCReplayMod$MixinVanillaCameraController",
-	  	"mod.MixinScrollableTooltipsMod$MixinGuiScreen",
-	  "mod.MixinScrollableTooltipsMod$MixinGuiContainer",
+		"mod.MixinScrollableTooltipsMod$MixinGuiScreen",
+		"mod.MixinScrollableTooltipsMod$MixinGuiContainer",
 		"mod.MixinV1_7VisualsMod$MixinEntityRenderer",
 		"mod.MixinV1_7VisualsMod$MixinItemRenderer",
 		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase",

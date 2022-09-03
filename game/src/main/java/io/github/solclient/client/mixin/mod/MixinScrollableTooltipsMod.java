@@ -18,43 +18,49 @@ import net.minecraft.inventory.Slot;
 
 public class MixinScrollableTooltipsMod {
 
-    @Mixin(GuiScreen.class)
-    public static class MixinGuiScreen {
-    	
-        @ModifyArgs(method = "renderToolTip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawHoveringText(Ljava/util/List;II)V"))
-        public void modifyTooltipPosition(Args args){
-            if(ScrollableTooltipsMod.enabled) {
-            	ScrollableTooltipsMod instance = ScrollableTooltipsMod.instance;
-            	
-				if((Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreative)
-						&& ((GuiContainerCreative) Minecraft.getMinecraft().currentScreen)
-								.getSelectedTabIndex() != CreativeTabs.tabInventory.getTabIndex()) {
-                    return;
-                }
+	@Mixin(GuiScreen.class)
+	public static class MixinGuiScreen {
 
-                instance.onRenderTooltip();
-                args.set(1, (int)args.get(1) + instance.offsetX);
-                args.set(2, (int)args.get(2) + instance.offsetY);
-            }
-        }
+		@ModifyArgs(method = "renderToolTip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawHoveringText(Ljava/util/List;II)V"))
+		public void modifyTooltipPosition(Args args) {
+			if(!((Object) this instanceof GuiContainer)) {
+				return;
+			}
 
-    }
+			if(!ScrollableTooltipsMod.enabled) {
+				return;
+			}
 
-    @Mixin(GuiContainer.class)
-    public static class MixinGuiContainer {
+			if(((Object) this instanceof GuiContainerCreative)) {
+				GuiContainerCreative creative = (GuiContainerCreative) (Object) this;
 
-        @Shadow
-        private Slot theSlot;
-        private Slot cachedSlot;
+				if(creative.getSelectedTabIndex() != CreativeTabs.tabInventory.getTabIndex()) {
+					return;
+				}
+			}
 
-        @Inject(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;popMatrix()V"))
-        public void resetScrollOnSlotChange(int mouseX, int mouseY, float tickDelta, CallbackInfo ci){
+			ScrollableTooltipsMod instance = ScrollableTooltipsMod.instance;
+			instance.onRenderTooltip();
+			
+			args.set(1, (int) args.get(1) + instance.offsetX);
+			args.set(2, (int) args.get(2) + instance.offsetY);
+		}
 
-            if(ScrollableTooltipsMod.enabled && cachedSlot != theSlot){
-                cachedSlot = theSlot;
-                ScrollableTooltipsMod.instance.resetScroll();
-            }
+	}
 
-        }
-    }
+	@Mixin(GuiContainer.class)
+	public static class MixinGuiContainer {
+
+		@Shadow
+		private Slot theSlot;
+		private Slot cachedSlot;
+
+		@Inject(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;popMatrix()V"))
+		public void resetScrollOnSlotChange(int mouseX, int mouseY, float tickDelta, CallbackInfo ci) {
+			if(ScrollableTooltipsMod.enabled && cachedSlot != theSlot) {
+				cachedSlot = theSlot;
+				ScrollableTooltipsMod.instance.resetScroll();
+			}
+		}
+	}
 }

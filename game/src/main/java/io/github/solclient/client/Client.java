@@ -72,7 +72,7 @@ public final class Client {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	private final File dataFile = new File(mc.getDataFolder(), "sol_client_mods.json");
-	// data file for beta versions - this is no longer very neccessary.
+	// data file for beta versions - this is no longer very necessary.
 	private final File legacyDataFile = new File(mc.getDataFolder(), "parrot_client_mods.json");
 
 	public DetectedServer detectedServer;

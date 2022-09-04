@@ -141,14 +141,13 @@ public class PotionEffectsMod extends HudMod {
 
 				if(icon && effect.showIcon()) {
 					mc.getTextureManager().bind(Texture.MOB_EFFECTS_ATLAS_ID);
-
 					DrawableHelper.fillTexturedRect(iconX, y + 7, type.getAtlasU(), type.getAtlasV(), 18, 18, 18, 18);
 				}
 
 				if(title) {
 					String titleText = I18n.translate(type.getName());
 
-					if(effect.getAmplifier() > 0 && effect.getAmplifier() < 4) {
+					if(effect.showAmplifier()) {
 						titleText += " " + I18n.translate(effect.getAmplifierName());
 					}
 

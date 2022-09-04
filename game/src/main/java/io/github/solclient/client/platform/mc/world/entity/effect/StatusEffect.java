@@ -21,13 +21,15 @@ public interface StatusEffect {
 
 	@NotNull StatusEffectType getType();
 
-	int getDuration();
+	int getEffectDuration();
 
 	@NotNull String getDurationText();
 
-	int getAmplifier();
+	int getEffectAmplifier();
 
 	boolean showIcon();
+
+	boolean showAmplifier();
 
 	@NotNull String getAmplifierName();
 

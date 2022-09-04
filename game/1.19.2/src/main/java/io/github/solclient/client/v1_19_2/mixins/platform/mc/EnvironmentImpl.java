@@ -48,7 +48,7 @@ public class EnvironmentImpl {
 				return (T) "Mojang Studios";
 		}
 
-		throw new UnsupportedOperationException(key + " has no value");
+		throw new IllegalArgumentException(key);
 	}
 
 	private static int versionComponent(int i) {

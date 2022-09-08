@@ -41,4 +41,7 @@ public interface Text extends Cloneable {
 
 	@NotNull Style getStyle();
 
+	@NotNull
+	String getLegacy();
+
 }

@@ -18,8 +18,8 @@ import io.github.solclient.client.platform.mc.world.entity.Entity;
 import io.github.solclient.client.platform.mc.world.entity.player.GameMode;
 import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
 import io.github.solclient.client.platform.mc.world.item.ItemStack;
+import io.github.solclient.client.platform.mc.world.level.Level;
 import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
-import io.github.solclient.client.platform.mc.world.level.block.BlockState;
 import io.github.solclient.client.platform.mc.world.level.block.BlockType;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
@@ -71,15 +71,14 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
 		LocalPlayer player = (LocalPlayer) entity;
 		ItemStack item = player.getInventory().getMainHand();
-		BlockState state = mc.getLevel().getBlockState(hit.getBlockPos());
-		BlockType block = state.getType();
+		Level level = mc.getLevel();
 
 		if(!player.getAbilities().canBuild() && !persistent) {
 			if(mc.getPlayerState().getGameMode() == GameMode.SPECTATOR) {
-				return state.hasMenu(mc.getLevel(), hit.getBlockPos());
+				return level.getBlockState(hit.getBlockPos()).hasMenu(mc.getLevel(), hit.getBlockPos());
 			}
 			else {
-				return item.canDestroy(block) || item.canPlaceOn(block);
+				return item.canDestroy(level, hit.getBlockPos()) || item.canPlaceOn(level, hit.getBlockPos());
 			}
 		}
 

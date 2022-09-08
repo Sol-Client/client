@@ -80,17 +80,17 @@ public class ArmourMod extends HudMod {
 
 	private void renderStack(ItemStack stack, int x, int y) {
 		mc.getItemRenderer().render(stack, x, y);
-		if(stack.getMaxDamage() > 0) {
+		if(stack.getMaxDamageValue() > 0) {
 			String text;
 			switch(durability) {
 				case FRACTION:
-					text = stack.getMaxDamage() - stack.getDamage() + " / " + (stack.getMaxDamage());
+					text = stack.getMaxDamageValue() - stack.getDamageValue() + " / " + (stack.getMaxDamageValue());
 					break;
 				case REMAINING:
-					text = Integer.toString(stack.getMaxDamage() - stack.getDamage());
+					text = Integer.toString(stack.getMaxDamageValue() - stack.getDamageValue());
 					break;
 				case PERCENTAGE:
-					text = ((int) (((double) stack.getMaxDamage() - stack.getDamage()) / (stack.getMaxDamage()) * 100)) + "%";
+					text = ((int) (((double) stack.getMaxDamageValue() - stack.getDamageValue()) / (stack.getMaxDamageValue()) * 100)) + "%";
 					break;
 				default:
 					text = "Invalid mode";

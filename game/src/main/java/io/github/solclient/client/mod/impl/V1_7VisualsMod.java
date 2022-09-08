@@ -97,8 +97,9 @@ public class V1_7VisualsMod extends Mod {
 		float var15 = 1.0F - var14 / item.getMaxItemUseTime();
 		float var16 = 1.0F - var15;
 
-		for(int i = 0; i < 3; i++)
+		for(int i = 0; i < 3; i++) {
 			var16 = (float) Math.pow(var16, 3);
+		}
 
 		var16 -= 0.05F;
 		float var17 = 1.0F - var16;

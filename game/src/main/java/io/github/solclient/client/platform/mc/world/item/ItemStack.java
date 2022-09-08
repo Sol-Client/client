@@ -3,7 +3,10 @@ package io.github.solclient.client.platform.mc.world.item;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import io.github.solclient.client.platform.Helper;
 import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.world.level.Level;
+import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
 import io.github.solclient.client.platform.mc.world.level.block.BlockType;
 
 public interface ItemStack {
@@ -30,17 +33,20 @@ public interface ItemStack {
 
 	@NotNull ItemType getType();
 
-	int getDamage();
+	int getDamageValue();
 
-	int getMaxDamage();
+	int getMaxDamageValue();
 
 	@NotNull Text getDisplayName();
 
-	@NotNull String getLegacyDisplayName();
+	@Helper
+	default @NotNull String getLegacyDisplayName() {
+		return getDisplayName().getLegacy();
+	}
 
-	boolean canDestroy(@NotNull BlockType block);
+	boolean canDestroy(@NotNull Level level, @NotNull BlockPos pos);
 
-	boolean canPlaceOn(@NotNull BlockType block);
+	boolean canPlaceOn(@NotNull Level level, @NotNull BlockPos pos);
 
 	int getMaxItemUseTime();
 

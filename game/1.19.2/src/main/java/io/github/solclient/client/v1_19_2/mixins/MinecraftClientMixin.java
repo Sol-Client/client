@@ -21,7 +21,7 @@ public class MinecraftClientMixin {
 	}
 
 	@Inject(method = "<init>", at = @At(value = "FIELD",
-			target = "instance:Lnet/minecraft/client/MinecraftClient;", shift = Shift.AFTER))
+			target = "instance:Lnet/minecraft/client/option/GameOptions;", shift = Shift.BEFORE))
 	private void init(CallbackInfo callback) {
 		Client.INSTANCE.init();
 	}

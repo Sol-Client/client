@@ -148,10 +148,8 @@ If you have private messages, try reproducing this issue again.`,
 
 			hasteUrl = await hastebin.createPaste(report, {
 				raw: true,
-				contentType: "text/plain",
-				server: "https://www.toptal.com/developers/hastebin/"
+				contentType: "text/plain"
 			});
-			hasteUrl = "https://www.toptal.com/developers/hastebin/" + hasteUrl.substring(hasteUrl.lastIndexOf('/') + 1) + ".txt";
 
 			crashReportText = `<!-- Do not change this unless you need to. -->
 [Game Log on Hastebin](${hasteUrl})`

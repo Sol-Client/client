@@ -4,6 +4,7 @@
 	"package": "io.github.solclient.client.v1_8_9.mixins",
 	"minVersion": "0.8.5",
 	"mixins": [
+		"platform.mc.lang.I18nImpl",
 		"platform.mc.maths.Vec3iImpl",
 		"platform.mc.option.KeyBindingImpl",
 		"platform.mc.option.KeyBindingImpl$Static",

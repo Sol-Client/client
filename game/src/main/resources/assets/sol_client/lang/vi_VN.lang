@@ -31,7 +31,7 @@ sol_client.key.category=Sol Client
 sol_client.key.accept_request=Chấp nhận yêu cầu
 sol_client.key.dismiss_request=Từ chối yêu cầu
 
-sol_client.mod.generic.option.enabled=Đã bật
+sol_client.mod.generic.option.enabled=Bật
 sol_client.mod.hud.option.scale=Độ phóng đại
 sol_client.mod.simple_hud.option.background=Nền
 sol_client.mod.simple_hud.option.backgroundColour=Màu nền
@@ -135,7 +135,7 @@ sol_client.mod.armour.option.durability.fraction=Phân số
 sol_client.mod.armour.option.armour=Hiển thị giáp
 sol_client.mod.armour.option.hand=Hiển thị công cụ
 
-sol_client.mod.timers.name=Bộ đếm
+sol_client.mod.timers.name=Bộ đếm thời gian sự kiện
 sol_client.mod.timers.description=Hiển thị thời gian còn lại của các sự kiện.
 
 sol_client.mod.timers.option.alignment=Căn lề
@@ -231,7 +231,7 @@ sol_client.mod.tweaks.option.borderlessFullscreen=Toàn màn hình không viền
 sol_client.mod.tweaks.option.betterKeyBindings=Nhận diện phím tắt tốt hơn
 sol_client.mod.tweaks.option.disableHotbarScrolling=Vô hiệu hoá thanh cuộn Hotbar
 
-sol_client.mod.tweaks.confirm_disconnect=Ấn vào đây một lần nữa để xác nhận thoát khỏi máy chủ.
+sol_client.mod.tweaks.confirm_disconnect=Ấn một lần nữa để thoát khỏi máy chủ
 
 sol_client.mod.freelook.name=Freelook
 sol_client.mod.freelook.description=Tự do nhìn xung quanh.
@@ -332,7 +332,7 @@ sol_client.mod.motion_blur.description=Hiệu ứng mờ khi màn hình di chuy�
 
 sol_client.mod.motion_blur.option.blur=Độ mờ
 
-sol_client.mod.menu_blur.name=Menu Blur
+sol_client.mod.menu_blur.name=Nền Menu Mờ
 sol_client.mod.menu_blur.description=Làm mờ nền khi đang mở túi đồ hay giao diện bất kì.
 
 sol_client.mod.menu_blur.option.blur=Độ mờ
@@ -367,7 +367,7 @@ sol_client.mod.item_physics.description=Hoạt hoạ vật phẩm rơi trên m�
 
 sol_client.mod.item_physics.option.rotationSpeed=Tốc độ Quay
 
-sol_client.mod.particles.name=Particles
+sol_client.mod.particles.name=Hạt hiệu ứng
 sol_client.mod.particles.description=Tuỳ chỉnh hạt hiệu ứng sát thương.
 
 sol_client.mod.particles.option.multiplier=Số lượng hạt hiệu ứng
@@ -416,9 +416,9 @@ sol_client.mod.category.visual.name=Hiển thị
 sol_client.mod.category.integration.name=Tương tác
 
 sol_client.mod.discord_integration.name=Tương tác với Discord
-sol_client.mod.discord_integration.description=Các tính năng liên kết với Discord, bao gồm trạng thái đang chơi và Game Overlay.
+sol_client.mod.discord_integration.description=Các tính năng liên kết với Discord.
 
-sol_client.mod.discord_integration.option.voiceChatHud=Hiển thị Voice chat HUD
+sol_client.mod.discord_integration.option.voiceChatHud=Hiển thị HUD Voice chat
 sol_client.mod.discord_integration.option.voiceChatHudScale=Kích thước HUD
 sol_client.mod.discord_integration.option.voiceChatHudAlignment=Căn lề HUD
 sol_client.mod.discord_integration.option.usernameColour=Màu tên tài khoản mặc định

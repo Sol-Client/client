@@ -399,12 +399,7 @@ public class Utils {
 									file = "/usr/share/applications/" + file;
 								}
 
-								if(file.endsWith("org.gnome.Nautilus.desktop") || file.endsWith("org.kde.dolphin.desktop")) {
-									command = new String[] { "gio", "launch", file, "--select", url };
-								}
-								else {
-									command = new String[] { "gio", "launch", file, url };
-								}
+								command = new String[] { "gio", "launch", file, url };
 								break;
 							}
 						}

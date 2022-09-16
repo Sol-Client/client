@@ -32,22 +32,22 @@ sol_client.key.accept_request=Chấp nhận yêu cầu
 sol_client.key.dismiss_request=Từ chối yêu cầu
 
 sol_client.mod.generic.option.enabled=Bật
-sol_client.mod.hud.option.scale=Độ phóng đại
+sol_client.mod.hud.option.scale=Độ lớn
 sol_client.mod.simple_hud.option.background=Nền
 sol_client.mod.simple_hud.option.backgroundColour=Màu nền
 sol_client.mod.simple_hud.option.border=Viền
 sol_client.mod.simple_hud.option.borderColour=Màu viền
 sol_client.mod.simple_hud.option.textColour=Màu chữ
 sol_client.mod.simple_hud.option.shadow=Bóng chữ
-sol_client.mod.smooth_counter_hud.option.smoothNumbers=Hiệu ứng thay đổi số
+sol_client.mod.smooth_counter_hud.option.smoothNumbers=Hiệu ứng nhảy số
 
 sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=Các thiết lập chung của Sol Client.
 
-sol_client.mod.sol_client.option.fancyMainMenu=Màn hình chính
+sol_client.mod.sol_client.option.fancyMainMenu=Sử dụng Màn hình chính của Sol
 sol_client.mod.sol_client.option.logoInInventory=Hiện Logo ở giao diện Túi đồ
 sol_client.mod.sol_client.mods=Mods
-sol_client.mod.sol_client.option.modsKey=Phím tắt Mods
+sol_client.mod.sol_client.option.modsKey=Phím tắt mở Danh sách Mod
 sol_client.mod.sol_client.edit_hud=Chỉnh sửa HUD
 sol_client.mod.sol_client.option.editHudKey=Chỉnh sửa phím tắt HUD
 sol_client.mod.sol_client.option.uiColour=Màu sắc chủ đạo
@@ -132,8 +132,8 @@ sol_client.mod.armour.option.durability.remaining=Còn lại
 sol_client.mod.armour.option.durability.percentage=Phần trăm
 sol_client.mod.armour.option.durability.fraction=Phân số
 
-sol_client.mod.armour.option.armour=Hiển thị giáp
-sol_client.mod.armour.option.hand=Hiển thị công cụ
+sol_client.mod.armour.option.armour=Hiển thị giáp đang mặc
+sol_client.mod.armour.option.hand=Hiển thị vật phẩm đang cầm trên tay
 
 sol_client.mod.timers.name=Bộ đếm thời gian sự kiện
 sol_client.mod.timers.description=Hiển thị thời gian còn lại của các sự kiện.
@@ -148,11 +148,11 @@ sol_client.mod.chat.description=Tuỳ chỉnh khung trò chuyện.
 
 sol_client.mod.chat.peek=Mở trò chuyện nhanh
 sol_client.mod.chat.option.preventClose=Ngăn việc đóng khung trò chuyện tự động
-sol_client.mod.chat.option.smooth=Hiệu ứng khi có trò chuyện mới
+sol_client.mod.chat.option.smooth=Hiệu ứng chat chạy lên khi có trò chuyện mới
 sol_client.mod.chat.option.infiniteChat=Lịch sử trò chuyện không giới hạn
 sol_client.mod.chat.option.peekKey=Phím tắt đọc trò chuyện nhanh
 
-sol_client.mod.chat.option.visibility=Hiển thị
+sol_client.mod.chat.option.visibility=Hiển thị trò chuyện
 sol_client.mod.chat.option.visibility.shown=Mở
 sol_client.mod.chat.option.visibility.commands=Chỉ khi nhập lệnh
 sol_client.mod.chat.option.visibility.hidden=Đóng
@@ -294,7 +294,7 @@ sol_client.mod.replay.option.camera=Dạng Camera
 sol_client.mod.replay.option.camera.classic=Cổ điển
 sol_client.mod.replay.option.camera.vanilla_ish=Vanilla-ish
 
-sol_client.mod.replay.option.showPathPreview=Hiển thị đường di chuyển máy quay
+sol_client.mod.replay.option.showPathPreview=Hiển thị đường di chuyển của máy quay
 
 sol_client.mod.replay.option.defaultInterpolator=Interpolator mặc định
 sol_client.mod.replay.interpolator.catmull=Catmull-Rom Spline
@@ -405,8 +405,8 @@ sol_client.mod.hitbox.option.boundingBox=Hiển thị viền Hitbox
 sol_client.mod.hitbox.option.boundingBoxColour=Màu sắc viền Hitbox
 sol_client.mod.hitbox.option.eyeHeight=Hiển thị độ cao mắt
 sol_client.mod.hitbox.option.eyeHeightColour=Màu độ cao mắt
-sol_client.mod.hitbox.option.lookVector=Hiển thị hướng nhìn
-sol_client.mod.hitbox.option.lookVectorColour=Màu hướng hình
+sol_client.mod.hitbox.option.lookVector=Đường chỉ hướng nhìn của người chơi
+sol_client.mod.hitbox.option.lookVectorColour=Màu đường chỉ hướng hình
 sol_client.mod.hitbox.option.lineWidth=Độ lớn đường viền
 
 sol_client.mod.category.general.name=Chung
@@ -425,9 +425,9 @@ sol_client.mod.discord_integration.option.usernameColour=Màu tên tài khoản 
 sol_client.mod.discord_integration.option.mutedColour=Màu tên tài khoản đã tắt Mic
 sol_client.mod.discord_integration.option.speakingColour=Màu tên tài khoản đang nói
 
-sol_client.mod.screen.title=Mods
+sol_client.mod.screen.title=Danh sách Mod
 sol_client.mod.screen.search=Gõ để tìm kiếm
-sol_client.mod.screen.apply_to_all=Áp dụng cho toàn bộ mod khác
+sol_client.mod.screen.apply_to_all=Áp dụng cho toàn bộ Mod khác
 
 sol_client.hud.edit=Chỉnh sửa HUD
 

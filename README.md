@@ -13,6 +13,14 @@ Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versi
 [Website & Download](https://sol-client.github.io)&nbsp;&nbsp;
 [Discord Server](https://discord.gg/QFDGDhcFqu)
 
+## Screenshots
+
+# Launcher
+![Launcher](./assets/screenshots/Launcher.png)
+
+# Mods
+![Mods](./assets/screenshots/Mods.png)
+
 ## Pojav
 People have alreading been talking about this client working on Pojav, but it's not quite ready.
 However, it does mostly work, and you can download a preview from [here](https://github.com/Sol-Client/Installer/releases).

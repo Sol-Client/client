@@ -19,6 +19,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
@@ -29,6 +30,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -113,7 +115,11 @@ public class MixinTweaksMod {
 	}
 
 	@Mixin(InventoryEffectRenderer.class)
-	public static class MixinInventoryEffectRenderer {
+	public static abstract class MixinInventoryEffectRenderer extends GuiContainer {
+
+		public MixinInventoryEffectRenderer(Container inventorySlotsIn) {
+			super(inventorySlotsIn);
+		}
 
 		@Redirect(method = "drawActivePotionEffects", at = @At(value = "INVOKE",
 				target = "Lnet/minecraft/client/resources/I18n;format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;"))
@@ -123,6 +129,16 @@ public class MixinTweaksMod {
 			}
 
 			return I18n.format(translateKey, parameters);
+		}
+
+		@Redirect(method = "updateActivePotionEffects", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/InventoryEffectRenderer;guiLeft:I", ordinal = 0))
+		public void shiftLeft(InventoryEffectRenderer instance, int value) {
+			if(TweaksMod.enabled && TweaksMod.instance.centredInventory) {
+				guiLeft = (width - xSize) / 2;
+				return;
+			}
+
+			guiLeft = value;
 		}
 
 	}
@@ -184,7 +200,7 @@ public class MixinTweaksMod {
 			if(TweaksMod.enabled) {
 				angle *= TweaksMod.instance.getDamageShakeIntensity();
 			}
-			
+
 			GlStateManager.rotate(angle, x, y, z);
 		}
 

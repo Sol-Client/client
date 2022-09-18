@@ -232,6 +232,7 @@ sol_client.mod.tweaks.option.confirmDisconnect=Confirm Disconnect
 sol_client.mod.tweaks.option.borderlessFullscreen=Borderless Fullscreen
 sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
 sol_client.mod.tweaks.option.disableHotbarScrolling=Disable Hotbar Scrolling
+sol_client.mod.tweaks.option.centredInventory=Centered Inventory
 
 sol_client.mod.tweaks.confirm_disconnect=Press Again to Confirm
 

@@ -43,6 +43,8 @@ sol_client.mod.crosshair.option.entityColour=Entity Colour
 sol_client.mod.scoreboard.description=Customise the scoreboard.
 sol_client.mod.scoreboard.option.numbersColour=Numbers Colour
 
+sol_client.mod.tweaks.option.centredInventory=Centred Inventory
+
 sol_client.mod.replay.option.recordingIndicatorColour=Recording Indicator Colour
 sol_client.mod.replay.option.recordingIndicatorTextColour=Recording Indicator Text Colour
 

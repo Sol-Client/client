@@ -13,12 +13,12 @@ Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versi
 [Website & Download](https://sol-client.github.io)&nbsp;&nbsp;
 [Discord Server](https://discord.gg/QFDGDhcFqu)
 
-## Screenshots
+# Screenshots
 
-# Launcher
+## Launcher
 ![Launcher](./assets/screenshots/Launcher.png)
 
-# Mods
+## Mods
 ![Mods](./assets/screenshots/Mods.png)
 
 ## Pojav

@@ -58,7 +58,7 @@ public class TweaksMod extends Mod {
 	private boolean borderlessFullscreen;
 	@Expose
 	@Option
-	public boolean centredInventory;
+	public boolean centredInventory = true;
 	private Rectangle previousBounds;
 	private long fullscreenTime = -1;
 

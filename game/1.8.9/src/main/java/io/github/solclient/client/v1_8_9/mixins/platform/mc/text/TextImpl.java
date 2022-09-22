@@ -63,6 +63,13 @@ public interface TextImpl {
 		return mut$setStyle(styler.apply(platform$getStyle()));
 	}
 
+	default @NotNull String getLegacy() {
+		return asFormattedString();
+	}
+
+	@Shadow
+	String asFormattedString();
+
 }
 
 @Mixin(Text.class)

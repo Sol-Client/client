@@ -5,6 +5,7 @@ import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.screen.ProxyScreen;
 import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
@@ -51,10 +52,10 @@ public class Screen extends ProxyScreen {
 
 		if(background) {
 			if(mc.hasLevel()) {
-				DrawableHelper.fillRect(0, 0, width, height, Colour.BACKGROUND.getValue());
+				renderDefaultBackground();
 			}
 			else {
-				renderDefaultBackground();
+				DrawableHelper.fillRect(0, 0, width, height, Colour.BACKGROUND.getValue());
 			}
 		}
 
@@ -70,36 +71,39 @@ public class Screen extends ProxyScreen {
 	}
 
 	@Override
-	public void keyDown(int code, int scancode, int mods) {
+	public boolean keyDown(int code, int scancode, int mods) {
 		if(!rootWrapper.keyPressed(getInfo(), code, scancode, mods)) {
-			if(code == 1) {
+			if(code == Input.ESCAPE) {
 				closeAll();
+				return true;
 			}
-			else {
-				super.keyDown(code, scancode, mods);
-			}
+			return super.keyDown(code, scancode, mods);
 		}
+		return true;
 	}
 
 	@Override
-	public void characterTyped(char character, int key) {
+	public boolean characterTyped(char character, int key) {
 		if(!rootWrapper.characterTyped(getInfo(), character)) {
-			super.characterTyped(character, key);
+			return super.characterTyped(character, key);
 		}
+		return true;
 	}
 
 	@Override
-	public void mouseDown(int x, int y, int button) {
+	public boolean mouseDown(int x, int y, int button) {
 		if(!rootWrapper.mouseClickedAnywhere(getInfo(), button, true, false)) {
-			super.mouseDown(x, y, button);
+			return super.mouseDown(x, y, button);
 		}
+		return true;
 	}
 
 	@Override
-	public void mouseUp(int x, int y, int button) {
+	public boolean mouseUp(int x, int y, int button) {
 		if(!rootWrapper.mouseReleasedAnywhere(getInfo(), button, true)) {
-			super.mouseUp(x, y, button);
+			return super.mouseUp(x, y, button);
 		}
+		return true;
 	}
 
 	@Override
@@ -126,7 +130,7 @@ public class Screen extends ProxyScreen {
 	}
 
 	private ComponentRenderInfo getInfo() {
-		return new ComponentRenderInfo(mouseX, mouseY, mc.getTimer().getTickDelta());
+		return new ComponentRenderInfo(mouseX, mouseY, MinecraftClient.getInstance().getTimer().getTickDelta());
 	}
 
 }

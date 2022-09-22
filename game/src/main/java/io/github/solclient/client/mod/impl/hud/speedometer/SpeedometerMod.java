@@ -62,11 +62,13 @@ public class SpeedometerMod extends SimpleHudMod {
 			textColour.bind();
 			GlStateManager.lineWidth(1.5F);
 
-			if(!editMode && !mc.isPaused()
+			if(!editMode && !mc.isGamePaused()
 					&& (lastUpdate == -1 || (System.currentTimeMillis() - lastUpdate) > 30)) {
 				addSpeed(getSpeed());
 				lastUpdate = System.currentTimeMillis();
 			}
+
+			// TODO fix this legacy opengl nightmare
 
 			GlStateManager.enableBlend();
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -88,13 +90,13 @@ public class SpeedometerMod extends SimpleHudMod {
 			GL11.glDisable(GL11.GL_SCISSOR_TEST);
 			GL11.glColor4f(1, 1, 1, 1);
 
-			Utils.resetLineWidth();
+			GlStateManager.resetLineWidth();
 		}
 	}
 
 	private double getSpeed() {
-		double xTraveled = mc.getPlayer().getX() - mc.getPlayer().getPreviousX();
-		double zTraveled = mc.getPlayer().getZ() - mc.getPlayer().getPreviousZ();
+		double xTraveled = mc.getPlayer().x() - mc.getPlayer().previousX();
+		double zTraveled = mc.getPlayer().z() - mc.getPlayer().previousZ();
 		return Math.sqrt(xTraveled * xTraveled + zTraveled * zTraveled);
 	}
 

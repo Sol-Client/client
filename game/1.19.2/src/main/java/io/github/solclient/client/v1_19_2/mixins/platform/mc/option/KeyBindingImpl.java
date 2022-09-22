@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -75,7 +76,7 @@ public abstract class KeyBindingImpl {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public @NotNull List<KeyBinding> platform$getConflictingKeys() {
-		if(platform$getKeyCode() == 0) {
+		if(platform$getKeyCode() == GLFW.GLFW_KEY_UNKNOWN) {
 			return Collections.emptyList();
 		}
 
@@ -94,6 +95,11 @@ interface KeyBindingImpl$Static {
 	@Overwrite(remap = false)
 	static @NotNull KeyBinding create(@NotNull String name, int initialKey, @NotNull String category) {
 		return (KeyBinding) new net.minecraft.client.option.KeyBinding(name, initialKey, category);
+	}
+
+	@Overwrite(remap = false)
+	static void reload() {
+		net.minecraft.client.option.KeyBinding.updateKeysByCode();
 	}
 
 }

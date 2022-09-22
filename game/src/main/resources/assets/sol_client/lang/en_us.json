@@ -43,12 +43,12 @@
 	"mod.simple_hud.option.borderColour": "Border Color",
 	"mod.simple_hud.option.textColour": "Text Color",
 	"mod.simple_hud.option.shadow": "Text Shadow",
-	"sol_client.mod.smooth_counter_hud.option.smoothNumbers": "Smooth Numbers",
+	"mod.smooth_counter_hud.option.smoothNumbers": "Smooth Numbers",
 
 	"mod.sol_client.name": "Sol Client",
 	"mod.sol_client.description": "General settings for Sol Client.",
 
-	"mod.sol_client.fancyMainMenu": "Main Menu",
+	"mod.sol_client.option.fancyMainMenu": "Main Menu",
 	"mod.sol_client.option.logoInInventory": "Show Logo in Inventory",
 	"mod.sol_client.mods": "Mods",
 	"mod.sol_client.option.modsKey": "Mods Key",

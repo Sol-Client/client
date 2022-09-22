@@ -35,27 +35,24 @@ import io.github.solclient.client.platform.mc.world.item.ItemRenderer;
 import io.github.solclient.client.platform.mc.world.level.ClientLevel;
 import io.github.solclient.client.platform.mc.world.level.LevelRenderer;
 import io.github.solclient.client.platform.mc.world.particle.ParticleEngine;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.resource.ReloadableResourceManager;
 
 @Mixin(net.minecraft.client.MinecraftClient.class)
 public class MinecraftClientImpl implements MinecraftClient {
 
-	@Shadow
-	private @Final ReloadableResourceManager resourceManager;
-	@Shadow
-	public @Final GameOptions options;
-	private net.minecraft.client.util.Window window;
-
 	@Override
 	public @NotNull Window getWindow() {
 		return (Window) window;
 	}
 
-	@Inject(method = "method_2923", at = @At("RETURN"))
+	@Inject(method = "onResolutionChanged", at = @At("RETURN"))
 	public void updateWindow(CallbackInfo callback) {
 		window = new net.minecraft.client.util.Window((net.minecraft.client.MinecraftClient) (Object) this);
 	}
+
+	private net.minecraft.client.util.Window window;
 
 	@Override
 	public @Nullable ClientLevel getLevel() {
@@ -92,6 +89,9 @@ public class MinecraftClientImpl implements MinecraftClient {
 		return (Options) options;
 	}
 
+	@Shadow
+	public @Final GameOptions options;
+
 	@Override
 	public @NotNull File getDataFolder() {
 		// TODO Auto-generated method stub
@@ -106,9 +106,11 @@ public class MinecraftClientImpl implements MinecraftClient {
 
 	@Override
 	public @NotNull Font getFont() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Font) textRenderer;
 	}
+
+	@Shadow
+	public TextRenderer textRenderer;
 
 	@Override
 	public @Nullable Screen getScreen() {
@@ -148,9 +150,11 @@ public class MinecraftClientImpl implements MinecraftClient {
 
 	@Override
 	public @NotNull TextureManager getTextureManager() {
-		// TODO Auto-generated method stub
-		return null;
+		return (TextureManager) textureManager;
 	}
+
+	@Shadow
+	private net.minecraft.client.texture.TextureManager textureManager;
 
 	@Override
 	public @NotNull LanguageManager getLanguageManager() {
@@ -162,6 +166,9 @@ public class MinecraftClientImpl implements MinecraftClient {
 	public @NotNull ResourceManager getResourceManager() {
 		return (ResourceManager) resourceManager;
 	}
+
+	@Shadow
+	private @Final ReloadableResourceManager resourceManager;
 
 	@Override
 	public boolean hasSingleplayerServer() {
@@ -242,9 +249,17 @@ public class MinecraftClientImpl implements MinecraftClient {
 	}
 
 	@Override
-	public @Nullable TitleScreen getMainMenu() {
-		// TODO Auto-generated method stub
-		return null;
+	public @Nullable TitleScreen getTitleScreen() {
+		return titleScreen;
+	}
+
+	private TitleScreen titleScreen;
+
+	@Inject(method = "openScreen", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;"))
+	public void setTitleScreen(net.minecraft.client.gui.screen.Screen screen, CallbackInfo callback) {
+		if(screen instanceof net.minecraft.client.gui.screen.TitleScreen) {
+			titleScreen = (TitleScreen) screen;
+		}
 	}
 
 	@Override

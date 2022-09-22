@@ -1,5 +1,6 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.text;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -48,7 +49,12 @@ public class TextFormattingImpl implements TextFormatting {
 interface TextFormattingImpl$Static {
 
 	@Overwrite(remap = false)
-	static String strip(String message) {
+	static @NotNull TextFormatting get(@NotNull String name) {
+		return (TextFormatting) (Object) Formatting.valueOf(name);
+	}
+
+	@Overwrite(remap = false)
+	static @NotNull String strip(@NotNull String message) {
 		return Formatting.strip(message);
 	}
 

@@ -103,7 +103,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 					screen.getRoot().onKeyPressed((ignored, code, scancode, mods) -> {
 						if(code == Input.ESCAPE) {
-							mc.getOptions().setKey(binding, Input.UNKNOWN, 0);
+							mc.getOptions().unbindKey(binding);
 						}
 						else if(code != 0) {
 							mc.getOptions().setKey(binding, code, scancode);
@@ -135,7 +135,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 						(component, defaultBounds) -> {
 							if(enumWidth == 0) {
 								for(Enum<?> field : fields) {
-									int newWidth = (int) font.getWidth(field.toString());
+									int newWidth = (int) font.getTextWidth(field.toString());
 
 									if(newWidth > enumWidth) {
 										enumWidth = newWidth;
@@ -144,7 +144,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 							}
 
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
-							return new Rectangle(getBounds().getWidth() - enumWidth - 16 + (enumWidth / 2) - ((int) font.getWidth(((LabelComponent) component).getText()) / 2), defaultComponentBounds.getY(), defaultComponentBounds.getWidth(), defaultComponentBounds.getHeight());
+							return new Rectangle(getBounds().getWidth() - enumWidth - 16 + (enumWidth / 2) - ((int) font.getTextWidth(((LabelComponent) component).getText()) / 2), defaultComponentBounds.getY(), defaultComponentBounds.getWidth(), defaultComponentBounds.getHeight());
 						});
 
 				Component previous;
@@ -208,7 +208,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 			if(sliderAnnotation.showValue()) {
 				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderAnnotation.format(), new DecimalFormat("0.##").format(option.getValue()))), (component, defaultBounds) -> {
 					Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
-					return new Rectangle((int) (getBounds().getWidth() - font.getWidth(((LabelComponent) component).getText()) - 117), defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
+					return new Rectangle((int) (getBounds().getWidth() - font.getTextWidth(((LabelComponent) component).getText()) - 117), defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
 				});
 			}
 

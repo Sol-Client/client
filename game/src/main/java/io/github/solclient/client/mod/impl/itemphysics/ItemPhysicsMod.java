@@ -56,10 +56,10 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 			long since = now - data.getLastUpdate();
 
 			GlStateManager.rotate(180, 0, 1, 1);
-			GlStateManager.rotate(event.getEntity().getYaw(), 0, 0, 1);
+			GlStateManager.rotate(event.getEntity().yaw(), 0, 0, 1);
 
-			if(!mc.isPaused()) {
-				if(!event.getEntity().isOnGround()) {
+			if(!mc.isGamePaused()) {
+				if(!event.getEntity().isEntityOnGround()) {
 					int divisor = 2500000;
 					if(event.getEntity().isInWeb()) {
 						divisor *= 10;

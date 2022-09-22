@@ -12,6 +12,7 @@ import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
+import io.github.solclient.client.util.TrueTypeFont;
 import io.github.solclient.client.util.data.Colour;
 
 public class SolClientConfig extends ConfigOnlyMod {
@@ -40,8 +41,8 @@ public class SolClientConfig extends ConfigOnlyMod {
 			smoothScrolling = true,
 			fancyFont = true;
 
-	private Font font;
-	private boolean fontErr;
+	private TrueTypeFont font;
+	private boolean fontError;
 
 	@Override
 	public String getId() {
@@ -80,21 +81,29 @@ public class SolClientConfig extends ConfigOnlyMod {
 	}
 
 	public Font getUIFont() {
-		if(fancyFont) {
-			if(font == null && !fontErr) {
+		if(fancyFont && !fontError) {
+			if(font == null) {
 				try {
-					return font = Font.createTrueType(getClass().getResourceAsStream("/Roboto-Regular.ttf"), 16);
+					return font = new TrueTypeFont(getClass().getResourceAsStream("/Roboto-Regular.ttf"), 16);
 				}
-				catch(IOException error) {
-					fontErr = true;
+				catch(IOException | IllegalStateException error) {
+					fontError = true;
 					logger.error("Could not load HD font", error);
-					// else used to fall through to return
 				}
 			}
 			else {
 				return font;
 			}
 		}
+		if(font != null) {
+			try {
+				font.close();
+			}
+			catch(IOException error) {
+				logger.error("Could not close font", error);
+			}
+		}
+		font = null;
 		return mc.getFont();
 	}
 

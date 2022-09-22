@@ -2,8 +2,6 @@ package io.github.solclient.client.util.data;
 
 import java.awt.Color;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.platform.mc.render.GlStateManager;
@@ -107,19 +105,19 @@ public class Colour {
 	}
 
 	public float getRedFloat() {
-		return getRed() / 0xFF;
+		return getRed() / 255F;
 	}
 
 	public float getGreenFloat() {
-		return getGreen() / 0xFF;
+		return getGreen() / 255F;
 	}
 
 	public float getBlueFloat() {
-		return getBlue() / 0xFF;
+		return getBlue() / 255F;
 	}
 
 	public float getAlphaFloat() {
-		return getAlpha() / 0xFF;
+		return getAlpha() / 255F;
 	}
 
 	public Color toAWT() {
@@ -173,13 +171,13 @@ public class Colour {
 	public Colour withComponent(int component, int value) {
 		switch(component) {
 			case 0:
-				return new Colour((value & 0xFF00FFFF) + (component << 16));
+				return new Colour((this.value & 0xFF00FFFF) + (value << 16));
 			case 1:
-				return new Colour((value & 0xFFFF00FF) + (component << 8));
+				return new Colour((this.value & 0xFFFF00FF) + (value << 8));
 			case 2:
-				return new Colour((value & 0xFFFFFF00) + component);
+				return new Colour((this.value & 0xFFFFFF00) + value);
 			case 3:
-				return new Colour((value & 0xFFFFFF) + (component << 24));
+				return new Colour((this.value & 0xFFFFFF) + (value << 24));
 			default:
 				throw new IndexOutOfBoundsException(component + " out of bounds");
 		}

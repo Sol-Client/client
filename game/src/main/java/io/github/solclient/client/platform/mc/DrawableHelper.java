@@ -4,19 +4,19 @@ import lombok.experimental.UtilityClass;
 
 public class DrawableHelper {
 
-	public static void fillRect(int top, int left, int right, int bottom, int colour) {
+	public static void fillRect(int left, int top, int right, int bottom, int colour) {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void fillRect(float top, float left, float right, float bottom, int colour) {
+	public static void fillRect(float left, float top, float right, float bottom, int colour) {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void fillGradientRect(int top, int left, int right, int bottom, int topColour, int bottomColour) {
+	public static void fillGradientRect(int left, int top, int right, int bottom, int topColour, int bottomColour) {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void strokeRect(int top, int left, int right, int bottom, int colour) {
+	public static void strokeRect(int left, int top, int right, int bottom, int colour) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -24,7 +24,7 @@ public class DrawableHelper {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void renderHorizontalLine(int x, int startY, int endY, int colour) {
+	public static void renderHorizontalLine(int startX, int endX, int y, int colour) {
 		throw new UnsupportedOperationException();
 	}
 

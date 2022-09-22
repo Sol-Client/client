@@ -144,7 +144,7 @@ public final class Client {
 			FilePollingTask filePolling = new FilePollingTask(mods);
 
 			Thread generalUpdateThread = new Thread(() -> {
-				while(mc.isRunning()) {
+				while(mc.isGameRunning()) {
 					try {
 						Thread.sleep(10);
 					}
@@ -191,12 +191,10 @@ public final class Client {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean load() {
 		try {
 			if(dataFile.exists()) {
-				// 1.8 uses old libraries, so this warning cannot be easily fixed.
-				data = new JsonParser().parse(FileUtils.readFileToString(dataFile)).getAsJsonObject();
+				data = JsonParser.parseString(FileUtils.readFileToString(dataFile, StandardCharsets.UTF_8)).getAsJsonObject();
 				data = ConfigVersion.migrate(data);
 			}
 			else {
@@ -304,7 +302,15 @@ public final class Client {
 
 	@EventHandler
 	public void onPostStart(PostStartEvent event) {
-		mods.forEach(Mod::postStart);
+		for(Mod mod : mods) {
+			try {
+				mod.postStart();
+			}
+			catch(Throwable error) {
+				LOGGER.error("Could not fire postStart()", error);
+			}
+		}
+
 		cacheHudList();
 
 		try {
@@ -352,10 +358,10 @@ public final class Client {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(SolClientConfig.INSTANCE.modsKey.isHeld()) {
+		if(SolClientConfig.INSTANCE.modsKey.consumePress()) {
 			mc.setScreen(new ModsScreen());
 		}
-		else if(SolClientConfig.INSTANCE.editHudKey.isHeld()) {
+		else if(SolClientConfig.INSTANCE.editHudKey.consumePress()) {
 			mc.setScreen(new ModsScreen());
 			mc.setScreen(new MoveHudsScreen());
 		}

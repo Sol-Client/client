@@ -66,7 +66,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	@Override
 	public void closeAll() {
 		if(!mc.hasLevel() && SolClientConfig.INSTANCE.fancyMainMenu) {
-			mc.setScreen(Client.INSTANCE.getMainMenu());
+			mc.setScreen(mc.getTitleScreen());
 			return;
 		}
 
@@ -101,10 +101,11 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						scroll.load();
 					}
 					else {
-						((ModsScreen) screen).onClose();
+						screen.close();
 						if(screen.getParentScreen() instanceof Screen) {
 							((Screen) screen.getParentScreen()).getRoot().setFont(font);
 						}
+						mc.setScreen(((ModsScreen) screen).parentScreen);
 					}
 				}
 				else {
@@ -171,6 +172,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int code, int scancode, int mods) {
+			boolean result = super.keyPressed(info, code, scancode, mods);
+
 			if((screen.getRoot().getDialog() == null && (code == Input.ENTER || code == Input.KP_ENTER))
 					&& !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
@@ -178,7 +181,12 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true,
 						false);
 			}
-			else if(mod == null && code == Input.F && (mods & Input.COMMAND_MODIFIER) != 0
+
+			if(result) {
+				return true;
+			}
+
+			if(mod == null && code == Input.F && (mods & Input.COMMAND_MODIFIER) != 0
 					&& (mods & Input.SHIFT_MODIFIER) == 0 && (mods & Input.ALT_MODIFIER) == 0) {
 				search.setFocused(true);
 				return true;
@@ -191,14 +199,12 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				return true;
 			}
 
-			boolean result = super.keyPressed(info, code, scancode, mods);
-
-			if(!result && code == SolClientConfig.INSTANCE.modsKey.getKeyCode()) {
+			if(code == SolClientConfig.INSTANCE.modsKey.getKeyCode()) {
 				mc.closeScreen();
 				return true;
 			}
 
-			return result;
+			return false;
 		}
 
 		@Override
@@ -206,9 +212,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			if(!search.isFocused() && mod == null) {
 				search.setFocused(true);
 				search.setText("");
-
-				return true;
 			}
+
 			return super.characterTyped(info, character);
 		}
 

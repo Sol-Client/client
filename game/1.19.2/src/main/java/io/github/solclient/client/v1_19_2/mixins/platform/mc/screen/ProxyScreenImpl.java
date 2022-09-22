@@ -21,61 +21,67 @@ public abstract class ProxyScreenImpl extends Screen {
 
 	@Overwrite
 	public void renderScreen(int mouseX, int mouseY, float tickDelta) {
-		super.render(SharedObjects.primary2dMatrixStack, mouseX, mouseY, tickDelta);
+		super.render(SharedObjects.primary2dMatrixStack, mouseX, mouseY, client.getLastFrameDuration());
 	}
 
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float tickDelta) {
-		renderScreen(mouseX, mouseY, tickDelta);
+		renderScreen(mouseX, mouseY, client.getTickDelta());
 	}
 
 	@Overwrite
-	public void characterTyped(char character, int key) {
-		super.charTyped(character, key);
+	public boolean characterTyped(char character, int key) {
+		return super.charTyped(character, key);
 	}
 
 	@Override
 	public boolean charTyped(char character, int key) {
-		characterTyped(character, key);
-		return false;
+		return characterTyped(character, key);
 	}
 
 	@Overwrite
-	public void keyDown(int key, int scancode, int mods) {
-		super.keyPressed(key, scancode, mods);
+	public boolean keyDown(int key, int scancode, int mods) {
+		return super.keyPressed(key, scancode, mods);
 	}
 
 	@Override
 	public boolean keyPressed(int key, int scancode, int mods) {
-		keyDown(key, scancode, mods);
-		return false;
+		return keyDown(key, scancode, mods);
 	}
 
 	@Overwrite
-	public void mouseDown(int x, int y, int button) {
-		super.mouseClicked(x, y, button);
+	public boolean mouseDown(int x, int y, int button) {
+		return super.mouseClicked(x, y, button);
 	}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		mouseDown((int) mouseX, (int) mouseY, button);
-		return false;
+		return mouseDown((int) mouseX, (int) mouseY, button);
 	}
 
 	@Overwrite
-	public void mouseUp(int x, int y, int button) {
-		super.mouseReleased(x, y, button);
+	public boolean mouseUp(int x, int y, int button) {
+		return super.mouseReleased(x, y, button);
 	}
 
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		mouseUp((int) mouseX, (int) mouseY, button);
-		return false;
+		return mouseUp((int) mouseX, (int) mouseY, button);
 	}
 
 	@Override
 	public boolean mouseScrolled(double d, double e, double f) {
-		scroll((int) f);
+		if(f < 1 && f > -1) {
+			if(f < 0) {
+				scroll(-1);
+			}
+			else {
+				scroll(1);
+			}
+		}
+		else {
+			scroll((int) f);
+		}
 		return super.mouseScrolled(d, e, f);
 	}
 

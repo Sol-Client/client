@@ -6,9 +6,9 @@ import io.github.solclient.client.platform.Helper;
 
 public interface Options {
 
-	float mouseSensitivity();
+	double mouseSensitivity();
 
-	void setMouseSensitivity(float sensitivity);
+	void setMouseSensitivity(double sensitivity);
 
 	boolean invertMouse();
 
@@ -57,6 +57,8 @@ public interface Options {
 	void setMouseButton(@NotNull KeyBinding binding, int button);
 
 	void setKey(@NotNull KeyBinding binding, int code, int scancode);
+
+	void unbindKey(@NotNull KeyBinding binding);
 
 	void save();
 

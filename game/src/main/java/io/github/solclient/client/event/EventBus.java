@@ -3,7 +3,6 @@ package io.github.solclient.client.event;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.WrongMethodTypeException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,10 +22,10 @@ import lombok.AllArgsConstructor;
 /**
  * Event bus system focused on performance.
  */
-public class EventBus {
+public final class EventBus {
 
 	@AllArgsConstructor
-	private static class MethodData {
+	private static final class MethodData {
 
 		public final Object instance;
 		public final String name;
@@ -105,6 +104,7 @@ public class EventBus {
 			toRemove.forEach(this::unregister);
 		}
 		catch(ConcurrentModificationException ignored) {
+			// seems like a bright idea
 		}
 
 		return event;

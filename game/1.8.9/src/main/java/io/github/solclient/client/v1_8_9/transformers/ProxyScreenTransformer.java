@@ -24,7 +24,7 @@ public class ProxyScreenTransformer
 				.stream()
 				.filter((method) -> method.name.equals("<init>"))
 				.findFirst()
-				.orElseThrow();
+				.get();
 
 		constructor.instructions.clear();
 		constructor.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));

@@ -29,6 +29,7 @@ import lombok.Setter;
 
 // Class for GUI components.
 // May be replaced by Aether UI in the future when it's stable enough.
+// Edit: probably won't be
 public abstract class Component {
 
 	protected MinecraftClient mc = MinecraftClient.getInstance();
@@ -250,7 +251,7 @@ public abstract class Component {
 		}
 
 		if(!processed && onClickAnywhere != null && onClickAnywhere.onClick(info, button)) {
-			processed = true;
+			return true;
 		}
 
 		try {

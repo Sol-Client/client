@@ -8,7 +8,7 @@ import io.github.solclient.client.platform.mc.world.item.ItemStack;
 public class EnchantmentHelper {
 
 	public static float getExtraDamage(@NotNull ItemStack item, @NotNull LivingEntityType type) {
-		return 0;
+		throw new UnsupportedOperationException();
 	}
 
 }

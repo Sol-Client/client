@@ -11,12 +11,17 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.MemoryUtil;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientConfig;
@@ -24,6 +29,7 @@ import io.github.solclient.client.platform.mc.Environment;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.Window;
 import io.github.solclient.client.platform.mc.hud.IngameHud;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.sound.SoundInstance;
 import io.github.solclient.client.platform.mc.sound.SoundType;
 import io.github.solclient.client.platform.mc.util.MinecraftUtil;
@@ -43,7 +49,7 @@ public class Utils {
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
 	public int getStringWidth(String text) {
-		return MinecraftClient.getInstance().getFont().getWidth(text);
+		return MinecraftClient.getInstance().getFont().getTextWidth(text);
 	}
 
 	public long toMegabytes(long bytes) {
@@ -289,13 +295,6 @@ public class Utils {
 		return relative;
 	}
 
-	public void resetLineWidth() {
-		// Reset the fishing rod line back to its normal width.
-		// Fun fact: the line should actually be thinner, but it's overriden by the
-		// block selection.
-		GL11.glLineWidth(2);
-	}
-
 	public static String getNativeFileExtension() {
 		OperatingSystem system = MinecraftUtil.getOperatingSystem();
 
@@ -322,7 +321,7 @@ public class Utils {
 	}
 
 	public void glColour(int colour) {
-		GL11.glColor4f(((colour >> 16) & 0xFF) / 255F, ((colour >> 8) & 0xFF) / 255F, (colour & 0xFF) / 255F,
+		GlStateManager.colour(((colour >> 16) & 0xFF) / 255F, ((colour >> 8) & 0xFF) / 255F, (colour & 0xFF) / 255F,
 				((colour << 24) & 0xFF) / 255F);
 	}
 
@@ -351,7 +350,7 @@ public class Utils {
 			yaw += 360;
 		}
 
-		return 0;
+		return yaw;
 	}
 
 	public static void earlyLoad(String name) {
@@ -385,15 +384,29 @@ public class Utils {
 		}
 
 		Process process = new ProcessBuilder("git", "branch", "--show-current").start();
-		process.waitFor();
-
-		if(process.exitValue() > 0) {
+		if(process.waitFor() > 0) {
 			throw new IllegalStateException("git command exited with code " + process.exitValue());
 		}
 
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 			return reader.readLine();
 		}
+	}
+
+	// not managed by Java GC for performance reasons
+	public static ByteBuffer mallocAndRead(@NotNull InputStream in) throws IOException {
+		ReadableByteChannel channel = Channels.newChannel(in);
+		ByteBuffer buffer = MemoryUtil.memAlloc(8192);
+
+		while(channel.read(buffer) != -1) {
+			if(buffer.remaining() == 0) {
+				buffer = MemoryUtil.memRealloc(buffer, buffer.capacity() + buffer.capacity() * 3 / 2);
+			}
+		}
+
+		buffer.flip();
+
+		return buffer;
 	}
 
 }

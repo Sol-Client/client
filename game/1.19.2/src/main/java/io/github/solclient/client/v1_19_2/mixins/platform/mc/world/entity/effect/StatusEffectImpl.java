@@ -31,7 +31,7 @@ public abstract class StatusEffectImpl {
 	public abstract int getDuration();
 
 	public @NotNull String getDurationText() {
-		return StatusEffectUtil.durationToString((StatusEffectInstance) (Object) this, getDuration());
+		return StatusEffectUtil.durationToString((StatusEffectInstance) (Object) this, 1);
 	}
 
 	public int platform$getEffectAmplifier() {
@@ -53,7 +53,7 @@ public abstract class StatusEffectImpl {
 	}
 
 	public @NotNull String getAmplifierName() {
-		return "enchantment.level." + getAmplifier();
+		return "enchantment.level." + (getAmplifier() + 1);
 	}
 
 }

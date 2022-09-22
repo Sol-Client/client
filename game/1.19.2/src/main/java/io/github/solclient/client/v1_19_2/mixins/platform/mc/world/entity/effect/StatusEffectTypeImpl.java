@@ -8,7 +8,9 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectType;
+import io.github.solclient.client.v1_19_2.SharedObjects;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
@@ -21,12 +23,8 @@ public abstract class StatusEffectTypeImpl {
 		return MinecraftClient.getInstance().getStatusEffectSpriteManager().getSprite((StatusEffect) (Object) this);
 	}
 
-	public float platform$getAtlasU() {
-		return getSprite().getMinU();
-	}
-
-	public float platform$getAtlasV() {
-		return getSprite().getMinV();
+	public void platform$render(int x, int y) {
+		DrawableHelper.drawSprite(SharedObjects.primary2dMatrixStack, x, y, 0, 18, 18, getSprite());
 	}
 
 	public @NotNull String platform$getName() {

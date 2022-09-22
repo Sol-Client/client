@@ -13,11 +13,6 @@ public class OptiFineTransformer extends Transformer {
 	public static final boolean ACTIVE = Boolean.getBoolean("io.github.solclient.use_optifine");
 
 	@Override
-	public boolean isEnabled() {
-		return ACTIVE;
-	}
-
-	@Override
 	public boolean willModify(@NotNull String className) {
 		// TODO Auto-generated method stub
 		return false;

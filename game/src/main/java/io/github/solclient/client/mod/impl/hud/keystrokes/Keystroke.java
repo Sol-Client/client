@@ -1,13 +1,11 @@
 package io.github.solclient.client.mod.impl.hud.keystrokes;
 
-import org.lwjgl.opengl.GL11;
-
 import io.github.solclient.client.CpsCounter;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -27,7 +25,7 @@ public class Keystroke {
 		int x = this.x + offsetX;
 		int y = offsetY;
 		boolean down = keyBinding.isHeld();
-		GL11.glEnable(GL11.GL_BLEND);
+		GlStateManager.enableBlend();
 
 		if((wasDown && !down) || (!wasDown && down)) {
 			end = System.currentTimeMillis();
@@ -82,15 +80,15 @@ public class Keystroke {
 					String cpsText = monitor.getCps() + " CPS";
 					float scale = 0.5F;
 
-					GL11.glPushMatrix();
-					GL11.glScalef(scale, scale, scale);
+					GlStateManager.pushMatrix();
+					GlStateManager.scale(scale, scale, scale);
 
 					mc.getFont().render(cpsText,
-							(int) ((x / scale) + (width / 2F / scale) - (mc.getFont().getWidth(cpsText) / 2F)),
+							(int) ((x / scale) + (width / 2F / scale) - (mc.getFont().getTextWidth(cpsText) / 2F)),
 							(int) ((y + height - (mc.getFont().getHeight() * scale)) / scale - 3), fgColour,
 							mod.shadow);
 
-					GL11.glPopMatrix();
+					GlStateManager.popMatrix();
 
 					y -= 3;
 				}
@@ -98,7 +96,7 @@ public class Keystroke {
 			}
 
 			y += 1;
-			mc.getFont().render(name, (int) (x + (width / 2F) - (mc.getFont().getWidth(name) / 2F)),
+			mc.getFont().render(name, (int) (x + (width / 2F) - (mc.getFont().getTextWidth(name) / 2F)),
 					(int) (y + (height / 2F) - (mc.getFont().getHeight() / 2F)), fgColour, mod.shadow);
 		}
 		wasDown = down;

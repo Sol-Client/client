@@ -10,13 +10,13 @@ public interface Screen {
 
 	void renderScreen(int mouseX, int mouseY, float tickDelta);
 
-	void characterTyped(char character, int key);
+	boolean characterTyped(char character, int key);
 
-	void keyDown(int code, int scancode, int mods);
+	boolean keyDown(int code, int scancode, int mods);
 
-	void mouseDown(int x, int y, int button);
+	boolean mouseDown(int x, int y, int button);
 
-	void mouseUp(int x, int y, int button);
+	boolean mouseUp(int x, int y, int button);
 
 	int getWidth();
 

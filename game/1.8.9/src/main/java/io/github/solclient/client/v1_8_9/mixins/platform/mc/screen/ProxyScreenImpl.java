@@ -28,8 +28,9 @@ public abstract class ProxyScreenImpl extends Screen {
 	}
 
 	@Overwrite
-	public void keyDown(int code, int scancode, int mods) {
+	public boolean keyDown(int code, int scancode, int mods) {
 		super.keyPressed(currentCharacter, code);
+		return false;
 	}
 
 	@Overwrite
@@ -81,8 +82,9 @@ public abstract class ProxyScreenImpl extends Screen {
 	}
 
 	@Overwrite
-	public void mouseDown(int x, int y, int button) {
+	public boolean mouseDown(int x, int y, int button) {
 		super.mouseClicked(x, y, button);
+		return false;
 	}
 
 	@Override
@@ -91,8 +93,9 @@ public abstract class ProxyScreenImpl extends Screen {
 	}
 
 	@Overwrite
-	public void mouseUp(int x, int y, int button) {
+	public boolean mouseUp(int x, int y, int button) {
 		super.mouseReleased(x, y, button);
+		return false;
 	}
 
 	@Override

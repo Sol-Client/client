@@ -96,7 +96,7 @@ public interface MinecraftClient {
 
 	boolean isInMenu();
 
-	boolean isPaused();
+	boolean isGamePaused();
 
 	void runSync(@NotNull Runnable runnable);
 
@@ -117,7 +117,7 @@ public interface MinecraftClient {
 
 	@NotNull IngameHud getIngameHud();
 
-	boolean isRunning();
+	boolean isGameRunning();
 
 	// Should never be null, unlike vanilla.
 	@NotNull HitResult getHitResult();
@@ -137,7 +137,7 @@ public interface MinecraftClient {
 	@NotNull SoundEngine getSoundEngine();
 
 	@Helper
-	@Nullable TitleScreen getMainMenu();
+	@Nullable TitleScreen getTitleScreen();
 
 	void quit();
 

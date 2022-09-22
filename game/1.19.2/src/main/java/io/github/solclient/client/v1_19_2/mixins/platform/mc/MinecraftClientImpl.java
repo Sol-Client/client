@@ -5,9 +5,14 @@ import java.io.File;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Implements;
+import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.MouseHandler;
@@ -32,216 +37,219 @@ import io.github.solclient.client.platform.mc.world.item.ItemRenderer;
 import io.github.solclient.client.platform.mc.world.level.ClientLevel;
 import io.github.solclient.client.platform.mc.world.level.LevelRenderer;
 import io.github.solclient.client.platform.mc.world.particle.ParticleEngine;
+import io.github.solclient.client.v1_19_2.mixins.accessor.MinecraftClientAccessor;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.sound.SoundManager;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
 
 @Mixin(net.minecraft.client.MinecraftClient.class)
-public class MinecraftClientImpl implements MinecraftClient {
+@Implements(@Interface(iface = MinecraftClient.class, prefix = "platform$"))
+public abstract class MinecraftClientImpl {
 
-	@Shadow
-	private @Final ReloadableResourceManagerImpl resourceManager;
-	@Shadow
-	public @Final GameOptions options;
-	@Shadow
-	private @Final net.minecraft.client.util.Window window;
-
-	@Override
-	public @NotNull Window getWindow() {
+	public @NotNull Window platform$getWindow() {
 		return (Window) (Object) window;
 	}
 
-	@Override
-	public @Nullable ClientLevel getLevel() {
+	@Shadow
+	private @Final net.minecraft.client.util.Window window;
+
+	public @Nullable ClientLevel platform$getLevel() {
+		return (ClientLevel) world;
+	}
+
+	@Shadow
+	private ClientWorld world;
+
+	public @NotNull LevelRenderer platform$getLevelRenderer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @NotNull LevelRenderer getLevelRenderer() {
+	public @Nullable LocalPlayer platform$getPlayer() {
+		return (LocalPlayer) player;
+	}
+
+	private ClientPlayerEntity player;
+
+	public @Nullable LocalPlayerState platform$getPlayerState() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @Nullable LocalPlayer getPlayer() {
+	public @Nullable Entity platform$getCameraEntity() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @Nullable LocalPlayerState getPlayerState() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public @Nullable Entity getCameraEntity() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public @NotNull Options getOptions() {
+	public @NotNull Options platform$getOptions() {
 		return (Options) options;
 	}
 
-	@Override
-	public @NotNull File getDataFolder() {
+	@Shadow
+	public @Final GameOptions options;
+
+	public @NotNull File platform$getDataFolder() {
+		return runDirectory;
+	}
+
+	@Shadow
+	public @Final File runDirectory;
+
+	public @NotNull File platform$getPackFolder() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @NotNull File getPackFolder() {
-		// TODO Auto-generated method stub
-		return null;
+	public @NotNull Font platform$getFont() {
+		return (Font) textRenderer;
 	}
 
-	@Override
-	public @NotNull Font getFont() {
-		// TODO Auto-generated method stub
-		return null;
+	@Shadow
+	public @Final TextRenderer textRenderer;
+
+	public @Nullable Screen platform$getScreen() {
+		return (Screen) currentScreen;
 	}
 
-	@Override
-	public @Nullable Screen getScreen() {
-		// TODO Auto-generated method stub
-		return null;
+	@Shadow
+	public net.minecraft.client.gui.screen.Screen currentScreen;
+
+	public void platform$setScreen(@Nullable Screen screen) {
+		setScreen((net.minecraft.client.gui.screen.Screen) screen);
 	}
 
-	@Override
-	public void setScreen(@Nullable Screen screen) {
-		// TODO Auto-generated method stub
+	@Shadow
+	public abstract void setScreen(net.minecraft.client.gui.screen.Screen screen);
 
-	}
-
-	@Override
-	public boolean isInMenu() {
+	public boolean platform$isInMenu() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public boolean isPaused() {
+	public boolean platform$isGamePaused() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public void runSync(@NotNull Runnable runnable) {
+	public void platform$runSync(@NotNull Runnable runnable) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public void runSyncLater(@NotNull Runnable runnable, int ticks) {
+	public void platform$runSyncLater(@NotNull Runnable runnable, int ticks) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public @NotNull TextureManager getTextureManager() {
-		// TODO Auto-generated method stub
-		return null;
+	public @NotNull TextureManager platform$getTextureManager() {
+		return (TextureManager) textureManager;
 	}
 
-	@Override
-	public @NotNull LanguageManager getLanguageManager() {
-		// TODO Auto-generated method stub
-		return null;
+	@Shadow
+	private @Final net.minecraft.client.texture.TextureManager textureManager;
+
+	public @NotNull LanguageManager platform$getLanguageManager() {
+		return (LanguageManager) languageManager;
 	}
 
-	@Override
-	public @NotNull ResourceManager getResourceManager() {
+	@Shadow
+	private @Final net.minecraft.client.resource.language.LanguageManager languageManager;
+
+	public @NotNull ResourceManager platform$getResourceManager() {
 		return (ResourceManager) resourceManager;
 	}
 
-	@Override
-	public boolean hasSingleplayerServer() {
+	@Shadow
+	private @Final ReloadableResourceManagerImpl resourceManager;
+
+	public boolean platform$hasSingleplayerServer() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public @Nullable ServerData getCurrentServer() {
+	public @Nullable ServerData platform$getCurrentServer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @NotNull ItemRenderer getItemRenderer() {
+	public @NotNull ItemRenderer platform$getItemRenderer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @NotNull IngameHud getIngameHud() {
+	public @NotNull IngameHud platform$getIngameHud() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public boolean isRunning() {
+	public boolean platform$isGameRunning() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public @NotNull HitResult getHitResult() {
+	public @NotNull HitResult platform$getHitResult() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @NotNull Timer getTimer() {
+	public @NotNull Timer platform$getTimer() {
+		return (Timer) renderTickCounter;
+	}
+
+	@Shadow
+	private @Final RenderTickCounter renderTickCounter;
+
+
+	public @NotNull EntityRenderDispatcher platform$getEntityRenderDispatcher() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @NotNull EntityRenderDispatcher getEntityRenderDispatcher() {
+	public @NotNull ParticleEngine platform$getParticleEngine() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @NotNull ParticleEngine getParticleEngine() {
+	public @NotNull MouseHandler platform$getMouseHandler() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @NotNull MouseHandler getMouseHandler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isFullscreen() {
+	public boolean platform$isFullscreen() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public void toggleFullscreen() {
+	public void platform$toggleFullscreen() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public @NotNull SoundEngine getSoundEngine() {
-		// TODO Auto-generated method stub
-		return null;
+	public @NotNull SoundEngine platform$getSoundEngine() {
+		return (SoundEngine) soundManager;
 	}
 
-	@Override
-	public @Nullable TitleScreen getMainMenu() {
-		// TODO Auto-generated method stub
-		return null;
+	@Shadow
+	private @Final SoundManager soundManager;
+
+	public @Nullable TitleScreen platform$getTitleScreen() {
+		return titleScreen;
 	}
 
-	@Override
-	public void quit() {
+	private TitleScreen titleScreen;
+
+	@Inject(method = "setScreen", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;"))
+	public void setTitleScreen(net.minecraft.client.gui.screen.Screen screen, CallbackInfo callback) {
+		if(screen instanceof net.minecraft.client.gui.screen.TitleScreen) {
+			titleScreen = (TitleScreen) screen;
+		}
+	}
+
+	public void platform$quit() {
 		// TODO Auto-generated method stub
 
 	}
@@ -254,6 +262,11 @@ interface MinecraftClientImpl$Static {
 	@Overwrite(remap = false)
 	static MinecraftClient getInstance() {
 		return (MinecraftClient) net.minecraft.client.MinecraftClient.getInstance();
+	}
+
+	@Overwrite(remap = false)
+	static int getFps() {
+		return MinecraftClientAccessor.getCurrentFps();
 	}
 
 }

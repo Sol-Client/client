@@ -83,7 +83,7 @@ public class V1_7VisualsMod extends Mod {
 		}
 
 		// https://github.com/sp614x/optifine/issues/2098
-		if(mc.getPlayer().isUsingItem() && event.getItem().getType() == ItemType.BOW && bow) {
+		if(mc.getPlayer().isEntityUsingItem() && event.getItem().getType() == ItemType.BOW && bow) {
 			GlStateManager.translate(-0.01F, 0.05F, -0.06F);
 		}
 		else if(event.getItem().getType() == ItemType.FISHING_ROD && rod) {

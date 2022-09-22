@@ -7,7 +7,7 @@ public interface ChatButton {
 	int getPriority();
 
 	default int getWidth() {
-		return MinecraftClient.getInstance().getFont().getWidth(getText()) + 4;
+		return MinecraftClient.getInstance().getFont().getTextWidth(getText()) + 4;
 	}
 
 	int getPopupWidth();

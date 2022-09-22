@@ -51,7 +51,6 @@ public class SliderComponent extends Component {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
 
 		int x = (int) (100 * (((value - min) / (max - min)))) - 4;

@@ -37,18 +37,23 @@ public abstract class ScreenImpl extends AbstractParentElement implements Screen
 	public abstract void render(MatrixStack stack, int mouseX, int mouseY, float tickDelta);
 
 	@Override
-	public void keyDown(int key, int scancode, int mods) {
-		keyDown(key, scancode, mods);
+	public boolean characterTyped(char character, int key) {
+		return charTyped(character, key);
 	}
 
 	@Override
-	public void mouseDown(int x, int y, int button) {
-		mouseClicked(x, y, button);
+	public boolean keyDown(int key, int scancode, int mods) {
+		return keyPressed(key, scancode, mods);
 	}
 
 	@Override
-	public void mouseUp(int x, int y, int button) {
-		mouseReleased(x, y, button);
+	public boolean mouseDown(int x, int y, int button) {
+		return mouseClicked(x, y, button);
+	}
+
+	@Override
+	public boolean mouseUp(int x, int y, int button) {
+		return mouseReleased(x, y, button);
 	}
 
 	@Override

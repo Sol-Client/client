@@ -105,7 +105,7 @@ public class TextFieldComponent extends Component {
 		int textOffset = 2;
 
 		if(centred) {
-			textOffset = (getBounds().getWidth() / 2) - (font.getWidth(text) / 2);
+			textOffset = (getBounds().getWidth() / 2) - (font.getTextWidth(text) / 2);
 		}
 
 		if(hasIcon) {
@@ -116,8 +116,8 @@ public class TextFieldComponent extends Component {
 			int start = Math.min(selectionEnd, cursor);
 			int end = Math.max(selectionEnd, cursor);
 
-			float selectionWidth = font.getWidth(text.substring(start, end));
-			float offset = font.getWidth(text.substring(0, start));
+			float selectionWidth = font.getTextWidth(text.substring(start, end));
+			float offset = font.getTextWidth(text.substring(0, start));
 
 			DrawableHelper.fillRect(textOffset + offset, 0, textOffset + offset + selectionWidth, 10,
 					Colour.BLUE.getValue());
@@ -129,7 +129,7 @@ public class TextFieldComponent extends Component {
 				SolClientConfig.INSTANCE.fancyFont ? 0 : 1, hasPlaceholder ? 0x888888 : -1);
 
 		if(focused && ticks / 12 % 2 == 0) {
-			float relativeCursorPosition = font.getWidth(text.substring(0, cursor));
+			float relativeCursorPosition = font.getTextWidth(text.substring(0, cursor));
 			DrawableHelper.fillRect(textOffset + relativeCursorPosition, 0, textOffset + relativeCursorPosition + 1, 10,
 					-1);
 		}

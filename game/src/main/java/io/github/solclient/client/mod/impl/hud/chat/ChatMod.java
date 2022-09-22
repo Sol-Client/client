@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
@@ -57,7 +55,7 @@ public class ChatMod extends HudMod {
 	public boolean infiniteChat = true;
 
 	@Option
-	public KeyBinding peekKey = KeyBinding.create(getTranslationKey() + ".peek", 0, Constants.KEY_CATEGORY);
+	public KeyBinding peekKey = KeyBinding.create(getTranslationKey() + ".peek", Input.UNKNOWN, Constants.KEY_CATEGORY);
 	private boolean wasPeeking;
 	private boolean hasScrollbar;
 
@@ -207,7 +205,7 @@ public class ChatMod extends HudMod {
 
 		wasPeeking = peekKey.isHeld();
 
-		if(smooth && !mc.isPaused()) {
+		if(smooth && !mc.isGamePaused()) {
 			lastAnimatedOffset = animatedOffset;
 
 			animatedOffset *= ANIMATION_MULTIPLIER;
@@ -276,7 +274,7 @@ public class ChatMod extends HudMod {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(2, 20, 0);
 
-		GL11.glScalef(scale, scale, 1.0F);
+		GlStateManager.scale(scale, scale, 1.0F);
 
 		if(previousChatSize < visibleLinesCount) {
 			animatedOffset = 9;
@@ -286,7 +284,7 @@ public class ChatMod extends HudMod {
 		if(smooth && !(chat.isOpen() && chat.getScroll() > 0)) {
 			float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.getTickDelta();
 
-			GL11.glTranslatef(0, calculatedOffset, 0);
+			GlStateManager.translate(0, calculatedOffset, 0);
 		}
 
 		for(int i = 0; i + chat.getScroll() < chat.getVisibleMessages().size() && i < linesCount; ++i) {
@@ -338,7 +336,7 @@ public class ChatMod extends HudMod {
 			}
 
 			Text formattedText = line.getMessage();
-			GL11.glEnable(GL11.GL_BLEND);
+			GlStateManager.enableBlend();
 
 			if(percentFG > 0.05F) {
 				mc.getFont().render(colours ? formattedText : Text.literal(formattedText.getPlain()), i2, j2 - 8,
@@ -349,7 +347,7 @@ public class ChatMod extends HudMod {
 
 		if(open) {
 			int k2 = mc.getFont().getHeight();
-			GL11.glTranslatef(-3, 0, 0);
+			GlStateManager.translate(-3, 0, 0);
 
 			int l2 = visibleLinesCount * k2 + visibleLinesCount;
 			int i3 = j * k2 + j;
@@ -370,7 +368,7 @@ public class ChatMod extends HudMod {
 			}
 		}
 
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 		previousChatSize = visibleLinesCount;
 	}
 

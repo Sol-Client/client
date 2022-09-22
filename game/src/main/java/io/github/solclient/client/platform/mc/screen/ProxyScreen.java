@@ -20,22 +20,22 @@ public class ProxyScreen implements Screen {
 	}
 
 	@Override
-	public void characterTyped(char character, int key) {
+	public boolean characterTyped(char character, int key) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void keyDown(int code, int scancode, int mods) {
+	public boolean keyDown(int code, int scancode, int mods) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void mouseDown(int x, int y, int button) {
+	public boolean mouseDown(int x, int y, int button) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void mouseUp(int x, int y, int button) {
+	public boolean mouseUp(int x, int y, int button) {
 		throw new UnsupportedOperationException();
 	}
 

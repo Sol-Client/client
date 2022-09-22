@@ -16,13 +16,13 @@ public class OptionsImpl implements Options {
 	public String language;
 
 	@Override
-	public float mouseSensitivity() {
+	public double mouseSensitivity() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public void setMouseSensitivity(float sensitivity) {
+	public void setMouseSensitivity(double sensitivity) {
 		// TODO Auto-generated method stub
 
 	}
@@ -154,13 +154,20 @@ public class OptionsImpl implements Options {
 	}
 
 	@Override
+	public void setMouseButton(@NotNull KeyBinding binding, int button) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void setKey(@NotNull KeyBinding binding, int code, int scancode) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void setMouseButton(@NotNull KeyBinding binding, int button) {
+	public void unbindKey(@NotNull KeyBinding binding) {
+		// TODO Auto-generated method stub
 
 	}
 

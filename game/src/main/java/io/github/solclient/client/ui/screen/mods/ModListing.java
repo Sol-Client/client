@@ -68,7 +68,6 @@ public class ModListing extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
 
 		if(SolClientConfig.INSTANCE.roundedUI) {

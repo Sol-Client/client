@@ -1,113 +1,140 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.option;
 
+import java.util.Map;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.option.Options;
 import io.github.solclient.client.platform.mc.option.Perspective;
+import io.github.solclient.client.v1_19_2.mixins.accessor.option.KeyBindingAccessor;
 import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.option.SimpleOption;
 import net.minecraft.client.util.InputUtil;
 
 @Mixin(GameOptions.class)
 public abstract class OptionsImpl implements Options {
 
 	@Override
-	public float mouseSensitivity() {
-		// TODO Auto-generated method stub
-		return 0;
+	public double mouseSensitivity() {
+		return getMouseSensitivity().getValue();
 	}
 
 	@Override
-	public void setMouseSensitivity(float sensitivity) {
-		// TODO Auto-generated method stub
-
+	public void setMouseSensitivity(double sensitivity) {
+		getMouseSensitivity().setValue(sensitivity);
 	}
+
+	@Shadow
+	public abstract SimpleOption<Double> getMouseSensitivity();
 
 	@Override
 	public boolean invertMouse() {
-		// TODO Auto-generated method stub
-		return false;
+		return getInvertYMouse().getValue();
 	}
+
+	@Shadow
+	public abstract SimpleOption<Boolean> getInvertYMouse();
 
 	@Override
 	public boolean debugOverlay() {
-		// TODO Auto-generated method stub
-		return false;
+		return debugEnabled;
 	}
+
+	@Shadow
+	public boolean debugEnabled;
 
 	@Override
 	public @NotNull Perspective perspective() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Perspective) (Object) getPerspective();
 	}
 
 	@Override
 	public int ordinalPerspective() {
-		// TODO Auto-generated method stub
-		return 0;
+		return getPerspective().ordinal();
 	}
+
+	@Shadow
+	public abstract net.minecraft.client.option.Perspective getPerspective();
 
 	@Override
 	public void setPerspective(@NotNull Perspective perspective) {
-		// TODO Auto-generated method stub
-
+		setPerspective((net.minecraft.client.option.Perspective) (Object) perspective);
 	}
 
 	@Override
 	public void setOrdinalPerspective(int perspective) {
-		// TODO Auto-generated method stub
-
+		setPerspective(net.minecraft.client.option.Perspective.values()[perspective]);
 	}
+
+	@Shadow
+	public abstract void setPerspective(net.minecraft.client.option.Perspective perspective);
 
 	@Override
 	public @NotNull KeyBinding[] keys() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding[]) allKeys;
 	}
 
 	@Override
 	public @NotNull KeyBinding forwardsKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) forwardKey;
 	}
+
+	@Shadow
+	public @Final net.minecraft.client.option.KeyBinding forwardKey;
 
 	@Override
 	public @NotNull KeyBinding backwardsKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) backKey;
 	}
+
+	@Shadow
+	public @Final net.minecraft.client.option.KeyBinding backKey;
 
 	@Override
 	public @NotNull KeyBinding strafeLeftKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) leftKey;
 	}
+
+	@Shadow
+	public @Final net.minecraft.client.option.KeyBinding leftKey;
 
 	@Override
 	public @NotNull KeyBinding strafeRightKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) rightKey;
 	}
+
+	@Shadow
+	public @Final net.minecraft.client.option.KeyBinding rightKey;
 
 	@Override
 	public @NotNull KeyBinding attackKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) attackKey;
 	}
+
+	@Shadow
+	public @Final net.minecraft.client.option.KeyBinding attackKey;
 
 	@Override
 	public @NotNull KeyBinding useKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) useKey;
 	}
+
+	@Shadow
+	public @Final net.minecraft.client.option.KeyBinding useKey;
 
 	@Override
 	public @NotNull KeyBinding jumpKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) jumpKey;
 	}
+
+	@Shadow
+	public @Final net.minecraft.client.option.KeyBinding jumpKey;
 
 	@Override
 	public @NotNull KeyBinding sprintKey() {
@@ -115,41 +142,55 @@ public abstract class OptionsImpl implements Options {
 		return null;
 	}
 
+	@Shadow
+	public @Mutable @Final net.minecraft.client.option.KeyBinding sprintKey;
+
 	@Override
 	public void overwriteSprintKey(@NotNull KeyBinding sprint) {
-		// TODO Auto-generated method stub
-
+		sprintKey = (net.minecraft.client.option.KeyBinding) sprint;
 	}
 
 	@Override
 	public boolean hideGui() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
+	@Shadow
+	public boolean hudHidden;
+
 	@Override
 	public void addKey(@NotNull KeyBinding key) {
-		// TODO Auto-generated method stub
+		Map<String, Integer> sortOrder = KeyBindingAccessor.getCategoryOrderMap();
+		if(!sortOrder.containsKey(key.getKeyCategory())) {
+			int order = KeyBindingAccessor.getCategoryOrderMap().values().stream().max(Integer::compareTo).orElse(0) + 1;
+			sortOrder.put(key.getKeyCategory(), order);
+		}
 
+		// I wanted to use a fancy bit-shifting array growth thing based on the JDK
+		// impl, then I realised that the array cannot contain nulls :(.
+		allKeys = ArrayUtils.add(allKeys, (net.minecraft.client.option.KeyBinding) key);
 	}
 
 	@Override
 	public void removeKey(@NotNull KeyBinding key) {
-		// TODO Auto-generated method stub
-
+		allKeys = ArrayUtils.removeElement(allKeys, (net.minecraft.client.option.KeyBinding) key);
 	}
+
+	@Shadow
+	public @Mutable @Final net.minecraft.client.option.KeyBinding[] allKeys;
 
 	@Override
 	public boolean smoothCamera() {
-		// TODO Auto-generated method stub
-		return false;
+		return smoothCameraEnabled;
 	}
 
 	@Override
 	public void setSmoothCamera(boolean camera) {
-		// TODO Auto-generated method stub
-
+		smoothCameraEnabled = camera;
 	}
+
+	@Shadow
+	public boolean smoothCameraEnabled;
 
 	@Override
 	public void setKey(@NotNull KeyBinding binding, int code, int scancode) {
@@ -161,14 +202,21 @@ public abstract class OptionsImpl implements Options {
 		setKeyCode((net.minecraft.client.option.KeyBinding) binding, InputUtil.Type.MOUSE.createFromCode(button));
 	}
 
+	@Override
+	public void unbindKey(@NotNull KeyBinding binding) {
+		setKeyCode((net.minecraft.client.option.KeyBinding) binding, InputUtil.UNKNOWN_KEY);
+	}
+
 	@Shadow
 	public abstract void setKeyCode(net.minecraft.client.option.KeyBinding keyBinding, InputUtil.Key key);
 
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-
+		write();
 	}
+
+	@Shadow
+	public abstract void write();
 
 	@Override
 	public @NotNull String languageCode() {

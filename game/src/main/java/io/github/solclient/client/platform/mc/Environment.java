@@ -1,6 +1,7 @@
 package io.github.solclient.client.platform.mc;
 
 import lombok.experimental.UtilityClass;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Various constants about the current environment and its capabilities.
@@ -62,9 +63,9 @@ public class Environment {
 	/**
 	 * Mojang studios/AB depending on the game version.
 	 */
-	public final String MOJANG = null;
+	public final String MOJANG = get("MOJANG");
 
-	private <T> T get(String key) {
+	private <T> @NotNull T get(@NotNull String key) {
 		throw new UnsupportedOperationException();
 	}
 

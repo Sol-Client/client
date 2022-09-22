@@ -1,10 +1,9 @@
 package io.github.solclient.client.ui.component.impl;
 
-import org.lwjgl.opengl.GL11;
-
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.lang.I18n;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -37,8 +36,7 @@ public class ButtonComponent extends ColouredComponent {
 	@Override
 	public void render(ComponentRenderInfo info) {
 		if(SolClientConfig.INSTANCE.roundedUI) {
-			GL11.glEnable(GL11.GL_ALPHA);
-			GL11.glEnable(GL11.GL_BLEND);
+			GlStateManager.enableBlend();
 
 			getColour().bind();
 

@@ -1,7 +1,5 @@
 package io.github.solclient.client.mod.impl;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
@@ -21,7 +19,6 @@ import io.github.solclient.client.platform.mc.world.item.ItemStack;
 import io.github.solclient.client.platform.mc.world.level.Level;
 import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
 import io.github.solclient.client.platform.mc.world.level.block.BlockType;
-import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 
 public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
@@ -114,7 +111,7 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
 			if(outline) {
 				outlineColour.bind();
-				GL11.glLineWidth(outlineWidth);
+				GlStateManager.lineWidth(outlineWidth);
 				block.strokeBox();
 			}
 		}
@@ -128,7 +125,7 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 			GlStateManager.enableDepth();
 		}
 
-		Utils.resetLineWidth();
+		GlStateManager.resetLineWidth();
 	}
 
 	@Override

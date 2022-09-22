@@ -1,8 +1,5 @@
 package io.github.solclient.client.ui.screen;
 
-import java.io.IOException;
-
-import io.github.solclient.client.Client;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
 import io.github.solclient.client.platform.mc.text.Text;
@@ -11,7 +8,7 @@ import io.github.solclient.client.ui.component.Screen;
 
 public abstract class PanoramaBackgroundScreen extends Screen {
 
-	private TitleScreen titleScreen = MinecraftClient.getInstance().getMainMenu();
+	private final TitleScreen titleScreen = MinecraftClient.getInstance().getTitleScreen();
 
 	public PanoramaBackgroundScreen(Text title, Component root) {
 		super(title, root);
@@ -33,7 +30,7 @@ public abstract class PanoramaBackgroundScreen extends Screen {
 	}
 
 	protected void renderPanorama(int x, int y, float tickDelta) {
-		titleScreen.renderPanorama(x, y, tickDelta);
+		titleScreen.renderTitlePanorama(x, y, tickDelta);
 	}
 
 }

@@ -135,7 +135,6 @@ public abstract class ScrollListComponent extends Component {
 
 		boolean superResult = super.mouseClicked(info, button);
 
-
 		if(button == 0 && !superResult && grabStartY == -1) {
 			grabStartY = targetY;
 			grabMouseY = reverseTranslation(info).getRelativeMouseY();
@@ -207,11 +206,22 @@ public abstract class ScrollListComponent extends Component {
 			return true;
 		}
 
-		delta = delta / Math.abs(delta);
+		if(delta > 0) {
+			delta = 1;
+		}
+		else if(delta < 0) {
+			delta = -1;
+		}
+		else {
+			delta = 0;
+		}
+
 
 		if(subComponents.size() != 0) {
 			targetY -= delta * getScrollStep();
 		}
+
+		clamp();
 
 		return true;
 	}

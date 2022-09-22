@@ -94,12 +94,12 @@ public class ScoreboardMod extends Mod {
 			scores = filteredScores;
 		}
 
-		int nameWidth = mc.getFont().getWidth(event.getObjective().getDisplayName());
+		int nameWidth = mc.getFont().getTextWidth(event.getObjective().getDisplayName());
 
 		for(Score score : scores) {
 			PlayerTeam team = scoreboard.getPlayersTeam(score.getPlayerName());
 			Text teamText = team.formatText(score.getPlayerName(), numbers);
-			nameWidth = Math.max(nameWidth, mc.getFont().getWidth(teamText));
+			nameWidth = Math.max(nameWidth, mc.getFont().getTextWidth(teamText));
 		}
 
 		int scoresHeight = (scores.size() + 1) * mc.getFont().getHeight() + 1;
@@ -136,7 +136,7 @@ public class ScoreboardMod extends Mod {
 			mc.getFont().render(text, l1, k, textColour.getValue(), shadow);
 
 			if(numbers) {
-				mc.getFont().render(points, l - mc.getFont().getWidth(points) - (border ? 1 : 0), k,
+				mc.getFont().render(points, l - mc.getFont().getTextWidth(points) - (border ? 1 : 0), k,
 						numbersColour.getValue(), shadow);
 			}
 
@@ -147,7 +147,7 @@ public class ScoreboardMod extends Mod {
 					DrawableHelper.fillRect(l1 - 2, mc.getFont().getHeight(), l, mc.getFont().getHeight() + 1,
 							backgroundColour.getValue());
 				}
-				mc.getFont().render(name, l1 + nameWidth / 2 - mc.getFont().getWidth(name) / 2, 1,
+				mc.getFont().render(name, l1 + nameWidth / 2 - mc.getFont().getTextWidth(name) / 2, 1,
 						textColour.getValue(), shadow);
 			}
 		}

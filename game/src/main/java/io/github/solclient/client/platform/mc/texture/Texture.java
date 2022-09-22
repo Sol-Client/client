@@ -6,10 +6,12 @@ import io.github.solclient.client.platform.mc.resource.Identifier;
 
 public interface Texture {
 
-	public static final Identifier ICONS_ID = null,
-			INVENTORY_ID = null,
-			MOB_EFFECTS_ATLAS_ID = null;
+	public static final Identifier ICONS_ID = get("ICONS_ID"),
+			INVENTORY_ID = get("INVENTORY_ID"),
+			MOB_EFFECTS_ATLAS_ID = get("MOB_EFFECTS_ATLAS_ID");
 
-	@NotNull Identifier getId();
+	public static @NotNull Identifier get(@NotNull String name) {
+		throw new UnsupportedOperationException();
+	}
 
 }

@@ -62,12 +62,12 @@ public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 			return;
 		}
 
-		boolean crit = mc.getPlayer().getFallDistance() > 0 && !mc.getPlayer().isOnGround()
-				&& !mc.getPlayer().isClimbing() && !mc.getPlayer().isInWater()
+		boolean crit = mc.getPlayer().getFallDistance() > 0 && !mc.getPlayer().isEntityOnGround()
+				&& !mc.getPlayer().isEntityClimbing() && !mc.getPlayer().isInWater()
 				&& !mc.getPlayer().hasStatusEffect(StatusEffectType.BLINDNESS) && !mc.getPlayer().isPassenger();
 
 		if(Environment.MAJOR_RELEASE > 1 || Environment.MINOR_RELEASE <= 9) {
-			crit = crit && !mc.getPlayer().isSprinting();
+			crit = crit && !mc.getPlayer().isEntitySprinting();
 		}
 
 		if(crit) {

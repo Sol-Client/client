@@ -3,7 +3,6 @@ package io.github.solclient.client.ui.screen.mods;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.util.Input;
@@ -47,33 +46,37 @@ public class MoveHudsScreen extends Screen {
 	}
 
 	@Override
-	public void mouseDown(int x, int y, int button) {
-		super.mouseDown(x, y, button);
+	public boolean mouseDown(int x, int y, int button) {
 		if(button == 1) {
 			HudElement hud = getSelectedHud(x, y);
 
-			if(hud != null) {
-				if (parentScreen instanceof ModsScreen) {
-					Utils.playClickSound(true);
-					((ModsScreen) parentScreen).switchMod(hud.getMod());
-					mc.setScreen(parentScreen);
-				}
+			if(hud != null && parentScreen instanceof ModsScreen) {
+				Utils.playClickSound(true);
+				((ModsScreen) parentScreen).switchMod(hud.getMod());
+				mc.setScreen(parentScreen);
+				return true;
 			}
 		}
+
+		return super.mouseDown(x, y, button);
 	}
 
 	@Override
 	public void initScreen() {
 		super.initScreen();
 
-		if(title != null) title.update(mc, width, height);
+		if(title != null) {
+			title.update(mc, width, height);
+		}
 	}
 
 	@Override
 	public void tickScreen() {
 		super.tickScreen();
 
-		if(title != null) title.tickScreen();
+		if(title != null) {
+			title.tickScreen();
+		}
 	}
 
 	@Override
@@ -83,7 +86,9 @@ public class MoveHudsScreen extends Screen {
 		}
 
 		for(HudElement hud : Client.INSTANCE.getHuds()) {
-			if(!hud.isVisible()) continue;
+			if(!hud.isVisible()) {
+				continue;
+			}
 
 			Rectangle bounds = hud.getMultipliedBounds();
 
@@ -117,8 +122,8 @@ public class MoveHudsScreen extends Screen {
 	}
 
 	@Override
-	public void keyDown(int key, int scancode, int mods) {
-		if(key == 1 || key == SolClientConfig.INSTANCE.editHudKey.getKeyCode()) {
+	public boolean keyDown(int key, int scancode, int mods) {
+		if(key == Input.ESCAPE || key == SolClientConfig.INSTANCE.editHudKey.getKeyCode()) {
 			Client.INSTANCE.save();
 			if(title != null) {
 				mc.setScreen(title);
@@ -126,7 +131,10 @@ public class MoveHudsScreen extends Screen {
 			else {
 				mc.closeScreen();
 			}
+			return true;
 		}
+
+		return false;
 	}
 
 	public static class MoveHudsComponent extends Component {

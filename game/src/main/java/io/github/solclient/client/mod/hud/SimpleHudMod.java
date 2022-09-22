@@ -76,7 +76,7 @@ public abstract class SimpleHudMod extends HudMod {
 				getBounds(position).stroke(borderColour);
 			}
 			font.render(text,
-					(int) (position.getX() + (getBounds(position).getWidth() / 2F) - (font.getWidth(text) / 2F)),
+					(int) (position.getX() + (getBounds(position).getWidth() / 2F) - (font.getTextWidth(text) / 2F)),
 					position.getY() + 4, textColour.getValue(), shadow);
 		}
 	}

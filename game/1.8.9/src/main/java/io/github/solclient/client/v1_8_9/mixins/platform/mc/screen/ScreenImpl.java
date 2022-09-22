@@ -34,29 +34,33 @@ public abstract class ScreenImpl implements Screen {
 	public abstract void render(int mouseX, int mouseY, float tickDelta);
 
 	@Override
-	public void characterTyped(char character, int key) {
+	public boolean characterTyped(char character, int key) {
 		keyPressed(character, key);
+		return false;
 	}
 
 	@Shadow
 	protected abstract void keyPressed(char character, int code);
 
 	@Override
-	public void mouseDown(int x, int y, int button) {
+	public boolean mouseDown(int x, int y, int button) {
 		mouseClicked(x, y, button);
+		return false;
 	}
 
 	@Override
-	public void keyDown(int code, int scancode, int mods) {
+	public boolean keyDown(int code, int scancode, int mods) {
 		keyPressed('\0', code);
+		return false;
 	}
 
 	@Shadow
 	protected abstract void mouseClicked(int mouseX, int mouseY, int button);
 
 	@Override
-	public void mouseUp(int x, int y, int button) {
+	public boolean mouseUp(int x, int y, int button) {
 		mouseReleased(x, y, button);
+		return false;
 	}
 
 	@Shadow
@@ -68,7 +72,7 @@ public abstract class ScreenImpl implements Screen {
 	}
 
 	@Shadow
-	protected int width;
+	public int width;
 
 	@Override
 	public int getHeight() {
@@ -76,7 +80,7 @@ public abstract class ScreenImpl implements Screen {
 	}
 
 	@Shadow
-	protected int height;
+	public int height;
 
 	@Override
 	public void tickScreen() {

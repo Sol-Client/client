@@ -48,7 +48,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	private float lastAnimatedFactor = 1;
 	private float animatedFactor = 1;
 	private float lastCalculatedAnimatedFactor = 1;
-	public float lastSensitivity;
+	public double lastSensitivity;
 	public boolean wasCinematic;
 	public boolean active;
 

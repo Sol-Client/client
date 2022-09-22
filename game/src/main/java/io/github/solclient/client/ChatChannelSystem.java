@@ -4,14 +4,12 @@ import java.util.List;
 import java.util.Objects;
 
 import io.github.solclient.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
-import io.github.solclient.client.chat.ChatAccessor;
 import io.github.solclient.client.chat.ChatButton;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.hud.chat.Chat;
 import io.github.solclient.client.platform.mc.network.C2SChatMessagePacket;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
-import io.github.solclient.client.platform.mc.world.entity.player.Player;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
@@ -140,7 +138,7 @@ public abstract class ChatChannelSystem {
 
 				font.render(channel.getName(),
 						optionBounds.getX() + (optionBounds.getWidth() / 2)
-								- (font.getWidth(channel.getName()) / 2),
+								- (font.getTextWidth(channel.getName()) / 2),
 						optionBounds.getY() + (optionBounds.getHeight() / 2) - (font.getHeight() / 2), hovered ? 0 :
 								-1);
 				y += 13;

@@ -10,16 +10,18 @@ import io.github.solclient.client.platform.mc.world.item.ItemStack;
 
 public interface LivingEntity extends Entity {
 
-	float getHealth();
-
 	@NotNull List<StatusEffect> getStatusEffects();
 
 	boolean hasStatusEffect(StatusEffectType effect);
 
-	boolean isClimbing();
+	boolean isEntityClimbing();
 
 	@NotNull ItemStack getMainHandItem();
 
 	@NotNull LivingEntityType getLivingEntityType();
+
+	boolean isEntityUsingItem();
+
+	int getItemUsageRemaining();
 
 }

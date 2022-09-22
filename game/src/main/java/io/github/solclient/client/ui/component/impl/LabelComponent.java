@@ -1,7 +1,6 @@
 package io.github.solclient.client.ui.component.impl;
 
 import io.github.solclient.client.platform.mc.lang.I18n;
-import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.data.Colour;
@@ -33,7 +32,7 @@ public class LabelComponent extends ColouredComponent {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return new Rectangle(0, 0, (int) font.getWidth(getText()), font.getHeight());
+		return new Rectangle(0, 0, (int) font.getTextWidth(getText()), font.getHeight());
 	}
 
 	public String getText() {

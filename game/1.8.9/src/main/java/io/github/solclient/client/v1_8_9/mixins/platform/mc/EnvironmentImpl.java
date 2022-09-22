@@ -1,5 +1,6 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc;
 
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -13,7 +14,7 @@ public class EnvironmentImpl {
 
 	@Overwrite(remap = false)
 	@SuppressWarnings("unchecked")
-	private static <T> T get(String key) {
+	private static <T> @NotNull T get(@NotNull String key) {
 		switch(key) {
 			case "CLASS_LOADER":
 				return (T) WrapperClassLoader.INSTANCE;
@@ -46,7 +47,7 @@ public class EnvironmentImpl {
 				return (T) "Mojang AB";
 		}
 
-		throw new UnsupportedOperationException(key + " has no value");
+		throw new IllegalArgumentException(key);
 	}
 
 }

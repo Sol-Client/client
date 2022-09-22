@@ -1,7 +1,5 @@
 package io.github.solclient.client.mod.impl;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
@@ -24,7 +22,6 @@ import io.github.solclient.client.platform.mc.render.VertexFormat;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.platform.mc.world.entity.LivingEntity;
 import io.github.solclient.client.platform.mc.world.level.LevelRenderer;
-import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 
 public class HitboxMod extends Mod {
@@ -96,30 +93,30 @@ public class HitboxMod extends Mod {
 	public void onHitboxRender(HitboxRenderEvent event) {
 		event.cancel();
 		GlStateManager.depthMask(false);
-		GlStateManager.disableTexture2D();
+		GlStateManager.disableTexture2d();
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 		GlStateManager.enableBlend();
-		GL11.glLineWidth(lineWidth);
+		GlStateManager.lineWidth(lineWidth);
 
-		float half = event.getEntity().getWidth() / 2.0F;
+		float half = event.getEntity().getEntityWidth() / 2.0F;
 
 		if(boundingBox) {
 			Box box = event.getEntity().getBounds();
-			Box offsetBox = Box.create(box.minX() - event.getEntity().getX() + event.getX(),
-					box.minY() - event.getEntity().getY() + event.getY(),
-					box.minZ() - event.getEntity().getZ() + event.getZ(),
-					box.maxX() - event.getEntity().getX() + event.getX(),
-					box.maxY() - event.getEntity().getY() + event.getY(),
-					box.maxZ() - event.getEntity().getZ() + event.getZ());
+			Box offsetBox = Box.create(box.minX() - event.getEntity().x() + event.getX(),
+					box.minY() - event.getEntity().y() + event.getY(),
+					box.minZ() - event.getEntity().z() + event.getZ(),
+					box.maxX() - event.getEntity().x() + event.getX(),
+					box.maxY() - event.getEntity().y() + event.getY(),
+					box.maxZ() - event.getEntity().z() + event.getZ());
 			LevelRenderer.strokeBox(offsetBox, boundingBoxColour.getRed(), boundingBoxColour.getGreen(),
 					boundingBoxColour.getBlue(), boundingBoxColour.getAlpha());
 		}
 
 		if(eyeHeight && event.getEntity() instanceof LivingEntity) {
 			LevelRenderer.strokeBox(Box.create(event.getX() - half,
-					event.getY() + event.getEntity().getEyeHeight() - 0.009999999776482582D, event.getZ() - half,
-					event.getX() + half, event.getY() + event.getEntity().getEyeHeight() + 0.009999999776482582D,
+					event.getY() + event.getEntity().getEntityEyeHeight() - 0.009999999776482582D, event.getZ() - half,
+					event.getX() + half, event.getY() + event.getEntity().getEntityEyeHeight() + 0.009999999776482582D,
 					event.getZ() + half), eyeHeightColour.getRed(), eyeHeightColour.getGreen(),
 					eyeHeightColour.getBlue(), eyeHeightColour.getAlpha());
 		}
@@ -130,9 +127,9 @@ public class HitboxMod extends Mod {
 		if(lookVector) {
 			Vec3d look = event.getEntity().getView(event.getTickDelta());
 			builder.begin(3, VertexFormat.POSITION_COLOUR);
-			builder.vertex(event.getX(), event.getY() + event.getEntity().getEyeHeight(), event.getZ())
+			builder.vertex(event.getX(), event.getY() + event.getEntity().getEntityEyeHeight(), event.getZ())
 					.color(0, 0, 255, 255).endVertex();
-			builder.vertex(event.getX() + look.x() * 2, event.getY() + event.getEntity().getEyeHeight() + look.y() * 2,
+			builder.vertex(event.getX() + look.x() * 2, event.getY() + event.getEntity().getEntityEyeHeight() + look.y() * 2,
 					event.getZ() + look.z() * 2)
 					.color(lookVectorColour.getRed(), lookVectorColour.getGreen(), lookVectorColour.getBlue(),
 							lookVectorColour.getAlpha())
@@ -140,12 +137,12 @@ public class HitboxMod extends Mod {
 			tessellator.end();
 		}
 
-		GlStateManager.enableTexture2D();
+		GlStateManager.enableTexture2d();
 		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.disableBlend();
 		GlStateManager.depthMask(true);
-		Utils.resetLineWidth();
+		GlStateManager.resetLineWidth();
 	}
 
 	@EventHandler

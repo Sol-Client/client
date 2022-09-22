@@ -69,7 +69,7 @@ public class TimersMod extends HudMod {
 				y -= (TIMER_HEIGHT * 3) * getScale();
 		}
 		return new Rectangle(position.getX(), y,
-				22 + font.getWidth("Dishwasher") + 4 + font.getWidth("00:00"), 19 * 3);
+				22 + font.getTextWidth("Dishwasher") + 4 + font.getTextWidth("00:00"), 19 * 3);
 	}
 
 	@Override

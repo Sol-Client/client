@@ -32,7 +32,7 @@ public class CpsMod extends SimpleHudMod {
 			String prefix = background ? "" : "[";
 			String suffix = background ? "" : "]";
 
-			int width = font.getWidth(prefix + CpsCounter.LMB.getCps() + " | " + CpsCounter.RMB.getCps() + " CPS" + suffix) - 2;
+			int width = font.getTextWidth(prefix + CpsCounter.LMB.getCps() + " | " + CpsCounter.RMB.getCps() + " CPS" + suffix) - 2;
 
 			int x = position.getX() + (53 / 2) - (width / 2);
 			int y = position.getY() + 4;
@@ -42,7 +42,7 @@ public class CpsMod extends SimpleHudMod {
 			x--;
 			if(shadow) x--;
 
-			x += font.getWidth(' ');
+			x += font.getCharacterWidth(' ');
 
 			DrawableHelper.renderVerticalLine(x, y - 1, y + 7, separatorColour.getValue());
 
@@ -52,7 +52,7 @@ public class CpsMod extends SimpleHudMod {
 
 			x += 1;
 
-			x += font.getWidth(' ');
+			x += font.getCharacterWidth(' ');
 
 			font.render(CpsCounter.RMB.getCps() + " CPS" + suffix, x, y, textColour.getValue(), shadow);
 		}

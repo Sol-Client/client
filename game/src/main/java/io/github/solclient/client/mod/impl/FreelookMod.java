@@ -75,8 +75,8 @@ public class FreelookMod extends Mod {
 		previousPerspective = mc.getOptions().ordinalPerspective();
 		mc.getOptions().setOrdinalPerspective(perspective.ordinal());
 		Entity camera = mc.getCameraEntity();
-		yaw = camera.getYaw();
-		pitch = camera.getPitch();
+		yaw = camera.yaw();
+		pitch = camera.pitch();
 	}
 
 	public void stop() {

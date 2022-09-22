@@ -12,6 +12,7 @@ import io.github.solclient.client.platform.mc.screen.OptionsScreen;
 import io.github.solclient.client.platform.mc.screen.SingleplayerScreen;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
@@ -37,9 +38,9 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 		Font font = SolClientConfig.INSTANCE.getUIFont();
 
 		String copyrightString = "Copyright " + Environment.MOJANG + ". Do not distribute!";
-		font.render(copyrightString, (int) (width - font.getWidth(copyrightString) - 10), height - 15, -1);
+		font.render(copyrightString, (int) (width - font.getTextWidth(copyrightString) - 10), height - 15, -1);
 		String versionString = "Minecraft 1.8.9";
-		font.render(versionString, (int) (width - font.getWidth(versionString) - 10), height - 25, -1);
+		font.render(versionString, (int) (width - font.getTextWidth(versionString) - 10), height - 25, -1);
 
 		font.render("Copyright TheKodeToad and contributors.", 10, height - 15, -1);
 		font.render(Constants.NAME, 10, height - 25, -1);
@@ -52,12 +53,12 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void keyDown(int code, int scancode, int mods) {
-		if(code == 1) {
-			return;
+	public boolean keyDown(int code, int scancode, int mods) {
+		if(code == Input.ESCAPE) {
+			return true;
 		}
 
-		super.keyDown(code, scancode, mods);
+		return super.keyDown(code, scancode, mods);
 	}
 
 	private static class MainMenuComponent extends Component {

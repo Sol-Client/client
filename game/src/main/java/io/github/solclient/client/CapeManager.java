@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import io.github.solclient.client.platform.mc.MinecraftClient;
-import io.github.solclient.client.platform.mc.resource.Identifier;
+import io.github.solclient.client.platform.mc.texture.Texture;
 import io.github.solclient.client.platform.mc.world.entity.player.Player;
 import io.github.solclient.client.util.Utils;
 
@@ -23,7 +22,7 @@ public class CapeManager {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private Map<String, String> capes = new HashMap<>();
-	private Map<UUID, Identifier> capeCache = new HashMap<>();
+	private Map<UUID, Texture> capeCache = new HashMap<>();
 	private static final String BASE_URL = "https://raw.githubusercontent.com/Sol-Client/Capes/main/";
 	private static final URL BY_PLAYER_URL = Utils.sneakyParse(BASE_URL + "by_player.json");
 
@@ -43,7 +42,7 @@ public class CapeManager {
 		});
 	}
 
-	public Identifier getForPlayer(Player player) {
+	public Texture getForPlayer(Player player) {
 		MinecraftClient mc = MinecraftClient.getInstance();
 
 		String capeUrl = capes.get(player.getId().toString().replace("-", ""));
@@ -57,9 +56,9 @@ public class CapeManager {
 				return capeCache.get(player.getId());
 			}
 			else {
-				mc.getTextureManager().download(capeUrl).thenAccept((tex) -> {
+				mc.getTextureManager().download(capeUrl).thenAccept((texure) -> {
 					mc.runSync(() -> {
-						capeCache.put(player.getId(), tex.getId());
+						capeCache.put(player.getId(), texure);
 					});
 				});
 

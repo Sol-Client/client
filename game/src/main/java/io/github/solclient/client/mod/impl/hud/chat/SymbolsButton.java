@@ -78,7 +78,7 @@ public class SymbolsButton implements ChatButton {
 				characterBounds.fill(selected ? Colour.WHITE_128 : Colour.BLACK_128);
 				if(character != 0) {
 					font.render(character + "",
-							x + (13 / 2) - (font.getWidth(character) / 2),
+							x + (13 / 2) - (font.getCharacterWidth(character) / 2),
 							characterBounds.getY() + (characterBounds.getHeight() / 2) - (font.getHeight() / 2),
 							characterBounds.contains(mouseX, mouseY) ? 0 : -1);
 				}

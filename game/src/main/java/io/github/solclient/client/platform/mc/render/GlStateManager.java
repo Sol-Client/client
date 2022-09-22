@@ -12,14 +12,6 @@ public class GlStateManager {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void enableAlpha() {
-		throw new UnsupportedOperationException();
-	}
-
-	public static void disableAlpha() {
-		throw new UnsupportedOperationException();
-	}
-
 	public static void enableDepth() {
 		throw new UnsupportedOperationException();
 	}
@@ -33,14 +25,6 @@ public class GlStateManager {
 	}
 
 	public static void disableCull() {
-		throw new UnsupportedOperationException();
-	}
-
-	public static void enableTexture2D() {
-		throw new UnsupportedOperationException();
-	}
-
-	public static void disableTexture2D() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -114,6 +98,10 @@ public class GlStateManager {
 	}
 
 	public static void rotate(float angle, float x, float y, float z) {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void bindTexture(int id) {
 		throw new UnsupportedOperationException();
 	}
 

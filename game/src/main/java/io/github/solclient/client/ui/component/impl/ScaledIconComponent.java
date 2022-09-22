@@ -44,7 +44,6 @@ public class ScaledIconComponent extends ColouredComponent {
 			renderFallback(info);
 		}
 		else {
-			GlStateManager.enableAlpha();
 			GlStateManager.enableBlend();
 
 			getColour().bind();

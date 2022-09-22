@@ -52,7 +52,12 @@ public class TextFormattingImpl implements TextFormatting {
 interface TextFormattingImpl$Static {
 
 	@Overwrite(remap = false)
-	static String strip(String message) {
+	static @NotNull TextFormatting get(@NotNull String name) {
+		return (TextFormatting) (Object) Formatting.valueOf(name);
+	}
+
+	@Overwrite(remap = false)
+	static @NotNull String strip(@NotNull String message) {
 		return Formatting.strip(message);
 	}
 

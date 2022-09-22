@@ -70,8 +70,8 @@ public final class QuickPlayPalette extends ProxyScreen {
 		font.render(query.isEmpty() ? "Search" : query, box.getX() + 10 + (query.isEmpty() ? 2 : 0),
 				box.getY() + 10 + (SolClientConfig.INSTANCE.fancyFont ? 0 : 1), query.isEmpty() ? 0xFF666666 : -1);
 
-		DrawableHelper.fillRect((int) (box.getX() + 10 + font.getWidth(query)), box.getY() + 10,
-				(int) (box.getX() + 11 + font.getWidth(query)), box.getY() + 20, -1);
+		DrawableHelper.fillRect((int) (box.getX() + 10 + font.getTextWidth(query)), box.getY() + 10,
+				(int) (box.getX() + 11 + font.getTextWidth(query)), box.getY() + 20, -1);
 
 		DrawableHelper.renderHorizontalLine(box.getX(), box.getX() + box.getWidth() - 1, box.getY() + 30, 0xFF000000);
 
@@ -181,7 +181,7 @@ public final class QuickPlayPalette extends ProxyScreen {
 	}
 
 	@Override
-	public void keyDown(int code, int scancode, int mods) {
+	public boolean keyDown(int code, int scancode, int mods) {
 		super.keyDown(code, scancode, mods);
 
 		if(code == Input.BACKSPACE) {
@@ -215,35 +215,47 @@ public final class QuickPlayPalette extends ProxyScreen {
 		else if(code == Input.LEFT) {
 			back();
 		}
+		else {
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
-	public void characterTyped(char character, int key) {
+	public boolean characterTyped(char character, int key) {
 		super.characterTyped(character, key);
 
 		if(character != '§') {
 			query += character;
 			inAllGames = false;
+			return true;
 		}
+
+		return false;
 	}
 
 	@Override
-	public void mouseDown(int x, int y, int mouseButton) {
+	public boolean mouseDown(int x, int y, int mouseButton) {
 		super.mouseDown(x, y, mouseButton);
 
 		if(mouseButton == 0) {
 			mouseDown = true;
 			lastMouseX = lastMouseY = 0;
 		}
+
+		return false;
 	}
 
 	@Override
-	public void mouseUp(int mouseX, int mouseY, int state) {
+	public boolean mouseUp(int mouseX, int mouseY, int state) {
 		super.mouseUp(mouseX, mouseY, state);
 
 		if(state == 0) {
 			mouseDown = false;
 		}
+
+		return false;
 	}
 
 	@Override

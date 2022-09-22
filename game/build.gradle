@@ -7,6 +7,8 @@ plugins {
 	id "io.freefair.lombok" version "6.4.3"
 }
 
+sourceCompatibility = targetCompatibility = 8
+
 configurations {
 	mixin
 	api.extendsFrom mixin
@@ -15,6 +17,7 @@ configurations {
 dependencies {
 	// minimal lwjgl, simply to compile against since the version can vary
 	compileOnly "org.lwjgl:lwjgl-opengl:3.3.1"
+	compileOnly "org.lwjgl:lwjgl-stb:3.3.1"
 
 	api files(rootProject.projectDir.getPath() + "/libs/occlusionculling.jar")
 
@@ -41,6 +44,7 @@ dependencies {
 allprojects {
 	repositories {
 		mavenCentral()
+		mavenLocal()
 		maven { url "https://libraries.minecraft.net" }
 		maven { url "https://repo.spongepowered.org/maven" }
 		maven { url "https://repo.hypixel.net/repository/Hypixel" }
@@ -48,6 +52,7 @@ allprojects {
 		maven { url "https://maven.fabricmc.net" }
 		maven { url "https://maven.legacyfabric.net" }
 		maven { url "https://maven.glass-launcher.net/babric" }
+		maven { url "https://repo.polyfrost.cc/releases" }
 	}
 }
 

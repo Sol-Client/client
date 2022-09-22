@@ -40,7 +40,7 @@ public class PopupManager {
 				String message = currentPopup.getText();
 				String keys = TextFormatting.GREEN + " [ " + acceptRequestKey.getBoundKeyName() + " ] Accept"
 						+ TextFormatting.RED + "  [ " + dismissRequestKey.getBoundKeyName() + " ] Dismiss ";
-				int width = Math.max(mc.getFont().getWidth(message), mc.getFont().getWidth(keys)) + 15;
+				int width = Math.max(mc.getFont().getTextWidth(message), mc.getFont().getTextWidth(keys)) + 15;
 
 				Window window = mc.getWindow();
 
@@ -52,11 +52,11 @@ public class PopupManager {
 						(int) ((popupBounds.getWidth() / 10000F) * (since)), 2).fill(Colour.BLUE);
 
 				mc.getFont().render(message,
-						popupBounds.getX() + (popupBounds.getWidth() / 2) - (mc.getFont().getWidth(message) / 2), 20,
+						popupBounds.getX() + (popupBounds.getWidth() / 2) - (mc.getFont().getTextWidth(message) / 2), 20,
 						-1);
 
 				mc.getFont().render(keys,
-						popupBounds.getX() + (popupBounds.getWidth() / 2) - (mc.getFont().getWidth(keys) / 2), 40,
+						popupBounds.getX() + (popupBounds.getWidth() / 2) - (mc.getFont().getTextWidth(keys) / 2), 40,
 						-1);
 
 				if(acceptRequestKey.consumePress()) {

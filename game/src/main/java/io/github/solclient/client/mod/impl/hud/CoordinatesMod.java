@@ -83,15 +83,15 @@ public class CoordinatesMod extends HudMod {
 			yaw = -90;
 		}
 		else {
-			x = mc.getPlayer().getX();
-			y = mc.getPlayer().getY();
-			z = mc.getPlayer().getZ();
-			yaw = mc.getPlayer().getYaw();
+			x = mc.getPlayer().x();
+			y = mc.getPlayer().y();
+			z = mc.getPlayer().z();
+			yaw = mc.getPlayer().yaw();
 		}
 
 		int width = 80;
 		int cardinalDirectionIndex = (int) Math.floor(
-				((Utils.wrapYaw(yaw) + 180D + 22.5D) % 360D) / 45D);
+				((Utils.wrapYaw(yaw) + 180D + 22.5) % 360D) / 45D);
 
 		String xDirection = null;
 		String zDirection = null;
@@ -134,7 +134,7 @@ public class CoordinatesMod extends HudMod {
 				position.getY() + 4, axisValueColour.getValue(), shadow);
 
 		if(xDirection != null && axisDirection) {
-			font.render(xDirection, position.getX() + width - font.getWidth(xDirection) - 2,
+			font.render(xDirection, position.getX() + width - font.getTextWidth(xDirection) - 2,
 					position.getY() + 4,
 					axisDirectionColour.getValue(), shadow);
 		}
@@ -146,7 +146,7 @@ public class CoordinatesMod extends HudMod {
 				position.getY() + 4 + font.getHeight() + 2, axisValueColour.getValue(), shadow);
 
 		if(cardinalDirection) {
-			font.render(facing, position.getX() + width - font.getWidth(facing) - 2,
+			font.render(facing, position.getX() + width - font.getTextWidth(facing) - 2,
 					position.getY() + 4 + font.getHeight() + 2, cardinalDirectionColour.getValue(), shadow);
 		}
 
@@ -157,7 +157,7 @@ public class CoordinatesMod extends HudMod {
 				position.getY() + 4 + font.getHeight() + 2 + font.getHeight() + 2, axisValueColour.getValue(), shadow);
 
 		if(zDirection != null && axisDirection) {
-			font.render(zDirection, position.getX() + width - font.getWidth(zDirection) - 2,
+			font.render(zDirection, position.getX() + width - font.getTextWidth(zDirection) - 2,
 					position.getY() + 4 + font.getHeight() + 2 + font.getHeight() + 2, axisDirectionColour.getValue(),
 					shadow);
 		}

@@ -73,11 +73,10 @@ public class CrosshairMod extends HudMod {
 			crosshairColour.bind();
 
 			GlStateManager.enableBlend();
-			GlStateManager.enableAlpha();
 			GlStateManager.blendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
 			if(highlightEntities && mc.getHitResult().getType() == HitType.ENTITY
-					&& mc.getHitResult().getEntity() != null && !(mc.getHitResult().getEntity().isInvisible()
+					&& mc.getHitResult().getEntity() != null && !(mc.getHitResult().getEntity().isGloballyInvisible()
 							|| mc.getHitResult().getEntity().isInvisibleTo(mc.getPlayer()))) {
 				entityColour.bind();
 			}

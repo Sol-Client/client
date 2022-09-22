@@ -12,9 +12,12 @@ public interface StatusEffectType {
 		throw new UnsupportedOperationException();
 	}
 
-	float getAtlasU();
-
-	float getAtlasV();
+	/**
+	 * Renders the status effect icon in the GUI.
+	 * @param x The x position.
+	 * @param y The y position.
+	 */
+	void render(int x, int y);
 
 	@NotNull String getName();
 

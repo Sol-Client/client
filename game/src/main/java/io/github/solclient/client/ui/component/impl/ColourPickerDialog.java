@@ -141,11 +141,10 @@ public class ColourPickerDialog	 extends ScaledIconComponent {
 
 			for(int i = 0; i < 256; i++) {
 				Colour stripColour = Colour.BLACK.withComponent(component, i);
-
 				if(colour.getComponents()[component] == i) {
 					stripColour = Colour.WHITE;
 
-					font.render(Integer.toString(i), RGB_OFFSET_LEFT + i + 1 - (font.getWidth(Integer.toString(i)) / 2), rectangle.getY() + (SolClientConfig.INSTANCE.fancyFont ? 9 : 11), -1);
+					font.render(Integer.toString(i), RGB_OFFSET_LEFT + i + 1 - (font.getTextWidth(Integer.toString(i)) / 2), rectangle.getY() + (SolClientConfig.INSTANCE.fancyFont ? 9 : 11), -1);
 				}
 
 				DrawableHelper.renderVerticalLine(RGB_OFFSET_LEFT + i, RGB_OFFSET_TOP + component * RGB_SPACING, RGB_OFFSET_TOP + (component * RGB_SPACING) + 11, stripColour.getValue());

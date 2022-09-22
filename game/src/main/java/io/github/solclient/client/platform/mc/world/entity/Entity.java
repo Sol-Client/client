@@ -3,32 +3,29 @@ package io.github.solclient.client.platform.mc.world.entity;
 import java.util.UUID;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import io.github.solclient.client.platform.Helper;
 import io.github.solclient.client.platform.mc.maths.Box;
 import io.github.solclient.client.platform.mc.maths.Vec3d;
 import io.github.solclient.client.platform.mc.world.entity.player.Player;
-import io.github.solclient.client.platform.mc.world.item.ItemStack;
 import io.github.solclient.client.platform.mc.world.level.chunk.ChunkPos;
 
 public interface Entity {
 
-	double getX();
+	double x();
 
-	double getY();
+	double y();
 
-	double getZ();
+	double z();
 
-	double getPreviousX();
+	double previousX();
 
-	double getPreviousY();
+	double previousY();
 
-	double getPreviousZ();
+	double previousZ();
 
-	float getYaw();
+	float yaw();
 
-	float getPitch();
+	float pitch();
 
 	@NotNull Vec3d getPosition();
 
@@ -43,7 +40,7 @@ public interface Entity {
 
 	@NotNull Box getBounds();
 
-	boolean isInvisible();
+	boolean isGloballyInvisible();
 
 	boolean isInvisibleTo(@NotNull Player player);
 
@@ -51,9 +48,9 @@ public interface Entity {
 
 	Vec3d getEyePosition(float tickDelta);
 
-	float getWidth();
+	float getEntityWidth();
 
-	float getEyeHeight();
+	float getEntityEyeHeight();
 
 	Vec3d getView(float tickDelta);
 
@@ -77,12 +74,14 @@ public interface Entity {
 
 	boolean isPassenger();
 
-	boolean isOnGround();
+	boolean isEntityOnGround();
 
 	boolean isInWeb();
 
 	boolean isInWater();
 
-	boolean isSprinting();
+	boolean isEntitySprinting();
+
+	float getFallDistance();
 
 }

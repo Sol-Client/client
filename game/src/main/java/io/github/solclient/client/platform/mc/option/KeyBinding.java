@@ -11,6 +11,10 @@ public interface KeyBinding {
 		throw new UnsupportedOperationException();
 	}
 
+	static void reload() {
+		throw new UnsupportedOperationException();
+	}
+
 	@NotNull String getKeyCategory();
 
 	@NotNull String getName();
@@ -32,9 +36,5 @@ public interface KeyBinding {
 	@NotNull List<KeyBinding> getConflictingKeys();
 
 	boolean conflicts();
-
-	static void reload() {
-		throw new UnsupportedOperationException();
-	}
 
 }

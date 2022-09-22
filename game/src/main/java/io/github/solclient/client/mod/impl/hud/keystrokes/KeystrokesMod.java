@@ -1,7 +1,5 @@
 package io.github.solclient.client.mod.impl.hud.keystrokes;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
@@ -12,6 +10,7 @@ import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
@@ -142,21 +141,21 @@ public class KeystrokesMod extends HudMod {
 				DrawableHelper.strokeRect(x, y, x + space.width, y + 34, borderColour.getValue());
 			}
 
-			GL11.glPushMatrix();
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glColor4f(1, 1, 1, 1);
+			GlStateManager.pushMatrix();
+			GlStateManager.enableBlend();
+			GlStateManager.resetColour();
 
 			mc.getTextureManager().bind(Identifier.solClient("mod/keystrokes/mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
 			DrawableHelper.fillTexturedRect(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
 
 			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * tickDelta)) - 5;
 			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * tickDelta)) - 5;
-			GL11.glTranslatef(calculatedMouseX, calculatedMouseY, 0);
+			GlStateManager.translate(calculatedMouseX, calculatedMouseY, 0);
 
 			mc.getTextureManager().bind(Identifier.solClient("mod/keystrokes/mouse_ring_" + Utils.getTextureScale() + ".png"));
 			DrawableHelper.fillTexturedRect(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
 
-			GL11.glPopMatrix();
+			GlStateManager.popMatrix();
 			y += 35;
 		}
 

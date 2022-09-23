@@ -42,6 +42,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
@@ -65,9 +66,11 @@ public abstract class MinecraftClientImpl {
 	private ClientWorld world;
 
 	public @NotNull LevelRenderer platform$getLevelRenderer() {
-		// TODO Auto-generated method stub
-		return null;
+		return (LevelRenderer) worldRenderer;
 	}
+
+	@Shadow
+	public @Final WorldRenderer worldRenderer;
 
 	public @Nullable LocalPlayer platform$getPlayer() {
 		return (LocalPlayer) player;
@@ -177,9 +180,11 @@ public abstract class MinecraftClientImpl {
 	}
 
 	public @NotNull ItemRenderer platform$getItemRenderer() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ItemRenderer) getItemRenderer();
 	}
+
+	@Shadow
+	public abstract net.minecraft.client.render.item.ItemRenderer getItemRenderer();
 
 	public @NotNull IngameHud platform$getIngameHud() {
 		// TODO Auto-generated method stub

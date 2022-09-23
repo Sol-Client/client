@@ -131,7 +131,7 @@ public class MinecraftClientImpl implements MinecraftClient {
 	}
 
 	@Override
-	public boolean isPaused() {
+	public boolean isGamePaused() {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -195,7 +195,7 @@ public class MinecraftClientImpl implements MinecraftClient {
 	}
 
 	@Override
-	public boolean isRunning() {
+	public boolean isGameRunning() {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -138,7 +138,7 @@ public class PotionEffectsMod extends HudMod {
 				}
 
 				int centreText = y + 12;
-
+				
 				if(icon) {
 					mc.getTextureManager().bind(Texture.MOB_EFFECTS_ATLAS_ID);
 					type.render(iconX, y + 7);

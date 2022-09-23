@@ -5,7 +5,8 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
+import io.github.solclient.client.platform.mc.Window;
+import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.world.item.ItemStack;
 import io.github.solclient.client.platform.mc.world.item.ItemType;
 import io.github.solclient.client.util.data.Colour;
@@ -32,6 +33,9 @@ public class ArmourMod extends HudMod {
 	@Option
 	private boolean hand = true;
 	@Expose
+	@Option
+	private boolean horizontal;
+	@Expose
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
@@ -45,42 +49,125 @@ public class ArmourMod extends HudMod {
 
 	@Override
 	public Rectangle getBounds(Position position) {
+		if(horizontal) {
+			int width = 1;
+
+			if(armour) {
+				switch(durability) {
+					case FRACTION:
+						width += 296;
+						break;
+					case REMAINING:
+						width += 168;
+						break;
+					case PERCENTAGE:
+						width += 192;
+						break;
+					default:
+						width += 73;
+						break;
+				}
+			}
+
+			if(hand) {
+				switch(durability) {
+					case FRACTION:
+						width += 85;
+						break;
+					case REMAINING:
+						width += 47;
+						break;
+					case PERCENTAGE:
+						width += 48;
+						break;
+					default:
+						width += 17;
+						break;
+				}
+			}
+
+			return new Rectangle(position.getX() - 1, position.getY(), width, 18);
+		}
 		int height = 1;
-		if(armour) height += 15 * 4;
-		if(hand) height += 15;
-		return new Rectangle(position.getX() - 1, position.getY(), durability.getWidth() + 1, height);
+
+		if(armour) {
+			height += 15 * 4;
+		}
+
+		if(hand) {
+			height += 15;
+		}
+
+		return new Rectangle(position.getX() - 1, position.getY(), durability.getWidth() + 18, height);
 	}
 
 	@Override
 	public void render(Position position, boolean editMode) {
-		if(mc.hasPlayer() && !editMode) {
-			LocalPlayer player = mc.getPlayer();
-			if(armour) {
-				for(int i = 0; i < 4; i++) {
-					ItemStack stack = player.getInventory().getArmour(3 - i);
-					if(stack != null) {
-						renderStack(stack, position.getX(), position.getY() + (i * 15));
+		Window window = mc.getWindow();
+		boolean rtl = !horizontal && position.getX() > window.getScaledWidth() / 2;
+
+		int x = position.getX(), y = position.getY();
+
+		if(horizontal) {
+			y++;
+		}
+
+		ItemStack[] playerArmour;
+		ItemStack handItem;
+
+		if(!mc.hasPlayer() || editMode) {
+			playerArmour = new ItemStack[] { BOOTS, LEGGINGS, CHESTPLATE, HELMET };
+			handItem = HAND;
+		}
+		else {
+			playerArmour = null;
+			handItem = mc.getPlayer().getInventory().getMainHand();
+		}
+
+		if(armour) {
+			for(int i = 0; i < 4; i++) {
+				ItemStack stack;
+				if(playerArmour != null) {
+					stack = playerArmour[i];
+				}
+				else {
+					stack = mc.getPlayer().getInventory().getArmour(i);
+				}
+				if(stack != null) {
+					int width = renderStack(stack, x, y, rtl);
+					if(horizontal) {
+						if(width != 0) {
+							x += 24 + width;
+						}
+						else {
+							x += 18;
+						}
 					}
 				}
+				if(!horizontal) {
+					y += 15;
+				}
 			}
-			if(hand && player.getInventory().getMainHand() != null) renderStack(player.getInventory().getMainHand(),
-					position.getX(), position.getY() + (armour ? 60 : 0));
 		}
-		else if(editMode) {
-			if(armour) {
-				renderStack(HELMET, position.getX(), position.getY());
-				renderStack(CHESTPLATE, position.getX(), position.getY() + 15);
-				renderStack(LEGGINGS, position.getX(), position.getY() + 30);
-				renderStack(BOOTS, position.getX(), position.getY() + 45);
-			}
 
-			if(hand) renderStack(HAND, position.getX(), position.getY() + (armour ? 60 : 0));
+		if(hand && handItem != null) {
+			renderStack(handItem, x, y, rtl);
 		}
 	}
 
-	private void renderStack(ItemStack stack, int x, int y) {
-		mc.getItemRenderer().render(stack, x, y);
-		if(stack.getMaxDamageValue() > 0) {
+	private int renderStack(ItemStack stack, int x, int y, boolean rtl) {
+		boolean hasDurability = durability != DurabilityDisplay.OFF;
+		int itemX = x;
+
+		if(rtl && hasDurability) {
+			itemX += durability.getWidth() - 1;
+		}
+
+		mc.getItemRenderer().render(stack, itemX, y);
+		mc.getItemRenderer().renderOverlays(font, stack, itemX, y);
+		GlStateManager.disableLighting();
+
+		if(hasDurability && stack.getMaxDamageValue() > 0) {
 			String text;
 			switch(durability) {
 				case FRACTION:
@@ -93,10 +180,23 @@ public class ArmourMod extends HudMod {
 					text = ((int) (((double) stack.getMaxDamageValue() - stack.getDamageValue()) / (stack.getMaxDamageValue()) * 100)) + "%";
 					break;
 				default:
-					text = "Invalid mode";
+					text = "??";
+					break;
 			}
-			font.render(text, x + 20, y + 5, textColour.getValue(), shadow);
+
+			if(rtl) {
+				x += durability.getWidth() - 4 - font.getTextWidth(text);
+			}
+			else {
+				x += 20;
+			}
+
+			font.render(text, x, y + 4, textColour.getValue(), shadow);
+
+			return font.getTextWidth(text);
 		}
+
+		return 0;
 	}
 
 }

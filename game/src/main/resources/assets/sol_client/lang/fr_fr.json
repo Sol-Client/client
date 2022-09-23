@@ -248,7 +248,7 @@
 	"mod.toggle_sprint.name": "Basculer le sprint",
 	"mod.toggle_sprint.description": "Basculez la touche de sprint.",
 
-	"mod.toggle_sprint.default_width": "113(cent treize)",
+	"mod.toggle_sprint.default_width": "113",
 
 	"mod.toggle_sprint.option.hud": "HUD",
 

@@ -8,12 +8,24 @@
 <img src="https://img.shields.io/static/v1?label=Contributions&message=Welcome&color=brightgreen&style=for-the-badge"/>&nbsp;
 ![GitHub all releases](https://img.shields.io/github/downloads/Sol-Client/Client/total?label=Downloads&style=for-the-badge)&nbsp;
 
+<<<<<<< HEAD
 Simple and easy to use Minecraft client for 1.19 and 1.8.
 
 Update: Yes, I know, it has been seven months since I wrote about the newer versions thing.
+=======
+Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versions - the [multiversion branch](https://github.com/Sol-Client/Client/tree/dev/multiversion) is being worked on).
+>>>>>>> origin/main
 
 [Website & Download](https://sol-client.github.io)&nbsp;&nbsp;
 [Discord Server](https://discord.gg/QFDGDhcFqu)
+
+# Screenshots
+
+## Launcher
+![Launcher](./assets/screenshots/Launcher.png)
+
+## Mods
+![Mods](./assets/screenshots/Mods.png)
 
 ## Pojav
 People have alreading been talking about this client working on Pojav, but it's not quite ready.

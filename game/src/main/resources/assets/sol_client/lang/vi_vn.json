@@ -1,5 +1,5 @@
 {
-	"sol_client.passthrough": "%s",
+	"passthrough": "%s",
 	"slider.percent": "%s%%",
 	"slider.factor": "%sx",
 	"slider.seconds": "%ss",
@@ -32,23 +32,23 @@
 	"key.accept_request": "Chấp nhận yêu cầu",
 	"key.dismiss_request": "Từ chối yêu cầu",
 
-	"mod.generic.option.enabled": "Đã bật",
-	"mod.hud.option.scale": "Độ phóng đại",
+	"mod.generic.option.enabled": "Bật",
+	"mod.hud.option.scale": "Độ lớn",
 	"mod.simple_hud.option.background": "Nền",
 	"mod.simple_hud.option.backgroundColour": "Màu nền",
 	"mod.simple_hud.option.border": "Viền",
 	"mod.simple_hud.option.borderColour": "Màu viền",
 	"mod.simple_hud.option.textColour": "Màu chữ",
 	"mod.simple_hud.option.shadow": "Bóng chữ",
-	"mod.smooth_counter_hud.option.smoothNumbers": "Hiệu ứng thay đổi số",
+	"mod.smooth_counter_hud.option.smoothNumbers": "Hiệu ứng nhảy số",
 
 	"mod.sol_client.name": "Sol Client",
 	"mod.sol_client.description": "Các thiết lập chung của Sol Client.",
 
-	"mod.sol_client.option.fancyMainMenu": "Màn hình chính",
+	"mod.sol_client.option.fancyMainMenu": "Sử dụng Màn hình chính của Sol",
 	"mod.sol_client.option.logoInInventory": "Hiện Logo ở giao diện Túi đồ",
 	"mod.sol_client.mods": "Mods",
-	"mod.sol_client.option.modsKey": "Phím tắt Mods",
+	"mod.sol_client.option.modsKey": "Phím tắt mở Danh sách Mod",
 	"mod.sol_client.edit_hud": "Chỉnh sửa HUD",
 	"mod.sol_client.option.editHudKey": "Chỉnh sửa phím tắt HUD",
 	"mod.sol_client.option.uiColour": "Màu sắc chủ đạo",
@@ -133,10 +133,10 @@
 	"mod.armour.option.durability.percentage": "Phần trăm",
 	"mod.armour.option.durability.fraction": "Phân số",
 
-	"mod.armour.option.armour": "Hiển thị giáp",
-	"mod.armour.option.hand": "Hiển thị công cụ",
+	"mod.armour.option.armour": "Hiển thị giáp đang mặc",
+	"mod.armour.option.hand": "Hiển thị vật phẩm đang cầm trên tay",
 
-	"mod.timers.name": "Bộ đếm",
+	"mod.timers.name": "Bộ đếm thời gian sự kiện",
 	"mod.timers.description": "Hiển thị thời gian còn lại của các sự kiện.",
 
 	"mod.timers.option.alignment": "Căn lề",
@@ -149,11 +149,11 @@
 
 	"mod.chat.peek": "Mở trò chuyện nhanh",
 	"mod.chat.option.preventClose": "Ngăn việc đóng khung trò chuyện tự động",
-	"mod.chat.option.smooth": "Hiệu ứng khi có trò chuyện mới",
+	"mod.chat.option.smooth": "Hiệu ứng chat chạy lên khi có trò chuyện mới",
 	"mod.chat.option.infiniteChat": "Lịch sử trò chuyện không giới hạn",
 	"mod.chat.option.peekKey": "Phím tắt đọc trò chuyện nhanh",
 
-	"mod.chat.option.visibility": "Hiển thị",
+	"mod.chat.option.visibility": "Hiển thị trò chuyện",
 	"mod.chat.option.visibility.shown": "Mở",
 	"mod.chat.option.visibility.commands": "Chỉ khi nhập lệnh",
 	"mod.chat.option.visibility.hidden": "Đóng",
@@ -232,7 +232,7 @@
 	"mod.tweaks.option.betterKeyBindings": "Nhận diện phím tắt tốt hơn",
 	"mod.tweaks.option.disableHotbarScrolling": "Vô hiệu hoá thanh cuộn Hotbar",
 
-	"mod.tweaks.confirm_disconnect": "Ấn vào đây một lần nữa để xác nhận thoát khỏi máy chủ.",
+	"mod.tweaks.confirm_disconnect": "Ấn một lần nữa để thoát khỏi máy chủ",
 
 	"mod.freelook.name": "Freelook",
 	"mod.freelook.description": "Tự do nhìn xung quanh.",
@@ -295,7 +295,7 @@
 	"mod.replay.option.camera.classic": "Cổ điển",
 	"mod.replay.option.camera.vanilla_ish": "Vanilla-ish",
 
-	"mod.replay.option.showPathPreview": "Hiển thị đường di chuyển máy quay",
+	"mod.replay.option.showPathPreview": "Hiển thị đường di chuyển của máy quay",
 
 	"mod.replay.option.defaultInterpolator": "Interpolator mặc định",
 	"mod.replay.interpolator.catmull": "Catmull-Rom Spline",
@@ -333,7 +333,7 @@
 
 	"mod.motion_blur.option.blur": "Độ mờ",
 
-	"mod.menu_blur.name": "Menu Blur",
+	"mod.menu_blur.name": "Nền Menu Mờ",
 	"mod.menu_blur.description": "Làm mờ nền khi đang mở túi đồ hay giao diện bất kì.",
 
 	"mod.menu_blur.option.blur": "Độ mờ",
@@ -368,7 +368,7 @@
 
 	"mod.item_physics.option.rotationSpeed": "Tốc độ Quay",
 
-	"mod.particles.name": "Particles",
+	"mod.particles.name": "Hạt hiệu ứng",
 	"mod.particles.description": "Tuỳ chỉnh hạt hiệu ứng sát thương.",
 
 	"mod.particles.option.multiplier": "Số lượng hạt hiệu ứng",
@@ -406,8 +406,8 @@
 	"mod.hitbox.option.boundingBoxColour": "Màu sắc viền Hitbox",
 	"mod.hitbox.option.eyeHeight": "Hiển thị độ cao mắt",
 	"mod.hitbox.option.eyeHeightColour": "Màu độ cao mắt",
-	"mod.hitbox.option.lookVector": "Hiển thị hướng nhìn",
-	"mod.hitbox.option.lookVectorColour": "Màu hướng hình",
+	"mod.hitbox.option.lookVector": "Đường chỉ hướng nhìn của người chơi",
+	"mod.hitbox.option.lookVectorColour": "Màu đường chỉ hướng hình",
 	"mod.hitbox.option.lineWidth": "Độ lớn đường viền",
 
 	"mod.category.general.name": "Chung",
@@ -417,18 +417,18 @@
 	"mod.category.integration.name": "Tương tác",
 
 	"mod.discord_integration.name": "Tương tác với Discord",
-	"mod.discord_integration.description": "Các tính năng liên kết với Discord, bao gồm trạng thái đang chơi và Game Overlay.",
+	"mod.discord_integration.description": "Các tính năng liên kết với Discord.",
 
-	"mod.discord_integration.option.voiceChatHud": "Hiển thị Voice chat HUD",
+	"mod.discord_integration.option.voiceChatHud": "Hiển thị HUD Voice chat",
 	"mod.discord_integration.option.voiceChatHudScale": "Kích thước HUD",
 	"mod.discord_integration.option.voiceChatHudAlignment": "Căn lề HUD",
 	"mod.discord_integration.option.usernameColour": "Màu tên tài khoản mặc định",
 	"mod.discord_integration.option.mutedColour": "Màu tên tài khoản đã tắt Mic",
 	"mod.discord_integration.option.speakingColour": "Màu tên tài khoản đang nói",
 
-	"mod.screen.title": "Mods",
+	"mod.screen.title": "Danh sách Mod",
 	"mod.screen.search": "Gõ để tìm kiếm",
-	"mod.screen.apply_to_all": "Áp dụng cho toàn bộ mod khác",
+	"mod.screen.apply_to_all": "Áp dụng cho toàn bộ Mod khác",
 
 	"hud.edit": "Chỉnh sửa HUD",
 

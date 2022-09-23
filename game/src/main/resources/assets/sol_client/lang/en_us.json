@@ -131,13 +131,15 @@
 	"mod.armour.name": "Armor and Equipment",
 	"mod.armour.description": "Display your armor and equipment with durability.",
 
-	"mod.armour.option.durability": "Durability",
+	"mod.armour.option.durability": "Durability Text",
+	"mod.armour.option.durability.off": "Off",
 	"mod.armour.option.durability.remaining": "Remaining",
 	"mod.armour.option.durability.percentage": "Percentage",
 	"mod.armour.option.durability.fraction": "Fraction",
 
 	"mod.armour.option.armour": "Show Armor",
 	"mod.armour.option.hand": "Show Item",
+	"mod.armour.option.horizontal": "Horizontal",
 
 	"mod.timers.name": "Timers",
 	"mod.timers.description": "Display timers for ingame events.",
@@ -234,6 +236,7 @@
 	"mod.tweaks.option.borderlessFullscreen": "Borderless Fullscreen",
 	"mod.tweaks.option.betterKeyBindings": "Better Key Bindings",
 	"mod.tweaks.option.disableHotbarScrolling": "Disable Hotbar Scrolling",
+	"mod.tweaks.option.centredInventory": "Centered Inventory",
 
 	"mod.tweaks.confirm_disconnect": "Press Again to Confirm",
 

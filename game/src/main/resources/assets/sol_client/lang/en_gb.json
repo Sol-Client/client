@@ -43,6 +43,8 @@
 
 	"mod.scoreboard.description": "Customise the scoreboard.",
 	"mod.scoreboard.option.numbersColour": "Numbers Colour",
+	
+	"sol_client.mod.tweaks.option.centredInventory": "Centred Inventory",
 
 	"mod.replay.option.recordingIndicatorColour": "Recording Indicator Colour",
 	"mod.replay.option.recordingIndicatorTextColour": "Recording Indicator Text Colour",

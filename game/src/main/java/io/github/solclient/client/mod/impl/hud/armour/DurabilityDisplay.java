@@ -3,6 +3,7 @@ package io.github.solclient.client.mod.impl.hud.armour;
 import io.github.solclient.client.platform.mc.lang.I18n;
 
 public enum DurabilityDisplay {
+	OFF,
 	FRACTION,
 	REMAINING,
 	PERCENTAGE;
@@ -14,14 +15,14 @@ public enum DurabilityDisplay {
 
 	public int getWidth() {
 		switch(this) {
-		case FRACTION:
-			return 84;
-		case REMAINING:
-			return 46;
-		case PERCENTAGE:
-			return 47;
-		default:
-			return 0;
+			case FRACTION:
+				return 67;
+			case REMAINING:
+				return 29;
+			case PERCENTAGE:
+				return 30;
+			default:
+				return 0;
 		}
 	}
 

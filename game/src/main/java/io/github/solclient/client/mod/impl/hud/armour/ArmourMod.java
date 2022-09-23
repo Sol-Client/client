@@ -6,7 +6,6 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.platform.mc.Window;
-import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.world.item.ItemStack;
 import io.github.solclient.client.platform.mc.world.item.ItemType;
 import io.github.solclient.client.util.data.Colour;
@@ -22,6 +21,7 @@ public class ArmourMod extends HudMod {
 	private static final ItemStack LEGGINGS = ItemStack.create(ItemType.IRON_LEGGINGS);
 	private static final ItemStack BOOTS = ItemStack.create(ItemType.IRON_BOOTS);
 	private static final ItemStack HAND = ItemStack.create(ItemType.DIAMOND_SWORD);
+	private static final ItemStack[] ARMOUR = {HELMET, CHESTPLATE, LEGGINGS, BOOTS};
 
 	@Expose
 	@Option
@@ -112,26 +112,14 @@ public class ArmourMod extends HudMod {
 			y++;
 		}
 
-		ItemStack[] playerArmour;
-		ItemStack handItem;
-
-		if(!mc.hasPlayer() || editMode) {
-			playerArmour = new ItemStack[] { BOOTS, LEGGINGS, CHESTPLATE, HELMET };
-			handItem = HAND;
-		}
-		else {
-			playerArmour = null;
-			handItem = mc.getPlayer().getInventory().getMainHand();
-		}
-
 		if(armour) {
 			for(int i = 0; i < 4; i++) {
 				ItemStack stack;
-				if(playerArmour != null) {
-					stack = playerArmour[i];
+				if(editMode) {
+					stack = ARMOUR[i];
 				}
 				else {
-					stack = mc.getPlayer().getInventory().getArmour(i);
+					stack = mc.getPlayer().getInventory().getArmour(3 - i);
 				}
 				if(stack != null) {
 					int width = renderStack(stack, x, y, rtl);
@@ -150,6 +138,15 @@ public class ArmourMod extends HudMod {
 			}
 		}
 
+		ItemStack handItem;
+
+		if(editMode) {
+			handItem = HAND;
+		}
+		else {
+			handItem = mc.getPlayer().getInventory().getMainHand();
+		}
+
 		if(hand && handItem != null) {
 			renderStack(handItem, x, y, rtl);
 		}
@@ -165,7 +162,6 @@ public class ArmourMod extends HudMod {
 
 		mc.getItemRenderer().render(stack, itemX, y);
 		mc.getItemRenderer().renderOverlays(font, stack, itemX, y);
-		GlStateManager.disableLighting();
 
 		if(hasDurability && stack.getMaxDamageValue() > 0) {
 			String text;

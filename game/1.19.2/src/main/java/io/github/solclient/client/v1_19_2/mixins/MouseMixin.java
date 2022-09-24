@@ -31,10 +31,14 @@ public class MouseMixin {
 	@Shadow
 	private @Final MinecraftClient client;
 
-	@Inject(method = "onMouseScroll", at = @At(value = "INVOKE", target = "eventDeltaWheel:Lnet/minecraft/client/Mouse;"))
-	public void preMouseScroll(long window, double x /* I've never seen a mouse do this before */,
-			double y/* , double z, double w? when libraries try to be too future-proof */, CallbackInfo callback, int amount /* applause */) {
-		Client.INSTANCE.getBus().post(new ScrollWheelEvent(amount));
+	@Inject(method = "onMouseScroll", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7), cancellable = true)
+	public void preMouseScroll(CallbackInfo callback) {
+		if(Client.INSTANCE.getBus().post(new ScrollWheelEvent((int) eventDeltaWheel)).isCancelled()) {
+			callback.cancel();
+		}
 	}
+
+	@Shadow
+	private double eventDeltaWheel;
 
 }

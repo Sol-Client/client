@@ -5,10 +5,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.game.PreRenderEvent;
+import io.github.solclient.client.event.impl.world.FovEvent;
 import io.github.solclient.client.v1_19_2.SharedObjects;
+import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -23,6 +26,12 @@ public class GameRendererMixin {
 	@Inject(method = "render", at = @At("HEAD"))
 	public void preRender(CallbackInfo callback) {
 		Client.INSTANCE.getBus().post(new PreRenderEvent());
+	}
+
+	@Inject(method = "getFov", at = @At("RETURN"), cancellable = true)
+	public void fovEvent(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> callback) {
+		callback.setReturnValue(
+				Client.INSTANCE.getBus().post(new FovEvent(callback.getReturnValueD(), tickDelta)).getFov());
 	}
 
 }

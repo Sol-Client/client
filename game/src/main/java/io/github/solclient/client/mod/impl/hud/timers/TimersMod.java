@@ -63,13 +63,13 @@ public class TimersMod extends HudMod {
 			case TOP:
 				break;
 			case MIDDLE:
-				y -= ((TIMER_HEIGHT * 3) / 2) * getScale();
+				y -= ((TIMER_HEIGHT * 2) / 2) * getScale();
 				break;
 			case BOTTOM:
-				y -= (TIMER_HEIGHT * 3) * getScale();
+				y -= (TIMER_HEIGHT * 2) * getScale();
 		}
 		return new Rectangle(position.getX(), y,
-				22 + font.getTextWidth("Dishwasher") + 4 + font.getTextWidth("00:00"), 19 * 3);
+				22 + font.getTextWidth("Dishwasher") + 4 + font.getTextWidth("00:00"), 19 * 2);
 	}
 
 	@Override

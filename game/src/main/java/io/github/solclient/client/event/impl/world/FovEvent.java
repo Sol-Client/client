@@ -8,9 +8,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class FovEvent extends RenderEvent {
 
-	private float fov;
+	private double fov;
 
-	public FovEvent(int fov, float tickDelta) {
+	public FovEvent(double fov, float tickDelta) {
 		super(tickDelta);
 		this.fov = fov;
 	}

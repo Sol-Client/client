@@ -30,8 +30,12 @@ public abstract class ScreenImpl extends AbstractParentElement implements Screen
 
 	@Override
 	public void renderScreen(int mouseX, int mouseY, float tickDelta) {
-		render(SharedObjects.primary2dMatrixStack, mouseX, mouseY, tickDelta);
+																   // polite ignorance
+		render(SharedObjects.primary2dMatrixStack, mouseX, mouseY, client.getLastFrameDuration());
 	}
+
+	@Shadow
+	protected net.minecraft.client.MinecraftClient client;
 
 	@Shadow
 	public abstract void render(MatrixStack stack, int mouseX, int mouseY, float tickDelta);

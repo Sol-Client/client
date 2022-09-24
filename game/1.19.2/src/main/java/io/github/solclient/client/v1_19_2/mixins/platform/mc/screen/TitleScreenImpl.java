@@ -1,15 +1,15 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.screen;
 
-import io.github.solclient.client.v1_19_2.SharedObjects;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
+import io.github.solclient.client.v1_19_2.SharedObjects;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 
 @Mixin(net.minecraft.client.gui.screen.TitleScreen.class)
 public abstract class TitleScreenImpl extends Screen implements TitleScreen {
@@ -23,7 +23,7 @@ public abstract class TitleScreenImpl extends Screen implements TitleScreen {
 	@Override
 	public void renderTitlePanorama(int x, int y, float tickDelta) {
 		earlyExit = true;
-		render(SharedObjects.primary2dMatrixStack, x, y, tickDelta);
+		render(SharedObjects.primary2dMatrixStack, x, y, client.getLastFrameDuration());
 		earlyExit = false;
 	}
 

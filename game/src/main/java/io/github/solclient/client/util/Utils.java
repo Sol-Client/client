@@ -321,6 +321,7 @@ public class Utils {
 	}
 
 	// Code duplication required
+	// thanks for not having proper templates <3
 
 	public float clamp(float input, float min, float max) {
 		return input > max ? max : (input < min ? min : input);

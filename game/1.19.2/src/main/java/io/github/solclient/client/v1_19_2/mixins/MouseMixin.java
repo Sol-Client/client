@@ -7,11 +7,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
+
 import io.github.solclient.client.Client;
+import io.github.solclient.client.event.impl.input.CameraRotateEvent;
 import io.github.solclient.client.event.impl.input.MouseDownEvent;
 import io.github.solclient.client.event.impl.input.ScrollWheelEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
+import net.minecraft.client.network.ClientPlayerEntity;
 
 @Mixin(Mouse.class)
 public class MouseMixin {
@@ -40,5 +44,10 @@ public class MouseMixin {
 
 	@Shadow
 	private double eventDeltaWheel;
+
+	@WrapWithCondition(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V"), require = 1)
+	public boolean cancelMouseMovement(ClientPlayerEntity instance, double x, double y) {
+		return !Client.INSTANCE.getBus().post(new CameraRotateEvent((float) x, (float) y)).isCancelled();
+	}
 
 }

@@ -72,6 +72,7 @@
 		"accessor.MinecraftClientAccessor",
 		"gui.hud.InGameHudMixin",
 		"gui.screen.TitleScreenMixin",
+		"render.CameraMixin",
 		"render.GameRendererMixin",
 		"resource.language.TranslationStorageMixin",
 		"resource.language.LanguageManagerMixin",

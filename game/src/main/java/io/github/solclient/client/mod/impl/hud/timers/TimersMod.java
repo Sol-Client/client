@@ -33,6 +33,13 @@ public class TimersMod extends HudMod {
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("mm:ss");
 	private static final int TIMER_HEIGHT = 19;
 
+	private static final Map<Long, Timer> DEFAULT_TIMERS = new HashMap<>();
+
+	static {
+		DEFAULT_TIMERS.put(0L, new Timer("Diamond II", ItemStack.create(ItemType.DIAMOND)));
+		DEFAULT_TIMERS.put(1L, new Timer("Emerald II", ItemStack.create(ItemType.EMERALD)));
+	}
+
 	private final Map<Long, Timer> timers = new HashMap<>();
 
 	@Expose
@@ -69,7 +76,7 @@ public class TimersMod extends HudMod {
 				y -= (TIMER_HEIGHT * 2) * getScale();
 		}
 		return new Rectangle(position.getX(), y,
-				22 + font.getTextWidth("Dishwasher") + 4 + font.getTextWidth("00:00"), 19 * 2);
+				22 + font.getTextWidth(DEFAULT_TIMERS.get(0L).getName()) + 4 + font.getTextWidth("00:00"), 19 * 2);
 	}
 
 	@Override
@@ -77,9 +84,7 @@ public class TimersMod extends HudMod {
 		super.render(position, editMode);
 		Map<Long, Timer> timers;
 		if(editMode) {
-			timers = new HashMap<>();
-			timers.put(0L, new Timer("Diamond II", ItemStack.create(ItemType.DIAMOND)));
-			timers.put(1L, new Timer("Emerald II", ItemStack.create(ItemType.EMERALD)));
+			timers = DEFAULT_TIMERS;
 		}
 		else {
 			timers = this.timers;
@@ -127,6 +132,7 @@ public class TimersMod extends HudMod {
 		String type = message.substring(0, message.indexOf('|'));
 		JsonObject data = JsonParser.parseString(message.substring(message.indexOf('|') + 1)).getAsJsonObject();
 
+		// uses longs for some reason
 		long id = -1;
 		if(data.has("id")) {
 			id = data.get("id").getAsLong();

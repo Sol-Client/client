@@ -1,14 +1,12 @@
 package io.github.solclient.client.wrapper.mixin;
 
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Collections;
 
 import org.spongepowered.asm.launch.platform.container.ContainerHandleVirtual;
 import org.spongepowered.asm.launch.platform.container.IContainerHandle;
 import org.spongepowered.asm.logging.ILogger;
-import org.spongepowered.asm.logging.LoggerAdapterConsole;
 import org.spongepowered.asm.mixin.MixinEnvironment.CompatibilityLevel;
 import org.spongepowered.asm.mixin.MixinEnvironment.Phase;
 import org.spongepowered.asm.mixin.transformer.IMixinTransformer;
@@ -20,14 +18,12 @@ import org.spongepowered.asm.service.IMixinAuditTrail;
 import org.spongepowered.asm.service.IMixinInternal;
 import org.spongepowered.asm.service.IMixinService;
 import org.spongepowered.asm.service.ITransformerProvider;
-import org.spongepowered.asm.service.mojang.LoggerAdapterLog4j2;
 import org.spongepowered.asm.util.Constants;
 import org.spongepowered.asm.util.ReEntranceLock;
 
 import io.github.solclient.client.wrapper.WrapperClassLoader;
 import lombok.Getter;
 
-@SuppressWarnings("unchecked")
 public class ClientMixinService implements IMixinService {
 
 	@Getter
@@ -112,11 +108,11 @@ public class ClientMixinService implements IMixinService {
 		return null;
 	}
 
-
 	// use bad practices not to feed GC
+	// edit: wow I'm so dumb
 	@Override
 	public Collection<String> getPlatformAgents() {
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -126,7 +122,7 @@ public class ClientMixinService implements IMixinService {
 
 	@Override
 	public Collection<IContainerHandle> getMixinContainers() {
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	@Override

@@ -26,7 +26,6 @@
 
 package io.github.solclient.client.wrapper;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -156,6 +154,14 @@ public class WrapperClassLoader extends ClassLoader {
 
 	public byte[] getModifiedBytes(String name) throws ClassNotFoundException {
 		byte[] data = loadClassData(name);
+
+		if(data == null) {
+			if((data = ClientMixinService.getInstance().getTransformer()
+					.generateClass(MixinEnvironment.getDefaultEnvironment(), name)) == null) {
+				throw new ClassNotFoundException();
+			}
+		}
+
 		String internalName = name.replace(".", "/");
 
 		List<Transformer> applicableTransformers = transformers.stream().filter((transformer) -> transformer.willModify(internalName)).collect(Collectors.toList());
@@ -174,13 +180,6 @@ public class WrapperClassLoader extends ClassLoader {
 				ClassWriter writer = new ClassWriter(0);
 				node.accept(writer);
 				data = writer.toByteArray();
-
-				try {
-					File file = new File("./" + internalName + ".class");
-					file.getParentFile().mkdirs();
-					FileUtils.writeByteArrayToFile(file, data);
-				}
-				catch(IOException error) {}
 			}
 			catch(ClassNotFoundException | IOException error) {
 				throw new ClassNotFoundException(name, error);
@@ -192,10 +191,6 @@ public class WrapperClassLoader extends ClassLoader {
 		}
 		catch(Throwable error) {
 			throw new ClassNotFoundException(name, error);
-		}
-
-		if(data.length == 0) {
-			throw new ClassNotFoundException(name);
 		}
 
 		return data;
@@ -213,7 +208,7 @@ public class WrapperClassLoader extends ClassLoader {
 			LOGGER.error(error);
 		}
 
-		return new byte[0];
+		return null;
 	}
 
 	@Override

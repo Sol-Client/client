@@ -80,7 +80,7 @@ public class CullTask implements Runnable {
 					lastPos.set(cameraVec.x(), cameraVec.y(), cameraVec.z());
 					Vec3d camera = lastPos;
 					culling.resetCache();
-					boolean spectator = mc.getPlayer().isSpectator();
+					boolean spectator = mc.getPlayer().isSpectatorMode();
 
 					for (int x = -8; x <= 8; x++) {
 						for (int z = -8; z <= 8; z++) {

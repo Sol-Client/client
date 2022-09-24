@@ -1,15 +1,9 @@
 package io.github.solclient.client.platform.mc.world.entity.player;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 
 import io.github.solclient.client.platform.mc.network.Connection;
 import io.github.solclient.client.platform.mc.text.Text;
-import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffect;
-import io.github.solclient.client.platform.mc.world.inventory.Inventory;
-import io.github.solclient.client.platform.mc.world.item.ItemStack;
-import io.github.solclient.client.platform.mc.world.level.chunk.ChunkPos;
 
 public interface LocalPlayer extends ClientPlayer {
 
@@ -38,7 +32,7 @@ public interface LocalPlayer extends ClientPlayer {
 		chat("/" + command);
 	}
 
-	boolean isSpectator();
+	boolean isSpectatorMode();
 
 	void clientSwing();
 

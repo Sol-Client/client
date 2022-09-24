@@ -34,7 +34,7 @@ public class LocalPlayerImpl {
 
 	}
 
-	public boolean platform$isSpectator() {
+	public boolean platform$isSpectatorMode() {
 		// TODO Auto-generated method stub
 		return false;
 	}

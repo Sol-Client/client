@@ -30,8 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -43,13 +41,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
-import org.spongepowered.asm.mixin.transformer.Proxy;
+
+import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 
 import io.github.solclient.client.Constants;
 import io.github.solclient.client.wrapper.mixin.ClientMixinService;
@@ -58,8 +55,6 @@ import io.github.solclient.client.wrapper.transformer.impl.guava.LegacyFuturesTr
 import io.github.solclient.client.wrapper.transformer.impl.guava.LegacyIteratorsTransformer;
 import io.github.solclient.client.wrapper.transformer.impl.guava.LegacyObjectsTransformer;
 import io.github.solclient.client.wrapper.transformer.impl.mc.PackageAccessFixer;
-import lombok.Getter;
-import lombok.SneakyThrows;
 
 /**
  * A class loader which modifies classes and applies mixins.
@@ -78,6 +73,7 @@ public class WrapperClassLoader extends ClassLoader {
 		registerDefaultTransformers();
 
 		MixinBootstrap.init();
+		MixinExtrasBootstrap.init();
 	}
 
 	private void addDefaultExclusions() {

@@ -47,7 +47,7 @@ public class MouseMixin {
 
 	@WrapWithCondition(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V"), require = 1)
 	public boolean cancelMouseMovement(ClientPlayerEntity instance, double x, double y) {
-		return !Client.INSTANCE.getBus().post(new CameraRotateEvent((float) x, (float) y)).isCancelled();
+		return !Client.INSTANCE.getBus().post(new CameraRotateEvent((float) x, (float) -y)).isCancelled();
 	}
 
 }

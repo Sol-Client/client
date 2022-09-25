@@ -108,7 +108,7 @@ public class FreelookMod extends Mod {
 			float pitch = event.getPitch();
 			event.cancel();
 
-			if(invertPitch) {
+			if(!invertPitch) {
 				pitch = -pitch;
 			}
 			if(invertYaw) {

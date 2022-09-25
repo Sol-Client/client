@@ -145,14 +145,14 @@ public class KeystrokesMod extends HudMod {
 			GlStateManager.enableBlend();
 			GlStateManager.resetColour();
 
-			mc.getTextureManager().bind(Identifier.solClient("mod/keystrokes/mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
+			mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_keystrokes_mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
 			DrawableHelper.fillTexturedRect(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
 
 			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * tickDelta)) - 5;
 			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * tickDelta)) - 5;
 			GlStateManager.translate(calculatedMouseX, calculatedMouseY, 0);
 
-			mc.getTextureManager().bind(Identifier.solClient("mod/keystrokes/mouse_ring_" + Utils.getTextureScale() + ".png"));
+			mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_keystrokes_mouse_ring_" + Utils.getTextureScale() + ".png"));
 			DrawableHelper.fillTexturedRect(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
 
 			GlStateManager.popMatrix();

@@ -105,8 +105,8 @@ public class KeystrokesMod extends HudMod {
 	public void setAngles(CameraRotateEvent event) {
 		mouseX += event.getYaw() / 40F;
 		mouseY -= event.getPitch() / 40F;
-		mouseX = Utils.clamp(mouseX, -(space.width / 2) + 4, space.width / 2 - 4);
-		mouseY = Utils.clamp(mouseY, -34 / 2 + 4, 34 / 2 - 4);
+		mouseX = Utils.clamp(mouseX, -(space.width / 2) + 5, space.width / 2 - 4);
+		mouseY = Utils.clamp(mouseY, -34 / 2 + 5, 34 / 2 - 5);
 	}
 
 	@EventHandler

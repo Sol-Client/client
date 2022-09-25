@@ -37,7 +37,7 @@ public abstract class StatusEffectTypeImpl {
 @Mixin(StatusEffectType.class)
 interface StatusEffectTypeImpl$Static {
 
-	@Overwrite
+	@Overwrite(remap = false)
 	static StatusEffectType get(String name) {
 		switch(name) {
 			case "SPEED":

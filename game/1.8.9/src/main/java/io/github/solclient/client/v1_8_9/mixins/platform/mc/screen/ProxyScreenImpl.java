@@ -17,7 +17,7 @@ public abstract class ProxyScreenImpl extends Screen {
 
 	private char currentCharacter;
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public void renderScreen(int mouseX, int mouseY, float tickDelta) {
 		super.render(mouseX, mouseY, tickDelta);
 	}
@@ -27,13 +27,13 @@ public abstract class ProxyScreenImpl extends Screen {
 		renderScreen(mouseX, mouseY, tickDelta);
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public boolean keyDown(int code, int scancode, int mods) {
 		super.keyPressed(currentCharacter, code);
 		return false;
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public void characterTyped(char character, int key) {
 		// no call to super is currently necessary.
 	}
@@ -81,7 +81,7 @@ public abstract class ProxyScreenImpl extends Screen {
 		}
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public boolean mouseDown(int x, int y, int button) {
 		super.mouseClicked(x, y, button);
 		return false;
@@ -92,7 +92,7 @@ public abstract class ProxyScreenImpl extends Screen {
 		mouseDown(mouseX, mouseY, button);
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public boolean mouseUp(int x, int y, int button) {
 		super.mouseReleased(x, y, button);
 		return false;
@@ -113,10 +113,10 @@ public abstract class ProxyScreenImpl extends Screen {
 		}
 	}
 
-	@Shadow
+	@Shadow(remap = false)
 	public abstract void scroll(int by);
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public void initScreen() {
 		super.init();
 		mc = (MinecraftClient) client;
@@ -135,15 +135,15 @@ public abstract class ProxyScreenImpl extends Screen {
 		onClose();
 	}
 
-	@Shadow
+	@Shadow(remap = false)
 	public void onClose() {}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	protected final void renderDefaultBackground() {
 		renderBackground(0);
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public void tickScreen() {
 		super.tick();
 	}
@@ -158,16 +158,16 @@ public abstract class ProxyScreenImpl extends Screen {
 		return pausesGame();
 	}
 
-	@Shadow
+	@Shadow(remap = false)
 	protected abstract boolean pausesGame();
 
-	@Shadow
+	@Shadow(remap = false)
 	protected int width, height;
 
-	@Shadow
+	@Shadow(remap = false)
 	protected MinecraftClient mc;
 
-	@Shadow
+	@Shadow(remap = false)
 	protected Font font;
 
 }

@@ -19,7 +19,7 @@ public abstract class ProxyScreenImpl extends Screen {
 		super(text);
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public void renderScreen(int mouseX, int mouseY, float tickDelta) {
 		super.render(SharedObjects.primary2dMatrixStack, mouseX, mouseY, client.getLastFrameDuration());
 	}
@@ -29,7 +29,7 @@ public abstract class ProxyScreenImpl extends Screen {
 		renderScreen(mouseX, mouseY, client.getTickDelta());
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public boolean characterTyped(char character, int key) {
 		return super.charTyped(character, key);
 	}
@@ -39,7 +39,7 @@ public abstract class ProxyScreenImpl extends Screen {
 		return characterTyped(character, key);
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public boolean keyDown(int key, int scancode, int mods) {
 		return super.keyPressed(key, scancode, mods);
 	}
@@ -49,7 +49,7 @@ public abstract class ProxyScreenImpl extends Screen {
 		return keyDown(key, scancode, mods);
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public boolean mouseDown(int x, int y, int button) {
 		return super.mouseClicked(x, y, button);
 	}
@@ -59,7 +59,7 @@ public abstract class ProxyScreenImpl extends Screen {
 		return mouseDown((int) mouseX, (int) mouseY, button);
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public boolean mouseUp(int x, int y, int button) {
 		return super.mouseReleased(x, y, button);
 	}
@@ -85,10 +85,10 @@ public abstract class ProxyScreenImpl extends Screen {
 		return super.mouseScrolled(d, e, f);
 	}
 
-	@Shadow
+	@Shadow(remap = false)
 	public abstract void scroll(int by);
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public void initScreen() {
 		super.init();
 		mc = (MinecraftClient) client;
@@ -107,15 +107,15 @@ public abstract class ProxyScreenImpl extends Screen {
 		onClose();
 	}
 
-	@Shadow
+	@Shadow(remap = false)
 	public void onClose() {}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	protected final void renderDefaultBackground() {
 		renderBackground(SharedObjects.primary2dMatrixStack, 0);
 	}
 
-	@Overwrite
+	@Overwrite(remap = false)
 	public void tickScreen() {
 		super.tick();
 	}
@@ -130,16 +130,16 @@ public abstract class ProxyScreenImpl extends Screen {
 		return pausesGame();
 	}
 
-	@Shadow
+	@Shadow(remap = false)
 	protected abstract boolean pausesGame();
 
-	@Shadow
+	@Shadow(remap = false)
 	protected int width, height;
 
-	@Shadow
+	@Shadow(remap = false)
 	protected MinecraftClient mc;
 
-	@Shadow
+	@Shadow(remap = false)
 	protected Font font;
 
 }

@@ -1,24 +1,95 @@
+import java.io.IOException
+import java.nio.charset.StandardCharsets
+
+import org.gradle.api.file.FileTreeElement
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
+import com.github.jengelman.gradle.plugins.shadow.transformers.TransformerContext
+
+import io.toadlabs.jfgjds.JsonDeserializer
+import io.toadlabs.jfgjds.JsonSerializer
+import io.toadlabs.jfgjds.data.JsonObject
+import shadow.org.apache.tools.zip.ZipEntry
+import shadow.org.apache.tools.zip.ZipOutputStream
+
+buildscript {
+	repositories {
+		maven { url "https://jitpack.io" }
+	}
+
+	dependencies {
+		classpath "com.github.TheKodeToad:jfgjds:174fb804af"
+	}
+}
+
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+	id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 configurations {
-    flatShadow
-    flatShadow.transitive false
+	flatShadow
+	flatShadow.transitive false
 }
 
 jar {
-    enabled = false
-    dependsOn shadowJar
+	enabled = false
+	dependsOn shadowJar
 }
 
+final class MixinNonRequiredTransformer implements Transformer {
+
+	private String path
+	private JsonObject object
+
+	@Override
+	public boolean canTransformResource(FileTreeElement element) {
+		return element.getName().matches("(.+-)?mixins(-.+)?\\.json")
+	}
+
+	@Override
+	public void transform(TransformerContext context) {
+		path = context.getPath()
+		try {
+			object = JsonDeserializer.read(context.getIs(), StandardCharsets.UTF_8).asObject()
+		}
+		catch(IOException error) {
+			throw new Error(error)
+		}
+		object.put("required", false);
+		object.computeIfAbsent("injectors", JsonObject.DEFAULT_COMPUTION).asObject().put("defaultRequire", 0)
+		object.computeIfAbsent("overwrites", JsonObject.DEFAULT_COMPUTION).asObject().put("requireAnnotations", false)
+	}
+
+	@Override
+	public boolean hasTransformedResource() {
+		return path != null
+	}
+
+	@Override
+	public void modifyOutputStream(ZipOutputStream out, boolean preserveFileTimestamps) {
+		try {
+			ZipEntry entry = new ZipEntry(path)
+			out.putNextEntry(entry)
+			JsonSerializer.write(object, out, StandardCharsets.UTF_8)
+
+			path = object = null
+		}
+		catch(IOException error) {
+			throw new Error(error) // what am I supposed to do with this exception?
+		}
+	}
+
+}
+
+
 shadowJar {
-    classifier null
-    configurations = [ project.configurations.flatShadow ]
+	classifier null
+	configurations = [project.configurations.flatShadow]
+	transform MixinNonRequiredTransformer // prevent mixin from throwing exception in final version.
 }
 
 dependencies {
-    flatShadow project(":")
-    flatShadow project(":1.8.9")
-    flatShadow project(":1.19.2")
+	flatShadow project(":")
+	flatShadow project(":1.8.9")
+	flatShadow project(":1.19.2")
 }

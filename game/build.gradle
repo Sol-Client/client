@@ -66,6 +66,12 @@ subprojects {
 	if(versionProject) {
 		apply plugin: "io.freefair.lombok"
 		apply plugin: "org.quiltmc.loom"
+
+		compileJava {
+			options.compilerArgs += [
+				"-AMSG_TARGET_VALIDATOR=disabled"
+			]
+		}
 	}
 	
 	dependencies {

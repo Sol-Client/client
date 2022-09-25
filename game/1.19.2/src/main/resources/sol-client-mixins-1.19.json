@@ -79,5 +79,14 @@
 		"resource.DefaultResourcePackMixin",
 		"MinecraftClientMixin",
 		"MouseMixin"
-	]
+	],
+	"comment": "Disabled in final build",
+	"required": true,
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true,
+		"requireAnnotations_comment": "Thx llamalad7"
+	}
 }

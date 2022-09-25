@@ -40,7 +40,7 @@ public class OperatingSystemImpl implements OperatingSystem {
 @Mixin(OperatingSystem.class)
 interface OperatingSystemImpl$Static {
 
-	@Overwrite
+	@Overwrite(remap = false)
 	static OperatingSystem get(String name) {
 		return (OperatingSystem) (Object) Util.OperatingSystem.valueOf(name);
 	}

@@ -41,7 +41,7 @@ public class OperatingSystemImpl implements OperatingSystem {
 interface OperatingSystemImpl$Static {
 
 
-	@Overwrite
+	@Overwrite(remap = false)
 	static OperatingSystem get(String name) {
 		return (OperatingSystem) (Object) Util.OperatingSystem.valueOf(name);
 	}

@@ -1,21 +1,21 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.util;
 
-import io.github.solclient.client.v1_19_2.SharedObjects;
-import net.minecraft.SharedConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 
 import io.github.solclient.client.platform.mc.maths.Vec3d;
 import io.github.solclient.client.platform.mc.util.MinecraftUtil;
 import io.github.solclient.client.platform.mc.util.OperatingSystem;
 import lombok.experimental.UtilityClass;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Util;
-import org.spongepowered.asm.mixin.Overwrite;
 
 @UtilityClass
 @Mixin(MinecraftUtil.class)
+@SuppressWarnings("resource")
 public class MinecraftUtilImpl {
 
 	@Overwrite(remap = false)

@@ -74,6 +74,7 @@
 		"gui.screen.TitleScreenMixin",
 		"render.CameraMixin",
 		"render.GameRendererMixin",
+		"render.LightmapTextureManagerMixin",
 		"resource.language.TranslationStorageMixin",
 		"resource.language.LanguageManagerMixin",
 		"resource.DefaultResourcePackMixin",

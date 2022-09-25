@@ -13,12 +13,10 @@ public abstract class ClientLevelImpl implements ClientLevel {
 
 	@Override
 	public @NotNull Iterable<Entity> getRenderedEntities() {
-		// oh wait type erasure moment we could have just used the correct type in the
-		// shadow field moment
-		return (Iterable) getEntities();
+		return getEntities();
 	}
 
 	@Shadow
-	public abstract Iterable<net.minecraft.entity.Entity> getEntities();
+	public abstract Iterable<Entity> getEntities();
 
 }

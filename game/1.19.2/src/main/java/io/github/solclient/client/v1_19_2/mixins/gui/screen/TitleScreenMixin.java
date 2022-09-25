@@ -1,6 +1,5 @@
 package io.github.solclient.client.v1_19_2.mixins.gui.screen;
 
-import io.github.solclient.client.ui.screen.TestScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

@@ -42,7 +42,7 @@ interface OperatingSystemImpl$Static {
 
 	@Overwrite(remap = false)
 	static OperatingSystem get(String name) {
-		return (OperatingSystem) Util.OperatingSystem.valueOf(name);
+		return (OperatingSystem) (Object) Util.OperatingSystem.valueOf(name);
 	}
 
 }

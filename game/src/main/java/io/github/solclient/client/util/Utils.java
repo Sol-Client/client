@@ -89,9 +89,9 @@ public class Utils {
 
 	public void scissor(double x, double y, double width, double height) {
 		Window window = MinecraftClient.getInstance().getWindow();
-		double scale = window.getScaleFactor();
+		double scale = window.scaleFactor();
 
-		GL11.glScissor((int) (x * scale), (int) ((window.getScaledHeight() - height - y) * scale),
+		GL11.glScissor((int) (x * scale), (int) ((window.scaledHeight() - height - y) * scale),
 				(int) (width * scale), (int) (height * scale));
 	}
 
@@ -116,8 +116,8 @@ public class Utils {
 	public String getTextureScale() {
 		Window window = MinecraftClient.getInstance().getWindow();
 
-		if (window.getScaleFactor() > 0 && window.getScaleFactor() < 5) {
-			return window.getScaleFactor() + "x";
+		if (window.scaleFactor() > 0 && window.scaleFactor() < 5) {
+			return window.scaleFactor() + "x";
 		}
 
 		return "4x";
@@ -180,7 +180,7 @@ public class Utils {
 			}
 		}
 
-		switch(MinecraftUtil.getOperatingSystem().getOrdinal()) {
+		switch(MinecraftUtil.getOperatingSystem().enumOrdinal()) {
 			case 0: // Linux
 				if(reveal) {
 					if(new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {

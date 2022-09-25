@@ -19,13 +19,13 @@ public class HudPosition {
 
 	public Position toAbsolute() {
 		Window window = MinecraftClient.getInstance().getWindow();
-		return new Position((int) (window.getScaledWidth() * x), (int) (window.getScaledHeight() * y));
+		return new Position((int) (window.scaledWidth() * x), (int) (window.scaledHeight() * y));
 	}
 
 	public static HudPosition fromAbsolute(Position absolute) {
 		Window window = MinecraftClient.getInstance().getWindow();
-		return new HudPosition((float) (absolute.getX() / window.getScaledWidthD()),
-				(float) (absolute.getY() / window.getScaledHeightD()));
+		return new HudPosition((float) (absolute.getX() / window.scaledWidthD()),
+				(float) (absolute.getY() / window.scaledHeightD()));
 	}
 
 }

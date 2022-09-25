@@ -52,7 +52,7 @@ public class TrueTypeFont implements Font, Closeable {
 		textureId = GL11.glGenTextures();
 
 		int bitmapWidth = 512, bitmapHeight = 512;
-		int scale = MinecraftClient.getInstance().getWindow().getScaleFactor();
+		int scale = MinecraftClient.getInstance().getWindow().scaleFactor();
 		bitmapWidth *= scale;
 		bitmapHeight *= scale;
 

@@ -11,12 +11,12 @@ import net.minecraft.util.Util;
 public class OperatingSystemImpl implements OperatingSystem {
 
 	@Override
-	public String getName() {
+	public String enumName() {
 		return toEnum().name();
 	}
 
 	@Override
-	public int getOrdinal() {
+	public int enumOrdinal() {
 		return toEnum().ordinal();
 	}
 
@@ -42,7 +42,7 @@ interface OperatingSystemImpl$Static {
 
 	@Overwrite(remap = false)
 	static OperatingSystem get(String name) {
-		return (OperatingSystem) (Object) Util.OperatingSystem.valueOf(name);
+		return (OperatingSystem) Util.OperatingSystem.valueOf(name);
 	}
 
 }

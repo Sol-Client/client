@@ -67,8 +67,8 @@ public class CrosshairMod extends HudMod {
 
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(getScale(), getScale(), getScale());
-			GlStateManager.translate(window.getScaledWidth() / getScale() / 2 - 7,
-					window.getScaledHeight() / getScale() / 2 - 7, 0);
+			GlStateManager.translate(window.scaledWidth() / getScale() / 2 - 7,
+					window.scaledHeight() / getScale() / 2 - 7, 0);
 
 			crosshairColour.bind();
 

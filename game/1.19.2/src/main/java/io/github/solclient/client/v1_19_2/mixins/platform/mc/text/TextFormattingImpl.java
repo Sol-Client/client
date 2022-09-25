@@ -15,12 +15,12 @@ import net.minecraft.util.Formatting;
 public class TextFormattingImpl implements TextFormatting {
 
 	@Override
-	public String getName() {
+	public String enumName() {
 		return toEnum().name();
 	}
 
 	@Override
-	public int getOrdinal() {
+	public int enumOrdinal() {
 		return toEnum().ordinal();
 	}
 

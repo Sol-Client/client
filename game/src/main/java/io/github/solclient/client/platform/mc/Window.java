@@ -10,18 +10,18 @@ public interface Window {
 		throw new UnsupportedOperationException();
 	}
 
-	int getWidth();
+	int width();
 
-	int getHeight();
+	int height();
 
-	int getScaleFactor();
+	int scaleFactor();
 
-	int getScaledWidth();
+	int scaledWidth();
 
-	int getScaledHeight();
+	int scaledHeight();
 
-	double getScaledWidthD();
+	double scaledWidthD();
 
-	double getScaledHeightD();
+	double scaledHeightD();
 
 }

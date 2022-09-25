@@ -104,7 +104,7 @@ public class ArmourMod extends HudMod {
 	@Override
 	public void render(Position position, boolean editMode) {
 		Window window = mc.getWindow();
-		boolean rtl = !horizontal && position.getX() > window.getScaledWidth() / 2;
+		boolean rtl = !horizontal && position.getX() > window.scaledWidth() / 2;
 
 		int x = position.getX(), y = position.getY();
 

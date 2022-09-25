@@ -8,39 +8,45 @@ import org.spongepowered.asm.mixin.Shadow;
 import io.github.solclient.client.platform.mc.Window;
 
 @Mixin(net.minecraft.client.util.Window.class)
-@Implements(@Interface(iface = Window.class, prefix = "platform$"))
-public class WindowImpl {
+public class WindowImpl implements Window {
 
 	@Shadow
 	private int width, height, scaleFactor;
 	@Shadow
 	private double scaledWidth, scaledHeight;
 
-	public int platform$getWidth() {
+	@Override
+	public int width() {
 		return width;
 	}
 
-	public int platform$getHeight() {
+	@Override
+	public int height() {
 		return height;
 	}
 
-	public int platform$getScaleFactor() {
+	@Override
+	public int scaleFactor() {
 		return scaleFactor;
 	}
 
-	public int platform$getScaledWidth() {
+	@Override
+	public int scaledWidth() {
 		return (int) scaledWidth;
 	}
 
-	public int platform$getScaledHeight() {
+	@Override
+	public int scaledHeight() {
 		return (int) scaledHeight;
 	}
 
-	public double platform$getScaledWidthD() {
+	@Override
+	public double scaledWidthD() {
 		return scaledWidth;
 	}
 
-	public double platform$getScaledHeightD() {
+	@Override
+	public double scaledHeightD() {
 		return scaledHeight;
 	}
 

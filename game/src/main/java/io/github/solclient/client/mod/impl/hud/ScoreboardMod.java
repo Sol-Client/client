@@ -104,8 +104,8 @@ public class ScoreboardMod extends Mod {
 
 		int scoresHeight = (scores.size() + 1) * mc.getFont().getHeight() + 1;
 
-		int scaledWidth = mc.getWindow().getScaledWidth();
-		int scaledHeight = mc.getWindow().getScaledHeight();
+		int scaledWidth = mc.getWindow().scaledWidth();
+		int scaledHeight = mc.getWindow().scaledHeight();
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(-3, 0, 0);

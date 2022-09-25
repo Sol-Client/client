@@ -44,12 +44,12 @@ interface ClickEventImpl$Static {
 class ClickEventImpl$ActionImpl implements ClickEvent.Action {
 
 	@Override
-	public String getName() {
+	public String enumName() {
 		return toEnum().name();
 	}
 
 	@Override
-	public int getOrdinal() {
+	public int enumOrdinal() {
 		return toEnum().ordinal();
 	}
 

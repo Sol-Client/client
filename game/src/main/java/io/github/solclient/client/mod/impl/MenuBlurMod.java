@@ -80,7 +80,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@EventHandler
 	public void customScreenBackground(ScreenBackgroundRenderEvent event) {
 		event.cancel();
-		DrawableHelper.fillRect(0, 0, mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight(),
+		DrawableHelper.fillRect(0, 0, mc.getWindow().scaledWidth(), mc.getWindow().scaledHeight(),
 				Utils.lerpColour(0, backgroundColour.getValue(), getProgress()));
 	}
 

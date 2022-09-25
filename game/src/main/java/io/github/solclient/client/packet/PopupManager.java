@@ -44,7 +44,7 @@ public class PopupManager {
 
 				Window window = mc.getWindow();
 
-				Rectangle popupBounds = new Rectangle(window.getScaledWidth() / 2 - (width / 2), 10, width, 50);
+				Rectangle popupBounds = new Rectangle(window.scaledWidth() / 2 - (width / 2), 10, width, 50);
 				popupBounds.fill(new Colour(0, 0, 0, 100));
 				new Rectangle(popupBounds.getX(), popupBounds.getY() + popupBounds.getHeight() - 1, width, 2)
 						.fill(Colour.BLACK);

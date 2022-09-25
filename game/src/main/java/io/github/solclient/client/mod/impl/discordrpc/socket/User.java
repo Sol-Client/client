@@ -78,7 +78,7 @@ public class User {
 	}
 
 	public void bindTexture() {
-		int scale = MinecraftClient.getInstance().getWindow().getScaleFactor();
+		int scale = MinecraftClient.getInstance().getWindow().scaleFactor();
 		TextureManager texman = MinecraftClient.getInstance().getTextureManager();
 
 		GlStateManager.resetColour();

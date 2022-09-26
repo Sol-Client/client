@@ -79,7 +79,8 @@
 		"resource.language.LanguageManagerMixin",
 		"resource.DefaultResourcePackMixin",
 		"MinecraftClientMixin",
-		"MouseMixin"
+		"MouseMixin",
+		"mods.PotionEffectsModMixins$InGameHudMixin"
 	],
 	"comment": "Disabled in final build",
 	"required": true,

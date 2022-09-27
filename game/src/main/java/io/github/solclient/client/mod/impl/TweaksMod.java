@@ -77,8 +77,8 @@ public class TweaksMod extends Mod {
 		super.onDisable();
 		if(borderlessFullscreen && mc.isFullscreen()) {
 			setBorderlessFullscreen(false);
-			mc.toggleFullscreen();
-			mc.toggleFullscreen();
+			mc.toggleFullscreenState();
+			mc.toggleFullscreenState();
 		}
 	}
 
@@ -96,8 +96,8 @@ public class TweaksMod extends Mod {
 				}
 				else {
 					setBorderlessFullscreen(false);
-					mc.toggleFullscreen();
-					mc.toggleFullscreen();
+					mc.toggleFullscreenState();
+					mc.toggleFullscreenState();
 				}
 			}
 		}

@@ -8,6 +8,7 @@
 		"platform.mc.option.KeyBindingImpl",
 		"platform.mc.option.KeyBindingImpl$Static",
 		"platform.mc.option.OptionsImpl",
+		"platform.mc.render.GlStateManagerImpl",
 		"platform.mc.resource.IdentifierImpl",
 		"platform.mc.resource.IdentifierImpl$Static",
 		"platform.mc.resource.ResourceImpl",
@@ -15,6 +16,10 @@
 		"platform.mc.screen.ScreenImpl",
 		"platform.mc.screen.ProxyScreenImpl",
 		"platform.mc.screen.TitleScreenImpl",
+		"platform.mc.sound.SoundEngineImpl",
+		"platform.mc.sound.SoundInstanceImpl",
+		"platform.mc.sound.SoundInstanceImpl$Static",
+		"platform.mc.sound.SoundTypeImpl$Static",
 		"platform.mc.text.ClickEventImpl",
 		"platform.mc.text.ClickEventImpl$Static",
 		"platform.mc.text.ClickEventImpl$ActionImpl",
@@ -25,6 +30,9 @@
 		"platform.mc.text.TextFormattingImpl$Static",
 		"platform.mc.text.TextImpl",
 		"platform.mc.text.TextImpl$Static",
+		"platform.mc.texture.TextureImpl",
+		"platform.mc.texture.TextureImpl$Static",
+		"platform.mc.texture.TextureManagerImpl",
 		"platform.mc.util.InputImpl",
 		"platform.mc.util.MinecraftUtilImpl",
 		"platform.mc.util.OperatingSystemImpl",
@@ -33,8 +41,11 @@
 		"platform.mc.world.entity.effect.StatusEffectImpl$Static",
 		"platform.mc.world.entity.effect.StatusEffectTypeImpl",
 		"platform.mc.world.entity.effect.StatusEffectTypeImpl$Static",
+		"platform.mc.world.item.ItemRendererImpl",
 		"platform.mc.world.item.ItemStackImpl",
 		"platform.mc.world.item.ItemStackImpl$Static",
+		"platform.mc.world.item.ItemTypeImpl",
+		"platform.mc.world.item.ItemTypeImpl$Static",
 		"platform.mc.world.level.block.BlockPosImpl$Static",
 		"platform.mc.world.level.block.BlockStateImpl",
 		"platform.mc.world.level.chunk.ChunkImpl",
@@ -43,10 +54,20 @@
 		"platform.mc.EnvironmentImpl",
 		"platform.mc.MinecraftClientImpl",
 		"platform.mc.MinecraftClientImpl$Static",
+		"platform.mc.TimerImpl",
 		"platform.mc.WindowImpl",
 		"resource.ReloadableResourceManagerImplMixin",
 		"resource.I18nMixin",
 		"screen.TitleScreenMixin",
 		"MinecraftClientMixin"
-	]
+	],
+	"comment": "Disabled in final build",
+	"required": true,
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true,
+		"requireAnnotations_comment": "Thx llamalad7"
+	}
 }

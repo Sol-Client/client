@@ -172,7 +172,7 @@ public class OptionsImpl implements Options {
 	}
 
 	@Override
-	public void save() {
+	public void saveFile() {
 		// TODO Auto-generated method stub
 
 	}

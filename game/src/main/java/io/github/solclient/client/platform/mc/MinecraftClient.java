@@ -132,7 +132,7 @@ public interface MinecraftClient {
 
 	boolean isFullscreen();
 
-	void toggleFullscreen();
+	void toggleFullscreenState();
 
 	@NotNull SoundEngine getSoundEngine();
 

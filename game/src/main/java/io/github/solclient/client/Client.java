@@ -113,7 +113,7 @@ public final class Client {
 
 		LOGGER.info("Loading mods...");
 		DefaultMods.register();
-		LOGGER.info("Loaded {} mods", mods.size());
+		LOGGER.info("Loaded {} mods", new Object[] {mods.size()});
 
 		LOGGER.info("Saving settings...");
 		save();

@@ -34,8 +34,9 @@ public abstract class ProxyScreenImpl extends Screen {
 	}
 
 	@Overwrite(remap = false)
-	public void characterTyped(char character, int key) {
+	public boolean characterTyped(char character, int key) {
 		// no call to super is currently necessary.
+		return false;
 	}
 
 	@Override

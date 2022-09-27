@@ -21,6 +21,7 @@ import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.text.Text;
 
+// TODO stuff
 // Roughly based around
 // https://github.com/LWJGL/lwjgl3/blob/master/modules/samples/src/test/java/org/lwjgl/demo/stb/Truetype.java
 public class TrueTypeFont implements Font, Closeable {
@@ -30,8 +31,6 @@ public class TrueTypeFont implements Font, Closeable {
 	private final int ascent, descent, lineGap;
 
 	public TrueTypeFont(@NotNull InputStream in, float size) throws IOException, IllegalStateException {
-		System.out.println("new");
-
 		buffer = Utils.mallocAndRead(in);
 
 		STBTTFontinfo info = STBTTFontinfo.create();
@@ -153,7 +152,6 @@ public class TrueTypeFont implements Font, Closeable {
 
 	@Override
 	public void close() throws IOException {
-		System.out.println("Bye");
 		MemoryUtil.memFree(buffer);
 		GL11.glDeleteTextures(textureId);
 	}

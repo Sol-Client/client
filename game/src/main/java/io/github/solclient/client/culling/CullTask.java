@@ -86,7 +86,7 @@ public class CullTask implements Runnable {
 						for (int z = -8; z <= 8; z++) {
 							Chunk chunk = mc.getLevel().getChunk(mc.getPlayer().getChunkX() + x,
 									mc.getPlayer().getChunkZ() + z);
-							Iterator<Entry<BlockPos, BlockEntity>> iterator = chunk.getBlockEntities().entrySet()
+							Iterator<Entry<BlockPos, BlockEntity>> iterator = chunk.getBlockEntityMap().entrySet()
 									.iterator();
 							Entry<BlockPos, BlockEntity> entry;
 							while (iterator.hasNext()) {

@@ -8,22 +8,27 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectType;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.entity.effect.StatusEffect;
 
 @Mixin(StatusEffect.class)
 @Implements(@Interface(iface = StatusEffectType.class, prefix = "platform$"))
 public abstract class StatusEffectTypeImpl {
 
-	@Shadow
-	public abstract int method_2444();
+	public void platform$render(int x, int y) {
+		DrawableHelper.drawTexture(x, y, getAtlasU(), getAtlasV(), 8, 8, 8, 8);
+	}
 
-	public float platform$getAtlasU() {
+	private float getAtlasU() {
 		return method_2444() % 8 * 18;
 	}
 
-	public float platform$getAtlasV() {
+	private float getAtlasV() {
 		return 198 + method_2444() / 8 * 18;
 	}
+
+	@Shadow
+	public abstract int method_2444();
 
 	public @NotNull String platform$getName() {
 		return getTranslationKey();

@@ -9,6 +9,6 @@ import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
 
 public interface Chunk {
 
-	@NotNull Map<BlockPos, BlockEntity> getBlockEntities();
+	@NotNull Map<BlockPos, BlockEntity> getBlockEntityMap();
 
 }

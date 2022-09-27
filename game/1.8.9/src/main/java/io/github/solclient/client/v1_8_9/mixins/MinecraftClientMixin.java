@@ -2,7 +2,6 @@ package io.github.solclient.client.v1_8_9.mixins;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
@@ -20,8 +19,7 @@ public class MinecraftClientMixin {
 		return Constants.NAME + " | " + title;
 	}
 
-	@Inject(method = "initializeGame", at = @At(value = "FIELD",
-			target = "Lnet/minecraft/client/MinecraftClient;instance:Lnet/minecraft/client/option/GameOptions;", shift = Shift.BEFORE))
+	@Inject(method = "initializeGame", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;options:Lnet/minecraft/client/options/GameOptions;", shift = At.Shift.AFTER, ordinal = 0))
 	public void init(CallbackInfo callback) {
 		Client.INSTANCE.init();
 	}

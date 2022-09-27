@@ -16,7 +16,7 @@ public class ChunkImpl implements Chunk {
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public @NotNull Map<BlockPos, BlockEntity> getBlockEntities() {
+	public @NotNull Map<BlockPos, BlockEntity> getBlockEntityMap() {
 		return (Map) blockEntities;
 	}
 

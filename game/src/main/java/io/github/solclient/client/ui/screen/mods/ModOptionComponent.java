@@ -92,7 +92,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 						listening = false;
 
-						mc.getOptions().save();
+						mc.getOptions().saveFile();
 						KeyBinding.reload();
 
 						screen.getRoot().onKeyPressed(null);
@@ -111,7 +111,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 						listening = false;
 
-						mc.getOptions().save();
+						mc.getOptions().saveFile();
 						KeyBinding.reload();
 						screen.getRoot().onKeyPressed(null);
 						screen.getRoot().onClickAnwhere(null);

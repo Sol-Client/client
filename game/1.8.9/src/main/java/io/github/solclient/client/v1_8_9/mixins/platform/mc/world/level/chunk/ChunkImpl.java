@@ -18,7 +18,7 @@ import io.github.solclient.client.platform.mc.world.level.chunk.Chunk;
 public class ChunkImpl {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public @NotNull Map<BlockPos, BlockEntity> platform$getBlockEntities() {
+	public @NotNull Map<BlockPos, BlockEntity> platform$getBlockEntityMap() {
 		return (Map) blockEntities;
 	}
 

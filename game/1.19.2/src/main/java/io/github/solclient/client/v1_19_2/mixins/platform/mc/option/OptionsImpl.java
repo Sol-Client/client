@@ -211,7 +211,7 @@ public abstract class OptionsImpl implements Options {
 	public abstract void setKeyCode(net.minecraft.client.option.KeyBinding keyBinding, InputUtil.Key key);
 
 	@Override
-	public void save() {
+	public void saveFile() {
 		write();
 	}
 

@@ -37,17 +37,19 @@ import io.github.solclient.client.platform.mc.world.level.LevelRenderer;
 import io.github.solclient.client.platform.mc.world.particle.ParticleEngine;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.options.GameOptions;
+import net.minecraft.client.render.ClientTickTracker;
+import net.minecraft.client.sound.SoundManager;
 import net.minecraft.resource.ReloadableResourceManager;
 
 @Mixin(net.minecraft.client.MinecraftClient.class)
-public class MinecraftClientImpl implements MinecraftClient {
+public abstract class MinecraftClientImpl implements MinecraftClient {
 
 	@Override
 	public @NotNull Window getWindow() {
 		return (Window) window;
 	}
 
-	@Inject(method = "onResolutionChanged", at = @At("RETURN"))
+	@Inject(method = {"onResolutionChanged", "initializeGame"}, at = @At("RETURN"))
 	public void updateWindow(CallbackInfo callback) {
 		window = new net.minecraft.client.util.Window((net.minecraft.client.MinecraftClient) (Object) this);
 	}
@@ -94,9 +96,11 @@ public class MinecraftClientImpl implements MinecraftClient {
 
 	@Override
 	public @NotNull File getDataFolder() {
-		// TODO Auto-generated method stub
-		return null;
+		return runDirectory;
 	}
+
+	@Shadow
+	public @Final File runDirectory;
 
 	@Override
 	public @NotNull File getPackFolder() {
@@ -114,15 +118,19 @@ public class MinecraftClientImpl implements MinecraftClient {
 
 	@Override
 	public @Nullable Screen getScreen() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Screen) currentScreen;
 	}
+
+	@Shadow
+	public net.minecraft.client.gui.screen.Screen currentScreen;
 
 	@Override
 	public void setScreen(@Nullable Screen screen) {
-		// TODO Auto-generated method stub
-
+		openScreen((net.minecraft.client.gui.screen.Screen) screen);
 	}
+
+	@Shadow
+	public abstract void openScreen(net.minecraft.client.gui.screen.Screen screen);
 
 	@Override
 	public boolean isInMenu() {
@@ -208,9 +216,12 @@ public class MinecraftClientImpl implements MinecraftClient {
 
 	@Override
 	public @NotNull Timer getTimer() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Timer) tricker;
 	}
+
+	// :P tongue twister
+	@Shadow
+	private ClientTickTracker tricker;
 
 	@Override
 	public @NotNull EntityRenderDispatcher getEntityRenderDispatcher() {
@@ -237,16 +248,18 @@ public class MinecraftClientImpl implements MinecraftClient {
 	}
 
 	@Override
-	public void toggleFullscreen() {
+	public void toggleFullscreenState() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public @NotNull SoundEngine getSoundEngine() {
-		// TODO Auto-generated method stub
-		return null;
+		return (SoundEngine) getSoundManager();
 	}
+
+	@Shadow
+	public abstract SoundManager getSoundManager();
 
 	@Override
 	public @Nullable TitleScreen getTitleScreen() {

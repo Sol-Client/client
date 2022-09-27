@@ -60,10 +60,9 @@ public interface Options {
 
 	void unbindKey(@NotNull KeyBinding binding);
 
-	void save();
+	void saveFile();
 
 	/**
-	 *
 	 * @return Language code in lower-case format. For example <code>en_us</code>.
 	 */
 	@NotNull String languageCode();

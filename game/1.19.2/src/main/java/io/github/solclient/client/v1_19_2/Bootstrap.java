@@ -8,7 +8,7 @@ import io.github.solclient.client.wrapper.WrapperClassLoader;
 public class Bootstrap {
 
 	public static void init(WrapperClassLoader loader) {
-		Mixins.addConfiguration("sol-client-mixins-1.19.json");
+		Mixins.addConfiguration("sol-client-mixins-1.19.2.json");
 		loader.registerTransformer(new ProxyScreenTransformer());
 	}
 

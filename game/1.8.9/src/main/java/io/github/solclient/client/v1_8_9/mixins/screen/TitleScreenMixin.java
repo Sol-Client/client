@@ -2,7 +2,6 @@ package io.github.solclient.client.v1_8_9.mixins.screen;
 
 import java.io.IOException;
 
-import io.github.solclient.client.ui.screen.TestScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +32,7 @@ public class TitleScreenMixin extends Screen {
 	@Redirect(method = "buttonClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;"
 			+ "switchToRealms()V"))
 	public void openModsMenu(TitleScreen screen) throws IllegalStateException, IOException {
-		client.openScreen((Screen) (Object) new TestScreen());
+		client.openScreen((Screen) (Object) new ModsScreen());
 	}
 
 }

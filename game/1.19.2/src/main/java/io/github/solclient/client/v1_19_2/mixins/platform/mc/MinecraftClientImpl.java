@@ -237,7 +237,7 @@ public abstract class MinecraftClientImpl {
 		return false;
 	}
 
-	public void platform$toggleFullscreen() {
+	public void platform$toggleFullscreenState() {
 		// TODO Auto-generated method stub
 
 	}

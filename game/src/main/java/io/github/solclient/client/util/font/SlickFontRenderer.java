@@ -148,6 +148,9 @@ public class SlickFontRenderer implements Font {
 
 	@SuppressWarnings("unchecked")
 	private void loadFont() {
+		if(slickFont != null) {
+			free();
+		}
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 		scaleFactor = resolution.getScaleFactor();
 

@@ -71,6 +71,7 @@
 		"accessor.option.KeyBindingAccessor",
 		"accessor.MinecraftClientAccessor",
 		"gui.hud.InGameHudMixin",
+		"gui.screen.GameMenuScreenMixin",
 		"gui.screen.TitleScreenMixin",
 		"render.CameraMixin",
 		"render.GameRendererMixin",

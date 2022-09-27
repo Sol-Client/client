@@ -27,7 +27,7 @@ public class TitleScreenMixin extends Screen {
 	public void addModButton(CallbackInfo callback) {
 		addDrawableChild(new ButtonWidget(width / 2 - 100, height / 4 + 120, 200, 20,
 				Text.translatable("sol_client.mod.screen.title"),
-				(button) -> client.setScreen((Screen) (Object) new ModsScreen())));
+				(ignored) -> client.setScreen((Screen) (Object) new ModsScreen())));
 	}
 
 	@Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;"))

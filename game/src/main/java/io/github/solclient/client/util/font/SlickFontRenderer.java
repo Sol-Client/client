@@ -74,7 +74,9 @@ public class SlickFontRenderer implements Font {
 
 	@Override
 	public int renderString(String text, float x, float y, int colour) {
-		if(text == null || slickFont == null) return 0;
+		if(text == null || slickFont == null) {
+			return 0;
+		}
 
 		x = (int) x;
 		y = (int) y;
@@ -148,13 +150,14 @@ public class SlickFontRenderer implements Font {
 
 	@SuppressWarnings("unchecked")
 	private void loadFont() {
-		if(slickFont != null) {
-			free();
-		}
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 		scaleFactor = resolution.getScaleFactor();
 
 		if(scaleFactor != prevScaleFactor) {
+			if(slickFont != null) {
+				free();
+			}
+
 			try {
 				prevScaleFactor = resolution.getScaleFactor();
 				slickFont = new UnicodeFont(getFontFromInput(name).deriveFont(size * prevScaleFactor / 2));
@@ -166,7 +169,7 @@ public class SlickFontRenderer implements Font {
 
 				// Vietnamese
 				slickFont.addGlyphs(0x0041, 0x005A);
-				slickFont.addGlyphs(0x0061, 0x007A);
+				slickFont.addGlyphs(0x0061, 0x007A);``
 				slickFont.addGlyphs(0x00C0, 0x00C3);
 				slickFont.addGlyphs(0x00C8, 0x00CA);
 				slickFont.addGlyphs(0x00CC, 0x00CD);

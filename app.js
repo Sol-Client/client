@@ -3,9 +3,8 @@ const Utils = require("./utils");
 const Config = require("./config");
 const launcher = Launcher.instance;
 const { ipcRenderer, shell } = require("electron");
-const { MicrosoftAuthService, YggdrasilAuthService, Account, AccountManager } = require("./auth");
+const { MicrosoftAuthService, Account, AccountManager } = require("./auth");
 const microsoftAuthService = MicrosoftAuthService.instance;
-const yggdrasilAuthService = YggdrasilAuthService.instance;
 const fs = require("fs");
 const msmc = require("msmc");
 const os = require("os");
@@ -39,11 +38,9 @@ window.addEventListener("DOMContentLoaded", async() => {
 	const playButton = document.getElementById("launch-button");
 	const launchNote = document.getElementById("launch-note");
 	const microsoftLoginButton = document.querySelector(".microsoft-login-button");
-	const mojangLoginButton = document.querySelector(".mojang-login-button");
 	const accountButton = document.querySelector(".account-button");
 
 	const login = document.querySelector(".login");
-	const mojangLogin = document.querySelector(".mojang-login");
 	const main = document.querySelector(".main");
 	const accounts = document.querySelector(".accounts");
 	const backToMain = document.querySelector(".back-to-main-button");
@@ -245,13 +242,6 @@ window.addEventListener("DOMContentLoaded", async() => {
 		updateAccounts();
 	})
 
-	mojangLoginButton.onclick = () => {
-		if(!loggingIn) {
-			login.style.display = "none";
-			mojangLogin.style.display = "block";
-		}
-	};
-
 	async function play(server) {
 		if(!launching) {
 			launching = true;
@@ -285,11 +275,6 @@ window.addEventListener("DOMContentLoaded", async() => {
 	}
 
 	playButton.onclick = () => play();
-
-	document.querySelector(".back-to-login-button").onclick = () => {
-		mojangLogin.style.display = "none";
-		login.style.display = "block";
-	};
 
 	document.querySelector(".about-tab").onclick = () => switchToTab("about");
 	document.querySelector(".settings-tab").onclick = () => switchToTab("settings");
@@ -425,33 +410,9 @@ window.addEventListener("DOMContentLoaded", async() => {
 		currentTab = tab;
 	}
 
-	const loginButtonMojang = document.querySelector(".login-button-mojang");
 	const emailField = document.getElementById("username");
 	const passwordField = document.getElementById("password");
 	const errorMessage = document.querySelector(".error-message");
-
-	loginButtonMojang.onclick = async() => {
-		if(!loggingIn) {
-			loggingIn = true;
-			loginButtonMojang.innerText = "...";
-			try {
-				let account = await yggdrasilAuthService.authenticateUsernamePassword(emailField.value, passwordField.value);
-				launcher.accountManager.addAccount(account);
-				mojangLogin.style.display = "none";
-				main.style.display = "block";
-				emailField.value = "";
-				passwordField.value = "";
-				errorMessage.innerText = "";
-				updateAccount();
-				updateAccounts();
-			}
-			catch(error) {
-				errorMessage.innerText = "Could not log in";
-			}
-			loginButtonMojang.innerText = "Log In";
-			loggingIn = false;
-		}
-	};
 
 	for(let element of document.querySelectorAll(".open-in-browser")) {
 		const href = element.href;

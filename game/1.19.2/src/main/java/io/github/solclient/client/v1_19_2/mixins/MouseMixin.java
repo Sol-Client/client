@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.impl.input.CameraRotateEvent;
 import io.github.solclient.client.event.impl.input.MouseDownEvent;
 import io.github.solclient.client.event.impl.input.ScrollWheelEvent;
@@ -26,7 +26,7 @@ public class MouseMixin {
 		// let's hope that it is
 		// otherwise Bad Things will happen
 		if(action == 1 && client.currentScreen == null) {
-			if(Client.INSTANCE.getBus().post(new MouseDownEvent(button)).isCancelled()) {
+			if(EventBus.DEFAULT.post(new MouseDownEvent(button)).isCancelled()) {
 				callback.cancel();
 			}
 		}
@@ -37,7 +37,7 @@ public class MouseMixin {
 
 	@Inject(method = "onMouseScroll", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7), cancellable = true)
 	public void preMouseScroll(CallbackInfo callback) {
-		if(Client.INSTANCE.getBus().post(new ScrollWheelEvent((int) eventDeltaWheel)).isCancelled()) {
+		if(EventBus.DEFAULT.post(new ScrollWheelEvent((int) eventDeltaWheel)).isCancelled()) {
 			callback.cancel();
 		}
 	}
@@ -47,7 +47,7 @@ public class MouseMixin {
 
 	@WrapWithCondition(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V"), require = 1)
 	public boolean cancelMouseMovement(ClientPlayerEntity instance, double x, double y) {
-		return !Client.INSTANCE.getBus().post(new CameraRotateEvent((float) x, (float) -y)).isCancelled();
+		return !EventBus.DEFAULT.post(new CameraRotateEvent((float) x, (float) -y)).isCancelled();
 	}
 
 }

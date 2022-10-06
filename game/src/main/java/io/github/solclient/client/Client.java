@@ -77,9 +77,6 @@ public final class Client {
 
 	public DetectedServer detectedServer;
 
-	@Getter
-	private EventBus bus = new EventBus();
-
 	private final Map<Identifier, Supplier<String>> resources = new HashMap<>();
 	private final Map<String, Command> commands = new HashMap<>();
 	private final List<ChatButton> chatButtons = new ArrayList<>();
@@ -99,7 +96,7 @@ public final class Client {
 		System.setProperty("http.agent", "Sol Client/" + Constants.VERSION);
 
 		LOGGER.info("Initialising...");
-		bus.register(this);
+		EventBus.DEFAULT.register(this);
 
 		CpsCounter.register();
 
@@ -170,8 +167,8 @@ public final class Client {
 			LOGGER.error("Could not start async updates thread", error);
 		}
 
-		bus.register(new PacketApi());
-		bus.register(popupManager = new PopupManager());
+		EventBus.DEFAULT.register(new PacketApi());
+		EventBus.DEFAULT.register(popupManager = new PopupManager());
 
 		capeManager = new CapeManager();
 	}
@@ -394,7 +391,7 @@ public final class Client {
 			}
 		}
 
-		bus.post(new ServerConnectEvent(data, detectedServer));
+		EventBus.DEFAULT.post(new ServerConnectEvent(data, detectedServer));
 	}
 
 	public List<ChatButton> getChatButtons() {

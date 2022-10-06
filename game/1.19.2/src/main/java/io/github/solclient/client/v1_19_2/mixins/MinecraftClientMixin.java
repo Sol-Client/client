@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.Constants;
+import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.impl.game.PostStartEvent;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
@@ -33,22 +34,22 @@ public class MinecraftClientMixin {
 
 	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
 	public void postStart(CallbackInfo callback) {
-		Client.INSTANCE.getBus().post(new PostStartEvent());
+		EventBus.DEFAULT.post(new PostStartEvent());
 	}
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	public void preTick(CallbackInfo callback) {
-		Client.INSTANCE.getBus().post(new PreTickEvent());
+		EventBus.DEFAULT.post(new PreTickEvent());
 	}
 
 	@Inject(method = "tick", at = @At("RETURN"))
 	public void postTick(CallbackInfo callback) {
-		Client.INSTANCE.getBus().post(new PostTickEvent());
+		EventBus.DEFAULT.post(new PostTickEvent());
 	}
 
 	@Inject(method = "setWorld", at = @At("HEAD"))
 	private void loadWorld(ClientWorld world, CallbackInfo callback) {
-		Client.INSTANCE.getBus().post(new LevelLoadEvent((ClientLevel) world));
+		EventBus.DEFAULT.post(new LevelLoadEvent((ClientLevel) world));
 	}
 
 }

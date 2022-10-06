@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.hud.PostHudRenderEvent;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
@@ -116,11 +117,11 @@ public abstract class Mod {
 	}
 
 	protected void onEnable() {
-		Client.INSTANCE.getBus().register(this);
+		EventBus.DEFAULT.register(this);
 	}
 
 	protected void onDisable() {
-		Client.INSTANCE.getBus().unregister(this);
+		EventBus.DEFAULT.unregister(this);
 	}
 
 	public boolean isBlocked() {
@@ -184,6 +185,11 @@ public abstract class Mod {
 	@EventHandler
 	public void onRender(PostHudRenderEvent event) {
 		render(mc.getScreen() instanceof MoveHudsScreen);
+	}
+
+	@Override
+	public String toString() {
+		return getId();
 	}
 
 }

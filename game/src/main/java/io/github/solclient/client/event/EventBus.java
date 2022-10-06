@@ -40,6 +40,7 @@ public final class EventBus {
 	}
 
 	private static final Logger LOGGER = LogManager.getLogger();
+	public static final EventBus DEFAULT = new EventBus();
 
 	private boolean inPost;
 	private final List<Object> toRemove = new ArrayList<>();

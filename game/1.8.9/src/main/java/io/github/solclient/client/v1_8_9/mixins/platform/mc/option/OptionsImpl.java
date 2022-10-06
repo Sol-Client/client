@@ -1,181 +1,206 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc.option;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.input.Keyboard;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.option.Options;
 import io.github.solclient.client.platform.mc.option.Perspective;
+import io.github.solclient.client.v1_8_9.platform.mc.option.PerspectiveImpl;
 import net.minecraft.client.options.GameOptions;
 
 @Mixin(GameOptions.class)
-public class OptionsImpl implements Options {
+public abstract class OptionsImpl implements Options {
 
 	@Shadow
 	public String language;
 
 	@Override
 	public double mouseSensitivity() {
-		// TODO Auto-generated method stub
-		return 0;
+		return sensitivity;
 	}
 
 	@Override
 	public void setMouseSensitivity(double sensitivity) {
-		// TODO Auto-generated method stub
-
+		this.sensitivity = (float) sensitivity;
 	}
+
+	@Shadow
+	public float sensitivity;
 
 	@Override
 	public boolean invertMouse() {
-		// TODO Auto-generated method stub
-		return false;
+		return invertYMouse;
 	}
+
+	public boolean invertYMouse;
 
 	@Override
 	public boolean debugOverlay() {
-		// TODO Auto-generated method stub
-		return false;
+		return debugEnabled;
 	}
+
+	public boolean debugEnabled;
 
 	@Override
 	public @NotNull Perspective perspective() {
-		// TODO Auto-generated method stub
-		return null;
+		return PerspectiveImpl.values()[ordinalPerspective()];
 	}
 
 	@Override
 	public int ordinalPerspective() {
-		// TODO Auto-generated method stub
-		return 0;
+		return perspective;
 	}
 
 	@Override
 	public void setPerspective(@NotNull Perspective perspective) {
-		// TODO Auto-generated method stub
-
+		setOrdinalPerspective(perspective.enumOrdinal());
 	}
 
 	@Override
 	public void setOrdinalPerspective(int perspective) {
-		// TODO Auto-generated method stub
-
+		this.perspective = perspective;
 	}
+
+	public int perspective;
 
 	@Override
 	public @NotNull KeyBinding[] keys() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding[]) keysAll;
 	}
 
 	@Override
 	public @NotNull KeyBinding forwardsKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) keyForward;
 	}
+
+	@Shadow
+	public net.minecraft.client.options.KeyBinding keyForward;
 
 	@Override
 	public @NotNull KeyBinding backwardsKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) keyBack;
 	}
+
+	@Shadow
+	public net.minecraft.client.options.KeyBinding keyBack;
 
 	@Override
 	public @NotNull KeyBinding strafeLeftKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) keyLeft;
 	}
+
+	@Shadow
+	public net.minecraft.client.options.KeyBinding keyLeft;
 
 	@Override
 	public @NotNull KeyBinding strafeRightKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) keyRight;
 	}
+
+	@Shadow
+	public net.minecraft.client.options.KeyBinding keyRight;
 
 	@Override
 	public @NotNull KeyBinding attackKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) keyAttack;
 	}
+
+	@Shadow
+	public net.minecraft.client.options.KeyBinding keyAttack;
 
 	@Override
 	public @NotNull KeyBinding useKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) keyUse;
 	}
+
+	@Shadow
+	public net.minecraft.client.options.KeyBinding keyUse;
 
 	@Override
 	public @NotNull KeyBinding jumpKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) keyUse;
 	}
+
+	@Shadow
+	public net.minecraft.client.options.KeyBinding keyJump;
 
 	@Override
 	public @NotNull KeyBinding sprintKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (KeyBinding) keySprint;
 	}
 
 	@Override
 	public void overwriteSprintKey(@NotNull KeyBinding sprint) {
-		// TODO Auto-generated method stub
-
+		keySprint = (net.minecraft.client.options.KeyBinding) sprint;
 	}
+
+	@Shadow
+	public net.minecraft.client.options.KeyBinding keySprint;
 
 	@Override
 	public boolean hideGui() {
-		// TODO Auto-generated method stub
-		return false;
+		return hudHidden;
 	}
+
+	public boolean hudHidden;
 
 	@Override
 	public void addKey(@NotNull KeyBinding key) {
-		// TODO Auto-generated method stub
-
+		keysAll = ArrayUtils.add(keysAll, (net.minecraft.client.options.KeyBinding) key);
 	}
 
 	@Override
 	public void removeKey(@NotNull KeyBinding key) {
-		// TODO Auto-generated method stub
-
+		keysAll = ArrayUtils.removeElement(keysAll, (net.minecraft.client.options.KeyBinding) key);
 	}
+
+	@Shadow
+	public @Mutable @Final net.minecraft.client.options.KeyBinding[] keysAll;
 
 	@Override
 	public boolean smoothCamera() {
-		// TODO Auto-generated method stub
-		return false;
+		return smoothCameraEnabled;
 	}
 
 	@Override
 	public void setSmoothCamera(boolean camera) {
-		// TODO Auto-generated method stub
-
+		smoothCameraEnabled = camera;
 	}
+
+	@Shadow
+	public boolean smoothCameraEnabled;
 
 	@Override
 	public void setMouseButton(@NotNull KeyBinding binding, int button) {
-		// TODO Auto-generated method stub
-
+		setKeyBindingCode((net.minecraft.client.options.KeyBinding) binding, button - 100);
 	}
 
 	@Override
 	public void setKey(@NotNull KeyBinding binding, int code, int scancode) {
-		// TODO Auto-generated method stub
-
+		setKeyBindingCode((net.minecraft.client.options.KeyBinding) binding, code);
 	}
 
 	@Override
 	public void unbindKey(@NotNull KeyBinding binding) {
-		// TODO Auto-generated method stub
-
+		setKeyBindingCode((net.minecraft.client.options.KeyBinding) binding, Keyboard.KEY_NONE);
 	}
+
+	@Shadow
+	public abstract void setKeyBindingCode(net.minecraft.client.options.KeyBinding binding, int code);
 
 	@Override
 	public void saveFile() {
-		// TODO Auto-generated method stub
-
+		save();
 	}
+
+	@Shadow
+	public abstract void save();
 
 	@Override
 	public @NotNull String languageCode() {

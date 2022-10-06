@@ -4,6 +4,7 @@
 	"minVersion": "0.8.5",
 	"mixins": [
 		"platform.mc.lang.I18nImpl",
+		"platform.mc.lang.LanguageManagerImpl",
 		"platform.mc.maths.Vec3iImpl",
 		"platform.mc.option.KeyBindingImpl",
 		"platform.mc.option.KeyBindingImpl$Static",
@@ -49,6 +50,7 @@
 		"platform.mc.world.level.block.BlockPosImpl$Static",
 		"platform.mc.world.level.block.BlockStateImpl",
 		"platform.mc.world.level.chunk.ChunkImpl",
+		"platform.mc.world.level.ClientLevelImpl",
 		"platform.mc.world.level.LevelImpl",
 		"platform.mc.DrawableHelperImpl",
 		"platform.mc.EnvironmentImpl",
@@ -56,9 +58,11 @@
 		"platform.mc.MinecraftClientImpl$Static",
 		"platform.mc.TimerImpl",
 		"platform.mc.WindowImpl",
+		"render.GameRendererMixin",
 		"resource.ReloadableResourceManagerImplMixin",
 		"resource.I18nMixin",
-		"screen.TitleScreenMixin",
+		"gui.hud.InGameHudMixin",
+		"gui.screen.TitleScreenMixin",
 		"MinecraftClientMixin"
 	],
 	"comment": "Disabled in final build",

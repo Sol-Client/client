@@ -152,7 +152,7 @@ public abstract class OptionsImpl implements Options {
 
 	@Override
 	public boolean hideGui() {
-		return false;
+		return hudHidden;
 	}
 
 	@Shadow

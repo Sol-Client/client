@@ -81,7 +81,8 @@
 		"resource.DefaultResourcePackMixin",
 		"MinecraftClientMixin",
 		"MouseMixin",
-		"mods.PotionEffectsModMixins$InGameHudMixin"
+		"mods.PotionEffectsModMixins$InGameHudMixin",
+		"mods.TweaksModMixins$DarknessOverrideMixin"
 	],
 	"comment": "Disabled in final build",
 	"required": true,

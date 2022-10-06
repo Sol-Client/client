@@ -3,6 +3,7 @@ package io.github.solclient.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.input.MouseDownEvent;
@@ -18,8 +19,8 @@ public class CpsCounter {
 	private List<Long> presses = new ArrayList<Long>();
 
 	public static void register() {
-		Client.INSTANCE.getBus().register(LMB);
-		Client.INSTANCE.getBus().register(RMB);
+		EventBus.DEFAULT.register(LMB);
+		EventBus.DEFAULT.register(RMB);
 	}
 
 	@EventHandler

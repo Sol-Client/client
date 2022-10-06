@@ -1,15 +1,25 @@
 package io.github.solclient.client.v1_8_9.mixins;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.Constants;
+import io.github.solclient.client.event.EventBus;
+import io.github.solclient.client.event.impl.game.PostStartEvent;
+import io.github.solclient.client.event.impl.game.PostTickEvent;
+import io.github.solclient.client.event.impl.game.PreTickEvent;
+import io.github.solclient.client.event.impl.world.level.LevelLoadEvent;
+import io.github.solclient.client.platform.mc.world.level.ClientLevel;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.world.ClientWorld;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
@@ -23,5 +33,40 @@ public class MinecraftClientMixin {
 	public void init(CallbackInfo callback) {
 		Client.INSTANCE.init();
 	}
+
+	@Inject(method = "initializeGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;openScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
+	public void postStart(CallbackInfo callback) {
+		EventBus.DEFAULT.post(new PostStartEvent());
+	}
+
+	@Inject(method = "tick", at = @At("HEAD"))
+	public void preTick(CallbackInfo callback) {
+		EventBus.DEFAULT.post(new PreTickEvent());
+	}
+
+	@Inject(method = "tick", at = @At("RETURN"))
+	public void postTick(CallbackInfo callback) {
+		EventBus.DEFAULT.post(new PostTickEvent());
+	}
+
+	@Inject(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V", at = @At("HEAD"))
+	private void loadWorld(ClientWorld world, String loadingMessage, CallbackInfo callback) {
+		EventBus.DEFAULT.post(new LevelLoadEvent((ClientLevel) world));
+	}
+
+	@Inject(method = "getMaxFramerate", at = @At("HEAD"), cancellable = true)
+	public void getMaxFramerate(CallbackInfoReturnable<Integer> callback) {
+		if(currentScreen instanceof Screen && world == null) {
+			// limit to 60 instead of 30
+			// it should be perfectly acceptable
+			callback.setReturnValue(60);
+		}
+	}
+
+	@Shadow
+	public Screen currentScreen;
+
+	@Shadow
+	public ClientWorld world;
 
 }

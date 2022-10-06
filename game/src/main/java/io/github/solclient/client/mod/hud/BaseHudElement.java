@@ -1,10 +1,10 @@
 package io.github.solclient.client.mod.hud;
 
+import io.github.solclient.client.Client;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
-import org.lwjgl.opengl.GL11;
 
 public abstract class BaseHudElement implements HudElement {
 
@@ -64,11 +64,20 @@ public abstract class BaseHudElement implements HudElement {
 	@Override
 	public void render(boolean editMode) {
 		// Don't render HUD in replay or if marked as invisible.
-		if(!isVisible() || !(editMode || isShownInReplay() || TODO.L /* TODO replaymod */ == null)) return;
+		if(!isVisible() || !(editMode || isShownInReplay() || TODO.L /* TODO replaymod */ == null)) {
+			return;
+		}
 
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(getHudScale(), getHudScale(), getHudScale());
-		render(getDividedPosition(), editMode);
+
+		try {
+			render(getDividedPosition(), editMode);
+		}
+		catch(Throwable error) {
+			Client.LOGGER.error("Could not render HUD " + this + " from " + getMod(), error);
+		}
+
 		GlStateManager.popMatrix();
 	}
 

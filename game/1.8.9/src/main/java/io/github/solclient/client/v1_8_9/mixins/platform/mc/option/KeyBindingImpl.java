@@ -89,4 +89,10 @@ interface KeyBindingImpl$Static {
 		return (KeyBinding) new net.minecraft.client.options.KeyBinding(name, initialKey, category);
 	}
 
+
+	@Overwrite(remap = false)
+	static void reload() {
+		net.minecraft.client.options.KeyBinding.updateKeysByCode();
+	}
+
 }

@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.impl.world.GammaEvent;
 import net.minecraft.client.render.LightmapTextureManager;
 
@@ -14,7 +14,7 @@ public class LightmapTextureManagerMixin {
 
 	@ModifyExpressionValue(method = "update", at = @At(value = "INVOKE", target = "Ljava/lang/Double;floatValue()F", ordinal = 1))
 	public float modifyGamma(float gamma) {
-		return Client.INSTANCE.getBus().post(new GammaEvent(gamma)).getGamma();
+		return EventBus.DEFAULT.post(new GammaEvent(gamma)).getGamma();
 	}
 
 }

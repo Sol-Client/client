@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_8_9.mixins.screen;
+package io.github.solclient.client.v1_8_9.mixins.gui.screen;
 
 import java.io.IOException;
 
@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.util.TrueTypeFont;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;

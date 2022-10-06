@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19_2.mixins.gui.hud;
+package io.github.solclient.client.v1_8_9.mixins.gui.hud;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

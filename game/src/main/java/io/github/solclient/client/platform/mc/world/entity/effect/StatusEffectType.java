@@ -4,9 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 public interface StatusEffectType {
 
-	StatusEffectType SPEED = get("SPEED");
-	StatusEffectType STRENGTH = get("STRENGTH");
-	StatusEffectType BLINDNESS = get("BLINDNESS");
+	StatusEffectType SPEED = get("SPEED"),
+			STRENGTH = get("STRENGTH"),
+			BLINDNESS = get("BLINDNESS"),
+			DARKNESS = get("DARKNESS");
 
 	static StatusEffectType get(String name) {
 		throw new UnsupportedOperationException();

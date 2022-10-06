@@ -17,7 +17,7 @@ public class TweaksMod extends Mod {
 
 	@Expose
 	@Option
-	private boolean fullbright;
+	public boolean fullbright;
 	@Expose
 	@Option
 	public boolean showOwnTag;

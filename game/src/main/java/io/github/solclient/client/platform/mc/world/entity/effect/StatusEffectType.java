@@ -6,8 +6,7 @@ public interface StatusEffectType {
 
 	StatusEffectType SPEED = get("SPEED"),
 			STRENGTH = get("STRENGTH"),
-			BLINDNESS = get("BLINDNESS"),
-			DARKNESS = get("DARKNESS");
+			BLINDNESS = get("BLINDNESS");
 
 	static StatusEffectType get(String name) {
 		throw new UnsupportedOperationException();

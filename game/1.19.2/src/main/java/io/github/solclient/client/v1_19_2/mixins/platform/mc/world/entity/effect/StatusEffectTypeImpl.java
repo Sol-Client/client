@@ -48,8 +48,6 @@ interface StatusEffectTypeImpl$Static {
 				return (StatusEffectType) StatusEffects.STRENGTH;
 			case "BLINDNESS":
 				return (StatusEffectType) StatusEffects.BLINDNESS;
-			case "DARKNESS":
-				return (StatusEffectType) StatusEffects.DARKNESS;
 		}
 
 		throw new IllegalArgumentException(name);

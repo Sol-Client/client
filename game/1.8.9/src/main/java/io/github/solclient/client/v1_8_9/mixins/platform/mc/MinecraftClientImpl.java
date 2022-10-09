@@ -40,6 +40,7 @@ import io.github.solclient.client.platform.mc.world.particle.ParticleEngine;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.render.ClientTickTracker;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.ClientPlayerEntity;
@@ -68,9 +69,11 @@ public abstract class MinecraftClientImpl {
 	public ClientWorld world;
 
 	public @NotNull LevelRenderer platform$getLevelRenderer() {
-		// TODO Auto-generated method stub
-		return null;
+		return (LevelRenderer) worldRenderer;
 	}
+
+	@Shadow
+	public WorldRenderer worldRenderer;
 
 	public @Nullable LocalPlayer platform$getPlayer() {
 		return (LocalPlayer) player;
@@ -85,7 +88,6 @@ public abstract class MinecraftClientImpl {
 	}
 
 	public @Nullable Entity platform$getCameraEntity() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

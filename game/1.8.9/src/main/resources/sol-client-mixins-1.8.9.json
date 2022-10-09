@@ -58,6 +58,7 @@
 		"platform.mc.world.level.chunk.ChunkImpl",
 		"platform.mc.world.level.ClientLevelImpl",
 		"platform.mc.world.level.LevelImpl",
+		"platform.mc.world.level.LevelRendererImpl",
 		"platform.mc.DrawableHelperImpl",
 		"platform.mc.EnvironmentImpl",
 		"platform.mc.MinecraftClientImpl",

@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19_2.mixins.platform.mc.world.level;
+package io.github.solclient.client.v1_8_9.mixins.platform.mc.world.level;
 
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;

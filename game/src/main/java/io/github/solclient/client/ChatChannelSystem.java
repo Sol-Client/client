@@ -46,8 +46,8 @@ public abstract class ChatChannelSystem {
 
 		public class DefaultChatChannel implements ChatChannel {
 
-			private String name;
-			private String command;
+			private final String name;
+			private final String command;
 
 			public DefaultChatChannel(String name, String command) {
 				this.name = name;

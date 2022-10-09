@@ -25,6 +25,8 @@ import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 
 import io.github.solclient.client.chat.ChatButton;
+import io.github.solclient.client.chat.ChatChannelButton;
+import io.github.solclient.client.chat.ChatChannelSystem;
 import io.github.solclient.client.command.Command;
 import io.github.solclient.client.command.CommandException;
 import io.github.solclient.client.config.ConfigVersion;
@@ -286,10 +288,10 @@ public final class Client {
 		this.chatChannelSystem = chatChannelSystem;
 
 		if(chatChannelSystem != null) {
-			registerChatButton(ChatChannelSystem.ChatChannelButton.INSTANCE);
+			registerChatButton(ChatChannelButton.INSTANCE);
 		}
 		else {
-			unregisterChatButton(ChatChannelSystem.ChatChannelButton.INSTANCE);
+			unregisterChatButton(ChatChannelButton.INSTANCE);
 		}
 	}
 

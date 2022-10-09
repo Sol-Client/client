@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.github.solclient.client.ChatChannelSystem;
 import io.github.solclient.client.Client;
+import io.github.solclient.client.chat.ChatChannelSystem;
 import io.github.solclient.client.command.CommandException;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelChatChannels;

@@ -16,7 +16,7 @@ public abstract class InventoryImpl implements Inventory {
 
 	// needed because 1.19 item stacks are non-null.
 	private static @Nullable ItemStack cast(@NotNull net.minecraft.item.ItemStack item) {
-		if(item == null || item.isEmpty()) {
+		if(/* this looks stupid, but it's good to be safe */ item == null || item.isEmpty()) {
 			return null;
 		}
 

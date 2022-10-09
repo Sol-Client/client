@@ -1,15 +1,12 @@
 package io.github.solclient.client.util;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -30,8 +27,8 @@ public class TranslationProvider {
 		TRANSLATIONS.clear();
 	}
 
-	public void accept(String jsonStr) {
-		JsonObject obj = JsonParser.parseString(JsonComments.swallowComments(jsonStr)).getAsJsonObject();
+	public void accept(InputStream json) {
+		JsonObject obj = JsonParser.parseReader(new InputStreamReader(json)).getAsJsonObject();
 		for(Map.Entry<String, JsonElement> entry : obj.entrySet()) {
 			String key = entry.getKey();
 			String value = entry.getValue().getAsString();
@@ -65,7 +62,7 @@ public class TranslationProvider {
 
 			for(Resource resource : resources) {
 				try(InputStream in = resource.getInput()) {
-					accept(IOUtils.toString(in, StandardCharsets.UTF_8));
+					accept(in);
 				}
 			}
 		}

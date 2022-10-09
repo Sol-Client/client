@@ -83,13 +83,12 @@
 		"MouseMixin",
 		"mods.PotionEffectsModMixins$InGameHudMixin"
 	],
-	"comment": "Disabled in final build",
+	// disabled in final build
 	"required": true,
 	"injectors": {
 		"defaultRequire": 1
 	},
 	"overwrites": {
-		"requireAnnotations": true,
-		"requireAnnotations_comment": "Thx llamalad7"
+		"requireAnnotations": true // Thx llamalad7
 	}
 }

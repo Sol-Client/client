@@ -161,7 +161,6 @@ public class ArmourMod extends HudMod {
 		}
 
 		mc.getItemRenderer().render(stack, itemX, y);
-		mc.getItemRenderer().renderOverlays(font, stack, itemX, y);
 
 		if(hasDurability && stack.getMaxDamageValue() > 0) {
 			String text;

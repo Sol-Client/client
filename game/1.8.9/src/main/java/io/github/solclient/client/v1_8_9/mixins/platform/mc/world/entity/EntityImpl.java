@@ -1,4 +1,4 @@
-package io.github.solclient.client.v1_19_2.mixins.platform.mc.world.entity;
+package io.github.solclient.client.v1_8_9.mixins.platform.mc.world.entity;
 
 import java.util.UUID;
 
@@ -13,32 +13,31 @@ import io.github.solclient.client.platform.mc.maths.Vec3d;
 import io.github.solclient.client.platform.mc.world.entity.Entity;
 import io.github.solclient.client.platform.mc.world.entity.player.Player;
 import io.github.solclient.client.platform.mc.world.level.chunk.ChunkPos;
-import net.minecraft.world.entity.EntityLike;
 
 @Mixin(net.minecraft.entity.Entity.class)
 @Implements(@Interface(iface = Entity.class, prefix = "platform$"))
-public abstract class EntityImpl implements EntityLike {
+public abstract class EntityImpl {
 
 	public double platform$x() {
-		return getX();
+		return x;
 	}
 
 	@Shadow
-	public abstract double getX();
+	public double x;
 
 	public double platform$y() {
-		return getY();
+		return y;
 	}
 
 	@Shadow
-	public abstract double getY();
+	public double y;
 
 	public double platform$z() {
-		return getZ();
+		return z;
 	}
 
 	@Shadow
-	public abstract double getZ();
+	public double z;
 
 	public double platform$previousX() {
 		return prevX;
@@ -62,18 +61,18 @@ public abstract class EntityImpl implements EntityLike {
 	public double prevZ;
 
 	public float platform$yaw() {
-		return getYaw();
+		return yaw;
 	}
 
 	@Shadow
-	public abstract float getYaw();
+	public float yaw;
 
 	public float platform$pitch() {
-		return getPitch();
+		return pitch;
 	}
 
 	@Shadow
-	public abstract float getPitch();
+	public float pitch;
 
 	public Vec3d platform$getPosition() {
 		return (Vec3d) getPos();
@@ -83,12 +82,18 @@ public abstract class EntityImpl implements EntityLike {
 	public abstract net.minecraft.util.math.Vec3d getPos();
 
 	public int platform$getNumericId() {
-		return getId();
+		return getEntityId();
 	}
+
+	@Shadow
+	public abstract int getEntityId();
 
 	public UUID platform$getId() {
 		return getUuid();
 	}
+
+	@Shadow
+	public abstract UUID getUuid();
 
 	public Box platform$getBounds() {
 		// TODO Auto-generated method stub
@@ -118,11 +123,11 @@ public abstract class EntityImpl implements EntityLike {
 	}
 
 	public float platform$getEntityWidth() {
-		return getWidth();
+		return width;
 	}
 
 	@Shadow
-	public abstract float getWidth();
+	public float width;
 
 	public float platform$getEntityEyeHeight() {
 		// TODO Auto-generated method stub
@@ -157,11 +162,11 @@ public abstract class EntityImpl implements EntityLike {
 	public abstract boolean hasVehicle();
 
 	public boolean platform$isEntityOnGround() {
-		return isOnGround();
+		return onGround;
 	}
 
 	@Shadow
-	public abstract boolean isOnGround();
+	public boolean onGround;
 
 	public boolean platform$isInWeb() {
 		// TODO Auto-generated method stub
@@ -180,7 +185,6 @@ public abstract class EntityImpl implements EntityLike {
 	@Shadow
 	public abstract boolean isSprinting();
 
-
 	public float platform$getFallDistance() {
 		return fallDistance;
 	}
@@ -189,4 +193,3 @@ public abstract class EntityImpl implements EntityLike {
 	public float fallDistance;
 
 }
-

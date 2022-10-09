@@ -42,6 +42,7 @@ import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.render.ClientTickTracker;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.resource.ReloadableResourceManager;
 
 @Mixin(net.minecraft.client.MinecraftClient.class)
@@ -72,9 +73,11 @@ public abstract class MinecraftClientImpl {
 	}
 
 	public @Nullable LocalPlayer platform$getPlayer() {
-		// TODO Auto-generated method stub
-		return null;
+		return (LocalPlayer) player;
 	}
+
+	@Shadow
+	public ClientPlayerEntity player;
 
 	public @Nullable LocalPlayerState platform$getPlayerState() {
 		// TODO Auto-generated method stub
@@ -178,7 +181,7 @@ public abstract class MinecraftClientImpl {
 	}
 
 	public @NotNull ItemRenderer platform$getItemRenderer() {
-		return null;
+		return (ItemRenderer) getItemRenderer();
 	}
 
 	@Shadow

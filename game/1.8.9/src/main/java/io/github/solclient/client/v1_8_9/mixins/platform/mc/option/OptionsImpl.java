@@ -124,7 +124,7 @@ public abstract class OptionsImpl implements Options {
 
 	@Override
 	public @NotNull KeyBinding jumpKey() {
-		return (KeyBinding) keyUse;
+		return (KeyBinding) keyJump;
 	}
 
 	@Shadow

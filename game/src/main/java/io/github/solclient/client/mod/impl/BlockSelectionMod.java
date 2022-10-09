@@ -75,7 +75,7 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 				return level.getBlockState(hit.getBlockPos()).hasMenu(mc.getLevel(), hit.getBlockPos());
 			}
 			else {
-				return item.canDestroy(level, hit.getBlockPos()) || item.canPlaceOn(level, hit.getBlockPos());
+				return item != null && item.canDestroy(level, hit.getBlockPos()) || item.canPlaceOn(level, hit.getBlockPos());
 			}
 		}
 

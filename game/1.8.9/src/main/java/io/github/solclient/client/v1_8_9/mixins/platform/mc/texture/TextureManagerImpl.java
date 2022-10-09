@@ -12,8 +12,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.texture.Texture;
 import io.github.solclient.client.platform.mc.texture.TextureManager;
-import net.minecraft.client.texture.AbstractTexture;
-import net.minecraft.client.texture.TextureUtil;
 
 @Mixin(net.minecraft.client.texture.TextureManager.class)
 public abstract class TextureManagerImpl implements TextureManager {

@@ -1,5 +1,6 @@
 package io.github.solclient.client.v1_8_9.mixins;
 
+import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
@@ -7,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.*;
 import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.impl.game.*;
+import io.github.solclient.client.event.impl.input.MouseDownEvent;
 import io.github.solclient.client.event.impl.world.level.LevelLoadEvent;
 import io.github.solclient.client.platform.mc.world.level.ClientLevel;
 import net.minecraft.client.MinecraftClient;
@@ -54,6 +56,20 @@ public class MinecraftClientMixin {
 			callback.setReturnValue(60);
 		}
 	}
+
+	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;next()Z"))
+	public boolean mouseEvent() {
+		boolean next = Mouse.next();
+
+		if(next && Mouse.getEventButtonState()) {
+			if(EventBus.DEFAULT.post(new MouseDownEvent(Mouse.getEventButton())).isCancelled()) {
+				next = mouseEvent(); // Skip
+			}
+		}
+
+		return next;
+	}
+
 
 	@Shadow
 	public Screen currentScreen;

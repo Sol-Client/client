@@ -1,12 +1,11 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc;
 
+import org.spongepowered.asm.mixin.*;
+
 import com.mojang.blaze3d.platform.GlStateManager;
+
 import io.github.solclient.client.platform.mc.DrawableHelper;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormats;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import net.minecraft.client.render.*;
 
 @Mixin(DrawableHelper.class)
 public class DrawableHelperImpl {

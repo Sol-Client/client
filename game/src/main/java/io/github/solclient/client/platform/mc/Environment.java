@@ -1,7 +1,8 @@
 package io.github.solclient.client.platform.mc;
 
-import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
+
+import lombok.experimental.UtilityClass;
 
 /**
  * Various constants about the current environment and its capabilities.

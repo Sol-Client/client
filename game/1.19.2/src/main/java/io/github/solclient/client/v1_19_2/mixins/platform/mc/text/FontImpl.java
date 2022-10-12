@@ -1,18 +1,13 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.text;
 
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.*;
+
+import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.v1_19_2.SharedObjects;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
-import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-
-import io.github.solclient.client.platform.mc.text.Font;
-import io.github.solclient.client.platform.mc.text.Text;
-import net.minecraft.client.font.TextRenderer;
 
 @Mixin(TextRenderer.class)
 @Implements(@Interface(iface = Font.class, prefix = "platform$"))

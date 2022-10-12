@@ -1,20 +1,14 @@
 package io.github.solclient.client.v1_19_2.mixins;
 
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 
 import io.github.solclient.client.event.EventBus;
-import io.github.solclient.client.event.impl.input.CameraRotateEvent;
-import io.github.solclient.client.event.impl.input.MouseDownEvent;
-import io.github.solclient.client.event.impl.input.ScrollWheelEvent;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
+import io.github.solclient.client.event.impl.input.*;
+import net.minecraft.client.*;
 import net.minecraft.client.network.ClientPlayerEntity;
 
 @Mixin(Mouse.class)

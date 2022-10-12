@@ -1,7 +1,6 @@
 package io.github.solclient.client.platform.mc.util;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 import io.github.solclient.client.platform.Helper;
 import io.github.solclient.client.platform.mc.maths.Vec3d;

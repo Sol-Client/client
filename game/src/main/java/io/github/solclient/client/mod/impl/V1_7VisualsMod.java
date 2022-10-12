@@ -10,14 +10,12 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.event.impl.world.item.FirstPersonItemTransformEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.platform.mc.raycast.HitType;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.world.entity.player.ClientPlayer;
-import io.github.solclient.client.platform.mc.world.item.ItemStack;
-import io.github.solclient.client.platform.mc.world.item.ItemType;
+import io.github.solclient.client.platform.mc.world.item.*;
 
 public class V1_7VisualsMod extends Mod {
 

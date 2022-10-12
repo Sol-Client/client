@@ -1,8 +1,7 @@
 package io.github.solclient.client.v1_19_2.mixins.render;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import io.github.solclient.client.event.EventBus;

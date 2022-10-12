@@ -1,8 +1,7 @@
 package io.github.solclient.client.platform.mc.screen;
 
 import io.github.solclient.client.platform.mc.MinecraftClient;
-import io.github.solclient.client.platform.mc.text.Font;
-import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.text.*;
 
 public class ProxyScreen implements Screen {
 

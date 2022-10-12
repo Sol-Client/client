@@ -1,16 +1,11 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.sound;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.sound.SoundType;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.sound.*;
 
 @Mixin(SoundEvent.class)
 @Implements(@Interface(iface = SoundType.class, prefix = "platform$"))

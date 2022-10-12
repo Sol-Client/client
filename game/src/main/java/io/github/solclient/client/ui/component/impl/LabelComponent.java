@@ -3,8 +3,7 @@ package io.github.solclient.client.ui.component.impl;
 import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public class LabelComponent extends ColouredComponent {
 

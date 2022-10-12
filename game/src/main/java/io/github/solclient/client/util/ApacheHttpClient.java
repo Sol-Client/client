@@ -38,8 +38,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import io.github.solclient.client.Constants;
-import net.hypixel.api.http.HypixelHttpClient;
-import net.hypixel.api.http.HypixelHttpResponse;
+import net.hypixel.api.http.*;
 
 public class ApacheHttpClient implements HypixelHttpClient {
 

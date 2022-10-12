@@ -1,27 +1,19 @@
 package io.github.solclient.client.mod.impl.hud;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.hud.PreSidebarRenderEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.text.Text;
-import io.github.solclient.client.platform.mc.world.scoreboard.PlayerTeam;
-import io.github.solclient.client.platform.mc.world.scoreboard.Score;
-import io.github.solclient.client.platform.mc.world.scoreboard.Scoreboard;
+import io.github.solclient.client.platform.mc.world.scoreboard.*;
 import io.github.solclient.client.util.data.Colour;
 
 public class ScoreboardMod extends Mod {

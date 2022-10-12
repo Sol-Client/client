@@ -1,31 +1,19 @@
 package io.github.solclient.client.ui.component;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiPredicate;
 
 import org.lwjgl.opengl.GL11;
 
-import io.github.solclient.client.platform.mc.DrawableHelper;
-import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.text.Font;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.controller.Controller;
-import io.github.solclient.client.ui.component.handler.CharacterHandler;
-import io.github.solclient.client.ui.component.handler.ClickHandler;
-import io.github.solclient.client.ui.component.handler.KeyHandler;
+import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.handler.*;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
-import lombok.Getter;
-import lombok.Setter;
+import io.github.solclient.client.util.data.*;
+import lombok.*;
 
 // Class for GUI components.
 // May be replaced by Aether UI in the future when it's stable enough.

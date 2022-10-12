@@ -2,14 +2,10 @@ package io.github.solclient.client.event.impl.network;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 import io.github.solclient.client.platform.mc.resource.Identifier;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 /**
  * Fired when the server sends a plugin message.

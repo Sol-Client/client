@@ -1,7 +1,6 @@
 package io.github.solclient.client.ui.component.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @AllArgsConstructor
 public enum ButtonType {

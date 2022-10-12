@@ -3,13 +3,9 @@ package io.github.solclient.client.v1_19_2.mixins.platform.mc.world.entity;
 import java.util.UUID;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
-import io.github.solclient.client.platform.mc.maths.Box;
-import io.github.solclient.client.platform.mc.maths.Vec3d;
+import io.github.solclient.client.platform.mc.maths.*;
 import io.github.solclient.client.platform.mc.world.entity.Entity;
 import io.github.solclient.client.platform.mc.world.entity.player.Player;
 import io.github.solclient.client.platform.mc.world.level.chunk.ChunkPos;

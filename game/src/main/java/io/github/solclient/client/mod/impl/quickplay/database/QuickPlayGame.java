@@ -1,21 +1,14 @@
 package io.github.solclient.client.mod.impl.quickplay.database;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
-import io.github.solclient.client.platform.mc.world.item.ItemStack;
-import io.github.solclient.client.platform.mc.world.item.ItemType;
+import io.github.solclient.client.mod.impl.quickplay.ui.*;
+import io.github.solclient.client.platform.mc.world.item.*;
 import io.github.solclient.client.platform.mc.world.level.block.BlockType;
-import lombok.Getter;
-import lombok.SneakyThrows;
+import lombok.*;
 
 public class QuickPlayGame implements QuickPlayOption {
 

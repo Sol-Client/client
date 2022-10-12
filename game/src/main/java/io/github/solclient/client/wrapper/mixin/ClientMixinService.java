@@ -1,25 +1,14 @@
 package io.github.solclient.client.wrapper.mixin;
 
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
-import org.spongepowered.asm.launch.platform.container.ContainerHandleVirtual;
-import org.spongepowered.asm.launch.platform.container.IContainerHandle;
+import org.spongepowered.asm.launch.platform.container.*;
 import org.spongepowered.asm.logging.ILogger;
-import org.spongepowered.asm.mixin.MixinEnvironment.CompatibilityLevel;
-import org.spongepowered.asm.mixin.MixinEnvironment.Phase;
-import org.spongepowered.asm.mixin.transformer.IMixinTransformer;
-import org.spongepowered.asm.mixin.transformer.IMixinTransformerFactory;
-import org.spongepowered.asm.service.IClassBytecodeProvider;
-import org.spongepowered.asm.service.IClassProvider;
-import org.spongepowered.asm.service.IClassTracker;
-import org.spongepowered.asm.service.IMixinAuditTrail;
-import org.spongepowered.asm.service.IMixinInternal;
-import org.spongepowered.asm.service.IMixinService;
-import org.spongepowered.asm.service.ITransformerProvider;
-import org.spongepowered.asm.util.Constants;
-import org.spongepowered.asm.util.ReEntranceLock;
+import org.spongepowered.asm.mixin.MixinEnvironment.*;
+import org.spongepowered.asm.mixin.transformer.*;
+import org.spongepowered.asm.service.*;
+import org.spongepowered.asm.util.*;
 
 import io.github.solclient.client.wrapper.WrapperClassLoader;
 import lombok.Getter;

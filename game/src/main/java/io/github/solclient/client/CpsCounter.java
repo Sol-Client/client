@@ -1,10 +1,8 @@
 package io.github.solclient.client;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import io.github.solclient.client.event.EventBus;
-import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.input.MouseDownEvent;
 import lombok.RequiredArgsConstructor;

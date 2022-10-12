@@ -1,9 +1,7 @@
 package io.github.solclient.client;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
+import java.net.*;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import io.github.solclient.client.mod.Mod;

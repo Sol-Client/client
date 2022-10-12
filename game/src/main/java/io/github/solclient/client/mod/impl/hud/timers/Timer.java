@@ -1,8 +1,7 @@
 package io.github.solclient.client.mod.impl.hud.timers;
 
 import io.github.solclient.client.platform.mc.world.item.ItemStack;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 /**
  * TODO: Move to ClientApi.

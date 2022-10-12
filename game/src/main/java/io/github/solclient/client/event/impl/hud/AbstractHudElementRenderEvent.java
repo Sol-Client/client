@@ -2,8 +2,7 @@ package io.github.solclient.client.event.impl.hud;
 
 import io.github.solclient.client.event.impl.RenderEvent;
 import io.github.solclient.client.util.VanillaHudElement;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

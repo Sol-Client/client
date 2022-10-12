@@ -1,8 +1,7 @@
 package io.github.solclient.client.mod.hud;
 
 import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 /**
  * Represents a HUD element. May be contained inside a mod.

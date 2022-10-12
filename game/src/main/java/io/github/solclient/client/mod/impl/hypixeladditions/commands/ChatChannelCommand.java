@@ -7,8 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.chat.ChatChannelSystem;
 import io.github.solclient.client.command.CommandException;
-import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
-import io.github.solclient.client.mod.impl.hypixeladditions.HypixelChatChannels;
+import io.github.solclient.client.mod.impl.hypixeladditions.*;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
 

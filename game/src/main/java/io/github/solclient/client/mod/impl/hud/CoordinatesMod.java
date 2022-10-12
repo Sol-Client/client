@@ -3,12 +3,9 @@ package io.github.solclient.client.mod.impl.hud;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public class CoordinatesMod extends HudMod {
 

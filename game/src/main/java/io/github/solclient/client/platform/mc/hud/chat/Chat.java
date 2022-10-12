@@ -1,10 +1,8 @@
 package io.github.solclient.client.platform.mc.hud.chat;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import io.github.solclient.client.chat.ChatAccessor;
 import io.github.solclient.client.platform.Helper;

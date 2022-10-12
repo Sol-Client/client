@@ -1,25 +1,17 @@
 package io.github.solclient.client.util;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
+import java.io.*;
+import java.nio.*;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.stb.STBTTBakedChar;
-import org.lwjgl.stb.STBTTFontinfo;
-import org.lwjgl.stb.STBTruetype;
-import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.stb.*;
+import org.lwjgl.system.*;
 
-import io.github.solclient.client.platform.mc.DrawableHelper;
-import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
-import io.github.solclient.client.platform.mc.text.Font;
-import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.text.*;
 
 // TODO stuff
 // Roughly based around

@@ -1,8 +1,6 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.screen;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.screen.ProxyScreen;

@@ -1,22 +1,15 @@
 package io.github.solclient.client.mod;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.io.*;
+import java.lang.reflect.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
-import io.github.solclient.client.mod.annotation.FileOption;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.platform.mc.option.KeyBinding;

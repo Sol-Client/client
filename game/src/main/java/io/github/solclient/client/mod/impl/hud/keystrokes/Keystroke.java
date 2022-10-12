@@ -1,8 +1,7 @@
 package io.github.solclient.client.mod.impl.hud.keystrokes;
 
 import io.github.solclient.client.CpsCounter;
-import io.github.solclient.client.platform.mc.DrawableHelper;
-import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.util.Utils;

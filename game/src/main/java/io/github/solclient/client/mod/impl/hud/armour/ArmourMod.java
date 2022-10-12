@@ -3,14 +3,10 @@ package io.github.solclient.client.mod.impl.hud.armour;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.platform.mc.Window;
-import io.github.solclient.client.platform.mc.world.item.ItemStack;
-import io.github.solclient.client.platform.mc.world.item.ItemType;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.platform.mc.world.item.*;
+import io.github.solclient.client.util.data.*;
 
 public class ArmourMod extends HudMod {
 

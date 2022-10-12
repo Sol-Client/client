@@ -3,20 +3,13 @@ package io.github.solclient.client.v1_8_9.mixins.platform.mc.world.level;
 import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.text.Text;
-import io.github.solclient.client.platform.mc.world.level.Level;
-import io.github.solclient.client.platform.mc.world.level.WorldBorder;
-import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
-import io.github.solclient.client.platform.mc.world.level.block.BlockState;
-import io.github.solclient.client.platform.mc.world.level.chunk.Chunk;
-import io.github.solclient.client.platform.mc.world.level.chunk.ChunkPos;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.scoreboard.ScoreboardObjective;
+import io.github.solclient.client.platform.mc.world.level.*;
+import io.github.solclient.client.platform.mc.world.level.block.*;
+import io.github.solclient.client.platform.mc.world.level.chunk.*;
+import net.minecraft.scoreboard.*;
 import net.minecraft.world.World;
 
 @Mixin(World.class)

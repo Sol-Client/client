@@ -1,7 +1,6 @@
 package io.github.solclient.client.wrapper.mixin;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.spongepowered.asm.logging.Level;
 import org.spongepowered.asm.logging.LoggerAdapterAbstract;
 

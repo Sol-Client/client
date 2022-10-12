@@ -1,7 +1,6 @@
 package io.github.solclient.client.event.impl.input;
 
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @RequiredArgsConstructor
 public class HitboxToggleEvent {

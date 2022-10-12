@@ -1,8 +1,7 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc.sound;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.sound.SoundType;

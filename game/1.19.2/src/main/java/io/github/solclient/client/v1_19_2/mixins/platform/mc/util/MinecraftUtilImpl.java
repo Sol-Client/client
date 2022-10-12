@@ -1,13 +1,10 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.util;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.jetbrains.annotations.*;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.maths.Vec3d;
-import io.github.solclient.client.platform.mc.util.MinecraftUtil;
-import io.github.solclient.client.platform.mc.util.OperatingSystem;
+import io.github.solclient.client.platform.mc.util.*;
 import lombok.experimental.UtilityClass;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;

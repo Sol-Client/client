@@ -1,12 +1,9 @@
 package io.github.solclient.client.mod.impl.hud.timers;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.*;
+import java.util.*;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
@@ -14,14 +11,9 @@ import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.network.ServerMessageReceiveEvent;
 import io.github.solclient.client.event.impl.world.level.LevelLoadEvent;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.platform.mc.world.item.ItemStack;
-import io.github.solclient.client.platform.mc.world.item.ItemType;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.data.VerticalAlignment;
+import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.platform.mc.world.item.*;
+import io.github.solclient.client.util.data.*;
 
 // Based around https://github.com/BadlionClient/BadlionClientTimerAPI.
 // Works with any server that supports Badlion timers.

@@ -1,21 +1,12 @@
 package io.github.solclient.client.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 import io.github.solclient.client.platform.mc.MinecraftClient;
-import io.github.solclient.client.platform.mc.resource.Identifier;
-import io.github.solclient.client.platform.mc.resource.Resource;
-import io.github.solclient.client.platform.mc.resource.ResourceManager;
+import io.github.solclient.client.platform.mc.resource.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

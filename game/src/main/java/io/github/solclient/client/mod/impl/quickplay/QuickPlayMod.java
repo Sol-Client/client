@@ -1,24 +1,17 @@
 package io.github.solclient.client.mod.impl.quickplay;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.Constants;
-import io.github.solclient.client.DetectedServer;
+import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayDatabase;
-import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
-import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGameMode;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
+import io.github.solclient.client.mod.impl.quickplay.database.*;
+import io.github.solclient.client.mod.impl.quickplay.ui.*;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Utils;

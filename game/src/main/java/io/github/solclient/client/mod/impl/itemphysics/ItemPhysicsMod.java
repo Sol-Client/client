@@ -5,20 +5,15 @@
 
 package io.github.solclient.client.mod.impl.itemphysics;
 
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.world.entity.render.ItemEntityRenderEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.world.entity.Entity;
-import io.github.solclient.client.platform.mc.world.item.ItemStack;
-import io.github.solclient.client.platform.mc.world.item.ItemType;
+import io.github.solclient.client.platform.mc.world.item.*;
 
 public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 

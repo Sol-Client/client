@@ -2,8 +2,7 @@ package io.github.solclient.client.platform.mc.network;
 
 import java.util.UUID;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 public interface Connection {
 

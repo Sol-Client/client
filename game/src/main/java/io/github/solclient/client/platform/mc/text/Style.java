@@ -1,7 +1,6 @@
 package io.github.solclient.client.platform.mc.text;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 public interface Style {
 

@@ -4,8 +4,7 @@ import io.github.solclient.client.event.Cancellable;
 import io.github.solclient.client.event.impl.RenderEvent;
 import io.github.solclient.client.platform.mc.model.BakedModel;
 import io.github.solclient.client.platform.mc.world.entity.item.ItemEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -4,12 +4,7 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
-import org.objectweb.asm.tree.VarInsnNode;
+import org.objectweb.asm.tree.*;
 
 import io.github.solclient.client.wrapper.transformer.CaptureClassNames;
 import net.minecraft.client.gui.screen.Screen;

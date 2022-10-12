@@ -2,7 +2,6 @@ package io.github.solclient.client.platform.mc.world.level.block;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.github.solclient.client.platform.mc.world.level.ClientLevel;
 import io.github.solclient.client.platform.mc.world.level.Level;
 
 public interface BlockState {

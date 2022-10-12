@@ -1,11 +1,8 @@
 package io.github.solclient.client.mod.impl.hypixeladditions;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-import io.github.solclient.client.chat.ChatChannel;
-import io.github.solclient.client.chat.ChatChannelSystem;
-import io.github.solclient.client.chat.DefaultChatChannel;
+import io.github.solclient.client.chat.*;
 
 public class HypixelChatChannels extends ChatChannelSystem {
 

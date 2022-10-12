@@ -1,7 +1,6 @@
 package io.github.solclient.client.mod.impl.quickplay.ui;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL11;
@@ -12,12 +11,10 @@ import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.screen.ProxyScreen;
-import io.github.solclient.client.platform.mc.text.Font;
-import io.github.solclient.client.platform.mc.text.TextFormatting;
+import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 // Dirty code alert
 // TODO new UI

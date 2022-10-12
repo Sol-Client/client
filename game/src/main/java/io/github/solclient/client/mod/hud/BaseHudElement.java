@@ -3,8 +3,7 @@ package io.github.solclient.client.mod.hud;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.todo.TODO;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public abstract class BaseHudElement implements HudElement {
 

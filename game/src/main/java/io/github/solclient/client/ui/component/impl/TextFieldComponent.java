@@ -1,23 +1,16 @@
 package io.github.solclient.client.ui.component.impl;
 
+import java.util.function.Predicate;
+
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.lang.I18n;
-import io.github.solclient.client.platform.mc.util.Input;
-import io.github.solclient.client.platform.mc.util.MinecraftUtil;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.controller.Controller;
+import io.github.solclient.client.platform.mc.util.*;
+import io.github.solclient.client.ui.component.*;
+import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.function.Predicate;
+import io.github.solclient.client.util.data.*;
+import lombok.*;
 
 public class TextFieldComponent extends Component {
 

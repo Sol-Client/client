@@ -1,18 +1,13 @@
 package io.github.solclient.client.wrapper.transformer;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 
-import io.github.solclient.client.wrapper.BootstrapMain;
-import io.github.solclient.client.wrapper.WrapperClassLoader;
 import io.github.solclient.client.wrapper.mixin.ClientMixinService;
 
 public abstract class Transformer {

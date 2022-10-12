@@ -1,7 +1,6 @@
 package io.github.solclient.client.ui.screen.mods;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
@@ -10,21 +9,11 @@ import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.util.Input;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.controller.Controller;
-import io.github.solclient.client.ui.component.impl.ColourBoxComponent;
-import io.github.solclient.client.ui.component.impl.ColourPickerDialog;
-import io.github.solclient.client.ui.component.impl.LabelComponent;
-import io.github.solclient.client.ui.component.impl.ScaledIconComponent;
-import io.github.solclient.client.ui.component.impl.SliderComponent;
-import io.github.solclient.client.ui.component.impl.TickboxComponent;
+import io.github.solclient.client.ui.component.*;
+import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 
 public class ModOptionComponent extends ScaledIconComponent {

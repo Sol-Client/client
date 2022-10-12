@@ -2,8 +2,7 @@ package io.github.solclient.client.platform.mc.option;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 public interface KeyBinding {
 

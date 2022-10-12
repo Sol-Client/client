@@ -2,8 +2,7 @@ package io.github.solclient.client.platform.mc.texture;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 import io.github.solclient.client.platform.mc.resource.Identifier;
 

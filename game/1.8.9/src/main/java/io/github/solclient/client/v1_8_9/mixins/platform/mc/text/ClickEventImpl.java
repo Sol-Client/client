@@ -1,11 +1,7 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc.text;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.VirtualEnum;
 import io.github.solclient.client.platform.mc.text.ClickEvent;

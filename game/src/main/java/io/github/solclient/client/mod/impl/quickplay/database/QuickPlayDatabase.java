@@ -1,13 +1,9 @@
 package io.github.solclient.client.mod.impl.quickplay.database;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 
 import io.github.solclient.client.util.Utils;
 import lombok.Getter;

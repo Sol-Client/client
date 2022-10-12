@@ -1,13 +1,8 @@
 package io.github.solclient.client.packet;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
+import org.apache.logging.log4j.*;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;

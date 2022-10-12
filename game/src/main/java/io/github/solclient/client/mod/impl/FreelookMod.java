@@ -7,14 +7,12 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.event.impl.input.CameraRotateEvent;
 import io.github.solclient.client.event.impl.world.CameraTransformEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.platform.mc.world.entity.Entity;
-import io.github.solclient.client.util.Perspective;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 
 public class FreelookMod extends Mod {
 

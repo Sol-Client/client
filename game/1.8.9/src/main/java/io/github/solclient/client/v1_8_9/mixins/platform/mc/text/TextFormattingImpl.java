@@ -1,13 +1,10 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc.text;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.jetbrains.annotations.*;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.VirtualEnum;
-import io.github.solclient.client.platform.mc.text.TextColour;
-import io.github.solclient.client.platform.mc.text.TextFormatting;
+import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.v1_8_9.platform.mc.text.TextColourImpl;
 import net.minecraft.util.Formatting;
 

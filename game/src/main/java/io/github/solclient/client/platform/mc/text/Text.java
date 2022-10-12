@@ -1,10 +1,8 @@
 package io.github.solclient.client.platform.mc.text;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 import io.github.solclient.client.platform.Helper;
 

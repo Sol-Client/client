@@ -3,13 +3,10 @@ package io.github.solclient.client.mod.impl;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.game.FullscreenToggleEvent;
-import io.github.solclient.client.event.impl.game.PreRenderEvent;
+import io.github.solclient.client.event.impl.game.*;
 import io.github.solclient.client.event.impl.world.GammaEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
 
 public class TweaksMod extends Mod {
 

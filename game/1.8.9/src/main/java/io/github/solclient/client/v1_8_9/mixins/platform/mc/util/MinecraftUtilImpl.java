@@ -1,20 +1,16 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc.util;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.jetbrains.annotations.*;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.maths.Vec3d;
-import io.github.solclient.client.platform.mc.util.MinecraftUtil;
-import io.github.solclient.client.platform.mc.util.OperatingSystem;
+import io.github.solclient.client.platform.mc.util.*;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.SharedConstants;
-import net.minecraft.util.Util;
+import net.minecraft.util.*;
 
 @UtilityClass
 @Mixin(MinecraftUtil.class)

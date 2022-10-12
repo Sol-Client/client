@@ -1,14 +1,10 @@
 package io.github.solclient.client.wrapper.mixin;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import org.spongepowered.asm.service.IGlobalPropertyService;
-import org.spongepowered.asm.service.IPropertyKey;
+import org.spongepowered.asm.service.*;
 
-import io.github.solclient.client.wrapper.mixin.ClientPropertyService.Key;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 // who still uses blackboards?
 @SuppressWarnings("unchecked")

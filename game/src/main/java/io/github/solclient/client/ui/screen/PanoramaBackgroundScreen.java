@@ -3,8 +3,7 @@ package io.github.solclient.client.ui.screen;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
 import io.github.solclient.client.platform.mc.text.Text;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.Screen;
+import io.github.solclient.client.ui.component.*;
 
 public abstract class PanoramaBackgroundScreen extends Screen {
 

@@ -1,17 +1,13 @@
 package io.github.solclient.client.mod.impl.discordrpc;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.hud.BaseHudElement;
-import io.github.solclient.client.mod.hud.HudPosition;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.discordrpc.socket.User;
-import io.github.solclient.client.platform.mc.DrawableHelper;
-import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.text.Font;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public class DiscordVoiceChatHud extends BaseHudElement {
 

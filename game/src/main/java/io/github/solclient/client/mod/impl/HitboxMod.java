@@ -2,23 +2,16 @@ package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.Constants;
+import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PreTickEvent;
 import io.github.solclient.client.event.impl.input.HitboxToggleEvent;
 import io.github.solclient.client.event.impl.world.entity.render.HitboxRenderEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.platform.mc.maths.Box;
-import io.github.solclient.client.platform.mc.maths.Vec3d;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.platform.mc.maths.*;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
-import io.github.solclient.client.platform.mc.render.BufferBuilder;
-import io.github.solclient.client.platform.mc.render.GlStateManager;
-import io.github.solclient.client.platform.mc.render.Tessellator;
-import io.github.solclient.client.platform.mc.render.VertexFormat;
+import io.github.solclient.client.platform.mc.render.*;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.platform.mc.world.entity.LivingEntity;
 import io.github.solclient.client.platform.mc.world.level.LevelRenderer;

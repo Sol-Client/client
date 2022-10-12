@@ -8,18 +8,12 @@ import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.resource.Identifier;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.impl.ColouredComponent;
-import io.github.solclient.client.ui.component.impl.LabelComponent;
-import io.github.solclient.client.ui.component.impl.ScaledIconComponent;
+import io.github.solclient.client.ui.component.*;
+import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public class ModListing extends ColouredComponent {
 

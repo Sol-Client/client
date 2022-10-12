@@ -1,14 +1,10 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc.world.item;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.world.item.ItemType;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 
 @Mixin(Item.class)
 @Implements(@Interface(iface = ItemType.class, prefix = "platform$"))

@@ -1,12 +1,10 @@
 package io.github.solclient.client.v1_8_9.mixins.resource;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import io.github.solclient.client.util.TranslationProvider;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 import net.minecraft.client.resource.language.I18n;
 
 @Mixin(I18n.class)

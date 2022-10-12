@@ -1,20 +1,14 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.world.entity;
 
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 import com.google.common.collect.Ordering;
 
-import io.github.solclient.client.platform.mc.world.entity.LivingEntity;
-import io.github.solclient.client.platform.mc.world.entity.LivingEntityType;
-import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffect;
-import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectType;
+import io.github.solclient.client.platform.mc.world.entity.*;
+import io.github.solclient.client.platform.mc.world.entity.effect.*;
 import io.github.solclient.client.platform.mc.world.item.ItemStack;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.effect.StatusEffectInstance;

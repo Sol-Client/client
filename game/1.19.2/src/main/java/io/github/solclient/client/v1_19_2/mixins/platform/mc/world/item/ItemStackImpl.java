@@ -1,25 +1,17 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.world.item;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.jetbrains.annotations.*;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.text.Text;
-import io.github.solclient.client.platform.mc.world.item.ItemStack;
-import io.github.solclient.client.platform.mc.world.item.ItemType;
+import io.github.solclient.client.platform.mc.world.item.*;
 import io.github.solclient.client.platform.mc.world.level.Level;
-import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
-import io.github.solclient.client.platform.mc.world.level.block.BlockType;
+import io.github.solclient.client.platform.mc.world.level.block.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.*;
 
 @Mixin(net.minecraft.item.ItemStack.class)
 @Implements(@Interface(iface = ItemStack.class, prefix = "platform$"))

@@ -1,7 +1,6 @@
 package io.github.solclient.client.platform.mc.screen;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 public interface MultiplayerScreen extends Screen {
 

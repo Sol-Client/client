@@ -4,8 +4,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.github.solclient.client.platform.mc.world.level.block.BlockEntity;
-import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
+import io.github.solclient.client.platform.mc.world.level.block.*;
 
 public interface Chunk {
 

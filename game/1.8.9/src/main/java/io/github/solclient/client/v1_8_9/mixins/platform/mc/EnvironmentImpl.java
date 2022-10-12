@@ -1,11 +1,9 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.*;
 
-import io.github.solclient.client.platform.mc.Environment;
-import io.github.solclient.client.platform.mc.OptimisationEngine;
+import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.wrapper.WrapperClassLoader;
 import io.github.solclient.client.wrapper.transformer.impl.optifine.OptiFineTransformer;
 

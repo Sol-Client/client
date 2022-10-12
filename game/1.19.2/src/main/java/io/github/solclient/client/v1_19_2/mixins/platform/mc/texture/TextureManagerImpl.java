@@ -2,16 +2,13 @@ package io.github.solclient.client.v1_19_2.mixins.platform.mc.texture;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.jetbrains.annotations.*;
+import org.spongepowered.asm.mixin.*;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import io.github.solclient.client.platform.mc.resource.Identifier;
-import io.github.solclient.client.platform.mc.texture.Texture;
-import io.github.solclient.client.platform.mc.texture.TextureManager;
+import io.github.solclient.client.platform.mc.texture.*;
 import net.minecraft.client.texture.AbstractTexture;
 
 @Mixin(net.minecraft.client.texture.TextureManager.class)

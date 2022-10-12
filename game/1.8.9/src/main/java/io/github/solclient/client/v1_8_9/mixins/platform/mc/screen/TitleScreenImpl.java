@@ -1,11 +1,11 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc.screen;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
 import net.minecraft.client.gui.screen.Screen;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(net.minecraft.client.gui.screen.TitleScreen.class)
 public abstract class TitleScreenImpl extends Screen implements TitleScreen {

@@ -1,21 +1,15 @@
 package io.github.solclient.client.v1_8_9.mixins.render;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.*;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.impl.game.PreRenderEvent;
 import io.github.solclient.client.event.impl.input.CameraRotateEvent;
-import io.github.solclient.client.event.impl.world.CameraTransformEvent;
-import io.github.solclient.client.event.impl.world.FovEvent;
-import io.github.solclient.client.event.impl.world.GammaEvent;
+import io.github.solclient.client.event.impl.world.*;
 import io.github.solclient.client.util.Utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.GameOptions;

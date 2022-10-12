@@ -5,8 +5,7 @@ import java.io.IOException;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Constants;
-import io.github.solclient.client.mod.ConfigOnlyMod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.text.Font;

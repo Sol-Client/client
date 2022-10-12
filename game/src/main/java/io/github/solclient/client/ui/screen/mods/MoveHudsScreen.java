@@ -6,15 +6,12 @@ import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.util.Input;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.Screen;
+import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public class MoveHudsScreen extends Screen {
 

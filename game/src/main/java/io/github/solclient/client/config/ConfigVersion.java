@@ -1,7 +1,6 @@
 package io.github.solclient.client.config;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.google.gson.JsonObject;
 

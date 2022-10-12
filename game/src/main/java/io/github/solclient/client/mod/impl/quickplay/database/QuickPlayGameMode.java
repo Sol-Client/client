@@ -3,8 +3,7 @@ package io.github.solclient.client.mod.impl.quickplay.database;
 import com.google.gson.JsonObject;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
+import io.github.solclient.client.mod.impl.quickplay.ui.*;
 import io.github.solclient.client.platform.mc.world.item.ItemStack;
 import lombok.Getter;
 

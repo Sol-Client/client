@@ -4,17 +4,13 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.option.Options;
 import io.github.solclient.client.platform.mc.option.Perspective;
 import io.github.solclient.client.v1_19_2.mixins.accessor.option.KeyBindingAccessor;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.SimpleOption;
+import net.minecraft.client.option.*;
 import net.minecraft.client.util.InputUtil;
 
 @Mixin(GameOptions.class)

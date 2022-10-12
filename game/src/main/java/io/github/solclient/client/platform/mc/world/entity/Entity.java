@@ -4,8 +4,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.github.solclient.client.platform.mc.maths.Box;
-import io.github.solclient.client.platform.mc.maths.Vec3d;
+import io.github.solclient.client.platform.mc.maths.*;
 import io.github.solclient.client.platform.mc.world.entity.player.Player;
 import io.github.solclient.client.platform.mc.world.level.chunk.ChunkPos;
 

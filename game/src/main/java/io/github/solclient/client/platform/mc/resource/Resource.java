@@ -1,7 +1,6 @@
 package io.github.solclient.client.platform.mc.resource;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import org.jetbrains.annotations.NotNull;
 

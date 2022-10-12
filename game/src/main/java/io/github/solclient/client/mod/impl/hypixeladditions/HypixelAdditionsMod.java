@@ -4,44 +4,29 @@
 
 package io.github.solclient.client.mod.impl.hypixeladditions;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.regex.*;
+import java.util.stream.*;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.DetectedServer;
+import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.network.ServerConnectEvent;
-import io.github.solclient.client.event.impl.network.chat.ActionBarPlayEvent;
-import io.github.solclient.client.event.impl.network.chat.IncomingChatMessageEvent;
+import io.github.solclient.client.event.impl.network.chat.*;
 import io.github.solclient.client.event.impl.sound.SoundPlayEvent;
 import io.github.solclient.client.event.impl.world.level.LevelLoadEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.mod.impl.hypixeladditions.commands.ChatChannelCommand;
-import io.github.solclient.client.mod.impl.hypixeladditions.commands.VisitHousingCommand;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.impl.hypixeladditions.commands.*;
 import io.github.solclient.client.packet.Popup;
-import io.github.solclient.client.platform.mc.text.ClickEvent;
+import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.platform.mc.text.ClickEvent.Action;
-import io.github.solclient.client.platform.mc.text.Text;
-import io.github.solclient.client.platform.mc.text.TextColour;
-import io.github.solclient.client.platform.mc.text.TextFormatting;
 import io.github.solclient.client.platform.mc.world.item.ItemStack;
-import io.github.solclient.client.util.ApacheHttpClient;
-import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.AutoGGMessage;
-import io.github.solclient.client.util.data.AutoGLMessage;
+import io.github.solclient.client.util.*;
+import io.github.solclient.client.util.data.*;
 import net.hypixel.api.HypixelAPI;
 
 public class HypixelAdditionsMod extends Mod {

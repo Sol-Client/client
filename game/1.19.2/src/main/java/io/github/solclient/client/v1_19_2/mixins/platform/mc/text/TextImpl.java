@@ -3,15 +3,9 @@ package io.github.solclient.client.v1_19_2.mixins.platform.mc.text;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
-import io.github.solclient.client.platform.mc.text.MutableText;
-import io.github.solclient.client.platform.mc.text.Style;
-import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.util.Utils;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.util.Formatting;

@@ -1,14 +1,12 @@
 package io.github.solclient.client.ui.component;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.platform.mc.DrawableHelper;
-import io.github.solclient.client.platform.mc.MinecraftClient;
+import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.screen.ProxyScreen;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 
 public class Screen extends ProxyScreen {

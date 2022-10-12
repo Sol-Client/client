@@ -10,8 +10,7 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public class SpeedometerMod extends SimpleHudMod {
 

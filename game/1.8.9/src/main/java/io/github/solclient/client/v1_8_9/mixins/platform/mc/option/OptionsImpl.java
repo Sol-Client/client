@@ -3,14 +3,9 @@ package io.github.solclient.client.v1_8_9.mixins.platform.mc.option;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
-import io.github.solclient.client.platform.mc.option.KeyBinding;
-import io.github.solclient.client.platform.mc.option.Options;
-import io.github.solclient.client.platform.mc.option.Perspective;
+import io.github.solclient.client.platform.mc.option.*;
 import io.github.solclient.client.v1_8_9.platform.mc.option.PerspectiveImpl;
 import net.minecraft.client.options.GameOptions;
 

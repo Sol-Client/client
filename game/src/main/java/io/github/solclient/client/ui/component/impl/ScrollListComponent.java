@@ -3,13 +3,10 @@ package io.github.solclient.client.ui.component.impl;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.util.Input;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
+import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public abstract class ScrollListComponent extends Component {
 

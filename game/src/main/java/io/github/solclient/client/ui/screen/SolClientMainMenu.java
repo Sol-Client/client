@@ -2,27 +2,19 @@ package io.github.solclient.client.ui.screen;
 
 import io.github.solclient.client.Constants;
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.platform.mc.DrawableHelper;
-import io.github.solclient.client.platform.mc.Environment;
+import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.platform.mc.resource.Identifier;
-import io.github.solclient.client.platform.mc.screen.LanguageScreen;
-import io.github.solclient.client.platform.mc.screen.MultiplayerScreen;
-import io.github.solclient.client.platform.mc.screen.OptionsScreen;
-import io.github.solclient.client.platform.mc.screen.SingleplayerScreen;
-import io.github.solclient.client.platform.mc.text.Font;
-import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.screen.*;
+import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.controller.Controller;
-import io.github.solclient.client.ui.component.impl.ButtonComponent;
-import io.github.solclient.client.ui.component.impl.ButtonType;
+import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public class SolClientMainMenu extends PanoramaBackgroundScreen {
 

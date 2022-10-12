@@ -1,23 +1,12 @@
 package io.github.solclient.client.util;
 
 import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
+import java.io.*;
+import java.net.*;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.*;
 import java.util.Comparator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.*;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
@@ -25,18 +14,13 @@ import org.lwjgl.system.MemoryUtil;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.platform.mc.Environment;
-import io.github.solclient.client.platform.mc.MinecraftClient;
-import io.github.solclient.client.platform.mc.Window;
+import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.hud.IngameHud;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
-import io.github.solclient.client.platform.mc.sound.SoundInstance;
-import io.github.solclient.client.platform.mc.sound.SoundType;
-import io.github.solclient.client.platform.mc.util.MinecraftUtil;
-import io.github.solclient.client.platform.mc.util.OperatingSystem;
+import io.github.solclient.client.platform.mc.sound.*;
+import io.github.solclient.client.platform.mc.util.*;
 import io.github.solclient.client.todo.TODO;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 

@@ -1,18 +1,15 @@
 package io.github.solclient.client.packet;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.*;
 
 import io.github.solclient.client.Constants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.hud.PostHudRenderEvent;
-import io.github.solclient.client.platform.mc.MinecraftClient;
-import io.github.solclient.client.platform.mc.Window;
+import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.text.TextFormatting;
 import io.github.solclient.client.platform.mc.util.Input;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public class PopupManager {
 

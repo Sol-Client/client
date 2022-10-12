@@ -1,16 +1,12 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc.resource;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
-import io.github.solclient.client.platform.mc.resource.Identifier;
-import io.github.solclient.client.platform.mc.resource.Resource;
-import io.github.solclient.client.platform.mc.resource.ResourceManager;
+import io.github.solclient.client.platform.mc.resource.*;
 
 @Mixin(net.minecraft.resource.ResourceManager.class)
 public interface ResourceManagerImpl extends ResourceManager {

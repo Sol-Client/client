@@ -1,18 +1,12 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.*;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.v1_19_2.SharedObjects;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.util.math.Matrix4f;
 
 @Mixin(DrawableHelper.class)

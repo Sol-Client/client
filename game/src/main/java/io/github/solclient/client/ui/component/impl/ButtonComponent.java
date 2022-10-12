@@ -6,14 +6,10 @@ import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.controller.Controller;
+import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.ClickHandler;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 
 public class ButtonComponent extends ColouredComponent {

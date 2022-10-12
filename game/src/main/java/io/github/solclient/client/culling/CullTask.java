@@ -28,12 +28,10 @@
 
 package io.github.solclient.client.culling;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Map.Entry;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 import com.logisticscraft.occlusionculling.util.Vec3d;
@@ -43,9 +41,7 @@ import io.github.solclient.client.platform.mc.maths.Box;
 import io.github.solclient.client.platform.mc.util.MinecraftUtil;
 import io.github.solclient.client.platform.mc.world.entity.Entity;
 import io.github.solclient.client.platform.mc.world.entity.decoration.ArmourStand;
-import io.github.solclient.client.platform.mc.world.level.block.BlockEntity;
-import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
-import io.github.solclient.client.platform.mc.world.level.block.BlockType;
+import io.github.solclient.client.platform.mc.world.level.block.*;
 import io.github.solclient.client.platform.mc.world.level.chunk.Chunk;
 
 public class CullTask implements Runnable {

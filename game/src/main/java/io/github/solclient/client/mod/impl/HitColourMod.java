@@ -4,8 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.world.entity.render.HitOverlayRenderEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.data.Colour;
 

@@ -3,8 +3,7 @@ package io.github.solclient.client.ui.component.impl;
 import java.util.function.Consumer;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
+import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;

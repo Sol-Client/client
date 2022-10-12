@@ -1,9 +1,8 @@
 package io.github.solclient.client.platform.mc.text;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 
 import io.github.solclient.client.platform.VirtualEnum;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Legacy chat colour codes.

@@ -1,32 +1,24 @@
 package io.github.solclient.client.mod.impl.hud.chat;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.Constants;
+import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.game.PostTickEvent;
 import io.github.solclient.client.event.impl.hud.PreHudElementRenderEvent;
 import io.github.solclient.client.event.impl.input.ScrollWheelEvent;
 import io.github.solclient.client.event.impl.network.chat.IncomingChatMessageEvent;
-import io.github.solclient.client.mod.annotation.FileOption;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.platform.mc.DrawableHelper;
-import io.github.solclient.client.platform.mc.hud.chat.Chat;
-import io.github.solclient.client.platform.mc.hud.chat.ChatMessage;
+import io.github.solclient.client.platform.mc.hud.chat.*;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.util.Input;
-import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.VanillaHudElement;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.Colour;
 
 public class ChatMod extends HudMod {

@@ -2,38 +2,28 @@ package io.github.solclient.client.mod.impl.discordrpc;
 
 import java.io.File;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.google.gson.annotations.Expose;
 
-import de.jcm.discordgamesdk.Core;
-import de.jcm.discordgamesdk.CreateParams;
+import de.jcm.discordgamesdk.*;
 import de.jcm.discordgamesdk.CreateParams.Flags;
-import de.jcm.discordgamesdk.activity.Activity;
-import de.jcm.discordgamesdk.activity.ActivityType;
+import de.jcm.discordgamesdk.activity.*;
 import io.github.solclient.client.Constants;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.game.PreTickEvent;
-import io.github.solclient.client.event.impl.game.QuitEvent;
+import io.github.solclient.client.event.impl.game.*;
 import io.github.solclient.client.event.impl.screen.ScreenSwitchEvent;
 import io.github.solclient.client.event.impl.world.level.LevelLoadEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.hud.HudPosition;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.discordrpc.socket.DiscordSocket;
-import io.github.solclient.client.platform.mc.screen.MultiplayerScreen;
-import io.github.solclient.client.platform.mc.screen.TitleScreen;
+import io.github.solclient.client.platform.mc.screen.*;
 import io.github.solclient.client.platform.mc.world.level.ClientLevel;
 import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.VerticalAlignment;
+import io.github.solclient.client.util.data.*;
 
 public class DiscordIntegrationMod extends Mod {
 

@@ -3,13 +3,9 @@ package io.github.solclient.client.v1_19_2.mixins.platform.mc.text;
 import java.util.function.UnaryOperator;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
-import io.github.solclient.client.platform.mc.text.MutableText;
-import io.github.solclient.client.platform.mc.text.Style;
+import io.github.solclient.client.platform.mc.text.*;
 import net.minecraft.text.Text;
 
 @Mixin(net.minecraft.text.MutableText.class)

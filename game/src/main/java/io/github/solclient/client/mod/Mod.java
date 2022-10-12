@@ -1,20 +1,16 @@
 package io.github.solclient.client.mod;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventBus;
-import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.hud.PostHudRenderEvent;
-import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.lang.I18n;

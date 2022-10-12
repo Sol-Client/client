@@ -1,8 +1,7 @@
 package io.github.solclient.client.v1_8_9.platform.mc.text;
 
 import io.github.solclient.client.platform.mc.text.TextColour;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import net.minecraft.util.Formatting;
 
 @Data

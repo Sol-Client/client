@@ -1,18 +1,10 @@
 package io.github.solclient.client.v1_8_9.mixins.platform.mc.option;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.stream.*;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.jetbrains.annotations.*;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import net.minecraft.client.MinecraftClient;

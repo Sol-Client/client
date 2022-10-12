@@ -1,24 +1,17 @@
 package io.github.solclient.client.mod.impl.hud;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.texture.Texture;
-import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffect;
-import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectType;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.data.VerticalAlignment;
+import io.github.solclient.client.platform.mc.world.entity.effect.*;
+import io.github.solclient.client.util.data.*;
 
 public class PotionEffectsMod extends HudMod {
 

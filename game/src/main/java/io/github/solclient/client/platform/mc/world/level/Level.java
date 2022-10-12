@@ -1,14 +1,11 @@
 package io.github.solclient.client.platform.mc.world.level;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 import io.github.solclient.client.platform.Helper;
 import io.github.solclient.client.platform.mc.text.Text;
-import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
-import io.github.solclient.client.platform.mc.world.level.block.BlockState;
-import io.github.solclient.client.platform.mc.world.level.chunk.Chunk;
-import io.github.solclient.client.platform.mc.world.level.chunk.ChunkPos;
+import io.github.solclient.client.platform.mc.world.level.block.*;
+import io.github.solclient.client.platform.mc.world.level.chunk.*;
 
 public interface Level {
 

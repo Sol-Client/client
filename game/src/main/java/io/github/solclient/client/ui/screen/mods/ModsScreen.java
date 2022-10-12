@@ -6,19 +6,12 @@ import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.util.Input;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
-import io.github.solclient.client.ui.component.Screen;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.impl.ButtonComponent;
-import io.github.solclient.client.ui.component.impl.LabelComponent;
-import io.github.solclient.client.ui.component.impl.TextFieldComponent;
+import io.github.solclient.client.ui.component.*;
+import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 
 public class ModsScreen extends PanoramaBackgroundScreen {

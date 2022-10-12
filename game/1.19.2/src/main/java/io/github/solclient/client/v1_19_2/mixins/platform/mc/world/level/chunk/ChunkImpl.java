@@ -3,12 +3,9 @@ package io.github.solclient.client.v1_19_2.mixins.platform.mc.world.level.chunk;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
-import io.github.solclient.client.platform.mc.world.level.block.BlockEntity;
-import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
+import io.github.solclient.client.platform.mc.world.level.block.*;
 import io.github.solclient.client.platform.mc.world.level.chunk.Chunk;
 
 @Mixin(net.minecraft.world.chunk.Chunk.class)

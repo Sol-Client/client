@@ -1,7 +1,5 @@
 package io.github.solclient.client.platform.mc;
 
-import lombok.experimental.UtilityClass;
-
 public class DrawableHelper {
 
 	public static void fillRect(int left, int top, int right, int bottom, int colour) {

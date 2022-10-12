@@ -1,10 +1,7 @@
 package io.github.solclient.client.ui.component.controller;
 
 import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.impl.ButtonComponent;
-import io.github.solclient.client.ui.component.impl.LabelComponent;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

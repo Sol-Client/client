@@ -1,20 +1,12 @@
 package io.github.solclient.client.v1_8_9.mixins;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.*;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.Constants;
+import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventBus;
-import io.github.solclient.client.event.impl.game.PostStartEvent;
-import io.github.solclient.client.event.impl.game.PostTickEvent;
-import io.github.solclient.client.event.impl.game.PreTickEvent;
+import io.github.solclient.client.event.impl.game.*;
 import io.github.solclient.client.event.impl.world.level.LevelLoadEvent;
 import io.github.solclient.client.platform.mc.world.level.ClientLevel;
 import net.minecraft.client.MinecraftClient;

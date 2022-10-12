@@ -6,9 +6,7 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.util.Utils;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @ToString
 @EqualsAndHashCode

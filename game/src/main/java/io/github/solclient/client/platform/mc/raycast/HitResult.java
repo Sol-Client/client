@@ -1,7 +1,6 @@
 package io.github.solclient.client.platform.mc.raycast;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 import io.github.solclient.client.platform.mc.Direction;
 import io.github.solclient.client.platform.mc.world.entity.Entity;

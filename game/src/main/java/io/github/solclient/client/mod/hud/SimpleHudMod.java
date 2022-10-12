@@ -4,13 +4,10 @@ import java.util.Optional;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.util.ChainCache;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 /**
  * A simple HUD mod that rendered a simple string.

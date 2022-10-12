@@ -1,11 +1,8 @@
 package io.github.solclient.client.ui.screen.mods;
 
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.ModOption;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.impl.LabelComponent;
-import io.github.solclient.client.ui.component.impl.ScrollListComponent;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 
 public class ModsScroll extends ScrollListComponent {

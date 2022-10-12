@@ -4,9 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import io.github.solclient.client.event.Cancellable;
 import io.github.solclient.client.platform.mc.text.Text;
-import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 /**
  * Called when the player receives a chat message.

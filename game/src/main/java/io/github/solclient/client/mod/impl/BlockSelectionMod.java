@@ -4,21 +4,15 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.world.level.BlockSelectionRenderEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.platform.mc.raycast.HitResult;
-import io.github.solclient.client.platform.mc.raycast.HitType;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.platform.mc.raycast.*;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.world.entity.Entity;
-import io.github.solclient.client.platform.mc.world.entity.player.GameMode;
-import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
+import io.github.solclient.client.platform.mc.world.entity.player.*;
 import io.github.solclient.client.platform.mc.world.item.ItemStack;
 import io.github.solclient.client.platform.mc.world.level.Level;
-import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
-import io.github.solclient.client.platform.mc.world.level.block.BlockType;
+import io.github.solclient.client.platform.mc.world.level.block.*;
 import io.github.solclient.client.util.data.Colour;
 
 public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {

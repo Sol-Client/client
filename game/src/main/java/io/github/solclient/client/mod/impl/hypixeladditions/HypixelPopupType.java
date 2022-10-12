@@ -1,7 +1,6 @@
 package io.github.solclient.client.mod.impl.hypixeladditions;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.*;
 
 import io.github.solclient.client.packet.Popup;
 

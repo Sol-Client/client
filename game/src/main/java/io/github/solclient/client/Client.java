@@ -1,61 +1,38 @@
 package io.github.solclient.client;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.InstanceCreator;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.logisticscraft.occlusionculling.DataProvider;
-import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
+import com.google.gson.*;
+import com.logisticscraft.occlusionculling.*;
 
-import io.github.solclient.client.chat.ChatButton;
-import io.github.solclient.client.chat.ChatChannelButton;
-import io.github.solclient.client.chat.ChatChannelSystem;
-import io.github.solclient.client.command.Command;
-import io.github.solclient.client.command.CommandException;
+import io.github.solclient.client.chat.*;
+import io.github.solclient.client.command.*;
 import io.github.solclient.client.config.ConfigVersion;
 import io.github.solclient.client.culling.CullTask;
-import io.github.solclient.client.event.EventBus;
-import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.game.PostStartEvent;
-import io.github.solclient.client.event.impl.game.PreTickEvent;
+import io.github.solclient.client.event.*;
+import io.github.solclient.client.event.impl.game.*;
 import io.github.solclient.client.event.impl.network.ServerConnectEvent;
 import io.github.solclient.client.event.impl.network.chat.OutgoingChatMessageEvent;
-import io.github.solclient.client.mod.DefaultMods;
-import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.packet.PacketApi;
-import io.github.solclient.client.packet.PopupManager;
+import io.github.solclient.client.packet.*;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.network.ServerData;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.screen.TitleScreen;
-import io.github.solclient.client.platform.mc.text.Text;
-import io.github.solclient.client.platform.mc.text.TextColour;
+import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.platform.mc.world.level.Level;
 import io.github.solclient.client.platform.mc.world.level.block.BlockPos;
-import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
-import lombok.Getter;
-import lombok.Setter;
+import io.github.solclient.client.ui.screen.mods.*;
+import lombok.*;
 
 /**
  * Main class for Sol Client.

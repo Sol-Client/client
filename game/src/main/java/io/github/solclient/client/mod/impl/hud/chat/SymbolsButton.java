@@ -5,8 +5,7 @@ import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 
 public class SymbolsButton implements ChatButton {
 

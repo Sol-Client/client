@@ -2,8 +2,7 @@ package io.github.solclient.client.platform.mc.world.scoreboard;
 
 import java.util.Collection;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 public interface Scoreboard {
 

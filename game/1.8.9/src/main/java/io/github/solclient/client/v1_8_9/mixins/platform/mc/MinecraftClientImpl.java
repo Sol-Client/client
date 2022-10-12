@@ -88,8 +88,17 @@ public abstract class MinecraftClientImpl {
 	}
 
 	public @Nullable Entity platform$getCameraEntity() {
-		return null;
+		Entity result = (Entity) getCameraEntity();
+
+		if(result == null) {
+			return platform$getPlayer();
+		}
+
+		return result;
 	}
+
+	@Shadow
+	public abstract net.minecraft.entity.Entity getCameraEntity();
 
 	public @NotNull Options platform$getOptions() {
 		return (Options) options;

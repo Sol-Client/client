@@ -7,10 +7,14 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.impl.game.PreRenderEvent;
+import io.github.solclient.client.event.impl.input.CameraRotateEvent;
 import io.github.solclient.client.event.impl.world.FovEvent;
+import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.v1_19_2.SharedObjects;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;

@@ -87,7 +87,6 @@ public class HitboxMod extends Mod {
 		event.cancel();
 		GlStateManager.depthMask(false);
 		GlStateManager.disableTexture2d();
-		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 		GlStateManager.enableBlend();
 		GlStateManager.lineWidth(lineWidth);
@@ -131,7 +130,6 @@ public class HitboxMod extends Mod {
 		}
 
 		GlStateManager.enableTexture2d();
-		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.disableBlend();
 		GlStateManager.depthMask(true);

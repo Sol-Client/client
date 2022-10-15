@@ -41,16 +41,6 @@ public class GlStateManagerImpl {
 	}
 
 	@Overwrite(remap = false)
-	public static void enableLighting() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Overwrite(remap = false)
-	public static void disableLighting() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Overwrite(remap = false)
 	public static void pushMatrix() {
 		com.mojang.blaze3d.platform.GlStateManager.pushMatrix();
 	}

@@ -1,6 +1,6 @@
 package io.github.solclient.client.platform.mc.world.entity;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +9,7 @@ import io.github.solclient.client.platform.mc.world.item.ItemStack;
 
 public interface LivingEntity extends Entity {
 
-	@NotNull List<StatusEffect> getStatusEffects();
+	@NotNull Collection<StatusEffect> getStatusEffects();
 
 	boolean hasStatusEffect(StatusEffectType effect);
 

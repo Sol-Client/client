@@ -13,9 +13,8 @@ import net.minecraft.entity.EntityGroup;
 @Implements(@Interface(iface = LivingEntity.class, prefix = "platform$"))
 public abstract class LivingEntityImpl {
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<StatusEffect> platform$getStatusEffects() {
-		return (List) getStatusEffectInstances();
+	public Collection<StatusEffect> platform$getStatusEffects() {
+		return getStatusEffectInstances();
 	}
 
 	@Shadow

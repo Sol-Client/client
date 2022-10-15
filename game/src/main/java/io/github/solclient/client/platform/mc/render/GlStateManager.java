@@ -28,14 +28,6 @@ public class GlStateManager {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void enableLighting() {
-		throw new UnsupportedOperationException();
-	}
-
-	public static void disableLighting() {
-		throw new UnsupportedOperationException();
-	}
-
 	public static void pushMatrix() {
 		throw new UnsupportedOperationException();
 	}

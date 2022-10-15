@@ -8,6 +8,7 @@ public class TODO {
 
 	static {
 		System.err.println("Warning: TODO class loaded");
+		Thread.dumpStack();
 	}
 
 	public static final Object L = null;

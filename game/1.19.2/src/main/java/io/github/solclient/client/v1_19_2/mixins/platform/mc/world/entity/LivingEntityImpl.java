@@ -1,6 +1,5 @@
 package io.github.solclient.client.v1_19_2.mixins.platform.mc.world.entity;
 
-
 import java.util.*;
 
 import org.spongepowered.asm.mixin.*;
@@ -18,10 +17,10 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 public abstract class LivingEntityImpl {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<StatusEffect> platform$getStatusEffects() {
+	public Collection<StatusEffect> platform$getStatusEffects() {
 		// yes, vanilla does actually create a list copy every frame
 		// who thought that was a good idea?
-		return (List) Ordering.natural().sortedCopy(getStatusEffects());
+		return (Collection) Ordering.natural().sortedCopy(getStatusEffects());
 	}
 
 	@Shadow

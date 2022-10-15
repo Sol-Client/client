@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectType;
+import io.github.solclient.client.v1_8_9.SharedObjects;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.entity.effect.StatusEffect;
 
@@ -12,7 +13,7 @@ import net.minecraft.entity.effect.StatusEffect;
 public abstract class StatusEffectTypeImpl {
 
 	public void platform$render(int x, int y) {
-		DrawableHelper.drawTexture(x, y, getAtlasU(), getAtlasV(), 8, 8, 8, 8);
+		SharedObjects.HANDY_HELPER.drawTexture(x, y, (int) getAtlasU(), (int) getAtlasV(), 18, 18);
 	}
 
 	private float getAtlasU() {

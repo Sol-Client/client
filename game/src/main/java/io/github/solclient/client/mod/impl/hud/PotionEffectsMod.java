@@ -106,9 +106,8 @@ public class PotionEffectsMod extends HudMod {
 		}
 
 		if(!effects.isEmpty()) {
-			GlStateManager.resetColour();
-
 			for(StatusEffect effect : effects) {
+				GlStateManager.resetColour();
 				StatusEffectType type = effect.getType();
 
 				int width = getWidth();
@@ -131,7 +130,7 @@ public class PotionEffectsMod extends HudMod {
 				}
 
 				int centreText = y + 12;
-				
+
 				if(icon) {
 					mc.getTextureManager().bind(Texture.MOB_EFFECTS_ATLAS_ID);
 					type.render(iconX, y + 7);

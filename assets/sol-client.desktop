@@ -1,0 +1,10 @@
+[Desktop Entry]
+
+Name=Sol Client
+Comment=Simple yet feature-rich open-source Minecraft client.
+GenericName=Sol Client
+Exec=sol-client %U
+Icon=sol-client.png
+Type=Application
+StartupNotify=true
+Categories=Game;

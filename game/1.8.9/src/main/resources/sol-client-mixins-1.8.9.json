@@ -65,6 +65,8 @@
 		"platform.mc.MinecraftClientImpl$Static",
 		"platform.mc.TimerImpl",
 		"platform.mc.WindowImpl",
+		"render.entity.EntityRenderDispatcherMixin",
+		"render.CameraMixin",
 		"render.GameRendererMixin",
 		"resource.ReloadableResourceManagerImplMixin",
 		"resource.I18nMixin",

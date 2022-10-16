@@ -44,25 +44,17 @@ public class GameRendererMixin {
 		return !event.isCancelled() && !Utils.isSpectatingEntityInReplay();
 	}
 
-	private static float rotationYaw;
-	private static float prevRotationYaw;
-	private static float rotationPitch;
-	private static float prevRotationPitch;
+	private static float sc$yaw, sc$prevYaw, sc$pitch, sc$prevPitch;
 
 	@Inject(method = "transformCamera", at = @At("HEAD"))
 	public void rotationEvent(float partialTicks, CallbackInfo callback) {
-		rotationYaw = client.getCameraEntity().yaw;
-		prevRotationYaw = client.getCameraEntity().prevYaw;
-		rotationPitch = client.getCameraEntity().pitch;
-		prevRotationPitch = client.getCameraEntity().prevPitch;
+		CameraTransformEvent event = EventBus.DEFAULT.post(new CameraTransformEvent(client.getCameraEntity().yaw, client.getCameraEntity().pitch));
+		sc$yaw = event.getYaw();
+		sc$pitch = event.getPitch();
 
-		CameraTransformEvent event = EventBus.DEFAULT.post(new CameraTransformEvent(rotationYaw, rotationPitch));
-		rotationYaw = event.getYaw();
-		rotationPitch = event.getPitch();
-
-		event = EventBus.DEFAULT.post(new CameraTransformEvent(prevRotationYaw, prevRotationPitch));
-		prevRotationYaw = event.getYaw();
-		prevRotationPitch = event.getPitch();
+		event = EventBus.DEFAULT.post(new CameraTransformEvent(client.getCameraEntity().prevYaw, client.getCameraEntity().prevPitch));
+		sc$prevYaw = event.getYaw();
+		sc$prevPitch = event.getPitch();
 	}
 
 	@Shadow
@@ -70,22 +62,22 @@ public class GameRendererMixin {
 
 	@Redirect(method = "transformCamera", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;yaw:F"))
 	public float eventYaw(Entity entity) {
-		return rotationYaw;
+		return sc$yaw;
 	}
 
 	@Redirect(method = "transformCamera", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;prevYaw:F"))
 	public float eventPrevYaw(Entity entity) {
-		return prevRotationYaw;
+		return sc$prevYaw;
 	}
 
 	@Redirect(method = "transformCamera", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;pitch:F"))
 	public float eventPitch(Entity entity) {
-		return rotationPitch;
+		return sc$pitch;
 	}
 
 	@Redirect(method = "transformCamera", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;prevPitch:F"))
 	public float eventPrevPitch(Entity entity) {
-		return prevRotationPitch;
+		return sc$prevPitch;
 	}
 
 }

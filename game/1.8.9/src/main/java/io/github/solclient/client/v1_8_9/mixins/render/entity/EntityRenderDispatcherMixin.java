@@ -31,22 +31,22 @@ public class EntityRenderDispatcherMixin {
 	}
 
 	@Redirect(method = UPDATE_CAMERA, at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;yaw:F"))
-	public float getYaw(Entity ignored) {
+	public float eventYaw(Entity ignored) {
 		return sc$yaw;
 	}
 
 	@Redirect(method = UPDATE_CAMERA, at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;prevYaw:F"))
-	public float getPrevYaw(Entity ignored) {
+	public float eventPrevYaw(Entity ignored) {
 		return sc$prevYaw;
 	}
 
 	@Redirect(method = UPDATE_CAMERA, at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;pitch:F"))
-	public float getPitch(Entity ignored) {
+	public float eventPitch(Entity ignored) {
 		return sc$pitch;
 	}
 
 	@Redirect(method = UPDATE_CAMERA, at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;prevPitch:F"))
-	public float getPrevPitch(Entity ignored) {
+	public float eventPrevPitch(Entity ignored) {
 		return sc$prevPitch;
 	}
 

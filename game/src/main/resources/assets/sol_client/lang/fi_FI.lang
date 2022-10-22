@@ -169,7 +169,7 @@ sol_client.mod.chat.option.promptLinks=Pikalinkit
 sol_client.mod.chat.option.chatFilter=Ota chat-suodatin käyttöön
 sol_client.mod.chat.option.filteredWordsContent=Suodatetut Sanat
 
-sol_client.mod.tab_list.name=Tab List
+sol_client.mod.tab_list.name=Tab Lista
 sol_client.mod.tab_list.description=Mukauta tab- tai pelaajaluoteeloa.
 
 sol_client.mod.tab_list.option.hideHeader=Piilota Otsikko
@@ -263,10 +263,10 @@ sol_client.mod.toggle_sprint.option.hud=HUD
 sol_client.mod.toggle_sprint.held=Juokseminen (Painettu)
 sol_client.mod.toggle_sprint.toggled=Juokseminen (Päällä)
 
-sol_client.mod.zoom.name=Zoom
+sol_client.mod.zoom.name=Zoomaus
 sol_client.mod.zoom.description=Zoomaa näppäimen painalluksella.
 
-sol_client.mod.zoom.key=Zoom
+sol_client.mod.zoom.key=Zoomaus
 sol_client.mod.zoom.option.key=Näppäin
 sol_client.mod.zoom.zoom_out=Zoomaa ulos
 sol_client.mod.zoom.option.zoomOutKey=Ulospäin Zoomaamisen näppäin
@@ -278,7 +278,7 @@ sol_client.mod.zoom.option.scrolling=Vieritä Zoomataksesi
 sol_client.mod.zoom.option.smooth=Zoomaus Animaatio
 sol_client.mod.zoom.option.factor=Zoomaustekijä
 
-sol_client.mod.replay.name=Replay
+sol_client.mod.replay.name=Uudelleentoisto
 sol_client.mod.replay.description=Kuvaa ja toista pelaamisesi.
 
 sol_client.mod.replay.option.enableNotifications=Salli ilmoitukset
@@ -306,10 +306,10 @@ sol_client.mod.replay.interpolator.linear=Lineaarinen
 
 sol_client.mod.replay.option.showServerIPs=Näytä palvelimien IP-osoitteet
 
-sol_client.mod.quickplay.name=Quick Play
+sol_client.mod.quickplay.name=Pikapeli
 sol_client.mod.quickplay.description=Liity nopeasti pelien jonoihin näppäimistön avulla.
 
-sol_client.mod.quickplay.key=Quick Play
+sol_client.mod.quickplay.key=Pikapeli
 sol_client.mod.quickplay.option.menuKey=Näppäin
 
 sol_client.mod.hypixel_util.name=Hypixel Lisäykset

@@ -53,7 +53,7 @@ sol_client.mod.sol_client.option.editHudKey=Vaihda HUD näppäin
 sol_client.mod.sol_client.option.uiColour=Aksentin Väri
 sol_client.mod.sol_client.option.smoothUIColours=Pehmeät UI Värit
 sol_client.mod.sol_client.option.roundedUI=Pyöreä UI
-sol_client.mod.sol_client.option.buttonClicks=Button Clicks
+sol_client.mod.sol_client.option.buttonClicks=Painikkeen napsautukset
 sol_client.mod.sol_client.option.smoothScrolling=Pehmeä Vieritys
 sol_client.mod.sol_client.option.fancyFont=HD Fontti
 

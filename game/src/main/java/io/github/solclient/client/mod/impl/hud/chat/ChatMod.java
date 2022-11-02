@@ -254,6 +254,7 @@ public class ChatMod extends HudMod {
 		int visibleLinesCount = chat.getVisibleMessages().size();
 
 		if(visibleLinesCount <= 0) {
+			previousBottommost = null;
 			hasScrollbar = false;
 			return;
 		}

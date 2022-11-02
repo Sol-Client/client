@@ -75,7 +75,7 @@ public abstract class BaseHudElement implements HudElement {
 				render(getDividedPosition(), editMode);
 			}
 			catch(Throwable error) {
-				Client.LOGGER.error("Could not render HUD " + this + " from " + getMod(), error);
+				Client.LOGGER.error("Could not render HUD {} from {}", this, getMod(), error);
 			}
 		}
 	}

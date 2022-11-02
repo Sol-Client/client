@@ -3,6 +3,7 @@ package io.github.solclient.client.mod.hud;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.todo.TODO;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 
 public abstract class BaseHudElement implements HudElement {
@@ -67,17 +68,16 @@ public abstract class BaseHudElement implements HudElement {
 			return;
 		}
 
-		GlStateManager.pushMatrix();
-		GlStateManager.scale(getHudScale(), getHudScale(), getHudScale());
+		try(ScopeGuard _p = GlScopeGuards.push()) {
+			GlStateManager.scale(getHudScale(), getHudScale(), getHudScale());
 
-		try {
-			render(getDividedPosition(), editMode);
+			try {
+				render(getDividedPosition(), editMode);
+			}
+			catch(Throwable error) {
+				Client.LOGGER.error("Could not render HUD " + this + " from " + getMod(), error);
+			}
 		}
-		catch(Throwable error) {
-			Client.LOGGER.error("Could not render HUD " + this + " from " + getMod(), error);
-		}
-
-		GlStateManager.popMatrix();
 	}
 
 	@Override

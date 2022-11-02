@@ -11,7 +11,7 @@ import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.*;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
 
@@ -132,17 +132,16 @@ public abstract class Component {
 
 			Rectangle bounds = getBounds(component);
 
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(bounds.getX(), bounds.getY(), 0);
+			try(ScopeGuard _p = GlScopeGuards.push()) {
+				GlStateManager.translate(bounds.getX(), bounds.getY(), 0);
 
-			if(component.shouldScissor()) {
-				GL11.glEnable(GL11.GL_SCISSOR_TEST);
-				Utils.scissor(bounds);
+				if(component.shouldScissor()) {
+					GL11.glEnable(GL11.GL_SCISSOR_TEST);
+					Utils.scissor(bounds);
+				}
+
+				component.render(transform(info, bounds));
 			}
-
-			component.render(transform(info, bounds));
-
-			GlStateManager.popMatrix();
 
 			if(component.shouldScissor()) {
 				GL11.glDisable(GL11.GL_SCISSOR_TEST);

@@ -14,7 +14,7 @@ import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.platform.mc.texture.Texture;
 import io.github.solclient.client.platform.mc.world.entity.player.GameMode;
-import io.github.solclient.client.util.VanillaHudElement;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.Colour;
 
 public class CrosshairMod extends HudMod {
@@ -64,41 +64,39 @@ public class CrosshairMod extends HudMod {
 			}
 			Window window = mc.getWindow();
 
-			GlStateManager.pushMatrix();
-			GlStateManager.scale(getScale(), getScale(), getScale());
-			GlStateManager.translate(window.scaledWidth() / getScale() / 2 - 7,
-					window.scaledHeight() / getScale() / 2 - 7, 0);
+			try(ScopeGuard _p = GlScopeGuards.push()) {
+				GlStateManager.scale(getScale(), getScale(), getScale());
+				GlStateManager.translate(window.scaledWidth() / getScale() / 2 - 7,
+						window.scaledHeight() / getScale() / 2 - 7, 0);
 
-			crosshairColour.bind();
+				crosshairColour.bind();
 
-			GlStateManager.enableBlend();
-			GlStateManager.blendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+				GlStateManager.enableBlend();
+				GlStateManager.blendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
-			if(highlightEntities && mc.getHitResult().getType() == HitType.ENTITY
-					&& mc.getHitResult().getEntity() != null && !(mc.getHitResult().getEntity().isGloballyInvisible()
-							|| mc.getHitResult().getEntity().isInvisibleTo(mc.getPlayer()))) {
-				entityColour.bind();
+				if(highlightEntities && mc.getHitResult().getType() == HitType.ENTITY
+						&& mc.getHitResult().getEntity() != null && !(mc.getHitResult().getEntity().isGloballyInvisible()
+								|| mc.getHitResult().getEntity().isInvisibleTo(mc.getPlayer()))) {
+					entityColour.bind();
+				}
+				else if(blending) {
+					GlStateManager.blendFunction(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_ONE,
+							GL11.GL_ZERO);
+				}
+
+				if(style == CrosshairStyle.DEFAULT) {
+					mc.getTextureManager().bind(Texture.ICONS_ID);
+					DrawableHelper.fillTexturedRect(0, 0, 0, 0, 16, 16, 16, 16);
+				}
+				else {
+					mc.getTextureManager().bind(CROSSHAIRS);
+					int v = (style.ordinal() - 2) * 16;
+					DrawableHelper.fillTexturedRect(0, 0, 0, v, 16, 16, 16, 16);
+					mc.getTextureManager().bind(Texture.ICONS_ID);
+				}
+
+				GlStateManager.resetColour();
 			}
-			else if(blending) {
-				GlStateManager.blendFunction(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_ONE,
-						GL11.GL_ZERO);
-			}
-
-			if(style == CrosshairStyle.DEFAULT) {
-				mc.getTextureManager().bind(Texture.ICONS_ID);
-				DrawableHelper.fillTexturedRect(0, 0, 0, 0, 16, 16, 16, 16);
-			}
-			else {
-				mc.getTextureManager().bind(CROSSHAIRS);
-				int v = (style.ordinal() - 2) * 16;
-				DrawableHelper.fillTexturedRect(0, 0, 0, v, 16, 16, 16, 16);
-				mc.getTextureManager().bind(Texture.ICONS_ID);
-			}
-
-			GlStateManager.resetColour();
-
-			GlStateManager.resetColour();
-			GlStateManager.popMatrix();
 		}
 	}
 

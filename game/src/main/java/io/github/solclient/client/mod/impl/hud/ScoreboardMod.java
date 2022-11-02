@@ -14,6 +14,7 @@ import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.world.scoreboard.*;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.Colour;
 
 public class ScoreboardMod extends Mod {
@@ -99,58 +100,57 @@ public class ScoreboardMod extends Mod {
 		int scaledWidth = mc.getWindow().scaledWidth();
 		int scaledHeight = mc.getWindow().scaledHeight();
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(-3, 0, 0);
-		GlStateManager.scale(scale / 100F, scale / 100F, scale / 100F);
+		try(ScopeGuard _p = GlScopeGuards.push()) {
+			GlStateManager.translate(-3, 0, 0);
+			GlStateManager.scale(scale / 100F, scale / 100F, scale / 100F);
 
-		scaledWidth /= scale / 100;
-		scaledHeight /= scale / 100;
+			scaledWidth /= scale / 100;
+			scaledHeight /= scale / 100;
 
-		GlStateManager.translate(0, (scaledHeight / 2) - (scoresHeight / 2), 0);
+			GlStateManager.translate(0, (scaledHeight / 2) - (scoresHeight / 2), 0);
 
-		int k1 = 0;
-		int l1 = scaledWidth - nameWidth - k1;
+			int k1 = 0;
+			int l1 = scaledWidth - nameWidth - k1;
 
-		int j = 0;
+			int j = 0;
 
-		for(Score score : scores) {
-			++j;
-			PlayerTeam team = scoreboard.getPlayersTeam(score.getPlayerName());
-			Text text = team.formatText(score.getPlayerName(), false);
-			String points = Integer.toString(score.getValue());
-			int k = (j * mc.getFont().getHeight()) + 1;
-			int l = scaledWidth - k1 + 2;
+			for(Score score : scores) {
+				++j;
+				PlayerTeam team = scoreboard.getPlayersTeam(score.getPlayerName());
+				Text text = team.formatText(score.getPlayerName(), false);
+				String points = Integer.toString(score.getValue());
+				int k = (j * mc.getFont().getHeight()) + 1;
+				int l = scaledWidth - k1 + 2;
 
-			if(background) {
-				DrawableHelper.fillRect(l1 - 2, k, l, k + mc.getFont().getHeight(), backgroundColour.getValue());
-			}
-
-			mc.getFont().render(text, l1, k, textColour.getValue(), shadow);
-
-			if(numbers) {
-				mc.getFont().render(points, l - mc.getFont().getTextWidth(points) - (border ? 1 : 0), k,
-						numbersColour.getValue(), shadow);
-			}
-
-			if(j == scores.size()) {
-				Text name = event.getObjective().getDisplayName();
 				if(background) {
-					DrawableHelper.fillRect(l1 - 2, 0, l, mc.getFont().getHeight(), backgroundColourTop.getValue());
-					DrawableHelper.fillRect(l1 - 2, mc.getFont().getHeight(), l, mc.getFont().getHeight() + 1,
-							backgroundColour.getValue());
+					DrawableHelper.fillRect(l1 - 2, k, l, k + mc.getFont().getHeight(), backgroundColour.getValue());
 				}
-				mc.getFont().render(name, l1 + nameWidth / 2 - mc.getFont().getTextWidth(name) / 2, 1,
-						textColour.getValue(), shadow);
+
+				mc.getFont().render(text, l1, k, textColour.getValue(), shadow);
+
+				if(numbers) {
+					mc.getFont().render(points, l - mc.getFont().getTextWidth(points) - (border ? 1 : 0), k,
+							numbersColour.getValue(), shadow);
+				}
+
+				if(j == scores.size()) {
+					Text name = event.getObjective().getDisplayName();
+					if(background) {
+						DrawableHelper.fillRect(l1 - 2, 0, l, mc.getFont().getHeight(), backgroundColourTop.getValue());
+						DrawableHelper.fillRect(l1 - 2, mc.getFont().getHeight(), l, mc.getFont().getHeight() + 1,
+								backgroundColour.getValue());
+					}
+					mc.getFont().render(name, l1 + nameWidth / 2 - mc.getFont().getTextWidth(name) / 2, 1,
+							textColour.getValue(), shadow);
+				}
+			}
+
+			if(border) {
+				int top = ((0 - j * mc.getFont().getHeight()) - mc.getFont().getHeight()) - 2;
+				DrawableHelper.strokeRect(l1 - 3, top, scaledWidth - k1 + 2,
+						top + mc.getFont().getHeight() + 3 + scoresHeight, borderColour.getValue());
 			}
 		}
-
-		if(border) {
-			int top = ((0 - j * mc.getFont().getHeight()) - mc.getFont().getHeight()) - 2;
-			DrawableHelper.strokeRect(l1 - 3, top, scaledWidth - k1 + 2,
-					top + mc.getFont().getHeight() + 3 + scoresHeight, borderColour.getValue());
-		}
-
-		GlStateManager.popMatrix();
 	}
 
 	@Override

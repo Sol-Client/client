@@ -10,7 +10,7 @@ import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.resource.Identifier;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 
 public class KeystrokesMod extends HudMod {
@@ -137,21 +137,21 @@ public class KeystrokesMod extends HudMod {
 				DrawableHelper.strokeRect(x, y, x + space.width, y + 34, borderColour.getValue());
 			}
 
-			GlStateManager.pushMatrix();
-			GlStateManager.enableBlend();
-			GlStateManager.resetColour();
+			try(ScopeGuard _p = GlScopeGuards.push()) {
+				GlStateManager.enableBlend();
+				GlStateManager.resetColour();
 
-			mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_keystrokes_mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
-			DrawableHelper.fillTexturedRect(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
+				mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_keystrokes_mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
+				DrawableHelper.fillTexturedRect(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
 
-			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * tickDelta)) - 5;
-			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * tickDelta)) - 5;
-			GlStateManager.translate(calculatedMouseX, calculatedMouseY, 0);
+				float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * tickDelta)) - 5;
+				float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * tickDelta)) - 5;
+				GlStateManager.translate(calculatedMouseX, calculatedMouseY, 0);
 
-			mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_keystrokes_mouse_ring_" + Utils.getTextureScale() + ".png"));
-			DrawableHelper.fillTexturedRect(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
+				mc.getTextureManager().bind(Identifier.minecraft("textures/gui/sol_client_keystrokes_mouse_ring_" + Utils.getTextureScale() + ".png"));
+				DrawableHelper.fillTexturedRect(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
+			}
 
-			GlStateManager.popMatrix();
 			y += 35;
 		}
 

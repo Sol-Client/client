@@ -4,7 +4,7 @@ import io.github.solclient.client.CpsCounter;
 import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -79,15 +79,14 @@ public class Keystroke {
 					String cpsText = monitor.getCps() + " CPS";
 					float scale = 0.5F;
 
-					GlStateManager.pushMatrix();
-					GlStateManager.scale(scale, scale, scale);
+					try(ScopeGuard _p = GlScopeGuards.push()) {
+						GlStateManager.scale(scale, scale, scale);
 
-					mc.getFont().render(cpsText,
-							(int) ((x / scale) + (width / 2F / scale) - (mc.getFont().getTextWidth(cpsText) / 2F)),
-							(int) ((y + height - (mc.getFont().getHeight() * scale)) / scale - 3), fgColour,
-							mod.shadow);
-
-					GlStateManager.popMatrix();
+						mc.getFont().render(cpsText,
+								(int) ((x / scale) + (width / 2F / scale) - (mc.getFont().getTextWidth(cpsText) / 2F)),
+								(int) ((y + height - (mc.getFont().getHeight() * scale)) / scale - 3), fgColour,
+								mod.shadow);
+					}
 
 					y -= 3;
 				}

@@ -263,112 +263,111 @@ public class ChatMod extends HudMod {
 		float scale = getScale();
 		int width = (int) Math.ceil(chat.getChatWidth() / scale);
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(2, 20, 0);
+		try(ScopeGuard _p = GlScopeGuards.push()) {
+			GlStateManager.translate(2, 20, 0);
 
-		GlStateManager.scale(scale, scale, 1.0F);
+			GlStateManager.scale(scale, scale, 1.0F);
 
-		ChatMessage bottommost = chat.getVisibleMessages().get(0);
+			ChatMessage bottommost = chat.getVisibleMessages().get(0);
 
-		if(previousBottommost != bottommost) {
-			animatedOffset = 9;
-			lastAnimatedOffset = 9;
-		}
-
-		previousBottommost = bottommost;
-
-		if(smooth && !(chat.isOpen() && chat.getScroll() > 0)) {
-			float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.getTickDelta();
-			GlStateManager.translate(0, calculatedOffset, 0);
-		}
-
-		for(int i = 0; i + chat.getScroll() < chat.getVisibleMessages().size() && i < linesCount; ++i) {
-			ChatMessage line = chat.getVisibleMessages().get(i + chat.getScroll());
-
-			if(line == null) {
-				continue;
+			if(previousBottommost != bottommost) {
+				animatedOffset = 9;
+				lastAnimatedOffset = 9;
 			}
 
-			int update = mc.getIngameHud().getTickCounter() - line.getMessageCreationTick();
+			previousBottommost = bottommost;
 
-			if(!(open || update < 200)) {
-				continue;
+			if(smooth && !(chat.isOpen() && chat.getScroll() > 0)) {
+				float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.getTickDelta();
+				GlStateManager.translate(0, calculatedOffset, 0);
 			}
 
-			double percent = update / 200.0D;
-			percent = 1.0D - percent;
-			percent = percent * 10.0D;
-			percent = Utils.clamp(percent, 0.0D, 1.0D);
-			percent = percent * percent;
+			for(int i = 0; i + chat.getScroll() < chat.getVisibleMessages().size() && i < linesCount; ++i) {
+				ChatMessage line = chat.getVisibleMessages().get(i + chat.getScroll());
+
+				if(line == null) {
+					continue;
+				}
+
+				int update = mc.getIngameHud().getTickCounter() - line.getMessageCreationTick();
+
+				if(!(open || update < 200)) {
+					continue;
+				}
+
+				double percent = update / 200.0D;
+				percent = 1.0D - percent;
+				percent = percent * 10.0D;
+				percent = Utils.clamp(percent, 0.0D, 1.0D);
+				percent = percent * percent;
+
+				if(open) {
+					percent = 1;
+				}
+
+				double percentFG = percent;
+
+				if(smooth) {
+					ChatAnimationData data = ((ChatAnimationData) line);
+
+					if(data.getTransparency() != 0) {
+						float calculatedTransparency = data.getLastTransparency() + (data.getTransparency() - data.getLastTransparency()) * event.getTickDelta();
+						percentFG *= (1 - calculatedTransparency);
+					}
+				}
+
+				j++;
+
+				if(percent <= 0.05F) {
+					continue;
+				}
+
+				int i2 = 0;
+				int j2 = -i * 9;
+
+				if(background) {
+					DrawableHelper.fillRect(i2 - 2, j2 - 9, i2 + width + 4, j2,
+							backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * percent)).getValue());
+				}
+
+				OrderedText formattedText = line.getMessage();
+				GlStateManager.enableBlend();
+
+				if(percentFG > 0.05F) {
+					int colour = defaultTextColour.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue();
+
+					if(colours) {
+						mc.getFont().render(formattedText, i2, j2 - 8, colour, shadow);
+					}
+					else {
+						mc.getFont().render(formattedText.getPlainOrdered(), i2, j2 - 8, colour, shadow);
+					}
+				}
+			}
 
 			if(open) {
-				percent = 1;
-			}
+				int k2 = mc.getFont().getHeight();
+				GlStateManager.translate(-3, 0, 0);
 
-			double percentFG = percent;
+				int l2 = visibleLinesCount * k2 + visibleLinesCount;
+				int i3 = j * k2 + j;
+				int j3 = chat.getScroll() * i3 / visibleLinesCount;
+				int k1 = i3 * i3 / l2;
 
-			if(smooth) {
-				ChatAnimationData data = ((ChatAnimationData) line);
+				if(l2 != i3) {
+					hasScrollbar = true;
 
-				if(data.getTransparency() != 0) {
-					float calculatedTransparency = data.getLastTransparency() + (data.getTransparency() - data.getLastTransparency()) * event.getTickDelta();
-					percentFG *= (1 - calculatedTransparency);
-				}
-			}
+					int k3 = j3 > 0 ? 170 : 96;
+					int l3 = chat.isScrolled() ? 13382451 : 3355562;
 
-			j++;
-
-			if(percent <= 0.05F) {
-				continue;
-			}
-
-			int i2 = 0;
-			int j2 = -i * 9;
-
-			if(background) {
-				DrawableHelper.fillRect(i2 - 2, j2 - 9, i2 + width + 4, j2,
-						backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * percent)).getValue());
-			}
-
-			OrderedText formattedText = line.getMessage();
-			GlStateManager.enableBlend();
-
-			if(percentFG > 0.05F) {
-				int colour = defaultTextColour.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue();
-
-				if(colours) {
-					mc.getFont().render(formattedText, i2, j2 - 8, colour, shadow);
+					DrawableHelper.fillRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
+					DrawableHelper.fillRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
 				}
 				else {
-					mc.getFont().render(formattedText.getPlainOrdered(), i2, j2 - 8, colour, shadow);
+					hasScrollbar = false;
 				}
 			}
 		}
-
-		if(open) {
-			int k2 = mc.getFont().getHeight();
-			GlStateManager.translate(-3, 0, 0);
-
-			int l2 = visibleLinesCount * k2 + visibleLinesCount;
-			int i3 = j * k2 + j;
-			int j3 = chat.getScroll() * i3 / visibleLinesCount;
-			int k1 = i3 * i3 / l2;
-
-			if(l2 != i3) {
-				hasScrollbar = true;
-
-				int k3 = j3 > 0 ? 170 : 96;
-				int l3 = chat.isScrolled() ? 13382451 : 3355562;
-
-				DrawableHelper.fillRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
-				DrawableHelper.fillRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
-			}
-			else {
-				hasScrollbar = false;
-			}
-		}
-
-		GlStateManager.popMatrix();
 	}
 
 }

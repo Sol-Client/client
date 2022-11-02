@@ -96,7 +96,7 @@ public class ChatMod extends HudMod {
 	private String filteredWordsContent;
 	private List<String> filteredWords = new ArrayList<>();
 
-	private int previousChatSize;
+	private ChatMessage previousBottommost;
 	private SymbolsButton symbolsButton;
 
 	@Override
@@ -221,8 +221,8 @@ public class ChatMod extends HudMod {
 		for(String word : filteredWords) {
 			word = strip(word);
 
-			if(message.equals(word) || message.startsWith(word + ' ')
-					|| message.endsWith(' ' + word) || message.contains(' ' + word + ' ')) {
+			if(message.equals(word) || message.startsWith(word + ' ') || message.endsWith(' ' + word)
+					|| message.contains(' ' + word + ' ')) {
 				event.cancel();
 				return;
 			}
@@ -268,10 +268,14 @@ public class ChatMod extends HudMod {
 
 		GlStateManager.scale(scale, scale, 1.0F);
 
-		if(previousChatSize < visibleLinesCount) {
+		ChatMessage bottommost = chat.getVisibleMessages().get(0);
+
+		if(previousBottommost != bottommost) {
 			animatedOffset = 9;
 			lastAnimatedOffset = 9;
 		}
+
+		previousBottommost = bottommost;
 
 		if(smooth && !(chat.isOpen() && chat.getScroll() > 0)) {
 			float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.getTickDelta();
@@ -365,7 +369,6 @@ public class ChatMod extends HudMod {
 		}
 
 		GlStateManager.popMatrix();
-		previousChatSize = visibleLinesCount;
 	}
 
 }

@@ -4,7 +4,7 @@ import io.github.solclient.client.event.Cancellable;
 import lombok.*;
 
 @RequiredArgsConstructor
-public class FullscreenToggleEvent implements Cancellable {
+public final class FullscreenToggleEvent implements Cancellable {
 
 	@Setter
 	private boolean state, applyState = true;

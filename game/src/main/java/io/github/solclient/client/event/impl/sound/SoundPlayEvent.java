@@ -4,7 +4,7 @@ import io.github.solclient.client.platform.mc.sound.SoundType;
 import lombok.Data;
 
 @Data
-public class SoundPlayEvent {
+public final class SoundPlayEvent {
 
 	private SoundType type;
 	private float volume;

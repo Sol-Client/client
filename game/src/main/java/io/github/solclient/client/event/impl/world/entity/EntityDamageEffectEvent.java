@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class EntityDamageEffectEvent {
+public final class EntityDamageEffectEvent {
 
 	private final Entity entity;
 

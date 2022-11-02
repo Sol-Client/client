@@ -92,7 +92,7 @@ public class PotionEffectsMod extends HudMod {
 			effects = Arrays.asList(SPEED, STRENGTH);
 		}
 		else {
-			effects = mc.getPlayer().getStatusEffects();
+			effects = mc.getPlayer().getEntityStatusEffects();
 		}
 
 		switch(alignment) {

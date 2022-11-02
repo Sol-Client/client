@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod.impl;
 
-import java.io.IOException;
+import java.io.*;
 
 import com.google.gson.annotations.Expose;
 
@@ -83,7 +83,9 @@ public class SolClientConfig extends ConfigOnlyMod {
 		if(fancyFont && !fontError) {
 			if(font == null) {
 				try {
-					return font = new TrueTypeFont(getClass().getResourceAsStream("/Roboto-Regular.ttf"), 16);
+					try(InputStream in = getClass().getResourceAsStream("/Roboto-Regular.ttf")) {
+						return font = new TrueTypeFont(in, 16);
+					}
 				}
 				catch(IOException | IllegalStateException error) {
 					fontError = true;

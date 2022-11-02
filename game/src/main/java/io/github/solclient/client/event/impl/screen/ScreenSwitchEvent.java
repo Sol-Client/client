@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class ScreenSwitchEvent {
+public final class ScreenSwitchEvent {
 
 	private final Screen screen, previousScreen;
 

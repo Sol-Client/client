@@ -17,7 +17,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 public abstract class LivingEntityImpl {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Collection<StatusEffect> platform$getStatusEffects() {
+	public Collection<StatusEffect> platform$getEntityStatusEffects() {
 		// yes, vanilla does actually create a list copy every frame
 		// who thought that was a good idea?
 		return (Collection) Ordering.natural().sortedCopy(getStatusEffects());

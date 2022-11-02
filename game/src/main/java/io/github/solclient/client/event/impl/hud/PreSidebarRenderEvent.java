@@ -4,7 +4,7 @@ import io.github.solclient.client.platform.mc.world.scoreboard.Objective;
 import io.github.solclient.client.util.VanillaHudElement;
 import lombok.Getter;
 
-public class PreSidebarRenderEvent extends PreHudElementRenderEvent {
+public final class PreSidebarRenderEvent extends PreHudElementRenderEvent {
 
 	@Getter
 	private Objective objective;

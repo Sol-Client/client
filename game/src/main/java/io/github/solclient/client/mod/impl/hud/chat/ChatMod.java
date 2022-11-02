@@ -16,7 +16,7 @@ import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.platform.mc.hud.chat.*;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
-import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.Colour;
@@ -128,7 +128,7 @@ public class ChatMod extends HudMod {
 		}
 
 		if(mc.hasLevel()) {
-			mc.getIngameHud().getChat().refresh();
+			mc.getIngameHud().getChat().resetChat();
 		}
 	}
 
@@ -138,7 +138,7 @@ public class ChatMod extends HudMod {
 		Client.INSTANCE.unregisterChatButton(symbolsButton);
 
 		if(mc.hasLevel()) {
-			mc.getIngameHud().getChat().refresh();
+			mc.getIngameHud().getChat().resetChat();
 		}
 	}
 
@@ -162,7 +162,7 @@ public class ChatMod extends HudMod {
 		if(key.equals("closedHeight") || key.equals("openHeight")
 				|| key.equals("width") || key.equals("enabled")
 				|| key.equals("scale")) {
-			mc.getIngameHud().getChat().refresh();
+			mc.getIngameHud().getChat().resetChat();
 		}
 		return super.onOptionChange(key, value);
 	}
@@ -182,7 +182,7 @@ public class ChatMod extends HudMod {
 				amount *= 7;
 			}
 
-			mc.getIngameHud().getChat().scroll(amount);
+			mc.getIngameHud().getChat().scrollChat(amount);
 
 			event.cancel();
 		}
@@ -192,7 +192,7 @@ public class ChatMod extends HudMod {
 	@SuppressWarnings("unchecked")
 	public void onTick(PostTickEvent event) {
 		if(!peekKey.isHeld() && wasPeeking) {
-			mc.getIngameHud().getChat().resetScroll();
+			mc.getIngameHud().getChat().scrollToStart();
 		}
 
 		wasPeeking = peekKey.isHeld();
@@ -216,22 +216,22 @@ public class ChatMod extends HudMod {
 			return;
 		}
 
-		// Primarily focused on English text, as all non-ascii characters are stripped.
 		String message = event.getMessage().getPlain();
 
 		for(String word : filteredWords) {
 			word = strip(word);
 
-			if(message.equals(word) || message.startsWith(word + " ")
-					|| message.endsWith(" " + word) || message.contains(" " + word + " ")) {
+			if(message.equals(word) || message.startsWith(word + ' ')
+					|| message.endsWith(' ' + word) || message.contains(' ' + word + ' ')) {
 				event.cancel();
 				return;
 			}
 		}
 	}
 
-	private String strip(String word) {
-		return word.toLowerCase().codePoints().filter(Character::isLetter).mapToObj((i) -> (Character) (char) i)
+	private static String strip(String word) {
+		return word.toLowerCase().codePoints().filter(Character::isLetter)
+				.mapToObj((codePoint) -> (Character) (char) codePoint)
 				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}
 
@@ -249,7 +249,7 @@ public class ChatMod extends HudMod {
 			return;
 		}
 
-		int linesCount = chat.getVisibleMessageCount();
+		int linesCount = chat.getLineCount();
 		int j = 0;
 		int visibleLinesCount = chat.getVisibleMessages().size();
 
@@ -261,7 +261,7 @@ public class ChatMod extends HudMod {
 		boolean open = chat.isOpen();
 
 		float scale = getScale();
-		int width = (int) Math.ceil(chat.getWidth() / scale);
+		int width = (int) Math.ceil(chat.getChatWidth() / scale);
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(2, 20, 0);
@@ -275,7 +275,6 @@ public class ChatMod extends HudMod {
 
 		if(smooth && !(chat.isOpen() && chat.getScroll() > 0)) {
 			float calculatedOffset = lastAnimatedOffset + (animatedOffset - lastAnimatedOffset) * event.getTickDelta();
-
 			GlStateManager.translate(0, calculatedOffset, 0);
 		}
 
@@ -286,7 +285,7 @@ public class ChatMod extends HudMod {
 				continue;
 			}
 
-			int update = mc.getIngameHud().getTicks() - line.getUpdatedCounter();
+			int update = mc.getIngameHud().getTickCounter() - line.getMessageCreationTick();
 
 			if(!(open || update < 200)) {
 				continue;
@@ -327,13 +326,18 @@ public class ChatMod extends HudMod {
 						backgroundColour.withAlpha((int) (backgroundColour.getAlpha() * percent)).getValue());
 			}
 
-			Text formattedText = line.getMessage();
+			OrderedText formattedText = line.getMessage();
 			GlStateManager.enableBlend();
 
 			if(percentFG > 0.05F) {
-				mc.getFont().render(colours ? formattedText : Text.literal(formattedText.getPlain()), i2, j2 - 8,
-						defaultTextColour
-								.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue(), shadow);
+				int colour = defaultTextColour.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue();
+
+				if(colours) {
+					mc.getFont().render(formattedText, i2, j2 - 8, colour, shadow);
+				}
+				else {
+					mc.getFont().render(formattedText.getPlainOrdered(), i2, j2 - 8, colour, shadow);
+				}
 			}
 		}
 

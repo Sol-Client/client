@@ -6,7 +6,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class ServerConnectEvent {
+public final class ServerConnectEvent {
 
 	private final ServerData data;
 	private final DetectedServer detected;

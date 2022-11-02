@@ -24,7 +24,7 @@ public class PackageAccessFixer extends Transformer {
 	}
 
 	// based off Fabric loader's method - pretty compact way to do things
-	private int fixAccess(int access) {
+	private static int fixAccess(int access) {
 		if((access & 7) != Opcodes.ACC_PRIVATE) {
 			return (access & ~7) | Opcodes.ACC_PUBLIC;
 		}

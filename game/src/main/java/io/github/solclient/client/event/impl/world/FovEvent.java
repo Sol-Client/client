@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FovEvent extends RenderEvent {
+public final class FovEvent extends RenderEvent {
 
 	private double fov;
 

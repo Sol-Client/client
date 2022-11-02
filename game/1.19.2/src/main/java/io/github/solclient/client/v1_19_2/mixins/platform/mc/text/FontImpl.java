@@ -7,7 +7,6 @@ import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.v1_19_2.SharedObjects;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.OrderedText;
 
 @Mixin(TextRenderer.class)
 @Implements(@Interface(iface = Font.class, prefix = "platform$"))
@@ -21,6 +20,7 @@ public abstract class FontImpl {
 		if(shadow) {
 			return drawWithShadow(SharedObjects.primary2dMatrixStack, text, x, y, rgb);
 		}
+
 		return draw(SharedObjects.primary2dMatrixStack, text, x, y, rgb);
 	}
 
@@ -42,6 +42,7 @@ public abstract class FontImpl {
 		if(shadow) {
 			return drawWithShadow(SharedObjects.primary2dMatrixStack, (net.minecraft.text.Text) text, x, y, rgb);
 		}
+
 		return draw(SharedObjects.primary2dMatrixStack, (net.minecraft.text.Text) text, x, y, rgb);
 	}
 
@@ -55,6 +56,28 @@ public abstract class FontImpl {
 	@Shadow
 	public abstract int drawWithShadow(MatrixStack stack, net.minecraft.text.Text text, float x, float y, int color);
 
+	public int platform$render(@NotNull OrderedText text, int x, int y, int rgb) {
+		return draw(SharedObjects.primary2dMatrixStack, (net.minecraft.text.OrderedText) text, x, y, rgb);
+	}
+
+	public int platform$render(@NotNull OrderedText text, int x, int y, int rgb, boolean shadow) {
+		if(shadow) {
+			return drawWithShadow(SharedObjects.primary2dMatrixStack, (net.minecraft.text.OrderedText) text, x, y, rgb);
+		}
+
+		return draw(SharedObjects.primary2dMatrixStack, (net.minecraft.text.OrderedText) text, x, y, rgb);
+	}
+
+	public int platform$renderWithShadow(@NotNull OrderedText text, int x, int y, int rgb) {
+		return drawWithShadow(SharedObjects.primary2dMatrixStack, (net.minecraft.text.OrderedText) text, x, y, rgb);
+	}
+
+	@Shadow
+	public abstract int draw(MatrixStack stack, net.minecraft.text.OrderedText text, float x, float y, int color);
+
+	@Shadow
+	public abstract int drawWithShadow(MatrixStack stack, net.minecraft.text.OrderedText text, float x, float y, int color);
+
 	public int platform$getCharacterWidth(char character) {
 		return getWidth(Character.toString(character));
 	}
@@ -67,11 +90,15 @@ public abstract class FontImpl {
 		return getWidth(((net.minecraft.text.Text) text).asOrderedText());
 	}
 
+	public int platform$getTextWidth(@NotNull OrderedText text) {
+		return getWidth((net.minecraft.text.OrderedText) text);
+	}
+
 	@Shadow
 	public abstract int getWidth(String text);
 
 	@Shadow
-	public abstract int getWidth(OrderedText text);
+	public abstract int getWidth(net.minecraft.text.OrderedText text);
 
 	public int platform$getHeight() {
 		return fontHeight;

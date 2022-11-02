@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class PreRenderChunkEvent {
+public final class PreRenderChunkEvent {
 
 	private final CompiledChunk chunk;
 

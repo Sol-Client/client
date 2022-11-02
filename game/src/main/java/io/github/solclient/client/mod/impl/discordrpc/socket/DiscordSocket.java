@@ -78,7 +78,7 @@ public class DiscordSocket extends WebSocketClient {
 					if(evt.equals("READY")) {
 						obtainAccessToken1();
 					}
-					else if(evt.equals("VOICE_CHANNEL_SELECT")) {
+					else if(evt.equals("VOICE_CHANNEL_SELECT") && data != null) {
 						if(data.get("channel_id").isJsonNull()) {
 							if(currentVoiceChannel != null) {
 								channelDisconnected();
@@ -101,7 +101,7 @@ public class DiscordSocket extends WebSocketClient {
 					else if(evt.equals("VOICE_STATE_DELETE") && userId != null) {
 						voiceCallUsers.remove(userId).deleteTexture();
 					}
-					else if(evt.equals("SPEAKING_START") || evt.equals("SPEAKING_STOP")) {
+					else if((evt.equals("SPEAKING_START") || evt.equals("SPEAKING_STOP")) && data != null) {
 						User user = voiceCallUsers.get(data.get("user_id").getAsString());
 
 						if(user != null) {
@@ -174,6 +174,7 @@ public class DiscordSocket extends WebSocketClient {
 		subscribe(event, (JsonObject) null);
 	}
 
+	@SuppressWarnings("unused")
 	private void unsubscribe(String event) {
 		subscribe(event, (JsonObject) null, false);
 	}
@@ -197,6 +198,7 @@ public class DiscordSocket extends WebSocketClient {
 		subscribe(event, args, true);
 	}
 
+	@SuppressWarnings("unused")
 	private void unsubscribe(String event, JsonObject args) {
 		subscribe(event, args, false);
 	}
@@ -245,19 +247,13 @@ public class DiscordSocket extends WebSocketClient {
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty("Accept", "application/json");
 
-		OutputStream out = connection.getOutputStream();
-		out.write(command.toString().getBytes());
+		try(OutputStream out = connection.getOutputStream(); InputStream in = connection.getInputStream()) {
+			out.write(command.toString().getBytes());
 
-		InputStream in;
+			JsonObject result = JsonParser.parseString(IOUtils.toString(in, StandardCharsets.UTF_8)).getAsJsonObject();
 
-		in = connection.getInputStream();
-
-		JsonObject result = JsonParser.parseString(IOUtils.toString(in, StandardCharsets.UTF_8)).getAsJsonObject();
-
-		out.close();
-		in.close();
-
-		auth(result.has("access_token") ? result.get("access_token").getAsString() : "none");
+			auth(result.has("access_token") ? result.get("access_token").getAsString() : "none");
+		}
 	}
 
 	private void auth(String accessToken) {

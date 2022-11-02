@@ -4,7 +4,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class HitOverlayRenderEvent {
+public final class HitOverlayRenderEvent {
 
 	private float r, g, b, a;
 

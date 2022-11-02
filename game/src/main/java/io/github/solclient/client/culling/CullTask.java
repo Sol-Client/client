@@ -164,7 +164,7 @@ public class CullTask implements Runnable {
 		}
 	}
 
-	private boolean isSkippableArmorstand(Entity entity) {
+	private static boolean isSkippableArmorstand(Entity entity) {
 		return entity instanceof ArmourStand && ((ArmourStand) entity).isMarker();
 	}
 

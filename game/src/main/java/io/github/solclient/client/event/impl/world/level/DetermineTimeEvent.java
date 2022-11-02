@@ -4,7 +4,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class DetermineTimeEvent {
+public final class DetermineTimeEvent {
 
 	private long time;
 

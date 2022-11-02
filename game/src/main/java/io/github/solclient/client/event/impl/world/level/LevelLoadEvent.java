@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class LevelLoadEvent {
+public final class LevelLoadEvent {
 
 	private final ClientLevel level;
 

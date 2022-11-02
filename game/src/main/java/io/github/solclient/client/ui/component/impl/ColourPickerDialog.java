@@ -172,8 +172,7 @@ public class ColourPickerDialog	 extends ScaledIconComponent {
 		return super.mouseReleasedAnywhere(info, button, inside);
 	}
 
-	private int getSelectedRGBComponent(ComponentRenderInfo info) {
-
+	private static int getSelectedRGBComponent(ComponentRenderInfo info) {
 		for(int component = 0; component < 4; component++) {
 			Rectangle rectangle = new Rectangle(RGB_OFFSET_LEFT, RGB_OFFSET_TOP + component * RGB_SPACING, 256, 11);
 

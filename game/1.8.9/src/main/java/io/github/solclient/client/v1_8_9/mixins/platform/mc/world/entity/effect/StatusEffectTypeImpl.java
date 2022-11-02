@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectType;
 import io.github.solclient.client.v1_8_9.SharedObjects;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.entity.effect.StatusEffect;
 
 @Mixin(StatusEffect.class)

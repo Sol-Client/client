@@ -9,8 +9,8 @@ import io.github.solclient.client.platform.mc.MinecraftClient;
 
 public class FilePollingTask implements Runnable, Closeable {
 
-	private Map<String, ModOption> files = new HashMap<>();
-	private WatchKey key;
+	private final Map<String, ModOption> files = new HashMap<>();
+	private final WatchKey key;
 
 	public FilePollingTask(List<Mod> mods) throws IOException {
 		WatchService service = FileSystems.getDefault().newWatchService();
@@ -37,8 +37,7 @@ public class FilePollingTask implements Runnable, Closeable {
 				try {
 					option.readFile();
 				}
-				catch(IOException error) {
-				}
+				catch(IOException error) {}
 			}
 		}
 	}

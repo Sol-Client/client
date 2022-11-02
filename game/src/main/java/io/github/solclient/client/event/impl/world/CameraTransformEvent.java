@@ -4,7 +4,7 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
-public class CameraTransformEvent {
+public final class CameraTransformEvent {
 
 	private float yaw, pitch;
 

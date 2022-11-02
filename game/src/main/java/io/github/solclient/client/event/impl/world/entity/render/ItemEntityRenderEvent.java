@@ -8,7 +8,7 @@ import lombok.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ItemEntityRenderEvent extends RenderEvent implements Cancellable {
+public final class ItemEntityRenderEvent extends RenderEvent implements Cancellable {
 
 	private boolean cancelled;
 	private final ItemEntity entity;

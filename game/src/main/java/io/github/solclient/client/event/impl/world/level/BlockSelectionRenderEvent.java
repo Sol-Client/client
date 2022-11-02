@@ -7,7 +7,7 @@ import lombok.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BlockSelectionRenderEvent extends RenderEvent implements Cancellable {
+public final class BlockSelectionRenderEvent extends RenderEvent implements Cancellable {
 
 	private HitResult hit;
 	private boolean cancelled;

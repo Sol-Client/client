@@ -95,7 +95,7 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 		rotationSpeed = Math.min(100, rotationSpeed + 10);
 	}
 
-	private int getClumpSize(int size) {
+	private static int getClumpSize(int size) {
 		if(size > 48) {
 			return 5;
 		}

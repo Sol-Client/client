@@ -60,10 +60,14 @@ public class Colour {
 		checkRange(getAlpha(), "alpha");
 	}
 
-	private void checkRange(int value, String name) {
+	private static void checkRange(int value, String name) {
 		if(value > 0xFF || value < 0) {
 			throw new IllegalStateException("Invalid range for " + name + " (" + value + ")");
 		}
+	}
+
+	private static int clamp(int channel) {
+		return Utils.clamp(channel, 0, 255);
 	}
 
 	public int getRed() {
@@ -128,10 +132,6 @@ public class Colour {
 
 	public Colour multiply(float factor) {
 		return new Colour(clamp((int) (getRed() * factor)), clamp((int) (getGreen() * factor)), clamp((int) (getBlue() * factor)), getAlpha());
-	}
-
-	private int clamp(int channel) {
-		return Utils.clamp(channel, 0, 255);
 	}
 
 	public Colour add(int amount) {

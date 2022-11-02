@@ -6,7 +6,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class ScreenBackgroundRenderEvent implements Cancellable {
+public final class ScreenBackgroundRenderEvent implements Cancellable {
 
 	private final Screen screen;
 	private boolean cancelled;

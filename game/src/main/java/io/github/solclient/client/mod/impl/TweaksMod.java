@@ -131,7 +131,7 @@ public class TweaksMod extends Mod {
 	}
 
 	// controlled by impl, since LWJGL versions vary so much
-	private void setBorderlessFullscreen(boolean state) {
+	private static void setBorderlessFullscreen(boolean state) {
 		throw new UnsupportedOperationException();
 	}
 

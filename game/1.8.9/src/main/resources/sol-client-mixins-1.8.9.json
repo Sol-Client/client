@@ -3,6 +3,9 @@
 	"package": "io.github.solclient.client.v1_8_9.mixins",
 	"minVersion": "0.8.5",
 	"mixins": [
+		"platform.mc.gui.chat.ChatImpl",
+		"platform.mc.gui.chat.ChatMessageImpl",
+		"platform.mc.gui.IngameHudImpl",
 		"platform.mc.lang.I18nImpl",
 		"platform.mc.lang.LanguageManagerImpl",
 		"platform.mc.maths.Vec3iImpl",
@@ -26,6 +29,7 @@
 		"platform.mc.text.ClickEventImpl$ActionImpl",
 		"platform.mc.text.ClickEventImpl$ActionImpl$Static",
 		"platform.mc.text.FontImpl",
+		"platform.mc.text.OrderedTextImpl",
 		"platform.mc.text.StyleImpl",
 		"platform.mc.text.TextFormattingImpl",
 		"platform.mc.text.TextFormattingImpl$Static",
@@ -70,6 +74,8 @@
 		"render.GameRendererMixin",
 		"resource.ReloadableResourceManagerImplMixin",
 		"resource.I18nMixin",
+		"gui.hud.ChatAnimationDataMixin",
+		"gui.hud.ChatHudMixin",
 		"gui.hud.InGameHudMixin",
 		"gui.screen.TitleScreenMixin",
 		"MinecraftClientMixin"

@@ -152,7 +152,7 @@ public final class Client {
 		capeManager = new CapeManager();
 	}
 
-	private Gson getGson(Mod mod) {
+	private static Gson getGson(Mod mod) {
 		GsonBuilder builder = new GsonBuilder();
 		if(mod != null) {
 			builder.registerTypeAdapter(mod.getClass(), (InstanceCreator<Mod>) (type) -> mod);

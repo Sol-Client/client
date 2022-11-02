@@ -111,17 +111,17 @@ public class Utils {
 		URLConnection connection = url.openConnection();
 		connection.addRequestProperty("User-Agent", System.getProperty("http.agent")); // Force consistent behaviour
 
-		InputStream in = connection.getInputStream();
+		try(InputStream in = connection.getInputStream()) {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			StringBuilder result = new StringBuilder();
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		StringBuilder result = new StringBuilder();
+			String line;
+			while((line = reader.readLine()) != null) {
+				result.append(line).append("\n");
+			}
 
-		String line;
-		while((line = reader.readLine()) != null) {
-			result.append(line).append("\n");
+			return result.toString();
 		}
-
-		return result.toString();
 	}
 
 	public int randomInt(int from, int to) {
@@ -375,18 +375,19 @@ public class Utils {
 
 	// not managed by Java GC for performance reasons
 	public static ByteBuffer mallocAndRead(@NotNull InputStream in) throws IOException {
-		ReadableByteChannel channel = Channels.newChannel(in);
-		ByteBuffer buffer = MemoryUtil.memAlloc(8192);
+		try(ReadableByteChannel channel = Channels.newChannel(in)) {
+			ByteBuffer buffer = MemoryUtil.memAlloc(8192);
 
-		while(channel.read(buffer) != -1) {
-			if(buffer.remaining() == 0) {
-				buffer = MemoryUtil.memRealloc(buffer, buffer.capacity() + buffer.capacity() * 3 / 2);
+			while(channel.read(buffer) != -1) {
+				if(buffer.remaining() == 0) {
+					buffer = MemoryUtil.memRealloc(buffer, buffer.capacity() + buffer.capacity() * 3 / 2);
+				}
 			}
+
+			buffer.flip();
+
+			return buffer;
 		}
-
-		buffer.flip();
-
-		return buffer;
 	}
 
 }

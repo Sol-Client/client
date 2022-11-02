@@ -54,12 +54,12 @@ public abstract class ScrollListComponent extends Component {
 
 			if(index > -1) {
 				lastAdded = subComponents.get(index);
-
 				lastBounds = lastAdded.getBounds();
 			}
 
-			return new Rectangle(defaultBounds.getX(), lastAdded == null ? 0
-					: lastBounds.getY() + lastBounds.getHeight() + getSpacing(),
+			return new Rectangle(defaultBounds.getX(),
+					lastAdded == null || lastBounds == null ? 0
+							: lastBounds.getY() + lastBounds.getHeight() + getSpacing(),
 					defaultBounds.getWidth(), defaultBounds.getHeight());
 		}));
 	}

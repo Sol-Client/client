@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class FirstPersonItemTransformEvent {
+public final class FirstPersonItemTransformEvent {
 
 	private final ItemStack item;
 

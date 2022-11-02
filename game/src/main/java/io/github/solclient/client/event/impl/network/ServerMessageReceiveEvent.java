@@ -12,7 +12,7 @@ import lombok.*;
  */
 @Data
 @AllArgsConstructor
-public class ServerMessageReceiveEvent {
+public final class ServerMessageReceiveEvent {
 
 	private Identifier channelId;
 	private final String channel;

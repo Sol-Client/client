@@ -24,6 +24,7 @@ import io.github.solclient.client.platform.mc.world.item.ItemRenderer;
 import io.github.solclient.client.platform.mc.world.level.*;
 import io.github.solclient.client.platform.mc.world.particle.ParticleEngine;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.render.*;
 import net.minecraft.client.sound.SoundManager;
@@ -184,9 +185,11 @@ public abstract class MinecraftClientImpl {
 	public abstract net.minecraft.client.render.item.ItemRenderer getItemRenderer();
 
 	public @NotNull IngameHud platform$getIngameHud() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IngameHud) inGameHud;
 	}
+
+	@Shadow
+	public InGameHud inGameHud;
 
 	public boolean platform$isGameRunning() {
 		// TODO Auto-generated method stub

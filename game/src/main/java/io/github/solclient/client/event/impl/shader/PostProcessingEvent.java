@@ -6,7 +6,7 @@ import io.github.solclient.client.platform.mc.shader.ShaderChain;
 import lombok.Data;
 
 @Data
-public class PostProcessingEvent {
+public final class PostProcessingEvent {
 
 	private final Type type;
 	private final List<ShaderChain> shaders;

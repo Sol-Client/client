@@ -13,7 +13,7 @@ import net.minecraft.entity.EntityGroup;
 @Implements(@Interface(iface = LivingEntity.class, prefix = "platform$"))
 public abstract class LivingEntityImpl {
 
-	public Collection<StatusEffect> platform$getStatusEffects() {
+	public Collection<StatusEffect> platform$getEntityStatusEffects() {
 		return getStatusEffectInstances();
 	}
 

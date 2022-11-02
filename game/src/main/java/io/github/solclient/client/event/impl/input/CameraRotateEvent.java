@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class CameraRotateEvent implements Cancellable {
+public final class CameraRotateEvent implements Cancellable {
 
 	private final float yaw, pitch;
 	private boolean cancelled;

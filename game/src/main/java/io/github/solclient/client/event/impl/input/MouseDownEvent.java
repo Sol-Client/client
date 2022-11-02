@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class MouseDownEvent implements Cancellable {
+public final class MouseDownEvent implements Cancellable {
 
 	private final int button;
 	private boolean cancelled;

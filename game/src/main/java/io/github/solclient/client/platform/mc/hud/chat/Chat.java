@@ -11,28 +11,28 @@ import io.github.solclient.client.platform.mc.text.Text;
 
 public interface Chat extends ChatAccessor {
 
-	void refresh();
+	void resetChat();
 
-	void resetScroll();
+	void scrollToStart();
 
-	int getVisibleMessageCount();
+	int getLineCount();
 
 	@NotNull
 	List<ChatMessage> getVisibleMessages();
 
 	boolean isOpen();
 
-	int getWidth();
+	int getChatWidth();
 
 	int getScroll();
 
-	void scroll(int amount);
+	void scrollChat(int amount);
 
 	boolean isScrolled();
 
 	@Helper
 	static @NotNull Chat requireInstance() {
-		return getInstance().orElseThrow(() -> new UnsupportedOperationException("Chat not open"));
+		return getInstance().orElseThrow(() -> new IllegalStateException("Chat not open"));
 	}
 
 	@Helper

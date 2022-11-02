@@ -1,6 +1,6 @@
 package io.github.solclient.client;
 
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
@@ -24,11 +24,12 @@ public class CapeManager {
 	public CapeManager() {
 		Utils.MAIN_EXECUTOR.submit(() -> {
 			try {
-				JsonObject capesObject = JsonParser.parseReader(new InputStreamReader(BY_PLAYER_URL.openStream()))
-						.getAsJsonObject();
+				try(InputStream in = BY_PLAYER_URL.openStream()) {
+					JsonObject capesObject = JsonParser.parseReader(new InputStreamReader(in)).getAsJsonObject();
 
-				for(Map.Entry<String, JsonElement> entry : capesObject.entrySet()) {
-					capes.put(entry.getKey(), BASE_URL + "capes/" + entry.getValue().getAsString() + ".png");
+					for(Map.Entry<String, JsonElement> entry : capesObject.entrySet()) {
+						capes.put(entry.getKey(), BASE_URL + "capes/" + entry.getValue().getAsString() + ".png");
+					}
 				}
 			}
 			catch(Exception error) {

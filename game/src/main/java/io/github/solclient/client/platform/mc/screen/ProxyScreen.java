@@ -57,6 +57,7 @@ public class ProxyScreen implements Screen {
 	protected void onClose() {
 	}
 
+	@SuppressWarnings("static-method")
 	protected final void renderDefaultBackground() {
 		throw new UnsupportedOperationException();
 	}

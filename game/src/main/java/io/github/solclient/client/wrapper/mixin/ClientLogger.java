@@ -25,7 +25,7 @@ public class ClientLogger extends LoggerAdapterAbstract {
 		return "Sol Client";
 	}
 
-	private org.apache.logging.log4j.Level map(Level level) {
+	private static org.apache.logging.log4j.Level map(Level level) {
 		return BY_ORDINAL[level.ordinal()];
 	}
 

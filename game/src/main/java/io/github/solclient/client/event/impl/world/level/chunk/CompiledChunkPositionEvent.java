@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class CompiledChunkPositionEvent {
+public final class CompiledChunkPositionEvent {
 
 	private final CompiledChunk chunk;
 

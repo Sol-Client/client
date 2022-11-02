@@ -22,6 +22,7 @@ public class TrueTypeFont implements Font, Closeable {
 	private final int textureId;
 	private final int ascent, descent, lineGap;
 
+	@SuppressWarnings("resource")
 	public TrueTypeFont(@NotNull InputStream in, float size) throws IOException, IllegalStateException {
 		buffer = Utils.mallocAndRead(in);
 

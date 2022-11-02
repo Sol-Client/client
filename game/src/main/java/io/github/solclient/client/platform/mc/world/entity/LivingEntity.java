@@ -9,7 +9,7 @@ import io.github.solclient.client.platform.mc.world.item.ItemStack;
 
 public interface LivingEntity extends Entity {
 
-	@NotNull Collection<StatusEffect> getStatusEffects();
+	@NotNull Collection<StatusEffect> getEntityStatusEffects();
 
 	boolean hasStatusEffect(StatusEffectType effect);
 

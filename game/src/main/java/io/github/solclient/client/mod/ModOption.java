@@ -52,22 +52,22 @@ public class ModOption {
 			if(getValue() == null) {
 				LOGGER.warn("Mod option {} has no default value. This may cause a crash.", name);
 			}
+
+			if(!option.translationKey().isEmpty()) {
+				translationKey = option.translationKey();
+			}
+
+			if(translationKey == null) {
+				if(field.getDeclaringClass().isAnnotationPresent(AbstractTranslationKey.class)) {
+					translationKey = field.getDeclaringClass().getAnnotation(AbstractTranslationKey.class).value();
+				}
+				else {
+					translationKey = mod.getTranslationKey();
+				}
+			}
 		}
 
 		priority = option.priority();
-
-		if(!option.translationKey().isEmpty()) {
-			translationKey = option.translationKey();
-		}
-
-		if(translationKey == null) {
-			if(field.getDeclaringClass().isAnnotationPresent(AbstractTranslationKey.class)) {
-				translationKey = field.getDeclaringClass().getAnnotation(AbstractTranslationKey.class).value();
-			}
-			else {
-				translationKey = mod.getTranslationKey();
-			}
-		}
 
 		applyToAllClass = option.applyToAllClass();
 

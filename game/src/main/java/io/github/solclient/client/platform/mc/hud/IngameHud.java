@@ -8,6 +8,6 @@ public interface IngameHud {
 
 	@NotNull Chat getChat();
 
-	int getTicks();
+	int getTickCounter();
 
 }

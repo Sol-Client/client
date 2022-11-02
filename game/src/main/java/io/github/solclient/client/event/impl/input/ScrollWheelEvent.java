@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class ScrollWheelEvent implements Cancellable {
+public final class ScrollWheelEvent implements Cancellable {
 
 	private final int amount;
 	private boolean cancelled;

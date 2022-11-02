@@ -4,7 +4,7 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
-public class GammaEvent {
+public final class GammaEvent {
 
 	private float gamma;
 

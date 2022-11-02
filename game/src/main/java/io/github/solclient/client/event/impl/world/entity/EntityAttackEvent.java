@@ -8,7 +8,7 @@ import lombok.*;
  */
 @Data
 @RequiredArgsConstructor
-public class EntityAttackEvent {
+public final class EntityAttackEvent {
 
 	private final Entity entity;
 

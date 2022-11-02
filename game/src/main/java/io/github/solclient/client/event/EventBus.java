@@ -36,7 +36,7 @@ public final class EventBus {
 	private final List<Object> toRemove = new ArrayList<>();
 	private final Map<Class<?>, List<MethodData>> handlers = new HashMap<Class<?>, List<MethodData>>();
 
-	private Set<Method> getMethods(Class<?> clazz) {
+	private static Set<Method> getMethods(Class<?> clazz) {
 		Set<Method> methods = new HashSet<>();
 
 		Collections.addAll(methods, clazz.getMethods());
@@ -101,12 +101,13 @@ public final class EventBus {
 		return event;
 	}
 
-	private boolean validate(Method method) {
+	private static boolean validate(Method method) {
 		if(method.isAnnotationPresent(EventHandler.class)) {
 			Validate.isTrue(method.getParameterCount() == 1,
 					"Method " + method.getName() + " has " + method.getParameterCount() + " parameters; expected 1.");
 			return true;
 		}
+
 		return false;
 	}
 

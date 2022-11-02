@@ -7,7 +7,7 @@ import lombok.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class HitboxRenderEvent extends RenderEvent implements Cancellable {
+public final class HitboxRenderEvent extends RenderEvent implements Cancellable {
 
 	private final Entity entity;
 	private final double x, y, z;

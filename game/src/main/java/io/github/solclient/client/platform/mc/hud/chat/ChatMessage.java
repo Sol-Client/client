@@ -2,14 +2,12 @@ package io.github.solclient.client.platform.mc.hud.chat;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.github.solclient.client.platform.mc.text.Text;
+import io.github.solclient.client.platform.mc.text.OrderedText;
 
 public interface ChatMessage {
 
-	int getCreationTick();
+	int getMessageCreationTick();
 
-	@NotNull Text getMessage();
-
-	int getUpdatedCounter();
+	@NotNull OrderedText getMessage();
 
 }

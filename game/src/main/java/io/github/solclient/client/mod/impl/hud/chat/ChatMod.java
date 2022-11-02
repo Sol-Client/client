@@ -153,7 +153,7 @@ public class ChatMod extends HudMod {
 
 		if(fieldName.equals("filteredWordsContent")) {
 			filteredWords = new ArrayList<>(Arrays.asList(filteredWordsContent.split("\\r?\\n"))); // https://stackoverflow.com/a/454913
-			filteredWords.removeIf((word) -> word.isEmpty() || word.startsWith("#"));
+			filteredWords.removeIf((word) -> word.isEmpty() || word.indexOf('#') == 0);
 		}
 	}
 
@@ -242,6 +242,7 @@ public class ChatMod extends HudMod {
 		}
 
 		event.cancel();
+
 		Chat chat = mc.getIngameHud().getChat();
 
 		if(visibility == ChatVisibility.HIDDEN) {

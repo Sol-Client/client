@@ -266,7 +266,7 @@ public class ChatMod extends HudMod {
 		int width = (int) Math.ceil(chat.getChatWidth() / scale);
 
 		try(ScopeGuard _p = GlScopeGuards.push()) {
-			GlStateManager.translate(2, 20, 0);
+			GlStateManager.translate(2, 8, 0);
 
 			GlStateManager.scale(scale, scale, 1.0F);
 

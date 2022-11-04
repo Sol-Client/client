@@ -8,7 +8,7 @@ import io.github.solclient.client.platform.mc.MinecraftClient;
 import io.github.solclient.client.platform.mc.text.*;
 import io.github.solclient.client.platform.mc.world.entity.PrimedTnt;
 
-public class TNTTimerMod extends Mod {
+public final class TNTTimerMod extends Mod {
 
 	public static final TNTTimerMod INSTANCE = new TNTTimerMod();
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.00");

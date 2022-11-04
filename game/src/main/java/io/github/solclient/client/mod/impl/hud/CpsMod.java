@@ -8,7 +8,7 @@ import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import io.github.solclient.client.util.data.*;
 
-public class CpsMod extends SimpleHudMod {
+public final class CpsMod extends SimpleHudMod {
 
 	public static final CpsMod INSTANCE = new CpsMod();
 

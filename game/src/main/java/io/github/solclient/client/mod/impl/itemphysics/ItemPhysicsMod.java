@@ -15,7 +15,7 @@ import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.world.entity.Entity;
 import io.github.solclient.client.platform.mc.world.item.*;
 
-public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
+public final class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final ItemPhysicsMod INSTANCE = new ItemPhysicsMod();
 

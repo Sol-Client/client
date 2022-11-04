@@ -4,14 +4,12 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
+import lombok.RequiredArgsConstructor;
 
-public class ModsScroll extends ScrollListComponent {
+@RequiredArgsConstructor
+public final class ModsScroll extends ScrollListComponent {
 
-	private ModsScreenComponent screen;
-
-	public ModsScroll(ModsScreenComponent screen) {
-		this.screen = screen;
-	}
+	private final ModsScreenComponent screen;
 
 	@Override
 	protected int getScrollStep() {

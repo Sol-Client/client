@@ -17,7 +17,7 @@ import io.github.solclient.client.platform.mc.world.scoreboard.*;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.Colour;
 
-public class ScoreboardMod extends Mod {
+public final class ScoreboardMod extends Mod {
 
 	public static final ScoreboardMod INSTANCE = new ScoreboardMod();
 

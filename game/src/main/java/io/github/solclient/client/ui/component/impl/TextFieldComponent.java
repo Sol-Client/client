@@ -12,7 +12,7 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
 
-public class TextFieldComponent extends Component {
+public final class TextFieldComponent extends Component {
 
 	private int width;
 	private String lastText = "";

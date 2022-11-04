@@ -8,7 +8,7 @@ import org.spongepowered.asm.service.IClassBytecodeProvider;
 
 import io.github.solclient.client.wrapper.WrapperClassLoader;
 
-public class ClientBytecodeProvider implements IClassBytecodeProvider {
+public final class ClientBytecodeProvider implements IClassBytecodeProvider {
 
 	@Override
 	public ClassNode getClassNode(String name) throws ClassNotFoundException, IOException {

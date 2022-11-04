@@ -9,7 +9,7 @@ import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.util.data.*;
 
-public class DiscordVoiceChatHud extends BaseHudElement {
+public final class DiscordVoiceChatHud extends BaseHudElement {
 
 	private static final int USER_HEIGHT = 20;
 

@@ -6,7 +6,7 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.data.Colour;
 
-public class TabListMod extends Mod {
+public final class TabListMod extends Mod {
 
 	public static final TabListMod INSTANCE = new TabListMod();
 

@@ -2,7 +2,7 @@ package io.github.solclient.client.wrapper;
 
 import io.github.solclient.client.Constants;
 
-public class WrappedMain {
+public final class WrappedMain {
 
 	public static void main(String[] args) throws ReflectiveOperationException {
 		if(Constants.MC_VERSION == null) {

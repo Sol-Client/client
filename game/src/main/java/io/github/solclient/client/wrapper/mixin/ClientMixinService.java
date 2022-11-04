@@ -13,7 +13,7 @@ import org.spongepowered.asm.util.*;
 import io.github.solclient.client.wrapper.WrapperClassLoader;
 import lombok.Getter;
 
-public class ClientMixinService implements IMixinService {
+public final class ClientMixinService implements IMixinService {
 
 	@Getter
 	private static ClientMixinService instance;

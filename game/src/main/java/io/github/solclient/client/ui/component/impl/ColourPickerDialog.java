@@ -10,7 +10,7 @@ import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 
-public class ColourPickerDialog	 extends ScaledIconComponent {
+public final class ColourPickerDialog	 extends ScaledIconComponent {
 
 	private Colour colour;
 	private final Consumer<Colour> callback;

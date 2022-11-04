@@ -8,7 +8,7 @@ import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.platform.mc.option.ToggleKeyBinding;
 
-public class ToggleSprintMod extends SimpleHudMod {
+public final class ToggleSprintMod extends SimpleHudMod {
 
 	public static final ToggleSprintMod INSTANCE = new ToggleSprintMod();
 

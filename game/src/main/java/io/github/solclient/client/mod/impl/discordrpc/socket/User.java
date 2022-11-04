@@ -12,7 +12,7 @@ import lombok.*;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
-public class User {
+public final class User {
 
 	private static final String AVATAR_FORMAT = "https://cdn.discordapp.com/avatars/%s/%s.png?size=%d";
 

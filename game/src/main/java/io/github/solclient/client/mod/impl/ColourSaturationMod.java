@@ -12,7 +12,7 @@ import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.platform.mc.Window;
 import io.github.solclient.client.platform.mc.shader.*;
 
-public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod {
+public final class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final ColourSaturationMod INSTANCE = new ColourSaturationMod();
 

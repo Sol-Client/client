@@ -3,16 +3,16 @@ package io.github.solclient.client;
 import org.apache.logging.log4j.LogManager;
 
 import io.github.solclient.client.util.Utils;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class Constants {
 
-	public static final boolean DEV;
-	public static final String VERSION;
-	public static final String MC_VERSION;
-	public static final String NAME;
+	public final boolean DEV;
+	public final String VERSION, MC_VERSION, NAME;
 
-	public static final String KEY_TRANSLATION_KEY = "sol_client.key";
-	public static final String KEY_CATEGORY = KEY_TRANSLATION_KEY + ".category";
+	public final String KEY_TRANSLATION_KEY = "sol_client.key";
+	public final String KEY_CATEGORY = KEY_TRANSLATION_KEY + ".category";
 
 	static {
 		String version = System.getProperty("io.github.solclient.client.version", "unknown");
@@ -29,8 +29,7 @@ public class Constants {
 		NAME = "Sol Client " + VERSION;
 	}
 
-
-	private static String devVersion() {
+	private String devVersion() {
 		try {
 			return "git " + Utils.getGitBranch();
 		}
@@ -39,4 +38,5 @@ public class Constants {
 			return "dev";
 		}
 	}
+
 }

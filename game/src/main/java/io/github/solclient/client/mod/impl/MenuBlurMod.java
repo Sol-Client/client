@@ -21,7 +21,7 @@ import io.github.solclient.client.todo.TODO;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 
-public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
+public final class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final MenuBlurMod INSTANCE = new MenuBlurMod();
 

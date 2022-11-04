@@ -12,7 +12,7 @@ import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 
-public class SpeedometerMod extends SimpleHudMod {
+public final class SpeedometerMod extends SimpleHudMod {
 
 	public static final SpeedometerMod INSTANCE = new SpeedometerMod();
 

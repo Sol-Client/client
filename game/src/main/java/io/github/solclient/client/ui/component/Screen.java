@@ -12,11 +12,10 @@ import lombok.Getter;
 public class Screen extends ProxyScreen {
 
 	@Getter
-	protected io.github.solclient.client.platform.mc.screen.Screen parentScreen;
-	protected Component root;
-	private Component rootWrapper;
-	private int mouseX;
-	private int mouseY;
+	protected final io.github.solclient.client.platform.mc.screen.Screen parentScreen;
+	protected final Component root;
+	private final Component rootWrapper;
+	private int mouseX, mouseY;
 	protected boolean background = true;
 
 	public Screen(Text title, Component root) {

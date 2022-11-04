@@ -11,7 +11,7 @@ import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 
-public class SliderComponent extends Component {
+public final class SliderComponent extends Component {
 
 	private float min;
 	private float max;

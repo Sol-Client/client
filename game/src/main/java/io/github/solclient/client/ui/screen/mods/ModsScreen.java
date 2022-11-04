@@ -14,7 +14,7 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 
-public class ModsScreen extends PanoramaBackgroundScreen {
+public final class ModsScreen extends PanoramaBackgroundScreen {
 
 	private ModsScreenComponent component;
 

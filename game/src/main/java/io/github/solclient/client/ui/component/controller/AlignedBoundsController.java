@@ -5,7 +5,7 @@ import io.github.solclient.client.util.data.*;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class AlignedBoundsController implements Controller<Rectangle> {
+public final class AlignedBoundsController implements Controller<Rectangle> {
 
 	private final Alignment xAlignment;
 	private final Alignment yAlignment;

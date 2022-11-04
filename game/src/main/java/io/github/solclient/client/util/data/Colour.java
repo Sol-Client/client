@@ -8,11 +8,9 @@ import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.util.Utils;
 import lombok.*;
 
-@ToString
-@EqualsAndHashCode
-public class Colour {
+@Data
+public final class Colour {
 
-	@Getter
 	@Expose
 	private final int value;
 

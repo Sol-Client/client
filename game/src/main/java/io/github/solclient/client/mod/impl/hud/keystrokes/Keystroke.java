@@ -8,7 +8,7 @@ import io.github.solclient.client.util.*;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class Keystroke {
+public final class Keystroke {
 
 	private final MinecraftClient mc = MinecraftClient.getInstance();
 	private final KeystrokesMod mod;

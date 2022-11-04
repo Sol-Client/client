@@ -11,7 +11,7 @@ import io.github.solclient.client.platform.mc.text.TextFormatting;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.data.*;
 
-public class PopupManager {
+public final class PopupManager {
 
 	private final MinecraftClient mc = MinecraftClient.getInstance();
 

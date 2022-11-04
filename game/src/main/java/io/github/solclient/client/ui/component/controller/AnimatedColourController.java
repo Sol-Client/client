@@ -6,7 +6,7 @@ import io.github.solclient.client.util.data.Colour;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class AnimatedColourController implements Controller<Colour> {
+public final class AnimatedColourController implements Controller<Colour> {
 
 	private final Controller<Colour> base;
 	private final int duration;

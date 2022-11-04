@@ -7,7 +7,7 @@ import io.github.solclient.client.event.impl.world.level.DetermineTimeEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 
-public class TimeChangerMod extends Mod implements PrimaryIntegerSettingMod {
+public final class TimeChangerMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final TimeChangerMod INSTANCE = new TimeChangerMod();
 

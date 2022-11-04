@@ -13,10 +13,10 @@ import io.github.solclient.client.platform.mc.*;
 import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.text.*;
 
-// TODO stuff
+// TODO pretty much everything - it's currently totally broken
 // Roughly based around
 // https://github.com/LWJGL/lwjgl3/blob/master/modules/samples/src/test/java/org/lwjgl/demo/stb/Truetype.java
-public class TrueTypeFont implements Font, Closeable {
+public final class TrueTypeFont implements Font, Closeable {
 
 	private final ByteBuffer buffer;
 	private final int textureId;

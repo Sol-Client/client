@@ -25,7 +25,7 @@ import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 
-public class DiscordIntegrationMod extends Mod {
+public final class DiscordIntegrationMod extends Mod {
 
 	public static final DiscordIntegrationMod INSTANCE = new DiscordIntegrationMod();
 

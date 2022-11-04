@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
  * @param <O> The output function.
  */
 @RequiredArgsConstructor
-public class ChainCache<I, O> {
+public final class ChainCache<I, O> {
 
 	private final Supplier<I> controlValueSupplier;
 	private final Function<I, O> mapper;

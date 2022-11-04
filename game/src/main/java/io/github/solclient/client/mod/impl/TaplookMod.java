@@ -11,7 +11,7 @@ import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Perspective;
 
-public class TaplookMod extends Mod {
+public final class TaplookMod extends Mod {
 
 	public static final TaplookMod INSTANCE = new TaplookMod();
 

@@ -9,10 +9,9 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SmoothCounterHudMod;
 import io.github.solclient.client.platform.mc.network.PlayerListEntry;
 
-public class PingMod extends SmoothCounterHudMod {
+public final class PingMod extends SmoothCounterHudMod {
 
 	public static final PingMod INSTANCE = new PingMod();
-
 	private static final int PING_INTERVAL = 600;
 
 	@Expose

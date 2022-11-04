@@ -13,7 +13,7 @@ import io.github.solclient.client.platform.mc.texture.Texture;
 import io.github.solclient.client.platform.mc.world.entity.effect.*;
 import io.github.solclient.client.util.data.*;
 
-public class PotionEffectsMod extends HudMod {
+public final class PotionEffectsMod extends HudMod {
 
 	public static final PotionEffectsMod INSTANCE = new PotionEffectsMod();
 

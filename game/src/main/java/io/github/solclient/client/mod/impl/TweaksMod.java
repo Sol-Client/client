@@ -8,7 +8,7 @@ import io.github.solclient.client.event.impl.world.GammaEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 
-public class TweaksMod extends Mod {
+public final class TweaksMod extends Mod {
 
 	public static final TweaksMod INSTANCE = new TweaksMod();
 

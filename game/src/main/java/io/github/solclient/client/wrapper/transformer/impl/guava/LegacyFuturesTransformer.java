@@ -9,7 +9,7 @@ import com.google.common.util.concurrent.*;
 
 import io.github.solclient.client.wrapper.transformer.Transformer;
 
-public class LegacyFuturesTransformer extends Transformer {
+public final class LegacyFuturesTransformer extends Transformer {
 
 	@Override
 	public boolean willModify(@NotNull String className) {

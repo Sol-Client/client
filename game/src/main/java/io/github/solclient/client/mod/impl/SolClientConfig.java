@@ -14,7 +14,7 @@ import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.TrueTypeFont;
 import io.github.solclient.client.util.data.Colour;
 
-public class SolClientConfig extends ConfigOnlyMod {
+public final class SolClientConfig extends ConfigOnlyMod {
 
 	public static final SolClientConfig INSTANCE = new SolClientConfig();
 

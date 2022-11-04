@@ -2,7 +2,7 @@ package io.github.solclient.client.wrapper;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class BootstrapMain {
+public final class BootstrapMain {
 
 	private static final String WRAPPED_MAIN = BootstrapMain.class.getPackage().getName() + ".WrappedMain";
 

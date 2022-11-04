@@ -7,7 +7,7 @@ import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
 import io.github.solclient.client.util.Utils;
 
-public class VisitHousingCommand extends HypixelAdditionsCommand {
+public final class VisitHousingCommand extends HypixelAdditionsCommand {
 
 	public VisitHousingCommand(HypixelAdditionsMod mod) {
 		super(mod);

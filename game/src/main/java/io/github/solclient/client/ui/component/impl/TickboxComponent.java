@@ -8,7 +8,7 @@ import io.github.solclient.client.ui.component.controller.AnimatedColourControll
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 
-public class TickboxComponent extends ScaledIconComponent {
+public final class TickboxComponent extends ScaledIconComponent {
 
 	private boolean value;
 	private final Consumer<Boolean> booleanConsumer;
@@ -16,8 +16,9 @@ public class TickboxComponent extends ScaledIconComponent {
 
 	public TickboxComponent(boolean value, Consumer<Boolean> booleanConsumer, Component hoverController) {
 		super("sol_client_tickbox", 16, 16,
-				new AnimatedColourController((component, defaultColour) -> component.isHovered() ? SolClientConfig.INSTANCE.uiHover
-						: SolClientConfig.INSTANCE.uiColour));
+				new AnimatedColourController(
+						(component, defaultColour) -> component.isHovered() ? SolClientConfig.INSTANCE.uiHover
+								: SolClientConfig.INSTANCE.uiColour));
 
 		this.value = value;
 		this.booleanConsumer = booleanConsumer;

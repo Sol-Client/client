@@ -20,7 +20,7 @@ import lombok.*;
 // Edit: probably won't be
 public abstract class Component {
 
-	protected MinecraftClient mc = MinecraftClient.getInstance();
+	protected final MinecraftClient mc = MinecraftClient.getInstance();
 	protected Screen screen;
 	@Getter
 	protected Font font;
@@ -33,17 +33,19 @@ public abstract class Component {
 	protected Runnable onMouseEnter;
 	protected Runnable onMouseExit;
 	@Getter
-	protected List<Component> subComponents = new ArrayList<>();
-	private Map<Component, Controller<Rectangle>> subComponentControllers = new HashMap<>();
+	protected final List<Component> subComponents = new ArrayList<>();
+	private final Map<Component, Controller<Rectangle>> subComponentControllers = new HashMap<>();
 	@Getter
 	private Component dialog;
-	private AnimatedColourController overlayColour = new AnimatedColourController(
+	private final AnimatedColourController overlayColour = new AnimatedColourController(
 			(component, defaultColour) -> dialog == null ? Colour.TRANSPARENT : new Colour(0, 0, 0, 150));
+
 	private ClickHandler onRelease;
 	private KeyHandler onKeyPressed;
 	private CharacterHandler onCharacterTyped;
 	private ClickHandler onClickAnywhere;
 	private ClickHandler onReleaseAnywhere;
+
 	private Controller<Boolean> visibilityController;
 
 	public void add(Component component, Controller<Rectangle> position) {

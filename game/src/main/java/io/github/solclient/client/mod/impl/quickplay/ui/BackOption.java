@@ -3,7 +3,7 @@ package io.github.solclient.client.mod.impl.quickplay.ui;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.platform.mc.world.item.*;
 
-public class BackOption implements QuickPlayOption {
+public final class BackOption implements QuickPlayOption {
 
 	@Override
 	public String getText() {

@@ -13,22 +13,26 @@ import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 
-public class MoveHudsScreen extends Screen {
+public final class MoveHudsScreen extends Screen {
 
-	private io.github.solclient.client.platform.mc.screen.Screen title;
+	private final io.github.solclient.client.platform.mc.screen.Screen title;
 	private HudElement movingHud;
 	private Position moveOffset;
 
 	public MoveHudsScreen() {
 		super(Text.translation("sol_client.hud.edit"), new MoveHudsComponent());
 		background = false;
+
 		if(parentScreen instanceof Screen) {
 			io.github.solclient.client.platform.mc.screen.Screen grandparentScreen = ((Screen) parentScreen).getParentScreen();
 
 			if(grandparentScreen instanceof TitleScreen || grandparentScreen instanceof SolClientMainMenu) {
 				title = grandparentScreen;
+				return;
 			}
 		}
+
+		title = null;
 	}
 
 	public HudElement getSelectedHud(int mouseX, int mouseY) {

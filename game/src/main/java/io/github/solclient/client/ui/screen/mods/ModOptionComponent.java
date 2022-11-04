@@ -19,7 +19,7 @@ import lombok.Getter;
 public class ModOptionComponent extends ScaledIconComponent {
 
 	@Getter
-	private ModOption option;
+	private final ModOption option;
 	private boolean listening;
 	private int enumWidth;
 

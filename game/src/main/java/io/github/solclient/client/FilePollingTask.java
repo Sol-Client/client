@@ -7,7 +7,7 @@ import java.util.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.platform.mc.MinecraftClient;
 
-public class FilePollingTask implements Runnable, Closeable {
+public final class FilePollingTask implements Runnable, Closeable {
 
 	private final Map<String, ModOption> files = new HashMap<>();
 	private final WatchKey key;

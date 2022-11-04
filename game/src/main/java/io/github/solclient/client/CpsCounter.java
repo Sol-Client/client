@@ -8,7 +8,7 @@ import io.github.solclient.client.event.impl.input.MouseDownEvent;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CpsCounter {
+public final class CpsCounter {
 
 	public static final CpsCounter LMB = new CpsCounter(0);
 	public static final CpsCounter RMB = new CpsCounter(1);

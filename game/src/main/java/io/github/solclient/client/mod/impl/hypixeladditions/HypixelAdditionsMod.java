@@ -1,5 +1,6 @@
-/**
+/*
  * Many of these options are based on the ideas of Sk1er LLC's mods.
+ * Some regex is taken directly.
  */
 
 package io.github.solclient.client.mod.impl.hypixeladditions;
@@ -29,7 +30,7 @@ import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import net.hypixel.api.HypixelAPI;
 
-public class HypixelAdditionsMod extends Mod {
+public final class HypixelAdditionsMod extends Mod {
 
 	public static final HypixelAdditionsMod INSTANCE = new HypixelAdditionsMod();
 

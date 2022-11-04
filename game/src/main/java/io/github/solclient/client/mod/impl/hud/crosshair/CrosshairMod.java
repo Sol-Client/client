@@ -17,7 +17,7 @@ import io.github.solclient.client.platform.mc.world.entity.player.GameMode;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.Colour;
 
-public class CrosshairMod extends HudMod {
+public final class CrosshairMod extends HudMod {
 
 	public static final CrosshairMod INSTANCE = new CrosshairMod();
 	private static final Identifier CROSSHAIRS = Identifier.solClient("crosshairs.png");

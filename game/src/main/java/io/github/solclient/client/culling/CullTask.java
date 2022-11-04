@@ -23,7 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * This should be replaced, since tr7zw has changed their license to a less permissive one, or I should at least ask permission as I think they are mainly concerned with it being used commercially.
+ * TODO This should be replaced, since tr7zw has changed their license to a less permissive one, or I should at least ask permission as I think they are mainly concerned with it being used commercially.
  */
 
 package io.github.solclient.client.culling;
@@ -44,7 +44,7 @@ import io.github.solclient.client.platform.mc.world.entity.decoration.ArmourStan
 import io.github.solclient.client.platform.mc.world.level.block.*;
 import io.github.solclient.client.platform.mc.world.level.chunk.Chunk;
 
-public class CullTask implements Runnable {
+public final class CullTask implements Runnable {
 
 	public static boolean requestCull = false;
 

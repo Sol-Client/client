@@ -13,7 +13,7 @@ import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Utils;
 
-public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
+public final class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final ZoomMod INSTANCE = new ZoomMod();
 

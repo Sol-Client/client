@@ -2,13 +2,11 @@ package io.github.solclient.client.util.data;
 
 import lombok.*;
 
+@Data
 @AllArgsConstructor
-public class Position {
+public final class Position {
 
-	@Getter
-	private final int x;
-	@Getter
-	private final int y;
+	private final int x, y;
 
 	public Position offset(int x, int y) {
 		return new Position(this.x + x, this.y - y);

@@ -17,7 +17,7 @@ import io.github.solclient.client.platform.mc.world.entity.LivingEntity;
 import io.github.solclient.client.platform.mc.world.level.LevelRenderer;
 import io.github.solclient.client.util.data.Colour;
 
-public class HitboxMod extends Mod {
+public final class HitboxMod extends Mod {
 
 	public static final HitboxMod INSTANCE = new HitboxMod();
 

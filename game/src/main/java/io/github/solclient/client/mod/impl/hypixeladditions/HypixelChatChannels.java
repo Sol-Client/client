@@ -4,8 +4,9 @@ import java.util.*;
 
 import io.github.solclient.client.chat.*;
 
-public class HypixelChatChannels extends ChatChannelSystem {
+public final class HypixelChatChannels extends ChatChannelSystem {
 
+	// TODO I18n
 	public static final ChatChannel PARTY = new DefaultChatChannel("Party", "pchat");
 	public static final ChatChannel GUILD = new DefaultChatChannel("Guild", "gchat");
 	public static final ChatChannel OFFICER = new DefaultChatChannel("Guild Officer", "ochat");

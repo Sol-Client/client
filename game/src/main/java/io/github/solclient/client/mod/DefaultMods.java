@@ -15,11 +15,14 @@ import io.github.solclient.client.mod.impl.hud.timers.TimersMod;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import io.github.solclient.client.mod.impl.itemphysics.ItemPhysicsMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class DefaultMods {
 
-	public static void register() {
+	public void register() {
 		// Singleton hell, pretty much
+		// TODO maybe there's a slightly less questionable approach
 		Client.INSTANCE.register(
 				SolClientConfig.INSTANCE,
 				FpsMod.INSTANCE,

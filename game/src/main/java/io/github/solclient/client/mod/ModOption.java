@@ -15,7 +15,7 @@ import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.platform.mc.option.KeyBinding;
 import lombok.Getter;
 
-public class ModOption {
+public final class ModOption {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 

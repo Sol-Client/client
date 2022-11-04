@@ -49,7 +49,7 @@ import io.github.solclient.client.wrapper.transformer.impl.mc.PackageAccessFixer
 /**
  * A class loader which modifies classes and applies mixins.
  */
-public class WrapperClassLoader extends ClassLoader {
+public final class WrapperClassLoader extends ClassLoader {
 
 	public static final WrapperClassLoader INSTANCE = new WrapperClassLoader();
 	private static final Logger LOGGER = LogManager.getLogger();

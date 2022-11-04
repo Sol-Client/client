@@ -4,7 +4,7 @@ import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.data.Colour;
 
-public class ColourBoxComponent extends ScaledIconComponent {
+public final class ColourBoxComponent extends ScaledIconComponent {
 
 	private final Component hoverController;
 

@@ -7,10 +7,9 @@ import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 
-public class CoordinatesMod extends HudMod {
+public final class CoordinatesMod extends HudMod {
 
 	public static final CoordinatesMod INSTANCE = new CoordinatesMod();
-
 	private static final String[] CARDINAL_DIRECTIONS = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
 
 	@Expose

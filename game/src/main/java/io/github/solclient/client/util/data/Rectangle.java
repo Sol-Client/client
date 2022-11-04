@@ -3,19 +3,11 @@ package io.github.solclient.client.util.data;
 import io.github.solclient.client.platform.mc.DrawableHelper;
 import lombok.*;
 
-@ToString
-@EqualsAndHashCode
+@Data
 @AllArgsConstructor
-public class Rectangle {
+public final class Rectangle {
 
-	@Getter
-	private final int x;
-	@Getter
-	private final int y;
-	@Getter
-	private final int width;
-	@Getter
-	private final int height;
+	private final int x, y, width, height;
 
 	public static final Rectangle ZERO = ofDimensions(0, 0);
 

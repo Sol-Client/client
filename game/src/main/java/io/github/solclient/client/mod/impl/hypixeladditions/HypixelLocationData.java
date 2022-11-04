@@ -5,12 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class HypixelLocationData {
+public final class HypixelLocationData {
 
 	@SerializedName("gametype")
 	private String type;
-	private String map;
-	private String server;
-	private String mode;
+	private String map, server, mode;
 
 }

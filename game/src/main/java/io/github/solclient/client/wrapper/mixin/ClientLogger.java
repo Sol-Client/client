@@ -4,7 +4,7 @@ import org.apache.logging.log4j.*;
 import org.spongepowered.asm.logging.Level;
 import org.spongepowered.asm.logging.LoggerAdapterAbstract;
 
-public class ClientLogger extends LoggerAdapterAbstract {
+public final class ClientLogger extends LoggerAdapterAbstract {
 
 	private static final org.apache.logging.log4j.Level[] BY_ORDINAL = {
 			org.apache.logging.log4j.Level.FATAL,

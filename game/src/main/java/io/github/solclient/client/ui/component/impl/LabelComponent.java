@@ -5,7 +5,7 @@ import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.data.*;
 
-public class LabelComponent extends ColouredComponent {
+public final class LabelComponent extends ColouredComponent {
 
 	private final Controller<String> text;
 

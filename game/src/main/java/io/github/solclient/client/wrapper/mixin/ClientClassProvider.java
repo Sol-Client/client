@@ -6,7 +6,7 @@ import org.spongepowered.asm.service.IClassProvider;
 
 import io.github.solclient.client.wrapper.WrapperClassLoader;
 
-public class ClientClassProvider implements IClassProvider {
+public final class ClientClassProvider implements IClassProvider {
 
 	@Override
 	public URL[] getClassPath() {

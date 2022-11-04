@@ -6,7 +6,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.world.entity.EntityAttackEvent;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 
-public class ReachDisplayMod extends SimpleHudMod {
+public final class ReachDisplayMod extends SimpleHudMod {
 
 	public static final ReachDisplayMod INSTANCE = new ReachDisplayMod();
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.##");

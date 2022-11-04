@@ -4,7 +4,7 @@ import lombok.*;
 
 @Data
 @RequiredArgsConstructor
-public class Popup {
+public final class Popup {
 
 	private final String text;
 	private final String command;

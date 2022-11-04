@@ -7,13 +7,11 @@ import io.github.solclient.client.util.data.Position;
 import lombok.*;
 
 @Data
-@AllArgsConstructor
-public class HudPosition {
+@RequiredArgsConstructor
+public final class HudPosition {
 
 	@Expose
-	private float x;
-	@Expose
-	private float y;
+	private final float x, y;
 
 	public Position toAbsolute() {
 		Window window = MinecraftClient.getInstance().getWindow();

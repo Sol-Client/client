@@ -8,7 +8,7 @@ import lombok.*;
  */
 @Data
 @RequiredArgsConstructor
-public class Timer {
+public final class Timer {
 
 	private final String name;
 	private final ItemStack renderItem;

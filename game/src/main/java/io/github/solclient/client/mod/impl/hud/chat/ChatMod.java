@@ -21,7 +21,7 @@ import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.Colour;
 
-public class ChatMod extends HudMod {
+public final class ChatMod extends HudMod {
 
 	public static final ChatMod INSTANCE = new ChatMod();
 

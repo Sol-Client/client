@@ -3,7 +3,7 @@ package io.github.solclient.client.mod.impl.itemphysics;
 import lombok.Data;
 
 @Data
-public class ItemData {
+public final class ItemData {
 
 	private long lastUpdate;
 	private float rotation;

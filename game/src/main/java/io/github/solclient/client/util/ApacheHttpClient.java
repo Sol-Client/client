@@ -40,7 +40,7 @@ import org.apache.http.util.EntityUtils;
 import io.github.solclient.client.Constants;
 import net.hypixel.api.http.*;
 
-public class ApacheHttpClient implements HypixelHttpClient {
+public final class ApacheHttpClient implements HypixelHttpClient {
 
 	private final UUID apiKey;
 	private final HttpClient httpClient;

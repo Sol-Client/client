@@ -11,7 +11,7 @@ import com.google.common.base.MoreObjects;
 
 import io.github.solclient.client.wrapper.transformer.Transformer;
 
-public class LegacyObjectsTransformer extends Transformer {
+public final class LegacyObjectsTransformer extends Transformer {
 
 	@Override
 	public boolean willModify(@NotNull String className) {

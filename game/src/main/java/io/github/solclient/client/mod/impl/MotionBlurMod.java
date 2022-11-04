@@ -12,7 +12,7 @@ import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.platform.mc.Window;
 import io.github.solclient.client.platform.mc.shader.*;
 
-public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
+public final class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final MotionBlurMod INSTANCE = new MotionBlurMod();
 

@@ -13,7 +13,7 @@ import io.github.solclient.client.platform.mc.texture.Texture;
 import io.github.solclient.client.platform.mc.world.entity.player.Player;
 import io.github.solclient.client.util.Utils;
 
-public class CapeManager {
+public final class CapeManager {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private Map<String, String> capes = new HashMap<>();

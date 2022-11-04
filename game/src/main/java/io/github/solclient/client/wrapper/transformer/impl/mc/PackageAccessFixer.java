@@ -8,7 +8,7 @@ import org.objectweb.asm.tree.ClassNode;
 
 import io.github.solclient.client.wrapper.transformer.Transformer;
 
-public class PackageAccessFixer extends Transformer {
+public final class PackageAccessFixer extends Transformer {
 
 	@Override
 	public boolean willModify(@NotNull String className) {

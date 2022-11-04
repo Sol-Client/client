@@ -8,10 +8,9 @@ import io.github.solclient.client.platform.mc.Window;
 import io.github.solclient.client.platform.mc.world.item.*;
 import io.github.solclient.client.util.data.*;
 
-public class ArmourMod extends HudMod {
+public final class ArmourMod extends HudMod {
 
 	public static final ArmourMod INSTANCE = new ArmourMod();
-
 	private static final ItemStack HELMET = ItemStack.create(ItemType.IRON_HELMET);
 	private static final ItemStack CHESTPLATE = ItemStack.create(ItemType.IRON_CHESTPLATE);
 	private static final ItemStack LEGGINGS = ItemStack.create(ItemType.IRON_LEGGINGS);

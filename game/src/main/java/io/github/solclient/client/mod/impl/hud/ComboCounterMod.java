@@ -6,7 +6,7 @@ import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.platform.mc.lang.I18n;
 import io.github.solclient.client.util.data.Position;
 
-public class ComboCounterMod extends SimpleHudMod {
+public final class ComboCounterMod extends SimpleHudMod {
 
 	public static final ComboCounterMod INSTANCE = new ComboCounterMod();
 

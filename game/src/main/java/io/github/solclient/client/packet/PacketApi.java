@@ -10,7 +10,7 @@ import io.github.solclient.client.event.impl.network.ServerMessageReceiveEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.platform.mc.resource.Identifier;
 
-public class PacketApi {
+public final class PacketApi {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 

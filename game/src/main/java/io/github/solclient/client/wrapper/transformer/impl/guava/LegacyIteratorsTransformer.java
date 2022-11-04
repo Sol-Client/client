@@ -8,7 +8,7 @@ import org.objectweb.asm.tree.ClassNode;
 
 import io.github.solclient.client.wrapper.transformer.Transformer;
 
-public class LegacyIteratorsTransformer extends Transformer {
+public final class LegacyIteratorsTransformer extends Transformer {
 
 	@Override
 	public boolean willModify(@NotNull String className) {

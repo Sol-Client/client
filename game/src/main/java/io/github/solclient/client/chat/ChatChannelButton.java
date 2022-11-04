@@ -7,7 +7,7 @@ import io.github.solclient.client.platform.mc.text.Font;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 
-public class ChatChannelButton implements ChatButton {
+public final class ChatChannelButton implements ChatButton {
 
 	public static final ChatChannelButton INSTANCE = new ChatChannelButton();
 

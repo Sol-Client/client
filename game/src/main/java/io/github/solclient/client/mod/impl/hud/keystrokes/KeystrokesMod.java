@@ -13,7 +13,7 @@ import io.github.solclient.client.platform.mc.resource.Identifier;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 
-public class KeystrokesMod extends HudMod {
+public final class KeystrokesMod extends HudMod {
 
 	public static final KeystrokesMod INSTANCE = new KeystrokesMod();
 

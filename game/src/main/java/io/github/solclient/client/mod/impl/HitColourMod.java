@@ -8,9 +8,10 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.data.Colour;
 
-public class HitColourMod extends Mod {
+public final class HitColourMod extends Mod {
 
 	public static final HitColourMod INSTANCE = new HitColourMod();
+
 	@Expose
 	@Option
 	private Colour colour = new Colour(255, 0, 0, 76);

@@ -3,7 +3,7 @@ package io.github.solclient.client.todo;
 /**
  * Used to mark critical todo values. Should be paired with a comment.
  */
-//@Deprecated
+@Deprecated
 public class TODO {
 
 	static {

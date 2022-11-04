@@ -12,7 +12,7 @@ import io.github.solclient.client.platform.mc.world.entity.effect.StatusEffectTy
 import io.github.solclient.client.platform.mc.world.item.enchantment.EnchantmentHelper;
 import io.github.solclient.client.platform.mc.world.particle.ParticleType;
 
-public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
+public final class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final ParticlesMod INSTANCE = new ParticlesMod();
 

@@ -7,8 +7,7 @@ import lombok.Data;
 @Data
 public class DefaultChatChannel implements ChatChannel {
 
-	private final String name;
-	private final String command;
+	private final String name, command;
 
 	@Override
 	public void sendMessage(LocalPlayer player, String message) {

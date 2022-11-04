@@ -19,7 +19,7 @@ import io.github.solclient.client.util.Utils;
  * Socket connection to Discord client.
  * Uses StreamKit.
  */
-public class DiscordSocket extends WebSocketClient {
+public final class DiscordSocket extends WebSocketClient {
 
 	private static final String STREAMKIT = "https://streamkit.discord.com";
 	private static final URL STREAMKIT_TOKEN = Utils.sneakyParse(STREAMKIT + "/overlay/token");

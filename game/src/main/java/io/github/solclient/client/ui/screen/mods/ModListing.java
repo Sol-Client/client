@@ -17,9 +17,9 @@ import io.github.solclient.client.util.data.*;
 
 public class ModListing extends ColouredComponent {
 
-	private Mod mod;
-	private ModsScreenComponent screen;
-	private Component settingsButton;
+	private final Mod mod;
+	private final ModsScreenComponent screen;
+	private final Component settingsButton;
 
 	public ModListing(Mod mod, ModsScreenComponent screen) {
 		super(new AnimatedColourController((component,

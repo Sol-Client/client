@@ -14,7 +14,7 @@ import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.platform.mc.world.entity.Entity;
 import io.github.solclient.client.util.*;
 
-public class FreelookMod extends Mod {
+public final class FreelookMod extends Mod {
 
 	public static final FreelookMod INSTANCE = new FreelookMod();
 

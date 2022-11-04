@@ -8,7 +8,7 @@ import org.objectweb.asm.tree.ClassNode;
 import io.github.solclient.client.wrapper.transformer.Transformer;
 
 // TODO: implement optifine
-public class OptiFineTransformer extends Transformer {
+public final class OptiFineTransformer extends Transformer {
 
 	public static final boolean ACTIVE = Boolean.getBoolean("io.github.solclient.use_optifine");
 

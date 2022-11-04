@@ -6,9 +6,8 @@ import org.spongepowered.asm.service.*;
 
 import lombok.*;
 
-// who still uses blackboards?
 @SuppressWarnings("unchecked")
-public class ClientPropertyService implements IGlobalPropertyService {
+public final class ClientPropertyService implements IGlobalPropertyService {
 
 	private final Map<IPropertyKey, Object> keys = new HashMap<>();
 	private final Map<String, IPropertyKey> keyPool = new HashMap<>();

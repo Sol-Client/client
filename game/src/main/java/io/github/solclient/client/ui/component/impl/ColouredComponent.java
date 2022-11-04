@@ -6,7 +6,7 @@ import io.github.solclient.client.util.data.Colour;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class ColouredComponent extends Component {
+public abstract class ColouredComponent extends Component {
 
 	private final Controller<Colour> colour;
 

@@ -16,7 +16,7 @@ import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 
-public class SolClientMainMenu extends PanoramaBackgroundScreen {
+public final class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 	public SolClientMainMenu() {
 		super(Text.translation(Environment.MAJOR_RELEASE > 1 || Environment.MINOR_RELEASE >= 12 ? "narrator.screen.title" : "deathScreen.titleScreen"),

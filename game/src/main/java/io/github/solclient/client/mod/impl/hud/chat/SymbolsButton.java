@@ -7,7 +7,7 @@ import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 
-public class SymbolsButton implements ChatButton {
+public final class SymbolsButton implements ChatButton {
 
 	private static String symbols = "☺☹♡♥◀▶▲▼←→↑↓«»©™‽☕✓✕⚐⚑⚠☆★✮✫☃☄";
 	private static char[][] table;

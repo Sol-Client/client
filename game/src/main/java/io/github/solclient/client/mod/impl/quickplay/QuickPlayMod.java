@@ -16,7 +16,7 @@ import io.github.solclient.client.platform.mc.option.KeyBinding;
 import io.github.solclient.client.platform.mc.util.Input;
 import io.github.solclient.client.util.Utils;
 
-public class QuickPlayMod extends Mod {
+public final class QuickPlayMod extends Mod {
 
 	public static final QuickPlayMod INSTANCE = new QuickPlayMod();
 

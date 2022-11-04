@@ -12,7 +12,7 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 
-public class ButtonComponent extends ColouredComponent {
+public final class ButtonComponent extends ColouredComponent {
 
 	@Getter
 	private final Controller<String> text;

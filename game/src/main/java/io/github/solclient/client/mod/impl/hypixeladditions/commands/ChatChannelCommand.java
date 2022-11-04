@@ -11,7 +11,7 @@ import io.github.solclient.client.mod.impl.hypixeladditions.*;
 import io.github.solclient.client.platform.mc.text.Text;
 import io.github.solclient.client.platform.mc.world.entity.player.LocalPlayer;
 
-public class ChatChannelCommand extends HypixelAdditionsCommand {
+public final class ChatChannelCommand extends HypixelAdditionsCommand {
 
 	private static final String USAGE = "Usage: /chat (all|party|guild|officer|coop)";
 

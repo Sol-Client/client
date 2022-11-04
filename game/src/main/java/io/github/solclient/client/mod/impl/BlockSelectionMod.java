@@ -15,7 +15,7 @@ import io.github.solclient.client.platform.mc.world.level.Level;
 import io.github.solclient.client.platform.mc.world.level.block.*;
 import io.github.solclient.client.util.data.Colour;
 
-public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
+public final class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public static final BlockSelectionMod INSTANCE = new BlockSelectionMod();
 

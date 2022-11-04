@@ -17,7 +17,7 @@ import io.github.solclient.client.util.data.*;
 
 // Based around https://github.com/BadlionClient/BadlionClientTimerAPI.
 // Works with any server that supports Badlion timers.
-public class TimersMod extends HudMod {
+public final class TimersMod extends HudMod {
 
 	public static final TimersMod INSTANCE = new TimersMod();
 

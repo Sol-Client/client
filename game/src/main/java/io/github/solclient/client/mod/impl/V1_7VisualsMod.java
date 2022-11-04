@@ -17,7 +17,7 @@ import io.github.solclient.client.platform.mc.render.GlStateManager;
 import io.github.solclient.client.platform.mc.world.entity.player.ClientPlayer;
 import io.github.solclient.client.platform.mc.world.item.*;
 
-public class V1_7VisualsMod extends Mod {
+public final class V1_7VisualsMod extends Mod {
 
 	public static final V1_7VisualsMod INSTANCE = new V1_7VisualsMod();
 

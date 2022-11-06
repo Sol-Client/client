@@ -76,7 +76,7 @@ If you want to suggest a feature, you can [create a new issue](https://github.co
 If there are any issues with us using your code, please open an issue.
 
 ## Safety
-The code for this client is available, so if you have suffiecient knowledge you can check yourself for nasty stuff.
+The code for this client is available, so if you have sufficient knowledge you can check yourself for nasty stuff.
 
 This client has been tested by multiple people on Hypixel. On most popular servers, disallowed mods are disabled. There are unknown servers, but just disable the correct mods and you should be fine. All mods are designed (and intend) not to change the behaviour of the player.
 

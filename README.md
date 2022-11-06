@@ -23,35 +23,27 @@ Simple and easy to use Minecraft client for 1.8.9 (and in future™, newer versi
 
 ## Pojav
 People have alreading been talking about this client working on Pojav, but it's not quite ready.
-However, it does mostly work, and you can download a preview from [here](https://github.com/Sol-Client/Installer/releases).
+However, it does mostly work so you can download a preview from [here](https://github.com/Sol-Client/Installer/releases).
 
 ## Licence
-This project uses [GNU General Public License v3.0](LICENSE), meaning that if you fork this project, it must be either completely private, or the code *must* be available to your users.
+This project uses [GNU General Public License v3.0](LICENSE), a copyleft license. This may need to be changed in future due to it technically conflicting with Minecraft.
 
-This is not legal advice, or even a summary, this is just a simplification of one of the main parts of the licence.
+While not stated in the licence, I would appreciate forks having a different name, logo and design. It's fine for feature branches and custom builds though. I'd just rather all of these things changed, not one of them.
 
-While not stated in the licence, forks should have the following changed:
-- Name
-- Logo
-- Design
-This does not apply to third-party builds.
+There are some parts of the code that use other licences (such as code "borrowed" from other projects). If this is the case, it will be noted in a comment or another licence file in the same directory.
 
-There are some parts of the code that use other licences (such as code "borrowed" from other projects). If this is the case, it will be noted in a comment, or another licence file in the same directory.
-
-Note that this project is not 100% open source, because both Minecraft and OptiFine are closed source. There are 100% open source clients, but they do not inherit any of the game's code, meaning they are not as complete, and will likely get you banned on servers.
+Note that this project is not entirely open source due to its closed source dependencies. There are some open source reimplementations of Minecraft, but are likely to cause bans due to their inaccuracy.
 
 I would also appreciate it if people didn't sell this client.
 
 ## Why?
-There are many Minecraft clients, but they are usually closed source, and may contain malicious code. This client is free and open source, meaning that the code is visible, and anyone can propose changes and report issues with ease.
+There are many Minecraft clients, but a surprising amount are closed source and focus a lot on paid cosmetics. This client is free and open source, allowing for people to view the code as well as propose changes through GitHub pull requests.
 
-Many clients lack important features, including ReplayMod.
-
-There may be mod loaders like Forge and Fabric, which are perfectly good, but are not as easy to use and update.
+Many other projects lack important features such as ReplayMod. This client still is missing some features, but it most important ones. There are mod loaders like Fabric, Quilt and Forge, which are very good; they simply lack the same levels of integration.
 
 ## Features
 
-Here are the main features that are currently in the client:
+Here are the main features currently available in the stable version:
 
 - A clean HUD inspired by Lunar.
 - Replay Mod. You will need to install FFmpeg yourself. This is completely unaffiliated to the original mod by Johni and CrushedPixel. If you encounter any issues, try reproducing them on the official Forge version, and if it happens there, report it on the [ReplayMod GitHub repositority](https://github.com/ReplayMod/ReplayMod). If it only happens on our version, report it here.
@@ -67,8 +59,8 @@ Here are the main features that are currently in the client:
 - Quick Play Mod. Allows you to quickly join games at the press of a button (by default, "M"). The key opens a menu where you can search for games, navigating through them using the arrow keys. If you type nothing, you can see recent games and a categorised list of all games.
 - Customisable launcher servers - automatically detected from the game, with no pinned servers.
 - Better item tooltips - show item damage and more.
-- Symbol picker (happy, sad, and most importantly: the snowman).
-- Chat channel display.
+- Symbol picker (happy, sad, and the extemely important snowman).
+- Chat channel display and switcher (you can still use the command).
 - Pop-up events (pop-up friend request, etc.).
 - Customisable font and colour scheme.
 - Turning off the inventory logo.
@@ -79,29 +71,29 @@ Here are the main features that are currently in the client:
 
 Click [this fancy blue text](https://github.com/Sol-Client/Client/projects/1) to see planned features.
 
-If you want to suggest a feature, [create a new issue](https://github.com/Sol-Client/Client/issues/new) or [ask on Discord](https://discord.gg/TSAkhgXNbK).
+If you want to suggest a feature, you can [create a new issue](https://github.com/Sol-Client/Client/issues/new) or [ask on Discord](https://discord.gg/TSAkhgXNbK).
 
 If there are any issues with us using your code, please open an issue.
 
 ## Safety
-The code for this client is available, meaning that you can see what it does.
+The code for this client is available, so if you have suffiecient knowledge you can check yourself for nasty stuff.
 
-This client has been tested by multiple people on Hypixel, and it disables disallowed mods automatically. There may be some unknown servers, but just disable the correct mods and you should be fine, as all Sol Client mods are designed to not change the behaviour of the player.
+This client has been tested by multiple people on Hypixel. On most popular servers, disallowed mods are disabled. There are unknown servers, but just disable the correct mods and you should be fine. All mods are designed (and intend) not to change the behaviour of the player.
 
 ## Credits
-[TheKodeToad](https://github.com/TheKodeToad) ([Discord User](https://discord.com/users/706152404072267788)): Programmer (turning tea into code).
+[TheKodeToad](https://github.com/TheKodeToad) ([Discord User](https://discord.com/users/706152404072267788)): Maintainer and developer of the client.
 
-[i9Dolphin](https://github.com/i9Dolphin): Helped create Discord, came up with the name (and changed his own one many times) and tested the client.
+[i9Dolphin](https://github.com/i9Dolphin): Helped create Discord, choose this name (and changed his own one many times) and tested the client.
 
-[sp614x](https://github.com/sp614x): OptiFine mod.
+[sp614x](https://github.com/sp614x): Creator of OptiFine mod.
 
 [Sk1er LLC](https://github.com/Sk1erLLC): Mod inspiration.
 
-[Hyperium](https://github.com/HyperiumClient/Hyperium): Some rendering and launching code.
+[Hyperium](https://github.com/HyperiumClient/Hyperium): Some rendering and launching code. Hopefully will be removed in future.
 
-[Eric Golde](https://www.youtube.com/c/egold555): My older private client followed his tutorials (stole his code). This client was written from scratch (but not in Scratch).
+[Eric Golde](https://www.youtube.com/c/egold555): A cool dude who inspired me to make my first Minecraft client with MCP. This client is not based on their tutorials though (a lot of people would be quite glad of that).
 
-[tr7zw](https://github.com/tr7zw/EntityCulling): Original EntityCulling mod. A modified version is used in this client.
+[tr7zw](https://github.com/tr7zw/EntityCulling): Original EntityCulling mod, a modified version of which is used in this client. May need to be removed for license change reasons.
 
 [OrangeMarshall](https://namemc.com/profile/OrangeMarshall.1): Original 1.7 Animations mod.
 
@@ -112,19 +104,18 @@ This client has been tested by multiple people on Hypixel, and it disables disal
 [lumien231](https://github.com/lumien231): Chunk Animator. The version in the client was based around the original Forge mod.
 
 ## IDE
-### Eclipse
-This IDE is prefered by the author, but many prefer IntelliJ for its IntelliJence (there's a clue in the name).
-
-1. Right click in "Package Explorer" and press "Import Project".
-2. Select "Gradle" > "Existing Gradle Project".
-3. Select the "game" directory inside the repository folder.
-4. Press "Finish".
-
 ### IntelliJ IDEA
 
 1. Close your current project ("File" > "Close Project").
 2. Press "Open".
 3. Select the "game" directory inside the repository folder.
+
+### Eclipse
+
+1. Right click in "Package Explorer" and press "Import Project".
+2. Select "Gradle" > "Existing Gradle Project".
+3. Select the "game" directory inside the repository folder.
+4. Press "Finish".
 
 ## Build Instructions
 

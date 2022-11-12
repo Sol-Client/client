@@ -15,6 +15,10 @@ class AccountManager {
 			let data = JSON.parse(fs.readFileSync(file, "UTF-8"));
 			this.accounts = [];
 			for(let account of data.accounts) {
+				if(account.type != "msa") {
+					continue;
+				}
+
 				this.accounts.push(Account.from(account));
 			}
 			this.activeAccount = this.accounts[data.activeAccount];
@@ -217,15 +221,6 @@ class AuthService {
 
 }
 
-class YggdrasilAuthKey {
-
-	constructor(username, password) {
-		this.username = username;
-		this.password = password;
-	}
-
-}
-
 class MicrosoftAuthService extends AuthService {
 
 	static instance = new MicrosoftAuthService();
@@ -266,90 +261,6 @@ class MicrosoftAuthService extends AuthService {
 
 }
 
-class YggdrasilAuthService extends AuthService {
-
-	static instance = new YggdrasilAuthService();
-	static api = "https://authserver.mojang.com";
-
-	constructor() {
-		super();
-	}
-
-	authenticateUsernamePassword(username, password) {
-		return this.authenticate(new YggdrasilAuthKey(username, password));
-	}
-
-	authenticate(key) {
-		const url = YggdrasilAuthService.api;
-		return new Promise((resolve, reject) => {
-			axios.post(url + "/authenticate", {
-						"agent": {
-							"name": "Minecraft",
-							"version": 1
-						},
-						"username": key.username,
-						"password": key.password
-					})
-					.catch((error) => {
-						reject(error);
-					})
-					.then((response) => {
-						if(response == null) {
-							return;
-						}
-						let data = response.data;
-						let account = new Account(
-								"mojang",
-								data.selectedProfile.name,
-								data.selectedProfile.id,
-								data.accessToken,
-								data.clientToken
-						);
-						manager.storeInKeychain(account);
-						resolve(account);
-					});
-		});
-	}
-
-	validate(_accessToken) {
-		return new Promise(async(resolve) => {
-			const url = YggdrasilAuthService.api;
-			axios.post(url + "/validate", {
-						accessToken: await manager.realToken(account),
-						clientToken: account.clientToken
-					})
-					.catch((_error) => {
-						resolve(false);
-					})
-					.then((_response) => {
-						resolve(true);
-					});
-		});
-	}
-
-	refresh(account) {
-		const url = YggdrasilAuthService.api;
-		return new Promise(async(resolve) => {
-			axios.post(url + "/refresh", {
-				accessToken: await manager.realToken(account),
-				clientToken: account.clientToken,
-				selectedProfile: {
-					name: account.username,
-					id: account.uuid
-				}
-			})
-			.catch((_error) => {
-				resolve(false);
-			})
-			.then(async(response) => {
-				account.accessToken = await manager.storeProp(response.data.accessToken, account.uuid + "_access_token");
-				resolve(true);
-			});
-		});
-	}
-
-}
-
 class Account {
 
 	static from(object) {
@@ -372,13 +283,12 @@ class Account {
 			return MicrosoftAuthService.instance;
 		}
 		else {
-			return YggdrasilAuthService.instance;
+			throw new Error("Unsupported account type " + this.type);
 		}
 	}
 
 }
 
-exports.YggdrasilAuthService = YggdrasilAuthService;
 exports.MicrosoftAuthService = MicrosoftAuthService;
 exports.Account = Account;
 exports.AccountManager = AccountManager;

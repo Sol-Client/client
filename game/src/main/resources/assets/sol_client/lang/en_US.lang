@@ -127,13 +127,15 @@ sol_client.mod.potion_effects.option.spacing=Spacing
 sol_client.mod.armour.name=Armor and Equipment
 sol_client.mod.armour.description=Display your armor and equipment with durability.
 
-sol_client.mod.armour.option.durability=Durability
+sol_client.mod.armour.option.durability=Durability Text
+sol_client.mod.armour.option.durability.off=Off
 sol_client.mod.armour.option.durability.remaining=Remaining
 sol_client.mod.armour.option.durability.percentage=Percentage
 sol_client.mod.armour.option.durability.fraction=Fraction
 
 sol_client.mod.armour.option.armour=Show Armor
 sol_client.mod.armour.option.hand=Show Item
+sol_client.mod.armour.option.horizontal=Horizontal
 
 sol_client.mod.timers.name=Timers
 sol_client.mod.timers.description=Display timers for ingame events.
@@ -230,6 +232,7 @@ sol_client.mod.tweaks.option.confirmDisconnect=Confirm Disconnect
 sol_client.mod.tweaks.option.borderlessFullscreen=Borderless Fullscreen
 sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
 sol_client.mod.tweaks.option.disableHotbarScrolling=Disable Hotbar Scrolling
+sol_client.mod.tweaks.option.centredInventory=Centered Inventory
 
 sol_client.mod.tweaks.confirm_disconnect=Press Again to Confirm
 

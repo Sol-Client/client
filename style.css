@@ -234,7 +234,7 @@
 	background: rgb(80, 80, 80);
 }
 
-.login, .mojang-login {
+.login {
 	position: relative;
 }
 
@@ -242,6 +242,17 @@
 	width: 350px;
 	display: block;
 	font-size: 2em;
+}
+
+.microsoft-login-button {
+	margin-top: 50px;
+}
+
+.login-note {
+	position: fixed;
+	bottom: 30px;
+	width: 100%;
+	text-align: center;
 }
 
 .login-box {

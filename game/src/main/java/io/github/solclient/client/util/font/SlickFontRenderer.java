@@ -74,7 +74,9 @@ public class SlickFontRenderer implements Font {
 
 	@Override
 	public int renderString(String text, float x, float y, int colour) {
-		if(text == null || slickFont == null) return 0;
+		if(text == null || slickFont == null) {
+			return 0;
+		}
 
 		x = (int) x;
 		y = (int) y;
@@ -152,6 +154,10 @@ public class SlickFontRenderer implements Font {
 		scaleFactor = resolution.getScaleFactor();
 
 		if(scaleFactor != prevScaleFactor) {
+			if(slickFont != null) {
+				free();
+			}
+
 			try {
 				prevScaleFactor = resolution.getScaleFactor();
 				slickFont = new UnicodeFont(getFontFromInput(name).deriveFont(size * prevScaleFactor / 2));

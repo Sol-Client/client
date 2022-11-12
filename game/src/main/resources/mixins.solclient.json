@@ -90,8 +90,5 @@
 		"lwjgl.MixinWindowsDisplay",
 		"lwjgl.MixinLinuxKeyboard",
 		"lwjgl.MixinLinuxKeycodes"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+	]
 }

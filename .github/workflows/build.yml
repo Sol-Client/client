@@ -3,7 +3,7 @@ name: build
 on: [ push, pull_request ]
 
 jobs:
-  game:
+  wrapper:
     runs-on: ubuntu-latest
     steps:
     - name: Git Checkout
@@ -22,13 +22,13 @@ jobs:
       with:
         distribution: temurin
         java-version: 17
-    - name: Build Game
-      run: cd game && ./gradlew --no-daemon --stacktrace build && cd ..
+    - name: Build Wrapper
+      run: cd wrapper && ./gradlew --no-daemon --stacktrace build && cd ..
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
         name: Bundle
-        path: game/bundle/build/libs/bundle.jar
+        path: wrapper/bundle/build/libs/bundle.jar
 
   launcher:
     runs-on: ${{ matrix.os }}
@@ -37,7 +37,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
-    needs: game
+    needs: wrapper
 
     steps:
     - name: Git Checkout
@@ -49,14 +49,14 @@ jobs:
         cache: "npm"
     - name: NPM CI
       run: npm ci
-    - name: Download Game
+    - name: Download Wrapper
       uses: actions/download-artifact@v2
       with:
-        name: Game
+        name: Wrapper
     - name: Remove Unnecessary Files
-      run: rm -r game
-    - name: Relocate Game
-      run: mkdir -p game/build/libs && mv game.jar game/build/libs
+      run: rm -r wrapper
+    - name: Relocate Wrapper
+      run: mkdir -p wrapper/bundle/build/libs && mv bundle.jar wrapper/bundle/build/libs
     - name: Build Installer
       run: npm run make
     - name: Upload Artifact (Linux)

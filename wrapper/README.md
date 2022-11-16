@@ -7,7 +7,9 @@ java
 -Dio.github.solclient.client.mc_version=[Minecraft version]
 -Dio.github.solclient.client.version=[client version or "dev"]
 -cp
-<classpath>
+[classpath]
 io.github.solclient.client.wrapper.BootstrapMain
 [Minecraft args - will be forwarded to Minecraft's main class]
 ```
+
+Should be a separate repo in future - preferably the launcher will be moved away.

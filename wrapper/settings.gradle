@@ -8,7 +8,7 @@ pluginManagement {
 	}
 }
 
-rootProject.name = "Sol Client Wrapper"
+rootProject.name = "sol-client-wrapper"
 
 include ":1.8.9"
 include ":1.19.2"

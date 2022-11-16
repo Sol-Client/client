@@ -21,12 +21,12 @@ public class CameraMixin {
 		sc$pitch = event.getPitch();
 	}
 
-	@Redirect(method = "update", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerEntity;yaw"))
+	@Redirect(method = "update", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerEntity;yaw:F"))
 	private static float eventYaw(PlayerEntity ignored) {
 		return sc$yaw;
 	}
 
-	@Redirect(method = "update", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerEntity;pitch"))
+	@Redirect(method = "update", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerEntity;pitch:F"))
 	private static float eventPitch(PlayerEntity ignored) {
 		return sc$pitch;
 	}

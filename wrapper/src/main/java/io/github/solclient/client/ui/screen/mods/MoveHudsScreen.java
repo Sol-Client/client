@@ -35,7 +35,7 @@ public final class MoveHudsScreen extends Screen {
 		title = null;
 	}
 
-	public HudElement getSelectedHud(int mouseX, int mouseY) {
+	private static HudElement getSelectedHud(int mouseX, int mouseY) {
 		for(HudElement hud : Client.INSTANCE.getHuds()) {
 			if(!hud.isVisible()) continue;
 

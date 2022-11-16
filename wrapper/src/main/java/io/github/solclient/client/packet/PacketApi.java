@@ -15,6 +15,7 @@ public final class PacketApi {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	@EventHandler
+	@SuppressWarnings("static-method")
 	public void onServerMessage(ServerMessageReceiveEvent payload) {
 		Identifier id = payload.getChannelId();
 		if(id != null && (id.namespace().equals("sol_client") || id.namespace().equals(/* deprecated */ "solclient"))) {

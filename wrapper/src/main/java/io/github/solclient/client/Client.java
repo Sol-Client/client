@@ -117,6 +117,7 @@ public final class Client {
 			// as it makes sense considering both tasks can deal with a 10ms pause,
 			// and file listeners will not take much time.
 
+			@SuppressWarnings("resource")
 			FilePollingTask filePolling = new FilePollingTask(mods);
 
 			Thread generalUpdateThread = new Thread(() -> {

@@ -3,14 +3,12 @@ import java.nio.charset.StandardCharsets
 
 import org.gradle.api.file.FileTreeElement
 
-import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
-import com.github.jengelman.gradle.plugins.shadow.transformers.TransformerContext
+import com.github.jengelman.gradle.plugins.shadow.transformers.*
 
-import io.toadlabs.jfgjds.JsonDeserializer
-import io.toadlabs.jfgjds.JsonSerializer
+import io.toadlabs.jfgjds.*
 import io.toadlabs.jfgjds.data.JsonObject
-import shadow.org.apache.tools.zip.ZipEntry
-import shadow.org.apache.tools.zip.ZipOutputStream
+	
+import shadow.org.apache.tools.zip.*
 
 buildscript {
 	repositories {
@@ -53,7 +51,7 @@ final class MixinNonRequiredTransformer implements Transformer {
 			object = JsonDeserializer.read(context.getIs(), StandardCharsets.UTF_8).asObject()
 		}
 		catch(IOException error) {
-			throw new Error(error)
+			throw new UncheckedIOException(error)
 		}
 		object.put("required", false);
 		object.computeIfAbsent("injectors", JsonObject.DEFAULT_COMPUTION).asObject().put("defaultRequire", 0)
@@ -75,7 +73,7 @@ final class MixinNonRequiredTransformer implements Transformer {
 			path = object = null
 		}
 		catch(IOException error) {
-			throw new Error(error) // what am I supposed to do with this exception?
+			throw new UncheckedIOException(error) // what am I supposed to do with this exception?
 		}
 	}
 
@@ -85,7 +83,7 @@ final class MixinNonRequiredTransformer implements Transformer {
 shadowJar {
 	classifier null
 	configurations = [project.configurations.flatShadow]
-	transform MixinNonRequiredTransformer // prevent mixin from throwing exception in final version.
+	transform MixinNonRequiredTransformer // prevent mixin from throwing exception in final version
 }
 
 dependencies {

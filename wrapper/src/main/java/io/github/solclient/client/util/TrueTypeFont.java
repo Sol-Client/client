@@ -20,6 +20,7 @@ public final class TrueTypeFont implements Font, Closeable {
 
 	private final ByteBuffer buffer;
 	private final int textureId;
+	@SuppressWarnings("unused")
 	private final int ascent, descent, lineGap;
 
 	@SuppressWarnings("resource")

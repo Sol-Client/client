@@ -194,11 +194,6 @@ public final class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 		setFactor(clamp(1 / changedFactor));
 	}
 
-
-	public float clamp(float factor) {
-		return Utils.clamp(factor, 0, 0.5F);
-	}
-
 	public void updateSensitivity() {
 		if(reduceSensitivity) {
 			mc.getOptions().setMouseSensitivity(lastSensitivity * currentFactor);
@@ -213,6 +208,10 @@ public final class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public void increment() {
 		factor = Math.min(32, factor + 1);
+	}
+
+	private static float clamp(float factor) {
+		return Utils.clamp(factor, 0, 0.5F);
 	}
 
 }

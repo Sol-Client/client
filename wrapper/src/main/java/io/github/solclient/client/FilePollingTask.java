@@ -13,6 +13,7 @@ public final class FilePollingTask implements Runnable, Closeable {
 	private final WatchKey key;
 
 	public FilePollingTask(List<Mod> mods) throws IOException {
+		@SuppressWarnings("resource")
 		WatchService service = FileSystems.getDefault().newWatchService();
 
 		key = MinecraftClient.getInstance().getDataFolder().toPath().register(service, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);

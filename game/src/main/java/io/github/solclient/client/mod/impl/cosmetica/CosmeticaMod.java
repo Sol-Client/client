@@ -61,18 +61,17 @@ public class CosmeticaMod extends Mod {
 
 	private void logIn() {
 		try {
-			if(mc.getSession().getProfile().getId() == null) {
-				api = CosmeticaAPI.newUnauthenticatedInstance();
+			if(mc.getSession().getProfile().getId() != null) {
+				api = CosmeticaAPI.fromMinecraftToken(mc.getSession().getToken(), mc.getSession().getUsername(),
+						mc.getSession().getProfile().getId());
 				return;
 			}
-			api = CosmeticaAPI.fromMinecraftToken(mc.getSession().getToken(), mc.getSession().getUsername(),
-					mc.getSession().getProfile().getId());
 		}
 		catch(NullPointerException | CosmeticaAPIException | IllegalStateException | FatalServerErrorException
 				| IOException error) {
 			logger.warn("Failed to authenticate with Cosmetica API; falling back to anonymous requests", error);
-			api = CosmeticaAPI.newUnauthenticatedInstance();
 		}
+		api = CosmeticaAPI.newUnauthenticatedInstance();
 	}
 
 	@Override

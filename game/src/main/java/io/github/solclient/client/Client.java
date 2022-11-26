@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.github.solclient.client.mod.impl.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -36,22 +37,6 @@ import io.github.solclient.client.event.impl.SendChatMessageEvent;
 import io.github.solclient.client.event.impl.ServerConnectEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.BlockSelectionMod;
-import io.github.solclient.client.mod.impl.ChunkAnimatorMod;
-import io.github.solclient.client.mod.impl.ColourSaturationMod;
-import io.github.solclient.client.mod.impl.FreelookMod;
-import io.github.solclient.client.mod.impl.HitColourMod;
-import io.github.solclient.client.mod.impl.HitboxMod;
-import io.github.solclient.client.mod.impl.MenuBlurMod;
-import io.github.solclient.client.mod.impl.MotionBlurMod;
-import io.github.solclient.client.mod.impl.ParticlesMod;
-import io.github.solclient.client.mod.impl.SolClientMod;
-import io.github.solclient.client.mod.impl.TNTTimerMod;
-import io.github.solclient.client.mod.impl.TaplookMod;
-import io.github.solclient.client.mod.impl.TimeChangerMod;
-import io.github.solclient.client.mod.impl.TweaksMod;
-import io.github.solclient.client.mod.impl.V1_7VisualsMod;
-import io.github.solclient.client.mod.impl.ZoomMod;
 import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
 import io.github.solclient.client.mod.impl.hud.ComboCounterMod;
 import io.github.solclient.client.mod.impl.hud.CoordinatesMod;
@@ -196,6 +181,7 @@ public class Client {
 		register(new HypixelAdditionsMod());
 		register(new QuickPlayMod());
 		register(new DiscordIntegrationMod());
+		register(new ScrollableTooltipsMod());
 
 		LOGGER.info("Loaded {} mods", mods.size());
 

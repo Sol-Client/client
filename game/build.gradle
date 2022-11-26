@@ -365,7 +365,7 @@ dependencies {
 
 	dependency "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
 	dependency "org.java-websocket:Java-WebSocket:1.5.3"
-	dependency "com.github.Cosmetica-cc:CosmeticaDotJava:1.5.2"
+	dependency "com.github.Cosmetica-cc:CosmeticaDotJava:1.7.0"
 }
 
 mixin {

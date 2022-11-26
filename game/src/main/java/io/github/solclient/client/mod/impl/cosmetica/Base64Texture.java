@@ -46,17 +46,22 @@ final class Base64Texture extends SimpleTexture {
 		}
 	}
 
-	static ResourceLocation load(String base64) {
-		base64 = strictParse(base64);
+	static ResourceLocation load(String url) {
+		String base64 = strictParse(url);
 		if(base64 == null) {
-			throw new IllegalArgumentException(base64);
+			throw new IllegalArgumentException(url);
 		}
 
 		ResourceLocation target = target(base64);
 
+		System.out.println(target);
+		System.out.println(all.contains(target));
+
 		if(all.contains(target)) {
 			return target;
 		}
+
+		all.add(target);
 
 		Base64Texture texture = new Base64Texture(base64);
 		Minecraft.getMinecraft().getTextureManager().loadTexture(target, texture);

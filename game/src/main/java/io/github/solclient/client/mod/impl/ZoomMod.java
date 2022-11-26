@@ -22,9 +22,6 @@ import net.minecraft.util.MathHelper;
 
 public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
-	public static boolean enabled;
-	public static ZoomMod instance;
-
 	@Option
 	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C, Client.KEY_CATEGORY);
 	@Option

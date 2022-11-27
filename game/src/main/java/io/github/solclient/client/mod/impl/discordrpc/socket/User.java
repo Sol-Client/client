@@ -2,8 +2,6 @@ package io.github.solclient.client.mod.impl.discordrpc.socket;
 
 import com.google.gson.JsonObject;
 
-import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -34,6 +34,7 @@ import io.github.solclient.client.event.impl.PostGameStartEvent;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.event.impl.SendChatMessageEvent;
 import io.github.solclient.client.event.impl.ServerConnectEvent;
+import io.github.solclient.client.event.impl.WorldLoadEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.BlockSelectionMod;
@@ -334,13 +335,17 @@ public class Client {
 
 	private void register(Mod mod) {
 		try {
+			// quite broken
+			if(Boolean.getBoolean("io.github.solclient.client.mod." + mod.getId() + ".disable")) {
+				return;
+			}
+
 			if(data.has(mod.getId())) {
 				getGson(mod).fromJson(data.get(mod.getId()), mod.getClass());
 			}
+
 			mods.add(mod);
-
 			modsById.put(mod.getId(), mod);
-
 			mod.onRegister();
 		}
 		catch(Throwable error) {
@@ -445,6 +450,11 @@ public class Client {
 			event.cancelled = true;
 			getChatChannelSystem().getChannel().sendMessage(mc.thePlayer, event.message);
 		}
+	}
+
+	@EventHandler
+	public void onWorldLoad(WorldLoadEvent event) {
+		Utils.USER_DATA.cancel();
 	}
 
 	@EventHandler

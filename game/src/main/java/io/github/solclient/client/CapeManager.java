@@ -30,7 +30,7 @@ public class CapeManager {
 	private static final URL BY_PLAYER_URL = Utils.sneakyParse(BASE_URL + "by_player.json");
 
 	public CapeManager() {
-		Utils.MAIN_EXECUTOR.submit(() -> {
+		Utils.USER_DATA.submit(() -> {
 			try {
 				JsonObject capesObject = JsonParser.parseReader(new InputStreamReader(BY_PLAYER_URL.openStream()))
 						.getAsJsonObject();

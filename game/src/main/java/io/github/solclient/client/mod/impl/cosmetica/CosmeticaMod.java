@@ -94,33 +94,45 @@ public class CosmeticaMod extends Mod {
 	}
 
 	public Optional<UserInfo> get(UUID uuid, String username) {
-		synchronized(dataCache) {
-			UserInfo result = dataCache.get(uuid);
+		if(uuid.version() != 4) {
+			return Optional.empty();
+		}
+
+		if(!uuid.equals(mc.thePlayer.getUniqueID()) && !dataCache.containsKey(mc.thePlayer.getUniqueID())) {
+			get(mc.thePlayer);
+		}
+
+		UserInfo result = dataCache.get(uuid);
+
+		if(result == null) {
+			synchronized(dataCache) {
+				// ensure the fetch doesn't keep reoccurring
+				result = dataCache.putIfAbsent(uuid, UserInfo.DUMMY);
+			}
 
 			if(result == null) {
-				// ensure the fetch doesn't keep reoccurring
-				dataCache.put(uuid, UserInfo.DUMMY);
 				fetch(uuid, username);
 			}
-			else if(result == UserInfo.DUMMY) {
-				// return null instead of dummy
-				result = null;
-			}
-
-			return Optional.ofNullable(result);
 		}
+
+		if(result == UserInfo.DUMMY) {
+			// return null instead of dummy
+			result = null;
+		}
+
+		return Optional.ofNullable(result);
 	}
 
 	private void fetch(UUID uuid, String username) {
-		Utils.MAIN_EXECUTOR.submit(() -> {
+		Utils.USER_DATA.submit(() -> {
+			ServerResponse<UserInfo> result = api.getUserInfo(uuid, username);
+
+			if(!result.isSuccessful()) {
+				logger.warn("UserInfo request ({}, {}) failed", uuid, username, result.getException());
+				return;
+			}
+
 			synchronized(dataCache) {
-				ServerResponse<UserInfo> result = api.getUserInfo(uuid, username);
-
-				if(!result.isSuccessful()) {
-					logger.warn("UserInfo request ({}, {}) failed", uuid, username, result.getException());
-					return;
-				}
-
 				dataCache.put(uuid, result.get());
 			}
 		});

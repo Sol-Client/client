@@ -6,27 +6,28 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.function.IntConsumer;
 
 import org.lwjgl.opengl.GL11;
 
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
-import com.replaymod.replaystudio.lib.viaversion.libs.kyori.adventure.text.event.ClickEvent.Action;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientMod;
@@ -45,8 +46,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.handshake.client.C00Handshake;
@@ -58,10 +57,8 @@ import net.minecraft.network.status.server.S01PacketPong;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.Util.EnumOS;
@@ -70,8 +67,21 @@ import net.minecraft.util.Util.EnumOS;
 public class Utils {
 
 	public static final String REVEAL_SUFFIX = "§sol_client:showinfolder";
-	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
+	public final MonitoringExecutorService USER_DATA;
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
+
+	static {
+		int threads = 8;
+		String threadsStr = System.getProperty("io.github.solclient.client.user_data_threads");
+		if(threadsStr != null) {
+			try {
+				threads = Integer.parseInt(threadsStr);
+			}
+			catch(NumberFormatException ignored) {}
+		}
+		USER_DATA = new MonitoringExecutorService(threads, threads, 0, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<>());
+	}
 
 	private int getStringWidth(String text) {
 		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);

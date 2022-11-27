@@ -1,8 +1,6 @@
 package io.github.solclient.client.mod.impl.hud.ping;
 
 import java.net.UnknownHostException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import com.google.gson.annotations.Expose;
 
@@ -16,8 +14,9 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 
 public class PingMod extends SmoothCounterHudMod {
 
-	private int ping;
 	private static final int PING_INTERVAL = 600;
+
+	private int ping;
 	private int nextPing;
 
 	@Expose
@@ -48,7 +47,7 @@ public class PingMod extends SmoothCounterHudMod {
 			else if(nextPing > -1) {
 				nextPing = -1;
 
-				Utils.MAIN_EXECUTOR.submit(() -> {
+				Thread thread = new Thread(() -> {
 					try {
 						Utils.pingServer(mc.getCurrentServerData().serverIP, (newPing) -> {
 							if(newPing != -1) {
@@ -67,6 +66,8 @@ public class PingMod extends SmoothCounterHudMod {
 
 					nextPing = PING_INTERVAL;
 				});
+				thread.setDaemon(true);
+				thread.start();
 			}
 		}
 	}

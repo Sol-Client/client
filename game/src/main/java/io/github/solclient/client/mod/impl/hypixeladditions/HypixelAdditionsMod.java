@@ -13,9 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
@@ -134,8 +131,7 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	public String getLevelhead(boolean isMainPlayer, String name, UUID id) {
-		if((!(enabled && levelhead))
-				|| (name.contains(EnumChatFormatting.OBFUSCATED.toString()) && !isMainPlayer)) {
+		if(id.version() != 4 || !(enabled && levelhead) || (name.contains(EnumChatFormatting.OBFUSCATED.toString()) && !isMainPlayer)) {
 			return null;
 		}
 

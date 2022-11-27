@@ -76,9 +76,11 @@ public class QuickPlayMod extends Mod {
 		super.onEnable();
 		if(!got) {
 			got = true;
-			Utils.MAIN_EXECUTOR.submit(() -> {
+			Thread thread = new Thread(() -> {
 				database = new QuickPlayDatabase();
 			});
+			thread.setDaemon(true);
+			thread.start();
 		}
 	}
 

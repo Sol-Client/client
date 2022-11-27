@@ -64,7 +64,7 @@ public class ApacheHttpClient implements HypixelHttpClient {
 			catch(IOException e) {
 				throw new RuntimeException(e);
 			}
-		}, Utils.MAIN_EXECUTOR);
+		}, Utils.USER_DATA);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class ApacheHttpClient implements HypixelHttpClient {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		}, Utils.MAIN_EXECUTOR);
+		}, Utils.USER_DATA);
 	}
 
 	@Override

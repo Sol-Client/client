@@ -54,9 +54,6 @@ final class Base64Texture extends SimpleTexture {
 
 		ResourceLocation target = target(base64);
 
-		System.out.println(target);
-		System.out.println(all.contains(target));
-
 		if(all.contains(target)) {
 			return target;
 		}

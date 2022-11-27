@@ -48,6 +48,7 @@
 		"client.MixinAbstractClientPlayer",
 		"client.MixinLightMap",
 		"client.MixinThreadDownloadImageData$1",
+		"client.MixinTextureUtil",
 		"mod.MixinTweaksMod$MixinEnchantment",
 		"mod.MixinTweaksMod$MixinInventoryEffectRenderer",
 		"mod.MixinTweaksMod$MixinItemPotion",

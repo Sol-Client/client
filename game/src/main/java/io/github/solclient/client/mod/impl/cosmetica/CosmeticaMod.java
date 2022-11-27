@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import cc.cosmetica.api.Cape;
 import cc.cosmetica.api.CosmeticaAPI;
 import cc.cosmetica.api.CosmeticaAPIException;
 import cc.cosmetica.api.FatalServerErrorException;
@@ -48,7 +49,7 @@ public class CosmeticaMod extends Mod {
 	}
 
 	private void clear() {
-		Base64Texture.disposeAll();
+		CosmeticaTexture.disposeAll();
 		if(!dataCache.isEmpty()) {
 			dataCache = new HashMap<>();
 		}
@@ -57,6 +58,10 @@ public class CosmeticaMod extends Mod {
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
 		clear();
+		if(mc.thePlayer != null) {
+			// prioritise the main player
+			get(mc.thePlayer);
+		}
 	}
 
 	private void logIn() {
@@ -86,7 +91,12 @@ public class CosmeticaMod extends Mod {
 
 
 	public Optional<ResourceLocation> getCapeTexture(EntityPlayer player) {
-		return get(player).flatMap(UserInfo::getCape).map((cape) -> cape.getImage()).map(Base64Texture::load);
+		Optional<Cape> optCape = get(player).flatMap(UserInfo::getCape);
+		if(!optCape.isPresent()) {
+			return Optional.empty();
+		}
+		Cape cape = optCape.get();
+		return Optional.of(CosmeticaTexture.load(2, cape.getFrameDelay() / 50, cape.getImage()));
 	}
 
 	public Optional<UserInfo> get(EntityPlayer player) {
@@ -98,10 +108,7 @@ public class CosmeticaMod extends Mod {
 			return Optional.empty();
 		}
 
-		if(!uuid.equals(mc.thePlayer.getUniqueID()) && !dataCache.containsKey(mc.thePlayer.getUniqueID())) {
-			get(mc.thePlayer);
-		}
-
+		// no synchronisation for performance
 		UserInfo result = dataCache.get(uuid);
 
 		if(result == null) {
@@ -110,6 +117,7 @@ public class CosmeticaMod extends Mod {
 				result = dataCache.putIfAbsent(uuid, UserInfo.DUMMY);
 			}
 
+			// it is possible that the result is no longer null when synchronised
 			if(result == null) {
 				fetch(uuid, username);
 			}

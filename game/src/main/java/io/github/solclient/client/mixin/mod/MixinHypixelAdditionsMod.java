@@ -24,7 +24,7 @@ public class MixinHypixelAdditionsMod {
 
 		@Inject(method = "renderOffsetLivingLabel", at = @At("RETURN"))
 		public void renderLevelhead(AbstractClientPlayer entityIn, double x, double y, double z, String str,
-									float p_177069_9_, double p_177069_10_, CallbackInfo callback) {
+				float p_177069_9_, double p_177069_10_, CallbackInfo callback) {
 			if(HypixelAdditionsMod.isEffective()) {
 				String levelhead = HypixelAdditionsMod.instance.getLevelhead(entityIn == Minecraft.getMinecraft().thePlayer, entityIn.getDisplayName().getFormattedText(), entityIn.getUniqueID());
 

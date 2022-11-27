@@ -20,7 +20,10 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
-final class CosmeticaTexture extends AbstractTexture implements ITickableTextureObject {
+/**
+ * An animatable texture deserialised and uploaded from Base64.
+ */
+final class Texture extends AbstractTexture implements ITickableTextureObject {
 
 	private static Set<ResourceLocation> all = new HashSet<>();
 
@@ -31,7 +34,7 @@ final class CosmeticaTexture extends AbstractTexture implements ITickableTexture
 	private final int frameDelay;
 	private String base64;
 
-	CosmeticaTexture(int aspectRatio, int frameDelay, String base64) {
+	Texture(int aspectRatio, int frameDelay, String base64) {
 		this.aspectRatio = aspectRatio;
 		this.frameDelay = ticks = frameDelay;
 		this.base64 = base64;
@@ -57,10 +60,13 @@ final class CosmeticaTexture extends AbstractTexture implements ITickableTexture
 		}
 	}
 
-	static ResourceLocation load(int aspectRatio, int frameDelay, String url) {
-		String base64 = strictParse(url);
-		if(base64 == null) {
-			throw new IllegalArgumentException(url);
+	static ResourceLocation load(int aspectRatio, int frameDelay, String base64) {
+		{
+			String newBase64 = strictParse(base64);
+			if(newBase64 == null) {
+				throw new IllegalArgumentException(base64);
+			}
+			base64 = newBase64;
 		}
 
 		ResourceLocation target = target(base64);
@@ -71,7 +77,7 @@ final class CosmeticaTexture extends AbstractTexture implements ITickableTexture
 
 		all.add(target);
 
-		CosmeticaTexture texture = new CosmeticaTexture(aspectRatio, frameDelay, base64);
+		Texture texture = new Texture(aspectRatio, frameDelay, base64);
 		Minecraft.getMinecraft().getTextureManager().loadTickableTexture(target, texture);
 		return target;
 	}

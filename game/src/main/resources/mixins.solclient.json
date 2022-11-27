@@ -88,6 +88,7 @@
 		"mod.MixinV1_7VisualsMod$MixinItemRenderer",
 		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase",
 		"mod.MixinTNTTimerMod$MixinRenderTNTPrimed",
+		"mod.MixinCosmeticaMod$MixinRenderPlayer",
 		"lwjgl.MixinWindowsDisplay",
 		"lwjgl.MixinLinuxKeyboard",
 		"lwjgl.MixinLinuxKeycodes"

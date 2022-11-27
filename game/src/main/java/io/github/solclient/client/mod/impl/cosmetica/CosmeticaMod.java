@@ -49,7 +49,7 @@ public class CosmeticaMod extends Mod {
 	}
 
 	private void clear() {
-		CosmeticaTexture.disposeAll();
+		Texture.disposeAll();
 		if(!dataCache.isEmpty()) {
 			dataCache = new HashMap<>();
 		}
@@ -96,7 +96,12 @@ public class CosmeticaMod extends Mod {
 			return Optional.empty();
 		}
 		Cape cape = optCape.get();
-		return Optional.of(CosmeticaTexture.load(2, cape.getFrameDelay() / 50, cape.getImage()));
+		return Optional.of(Texture.load(2, cape.getFrameDelay() / 50, cape.getImage()));
+	}
+
+	public Optional<String> getLore(EntityPlayer player) {
+		return get(player).map(UserInfo::getLore)
+				.flatMap((lore) -> lore.isEmpty() ? Optional.empty() : Optional.of(lore));
 	}
 
 	public Optional<UserInfo> get(EntityPlayer player) {

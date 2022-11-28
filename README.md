@@ -25,7 +25,7 @@ Simple and easy-to-use Minecraft client for 1.8.9 (and in future™, newer versi
 People have already been talking about this client working on Pojav, but it's not quite ready.
 However, it does mostly work so you can download a preview from [here](https://github.com/Sol-Client/Installer/releases).
 
-## Licence
+## License
 This project uses [GNU General Public License v3.0](LICENSE), a copyleft license. This may need to be changed in the future due to it technically conflicting with Minecraft.
 
 While not stated in the license, I would appreciate forks having a different name, logo, and design. It's fine for feature branches and custom builds though. I'd just rather all of these things changed, not one of them.

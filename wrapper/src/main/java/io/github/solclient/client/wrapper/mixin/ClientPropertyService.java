@@ -10,11 +10,10 @@ import lombok.*;
 public final class ClientPropertyService implements IGlobalPropertyService {
 
 	private final Map<IPropertyKey, Object> keys = new HashMap<>();
-	private final Map<String, IPropertyKey> keyPool = new HashMap<>();
 
 	@Override
 	public IPropertyKey resolveKey(String name) {
-		return keyPool.computeIfAbsent(name, Key::new);
+		return new Key(name);
 	}
 
 	@Override

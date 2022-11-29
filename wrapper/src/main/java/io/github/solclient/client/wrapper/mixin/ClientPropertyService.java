@@ -38,7 +38,7 @@ public final class ClientPropertyService implements IGlobalPropertyService {
 
 	@EqualsAndHashCode
 	@RequiredArgsConstructor
-	class Key implements IPropertyKey {
+	private static class Key implements IPropertyKey {
 
 		private final String key;
 

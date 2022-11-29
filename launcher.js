@@ -48,7 +48,7 @@ class Launcher {
 		const alreadyRunning = this.games.length > 0;
 
 		if(!alreadyRunning && fs.existsSync(nativesFolder)) {
-			fs.rmdirSync(nativesFolder, { recursive: true });
+			fs.rmSync(nativesFolder, { recursive: true });
 		}
 
 		console.log("Downloading libraries...");

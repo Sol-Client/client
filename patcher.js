@@ -10,7 +10,7 @@ class Patcher {
 		let tempFolder = versionFolder + "/patch/";
 		
 		if(fs.existsSync(tempFolder)) {
-			fs.rmdirSync(tempFolder, { recursive: true });
+			fs.rmSync(tempFolder, { recursive: true });
 		}
 		
 		fs.mkdirSync(tempFolder);
@@ -109,7 +109,7 @@ class Patcher {
 		});
 
 		fs.renameSync(mapped,  outputFile);
-		fs.rmdirSync(tempFolder, { recursive: true });
+		fs.rmSync(tempFolder, { recursive: true });
 	}
 
 }

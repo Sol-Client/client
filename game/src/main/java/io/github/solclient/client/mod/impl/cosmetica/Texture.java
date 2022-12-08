@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import io.github.solclient.client.mixin.client.MixinTextureUtil;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.ITickableTextureObject;
@@ -33,6 +34,9 @@ final class Texture extends AbstractTexture implements ITickableTextureObject {
 	private final int aspectRatio;
 	private final int frameDelay;
 	private String base64;
+
+	@Getter
+	private int frameWidth, frameHeight;
 
 	Texture(int aspectRatio, int frameDelay, String base64) {
 		this.aspectRatio = aspectRatio;
@@ -83,38 +87,46 @@ final class Texture extends AbstractTexture implements ITickableTextureObject {
 	}
 
 	@Override
-	public void loadTexture(IResourceManager resourceManager) throws IOException {
+	public void loadTexture(IResourceManager resources) throws IOException {
 		deleteGlTexture();
 
 		try(ByteArrayInputStream in = new ByteArrayInputStream(Base64.getDecoder().decode(base64))) {
 			BufferedImage image = ImageIO.read(in);
-			int frames = (aspectRatio * image.getHeight()) / image.getWidth();
-			int frameHeight = image.getHeight() / frames;
+			int frames = 0;
+
+			if(aspectRatio != 0) {
+				frames = (aspectRatio * image.getHeight()) / image.getWidth();
+			}
+
+			if(frames == 0) {
+				frames++;
+			}
+
+			frameWidth = image.getWidth();
+			frameHeight = image.getHeight() / frames;
+
 			textures = new int[frames];
 			for(int i = 0; i < frames; i++) {
 				textures[i] = GL11.glGenTextures();
 				TextureUtil.allocateTexture(textures[i], image.getWidth(), frameHeight);
 
 				// modified from code in TextureUtil
-
-				int width = image.getWidth();
-		        int height = frameHeight;
-		        int k = 4194304 / width;
-		        int[] sample = new int[k * width];
+		        int z = 4194304 / frameWidth; // What is this?
+		        int[] sample = new int[z * frameWidth];
 
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
-				for (int j = 0; j < width * height; j += width * k) {
-					int y = j / width;
-					int sampleHeight = Math.min(k, height - y);
-					int length = width * sampleHeight;
-					image.getRGB(0, i * frameHeight + y, width, sampleHeight, sample, 0, width);
+				for(int j = 0; j < frameWidth * frameHeight; j += frameWidth * z) {
+					int y = j / frameWidth;
+					int sampleHeight = Math.min(z, frameHeight - y);
+					int length = frameWidth * sampleHeight;
+					image.getRGB(0, i * frameHeight + y, frameWidth, sampleHeight, sample, 0, frameWidth);
 					MixinTextureUtil.copyToBuffer(sample, length);
 					GL11.glTexSubImage2D(
-							GL11.GL_TEXTURE_2D, 0, 0, y, width, sampleHeight, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, MixinTextureUtil.getDataBuffer());
+							GL11.GL_TEXTURE_2D, 0, 0, y, frameWidth, sampleHeight, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, MixinTextureUtil.getDataBuffer());
 		        }
 			}
 		}

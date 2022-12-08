@@ -1,22 +1,28 @@
 package io.github.solclient.client.mod.impl.cosmetica;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.WeakHashMap;
 
 import cc.cosmetica.api.Cape;
 import cc.cosmetica.api.CosmeticaAPI;
 import cc.cosmetica.api.CosmeticaAPIException;
 import cc.cosmetica.api.FatalServerErrorException;
+import cc.cosmetica.api.Model;
 import cc.cosmetica.api.ServerResponse;
+import cc.cosmetica.api.ShoulderBuddies;
 import cc.cosmetica.api.UserInfo;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.WorldLoadEvent;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.util.Utils;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -27,6 +33,7 @@ public class CosmeticaMod extends Mod {
 
 	private CosmeticaAPI api;
 	private Map<UUID, UserInfo> dataCache = new HashMap<>();
+	private Map<Model, IBakedModel> bakeryCache = new WeakHashMap<>();
 
 	@Override
 	public void onRegister() {
@@ -89,6 +96,17 @@ public class CosmeticaMod extends Mod {
 		return ModCategory.VISUAL; // TODO: change this?
 	}
 
+	public IBakedModel bakeIfAbsent(Model model) {
+		return bakeryCache.computeIfAbsent(model, Util::createModel);
+	}
+
+	public List<Model> getHats(EntityPlayer player) {
+		return get(player).map(UserInfo::getHats).orElse(Collections.emptyList());
+	}
+
+	public Optional<ShoulderBuddies> getShoulderBuddies(EntityPlayer player) {
+		return get(player).flatMap(UserInfo::getShoulderBuddies);
+	}
 
 	public Optional<ResourceLocation> getCapeTexture(EntityPlayer player) {
 		Optional<Cape> optCape = get(player).flatMap(UserInfo::getCape);

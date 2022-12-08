@@ -33,6 +33,8 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
@@ -46,6 +48,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.handshake.client.C00Handshake;
@@ -65,6 +68,8 @@ import net.minecraft.util.Util.EnumOS;
 
 @UtilityClass
 public class Utils {
+
+	public static ModelBakery modelBakery;
 
 	public static final String REVEAL_SUFFIX = "§sol_client:showinfolder";
 	public final MonitoringExecutorService USER_DATA;

@@ -81,8 +81,6 @@ The code for this client is available, so if you have sufficient knowledge, you 
 
 This client has been tested by multiple people on Hypixel. On most popular servers, disallowed mods are disabled. There are unknown servers, but just disable the correct mods and you should be fine. All mods are designed (and intend) not to change the behaviour of the player.
 
-This client has been tested by multiple people on Hypixel. On most popular servers, disallowed mods are disabled. There are unknown servers, but just disable the correct mods and you should be fine. All mods are designed (and intend) not to change the behavior of the player.
-
 ## Credits
 [TheKodeToad](https://github.com/TheKodeToad) ([Discord User](https://discord.com/users/706152404072267788)): Maintainer and developer of the client.
 

@@ -43,6 +43,7 @@ Many other projects lack important features, such as ReplayMod. While this clien
 
 ## Features
 
+
 Here are the main features currently available in the stable version:
 
 - A clean HUD inspired by Lunar.
@@ -55,14 +56,14 @@ Here are the main features currently available in the stable version:
 - Item physics.
 - Hypixel Additions.
 - OptiFine, downloaded automatically from the official site (open an issue if this is a problem).
-- Crosshair mod, allowing you to customize your crosshair while fitting with the vanilla style.
-- Quick Play Mod. Allows you to quickly join games at the press of a button (by default, "M"). The key opens a menu where you can search for games, navigating through them using the arrow keys. If you type nothing, you can see recent games and a categorized list of all games.
-- Customizable launcher servers - automatically detected from the game, with no pinned servers.
+- Crosshair mod, allowing you to customise your crosshair while fitting with the vanilla style.
+- Quick Play Mod. Allows you to quickly join games at the press of a button (by default, "M"). The key opens a menu where you can search for games, navigating through them using the arrow keys. If you type nothing, you can see recent games and a categorised list of all games.
+- Customisable launcher servers - automatically detected from the game, with no pinned servers.
 - Better item tooltips - show item damage and more.
 - Symbol picker (happy, sad, and the extremely important snowman).
 - Chat channel display and switcher (you can still use the command).
 - Pop-up events (pop-up friend requests, etc.).
-- Customizable font and color scheme.
+- Customisable font and colour scheme.
 - Option to turn off the inventory logo.
 - Speedometer.
 - Chunk animator (not sure if many people use this one).
@@ -77,6 +78,8 @@ If there are any issues with us using your code, please open an issue.
 
 ## Safety
 The code for this client is available, so if you have sufficient knowledge, you can check for yourself for any nasty stuff.
+
+This client has been tested by multiple people on Hypixel. On most popular servers, disallowed mods are disabled. There are unknown servers, but just disable the correct mods and you should be fine. All mods are designed (and intend) not to change the behaviour of the player.
 
 This client has been tested by multiple people on Hypixel. On most popular servers, disallowed mods are disabled. There are unknown servers, but just disable the correct mods and you should be fine. All mods are designed (and intend) not to change the behavior of the player.
 

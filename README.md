@@ -37,16 +37,16 @@ Note that this project is not entirely open-source due to its closed-source depe
 I would also appreciate it if people didn't sell this client.
 
 ## Why?
-There are many Minecraft clients, but a surprising amount of them are closed-source and focus a lot on paid cosmetics. This client is free and open source, allowing people to view the code as well as propose changes through GitHub pull requests.
+There are many Minecraft clients, but a surprising number of them are closed-source and focus heavily on paid cosmetics. This client is free and open-source, allowing people to view the code and propose changes through GitHub pull requests.
 
-Many other projects lack important features such as ReplayMod. This client still is missing some features, but it has the most important of them. There are mod loaders like Fabric, Quilt, and Forge, which are very good; they simply lack the same levels of integration.
+Many other projects lack important features, such as ReplayMod. While this client is still missing some features, it includes the most important ones. There are mod loaders like Fabric, Quilt, and Forge, which are very good, but they lack the same level of integration.
 
 ## Features
 
 Here are the main features currently available in the stable version:
 
 - A clean HUD inspired by Lunar.
-- Replay Mod. You will need to install FFmpeg yourself. This is completely unaffiliated with the original mod by Johni and CrushedPixel. If you encounter any issues, try reproducing them on the official Forge version, and if it happens there, report it on the [ReplayMod GitHub repositority](https://github.com/ReplayMod/ReplayMod). If it only happens on our version, report it here.
+- Replay Mod. You will need to install FFmpeg yourself. This is completely unaffiliated with the original mod by Johni and CrushedPixel. If you encounter any issues, try reproducing them on the official Forge version, and if it happens there, report it on the [ReplayMod GitHub repository](https://github.com/ReplayMod/ReplayMod). If it only happens on our version, report it here.
 - Freelook (automatically disabled on Hypixel), press "V" to activate.
 - Toggle sprint.
 - Smooth zoom.
@@ -54,16 +54,16 @@ Here are the main features currently available in the stable version:
 - 1.7 animations.
 - Item physics.
 - Hypixel Additions.
-- OptiFine, downloaded automatically from the official site (open an issue if this is a bad thing).
-- Crosshair mod, allowing you to customise your crosshair while fitting with the vanilla style.
-- Quick Play Mod. Allows you to quickly join games at the press of a button (by default, "M"). The key opens a menu where you can search for games, navigating through them using the arrow keys. If you type nothing, you can see recent games and a categorised list of all games.
-- Customisable launcher servers - automatically detected from the game, with no pinned servers.
+- OptiFine, downloaded automatically from the official site (open an issue if this is a problem).
+- Crosshair mod, allowing you to customize your crosshair while fitting with the vanilla style.
+- Quick Play Mod. Allows you to quickly join games at the press of a button (by default, "M"). The key opens a menu where you can search for games, navigating through them using the arrow keys. If you type nothing, you can see recent games and a categorized list of all games.
+- Customizable launcher servers - automatically detected from the game, with no pinned servers.
 - Better item tooltips - show item damage and more.
 - Symbol picker (happy, sad, and the extremely important snowman).
 - Chat channel display and switcher (you can still use the command).
 - Pop-up events (pop-up friend requests, etc.).
-- Customisable font and colour scheme.
-- Turning off the inventory logo.
+- Customizable font and color scheme.
+- Option to turn off the inventory logo.
 - Speedometer.
 - Chunk animator (not sure if many people use this one).
 - Bedwars timers.
@@ -76,9 +76,9 @@ If you want to suggest a feature, you can [create a new issue](https://github.co
 If there are any issues with us using your code, please open an issue.
 
 ## Safety
-The code for this client is available, so if you have sufficient knowledge you can check yourself for nasty stuff.
+The code for this client is available, so if you have sufficient knowledge, you can check for yourself for any nasty stuff.
 
-This client has been tested by multiple people on Hypixel. On most popular servers, disallowed mods are disabled. There are unknown servers, but just disable the correct mods and you should be fine. All mods are designed (and intend) not to change the behaviour of the player.
+This client has been tested by multiple people on Hypixel. On most popular servers, disallowed mods are disabled. There are unknown servers, but just disable the correct mods and you should be fine. All mods are designed (and intend) not to change the behavior of the player.
 
 ## Credits
 [TheKodeToad](https://github.com/TheKodeToad) ([Discord User](https://discord.com/users/706152404072267788)): Maintainer and developer of the client.
@@ -110,16 +110,16 @@ This client has been tested by multiple people on Hypixel. On most popular serve
 2. Press "Open".
 3. Select the "game" directory inside the repository folder.
 
-### Eclipse
 
-1. Right-click in "Package Explorer" and press "Import Project".
+### Eclipse
+1. Right-click in "Package Explorer" and select "Import Project".
 2. Select "Gradle" > "Existing Gradle Project".
 3. Select the "game" directory inside the repository folder.
 4. Press "Finish".
 
 ## Build Instructions
 
-Want to contribute? Or are you just trying to re-enable freelook (please don't do this)? Want to port this to your toaster's operating system, or run this on Windows 98?
+Want to contribute? Or are you just trying to re-enable freelook (please don't do this)? Want to port this to your toaster's operating system, or run it on Windows 98?
 
 ### Launcher
 

@@ -1,15 +1,8 @@
 package io.github.solclient.client.mod.impl.cosmetica;
 
 import cc.cosmetica.api.Model;
-import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -21,6 +14,8 @@ public final class HatsLayer extends CosmeticLayer {
 	}
 
 	/*
+	 * Modified from the Cosmetica mod for Fabric.
+	 *
 	 * Copyright 2022 EyezahMC
 	 *
 	 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +33,7 @@ public final class HatsLayer extends CosmeticLayer {
 	@Override
 	public void doRenderLayer(AbstractClientPlayer player, float p_177141_2_, float p_177141_3_,
 			float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
-		if(player.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) {
+		if(player.isInvisible()) {
 			return;
 		}
 

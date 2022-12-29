@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.mod.impl.cosmetica.CosmeticaMod;
 import io.github.solclient.client.mod.impl.cosmetica.HatsLayer;
+import io.github.solclient.client.mod.impl.cosmetica.ShoulderBuddies;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -29,6 +30,7 @@ public class MixinCosmeticaMod {
 		public void addLayers(CallbackInfo callback) {
 			RenderPlayer th1s = (RenderPlayer) (Object) this;
 			addLayer(new HatsLayer(th1s));
+			addLayer(new ShoulderBuddies(th1s));
 		}
 
 		@Redirect(method = "renderOffsetLivingLabel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RendererLivingEntity;renderOffsetLivingLabel(Lnet/minecraft/entity/Entity;DDDLjava/lang/String;FD)V"))

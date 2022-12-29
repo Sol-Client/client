@@ -22,6 +22,8 @@ class Util {
 	private static final float MAGIC_SCALE = 1.001F;
 
 	/*
+	 * Modified from the Cosmetica mod for Fabric.
+	 *
 	 * Copyright 2022 EyezahMC
 	 *
 	 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,6 +55,8 @@ class Util {
 	}
 
 	/*
+	 * Modified from the Cosmetica mod for Fabric.
+	 *
 	 * Copyright 2022 EyezahMC
 	 *
 	 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -119,6 +123,7 @@ class Util {
 		ModelBlock blockModel = ModelBlock.deserialize(model.getModel());
 		blockModel.name = model.getId();
 		// TODO fix??
+		// weird leftover stuff down here v
 //		blockModel.getElements().forEach((part) -> {
 //			part.mapFaces.forEach((key, value) -> {
 //				System.out.println(Arrays.toString(value.blockFaceUV.uvs));

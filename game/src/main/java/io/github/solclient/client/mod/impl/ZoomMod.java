@@ -6,6 +6,7 @@ import org.lwjgl.input.Mouse;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.FovEvent;
 import io.github.solclient.client.event.impl.MouseClickEvent;
@@ -23,11 +24,11 @@ import net.minecraft.util.MathHelper;
 public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C, Client.KEY_CATEGORY);
+	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C, GlobalConstants.KEY_CATEGORY);
 	@Option
-	private final KeyBinding zoomOutKey = new KeyBinding(getTranslationKey() + ".zoom_out", Keyboard.KEY_MINUS, Client.KEY_CATEGORY);
+	private final KeyBinding zoomOutKey = new KeyBinding(getTranslationKey() + ".zoom_out", Keyboard.KEY_MINUS, GlobalConstants.KEY_CATEGORY);
 	@Option
-	private final KeyBinding zoomInKey = new KeyBinding(getTranslationKey() + ".zoom_in", Keyboard.KEY_EQUALS, Client.KEY_CATEGORY);
+	private final KeyBinding zoomInKey = new KeyBinding(getTranslationKey() + ".zoom_in", Keyboard.KEY_EQUALS, GlobalConstants.KEY_CATEGORY);
 
 	@Expose
 	@Option

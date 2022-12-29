@@ -101,7 +101,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Main class for Sol Client.
  */
-public class Client {
+public final class Client {
 
 	public static final Client INSTANCE = new Client();
 
@@ -128,12 +128,6 @@ public class Client {
 
 	private ChatChannelSystem chatChannelSystem;
 
-	public static final String VERSION = System.getProperty("io.github.solclient.client.version", "DEVELOPMENT TEST");
-	public static final String NAME = "Sol Client " + VERSION;
-	public static final String KEY_TRANSLATION_KEY = "sol_client.key";
-	public static final String KEY_CATEGORY = KEY_TRANSLATION_KEY + ".category";
-	public static final boolean DEV = isDevelopment();
-
 	@Getter
 	private PopupManager popupManager;
 	@Getter
@@ -143,7 +137,7 @@ public class Client {
 	public void init() {
 		Utils.resetLineWidth();
 		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
-		System.setProperty("http.agent", "Sol Client/" + Client.VERSION);
+		System.setProperty("http.agent", "Sol Client/" + GlobalConstants.VERSION);
 
 		LOGGER.info("Initialising...");
 		bus.register(this);
@@ -259,16 +253,6 @@ public class Client {
 
 		bus.register(new ClientApi());
 		bus.register(popupManager = new PopupManager());
-	}
-
-	private static boolean isDevelopment() {
-		for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
-			if(element.getClassName().equals("GradleStart")) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	public void registerKeyBinding(KeyBinding keyBinding) {

@@ -81,12 +81,7 @@ public class DiscordIntegrationMod extends Mod {
 	@Override
 	public void onRegister() {
 		try {
-			if(!Client.DEV) {
-				Core.init(new File(System.getProperty("io.github.solclient.client.discord_lib")));
-			}
-			else {
-				Core.init(new File("./discord." + Utils.getNativeFileExtension()));
-			}
+			Core.init(new File(System.getProperty("io.github.solclient.client.discord_lib", "./discord." + Utils.getNativeFileExtension())));
 		}
 		catch(Exception error) {
 			logger.error("Could not load natives", error);
@@ -228,10 +223,6 @@ public class DiscordIntegrationMod extends Mod {
 
 		activity = new Activity();
 		activity.setState(text);
-
-		if(Client.DEV) {
-			activity.setDetails("Development Test");
-		}
 
 		activity.setType(ActivityType.PLAYING);
 		activity.assets().setLargeImage("large_logo");

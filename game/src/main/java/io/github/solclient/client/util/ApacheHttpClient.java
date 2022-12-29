@@ -39,7 +39,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.GlobalConstants;
 import net.hypixel.api.http.HypixelHttpClient;
 import net.hypixel.api.http.HypixelHttpResponse;
 
@@ -50,7 +50,7 @@ public class ApacheHttpClient implements HypixelHttpClient {
 
 	public ApacheHttpClient(UUID apiKey) {
 		this.apiKey = apiKey;
-		this.httpClient = HttpClientBuilder.create().setUserAgent(Client.NAME).build();
+		this.httpClient = HttpClientBuilder.create().setUserAgent(GlobalConstants.NAME).build();
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.DetectedServer;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.mod.Mod;
@@ -27,7 +28,7 @@ import net.minecraft.client.settings.KeyBinding;
 public class QuickPlayMod extends Mod {
 
 	@Option
-	private final KeyBinding menuKey = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_M, Client.KEY_CATEGORY);
+	private final KeyBinding menuKey = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_M, GlobalConstants.KEY_CATEGORY);
 	private boolean got;
 	private QuickPlayDatabase database;
 	@Expose

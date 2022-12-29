@@ -7,6 +7,7 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.GameOverlayElement;
 import io.github.solclient.client.event.impl.PostGameOverlayRenderEvent;
@@ -23,8 +24,8 @@ public class PopupManager {
 
 	private final Minecraft mc = Minecraft.getMinecraft();
 
-	private final KeyBinding keyAcceptRequest = new KeyBinding(Client.KEY_TRANSLATION_KEY + ".accept_request", Keyboard.KEY_Y, Client.KEY_CATEGORY);
-	private final KeyBinding keyDismissRequest = new KeyBinding(Client.KEY_TRANSLATION_KEY + ".dismiss_request", Keyboard.KEY_N, Client.KEY_CATEGORY);
+	private final KeyBinding keyAcceptRequest = new KeyBinding(GlobalConstants.KEY_TRANSLATION_KEY + ".accept_request", Keyboard.KEY_Y, GlobalConstants.KEY_CATEGORY);
+	private final KeyBinding keyDismissRequest = new KeyBinding(GlobalConstants.KEY_TRANSLATION_KEY + ".dismiss_request", Keyboard.KEY_N, GlobalConstants.KEY_CATEGORY);
 
 	private final Deque<Popup> popups = new ArrayDeque<>();
 	private Popup currentPopup;

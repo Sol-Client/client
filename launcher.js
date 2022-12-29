@@ -416,6 +416,8 @@ class Launcher {
 		args.push("-Djava.library.path=" + nativesFolder);
 
 		args.push("-Dio.github.solclient.client.version=" + Utils.version);
+		args.push("-Dio.github.solclient.client.launcher=ours");
+		args.push("-Dio.github.solclient.client.autoupdate=true");
 		args.push("-Dio.github.solclient.client.secret=" + secret);
 
 		args.push("-Dlog4j2.formatMsgNoLookups=true");

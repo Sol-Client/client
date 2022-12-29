@@ -9,6 +9,7 @@ import org.lwjgl.input.Keyboard;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ChatRenderEvent;
 import io.github.solclient.client.event.impl.PostTickEvent;
@@ -55,7 +56,7 @@ public class ChatMod extends HudMod {
 	public boolean infiniteChat = true;
 
 	@Option
-	public KeyBinding peekKey = new KeyBinding(getTranslationKey() + ".peek", 0, Client.KEY_CATEGORY);
+	public KeyBinding peekKey = new KeyBinding(getTranslationKey() + ".peek", 0, GlobalConstants.KEY_CATEGORY);
 	private boolean wasPeeking;
 	private boolean hasScrollbar;
 

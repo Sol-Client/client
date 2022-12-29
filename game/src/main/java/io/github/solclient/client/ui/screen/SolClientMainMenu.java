@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.ui.component.Component;
@@ -52,7 +52,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 		font.renderString(versionString, (int) (width - font.getWidth(versionString) - 10), height - 25, -1);
 
 		font.renderString("Copyright TheKodeToad and contributors.", 10, height - 15, -1);
-		font.renderString(Client.NAME, 10, height - 25, -1);
+		font.renderString(GlobalConstants.NAME, 10, height - 25, -1);
 
 		mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_logo_with_text_" +
 						Utils.getTextureScale() + ".png"));

@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.CameraRotateEvent;
 import io.github.solclient.client.event.impl.PlayerHeadRotateEvent;
@@ -20,7 +21,7 @@ import net.minecraft.util.MathHelper;
 public class FreelookMod extends Mod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_V, Client.KEY_CATEGORY);
+	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_V, GlobalConstants.KEY_CATEGORY);
 	private float yaw;
 	private float pitch;
 	private int previousPerspective;

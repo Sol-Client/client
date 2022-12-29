@@ -20,6 +20,7 @@ import com.replaymod.core.versions.MCVer;
 import com.replaymod.replay.InputReplayTimer;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.impl.FullscreenToggleEvent;
 import io.github.solclient.client.event.impl.GameQuitEvent;
 import io.github.solclient.client.event.impl.HitboxToggleEvent;
@@ -231,7 +232,7 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	@Redirect(method = "createDisplay",
 			at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V"))
 	public void overrideTitle(String oldTitle) {
-		Display.setTitle(Client.NAME + " on " + oldTitle);
+		Display.setTitle(GlobalConstants.NAME + " on " + oldTitle);
 	}
 
 	@Inject(method = "setServerData", at = @At("TAIL"))

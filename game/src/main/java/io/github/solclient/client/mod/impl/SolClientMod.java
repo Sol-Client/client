@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.mod.ConfigOnlyMod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
@@ -28,10 +29,10 @@ public class SolClientMod extends ConfigOnlyMod {
 	public boolean logoInInventory;
 
 	@Option
-	public KeyBinding modsKey = new KeyBinding(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT, Client.KEY_CATEGORY);
+	public KeyBinding modsKey = new KeyBinding(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT, GlobalConstants.KEY_CATEGORY);
 
 	@Option
-	public KeyBinding editHudKey = new KeyBinding(getTranslationKey() + ".edit_hud", 0, Client.KEY_CATEGORY);
+	public KeyBinding editHudKey = new KeyBinding(getTranslationKey() + ".edit_hud", 0, GlobalConstants.KEY_CATEGORY);
 
 	@Expose
 	@Option

@@ -115,8 +115,6 @@ public final class Client {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	private final File DATA_FILE = new File(mc.mcDataDir, "sol_client_mods.json");
-	// data file for beta versions - this is no longer very necessary.
-	private final File LEGACY_DATA_FILE = new File(mc.mcDataDir, "parrot_client_mods.json");
 
 	public DetectedServer detectedServer;
 
@@ -145,10 +143,6 @@ public final class Client {
 		CpsMonitor.forceInit();
 
 		LOGGER.info("Loading settings...");
-
-		if(!DATA_FILE.exists() && LEGACY_DATA_FILE.exists()) {
-			LEGACY_DATA_FILE.renameTo(DATA_FILE);
-		}
 
 		load();
 

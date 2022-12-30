@@ -23,6 +23,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.resources.I18n;
@@ -256,6 +257,26 @@ public class MixinTweaksMod {
 
 		@Shadow
 		public GameSettings gameSettings;
+
+	}
+
+	@Mixin(ItemRenderer.class)
+	public static class MixinItemRenderer {
+
+		@Inject(method = "renderFireInFirstPerson", at = @At("HEAD"))
+		public void transformFire(float partialTicks, CallbackInfo callback) {
+			if(TweaksMod.enabled && TweaksMod.instance.lowerFireBy != 0) {
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(0, -TweaksMod.instance.lowerFireBy, 0);
+			}
+		}
+
+		@Inject(method = "renderFireInFirstPerson", at = @At("RETURN"))
+		public void popFire(float partialTicks, CallbackInfo callback) {
+			if(TweaksMod.enabled && TweaksMod.instance.lowerFireBy != 0) {
+				GlStateManager.popMatrix();
+			}
+		}
 
 	}
 

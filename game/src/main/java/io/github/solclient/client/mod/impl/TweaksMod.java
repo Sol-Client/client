@@ -46,6 +46,10 @@ public class TweaksMod extends Mod {
 	private float damageShakeIntensity = 100;
 	@Expose
 	@Option
+	@Slider(min = 0, max = 0.5F, step = 0.01F)
+	public float lowerFireBy;
+	@Expose
+	@Option
 	public boolean confirmDisconnect;
 	@Expose
 	@Option

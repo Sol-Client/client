@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
@@ -20,12 +18,8 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.ui.ChatButton;
-import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessGuiChat;
 import io.github.solclient.client.util.access.AccessGuiNewChat;
 import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -269,7 +263,7 @@ public class ChatMod extends HudMod {
 				}
 
 				float f1 = getScale();
-				int l = MathHelper.ceiling_float_int((float) event.chat.getChatWidth() / f1);
+				int l = MathHelper.ceiling_float_int(event.chat.getChatWidth() / f1);
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(2.0F, 20.0F, 0.0F);
 				GlStateManager.scale(f1, f1, 1.0F);
@@ -286,13 +280,13 @@ public class ChatMod extends HudMod {
 				}
 
 				for(int i = 0; i + accessor.getScrollPos() < accessor.getDrawnChatLines().size() && i < linesCount; ++i) {
-					ChatLine line = (ChatLine) accessor.getDrawnChatLines().get(i + accessor.getScrollPos());
+					ChatLine line = accessor.getDrawnChatLines().get(i + accessor.getScrollPos());
 
 					if(line != null) {
 						int update = event.updateCounter - line.getUpdatedCounter();
 
 						if(open || update < 200) {
-							double percent = (double) update / 200.0D;
+							double percent = update / 200.0D;
 							percent = 1.0D - percent;
 							percent = percent * 10.0D;
 							percent = MathHelper.clamp_double(percent, 0.0D, 1.0D);
@@ -329,7 +323,7 @@ public class ChatMod extends HudMod {
 
 								if(percentFG > 0.05F) {
 									mc.fontRendererObj.drawString(colours ? formattedText :
-											EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), (float) i2, (float) (j2 - 8),
+											EnumChatFormatting.getTextWithoutFormattingCodes(formattedText), i2, j2 - 8,
 											defaultTextColour.withAlpha((int) (defaultTextColour.getAlpha() * percentFG)).getValue(), shadow);
 								}
 							}

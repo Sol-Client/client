@@ -61,6 +61,7 @@
 		"mod.MixinTweaksMod$MixinEntityRenderer",
 		"mod.MixinTweaksMod$MixinGuiIngameMenu",
 		"mod.MixinTweaksMod$MixinMinecraft",
+		"mod.MixinTweaksMod$MixinItemRenderer",
 		"mod.MixinChatMod$MixinGameSettings",
 		"mod.MixinChatMod$MixinGuiChat",
 		"mod.MixinChatMod$MixinGuiNewChat",

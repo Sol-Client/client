@@ -58,13 +58,13 @@ public class ModOptionComponent extends ScaledIconComponent {
 					defaultBoundController);
 
 			onClick((info, button) -> {
-				if(button == 0) {
-					Utils.playClickSound(true);
-					screen.getRoot().setDialog(new ColourPickerDialog(option, (Colour) option.getValue(), (colour) -> option.setValue(colour)));
-					return true;
+				if(button != 0) {
+					return false;
 				}
 
-				return false;
+				Utils.playClickSound(true);
+				screen.getRoot().setDialog(new ColourPickerDialog(option, (Colour) option.getValue(), (colour) -> option.setValue(colour)));
+				return true;
 			});
 		}
 		else if(option.getType() == KeyBinding.class) {

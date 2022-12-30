@@ -453,3 +453,5 @@ sol_client.modified_from=Modified from code by: %s.
 sol_client.originally_by=Originally by: %s.
 sol_client.inspired_by=Inspired by: %s.
 sol_client.by=By: %s.
+
+sol_client.about=About Sol Client

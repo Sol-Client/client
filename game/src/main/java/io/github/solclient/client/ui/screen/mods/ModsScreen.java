@@ -148,6 +148,21 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				return true;
 			}).placeholder("sol_client.mod.screen.search").withIcon("sol_client_search");
 
+			add(new ScaledIconComponent("sol_client_about", 16, 16,
+					new AnimatedColourController((component,
+							defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)).onClick((info, button) -> {
+								if(button != 0) {
+									return false;
+								}
+
+								Utils.playClickSound(true);
+								setDialog(new AboutDialog());
+								return true;
+							}),
+					new AlignedBoundsController(Alignment.END, Alignment.START,
+							(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - 3, defaultBounds.getY() + 3, defaultBounds.getWidth(),
+									defaultBounds.getHeight())));
+
 			switchMod(startingMod, true);
 		}
 

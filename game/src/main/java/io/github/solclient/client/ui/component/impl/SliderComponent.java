@@ -36,12 +36,12 @@ public class SliderComponent extends Component {
 		this.hoverController = hoverController;
 
 		hoverController.onClick((info, button) -> {
-			if(!super.isHovered()) {
-				mouseClicked(info, button);
-				return true;
+			if(super.isHovered()) {
+				return false;
 			}
 
-			return false;
+			mouseClicked(info, button);
+			return true;
 		});
 	}
 

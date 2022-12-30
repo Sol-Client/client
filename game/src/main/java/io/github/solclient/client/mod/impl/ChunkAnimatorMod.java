@@ -16,6 +16,7 @@ import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.util.data.EasingFunction;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.client.resources.I18n;
 
 // Based on lumien231's chunk animator.
 public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
@@ -33,6 +34,11 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public String getId() {
 		return "chunk_animator";
+	}
+
+	@Override
+	public String getCredit() {
+		return I18n.format("sol_client.originally_by", "lumien231");
 	}
 
 	@Override

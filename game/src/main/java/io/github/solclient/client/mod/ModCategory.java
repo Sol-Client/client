@@ -60,7 +60,7 @@ public enum ModCategory {
 		}
 
 		return mods.stream().filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
-				|| mod.getDescription().toLowerCase().contains(filter.toLowerCase()))
+				|| mod.getDescription().toLowerCase().contains(filter.toLowerCase()) || mod.getCredit().contains(filter.toLowerCase()))
 				.sorted((o1, o2) -> {
 					return Integer.compare(o1.getName().toLowerCase()
 							.startsWith(filter.toLowerCase()) ? -1 : 1, o2.getName().toLowerCase()

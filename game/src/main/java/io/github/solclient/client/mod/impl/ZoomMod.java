@@ -18,6 +18,7 @@ import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.MathHelper;
 
@@ -58,6 +59,11 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public String getId() {
 		return "zoom";
+	}
+
+	@Override
+	public String getCredit() {
+		return I18n.format("sol_client.inspired_by", "EnnuiL");
 	}
 
 	@Override

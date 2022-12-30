@@ -32,6 +32,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.shader.ShaderGroup;
@@ -60,6 +61,11 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public String getId() {
 		return "menu_blur";
+	}
+
+	@Override
+	public String getCredit() {
+		return I18n.format("sol_client.originally_by", "tterrag1098");
 	}
 
 	@Override

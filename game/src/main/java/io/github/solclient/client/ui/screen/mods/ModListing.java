@@ -64,6 +64,11 @@ public class ModListing extends ColouredComponent {
 		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
 				(component, defaultColour) -> new Colour(160, 160, 160)), new AlignedBoundsController(Alignment.START, Alignment.CENTRE, (component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
 						defaultBounds.getY() + (font.getHeight() / 2) + (SolClientMod.instance.fancyFont ? 0 : 1), defaultBounds.getWidth(), defaultBounds.getHeight())));
+
+		add(new LabelComponent((component, defaultText) -> mod.getCredit(),
+				new AnimatedColourController((component, defaultColour) -> hovered ? new Colour(120, 120, 120) : Colour.TRANSPARENT)),
+				new AlignedBoundsController(Alignment.END, Alignment.START,
+						(component, defaultBounds) -> defaultBounds.offset(-30, 5)));
 	}
 
 	@Override

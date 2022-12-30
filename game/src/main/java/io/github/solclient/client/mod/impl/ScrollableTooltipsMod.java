@@ -9,12 +9,13 @@ import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 
 public class ScrollableTooltipsMod extends Mod {
 
 	public static ScrollableTooltipsMod instance;
 	public static boolean enabled;
-	
+
 	@Expose
 	@Option
 	@Slider(min = 0.5F, max = 5, step = 0.5F)
@@ -32,6 +33,11 @@ public class ScrollableTooltipsMod extends Mod {
 	}
 
 	@Override
+	public String getCredit() {
+		return I18n.format("sol_client.by", "moehreag"); // maybe also add original creator
+	}
+
+	@Override
 	public ModCategory getCategory() {
 		return ModCategory.UTILITY;
 	}
@@ -41,19 +47,19 @@ public class ScrollableTooltipsMod extends Mod {
 		super.onRegister();
 		instance = this;
 	}
-	
+
 	@Override
 	protected void onEnable() {
 		super.onEnable();
 		enabled = true;
 	}
-	
+
 	@Override
 	protected void onDisable() {
 		super.onDisable();
 		enabled = false;
 	}
-	
+
 	public void onRenderTooltip() {
 		if(!isEnabled()) {
 			return;
@@ -72,7 +78,7 @@ public class ScrollableTooltipsMod extends Mod {
 		if(direction) {
 			scrollStep = -scrollStep;
 		}
-		
+
 		if(!reverse) {
 			scrollStep = -scrollStep;
 		}

@@ -448,3 +448,8 @@ sol_client.packs.folder=Folder (%d items)
 
 sol_client.screenshot.view=View
 sol_client.screenshot.open_folder=Show in Folder
+
+sol_client.modified_from=Modified from code by: %s.
+sol_client.originally_by=Originally by: %s.
+sol_client.inspired_by=Inspired by: %s.
+sol_client.by=By: %s.

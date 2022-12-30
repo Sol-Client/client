@@ -22,6 +22,7 @@ import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGameMode;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 
 public class QuickPlayMod extends Mod {
@@ -42,6 +43,11 @@ public class QuickPlayMod extends Mod {
 	@Override
 	public String getId() {
 		return "quickplay";
+	}
+
+	@Override
+	public String getCredit() {
+		return I18n.format("sol_client.originally_by", "robere2");
 	}
 
 	@Override

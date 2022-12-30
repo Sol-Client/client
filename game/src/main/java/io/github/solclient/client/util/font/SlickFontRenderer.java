@@ -92,6 +92,7 @@ public class SlickFontRenderer implements Font {
 		float green = (colour >> 8 & 255) / 255.0F;
 		float blue = (colour & 255) / 255.0F;
 		float alpha = (colour >> 24 & 255) / 255.0F;
+
 		GlStateManager.color(red, green, blue, alpha);
 
 		int currentColour = colour;
@@ -109,7 +110,10 @@ public class SlickFontRenderer implements Font {
 			for(String s2 : s.split("\n")) {
 				for(String s3 : s2.split("\r")) {
 
-					slickFont.drawString(x, y, s3, new org.newdawn.slick.Color(currentColour));
+					if(alpha != 0) {
+						slickFont.drawString(x, y, s3, new org.newdawn.slick.Color(currentColour));
+					}
+
 					x += slickFont.getWidth(s3);
 
 					index += s3.length();

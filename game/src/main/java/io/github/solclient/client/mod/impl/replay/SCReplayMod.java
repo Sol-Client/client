@@ -24,6 +24,7 @@ import io.github.solclient.client.mod.impl.replay.fix.SCReplayModBackend;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.resources.I18n;
 
 /**
  * Sol Client representation of Replay Mod.
@@ -113,6 +114,11 @@ public class SCReplayMod extends Mod {
 	@Override
 	public String getId() {
 		return "replay";
+	}
+
+	@Override
+	public String getCredit() {
+		return I18n.format("sol_client.modified_from", "CrushedPixel, johni0702");
 	}
 
 	@Override

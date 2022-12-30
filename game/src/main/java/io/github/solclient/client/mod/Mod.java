@@ -192,4 +192,8 @@ public abstract class Mod {
 		}
 	}
 
+	public String getCredit() {
+		return "";
+	}
+
 }

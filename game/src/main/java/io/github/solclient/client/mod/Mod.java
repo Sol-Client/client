@@ -8,21 +8,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.annotations.Expose;
-import com.replaymod.replay.ReplayModReplay;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.GameOverlayElement;
 import io.github.solclient.client.event.impl.PostGameOverlayRenderEvent;
-import io.github.solclient.client.event.impl.PostGameStartEvent;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.replay.fix.SCEventRegistrations;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 
 @AbstractTranslationKey("sol_client.mod.generic")
@@ -36,9 +32,18 @@ public abstract class Mod {
 	private boolean enabled = isEnabledByDefault();
 	protected final Logger logger = LogManager.getLogger();
 
+	@Getter
+	private boolean pinned;
+
+	/**
+	 * Called after the game has started.
+	 */
 	public void postStart() {
 	}
 
+	/**
+	 * Called when the mod is registered.
+	 */
 	public void onRegister() {
 		try {
 			options = ModOption.get(this);
@@ -60,12 +65,26 @@ public abstract class Mod {
 		return I18n.format(getTranslationKey() + ".name");
 	}
 
+	/**
+	 * @return a unique id.
+	 */
 	public abstract String getId();
+
+	/**
+	 * Choose a string to display on the right side of the mod component.
+	 * @return an additional credit string.
+	 */
+	public String getCredit() {
+		return "";
+	}
 
 	public String getDescription() {
 		return I18n.format("sol_client.mod." + getId() + ".description");
 	}
 
+	/**
+	 * @return a useful category, otherwise general.
+	 */
 	public abstract ModCategory getCategory();
 
 	public boolean isEnabledByDefault() {
@@ -161,12 +180,19 @@ public abstract class Mod {
 		setEnabled(true);
 	}
 
-	public int getIndex() {
-		return Client.INSTANCE.getMods().indexOf(this);
-	}
+	public void setPinned(boolean pinned) {
+		if(pinned == this.pinned) {
+			return;
+		}
 
-	public List<HudElement> getHudElements() {
-		return Collections.emptyList();
+		this.pinned = pinned;
+
+		if(pinned) {
+			Client.INSTANCE.getPins().notifyPin(this);
+		}
+		else {
+			Client.INSTANCE.getPins().notifyUnpin(this);
+		}
 	}
 
 	public boolean isLocked() {
@@ -175,6 +201,14 @@ public abstract class Mod {
 
 	public String getLockMessage() {
 		return "";
+	}
+
+	public int getIndex() {
+		return Client.INSTANCE.getMods().indexOf(this);
+	}
+
+	public List<HudElement> getHudElements() {
+		return Collections.emptyList();
 	}
 
 	public void onFileUpdate(String fieldName) {}
@@ -190,10 +224,6 @@ public abstract class Mod {
 		if(event.type == GameOverlayElement.ALL) {
 			render(mc.currentScreen instanceof MoveHudsScreen);
 		}
-	}
-
-	public String getCredit() {
-		return "";
 	}
 
 }

@@ -18,6 +18,10 @@ public enum ModCategory {
 	 */
 	ALL(false),
 	/**
+	 * User-pinned mods.
+	 */
+	PINNED(true),
+	/**
 	 * General uncategorisable mods.
 	 */
 	GENERAL(true),
@@ -43,29 +47,28 @@ public enum ModCategory {
 
 	@Override
 	public String toString() {
-		return showName ? I18n.format("sol_client.mod.category." + name().toLowerCase() + ".name") : null;
+		if(getMods().isEmpty() || !showName) {
+			return null;
+		}
+
+		return I18n.format("sol_client.mod.category." + name().toLowerCase() + ".name");
 	}
 
-	public List<Mod> getMods(String filter) {
-		if(this == ALL) {
+	public List<Mod> getMods() {
+		if(mods == null) {
 			mods = Client.INSTANCE.getMods();
-		}
-		else if(mods == null) {
-			mods = Client.INSTANCE.getMods().stream().filter((mod) -> mod.getCategory() == ModCategory.this)
-					.collect(Collectors.toList());
-		}
+			if(this != ALL) {
+				mods = mods.stream().filter((mod) -> {
+					if(this == PINNED) {
+						return mod.isPinned();
+					}
 
-		if(filter.isEmpty()) {
-			return mods;
-		}
-
-		return mods.stream().filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
-				|| mod.getDescription().toLowerCase().contains(filter.toLowerCase()) || mod.getCredit().contains(filter.toLowerCase()))
-				.sorted((o1, o2) -> {
-					return Integer.compare(o1.getName().toLowerCase()
-							.startsWith(filter.toLowerCase()) ? -1 : 1, o2.getName().toLowerCase()
-							.startsWith(filter.toLowerCase()) ? -1 : 1);
+					return mod.getCategory() == this;
 				}).collect(Collectors.toList());
+			}
+		}
+
+		return mods;
 	}
 
 }

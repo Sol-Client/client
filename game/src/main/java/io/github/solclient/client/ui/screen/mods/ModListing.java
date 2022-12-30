@@ -9,6 +9,7 @@ import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
+import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.ui.component.impl.ColouredComponent;
 import io.github.solclient.client.ui.component.impl.LabelComponent;
 import io.github.solclient.client.ui.component.impl.ScaledIconComponent;
@@ -25,7 +26,8 @@ public class ModListing extends ColouredComponent {
 
 	private Mod mod;
 	private ModsScreenComponent screen;
-	private Component settingsButton;
+	private final Component settingsButton;
+	private final ScaledIconComponent pinButton;
 
 	public ModListing(Mod mod, ModsScreenComponent screen) {
 		super(new AnimatedColourController((component,
@@ -36,9 +38,8 @@ public class ModListing extends ColouredComponent {
 					else if(mod.isBlocked()) {
 						return component.isHovered() ? Colour.RED_HOVER : Colour.PURE_RED;
 					}
-					else {
-						return component.isHovered() ? Colour.DISABLED_MOD_HOVER : Colour.DISABLED_MOD;
-					}
+
+					return component.isHovered() ? Colour.DISABLED_MOD_HOVER : Colour.DISABLED_MOD;
 				}));
 
 		this.mod = mod;
@@ -57,7 +58,10 @@ public class ModListing extends ColouredComponent {
 						(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - defaultBounds.getWidth() - defaultBounds.getY(),
 								defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-		add(new LabelComponent((component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : "")),
+//		add(new ScaledIconComponent((component, defaultIcon) -> "sol_client_favourited", 8, 8),  new AnimatedColourController(null));
+
+		Component name;
+		add(name = new LabelComponent((component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : "")),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
 								defaultBounds.getY() - (font.getHeight() / 2) - (SolClientMod.instance.fancyFont ? 0 : 1), defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -65,10 +69,21 @@ public class ModListing extends ColouredComponent {
 				(component, defaultColour) -> new Colour(160, 160, 160)), new AlignedBoundsController(Alignment.START, Alignment.CENTRE, (component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
 						defaultBounds.getY() + (font.getHeight() / 2) + (SolClientMod.instance.fancyFont ? 0 : 1), defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-		add(new LabelComponent((component, defaultText) -> mod.getCredit(),
-				new AnimatedColourController((component, defaultColour) -> hovered ? new Colour(120, 120, 120) : Colour.TRANSPARENT)),
-				new AlignedBoundsController(Alignment.END, Alignment.START,
-						(component, defaultBounds) -> defaultBounds.offset(-30, 5)));
+		Component credit;
+		add(credit = new LabelComponent((component, defaultText) -> mod.getCredit(),
+				new AnimatedColourController((component, defaultColour) -> isHovered() ? new Colour(120, 120, 120) : Colour.TRANSPARENT)),
+				new AlignedBoundsController(Alignment.START, Alignment.START,
+						(component, defaultBounds) -> defaultBounds.offset(name.getBounds().getEndX(), 5)));
+
+		Controller<Rectangle> favouriteBounds = new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
+				(component, defaultBounds) -> new Rectangle(credit.getBounds().getEndX() + 2,
+						defaultBounds.getY() + 5, defaultBounds.getWidth(), defaultBounds.getHeight()));
+
+		add(pinButton = new ScaledIconComponent((component, defaultIcon) -> "sol_client_favourite", 8, 8,
+				new AnimatedColourController((component, defaultColour) -> isHovered()
+						? (component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)
+						: Colour.TRANSPARENT)),
+				favouriteBounds);
 	}
 
 	@Override
@@ -115,6 +130,11 @@ public class ModListing extends ColouredComponent {
 					Utils.openUrl(blockedModPage.toString());
 				}
 
+				return true;
+			}
+
+			if(button == 0 && pinButton.isHovered()) {
+				mod.setPinned(true);
 				return true;
 			}
 

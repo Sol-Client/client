@@ -1,5 +1,10 @@
 package io.github.solclient.client.ui.screen.mods;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.ModOption;
@@ -30,18 +35,32 @@ public class ModsScroll extends ScrollListComponent {
 		clear();
 
 		if(screen.getMod() == null) {
-			for(ModCategory category : ModCategory.values()) {
-				if(category == ModCategory.ALL) {
-					continue;
-				}
+			if(screen.getQuery().isEmpty()) {
+				for(ModCategory category : ModCategory.values()) {
+					if(category == ModCategory.ALL) {
+						continue;
+					}
 
-				if(screen.getQuery().isEmpty()) {
 					if(category.toString() != null) {
 						add(new LabelComponent(category.toString()));
 					}
-				}
 
-				for(Mod mod : category.getMods(screen.getQuery())) {
+					for(Mod mod : category.getMods()) {
+						add(new ModListing(mod, screen));
+					}
+				}
+			}
+			else {
+				String filter = screen.getQuery();
+				List<Mod> filtered = Client.INSTANCE.getMods().stream()
+						.filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
+								|| mod.getDescription().toLowerCase().contains(filter.toLowerCase())
+								|| mod.getCredit().contains(filter.toLowerCase()))
+						.sorted(Comparator.comparing((Mod mod) -> mod.getName().toLowerCase()
+								.startsWith(filter.toLowerCase())).reversed())
+						.collect(Collectors.toList());
+
+				for(Mod mod : filtered) {
 					add(new ModListing(mod, screen));
 				}
 			}

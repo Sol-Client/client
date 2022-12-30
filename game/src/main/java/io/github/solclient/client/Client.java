@@ -36,6 +36,7 @@ import io.github.solclient.client.event.impl.SendChatMessageEvent;
 import io.github.solclient.client.event.impl.ServerConnectEvent;
 import io.github.solclient.client.event.impl.WorldLoadEvent;
 import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.mod.PinManager;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.BlockSelectionMod;
 import io.github.solclient.client.mod.impl.ChunkAnimatorMod;
@@ -110,13 +111,20 @@ public final class Client {
 	private final Minecraft mc = Minecraft.getMinecraft();
 	private JsonObject data;
 	@Getter
-	private List<Mod> mods = new ArrayList<Mod>();
-	private Map<String, Mod> modsById = new HashMap<>();
+	private final List<Mod> mods = new ArrayList<Mod>();
+	private final Map<String, Mod> modsById = new HashMap<>();
 	@Getter
-	private List<HudElement> huds = new ArrayList<HudElement>();
+	private final List<HudElement> huds = new ArrayList<HudElement>();
+
+	@Getter
+	private PinManager pins;
+
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private final File DATA_FILE = new File(mc.mcDataDir, "sol_client_mods.json");
+	private final File configFolder = new File(mc.mcDataDir, "config/sol-client");
+	private final File modsFile = new File(configFolder, "mods.json");
+	private final File pinsFile = new File(configFolder, "pins.json");
+	private final File legacyModsFile = new File(mc.mcDataDir, "sol_client_mods.json");
 
 	public DetectedServer detectedServer;
 
@@ -147,10 +155,17 @@ public final class Client {
 		CpsMonitor.forceInit();
 
 		LOGGER.info("Loading settings...");
+
+		System.out.println(legacyModsFile);
+		if(legacyModsFile.exists()) {
+			legacyModsFile.renameTo(modsFile);
+		}
+
+		configFolder.mkdirs();
+
 		load();
 
 		LOGGER.info("Loading mods...");
-
 		register(new SolClientMod());
 		register(new FpsMod());
 		register(new CoordinatesMod());
@@ -279,9 +294,9 @@ public final class Client {
 	@SuppressWarnings("deprecation")
 	public boolean load() {
 		try {
-			if(DATA_FILE.exists()) {
+			if(modsFile.exists()) {
 				// 1.8 uses old libraries, so this warning cannot be easily fixed.
-				data = new JsonParser().parse(FileUtils.readFileToString(DATA_FILE)).getAsJsonObject();
+				data = new JsonParser().parse(FileUtils.readFileToString(modsFile)).getAsJsonObject();
 				data = ConfigVersion.migrate(data);
 			}
 			else {
@@ -305,7 +320,7 @@ public final class Client {
 		}
 
 		try {
-			FileUtils.writeStringToFile(DATA_FILE, gson.toJson(data));
+			FileUtils.writeStringToFile(modsFile, gson.toJson(data));
 			return true;
 		}
 		catch(IOException error) {

@@ -195,6 +195,26 @@ public abstract class Mod {
 		}
 	}
 
+	void notifyUnpin() {
+		pinned = false;
+	}
+
+	void notifyPin() {
+		pinned = true;
+	}
+
+	public void unpin() {
+		setPinned(false);
+	}
+
+	public void pin() {
+		setPinned(true);
+	}
+
+	public void togglePin() {
+		setPinned(!isPinned());
+	}
+
 	public boolean isLocked() {
 		return false;
 	}

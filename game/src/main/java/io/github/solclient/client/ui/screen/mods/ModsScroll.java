@@ -37,11 +37,7 @@ public class ModsScroll extends ScrollListComponent {
 		if(screen.getMod() == null) {
 			if(screen.getQuery().isEmpty()) {
 				for(ModCategory category : ModCategory.values()) {
-					if(category == ModCategory.ALL) {
-						continue;
-					}
-
-					if(category.toString() != null) {
+					if(category.shouldShowName()) {
 						add(new LabelComponent(category.toString()));
 					}
 
@@ -70,6 +66,55 @@ public class ModsScroll extends ScrollListComponent {
 				add(new ModOptionComponent(option));
 			}
 		}
+	}
+
+	void notifyAddPin(Mod mod) {
+		if(!screen.getQuery().isEmpty()) {
+			return;
+		}
+
+		int scroll = 0;
+
+		if(Client.INSTANCE.getPins().getMods().size() == 0) {
+			// this is the first one
+			add(0, new LabelComponent(ModCategory.PINNED.toString()));
+			scroll += font.getHeight() + getSpacing();
+		}
+
+		add(Client.INSTANCE.getPins().getMods().size() + 1, new ModListing(mod, screen));
+
+		scroll += getScrollStep();
+
+		snapTo(getScroll() + scroll);
+	}
+
+	void notifyRemovePin(Mod mod) {
+		if(!screen.getQuery().isEmpty()) {
+			return;
+		}
+
+		int scroll = 0;
+		int index = Client.INSTANCE.getPins().getMods().indexOf(mod);
+
+		if(Client.INSTANCE.getPins().getMods().size() == 1) {
+			// this is the last one
+			remove(0);
+			scroll += font.getHeight() + getSpacing();
+		}
+		else {
+			index++;
+		}
+
+		remove(index);
+
+		scroll += getScrollStep();
+		scroll = getScroll() - scroll;
+
+		if(scroll < 0) {
+			scroll = 0;
+		}
+
+		snapTo(scroll);
 	}
 
 	@Override

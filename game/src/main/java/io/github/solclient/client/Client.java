@@ -117,7 +117,7 @@ public final class Client {
 	private final List<HudElement> huds = new ArrayList<HudElement>();
 
 	@Getter
-	private PinManager pins;
+	private PinManager pins = new PinManager();
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
@@ -156,7 +156,6 @@ public final class Client {
 
 		LOGGER.info("Loading settings...");
 
-		System.out.println(legacyModsFile);
 		if(legacyModsFile.exists()) {
 			legacyModsFile.renameTo(modsFile);
 		}
@@ -207,6 +206,13 @@ public final class Client {
 		register(new ScrollableTooltipsMod());
 
 		LOGGER.info("Loaded {} mods", mods.size());
+
+		try {
+			pins.load(pinsFile);
+		}
+		catch(IOException error) {
+			LOGGER.error("Could not load pins", error);
+		}
 
 		LOGGER.info("Saving settings...");
 		save();
@@ -312,7 +318,7 @@ public final class Client {
 		}
 	}
 
-	public boolean save() {
+	public void save() {
 		Gson gson = getGson(null);
 
 		for(Mod mod : mods) {
@@ -321,11 +327,16 @@ public final class Client {
 
 		try {
 			FileUtils.writeStringToFile(modsFile, gson.toJson(data));
-			return true;
 		}
-		catch(IOException error) {
+		catch(Throwable error) {
 			LOGGER.error("Could not save data", error);
-			return false;
+		}
+
+		try {
+			pins.save(pinsFile);
+		}
+		catch(Throwable error) {
+			LOGGER.error("Could not save pins", error);
 		}
 	}
 

@@ -24,8 +24,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class ModListing extends ColouredComponent {
 
-	private Mod mod;
-	private ModsScreenComponent screen;
+	private final Mod mod;
+	private final ModsScreenComponent screen;
 	private final Component settingsButton;
 	private final ScaledIconComponent pinButton;
 
@@ -58,8 +58,6 @@ public class ModListing extends ColouredComponent {
 						(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - defaultBounds.getWidth() - defaultBounds.getY(),
 								defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-//		add(new ScaledIconComponent((component, defaultIcon) -> "sol_client_favourited", 8, 8),  new AnimatedColourController(null));
-
 		Component name;
 		add(name = new LabelComponent((component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : "")),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
@@ -80,7 +78,13 @@ public class ModListing extends ColouredComponent {
 						defaultBounds.getY() + 5, defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 		add(pinButton = new ScaledIconComponent((component, defaultIcon) -> "sol_client_favourite", 8, 8,
-				new AnimatedColourController((component, defaultColour) -> isHovered()
+				new AnimatedColourController((component, defaultColour) -> isHovered() || mod.isPinned()
+						? (component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)
+						: Colour.TRANSPARENT)),
+				favouriteBounds);
+
+		add(new ScaledIconComponent((component, defaultIcon) -> "sol_client_favourited", 8, 8,
+				new AnimatedColourController((component, defaultColour) -> mod.isPinned()
 						? (component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)
 						: Colour.TRANSPARENT)),
 				favouriteBounds);
@@ -134,7 +138,13 @@ public class ModListing extends ColouredComponent {
 			}
 
 			if(button == 0 && pinButton.isHovered()) {
-				mod.setPinned(true);
+				if(!mod.isPinned()) {
+					screen.getScroll().notifyAddPin(mod);
+				}
+				else {
+					screen.getScroll().notifyRemovePin(mod);
+				}
+				mod.togglePin();
 				return true;
 			}
 

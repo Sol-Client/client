@@ -53,20 +53,23 @@ public abstract class ScrollListComponent extends Component {
 	}
 
 	public void add(Component component) {
-		add(component, new AlignedBoundsController(Alignment.CENTRE, Alignment.START, (sizingComponent, defaultBounds) -> {
+		add(getSubComponents().size(), component);
+	}
+
+	public void add(int index, Component component) {
+		add(index, component, new AlignedBoundsController(Alignment.CENTRE, Alignment.START, (sizingComponent, defaultBounds) -> {
 			Component lastAdded = null;
 			Rectangle lastBounds = null;
 
-			int index = subComponents.indexOf(component) - 1;
+			int prevIndex = subComponents.indexOf(component) - 1;
 
-			if(index > -1) {
-				lastAdded = subComponents.get(index);
-
+			if(prevIndex > -1) {
+				lastAdded = subComponents.get(prevIndex);
 				lastBounds = lastAdded.getBounds();
 			}
 
-			return new Rectangle(defaultBounds.getX(), lastAdded == null ? 0
-					: lastBounds.getY() + lastBounds.getHeight() + getSpacing(),
+			return new Rectangle(defaultBounds.getX(),
+					lastAdded == null ? 0 : lastBounds.getY() + lastBounds.getHeight() + getSpacing(),
 					defaultBounds.getWidth(), defaultBounds.getHeight());
 		}));
 	}

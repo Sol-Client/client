@@ -93,7 +93,7 @@ public class CosmeticaMod extends Mod {
 
 	@Override
 	public ModCategory getCategory() {
-		return ModCategory.VISUAL; // TODO: change this?
+		return ModCategory.INTEGRATION;
 	}
 
 	public IBakedModel bakeIfAbsent(Model model) {

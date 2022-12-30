@@ -87,6 +87,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		@Getter
 		private Mod mod;
 		private TextFieldComponent search;
+		@Getter
 		private ModsScroll scroll;
 		private int noModsScroll;
 		private boolean singleModMode;

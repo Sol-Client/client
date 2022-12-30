@@ -9,6 +9,8 @@ import java.util.function.BiPredicate;
 
 import org.lwjgl.opengl.GL11;
 
+import io.github.solclient.client.Client;
+import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.ui.component.controller.Controller;
@@ -56,6 +58,15 @@ public abstract class Component {
 
 	public void add(Component component, Controller<Rectangle> position) {
 		subComponents.add(component);
+		register(component, position);
+	}
+
+	public void add(int index, Component component, Controller<Rectangle> position) {
+		subComponents.add(index, component);
+		register(component, position);
+	}
+
+	private void register(Component component, Controller<Rectangle> position) {
 		subComponentControllers.put(component, position);
 
 		if(screen != null) {
@@ -71,6 +82,11 @@ public abstract class Component {
 
 	public void remove(Component component) {
 		subComponents.remove(component);
+		subComponentControllers.remove(component);
+	}
+
+	public void remove(int index) {
+		subComponentControllers.remove(subComponents.remove(index));
 	}
 
 	public void clear() {

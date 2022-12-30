@@ -44,7 +44,8 @@ sol_client.mod.smooth_counter_hud.option.smoothNumbers=Smooth Numbers
 sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=General settings for Sol Client.
 
-sol_client.mod.sol_client.option.fancyMainMenu=Main Menu
+sol_client.mod.sol_client.option.remindMeToUpdate=Update Notifications
+sol_client.mod.sol_client.option.fancyMainMenu=Replace Main Menu
 sol_client.mod.sol_client.option.logoInInventory=Show Logo in Inventory
 sol_client.mod.sol_client.mods=Mods
 sol_client.mod.sol_client.option.modsKey=Mods Key

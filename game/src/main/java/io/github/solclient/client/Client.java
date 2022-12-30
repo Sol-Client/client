@@ -79,6 +79,7 @@ import io.github.solclient.client.mod.impl.togglesprint.ToggleSprintMod;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
+import io.github.solclient.client.util.SemVer;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.font.SlickFontRenderer;
@@ -96,6 +97,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -132,10 +134,12 @@ public final class Client {
 	@Setter
 	private GuiMainMenu mainMenu;
 
+	private boolean remindedUpdate;
+
 	public void init() {
 		Utils.resetLineWidth();
 		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
-		System.setProperty("http.agent", "Sol Client/" + GlobalConstants.VERSION);
+		System.setProperty("http.agent", "Sol Client/" + GlobalConstants.VERSION_STRING);
 
 		LOGGER.info("Initialising...");
 		bus.register(this);
@@ -143,7 +147,6 @@ public final class Client {
 		CpsMonitor.forceInit();
 
 		LOGGER.info("Loading settings...");
-
 		load();
 
 		LOGGER.info("Loading mods...");
@@ -433,6 +436,15 @@ public final class Client {
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
 		Utils.USER_DATA.cancel();
+		if(!remindedUpdate && SolClientMod.instance.remindMeToUpdate) {
+			remindedUpdate = true;
+			SemVer latest = SolClientMod.instance.latestRelease;
+			if(latest != null && latest.isNewerThan(GlobalConstants.VERSION)) {
+				IChatComponent message = new ChatComponentText("A new version of Sol Client is available: " + latest + ".\nYou are currently on version " + GlobalConstants.VERSION_STRING + '.');
+				message.setChatStyle(message.getChatStyle().setColor(EnumChatFormatting.GREEN));
+				mc.ingameGUI.getChatGUI().printChatMessage(message);
+			}
+		}
 	}
 
 	@EventHandler

@@ -1,7 +1,13 @@
 package io.github.solclient.client.mod.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import org.lwjgl.input.Keyboard;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
@@ -10,6 +16,7 @@ import io.github.solclient.client.mod.ConfigOnlyMod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
+import io.github.solclient.client.util.SemVer;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.font.Font;
 import io.github.solclient.client.util.font.SlickFontRenderer;
@@ -19,6 +26,10 @@ import net.minecraft.client.settings.KeyBinding;
 public class SolClientMod extends ConfigOnlyMod {
 
 	public static SolClientMod instance;
+
+	@Expose
+	@Option
+	public boolean remindMeToUpdate = true;
 
 	@Expose
 	@Option
@@ -59,6 +70,8 @@ public class SolClientMod extends ConfigOnlyMod {
 	@Option
 	public boolean fancyFont = true;
 
+	public SemVer latestRelease;
+
 	@Override
 	public String getId() {
 		return "sol_client";
@@ -77,6 +90,24 @@ public class SolClientMod extends ConfigOnlyMod {
 		Client.INSTANCE.registerKeyBinding(modsKey);
 		Client.INSTANCE.registerKeyBinding(editHudKey);
 		uiHover = getUiHover();
+
+		// yuck...
+		if(GlobalConstants.AUTOUPDATE) {
+			getOptions().remove(0);
+		}
+		else if(remindMeToUpdate) {
+			Thread thread = new Thread(() -> {
+				try(InputStream in = GlobalConstants.RELEASE_API.openStream()) {
+					JsonObject object = JsonParser.parseReader(new InputStreamReader(in)).getAsJsonObject();
+					latestRelease = SemVer.parseOrNull(object.get("name").getAsString());
+				}
+				catch(Throwable error) {
+					logger.warn("Could not check for updates", error);
+				}
+			});
+			thread.setDaemon(true);
+			thread.start();
+		}
 	}
 
 	public static Font getFont() {

@@ -21,7 +21,6 @@ import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
 import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGameMode;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
-import io.github.solclient.client.util.Utils;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 

@@ -118,7 +118,7 @@ public class ModListing extends ColouredComponent {
 		}
 
 		if(dragStart != null && !dragging) {
-			dragging = Math.abs(info.getRelativeMouseX() - dragStart.getX()) > 3 || Math.abs(info.getRelativeMouseY() - dragStart.getY()) > 3;
+			dragging = Math.abs(info.getRelativeMouseX() - dragStart.getX()) > 2 || Math.abs(info.getRelativeMouseY() - dragStart.getY()) > 2;
 			if(dragging) {
 				screen.notifyDrag(this, dragStart.getX(), dragStart.getY());
 			}

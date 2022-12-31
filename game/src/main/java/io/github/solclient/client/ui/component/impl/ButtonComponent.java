@@ -62,7 +62,6 @@ public class ButtonComponent extends ColouredComponent {
 	@Override
 	public ButtonComponent onClick(ClickHandler onClick) {
 		super.onClick(onClick);
-
 		return this;
 	}
 

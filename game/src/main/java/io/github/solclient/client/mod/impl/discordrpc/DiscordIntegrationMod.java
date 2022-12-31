@@ -7,12 +7,14 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.replaymod.replay.ReplayModReplay;
+import com.replaymod.replaystudio.util.I18n;
 
 import de.jcm.discordgamesdk.Core;
 import de.jcm.discordgamesdk.CreateParams;
 import de.jcm.discordgamesdk.CreateParams.Flags;
 import de.jcm.discordgamesdk.activity.Activity;
 import de.jcm.discordgamesdk.activity.ActivityType;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.GameQuitEvent;
 import io.github.solclient.client.event.impl.OpenGuiEvent;
@@ -22,6 +24,7 @@ import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.mod.annotation.StringOption;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.hud.HudPosition;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
@@ -63,11 +66,19 @@ public class DiscordIntegrationMod extends Mod {
 	@Option
 	protected Colour mutedColour = new Colour(255, 80, 80);
 	@Expose
+	@Option
+	protected Colour speakingColour = new Colour(20, 255, 20);
+	@Expose
 	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
 	protected boolean shadow = true;
 	@Expose
 	@Option
-	protected Colour speakingColour = new Colour(20, 255, 20);
+	@StringOption("sol_client.default")
+	private String applicationId = "";
+	@Expose
+	@Option
+	@StringOption("sol_client.default")
+	private String icon = "";
 
 	private DiscordVoiceChatHud discordVoiceChatHud;
 
@@ -112,7 +123,17 @@ public class DiscordIntegrationMod extends Mod {
 
 		try {
 			params = new CreateParams();
-			params.setClientID(925701938211868683L);
+
+			long id = GlobalConstants.DISCORD_APPLICATION;
+
+			if(!applicationId.isEmpty()) {
+				try {
+					id = Long.parseLong(Utils.onlyKeepDigits(applicationId));
+				}
+				catch(NumberFormatException ignored) {}
+			}
+
+			params.setClientID(id);
 			params.setFlags(Flags.NO_REQUIRE_DISCORD);
 			core = new Core(params);
 
@@ -197,19 +218,19 @@ public class DiscordIntegrationMod extends Mod {
 	private void startActivity(WorldClient world) {
 		if(world != null) {
 			if(mc.isIntegratedServerRunning()) {
-				setActivity("Singleplayer");
+				setActivity(I18n.format("menu.singleplayer"));
 			}
 			else {
 				if(ReplayModReplay.instance.getReplayHandler() != null) {
-					setActivity("Replay Viewer");
+					setActivity(I18n.format("replaymod.gui.replayviewer"));
 				}
 				else {
-					setActivity("Multiplayer - " + mc.getCurrentServerData().serverName);
+					setActivity(I18n.format("sol_client.mod.discord_integration.multiplayer", mc.getCurrentServerData().serverName));
 				}
 			}
 		}
 		else {
-			setActivity("Main Menu");
+			setActivity(I18n.format("sol_client.mod.discord_integration.main_menu"));
 			state = false;
 		}
 	}
@@ -223,7 +244,7 @@ public class DiscordIntegrationMod extends Mod {
 		activity.setState(text);
 
 		activity.setType(ActivityType.PLAYING);
-		activity.assets().setLargeImage("large_logo");
+		activity.assets().setLargeImage(icon.isEmpty() ? "large_logo" : icon);
 		activity.timestamps().setStart(Instant.now());
 
 		core.activityManager().updateActivity(activity);

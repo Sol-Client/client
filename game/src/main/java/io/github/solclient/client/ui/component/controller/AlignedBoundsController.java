@@ -20,10 +20,10 @@ public class AlignedBoundsController implements Controller<Rectangle> {
 
 	@Override
 	public Rectangle get(Component component, Rectangle defaultBounds) {
-		return baseController.get(component,
-				new Rectangle(xAlignment.getPosition(component.getParent().getBounds().getWidth(), defaultBounds.getWidth()),
-						yAlignment.getPosition(component.getParent().getBounds().getHeight(), defaultBounds.getHeight()),
-						defaultBounds.getWidth(), defaultBounds.getHeight()));
+		return baseController.get(component, new Rectangle(
+				xAlignment.getPosition(component.getParent().getBounds().getWidth(), defaultBounds.getWidth()),
+				yAlignment.getPosition(component.getParent().getBounds().getHeight(), defaultBounds.getHeight()),
+				defaultBounds.getWidth(), defaultBounds.getHeight()));
 	}
 
 }

@@ -625,4 +625,17 @@ public class Utils {
 		GlStateManager.enableCull();
 	}
 
+	public static String onlyKeepDigits(String string) {
+		StringBuilder builder = new StringBuilder();
+
+		for(char character : string.toCharArray()) {
+			if(character < '0' || character > '9') {
+				continue;
+			}
+			builder.append(character);
+		}
+
+		return builder.toString();
+	}
+
 }

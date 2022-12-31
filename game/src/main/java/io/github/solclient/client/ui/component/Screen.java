@@ -2,6 +2,7 @@ package io.github.solclient.client.ui.component;
 
 import java.io.IOException;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import io.github.solclient.client.mod.impl.SolClientMod;
@@ -77,7 +78,23 @@ public class Screen extends GuiScreen {
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if(!rootWrapper.keyPressed(getInfo(), keyCode, typedChar)) {
-			if(keyCode == 1) {
+			if(keyCode == Keyboard.KEY_ESCAPE) {
+				Component withDialog = rootWrapper;
+
+				if(withDialog.getDialog() == null) {
+					if(!withDialog.getSubComponents().isEmpty()) {
+						withDialog = withDialog.getSubComponents().get(0);
+					}
+					else {
+						withDialog = null;
+					}
+				}
+
+				if(withDialog != null && withDialog.getDialog() != null) {
+					withDialog.setDialog(null);
+					return;
+				}
+
 				closeAll();
 			}
 			else {

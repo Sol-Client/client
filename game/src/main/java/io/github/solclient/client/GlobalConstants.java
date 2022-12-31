@@ -16,5 +16,6 @@ public class GlobalConstants {
 	public static final String KEY_CATEGORY = KEY_TRANSLATION_KEY + ".category";
 	public static final URL RELEASE_API = Utils.sneakyParse(System.getProperty("io.github.solclient.client.release_api",
 			"https://api.github.com/repos/Sol-Client/Client/releases/latest"));
+	public static final long DISCORD_APPLICATION = 925701938211868683L;
 
 }

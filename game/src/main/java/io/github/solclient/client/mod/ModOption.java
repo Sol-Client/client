@@ -3,15 +3,8 @@ package io.github.solclient.client.mod;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystems;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -24,7 +17,7 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.annotation.FileOption;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.mod.annotation.StringOption;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -43,6 +36,8 @@ public class ModOption {
 	@Getter
 	private File file;
 	private String applyToAllClass;
+	@Getter
+	private String placeholder;
 
 	public ModOption(Mod mod, Option option, Field field) throws IOException {
 		this.mod = mod;
@@ -56,6 +51,10 @@ public class ModOption {
 
 				file = new File(Minecraft.getMinecraft().mcDataDir, configFile.file());
 				readFile();
+			}
+
+			if(field.isAnnotationPresent(StringOption.class)) {
+				placeholder = field.getAnnotation(StringOption.class).value();
 			}
 
 			String name = field.getDeclaringClass() + "." + field.getName();

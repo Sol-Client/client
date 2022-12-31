@@ -19,6 +19,7 @@ import io.github.solclient.client.ui.component.impl.ColourPickerDialog;
 import io.github.solclient.client.ui.component.impl.LabelComponent;
 import io.github.solclient.client.ui.component.impl.ScaledIconComponent;
 import io.github.solclient.client.ui.component.impl.SliderComponent;
+import io.github.solclient.client.ui.component.impl.TextFieldComponent;
 import io.github.solclient.client.ui.component.impl.TickboxComponent;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
@@ -244,6 +245,15 @@ public class ModOptionComponent extends ScaledIconComponent {
 
 				return false;
 			});
+		}
+		else if(option.getType().equals(String.class)) {
+			TextFieldComponent field = new TextFieldComponent(100, false).placeholder(option.getPlaceholder()).onUpdate((string) -> {
+				option.setValue(string);
+				return true;
+			});
+			field.autoFlush();
+			field.setText((String) option.getValue());
+			add(field, defaultBoundController);
 		}
 	}
 

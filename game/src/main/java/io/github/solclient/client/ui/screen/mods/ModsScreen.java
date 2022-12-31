@@ -105,6 +105,9 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), 10, defaultBounds.getWidth(),
 									defaultBounds.getHeight())));
 
+			add(scroll = new ModsScroll(this), (component, defaultBounds) -> new Rectangle(0, 25, getBounds().getWidth(), getBounds().getHeight() - 62));
+
+
 			add(ButtonComponent.done(() -> {
 				if(mod == null || singleModMode) {
 					if(!search.getText().isEmpty()) {
@@ -143,8 +146,6 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 								(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 51,
 								getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
 			}
-
-			add(scroll = new ModsScroll(this), (component, defaultBounds) -> new Rectangle(0, 25, getBounds().getWidth(), getBounds().getHeight() - 62));
 
 			search = new TextFieldComponent(100, false).autoFlush().onUpdate((value) -> {
 				scroll.snapTo(0);
@@ -185,7 +186,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 			if(mod == null) {
 				scroll.snapTo(noModsScroll);
-				add(search, (component, defaultBounds) -> new Rectangle(6, 6, defaultBounds.getWidth(),
+				add(0, search, (component, defaultBounds) -> new Rectangle(6, 6, defaultBounds.getWidth(),
 						defaultBounds.getHeight()));
 			}
 			else {
@@ -228,10 +229,10 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					int mouse = draggingMod.getBounds().getY() - getScroll().getBounds().getY() + getScroll().getScroll();
 					getScroll().remove(ghost);
 
-					if(mouse > ghostY + 25) {
+					if(mouse > ghostY + 20) {
 						modIndex++;
 					}
-					else if(mouse < ghostY - 25) {
+					else if(mouse < ghostY - 20) {
 						modIndex--;
 					}
 
@@ -267,12 +268,6 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				search.setFocused(true);
 				return true;
 			}
-			else if (mod != null && (keyCode == Keyboard.KEY_BACK
-					|| (keyCode == Keyboard.KEY_LEFT && isAltKeyDown() && !isCtrlKeyDown() && !isShiftKeyDown()))
-					&& screen.getRoot().getDialog() == null) {
-				switchMod(null);
-				return true;
-			}
 
 			if(character > 31 && !search.isFocused() && mod == null && draggingMod == null) {
 				search.setFocused(true);
@@ -281,9 +276,17 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 			boolean result = super.keyPressed(info, keyCode, character);
 
-			if(!result && keyCode == SolClientMod.instance.modsKey.getKeyCode()) {
-				mc.displayGuiScreen(null);
-				return true;
+			if(!result) {
+				if(keyCode == SolClientMod.instance.modsKey.getKeyCode()) {
+					mc.displayGuiScreen(null);
+					return true;
+				}
+				else if(mod != null && (keyCode == Keyboard.KEY_BACK
+						|| (keyCode == Keyboard.KEY_LEFT && isAltKeyDown() && !isCtrlKeyDown() && !isShiftKeyDown()))
+						&& screen.getRoot().getDialog() == null) {
+					switchMod(null);
+					return true;
+				}
 			}
 
 			return result;

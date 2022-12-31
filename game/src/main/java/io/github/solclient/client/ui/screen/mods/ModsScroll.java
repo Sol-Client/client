@@ -51,7 +51,7 @@ public class ModsScroll extends ScrollListComponent {
 				List<Mod> filtered = Client.INSTANCE.getMods().stream()
 						.filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
 								|| mod.getDescription().toLowerCase().contains(filter.toLowerCase())
-								|| mod.getCredit().contains(filter.toLowerCase()))
+								|| mod.getCredit().toLowerCase().contains(filter.toLowerCase()))
 						.sorted(Comparator.comparing((Mod mod) -> mod.getName().toLowerCase()
 								.startsWith(filter.toLowerCase())).reversed())
 						.collect(Collectors.toList());

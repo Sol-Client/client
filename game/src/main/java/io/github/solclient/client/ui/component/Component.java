@@ -9,8 +9,6 @@ import java.util.function.BiPredicate;
 
 import org.lwjgl.opengl.GL11;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.ui.component.controller.Controller;
@@ -83,6 +81,7 @@ public abstract class Component {
 	public void remove(Component component) {
 		subComponents.remove(component);
 		subComponentControllers.remove(component);
+		component.setParent(null);
 	}
 
 	public void remove(int index) {
@@ -118,6 +117,10 @@ public abstract class Component {
 	}
 
 	public Rectangle getBounds(Component component) {
+		if(!subComponentControllers.containsKey(component)) {
+			throw new IllegalArgumentException(component + " is not a child of " + this);
+		}
+
 		return subComponentControllers.get(component).get(component, component.getDefaultBounds());
 	}
 
@@ -254,19 +257,22 @@ public abstract class Component {
 				Rectangle bounds = getBounds(component);
 
 				if(component.mouseClickedAnywhere(transform(info, bounds), button, inside && bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()), processed)) {
-					processed = true;
+					return true;
 				}
 			}
 		}
 		catch(ConcurrentModificationException error) {
+			// ArGHHHHHHH
 		}
 
-		if(inside && onClick != null && onClick.onClick(info, button)) {
-			processed = true;
-		}
+		if(inside) {
+			if (onClick != null && onClick.onClick(info, button)) {
+				return true;
+			}
 
-		if(inside && !processed && mouseClicked(info, button)) {
-			processed = true;
+			if(mouseClicked(info, button)) {
+				return true;
+			}
 		}
 
 		return processed;
@@ -391,11 +397,11 @@ public abstract class Component {
 			remove(this.dialog);
 		}
 
-		this.dialog = dialog;
-
 		if(dialog != null) {
 			add(dialog, new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE, (component, defaultBounds) -> defaultBounds));
 		}
+
+		this.dialog = dialog;
 	}
 
 	public Component visibilityController(Controller<Boolean> visibilityController) {

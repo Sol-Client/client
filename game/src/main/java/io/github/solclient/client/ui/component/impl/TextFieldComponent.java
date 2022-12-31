@@ -1,6 +1,6 @@
 package io.github.solclient.client.ui.component.impl;
 
-import java.util.function.Consumer;
+import java.util.Objects;
 
 import com.google.common.base.Predicate;
 
@@ -16,7 +16,6 @@ import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -423,7 +422,7 @@ public class TextFieldComponent extends Component {
 	}
 
 	public void flush() {
-		if(text == lastText) {
+		if(Objects.equals(text, lastText)) {
 			return;
 		}
 

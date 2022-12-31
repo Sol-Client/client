@@ -227,12 +227,14 @@ public abstract class ScrollListComponent extends Component {
 	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
 		if(keyCode == Keyboard.KEY_DOWN) {
 			targetY += getScrollStep();
+			return true;
 		}
 		else if(keyCode == Keyboard.KEY_UP) {
 			targetY -= getScrollStep();
+			return true;
 		}
 
-		return false;
+		return super.keyPressed(info, keyCode, character);
 	}
 
 	@Override

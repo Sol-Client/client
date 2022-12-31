@@ -430,12 +430,16 @@ sol_client.mod.category.integration.name=Integration
 sol_client.mod.discord_integration.name=Discord Integration
 sol_client.mod.discord_integration.description=Integration features for Discord including activities and overlay.
 
+sol_client.mod.discord_integration.option.applicationId=Application ID
+sol_client.mod.discord_integration.option.icon=Icon
 sol_client.mod.discord_integration.option.voiceChatHud=Voice Chat HUD
 sol_client.mod.discord_integration.option.voiceChatHudScale=Voice Chat HUD Scale
 sol_client.mod.discord_integration.option.voiceChatHudAlignment=Voice Chat HUD Alignment
 sol_client.mod.discord_integration.option.usernameColour=Username Colour
 sol_client.mod.discord_integration.option.mutedColour=Muted Colour
 sol_client.mod.discord_integration.option.speakingColour=Speaking Colour
+
+sol_client.mod.discord_integration.multiplayer=Multiplayer: %s
 
 sol_client.mod.cosmetica.name=Cosmetica
 sol_client.mod.cosmetica.description=Support for cosmetics with Cosmetica's API.
@@ -459,3 +463,5 @@ sol_client.inspired_by=, inspired by %s
 sol_client.by=, by %s
 
 sol_client.about=About Sol Client
+
+sol_client.default=(Default)

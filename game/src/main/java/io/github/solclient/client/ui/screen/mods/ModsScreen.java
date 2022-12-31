@@ -227,6 +227,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					int ghostY = ghost.getBounds().getY();
 					int mouse = draggingMod.getBounds().getY() - getScroll().getBounds().getY() + getScroll().getScroll();
 					getScroll().remove(ghost);
+
 					if(mouse > ghostY + 25) {
 						modIndex++;
 					}
@@ -258,15 +259,11 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-			if(draggingMod != null) {
-				return false;
-			}
-
 			if((screen.getRoot().getDialog() == null && (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER)) && !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
 				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true, false);
 			}
-			else if(mod == null && keyCode == Keyboard.KEY_F && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown()) {
+			else if(draggingMod == null && mod == null && keyCode == Keyboard.KEY_F && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown()) {
 				search.setFocused(true);
 				return true;
 			}
@@ -277,7 +274,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				return true;
 			}
 
-			if(character > 31 && !search.isFocused() && mod == null) {
+			if(character > 31 && !search.isFocused() && mod == null && draggingMod == null) {
 				search.setFocused(true);
 				search.setText("");
 			}

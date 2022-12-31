@@ -138,6 +138,12 @@ public class ModListing extends ColouredComponent {
 			return false;
 		}
 
+		if(!mod.isBlocked() && (settingsButton.isHovered() || button == 1)) {
+			Utils.playClickSound(true);
+			screen.switchMod(mod);
+			return true;
+		}
+
 		if(button == 0) {
 			if(pinButton.isHovered()) {
 				Utils.playClickSound(true);
@@ -150,40 +156,14 @@ public class ModListing extends ColouredComponent {
 				mod.togglePin();
 				return true;
 			}
-			else if(mod.isBlocked()) {
-				// passive-agressive
-				Utils.playClickSound(true);
-				if(Client.INSTANCE.detectedServer == null) {
-					return true;
-				}
 
-				URI blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage();
-				if(blockedModPage != null) {
-					Utils.openUrl(blockedModPage.toString());
-				}
-				return true;
-			}
-		}
-
-		if(settingsButton.isHovered() || button == 1) {
-			Utils.playClickSound(true);
-			screen.switchMod(mod);
-			return true;
-		}
-
-		if(button == 0) {
 			if(pinnedCategory && Client.INSTANCE.getPins().getMods().size() > 1) {
 				dragStart = new Position(info.getRelativeMouseX(), info.getRelativeMouseY());
 				return true;
 			}
 
 			Utils.playClickSound(true);
-			if(mod.isLocked()) {
-				screen.switchMod(mod);
-			}
-			else {
-				mod.toggle();
-			}
+			primaryFunction();
 			return true;
 		}
 
@@ -195,22 +175,38 @@ public class ModListing extends ColouredComponent {
 		if(dragStart != null && button == 0) {
 			if(!dragging) {
 				Utils.playClickSound(true);
-				if(mod.isLocked()) {
-					screen.switchMod(mod);
-				}
-				else {
-					mod.toggle();
-				}
+				primaryFunction();
 			}
 			else {
 				screen.notifyDrop(this);
 			}
+
 			dragging = false;
 			dragStart = null;
 			return true;
 		}
 
 		return super.mouseReleasedAnywhere(info, button, inside);
+	}
+
+	private void primaryFunction() {
+		if(mod.isBlocked()) {
+			// passive-agressive
+			if(Client.INSTANCE.detectedServer == null) {
+				return;
+			}
+
+			URI blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage();
+			if(blockedModPage != null) {
+				Utils.openUrl(blockedModPage.toString());
+			}
+		}
+		else if(mod.isLocked()) {
+			screen.switchMod(mod);
+		}
+		else {
+			mod.toggle();
+		}
 	}
 
 }

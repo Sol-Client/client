@@ -17,19 +17,25 @@ import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
+import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
+import lombok.Getter;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 public class ModListing extends ColouredComponent {
 
+	@Getter
 	private final Mod mod;
 	private final ModsScreenComponent screen;
 	private final Component settingsButton;
 	private final ScaledIconComponent pinButton;
+	private final boolean pinnedCategory;
+	private Position dragStart;
+	private boolean dragging;
 
-	public ModListing(Mod mod, ModsScreenComponent screen) {
+	public ModListing(Mod mod, ModsScreenComponent screen, boolean pinnedCategory) {
 		super(new AnimatedColourController((component,
 				defaultColour) -> {
 					if(mod.isEnabled()) {
@@ -69,7 +75,7 @@ public class ModListing extends ColouredComponent {
 
 		Component credit;
 		add(credit = new LabelComponent((component, defaultText) -> mod.getCredit(),
-				new AnimatedColourController((component, defaultColour) -> isHovered() ? new Colour(120, 120, 120) : Colour.TRANSPARENT)),
+				(component, defaultColour) -> new Colour(120, 120, 120)),
 				new AlignedBoundsController(Alignment.START, Alignment.START,
 						(component, defaultBounds) -> defaultBounds.offset(name.getBounds().getEndX(), 5)));
 
@@ -88,6 +94,8 @@ public class ModListing extends ColouredComponent {
 						? (component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)
 						: Colour.TRANSPARENT)),
 				favouriteBounds);
+
+		this.pinnedCategory = pinnedCategory;
 	}
 
 	@Override
@@ -105,9 +113,15 @@ public class ModListing extends ColouredComponent {
 			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
 		}
 		else {
-
 			Utils.drawRectangle(getRelativeBounds(), Colour.BLACK_128);
 			Utils.drawOutline(getRelativeBounds(), getColour());
+		}
+
+		if(dragStart != null && !dragging) {
+			dragging = Math.abs(info.getRelativeMouseX() - dragStart.getX()) > 3 || Math.abs(info.getRelativeMouseY() - dragStart.getY()) > 3;
+			if(dragging) {
+				screen.notifyDrag(this, dragStart.getX(), dragStart.getY());
+			}
 		}
 
 		super.render(info);
@@ -120,24 +134,13 @@ public class ModListing extends ColouredComponent {
 
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
-		if(button == 0 || (!mod.isBlocked() && (button == 0 || button == 1))) {
-			Utils.playClickSound(true);
+		if(button != 0 && button != 1) {
+			return false;
+		}
 
-			if(mod.isBlocked()) {
-				if(Client.INSTANCE.detectedServer == null) {
-					return true;
-				}
-
-				URI blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage();
-
-				if(blockedModPage != null) {
-					Utils.openUrl(blockedModPage.toString());
-				}
-
-				return true;
-			}
-
-			if(button == 0 && pinButton.isHovered()) {
+		if(button == 0) {
+			if(pinButton.isHovered()) {
+				Utils.playClickSound(true);
 				if(!mod.isPinned()) {
 					screen.getScroll().notifyAddPin(mod);
 				}
@@ -147,18 +150,67 @@ public class ModListing extends ColouredComponent {
 				mod.togglePin();
 				return true;
 			}
+			else if(mod.isBlocked()) {
+				// passive-agressive
+				Utils.playClickSound(true);
+				if(Client.INSTANCE.detectedServer == null) {
+					return true;
+				}
 
-			if(settingsButton.isHovered() || mod.isLocked() || button == 1) {
-				screen.switchMod(mod);
+				URI blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage();
+				if(blockedModPage != null) {
+					Utils.openUrl(blockedModPage.toString());
+				}
+				return true;
+			}
+		}
+
+		if(settingsButton.isHovered() || button == 1) {
+			Utils.playClickSound(true);
+			screen.switchMod(mod);
+			return true;
+		}
+
+		if(button == 0) {
+			if(pinnedCategory && Client.INSTANCE.getPins().getMods().size() > 1) {
+				dragStart = new Position(info.getRelativeMouseX(), info.getRelativeMouseY());
 				return true;
 			}
 
-			mod.toggle();
-
+			Utils.playClickSound(true);
+			if(mod.isLocked()) {
+				screen.switchMod(mod);
+			}
+			else {
+				mod.toggle();
+			}
 			return true;
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
+		if(dragStart != null && button == 0) {
+			if(!dragging) {
+				Utils.playClickSound(true);
+				if(mod.isLocked()) {
+					screen.switchMod(mod);
+				}
+				else {
+					mod.toggle();
+				}
+			}
+			else {
+				screen.notifyDrop(this);
+			}
+			dragging = false;
+			dragStart = null;
+			return true;
+		}
+
+		return super.mouseReleasedAnywhere(info, button, inside);
 	}
 
 }

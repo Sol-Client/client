@@ -42,7 +42,7 @@ public class ModsScroll extends ScrollListComponent {
 					}
 
 					for(Mod mod : category.getMods()) {
-						add(new ModListing(mod, screen));
+						add(new ModListing(mod, screen, category == ModCategory.PINNED));
 					}
 				}
 			}
@@ -57,7 +57,7 @@ public class ModsScroll extends ScrollListComponent {
 						.collect(Collectors.toList());
 
 				for(Mod mod : filtered) {
-					add(new ModListing(mod, screen));
+					add(new ModListing(mod, screen, false));
 				}
 			}
 		}
@@ -81,7 +81,7 @@ public class ModsScroll extends ScrollListComponent {
 			scroll += font.getHeight() + getSpacing();
 		}
 
-		add(Client.INSTANCE.getPins().getMods().size() + 1, new ModListing(mod, screen));
+		add(Client.INSTANCE.getPins().getMods().size() + 1, new ModListing(mod, screen, true));
 
 		scroll += getScrollStep();
 

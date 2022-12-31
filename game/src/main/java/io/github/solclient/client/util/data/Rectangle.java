@@ -30,6 +30,10 @@ public class Rectangle {
 		return new Rectangle(this.x + x, this.y + y, width, height);
 	}
 
+	public Rectangle grow(int x, int y) {
+		return new Rectangle(this.x, this.y, width + x, height + y);
+	}
+
 	public boolean contains(Position position) {
 		return contains(position.getX(), position.getY());
 	}

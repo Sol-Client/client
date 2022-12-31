@@ -1,7 +1,5 @@
 package io.github.solclient.client.ui.screen.mods;
 
-import java.io.IOException;
-
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.Client;
@@ -12,21 +10,16 @@ import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.Screen;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.handler.KeyHandler;
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.component.impl.LabelComponent;
 import io.github.solclient.client.ui.component.impl.ScaledIconComponent;
 import io.github.solclient.client.ui.component.impl.TextFieldComponent;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
-import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 
 public class ModsScreen extends PanoramaBackgroundScreen {
@@ -92,6 +85,16 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		private int noModsScroll;
 		private boolean singleModMode;
 
+		private ModListing targetDraggingMod;
+		private ModListing draggingMod;
+		private boolean drop;
+		private ModGhost ghost;
+		private int modIndex;
+		private int mouseX;
+		private int mouseY;
+		private int dragX;
+		private int dragY;
+
 		public ModsScreenComponent(Mod startingMod) {
 			if(startingMod != null) {
 				singleModMode = true;
@@ -151,18 +154,19 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 			add(new ScaledIconComponent("sol_client_about", 16, 16,
 					new AnimatedColourController((component,
-							defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)).onClick((info, button) -> {
-								if(button != 0) {
-									return false;
-								}
+							defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
+					.onClick((info, button) -> {
+						if(button != 0) {
+							return false;
+						}
 
-								Utils.playClickSound(true);
-								setDialog(new AboutDialog());
-								return true;
-							}),
+						Utils.playClickSound(true);
+						setDialog(new AboutDialog());
+						return true;
+					}),
 					new AlignedBoundsController(Alignment.END, Alignment.START,
-							(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - 3, defaultBounds.getY() + 3, defaultBounds.getWidth(),
-									defaultBounds.getHeight())));
+							(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - 3,
+									defaultBounds.getY() + 3, defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 			switchMod(startingMod, true);
 		}
@@ -194,10 +198,72 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		}
 
 		@Override
+		public void render(ComponentRenderInfo info) {
+			super.render(info);
+
+			mouseX = info.getRelativeMouseX();
+			mouseY = info.getRelativeMouseY();
+
+			if(targetDraggingMod != null) {
+				draggingMod = targetDraggingMod;
+				targetDraggingMod = null;
+				getScroll().remove(draggingMod);
+				ghost = new ModGhost();
+				getScroll().add(modIndex, ghost);
+				add(draggingMod, (component, defaultBounds) -> defaultBounds.offset(mouseX - dragX, mouseY - dragY));
+			}
+			else if(draggingMod != null) {
+				if(drop) {
+					drop = false;
+					remove(draggingMod);
+					getScroll().remove(ghost);
+					getScroll().add(modIndex, draggingMod);
+
+					Client.INSTANCE.getPins().reorder(draggingMod.getMod(), modIndex - 1);
+
+					draggingMod = null;
+				}
+				else {
+					int ghostY = ghost.getBounds().getY();
+					int mouse = draggingMod.getBounds().getY() - getScroll().getBounds().getY() + getScroll().getScroll();
+					getScroll().remove(ghost);
+					if(mouse > ghostY + 25) {
+						modIndex++;
+					}
+					else if(mouse < ghostY - 25) {
+						modIndex--;
+					}
+
+					int max = Client.INSTANCE.getPins().getMods().size();
+					if(modIndex < 1) {
+						modIndex = 1;
+					}
+					else if(modIndex > max) {
+						modIndex = max;
+					}
+
+					getScroll().add(modIndex, ghost);
+				}
+			}
+		}
+
+		@Override
+		public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside, boolean processed) {
+			if(draggingMod != null) {
+				return false;
+			}
+
+			return super.mouseClickedAnywhere(info, button, inside, processed);
+		}
+
+		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
+			if(draggingMod != null) {
+				return false;
+			}
+
 			if((screen.getRoot().getDialog() == null && (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER)) && !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
-
 				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true, false);
 			}
 			else if(mod == null && keyCode == Keyboard.KEY_F && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown()) {
@@ -228,6 +294,17 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 		public String getQuery() {
 			return search.getText();
+		}
+
+		void notifyDrag(ModListing listing, int xOffset, int yOffset) {
+			targetDraggingMod = listing;
+			modIndex = getScroll().getSubComponents().indexOf(listing);
+			this.dragX = xOffset;
+			this.dragY = yOffset;
+		}
+
+		void notifyDrop(ModListing listing) {
+			drop = true;
 		}
 
 	}

@@ -9,10 +9,8 @@ const fs = require("fs");
 const msmc = require("msmc");
 const os = require("os");
 const nbt = require("nbt");
-const vm = require("vm");
-const url = require("url");
 const path = require("path");
-const axios = require("axios");
+const xss = require("xss");
 
 Utils.init();
 Config.init(Utils.dataDirectory);
@@ -56,7 +54,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 			.then(async(response, error) => {
 				let today = new Date();
 
-				news.innerHTML = "<br/>" + await response.text();
+				news.innerHTML = "<br/>" + xss(await response.text(), { whiteList: { ...xss.whiteList, time: ["datetime"] } });
 				for(let timeElement of news.getElementsByTagName("time")) {
 					let datetime = timeElement.getAttribute("datetime");
 

@@ -2,14 +2,12 @@ package io.github.solclient.client.ui.component;
 
 import java.io.IOException;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
+import org.lwjgl.input.*;
 
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.access.AccessMinecraft;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -52,11 +50,10 @@ public class Screen extends GuiScreen {
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
 
-		if(background) {
-			if(mc.theWorld == null) {
+		if (background) {
+			if (mc.theWorld == null) {
 				drawRect(0, 0, width, height, Colour.BACKGROUND.getValue());
-			}
-			else {
+			} else {
 				drawDefaultBackground();
 			}
 		}
@@ -70,34 +67,32 @@ public class Screen extends GuiScreen {
 	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 
-		if(Mouse.getEventDWheel() != 0) {
+		if (Mouse.getEventDWheel() != 0) {
 			rootWrapper.mouseScroll(getInfo(), Mouse.getEventDWheel());
 		}
 	}
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(!rootWrapper.keyPressed(getInfo(), keyCode, typedChar)) {
-			if(keyCode == Keyboard.KEY_ESCAPE) {
+		if (!rootWrapper.keyPressed(getInfo(), keyCode, typedChar)) {
+			if (keyCode == Keyboard.KEY_ESCAPE) {
 				Component withDialog = rootWrapper;
 
-				if(withDialog.getDialog() == null) {
-					if(!withDialog.getSubComponents().isEmpty()) {
+				if (withDialog.getDialog() == null) {
+					if (!withDialog.getSubComponents().isEmpty()) {
 						withDialog = withDialog.getSubComponents().get(0);
-					}
-					else {
+					} else {
 						withDialog = null;
 					}
 				}
 
-				if(withDialog != null && withDialog.getDialog() != null) {
+				if (withDialog != null && withDialog.getDialog() != null) {
 					withDialog.setDialog(null);
 					return;
 				}
 
 				closeAll();
-			}
-			else {
+			} else {
 				super.keyTyped(typedChar, keyCode);
 			}
 		}
@@ -105,14 +100,14 @@ public class Screen extends GuiScreen {
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		if(!rootWrapper.mouseClickedAnywhere(getInfo(), mouseButton, true, false)) {
+		if (!rootWrapper.mouseClickedAnywhere(getInfo(), mouseButton, true, false)) {
 			super.mouseClicked(mouseX, mouseY, mouseButton);
 		}
 	}
 
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		if(!rootWrapper.mouseReleasedAnywhere(getInfo(), state, true)) {
+		if (!rootWrapper.mouseReleasedAnywhere(getInfo(), state, true)) {
 			super.mouseReleased(mouseX, mouseY, state);
 		}
 	}

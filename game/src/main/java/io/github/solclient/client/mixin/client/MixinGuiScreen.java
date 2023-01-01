@@ -4,33 +4,20 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-import net.minecraft.client.resources.I18n;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.impl.ActionPerformedEvent;
-import io.github.solclient.client.event.impl.PostGuiInitEvent;
-import io.github.solclient.client.event.impl.PostGuiRenderEvent;
-import io.github.solclient.client.event.impl.PreGuiInitEvent;
-import io.github.solclient.client.event.impl.PreGuiKeyboardInputEvent;
-import io.github.solclient.client.event.impl.PreGuiMouseInputEvent;
-import io.github.solclient.client.event.impl.PreGuiRenderEvent;
-import io.github.solclient.client.event.impl.RenderGuiBackgroundEvent;
+import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessGuiScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
 @Mixin(GuiScreen.class)
@@ -43,11 +30,10 @@ public abstract class MixinGuiScreen implements AccessGuiScreen {
 
 	@Redirect(method = "drawWorldBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawGradientRect(IIIIII)V"))
 	public void getTopColour(GuiScreen guiScreen, int left, int top, int right, int bottom, int startColor,
-						   int endColor) {
-		if(!Client.INSTANCE.bus.post(new RenderGuiBackgroundEvent()).cancelled) {
+			int endColor) {
+		if (!Client.INSTANCE.bus.post(new RenderGuiBackgroundEvent()).cancelled) {
 			Utils.drawGradientRect(left, top, right, bottom, startColor, endColor);
-		}
-		else {
+		} else {
 			Utils.drawGradientRect(left, top, right, bottom, 0, 0);
 		}
 	}
@@ -58,10 +44,10 @@ public abstract class MixinGuiScreen implements AccessGuiScreen {
 				&& !Client.INSTANCE.bus.post(new ActionPerformedEvent((GuiScreen) (Object) this, instance)).cancelled;
 	}
 
-	@Redirect(method = "setWorldAndResolution", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui" +
-			"/GuiScreen;initGui()V"))
+	@Redirect(method = "setWorldAndResolution", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui"
+			+ "/GuiScreen;initGui()V"))
 	public void guiInit(GuiScreen instance) {
-		if(!Client.INSTANCE.bus.post(new PreGuiInitEvent(instance)).cancelled) {
+		if (!Client.INSTANCE.bus.post(new PreGuiInitEvent(instance)).cancelled) {
 			instance.initGui();
 			Client.INSTANCE.bus.post(new PostGuiInitEvent(instance, buttonList));
 		}
@@ -77,30 +63,30 @@ public abstract class MixinGuiScreen implements AccessGuiScreen {
 		GlStateManager.color(1, 1, 1, 1); // Prevent colour from leaking
 		Client.INSTANCE.bus.post(new PostGuiRenderEvent(partialTicks));
 
-		if(SolClientMod.instance.logoInInventory && (Object) this instanceof GuiContainer) {
+		if (SolClientMod.instance.logoInInventory && (Object) this instanceof GuiContainer) {
 			GlStateManager.enableBlend();
 
-			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_logo_with_text_" +
-							Utils.getTextureScale() + ".png"));
+			mc.getTextureManager().bindTexture(
+					new ResourceLocation("textures/gui/sol_client_logo_with_text_" + Utils.getTextureScale() + ".png"));
 
 			Gui.drawModalRectWithCustomSizedTexture(width - 140, height - 40, 0, 0, 128, 32, 128, 32);
 		}
 	}
 
-	@Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;" +
-			"handleMouseInput()V"))
+	@Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;"
+			+ "handleMouseInput()V"))
 	public void handleMouseInput(GuiScreen instance) throws IOException {
-		if(!Client.INSTANCE.bus.post(new PreGuiMouseInputEvent()).cancelled) {
+		if (!Client.INSTANCE.bus.post(new PreGuiMouseInputEvent()).cancelled) {
 			instance.handleMouseInput();
 		}
 	}
 
 	// Fix options not saving when "esc" is pressed.
-	@Redirect(method = "keyTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen" +
-			"(Lnet/minecraft/client/gui/GuiScreen;)V"))
+	@Redirect(method = "keyTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen"
+			+ "(Lnet/minecraft/client/gui/GuiScreen;)V"))
 	public void saveFirst(Minecraft instance, GuiScreen screen) throws IOException {
-		for(GuiButton button : buttonList) {
-			if(button.displayString.equals(I18n.format("gui.done"))) {
+		for (GuiButton button : buttonList) {
+			if (button.displayString.equals(I18n.format("gui.done"))) {
 				actionPerformed(button);
 			}
 		}

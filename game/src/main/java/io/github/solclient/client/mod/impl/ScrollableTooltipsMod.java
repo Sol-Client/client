@@ -4,10 +4,8 @@ import org.lwjgl.input.Mouse;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 
@@ -61,13 +59,13 @@ public class ScrollableTooltipsMod extends Mod {
 	}
 
 	public void onRenderTooltip() {
-		if(!isEnabled()) {
+		if (!isEnabled()) {
 			return;
 		}
 
 		int wheel = Mouse.getDWheel();
 
-		if(wheel != 0) {
+		if (wheel != 0) {
 			onScroll(wheel > 0);
 		}
 	}
@@ -75,18 +73,17 @@ public class ScrollableTooltipsMod extends Mod {
 	public void onScroll(boolean direction) {
 		int scrollStep = (int) (12 * this.scrollSensitivity);
 
-		if(direction) {
+		if (direction) {
 			scrollStep = -scrollStep;
 		}
 
-		if(!reverse) {
+		if (!reverse) {
 			scrollStep = -scrollStep;
 		}
 
-		if(GuiScreen.isShiftKeyDown()) {
+		if (GuiScreen.isShiftKeyDown()) {
 			offsetX += scrollStep;
-		}
-		else {
+		} else {
 			offsetY += scrollStep;
 		}
 	}

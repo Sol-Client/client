@@ -1,8 +1,7 @@
 package io.github.solclient.client.mixin.client;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.mojang.authlib.GameProfile;
@@ -22,7 +21,7 @@ public abstract class MixinAbstractClientPlayer extends EntityPlayer {
 
 	@Inject(method = "getLocationCape", at = @At("HEAD"), cancellable = true)
 	public void overrideCapeLocation(CallbackInfoReturnable<ResourceLocation> callback) {
-		if(!CosmeticaMod.enabled) {
+		if (!CosmeticaMod.enabled) {
 			return;
 		}
 

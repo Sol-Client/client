@@ -3,8 +3,7 @@ package io.github.solclient.client.mixin.client;
 import java.nio.IntBuffer;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
-import org.spongepowered.asm.mixin.gen.Invoker;
+import org.spongepowered.asm.mixin.gen.*;
 
 import net.minecraft.client.renderer.texture.TextureUtil;
 

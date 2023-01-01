@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum AutoGGMessage {
-	GG("gg"),
-	GF("gf"),
-	GOOD_GAME("good game"),
-	GOOD_FIGHT("good fight");
+	GG("gg"), GF("gf"), GOOD_GAME("good game"), GOOD_FIGHT("good fight");
 
 	private final String message;
 

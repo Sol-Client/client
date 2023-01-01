@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum AutoGLMessage {
-	GLHF("glhf"),
-	GL("gl"),
-	GOOD_LUCK("good luck!"),
-	GOOD_LUCK_HAVE_FUN("good luck, have fun!");
+	GLHF("glhf"), GL("gl"), GOOD_LUCK("good luck!"), GOOD_LUCK_HAVE_FUN("good luck, have fun!");
 
 	private final String message;
 

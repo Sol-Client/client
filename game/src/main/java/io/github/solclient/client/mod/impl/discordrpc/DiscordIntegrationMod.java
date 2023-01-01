@@ -2,39 +2,26 @@ package io.github.solclient.client.mod.impl.discordrpc;
 
 import java.io.File;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.google.gson.annotations.Expose;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replaystudio.util.I18n;
 
-import de.jcm.discordgamesdk.Core;
-import de.jcm.discordgamesdk.CreateParams;
+import de.jcm.discordgamesdk.*;
 import de.jcm.discordgamesdk.CreateParams.Flags;
-import de.jcm.discordgamesdk.activity.Activity;
-import de.jcm.discordgamesdk.activity.ActivityType;
+import de.jcm.discordgamesdk.activity.*;
 import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameQuitEvent;
-import io.github.solclient.client.event.impl.OpenGuiEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.event.impl.WorldLoadEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.mod.annotation.StringOption;
-import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.hud.HudPosition;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.discordrpc.socket.DiscordSocket;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.VerticalAlignment;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiMultiplayer;
+import io.github.solclient.client.util.data.*;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.WorldClient;
 
 public class DiscordIntegrationMod extends Mod {
@@ -90,9 +77,9 @@ public class DiscordIntegrationMod extends Mod {
 	@Override
 	public void onRegister() {
 		try {
-			Core.init(new File(System.getProperty("io.github.solclient.client.discord_lib", "./discord." + Utils.getNativeFileExtension())));
-		}
-		catch(Exception error) {
+			Core.init(new File(System.getProperty("io.github.solclient.client.discord_lib",
+					"./discord." + Utils.getNativeFileExtension())));
+		} catch (Exception error) {
 			logger.error("Could not load natives", error);
 		}
 
@@ -103,9 +90,9 @@ public class DiscordIntegrationMod extends Mod {
 
 	@Override
 	public void postOptionChange(String key, Object value) {
-		if(key.equals("voiceChatHud")) {
+		if (key.equals("voiceChatHud")) {
 			closeSocket();
-			if((boolean) value) {
+			if ((boolean) value) {
 				connectSocket();
 			}
 		}
@@ -126,11 +113,11 @@ public class DiscordIntegrationMod extends Mod {
 
 			long id = GlobalConstants.DISCORD_APPLICATION;
 
-			if(!applicationId.isEmpty()) {
+			if (!applicationId.isEmpty()) {
 				try {
 					id = Long.parseLong(Utils.onlyKeepDigits(applicationId));
+				} catch (NumberFormatException ignored) {
 				}
-				catch(NumberFormatException ignored) {}
 			}
 
 			params.setClientID(id);
@@ -138,12 +125,11 @@ public class DiscordIntegrationMod extends Mod {
 			core = new Core(params);
 
 			startActivity(mc.theWorld);
-		}
-		catch(Throwable error) {
+		} catch (Throwable error) {
 			logger.warn("Could not start GameSDK", error);
 		}
 
-		if(voiceChatHud) {
+		if (voiceChatHud) {
 			connectSocket();
 		}
 	}
@@ -154,7 +140,7 @@ public class DiscordIntegrationMod extends Mod {
 	}
 
 	private void closeSocket() {
-		if(socket != null && !socket.isClosed()) {
+		if (socket != null && !socket.isClosed()) {
 			socket.close();
 			socket = null;
 		}
@@ -168,7 +154,7 @@ public class DiscordIntegrationMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(core == null) {
+		if (core == null) {
 			return;
 		}
 
@@ -177,13 +163,13 @@ public class DiscordIntegrationMod extends Mod {
 
 	@EventHandler
 	public void onGameQuit(GameQuitEvent event) {
-		if(isEnabled() && core != null) {
+		if (isEnabled() && core != null) {
 			close();
 		}
 	}
 
 	private void close() {
-		if(core != null) {
+		if (core != null) {
 			params.close();
 			core.close();
 			core = null;
@@ -194,7 +180,7 @@ public class DiscordIntegrationMod extends Mod {
 
 	@EventHandler
 	public void onGuiChange(OpenGuiEvent event) {
-		if(core == null) {
+		if (core == null) {
 			return;
 		}
 
@@ -206,37 +192,35 @@ public class DiscordIntegrationMod extends Mod {
 
 	@EventHandler
 	public void onWorldChange(WorldLoadEvent event) {
-		if(core == null) {
+		if (core == null) {
 			return;
 		}
 
-		if(!state && event.world != null) {
+		if (!state && event.world != null) {
 			startActivity(event.world);
 		}
 	}
 
 	private void startActivity(WorldClient world) {
-		if(world != null) {
-			if(mc.isIntegratedServerRunning()) {
+		if (world != null) {
+			if (mc.isIntegratedServerRunning()) {
 				setActivity(I18n.format("menu.singleplayer"));
-			}
-			else {
-				if(ReplayModReplay.instance.getReplayHandler() != null) {
+			} else {
+				if (ReplayModReplay.instance.getReplayHandler() != null) {
 					setActivity(I18n.format("replaymod.gui.replayviewer"));
-				}
-				else {
-					setActivity(I18n.format("sol_client.mod.discord_integration.multiplayer", mc.getCurrentServerData().serverName));
+				} else {
+					setActivity(I18n.format("sol_client.mod.discord_integration.multiplayer",
+							mc.getCurrentServerData().serverName));
 				}
 			}
-		}
-		else {
+		} else {
 			setActivity(I18n.format("sol_client.mod.discord_integration.main_menu"));
 			state = false;
 		}
 	}
 
 	private void setActivity(String text) {
-		if(activity != null) {
+		if (activity != null) {
 			activity.close();
 		}
 

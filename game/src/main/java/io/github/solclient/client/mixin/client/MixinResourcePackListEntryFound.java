@@ -1,12 +1,8 @@
 package io.github.solclient.client.mixin.client;
 
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
-import net.minecraft.client.resources.ResourcePackListEntryFound;
-import net.minecraft.client.resources.ResourcePackRepository;
+import net.minecraft.client.resources.*;
 
 @Mixin(ResourcePackListEntryFound.class)
 public class MixinResourcePackListEntryFound {
@@ -19,7 +15,7 @@ public class MixinResourcePackListEntryFound {
 	public String func_148312_b() {
 		String name = field_148319_c.getResourcePackName();
 
-		if(name.contains("/")) {
+		if (name.contains("/")) {
 			name = name.substring(field_148319_c.getResourcePackName().lastIndexOf("/") + 1);
 		}
 

@@ -1,20 +1,16 @@
 package io.github.solclient.client.mod;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameOverlayElement;
-import io.github.solclient.client.event.impl.PostGameOverlayRenderEvent;
-import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.Getter;
@@ -47,12 +43,11 @@ public abstract class Mod {
 	public void onRegister() {
 		try {
 			options = ModOption.get(this);
-		}
-		catch(IOException error) {
+		} catch (IOException error) {
 			throw new IllegalStateException(error);
 		}
 
-		if(this.enabled) {
+		if (this.enabled) {
 			tryEnable();
 		}
 	}
@@ -72,6 +67,7 @@ public abstract class Mod {
 
 	/**
 	 * Choose a string to display on the right side of the mod component.
+	 * 
 	 * @return an additional credit string.
 	 */
 	public String getCredit() {
@@ -92,8 +88,8 @@ public abstract class Mod {
 	}
 
 	public boolean onOptionChange(String key, Object value) {
-		if(key.equals("enabled")) {
-			if(isLocked()) {
+		if (key.equals("enabled")) {
+			if (isLocked()) {
 				return false;
 			}
 			setEnabled((boolean) value);
@@ -109,18 +105,18 @@ public abstract class Mod {
 	}
 
 	public void setEnabled(boolean enabled) {
-		if(blocked) return;
-		if(isLocked()) return;
+		if (blocked)
+			return;
+		if (isLocked())
+			return;
 
-		if(enabled != this.enabled) {
-			if(enabled) {
+		if (enabled != this.enabled) {
+			if (enabled) {
 				tryEnable();
-			}
-			else {
+			} else {
 				try {
 					onDisable();
-				}
-				catch(Throwable error) {
+				} catch (Throwable error) {
 					logger.error("Error while disabling mod", error);
 				}
 			}
@@ -131,8 +127,7 @@ public abstract class Mod {
 	private void tryEnable() {
 		try {
 			onEnable();
-		}
-		catch(Throwable error) {
+		} catch (Throwable error) {
 			logger.error("Could not enable mod", error);
 			setEnabled(false);
 		}
@@ -151,14 +146,14 @@ public abstract class Mod {
 	}
 
 	public void block() {
-		if(enabled && !blocked) {
+		if (enabled && !blocked) {
 			onDisable();
 		}
 		blocked = true;
 	}
 
 	public void unblock() {
-		if(enabled && blocked) {
+		if (enabled && blocked) {
 			onEnable();
 		}
 		blocked = false;
@@ -181,16 +176,15 @@ public abstract class Mod {
 	}
 
 	public void setPinned(boolean pinned) {
-		if(pinned == this.pinned) {
+		if (pinned == this.pinned) {
 			return;
 		}
 
 		this.pinned = pinned;
 
-		if(pinned) {
+		if (pinned) {
 			Client.INSTANCE.getPins().notifyPin(this);
-		}
-		else {
+		} else {
 			Client.INSTANCE.getPins().notifyUnpin(this);
 		}
 	}
@@ -231,17 +225,18 @@ public abstract class Mod {
 		return Collections.emptyList();
 	}
 
-	public void onFileUpdate(String fieldName) {}
+	public void onFileUpdate(String fieldName) {
+	}
 
 	public void render(boolean editMode) {
-		for(HudElement element : getHudElements()) {
+		for (HudElement element : getHudElements()) {
 			element.render(editMode);
 		}
 	}
 
 	@EventHandler
 	public void onRender(PostGameOverlayRenderEvent event) {
-		if(event.type == GameOverlayElement.ALL) {
+		if (event.type == GameOverlayElement.ALL) {
 			render(mc.currentScreen instanceof MoveHudsScreen);
 		}
 	}

@@ -2,8 +2,7 @@ package io.github.solclient.client.mixin.client;
 
 import java.util.function.IntSupplier;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.util.font.Font;
 import net.minecraft.client.gui.FontRenderer;
@@ -26,14 +25,14 @@ public abstract class MixinFontRendererCompat implements Font {
 		float offsetX = x - ((float) Math.floor(x));
 		float offsetY = y - ((float) Math.floor(y));
 
-		if(offsetX != 0 || offsetY != 0) {
+		if (offsetX != 0 || offsetY != 0) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(offsetX, offsetY, 0);
 		}
 
 		int result = function.getAsInt();
 
-		if(offsetX != 0 || offsetY != 0) {
+		if (offsetX != 0 || offsetY != 0) {
 			GlStateManager.popMatrix();
 		}
 

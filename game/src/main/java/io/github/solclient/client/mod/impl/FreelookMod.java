@@ -4,14 +4,10 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.GlobalConstants;
-import io.github.solclient.client.event.*;
-import io.github.solclient.client.event.impl.CameraRotateEvent;
-import io.github.solclient.client.event.impl.PlayerHeadRotateEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.*;
+import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.Perspective;
 import net.minecraft.client.settings.KeyBinding;
@@ -21,7 +17,8 @@ import net.minecraft.util.MathHelper;
 public class FreelookMod extends Mod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_V, GlobalConstants.KEY_CATEGORY);
+	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_V,
+			GlobalConstants.KEY_CATEGORY);
 	private float yaw;
 	private float pitch;
 	private int previousPerspective;
@@ -54,13 +51,12 @@ public class FreelookMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(key.isKeyDown()) {
-			if(!hasStarted()) {
+		if (key.isKeyDown()) {
+			if (!hasStarted()) {
 				start();
 			}
-		}
-		else {
-			if(hasStarted()) {
+		} else {
+			if (hasStarted()) {
 				stop();
 			}
 		}
@@ -95,7 +91,7 @@ public class FreelookMod extends Mod {
 
 	@EventHandler
 	public void setAngles(CameraRotateEvent event) {
-		if(active) {
+		if (active) {
 			event.yaw = yaw;
 			event.pitch = pitch;
 		}
@@ -103,12 +99,14 @@ public class FreelookMod extends Mod {
 
 	@EventHandler
 	public void setAngles(PlayerHeadRotateEvent event) {
-		if(active) {
+		if (active) {
 			float yaw = event.yaw;
 			float pitch = event.pitch;
 			event.cancelled = true;
-			if(!invertPitch) pitch = -pitch;
-			if(invertYaw) yaw = -yaw;
+			if (!invertPitch)
+				pitch = -pitch;
+			if (invertYaw)
+				yaw = -yaw;
 			this.yaw += yaw * 0.15F;
 			this.pitch = MathHelper.clamp_float(this.pitch + (pitch * 0.15F), -90, 90);
 			mc.renderGlobal.setDisplayListEntitiesDirty();

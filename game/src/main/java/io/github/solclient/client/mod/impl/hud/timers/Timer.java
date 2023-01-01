@@ -1,7 +1,6 @@
 package io.github.solclient.client.mod.impl.hud.timers;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -22,7 +21,7 @@ public class Timer {
 	}
 
 	public void tick() {
-		if(time > 0) {
+		if (time > 0) {
 			time--;
 		}
 	}

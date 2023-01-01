@@ -1,16 +1,12 @@
 package io.github.solclient.client.ui.screen.mods;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.ModOption;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.impl.LabelComponent;
-import io.github.solclient.client.ui.component.impl.ScrollListComponent;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 
 public class ModsScroll extends ScrollListComponent {
@@ -34,48 +30,47 @@ public class ModsScroll extends ScrollListComponent {
 	public void load() {
 		clear();
 
-		if(screen.getMod() == null) {
-			if(screen.getQuery().isEmpty()) {
-				for(ModCategory category : ModCategory.values()) {
-					if(category.shouldShowName()) {
+		if (screen.getMod() == null) {
+			if (screen.getQuery().isEmpty()) {
+				for (ModCategory category : ModCategory.values()) {
+					if (category.shouldShowName()) {
 						add(new LabelComponent(category.toString()));
 					}
 
-					for(Mod mod : category.getMods()) {
+					for (Mod mod : category.getMods()) {
 						add(new ModListing(mod, screen, category == ModCategory.PINNED));
 					}
 				}
-			}
-			else {
+			} else {
 				String filter = screen.getQuery();
 				List<Mod> filtered = Client.INSTANCE.getMods().stream()
 						.filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
 								|| mod.getDescription().toLowerCase().contains(filter.toLowerCase())
 								|| mod.getCredit().toLowerCase().contains(filter.toLowerCase()))
-						.sorted(Comparator.comparing((Mod mod) -> mod.getName().toLowerCase()
-								.startsWith(filter.toLowerCase())).reversed())
+						.sorted(Comparator
+								.comparing((Mod mod) -> mod.getName().toLowerCase().startsWith(filter.toLowerCase()))
+								.reversed())
 						.collect(Collectors.toList());
 
-				for(Mod mod : filtered) {
+				for (Mod mod : filtered) {
 					add(new ModListing(mod, screen, false));
 				}
 			}
-		}
-		else {
-			for(ModOption option : screen.getMod().getOptions()) {
+		} else {
+			for (ModOption option : screen.getMod().getOptions()) {
 				add(new ModOptionComponent(option));
 			}
 		}
 	}
 
 	void notifyAddPin(Mod mod) {
-		if(!screen.getQuery().isEmpty()) {
+		if (!screen.getQuery().isEmpty()) {
 			return;
 		}
 
 		int scroll = 0;
 
-		if(Client.INSTANCE.getPins().getMods().size() == 0) {
+		if (Client.INSTANCE.getPins().getMods().size() == 0) {
 			// this is the first one
 			add(0, new LabelComponent(ModCategory.PINNED.toString()));
 			scroll += font.getHeight() + getSpacing();
@@ -89,19 +84,18 @@ public class ModsScroll extends ScrollListComponent {
 	}
 
 	void notifyRemovePin(Mod mod) {
-		if(!screen.getQuery().isEmpty()) {
+		if (!screen.getQuery().isEmpty()) {
 			return;
 		}
 
 		int scroll = 0;
 		int index = Client.INSTANCE.getPins().getMods().indexOf(mod);
 
-		if(Client.INSTANCE.getPins().getMods().size() == 1) {
+		if (Client.INSTANCE.getPins().getMods().size() == 1) {
 			// this is the last one
 			remove(0);
 			scroll += font.getHeight() + getSpacing();
-		}
-		else {
+		} else {
 			index++;
 		}
 
@@ -110,7 +104,7 @@ public class ModsScroll extends ScrollListComponent {
 		scroll += getScrollStep();
 		scroll = getScroll() - scroll;
 
-		if(scroll < 0) {
+		if (scroll < 0) {
 			scroll = 0;
 		}
 

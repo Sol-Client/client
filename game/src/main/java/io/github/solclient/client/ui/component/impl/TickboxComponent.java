@@ -3,8 +3,7 @@ package io.github.solclient.client.ui.component.impl;
 import java.util.function.Consumer;
 
 import io.github.solclient.client.mod.impl.SolClientMod;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
+import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
@@ -17,15 +16,16 @@ public class TickboxComponent extends ScaledIconComponent {
 
 	public TickboxComponent(boolean value, Consumer<Boolean> booleanConsumer, Component hoverController) {
 		super("sol_client_tickbox", 16, 16,
-				new AnimatedColourController((component, defaultColour) -> component.isHovered() ? SolClientMod.instance.uiHover
-						: SolClientMod.instance.uiColour));
+				new AnimatedColourController(
+						(component, defaultColour) -> component.isHovered() ? SolClientMod.instance.uiHover
+								: SolClientMod.instance.uiColour));
 
 		this.value = value;
 		this.booleanConsumer = booleanConsumer;
 		this.hoverController = hoverController;
 
 		hoverController.onClick((info, button) -> {
-			if(!super.isHovered() && button == 0) {
+			if (!super.isHovered() && button == 0) {
 				mouseClicked(info, button);
 			}
 
@@ -46,7 +46,7 @@ public class TickboxComponent extends ScaledIconComponent {
 
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
-		if(button != 0) {
+		if (button != 0) {
 			return false;
 		}
 

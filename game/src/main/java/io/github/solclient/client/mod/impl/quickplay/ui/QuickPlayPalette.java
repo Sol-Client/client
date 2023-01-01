@@ -1,28 +1,22 @@
 package io.github.solclient.client.mod.impl.quickplay.ui;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
+import org.lwjgl.input.*;
 import org.lwjgl.opengl.GL11;
 
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.font.Font;
-import io.github.solclient.client.util.font.SlickFontRenderer;
+import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.font.*;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.renderer.*;
+import net.minecraft.util.*;
 
 @RequiredArgsConstructor
 public class QuickPlayPalette extends GuiScreen {
@@ -88,37 +82,35 @@ public class QuickPlayPalette extends GuiScreen {
 
 		List<QuickPlayOption> options = getGames();
 
-		if(selectedIndex > options.size() - 1) {
+		if (selectedIndex > options.size() - 1) {
 			selectedIndex = options.size() - 1;
 		}
 
-		if(selectedIndex < 0) {
+		if (selectedIndex < 0) {
 			selectedIndex = 0;
 		}
 
-		for(int i = 0; i < options.size(); i++) {
+		for (int i = 0; i < options.size(); i++) {
 			QuickPlayOption game = options.get(i);
 
 			Rectangle gameBounds = base.offset(0, y - scroll);
 
-			boolean containsMouse = gameBounds.contains(mouseX, mouseY)
-					&& entriesBox.contains(mouseX, mouseY);
+			boolean containsMouse = gameBounds.contains(mouseX, mouseY) && entriesBox.contains(mouseX, mouseY);
 
-			if(selectedIndex == i) {
+			if (selectedIndex == i) {
 				gameBounds.fill(new Colour(60, 60, 60));
 
-				if(containsMouse && mouseDown && !wasMouseDown) {
+				if (containsMouse && mouseDown && !wasMouseDown) {
 					game.onClick(this, mod);
 				}
 			}
 
-			if((lastMouseX != mouseX || lastMouseY != mouseY) && lastMouseX != -1
-					&& lastMouseY != -1 &&
-					containsMouse) {
+			if ((lastMouseX != mouseX || lastMouseY != mouseY) && lastMouseX != -1 && lastMouseY != -1
+					&& containsMouse) {
 				selectedIndex = i;
 			}
 
-			if(game.getIcon() != null) {
+			if (game.getIcon() != null) {
 				RenderHelper.enableGUIStandardItemLighting();
 				mc.getRenderItem().renderItemIntoGUI(game.getIcon(), x + 3, gameBounds.getY() + 1);
 				RenderHelper.disableStandardItemLighting();
@@ -130,7 +122,6 @@ public class QuickPlayPalette extends GuiScreen {
 			y += gameBounds.getHeight();
 		}
 
-
 		maxScrolling = Math.max(0, y - entriesBox.getHeight());
 
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -140,7 +131,7 @@ public class QuickPlayPalette extends GuiScreen {
 
 		wasMouseDown = mouseDown;
 
-		if(nextScroll != -1) {
+		if (nextScroll != -1) {
 			scroll = nextScroll;
 			nextScroll = -1;
 		}
@@ -148,30 +139,28 @@ public class QuickPlayPalette extends GuiScreen {
 
 	private List<QuickPlayOption> getGames() {
 		List<QuickPlayOption> result;
-		if(inAllGames) {
-			if(currentGame != null) {
+		if (inAllGames) {
+			if (currentGame != null) {
 				result = currentGame.getModeOptions();
-			}
-			else {
+			} else {
 				result = mod.getGameOptions();
 			}
 			result.add(0, new BackOption());
-		}
-		else if(query.isEmpty()) {
+		} else if (query.isEmpty()) {
 			result = mod.getRecentlyPlayed();
 			result.add(new AllGamesOption());
-		}
-		else {
+		} else {
 			result = mod.getGames().stream().flatMap((entry) -> entry.getModes().stream())
 					.filter((mode) -> EnumChatFormatting
 							.getTextWithoutFormattingCodes(mode.getText().toLowerCase(Locale.ROOT))
 							.contains(query.toLowerCase(Locale.ROOT)))
 					.sorted((o1, o2) -> {
-						return Integer.compare(EnumChatFormatting.getTextWithoutFormattingCodes(o1.getText().toLowerCase())
-								.startsWith(query.toLowerCase()) ? 0 : 1, EnumChatFormatting.getTextWithoutFormattingCodes(o2.getText().toLowerCase())
-								.startsWith(query.toLowerCase()) ? 0 : 1);
-					})
-					.collect(Collectors.toList());
+						return Integer.compare(
+								EnumChatFormatting.getTextWithoutFormattingCodes(o1.getText().toLowerCase())
+										.startsWith(query.toLowerCase()) ? 0 : 1,
+								EnumChatFormatting.getTextWithoutFormattingCodes(o2.getText().toLowerCase())
+										.startsWith(query.toLowerCase()) ? 0 : 1);
+					}).collect(Collectors.toList());
 		}
 
 		return result;
@@ -185,40 +174,34 @@ public class QuickPlayPalette extends GuiScreen {
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
 
-		if(keyCode == Keyboard.KEY_BACK) {
-			if(!query.isEmpty()) {
-				if(GuiScreen.isCtrlKeyDown()) {
+		if (keyCode == Keyboard.KEY_BACK) {
+			if (!query.isEmpty()) {
+				if (GuiScreen.isCtrlKeyDown()) {
 					query = "";
-				}
-				else {
+				} else {
 					query = query.substring(0, query.length() - 1);
 				}
 			}
-		}
-		else if(typedChar > 31 && typedChar != '§') {
+		} else if (typedChar > 31 && typedChar != '§') {
 			query += typedChar;
 			inAllGames = false;
 		}
 
-		if(keyCode == Keyboard.KEY_DOWN) {
+		if (keyCode == Keyboard.KEY_DOWN) {
 			selectedIndex++;
 			scroll += 20;
 			clampIndex();
-		}
-		else if(keyCode == Keyboard.KEY_UP) {
+		} else if (keyCode == Keyboard.KEY_UP) {
 			selectedIndex--;
 			scroll -= 20;
 			clampIndex();
-		}
-		else if(keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_RIGHT) {
+		} else if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_RIGHT) {
 			try {
 				getGames().get(selectedIndex).onClick(this, mod);
-			}
-			catch(IndexOutOfBoundsException ignored) {
+			} catch (IndexOutOfBoundsException ignored) {
 				// Prevent crash in the rare case that the index is desynchronised.
 			}
-		}
-		else if(keyCode == Keyboard.KEY_LEFT) {
+		} else if (keyCode == Keyboard.KEY_LEFT) {
 			back();
 		}
 	}
@@ -227,7 +210,7 @@ public class QuickPlayPalette extends GuiScreen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
-		if(mouseButton == 0) {
+		if (mouseButton == 0) {
 			mouseDown = true;
 			lastMouseX = lastMouseY = 0;
 		}
@@ -237,7 +220,7 @@ public class QuickPlayPalette extends GuiScreen {
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
 		super.mouseReleased(mouseX, mouseY, state);
 
-		if(state == 0) {
+		if (state == 0) {
 			mouseDown = false;
 		}
 	}
@@ -248,11 +231,10 @@ public class QuickPlayPalette extends GuiScreen {
 
 		int dWheel = Mouse.getEventDWheel();
 
-		if(dWheel != 0) {
-			if(dWheel > 0) {
+		if (dWheel != 0) {
+			if (dWheel > 0) {
 				dWheel = -1;
-			}
-			else if(dWheel < 0) {
+			} else if (dWheel < 0) {
 				dWheel = 1;
 			}
 
@@ -270,19 +252,17 @@ public class QuickPlayPalette extends GuiScreen {
 	}
 
 	public void back() {
-		if(currentGame != null) {
+		if (currentGame != null) {
 			selectedIndex = mod.getGames().indexOf(currentGame) + 1;
 			currentGame = null;
 
 			nextScroll = allGamesScroll;
-		}
-		else if(inAllGames) {
+		} else if (inAllGames) {
 			selectedIndex = mod.getRecentlyPlayed().size();
 			inAllGames = false;
 
 			nextScroll = recentGamesScroll;
-		}
-		else {
+		} else {
 			mc.displayGuiScreen(null);
 			return;
 		}

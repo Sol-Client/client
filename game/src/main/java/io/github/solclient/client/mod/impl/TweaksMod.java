@@ -1,19 +1,14 @@
 package io.github.solclient.client.mod.impl;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.*;
 
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.FullscreenToggleEvent;
-import io.github.solclient.client.event.impl.GammaEvent;
-import io.github.solclient.client.event.impl.PreRenderTickEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.data.Rectangle;
 
@@ -86,7 +81,7 @@ public class TweaksMod extends Mod {
 	protected void onEnable() {
 		super.onEnable();
 		enabled = true;
-		if(borderlessFullscreen && mc.isFullScreen()) {
+		if (borderlessFullscreen && mc.isFullScreen()) {
 			setBorderlessFullscreen(true);
 		}
 	}
@@ -95,7 +90,7 @@ public class TweaksMod extends Mod {
 	protected void onDisable() {
 		super.onDisable();
 		enabled = false;
-		if(borderlessFullscreen && mc.isFullScreen()) {
+		if (borderlessFullscreen && mc.isFullScreen()) {
 			setBorderlessFullscreen(false);
 			mc.toggleFullscreen();
 			mc.toggleFullscreen();
@@ -109,12 +104,11 @@ public class TweaksMod extends Mod {
 
 	@Override
 	public void postOptionChange(String key, Object value) {
-		if(isEnabled() && key.equals("borderlessFullscreen")) {
-			if(mc.isFullScreen()) {
-				if((boolean) value) {
+		if (isEnabled() && key.equals("borderlessFullscreen")) {
+			if (mc.isFullScreen()) {
+				if ((boolean) value) {
 					setBorderlessFullscreen(true);
-				}
-				else {
+				} else {
 					setBorderlessFullscreen(false);
 					mc.toggleFullscreen();
 					mc.toggleFullscreen();
@@ -125,14 +119,14 @@ public class TweaksMod extends Mod {
 
 	@EventHandler
 	public void onGamma(GammaEvent event) {
-		if(fullbright) {
+		if (fullbright) {
 			event.gamma = 20F;
 		}
 	}
 
 	@EventHandler
 	public void onFullscreenToggle(FullscreenToggleEvent event) {
-		if(borderlessFullscreen) {
+		if (borderlessFullscreen) {
 			event.applyState = false;
 			setBorderlessFullscreen(event.state);
 		}
@@ -140,10 +134,9 @@ public class TweaksMod extends Mod {
 
 	@EventHandler
 	public void onRender(PreRenderTickEvent event) {
-		if(fullscreenTime != -1
-				&& System.currentTimeMillis() - fullscreenTime >= 100) {
+		if (fullscreenTime != -1 && System.currentTimeMillis() - fullscreenTime >= 100) {
 			fullscreenTime = -1;
-			if(mc.inGameHasFocus) {
+			if (mc.inGameHasFocus) {
 				mc.mouseHelper.grabMouseCursor();
 			}
 		}
@@ -159,25 +152,25 @@ public class TweaksMod extends Mod {
 			Display.setFullscreen(false);
 			Display.setResizable(!state);
 
-			if(state) {
+			if (state) {
 				previousBounds = new Rectangle(Display.getX(), Display.getY(), mc.displayWidth, mc.displayHeight);
 
-				Display.setDisplayMode(new DisplayMode(Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight()));
+				Display.setDisplayMode(new DisplayMode(Display.getDesktopDisplayMode().getWidth(),
+						Display.getDesktopDisplayMode().getHeight()));
 				Display.setLocation(0, 0);
-				AccessMinecraft.getInstance().resizeWindow(Display.getDesktopDisplayMode().getWidth(), Display.getDesktopDisplayMode().getHeight());
-			}
-			else {
+				AccessMinecraft.getInstance().resizeWindow(Display.getDesktopDisplayMode().getWidth(),
+						Display.getDesktopDisplayMode().getHeight());
+			} else {
 				Display.setDisplayMode(new DisplayMode(previousBounds.getWidth(), previousBounds.getHeight()));
 				Display.setLocation(previousBounds.getX(), previousBounds.getY());
 				AccessMinecraft.getInstance().resizeWindow(previousBounds.getWidth(), previousBounds.getHeight());
 
-				if(mc.inGameHasFocus) {
+				if (mc.inGameHasFocus) {
 					mc.mouseHelper.ungrabMouseCursor();
 					fullscreenTime = System.currentTimeMillis();
 				}
 			}
-		}
-		catch(LWJGLException error) {
+		} catch (LWJGLException error) {
 			logger.error("Could not totggle borderless fullscreen", error);
 		}
 	}

@@ -1,8 +1,6 @@
 package io.github.solclient.client.mod.impl.replay;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.google.gson.annotations.Expose;
 import com.replaymod.core.ReplayMod;
@@ -10,16 +8,10 @@ import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.OpenGuiSc
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameOverlayElement;
-import io.github.solclient.client.event.impl.PostGameOverlayRenderEvent;
-import io.github.solclient.client.event.impl.WorldLoadEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.hud.HudPosition;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.replay.fix.SCReplayModBackend;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import io.github.solclient.client.util.data.Colour;
@@ -27,8 +19,8 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
 
 /**
- * Sol Client representation of Replay Mod.
- * This allows it to appear in the mod list.
+ * Sol Client representation of Replay Mod. This allows it to appear in the mod
+ * list.
  *
  * Originally by CrushedPixel and johni0702.
  */
@@ -182,7 +174,7 @@ public class SCReplayMod extends Mod {
 
 		@EventHandler
 		public void onRender(PostGameOverlayRenderEvent event) {
-			if(event.type == GameOverlayElement.ALL && enabled && !isEnabled()) {
+			if (event.type == GameOverlayElement.ALL && enabled && !isEnabled()) {
 				render(mc.currentScreen instanceof MoveHudsScreen);
 			}
 		}
@@ -192,19 +184,18 @@ public class SCReplayMod extends Mod {
 	private void updateState(WorldClient world) {
 		updateSettings();
 
-		if(world == null && deferedState != null && deferedState != enabled) {
+		if (world == null && deferedState != null && deferedState != enabled) {
 			enabled = deferedState;
-			if(deferedState) {
-				for(Object event : registerOnEnable) {
+			if (deferedState) {
+				for (Object event : registerOnEnable) {
 					Client.INSTANCE.bus.register(event);
 					unregisterOnDisable.add(event);
 				}
 				registerOnEnable.clear();
 
 				OpenGuiScreenCallback.EVENT.invoker().openGuiScreen(mc.currentScreen);
-			}
-			else {
-				for(Object event : unregisterOnDisable) {
+			} else {
+				for (Object event : unregisterOnDisable) {
 					Client.INSTANCE.bus.unregister(event);
 					registerOnEnable.add(event);
 				}
@@ -215,10 +206,9 @@ public class SCReplayMod extends Mod {
 	}
 
 	public void addEvent(Object event) {
-		if(isEnabled()) {
+		if (isEnabled()) {
 			unregisterOnDisable.add(event);
-		}
-		else {
+		} else {
 			registerOnEnable.add(event);
 			Client.INSTANCE.bus.unregister(event);
 		}

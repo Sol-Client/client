@@ -1,7 +1,6 @@
 package io.github.solclient.client.mod.impl.hypixeladditions;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import io.github.solclient.client.ChatChannelSystem;
 import io.github.solclient.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;

@@ -1,26 +1,13 @@
 package io.github.solclient.client.event;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.WrongMethodTypeException;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.invoke.*;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.apache.commons.lang3.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import net.minecraft.client.Minecraft;
+import org.apache.logging.log4j.*;
 
 /**
  * Event bus system focused on performance.
@@ -60,13 +47,12 @@ public class EventBus {
 	}
 
 	public void register(Object obj) {
-		for(Method method : getMethods(obj.getClass())) {
-			if(validate(method)) {
+		for (Method method : getMethods(obj.getClass())) {
+			if (validate(method)) {
 				try {
 					handlers.computeIfAbsent(method.getParameters()[0].getType(), (ignore) -> new ArrayList<>())
 							.add(new MethodData(obj, method));
-				}
-				catch(IllegalAccessException error) {
+				} catch (IllegalAccessException error) {
 					LOGGER.error("Could not register " + method.getName(), error);
 				}
 			}
@@ -74,47 +60,45 @@ public class EventBus {
 	}
 
 	public void unregister(Object obj) {
-		if(inPost) {
+		if (inPost) {
 			toRemove.add(obj);
 			return;
 		}
 
-		for(List<MethodData> methods : handlers.values()) {
+		for (List<MethodData> methods : handlers.values()) {
 			methods.removeIf((method) -> method.instance == obj);
 		}
 	}
 
 	public <T> T post(T event) {
-		if(!handlers.containsKey(event.getClass())) {
+		if (!handlers.containsKey(event.getClass())) {
 			return event;
 		}
 
 		try {
 			toRemove.clear();
 			inPost = true;
-			for(MethodData method : handlers.get(event.getClass())) {
+			for (MethodData method : handlers.get(event.getClass())) {
 				try {
 					method.target.invoke(method.instance, event);
-				}
-				catch(WrongMethodTypeException error) {
+				} catch (WrongMethodTypeException error) {
 					LOGGER.error("Failed to invoke " + method.name + ":", error);
-				}
-				catch(Throwable error) {
+				} catch (Throwable error) {
 					LOGGER.error("Error while executing " + method.name + ":", error);
 				}
 			}
 			inPost = false;
 			toRemove.forEach(this::unregister);
-		}
-		catch(ConcurrentModificationException ignored) {
+		} catch (ConcurrentModificationException ignored) {
 		}
 
 		return event;
 	}
 
 	private boolean validate(Method method) {
-		if(method.isAnnotationPresent(EventHandler.class)) {
-			Validate.isTrue(method.getParameterCount() == 1, "Method " + method.getName() + " has " + method.getParameterCount() + " parameters; expected 1.");
+		if (method.isAnnotationPresent(EventHandler.class)) {
+			Validate.isTrue(method.getParameterCount() == 1,
+					"Method " + method.getName() + " has " + method.getParameterCount() + " parameters; expected 1.");
 			return true;
 		}
 		return false;

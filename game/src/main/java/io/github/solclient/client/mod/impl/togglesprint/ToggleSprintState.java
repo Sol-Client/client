@@ -3,8 +3,7 @@ package io.github.solclient.client.mod.impl.togglesprint;
 import net.minecraft.client.resources.I18n;
 
 public enum ToggleSprintState {
-	HELD,
-	TOGGLED;
+	HELD, TOGGLED;
 
 	@Override
 	public String toString() {

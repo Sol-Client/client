@@ -1,44 +1,22 @@
 package io.github.solclient.client.mod.impl.discordrpc.socket;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.*;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.framing.CloseFrame;
 import org.java_websocket.handshake.ServerHandshake;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
-import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
-import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.Utils;
-import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.JsonException;
 
 /**
- * Socket connection to Discord client.
- * Uses StreamKit.
+ * Socket connection to Discord client. Uses StreamKit.
  */
 public class DiscordSocket extends WebSocketClient {
 
@@ -65,93 +43,84 @@ public class DiscordSocket extends WebSocketClient {
 	}
 
 	@Override
-	public void onOpen(ServerHandshake handshake) {}
+	public void onOpen(ServerHandshake handshake) {
+	}
 
 	@Override
 	public void onMessage(String message) {
 		try {
 			JsonObject obj = JsonParser.parseString(message).getAsJsonObject();
 
-			if(obj.has("cmd")) {
+			if (obj.has("cmd")) {
 				String cmd = obj.get("cmd").getAsString();
 				String evt = null;
 				JsonObject data = null;
 				JsonObject userData = null;
 				String userId = null;
 
-				if(obj.has("evt") && !obj.get("evt").isJsonNull()) {
+				if (obj.has("evt") && !obj.get("evt").isJsonNull()) {
 					evt = obj.get("evt").getAsString();
 				}
 
-				if(obj.has("data") && obj.get("data").isJsonObject()) {
+				if (obj.has("data") && obj.get("data").isJsonObject()) {
 					data = obj.get("data").getAsJsonObject();
 				}
 
-				if(data != null && data.has("user") && data.get("user").isJsonObject()) {
+				if (data != null && data.has("user") && data.get("user").isJsonObject()) {
 					userData = data.get("user").getAsJsonObject();
 					userId = userData.get("id").getAsString();
 				}
 
-				if(cmd.equals("DISPATCH") && evt != null) {
-					if(evt.equals("READY")) {
+				if (cmd.equals("DISPATCH") && evt != null) {
+					if (evt.equals("READY")) {
 						obtainAccessToken1();
-					}
-					else if(evt.equals("VOICE_CHANNEL_SELECT")) {
-						if(data.get("channel_id").isJsonNull()) {
-							if(currentVoiceChannel != null) {
+					} else if (evt.equals("VOICE_CHANNEL_SELECT")) {
+						if (data.get("channel_id").isJsonNull()) {
+							if (currentVoiceChannel != null) {
 								channelDisconnected();
 							}
 
 							currentVoiceChannel = null;
-						}
-						else {
+						} else {
 							currentVoiceChannel = data.get("channel_id").getAsString();
 							channelConnected();
 						}
-					}
-					else if(evt.equals("VOICE_STATE_CREATE") || evt.equals("VOICE_STATE_UPDATE")) {
-						if(currentVoiceChannel == null) {
+					} else if (evt.equals("VOICE_STATE_CREATE") || evt.equals("VOICE_STATE_UPDATE")) {
+						if (currentVoiceChannel == null) {
 							findUser();
 						}
 
 						voiceCallUsers.computeIfAbsent(userId, User::new).update(data, userData);
-					}
-					else if(evt.equals("VOICE_STATE_DELETE") && userId != null) {
+					} else if (evt.equals("VOICE_STATE_DELETE") && userId != null) {
 						voiceCallUsers.remove(userId).deleteTexture();
-					}
-					else if(evt.equals("SPEAKING_START") || evt.equals("SPEAKING_STOP")) {
+					} else if (evt.equals("SPEAKING_START") || evt.equals("SPEAKING_STOP")) {
 						User user = voiceCallUsers.get(data.get("user_id").getAsString());
 
-						if(user != null) {
+						if (user != null) {
 							user.setSpeaking(evt.equals("SPEAKING_START"));
 						}
 					}
-				}
-				else if(cmd.equals("GET_SELECTED_VOICE_CHANNEL") && data != null && !data.get("id").isJsonNull()) {
+				} else if (cmd.equals("GET_SELECTED_VOICE_CHANNEL") && data != null && !data.get("id").isJsonNull()) {
 					currentVoiceChannel = data.get("id").getAsString();
 
-					for(JsonElement elem : data.get("voice_states").getAsJsonArray()) {
+					for (JsonElement elem : data.get("voice_states").getAsJsonArray()) {
 						JsonObject voiceState = elem.getAsJsonObject();
 						User user = new User(userId);
 						user.update(voiceState, userData);
 					}
 
 					channelConnected();
-				}
-				else if(cmd.equals("AUTHORIZE")) {
+				} else if (cmd.equals("AUTHORIZE")) {
 					obtainAccessToken2(obj.get("data").getAsJsonObject().get("code").getAsString());
-				}
-				else if(cmd.equals("AUTHENTICATE")) {
-					if("ERROR".equals(evt)) {
+				} else if (cmd.equals("AUTHENTICATE")) {
+					if ("ERROR".equals(evt)) {
 						obtainAccessToken1();
-					}
-					else if(obj.has("data")) {
+					} else if (obj.has("data")) {
 						authCompleted();
 					}
 				}
 			}
-		}
-		catch(IOException | IllegalArgumentException error) {
+		} catch (IOException | IllegalArgumentException error) {
 			mod.socketError(error);
 		}
 	}
@@ -172,20 +141,20 @@ public class DiscordSocket extends WebSocketClient {
 	private void channelConnected() {
 		subscribe("VOICE_STATE_CREATE", currentVoiceChannel);
 		subscribe("VOICE_STATE_UPDATE", currentVoiceChannel);
-        subscribe("VOICE_STATE_DELETE", currentVoiceChannel);
-        subscribe("SPEAKING_START", currentVoiceChannel);
-        subscribe("SPEAKING_STOP", currentVoiceChannel);
+		subscribe("VOICE_STATE_DELETE", currentVoiceChannel);
+		subscribe("SPEAKING_START", currentVoiceChannel);
+		subscribe("SPEAKING_STOP", currentVoiceChannel);
 	}
 
 	private void channelDisconnected() {
 		unsubscribe("VOICE_STATE_CREATE", currentVoiceChannel);
 		unsubscribe("VOICE_STATE_UPDATE", currentVoiceChannel);
-        unsubscribe("VOICE_STATE_DELETE", currentVoiceChannel);
-        unsubscribe("SPEAKING_START", currentVoiceChannel);
-        unsubscribe("SPEAKING_STOP", currentVoiceChannel);
+		unsubscribe("VOICE_STATE_DELETE", currentVoiceChannel);
+		unsubscribe("SPEAKING_START", currentVoiceChannel);
+		unsubscribe("SPEAKING_STOP", currentVoiceChannel);
 
-        voiceCallUsers.values().forEach(User::deleteTexture);
-        voiceCallUsers.clear();
+		voiceCallUsers.values().forEach(User::deleteTexture);
+		voiceCallUsers.clear();
 	}
 
 	private void subscribe(String event) {
@@ -223,7 +192,7 @@ public class DiscordSocket extends WebSocketClient {
 		JsonObject command = new JsonObject();
 		command.addProperty("cmd", value ? "SUBSCRIBE" : "UNSUBSCRIBE");
 
-		if(args != null) {
+		if (args != null) {
 			command.add("args", args);
 		}
 
@@ -294,10 +263,11 @@ public class DiscordSocket extends WebSocketClient {
 
 	@Override
 	public void onClose(int code, String reason, boolean remote) {
-        voiceCallUsers.values().forEach(User::deleteTexture);
+		voiceCallUsers.values().forEach(User::deleteTexture);
 
-		if(code != CloseFrame.NORMAL) {
-			mod.socketError(new IllegalStateException("Socket closed abnormally (error " + code + ": " + (reason == null || reason.isEmpty() ? "no message" : reason) + ")"));
+		if (code != CloseFrame.NORMAL) {
+			mod.socketError(new IllegalStateException("Socket closed abnormally (error " + code + ": "
+					+ (reason == null || reason.isEmpty() ? "no message" : reason) + ")"));
 		}
 	}
 

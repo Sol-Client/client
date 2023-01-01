@@ -27,25 +27,20 @@ package io.github.solclient.client.util.font;
 
 import java.awt.FontFormatException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
-import org.newdawn.slick.font.effects.Effect;
+import org.newdawn.slick.*;
+import org.newdawn.slick.font.effects.*;
 
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StringUtils;
+import net.minecraft.util.*;
 
 public class SlickFontRenderer implements Font {
 
@@ -74,7 +69,7 @@ public class SlickFontRenderer implements Font {
 
 	@Override
 	public int renderString(String text, float x, float y, int colour) {
-		if(text == null || slickFont == null) {
+		if (text == null || slickFont == null) {
 			return 0;
 		}
 
@@ -106,39 +101,38 @@ public class SlickFontRenderer implements Font {
 
 		String[] parts = COLOR_CODE_PATTERN.split(text);
 		int index = 0;
-		for(String s : parts) {
-			for(String s2 : s.split("\n")) {
-				for(String s3 : s2.split("\r")) {
+		for (String s : parts) {
+			for (String s2 : s.split("\n")) {
+				for (String s3 : s2.split("\r")) {
 
-					if(alpha != 0) {
+					if (alpha != 0) {
 						slickFont.drawString(x, y, s3, new org.newdawn.slick.Color(currentColour));
 					}
 
 					x += slickFont.getWidth(s3);
 
 					index += s3.length();
-					if(index < characters.length && characters[index] == '\r') {
+					if (index < characters.length && characters[index] == '\r') {
 						x = originalX;
 						index++;
 					}
 				}
-				if(index < characters.length && characters[index] == '\n') {
+				if (index < characters.length && characters[index] == '\n') {
 					x = originalX;
 					y += getHeight(s2) * 2;
 					index++;
 				}
 			}
-			if(index < characters.length) {
+			if (index < characters.length) {
 				char colorCode = characters[index];
-				if(colorCode == '§') {
+				if (colorCode == '§') {
 					char colorChar = characters[index + 1];
 					int codeIndex = ("0123456789" + "abcdef").indexOf(colorChar);
-					if(codeIndex < 0) {
-						if(colorChar == 'r') {
+					if (codeIndex < 0) {
+						if (colorChar == 'r') {
 							currentColour = colour;
 						}
-					}
-					else {
+					} else {
 						currentColour = colorCodes[codeIndex];
 					}
 					index += 2;
@@ -157,8 +151,8 @@ public class SlickFontRenderer implements Font {
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 		scaleFactor = resolution.getScaleFactor();
 
-		if(scaleFactor != prevScaleFactor) {
-			if(slickFont != null) {
+		if (scaleFactor != prevScaleFactor) {
+			if (slickFont != null) {
 				free();
 			}
 
@@ -196,8 +190,7 @@ public class SlickFontRenderer implements Font {
 
 				((List<Effect>) slickFont.getEffects()).add(new ColorEffect(Colour.WHITE.toAWT()));
 				slickFont.loadGlyphs();
-			}
-			catch(FontFormatException | IOException | SlickException error) {
+			} catch (FontFormatException | IOException | SlickException error) {
 				// fallback to vanilla font
 				slickFont = null;
 				SolClientMod.instance.fancyFont = false;
@@ -223,23 +216,27 @@ public class SlickFontRenderer implements Font {
 	}
 
 	public float getAscent() {
-		if(slickFont == null) return 0;
+		if (slickFont == null)
+			return 0;
 		return slickFont.getAscent();
 	}
 
 	@Override
 	public float getWidth(String text) {
-		if(slickFont == null) return 0;
+		if (slickFont == null)
+			return 0;
 		return slickFont.getWidth(EnumChatFormatting.getTextWithoutFormattingCodes(text)) / scaleFactor;
 	}
 
 	public float getCharWidth(char c) {
-		if(slickFont == null) return 0;
+		if (slickFont == null)
+			return 0;
 		return slickFont.getWidth(String.valueOf(c));
 	}
 
 	public float getHeight(String s) {
-		if(slickFont == null) return 0;
+		if (slickFont == null)
+			return 0;
 		return slickFont.getHeight(s) / 2.0F;
 	}
 
@@ -253,10 +250,10 @@ public class SlickFontRenderer implements Font {
 		String[] splitText = text.split(" ");
 		StringBuilder currentString = new StringBuilder();
 
-		for(String word : splitText) {
+		for (String word : splitText) {
 			String potential = currentString + " " + word;
 
-			if(getWidth(potential) >= wrapWidth) {
+			if (getWidth(potential) >= wrapWidth) {
 				lines.add(currentString.toString());
 				currentString = new StringBuilder();
 			}

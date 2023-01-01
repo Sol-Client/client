@@ -1,24 +1,17 @@
 package io.github.solclient.client.mod.impl.hud;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.TweaksMod;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.data.VerticalAlignment;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.*;
 import net.minecraft.util.ResourceLocation;
 
 public class PotionEffectsMod extends HudMod {
@@ -61,15 +54,15 @@ public class PotionEffectsMod extends HudMod {
 	public Rectangle getBounds(Position position) {
 		int y = position.getY();
 
-		switch(alignment) {
-			case TOP:
-				break;
-			case MIDDLE:
-				y -= getHeight(2) / 2 * getScale();
-				break;
-			case BOTTOM:
-				y -= getHeight(2) * getScale();
-				break;
+		switch (alignment) {
+		case TOP:
+			break;
+		case MIDDLE:
+			y -= getHeight(2) / 2 * getScale();
+			break;
+		case BOTTOM:
+			y -= getHeight(2) * getScale();
+			break;
 		}
 
 		return new Rectangle(position.getX(), y, getWidth(), getHeight(2) + 12 + (background ? 2 : 0));
@@ -89,29 +82,28 @@ public class PotionEffectsMod extends HudMod {
 		int y = position.getY();
 		Collection<PotionEffect> effects;
 
-		if(editMode || mc.thePlayer == null) {
+		if (editMode || mc.thePlayer == null) {
 			effects = Arrays.asList(new PotionEffect(1, 0), new PotionEffect(5, 0));
-		}
-		else {
+		} else {
 			GlStateManager.enableBlend();
 			effects = mc.thePlayer.getActivePotionEffects();
 		}
 
-		switch(alignment) {
-			case TOP:
-				break;
-			case MIDDLE:
-				y -= (getHeight(effects.size()) / 2);
-				break;
-			case BOTTOM:
-				y -= getHeight(effects.size());
+		switch (alignment) {
+		case TOP:
+			break;
+		case MIDDLE:
+			y -= (getHeight(effects.size()) / 2);
+			break;
+		case BOTTOM:
+			y -= getHeight(effects.size());
 		}
 
-		if(!effects.isEmpty()) {
+		if (!effects.isEmpty()) {
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.disableLighting();
 
-			for(PotionEffect effect : effects) {
+			for (PotionEffect effect : effects) {
 				Potion potion = Potion.potionTypes[effect.getPotionID()];
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
@@ -120,35 +112,33 @@ public class PotionEffectsMod extends HudMod {
 				int iconX = x + 6;
 				int textX = x + 28;
 
-				if(!title && !duration) {
+				if (!title && !duration) {
 					iconX++;
 				}
 
-				if(!icon) {
+				if (!icon) {
 					textX -= 18;
 				}
 
-				if(background) {
+				if (background) {
 					Utils.drawTexture(x, y, 0, 166, width / 2, 32, 0);
 					Utils.drawTexture(x + width / 2, y, 120 - width / 2, 166, width / 2, 32, 0);
 				}
 
 				int centreText = y + 12;
 
-				if(icon && potion.hasStatusIcon()) {
+				if (icon && potion.hasStatusIcon()) {
 					int icon = potion.getStatusIconIndex();
-					Utils.drawTexture(iconX, y + 7, icon % 8 * 18, 198 + icon / 8 * 18, 18,
-							18, 0);
+					Utils.drawTexture(iconX, y + 7, icon % 8 * 18, 198 + icon / 8 * 18, 18, 18, 0);
 				}
 
-				if(title) {
+				if (title) {
 					String titleText = I18n.format(potion.getName());
 
-					if(effect.getAmplifier() > 0 && effect.getAmplifier() < 4) {
-						if(TweaksMod.enabled && TweaksMod.instance.arabicNumerals) {
+					if (effect.getAmplifier() > 0 && effect.getAmplifier() < 4) {
+						if (TweaksMod.enabled && TweaksMod.instance.arabicNumerals) {
 							titleText += " " + (effect.getAmplifier() + 1);
-						}
-						else {
+						} else {
 							titleText += " " + I18n.format("enchantment.level." + (effect.getAmplifier() + 1));
 						}
 					}
@@ -156,7 +146,7 @@ public class PotionEffectsMod extends HudMod {
 					font.drawString(titleText, textX, duration ? y + 7 : centreText, titleColour.getValue(), shadow);
 				}
 
-				if(duration) {
+				if (duration) {
 					String duration = Potion.getDurationString(effect);
 					font.drawString(duration, textX, title ? y + 17 : centreText, durationColour.getValue(), shadow);
 				}
@@ -169,12 +159,12 @@ public class PotionEffectsMod extends HudMod {
 	private int getWidth() {
 		int base = 0;
 
-		if(!icon) {
+		if (!icon) {
 			base = -18;
 		}
 
-		if(!title) {
-			if(!duration) {
+		if (!title) {
+			if (!duration) {
 				return base + 32;
 			}
 

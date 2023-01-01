@@ -1,7 +1,6 @@
 package io.github.solclient.client.util;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Data
 @RequiredArgsConstructor
@@ -12,8 +11,7 @@ public class SemVer {
 	public static SemVer parseOrNull(String string) {
 		try {
 			return parse(string);
-		}
-		catch(IllegalArgumentException error) {
+		} catch (IllegalArgumentException error) {
 			return null;
 		}
 	}
@@ -21,54 +19,52 @@ public class SemVer {
 	public static SemVer parse(String string) {
 		String initial = string;
 
-		if(string.indexOf('.') == -1) {
+		if (string.indexOf('.') == -1) {
 			throw new IllegalArgumentException(initial);
 		}
 
 		String majorString = string.substring(0, string.indexOf('.'));
 		string = string.substring(string.indexOf('.') + 1);
 
-		if(string.indexOf('.') == -1) {
+		if (string.indexOf('.') == -1) {
 			throw new IllegalArgumentException(initial);
 		}
 
 		String minorString = string.substring(0, string.indexOf('.'));
 		string = string.substring(string.indexOf('.') + 1);
 
-		if(string.indexOf('.') != -1) {
+		if (string.indexOf('.') != -1) {
 			throw new IllegalArgumentException(initial);
 		}
 
 		String patchString = string;
 
-		if(string.isEmpty()) {
+		if (string.isEmpty()) {
 			throw new IllegalArgumentException(initial);
 		}
 
 		try {
-			return new SemVer(Integer.parseInt(majorString), Integer.parseInt(minorString), Integer.parseInt(patchString));
-		}
-		catch(NumberFormatException error) {
+			return new SemVer(Integer.parseInt(majorString), Integer.parseInt(minorString),
+					Integer.parseInt(patchString));
+		} catch (NumberFormatException error) {
 			throw new NumberFormatException(error.getMessage() + ", full string: \"" + initial + "\"");
 		}
 	}
 
 	public boolean isNewerThan(SemVer version) {
-		if(version == null) {
+		if (version == null) {
 			return false;
 		}
 
-		if(major > version.major) {
+		if (major > version.major) {
 			return true;
-		}
-		else if(major < version.major) {
+		} else if (major < version.major) {
 			return false;
 		}
 
-		if(minor > version.minor) {
+		if (minor > version.minor) {
 			return true;
-		}
-		else if(minor < version.minor) {
+		} else if (minor < version.minor) {
 			return false;
 		}
 

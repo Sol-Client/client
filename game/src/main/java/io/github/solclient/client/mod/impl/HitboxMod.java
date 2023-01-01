@@ -5,32 +5,24 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.GlobalConstants;
+import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.HitboxRenderEvent;
-import io.github.solclient.client.event.impl.HitboxToggleEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 
 public class HitboxMod extends Mod {
 
 	@Option
-	private final KeyBinding toggleHitboxes = new KeyBinding(getTranslationKey() + ".option.toggleHitboxes", 0, GlobalConstants.KEY_CATEGORY);
+	private final KeyBinding toggleHitboxes = new KeyBinding(getTranslationKey() + ".option.toggleHitboxes", 0,
+			GlobalConstants.KEY_CATEGORY);
 	@Expose
 	@Option
 	private boolean boundingBox = true;
@@ -65,7 +57,7 @@ public class HitboxMod extends Mod {
 	@Override
 	public void postStart() {
 		super.postStart();
-		if(isEnabled()) {
+		if (isEnabled()) {
 			mc.getRenderManager().setDebugBoundingBox(toggled);
 		}
 	}
@@ -73,10 +65,11 @@ public class HitboxMod extends Mod {
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		if(mc.getRenderManager() != null) {
+		if (mc.getRenderManager() != null) {
 			toggled = mc.getRenderManager().isDebugBoundingBox();
 		}
-		while(toggleHitboxes.isPressed());
+		while (toggleHitboxes.isPressed())
+			;
 	}
 
 	@Override
@@ -101,16 +94,17 @@ public class HitboxMod extends Mod {
 
 		float half = event.entity.width / 2.0F;
 
-		if(boundingBox) {
+		if (boundingBox) {
 			AxisAlignedBB box = event.entity.getEntityBoundingBox();
 			AxisAlignedBB offsetBox = new AxisAlignedBB(box.minX - event.entity.posX + event.x,
 					box.minY - event.entity.posY + event.y, box.minZ - event.entity.posZ + event.z,
 					box.maxX - event.entity.posX + event.x, box.maxY - event.entity.posY + event.y,
 					box.maxZ - event.entity.posZ + event.z);
-			RenderGlobal.drawOutlinedBoundingBox(offsetBox, boundingBoxColour.getRed(), boundingBoxColour.getGreen(), boundingBoxColour.getBlue(), boundingBoxColour.getAlpha());
+			RenderGlobal.drawOutlinedBoundingBox(offsetBox, boundingBoxColour.getRed(), boundingBoxColour.getGreen(),
+					boundingBoxColour.getBlue(), boundingBoxColour.getAlpha());
 		}
 
-		if(eyeHeight && event.entity instanceof EntityLivingBase) {
+		if (eyeHeight && event.entity instanceof EntityLivingBase) {
 			RenderGlobal.drawOutlinedBoundingBox(
 					new AxisAlignedBB(event.x - half, event.y + event.entity.getEyeHeight() - 0.009999999776482582D,
 							event.z - half, event.x + half,
@@ -122,14 +116,17 @@ public class HitboxMod extends Mod {
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 
-		if(lookVector) {
+		if (lookVector) {
 			Vec3 look = event.entity.getLook(event.partialTicks);
 			worldrenderer.begin(3, DefaultVertexFormats.POSITION_COLOR);
 			worldrenderer.pos(event.x, event.y + event.entity.getEyeHeight(), event.z).color(0, 0, 255, 255)
 					.endVertex();
-			worldrenderer.pos(event.x + look.xCoord * 2,
-					event.y + event.entity.getEyeHeight() + look.yCoord * 2, event.z + look.zCoord * 2)
-					.color(lookVectorColour.getRed(), lookVectorColour.getGreen(), lookVectorColour.getBlue(), lookVectorColour.getAlpha()).endVertex();
+			worldrenderer
+					.pos(event.x + look.xCoord * 2, event.y + event.entity.getEyeHeight() + look.yCoord * 2,
+							event.z + look.zCoord * 2)
+					.color(lookVectorColour.getRed(), lookVectorColour.getGreen(), lookVectorColour.getBlue(),
+							lookVectorColour.getAlpha())
+					.endVertex();
 			tessellator.draw();
 		}
 
@@ -149,9 +146,9 @@ public class HitboxMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		while(toggleHitboxes.isPressed()) {
+		while (toggleHitboxes.isPressed()) {
 			// If debug shortcut is used, don't conflict.
-			if(toggleHitboxes.getKeyCode() == Keyboard.KEY_B && Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+			if (toggleHitboxes.getKeyCode() == Keyboard.KEY_B && Keyboard.isKeyDown(Keyboard.KEY_F3)) {
 				continue;
 			}
 

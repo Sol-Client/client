@@ -1,26 +1,13 @@
 package io.github.solclient.client.mod.impl.cosmetica;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.*;
 
-import cc.cosmetica.api.Cape;
-import cc.cosmetica.api.CosmeticaAPI;
-import cc.cosmetica.api.CosmeticaAPIException;
-import cc.cosmetica.api.FatalServerErrorException;
-import cc.cosmetica.api.Model;
-import cc.cosmetica.api.ServerResponse;
+import cc.cosmetica.api.*;
 import cc.cosmetica.api.ShoulderBuddies;
-import cc.cosmetica.api.UserInfo;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.WorldLoadEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.util.Utils;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,7 +44,7 @@ public class CosmeticaMod extends Mod {
 
 	private void clear() {
 		Texture.disposeAll();
-		if(!dataCache.isEmpty()) {
+		if (!dataCache.isEmpty()) {
 			dataCache = new HashMap<>();
 		}
 	}
@@ -65,7 +52,7 @@ public class CosmeticaMod extends Mod {
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
 		clear();
-		if(mc.thePlayer != null) {
+		if (mc.thePlayer != null) {
 			// prioritise the main player
 			get(mc.thePlayer);
 		}
@@ -73,13 +60,12 @@ public class CosmeticaMod extends Mod {
 
 	private void logIn() {
 		try {
-			if(mc.getSession().getProfile().getId() != null) {
+			if (mc.getSession().getProfile().getId() != null) {
 				api = CosmeticaAPI.fromMinecraftToken(mc.getSession().getToken(), mc.getSession().getUsername(),
 						mc.getSession().getProfile().getId());
 				return;
 			}
-		}
-		catch(NullPointerException | CosmeticaAPIException | IllegalStateException | FatalServerErrorException
+		} catch (NullPointerException | CosmeticaAPIException | IllegalStateException | FatalServerErrorException
 				| IOException error) {
 			logger.warn("Failed to authenticate with Cosmetica API; falling back to anonymous requests", error);
 		}
@@ -110,7 +96,7 @@ public class CosmeticaMod extends Mod {
 
 	public Optional<ResourceLocation> getCapeTexture(EntityPlayer player) {
 		Optional<Cape> optCape = get(player).flatMap(UserInfo::getCape);
-		if(!optCape.isPresent()) {
+		if (!optCape.isPresent()) {
 			return Optional.empty();
 		}
 		Cape cape = optCape.get();
@@ -127,26 +113,26 @@ public class CosmeticaMod extends Mod {
 	}
 
 	public Optional<UserInfo> get(UUID uuid, String username) {
-		if(uuid.version() != 4) {
+		if (uuid.version() != 4) {
 			return Optional.empty();
 		}
 
 		// no synchronisation for performance
 		UserInfo result = dataCache.get(uuid);
 
-		if(result == null) {
-			synchronized(dataCache) {
+		if (result == null) {
+			synchronized (dataCache) {
 				// ensure the fetch doesn't keep reoccurring
 				result = dataCache.putIfAbsent(uuid, UserInfo.DUMMY);
 			}
 
 			// it is possible that the result is no longer null when synchronised
-			if(result == null) {
+			if (result == null) {
 				fetch(uuid, username);
 			}
 		}
 
-		if(result == UserInfo.DUMMY) {
+		if (result == UserInfo.DUMMY) {
 			// return null instead of dummy
 			result = null;
 		}
@@ -158,12 +144,12 @@ public class CosmeticaMod extends Mod {
 		Utils.USER_DATA.submit(() -> {
 			ServerResponse<UserInfo> result = api.getUserInfo(uuid, username);
 
-			if(!result.isSuccessful()) {
+			if (!result.isSuccessful()) {
 				logger.warn("UserInfo request ({}, {}) failed", uuid, username, result.getException());
 				return;
 			}
 
-			synchronized(dataCache) {
+			synchronized (dataCache) {
 				dataCache.put(uuid, result.get());
 			}
 		});

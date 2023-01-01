@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.github.solclient.client.Client;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import net.minecraft.client.resources.I18n;
 
 /**
@@ -52,11 +51,11 @@ public enum ModCategory {
 	}
 
 	public List<Mod> getMods() {
-		if(this == PINNED) {
+		if (this == PINNED) {
 			return Client.INSTANCE.getPins().getMods();
 		}
 
-		if(mods == null) {
+		if (mods == null) {
 			mods = Client.INSTANCE.getMods().stream().filter((mod) -> mod.getCategory() == this)
 					.collect(Collectors.toList());
 		}

@@ -2,8 +2,7 @@ package io.github.solclient.client;
 
 import java.net.URL;
 
-import io.github.solclient.client.util.SemVer;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 
 public class GlobalConstants {
 

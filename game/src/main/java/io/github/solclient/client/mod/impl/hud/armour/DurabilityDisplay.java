@@ -3,10 +3,7 @@ package io.github.solclient.client.mod.impl.hud.armour;
 import net.minecraft.client.resources.I18n;
 
 public enum DurabilityDisplay {
-	OFF,
-	FRACTION,
-	REMAINING,
-	PERCENTAGE;
+	OFF, FRACTION, REMAINING, PERCENTAGE;
 
 	@Override
 	public String toString() {
@@ -14,15 +11,15 @@ public enum DurabilityDisplay {
 	}
 
 	public int getWidth() {
-		switch(this) {
-			case FRACTION:
-				return 67;
-			case REMAINING:
-				return 29;
-			case PERCENTAGE:
-				return 30;
-			default:
-				return 0;
+		switch (this) {
+		case FRACTION:
+			return 67;
+		case REMAINING:
+			return 29;
+		case PERCENTAGE:
+			return 30;
+		default:
+			return 0;
 		}
 	}
 

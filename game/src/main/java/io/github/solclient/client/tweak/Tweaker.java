@@ -2,17 +2,13 @@ package io.github.solclient.client.tweak;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.spongepowered.asm.launch.MixinBootstrap;
-import org.spongepowered.asm.mixin.MixinEnvironment;
-import org.spongepowered.asm.mixin.Mixins;
+import org.spongepowered.asm.mixin.*;
 
 import lombok.SneakyThrows;
-import net.minecraft.launchwrapper.ITweaker;
-import net.minecraft.launchwrapper.LaunchClassLoader;
+import net.minecraft.launchwrapper.*;
 
 public class Tweaker implements ITweaker {
 
@@ -26,23 +22,22 @@ public class Tweaker implements ITweaker {
 		try {
 			Class.forName("optifine.Patcher");
 			optiFine = true;
-		}
-		catch(ClassNotFoundException ignored) {
+		} catch (ClassNotFoundException ignored) {
 		}
 
 		this.args.addAll(args);
 
-		if(gameDir != null) {
+		if (gameDir != null) {
 			this.args.add("--gameDir");
 			this.args.add(gameDir.getAbsolutePath());
 		}
 
-		if(assetsDir != null) {
+		if (assetsDir != null) {
 			this.args.add("--assetsDir");
 			this.args.add(assetsDir.getAbsolutePath());
 		}
 
-		if(profile != null) {
+		if (profile != null) {
 			this.args.add("--version");
 			this.args.add(profile);
 		}
@@ -64,7 +59,8 @@ public class Tweaker implements ITweaker {
 		Mixins.addConfiguration("mixins.render.replaymod.json");
 		Mixins.addConfiguration("mixins.render.blend.replaymod.json");
 		Mixins.addConfiguration("mixins.replay.replaymod.json");
-		if(optiFine) Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
+		if (optiFine)
+			Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
 		Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
 
 		MixinEnvironment env = MixinEnvironment.getDefaultEnvironment();
@@ -77,7 +73,7 @@ public class Tweaker implements ITweaker {
 
 	@SneakyThrows
 	private void removeClassLoaderException(String exception) {
-		if(exceptions == null) {
+		if (exceptions == null) {
 			getExceptions();
 		}
 

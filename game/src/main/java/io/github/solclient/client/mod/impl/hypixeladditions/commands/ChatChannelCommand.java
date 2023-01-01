@@ -1,17 +1,11 @@
 package io.github.solclient.client.mod.impl.hypixeladditions.commands;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-import io.github.solclient.client.ChatChannelSystem;
-import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
-import io.github.solclient.client.mod.impl.hypixeladditions.HypixelChatChannels;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import io.github.solclient.client.*;
+import io.github.solclient.client.mod.impl.hypixeladditions.*;
+import net.minecraft.command.*;
+import net.minecraft.util.*;
 
 public class ChatChannelCommand extends HypixelAdditionsCommand {
 
@@ -22,33 +16,29 @@ public class ChatChannelCommand extends HypixelAdditionsCommand {
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
 		ChatChannelSystem system = Client.INSTANCE.getChatChannelSystem();
-		if(args.length == 1) {
-			if(args[0].equals("c") || args[0].equals("coop") || args[0].equals("co-op") || args[0].equals("skyblock_coop") || args[0].equals("skyblock_co-op")) {
+		if (args.length == 1) {
+			if (args[0].equals("c") || args[0].equals("coop") || args[0].equals("co-op")
+					|| args[0].equals("skyblock_coop") || args[0].equals("skyblock_co-op")) {
 				system.setChannel(HypixelChatChannels.COOP);
-			}
-			else if(args[0].equals("a") || args[0].equals("all")) {
+			} else if (args[0].equals("a") || args[0].equals("all")) {
 				system.setChannel(ChatChannelSystem.ALL);
-			}
-			else if(args[0].equals("p") || args[0].equals("party")) {
+			} else if (args[0].equals("p") || args[0].equals("party")) {
 				system.setChannel(HypixelChatChannels.PARTY);
-			}
-			else if(args[0].equals("o") || args[0].equals("officer") || args[0].equals("officers") || args[0].equals("guild_officer") || args[0].equals("guild_officers")) {
+			} else if (args[0].equals("o") || args[0].equals("officer") || args[0].equals("officers")
+					|| args[0].equals("guild_officer") || args[0].equals("guild_officers")) {
 				system.setChannel(HypixelChatChannels.OFFICER);
-			}
-			else if(args[0].equals("g") || args[0].equals("guild")) {
+			} else if (args[0].equals("g") || args[0].equals("guild")) {
 				system.setChannel(HypixelChatChannels.GUILD);
-			}
-			else {
+			} else {
 				throw new WrongUsageException(getCommandUsage(sender));
 			}
-		}
-		else if(args.length == 2 && (args[0].equals("2") || args[0].equals("t") || args[0].equals("to"))) {
+		} else if (args.length == 2 && (args[0].equals("2") || args[0].equals("t") || args[0].equals("to"))) {
 			system.setChannel(ChatChannelSystem.getPrivateChannel(args[1]));
-		}
-		else {
+		} else {
 			throw new WrongUsageException("Usage: " + getCommandUsage(sender));
 		}
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Chat Channel: " + system.getChannelName()));
+		sender.addChatMessage(
+				new ChatComponentText(EnumChatFormatting.GREEN + "Chat Channel: " + system.getChannelName()));
 	}
 
 	@Override

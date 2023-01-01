@@ -3,13 +3,11 @@ package io.github.solclient.client.mixin.client;
 import java.io.IOException;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.ui.screen.BetterLanguageGui;
-import net.minecraft.client.gui.GuiLanguage;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
 
 @Mixin(GuiLanguage.class)
@@ -29,7 +27,6 @@ public class MixinGuiLanguage extends GuiScreen {
 		super.handleMouseInput();
 		betterList.handleMouseInput();
 	}
-
 
 	@Inject(method = "drawScreen", at = @At("HEAD"), cancellable = true)
 	public void overrideRender(int mouseX, int mouseY, float partialTicks, CallbackInfo callback) throws IOException {

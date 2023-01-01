@@ -2,10 +2,7 @@ package io.github.solclient.client.mod.hud;
 
 import com.replaymod.replay.ReplayModReplay;
 
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.renderer.GlStateManager;
 
 public abstract class BaseHudElement implements HudElement {
@@ -45,7 +42,7 @@ public abstract class BaseHudElement implements HudElement {
 	public float[] getHighPrecisionMultipliedBounds() {
 		Rectangle rectangle = getBounds();
 
-		if(rectangle == null) {
+		if (rectangle == null) {
 			return null;
 		}
 
@@ -56,7 +53,7 @@ public abstract class BaseHudElement implements HudElement {
 	public Rectangle getMultipliedBounds() {
 		Rectangle rectangle = getBounds();
 
-		if(rectangle == null) {
+		if (rectangle == null) {
 			return null;
 		}
 
@@ -66,7 +63,8 @@ public abstract class BaseHudElement implements HudElement {
 	@Override
 	public void render(boolean editMode) {
 		// Don't render HUD in replay or if marked as invisible.
-		if(!isVisible() || !(editMode || isShownInReplay() || ReplayModReplay.instance.getReplayHandler() == null)) return;
+		if (!isVisible() || !(editMode || isShownInReplay() || ReplayModReplay.instance.getReplayHandler() == null))
+			return;
 
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(getHudScale(), getHudScale(), getHudScale());

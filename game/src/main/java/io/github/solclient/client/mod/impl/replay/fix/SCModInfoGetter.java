@@ -1,7 +1,6 @@
 package io.github.solclient.client.mod.impl.replay.fix;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 import com.replaymod.replaystudio.data.ModInfo;
 

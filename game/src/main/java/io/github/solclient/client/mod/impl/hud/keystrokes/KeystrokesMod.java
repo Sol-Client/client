@@ -4,25 +4,16 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.CpsMonitor;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PlayerHeadRotateEvent;
-import io.github.solclient.client.event.impl.PostRenderTickEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
+import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessMinecraft;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
+import io.github.solclient.client.util.data.*;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 
 public class KeystrokesMod extends HudMod {
 
@@ -100,10 +91,14 @@ public class KeystrokesMod extends HudMod {
 	public Rectangle getBounds(Position position) {
 		int height = 0;
 
-		if(movement) height += 36;
-		if(mouse) height += 18;
-		if(mouseMovement) height += 36;
-		if(showSpace) height += 9;
+		if (movement)
+			height += 36;
+		if (mouse)
+			height += 18;
+		if (mouseMovement)
+			height += 36;
+		if (showSpace)
+			height += 9;
 
 		height--;
 
@@ -132,7 +127,7 @@ public class KeystrokesMod extends HudMod {
 		int y = position.getY();
 		float partialTicks = AccessMinecraft.getInstance().getTimerSC().renderPartialTicks;
 
-		if(movement) {
+		if (movement) {
 			w.render(x, y);
 			y += 18;
 			a.render(x, y);
@@ -141,12 +136,12 @@ public class KeystrokesMod extends HudMod {
 			y += 18;
 		}
 
-		if(mouseMovement) {
-			if(background) {
+		if (mouseMovement) {
+			if (background) {
 				GuiScreen.drawRect(x, y, x + space.width, y + 34, backgroundColour.getValue());
 			}
 
-			if(border) {
+			if (border) {
 				Utils.drawOutline(x, y, x + space.width, y + 34, borderColour.getValue());
 			}
 
@@ -154,14 +149,16 @@ public class KeystrokesMod extends HudMod {
 			GlStateManager.enableBlend();
 			GlStateManager.color(1, 1, 1);
 
-			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_keystrokes_mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
+			mc.getTextureManager().bindTexture(new ResourceLocation(
+					"textures/gui/sol_client_keystrokes_mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
 
 			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * partialTicks)) - 5;
 			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * partialTicks)) - 5;
 			GL11.glTranslatef(calculatedMouseX, calculatedMouseY, 0);
 
-			mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_keystrokes_mouse_ring_" + Utils.getTextureScale() + ".png"));
+			mc.getTextureManager().bindTexture(new ResourceLocation(
+					"textures/gui/sol_client_keystrokes_mouse_ring_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
 //			Utils.drawCircle(x + space.width / 2F + calculatedMouseX, y + (34F / 2F) + calculatedMouseY, 4, textColour.getValue());
 
@@ -169,13 +166,13 @@ public class KeystrokesMod extends HudMod {
 			y += 35;
 		}
 
-		if(mouse) {
+		if (mouse) {
 			lmb.render(x, y);
 			rmb.render(x, y);
 			y += 18;
 		}
 
-		if(showSpace) {
+		if (showSpace) {
 			space.render(x, y);
 		}
 	}

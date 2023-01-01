@@ -1,10 +1,7 @@
 package io.github.solclient.client.util.data;
 
 import io.github.solclient.client.util.Utils;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @ToString
 @EqualsAndHashCode
@@ -39,8 +36,7 @@ public class Rectangle {
 	}
 
 	public boolean contains(int x, int y) {
-		return x > this.x && x < this.x + width
-				&& y > this.y && y < this.y + height;
+		return x > this.x && x < this.x + width && y > this.y && y < this.y + height;
 	}
 
 	public void fill(Colour colour) {

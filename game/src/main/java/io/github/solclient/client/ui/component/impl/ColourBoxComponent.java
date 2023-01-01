@@ -1,9 +1,7 @@
 package io.github.solclient.client.ui.component.impl;
 
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.controller.Controller;
+import io.github.solclient.client.ui.component.*;
+import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 
@@ -12,9 +10,8 @@ public class ColourBoxComponent extends ScaledIconComponent {
 	private final Component hoverController;
 
 	public ColourBoxComponent(Controller<Colour> colourController, Component hoverController) {
-		super("sol_client_colour_fill", 16, 16,
-				new AnimatedColourController(
-						(component, defaultColour) -> colourController.get(component, defaultColour)));
+		super("sol_client_colour_fill", 16, 16, new AnimatedColourController(
+				(component, defaultColour) -> colourController.get(component, defaultColour)));
 
 		this.hoverController = hoverController;
 

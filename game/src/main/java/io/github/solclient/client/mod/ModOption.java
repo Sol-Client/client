@@ -1,23 +1,15 @@
 package io.github.solclient.client.mod;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.io.*;
+import java.lang.reflect.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
-import io.github.solclient.client.mod.annotation.FileOption;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.StringOption;
+import io.github.solclient.client.mod.annotation.*;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -43,49 +35,48 @@ public class ModOption {
 		this.mod = mod;
 		this.field = field;
 
-		if(field != null) {
+		if (field != null) {
 			field.setAccessible(true);
 
-			if(field.isAnnotationPresent(FileOption.class)) {
+			if (field.isAnnotationPresent(FileOption.class)) {
 				configFile = field.getAnnotation(FileOption.class);
 
 				file = new File(Minecraft.getMinecraft().mcDataDir, configFile.file());
 				readFile();
 			}
 
-			if(field.isAnnotationPresent(StringOption.class)) {
+			if (field.isAnnotationPresent(StringOption.class)) {
 				placeholder = field.getAnnotation(StringOption.class).value();
 			}
 
 			String name = field.getDeclaringClass() + "." + field.getName();
 
-			if(Modifier.isFinal(field.getModifiers()) && !(field.getType() == KeyBinding.class)) {
+			if (Modifier.isFinal(field.getModifiers()) && !(field.getType() == KeyBinding.class)) {
 				LOGGER.warn("Mod option {} is final", name);
 			}
 
-			if(getValue() == null) {
+			if (getValue() == null) {
 				LOGGER.warn("Mod option {} has no default value. This may cause a crash.", name);
 			}
 		}
 
 		priority = option.priority();
 
-		if(!option.translationKey().isEmpty()) {
+		if (!option.translationKey().isEmpty()) {
 			translationKey = option.translationKey();
 		}
 
-		if(translationKey == null) {
-			if(field.getDeclaringClass().isAnnotationPresent(AbstractTranslationKey.class)) {
+		if (translationKey == null) {
+			if (field.getDeclaringClass().isAnnotationPresent(AbstractTranslationKey.class)) {
 				translationKey = field.getDeclaringClass().getAnnotation(AbstractTranslationKey.class).value();
-			}
-			else {
+			} else {
 				translationKey = mod.getTranslationKey();
 			}
 		}
 
 		applyToAllClass = option.applyToAllClass();
 
-		if(applyToAllClass.isEmpty()) {
+		if (applyToAllClass.isEmpty()) {
 			applyToAllClass = null;
 		}
 	}
@@ -99,7 +90,7 @@ public class ModOption {
 	}
 
 	public void readFile() throws IOException {
-		if(!file.exists()) {
+		if (!file.exists()) {
 			FileUtils.writeStringToFile(file, configFile.header());
 		}
 
@@ -119,22 +110,20 @@ public class ModOption {
 	public Object getValue() {
 		try {
 			return field.get(mod);
-		}
-		catch(IllegalArgumentException | IllegalAccessException error) {
+		} catch (IllegalArgumentException | IllegalAccessException error) {
 			throw new IllegalStateException(error);
 		}
 	}
 
 	public void setValue(Object value) {
 		try {
-			if(!value.equals(field.get(mod))) {
-				if(mod.onOptionChange(field.getName(), value)) {
+			if (!value.equals(field.get(mod))) {
+				if (mod.onOptionChange(field.getName(), value)) {
 					field.set(mod, value);
 					mod.postOptionChange(field.getName(), value);
 				}
 			}
-		}
-		catch(IllegalArgumentException | IllegalAccessException error) {
+		} catch (IllegalArgumentException | IllegalAccessException error) {
 			throw new IllegalStateException(error);
 		}
 	}
@@ -143,7 +132,7 @@ public class ModOption {
 		List<ModOption> result = new ArrayList<ModOption>();
 		add(mod, mod.getClass(), result);
 
-		if(mod instanceof ConfigOnlyMod) {
+		if (mod instanceof ConfigOnlyMod) {
 			result.remove(0);
 		}
 
@@ -153,27 +142,27 @@ public class ModOption {
 	private static List<ModOption> add(Mod mod, Class<? extends Mod> clazz, List<ModOption> list) throws IOException {
 		List<Field> fields = new ArrayList<Field>();
 
-		for(Field field : clazz.getDeclaredFields()) {
-			if(!fields.contains(field)) {
+		for (Field field : clazz.getDeclaredFields()) {
+			if (!fields.contains(field)) {
 				fields.add(field);
 			}
 		}
 
-		for(Field field : clazz.getFields()) {
-			if(!fields.contains(field)) {
+		for (Field field : clazz.getFields()) {
+			if (!fields.contains(field)) {
 				fields.add(field);
 			}
 		}
 
-		for(Field field : fields) {
-			if(field.isAnnotationPresent(Option.class)) {
-				if(list.stream().noneMatch((cached) -> cached.field.equals(field))) {
+		for (Field field : fields) {
+			if (field.isAnnotationPresent(Option.class)) {
+				if (list.stream().noneMatch((cached) -> cached.field.equals(field))) {
 					list.add(new ModOption(mod, field.getAnnotation(Option.class), field));
 				}
 			}
 		}
 
-		if(clazz.getSuperclass() != null && Mod.class.isAssignableFrom(clazz.getSuperclass())) {
+		if (clazz.getSuperclass() != null && Mod.class.isAssignableFrom(clazz.getSuperclass())) {
 			add(mod, (Class<? extends Mod>) clazz.getSuperclass(), list);
 		}
 
@@ -189,14 +178,13 @@ public class ModOption {
 	public void applyToAll() {
 		String key = applyToAllClass;
 
-		if(key == null) {
+		if (key == null) {
 			return;
 		}
 
-		for(Mod mod : Client.INSTANCE.getMods()) {
-			for(ModOption option : mod.getOptions()) {
-				if(option.canApplyToAll() && option.applyToAllClass.equals(key)
-						&& option.getType() == getType()) {
+		for (Mod mod : Client.INSTANCE.getMods()) {
+			for (ModOption option : mod.getOptions()) {
+				if (option.canApplyToAll() && option.applyToAllClass.equals(key) && option.getType() == getType()) {
 					option.setValue(getValue());
 				}
 			}

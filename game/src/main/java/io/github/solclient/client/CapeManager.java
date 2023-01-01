@@ -1,18 +1,12 @@
 package io.github.solclient.client;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 
 import io.github.solclient.client.util.Utils;
@@ -35,11 +29,10 @@ public class CapeManager {
 				JsonObject capesObject = JsonParser.parseReader(new InputStreamReader(BY_PLAYER_URL.openStream()))
 						.getAsJsonObject();
 
-				for(Map.Entry<String, JsonElement> entry : capesObject.entrySet()) {
+				for (Map.Entry<String, JsonElement> entry : capesObject.entrySet()) {
 					capes.put(entry.getKey(), BASE_URL + "capes/" + entry.getValue().getAsString() + ".png");
 				}
-			}
-			catch(Exception error) {
+			} catch (Exception error) {
 				LOGGER.error("Could not load capes", error);
 			}
 		});
@@ -50,20 +43,19 @@ public class CapeManager {
 
 		String capeUrl = capes.get(player.getUniqueID().toString().replace("-", ""));
 
-		if(capeUrl == null) {
+		if (capeUrl == null) {
 			return null;
 		}
 
 		try {
-			if(capeCache.containsKey(player.getUniqueID())) {
+			if (capeCache.containsKey(player.getUniqueID())) {
 				return capeCache.get(player.getUniqueID());
-			}
-			else {
+			} else {
 				MinecraftProfileTexture texture = new MinecraftProfileTexture(capeUrl, null);
 
 				ResourceLocation cape = new ResourceLocation("sc_capes/" + texture.getHash());
 
-				if(mc.getTextureManager().getTexture(cape) == null) {
+				if (mc.getTextureManager().getTexture(cape) == null) {
 					ThreadDownloadImageData thread = new ThreadDownloadImageData(null, texture.getUrl(), null, null);
 					mc.getTextureManager().loadTexture(cape, thread);
 				}
@@ -72,8 +64,7 @@ public class CapeManager {
 
 				return cape;
 			}
-		}
-		catch(Exception error) {
+		} catch (Exception error) {
 			LOGGER.error("Could not download cape", error);
 		}
 

@@ -1,69 +1,26 @@
 package io.github.solclient.client;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.InstanceCreator;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.logisticscraft.occlusionculling.DataProvider;
-import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
+import com.google.gson.*;
+import com.logisticscraft.occlusionculling.*;
 
-import io.github.solclient.client.api.ClientApi;
-import io.github.solclient.client.api.PopupManager;
+import io.github.solclient.client.api.*;
 import io.github.solclient.client.config.ConfigVersion;
 import io.github.solclient.client.culling.CullTask;
-import io.github.solclient.client.event.EventBus;
-import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameQuitEvent;
-import io.github.solclient.client.event.impl.PostGameStartEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.event.impl.SendChatMessageEvent;
-import io.github.solclient.client.event.impl.ServerConnectEvent;
-import io.github.solclient.client.event.impl.WorldLoadEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.PinManager;
+import io.github.solclient.client.event.*;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.BlockSelectionMod;
-import io.github.solclient.client.mod.impl.ChunkAnimatorMod;
-import io.github.solclient.client.mod.impl.ColourSaturationMod;
-import io.github.solclient.client.mod.impl.FreelookMod;
-import io.github.solclient.client.mod.impl.HitColourMod;
-import io.github.solclient.client.mod.impl.HitboxMod;
-import io.github.solclient.client.mod.impl.MenuBlurMod;
-import io.github.solclient.client.mod.impl.MotionBlurMod;
-import io.github.solclient.client.mod.impl.ParticlesMod;
-import io.github.solclient.client.mod.impl.ScrollableTooltipsMod;
-import io.github.solclient.client.mod.impl.SolClientMod;
-import io.github.solclient.client.mod.impl.TNTTimerMod;
-import io.github.solclient.client.mod.impl.TaplookMod;
-import io.github.solclient.client.mod.impl.TimeChangerMod;
-import io.github.solclient.client.mod.impl.TweaksMod;
-import io.github.solclient.client.mod.impl.V1_7VisualsMod;
-import io.github.solclient.client.mod.impl.ZoomMod;
+import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.impl.cosmetica.CosmeticaMod;
 import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
-import io.github.solclient.client.mod.impl.hud.ComboCounterMod;
-import io.github.solclient.client.mod.impl.hud.CoordinatesMod;
-import io.github.solclient.client.mod.impl.hud.CpsMod;
-import io.github.solclient.client.mod.impl.hud.FpsMod;
-import io.github.solclient.client.mod.impl.hud.PotionEffectsMod;
-import io.github.solclient.client.mod.impl.hud.ReachDisplayMod;
-import io.github.solclient.client.mod.impl.hud.ScoreboardMod;
+import io.github.solclient.client.mod.impl.hud.*;
 import io.github.solclient.client.mod.impl.hud.armour.ArmourMod;
 import io.github.solclient.client.mod.impl.hud.chat.ChatMod;
 import io.github.solclient.client.mod.impl.hud.crosshair.CrosshairMod;
@@ -78,28 +35,18 @@ import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.mod.impl.togglesprint.ToggleSprintMod;
 import io.github.solclient.client.ui.ChatButton;
-import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
-import io.github.solclient.client.util.SemVer;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.ui.screen.mods.*;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.font.SlickFontRenderer;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.multiplayer.*;
 import net.minecraft.client.resources.IResource;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.settings.*;
+import net.minecraft.command.*;
+import net.minecraft.util.*;
 
 /**
  * Main class for Sol Client.
@@ -156,7 +103,7 @@ public final class Client {
 
 		LOGGER.info("Loading settings...");
 
-		if(legacyModsFile.exists()) {
+		if (legacyModsFile.exists()) {
 			legacyModsFile.renameTo(modsFile);
 		}
 
@@ -209,8 +156,7 @@ public final class Client {
 
 		try {
 			pins.load(pinsFile);
-		}
-		catch(IOException error) {
+		} catch (IOException error) {
 			LOGGER.error("Could not load pins", error);
 		}
 
@@ -243,17 +189,16 @@ public final class Client {
 			FilePollingTask filePolling = new FilePollingTask(mods);
 
 			Thread generalUpdateThread = new Thread(() -> {
-				while(((AccessMinecraft) mc).isRunning()) {
+				while (((AccessMinecraft) mc).isRunning()) {
 					try {
 						Thread.sleep(10);
-					}
-					catch(InterruptedException error) {
+					} catch (InterruptedException error) {
 						return;
 					}
 
 					cullingTask.run();
 
-					if(filePolling != null) {
+					if (filePolling != null) {
 						filePolling.run();
 					}
 				}
@@ -264,8 +209,7 @@ public final class Client {
 				LOGGER.error("Async updates has crashed", error);
 			});
 			generalUpdateThread.start();
-		}
-		catch(IOException error) {
+		} catch (IOException error) {
 			LOGGER.error("Could not start async updates thread", error);
 		}
 
@@ -284,7 +228,7 @@ public final class Client {
 
 	private Gson getGson(Mod mod) {
 		GsonBuilder builder = new GsonBuilder();
-		if(mod != null) {
+		if (mod != null) {
 			builder.registerTypeAdapter(mod.getClass(), (InstanceCreator<Mod>) (type) -> mod);
 		}
 		return builder.excludeFieldsWithoutExposeAnnotation().create();
@@ -292,7 +236,7 @@ public final class Client {
 
 	private void cacheHudList() {
 		huds.clear();
-		for(Mod mod : mods) {
+		for (Mod mod : mods) {
 			huds.addAll(mod.getHudElements());
 		}
 	}
@@ -300,18 +244,16 @@ public final class Client {
 	@SuppressWarnings("deprecation")
 	public boolean load() {
 		try {
-			if(modsFile.exists()) {
+			if (modsFile.exists()) {
 				// 1.8 uses old libraries, so this warning cannot be easily fixed.
 				data = new JsonParser().parse(FileUtils.readFileToString(modsFile)).getAsJsonObject();
 				data = ConfigVersion.migrate(data);
-			}
-			else {
+			} else {
 				data = new JsonObject();
 				data.addProperty("version", ConfigVersion.values()[ConfigVersion.values().length - 1].name());
 			}
 			return true;
-		}
-		catch(IOException error) {
+		} catch (IOException error) {
 			LOGGER.error("Could not load data", error);
 			data = new JsonObject();
 			return false;
@@ -321,21 +263,19 @@ public final class Client {
 	public void save() {
 		Gson gson = getGson(null);
 
-		for(Mod mod : mods) {
+		for (Mod mod : mods) {
 			data.add(mod.getId(), gson.toJsonTree(mod));
 		}
 
 		try {
 			FileUtils.writeStringToFile(modsFile, gson.toJson(data));
-		}
-		catch(Throwable error) {
+		} catch (Throwable error) {
 			LOGGER.error("Could not save data", error);
 		}
 
 		try {
 			pins.save(pinsFile);
-		}
-		catch(Throwable error) {
+		} catch (Throwable error) {
 			LOGGER.error("Could not save pins", error);
 		}
 	}
@@ -343,19 +283,18 @@ public final class Client {
 	private void register(Mod mod) {
 		try {
 			// quite broken
-			if(Boolean.getBoolean("io.github.solclient.client.mod." + mod.getId() + ".disable")) {
+			if (Boolean.getBoolean("io.github.solclient.client.mod." + mod.getId() + ".disable")) {
 				return;
 			}
 
-			if(data.has(mod.getId())) {
+			if (data.has(mod.getId())) {
 				getGson(mod).fromJson(data.get(mod.getId()), mod.getClass());
 			}
 
 			mods.add(mod);
 			modsById.put(mod.getId(), mod);
 			mod.onRegister();
-		}
-		catch(Throwable error) {
+		} catch (Throwable error) {
 			LOGGER.error("Could not register mod " + mod.getId(), error);
 			mods.remove(mod);
 		}
@@ -383,7 +322,7 @@ public final class Client {
 
 	public CommandBase registerCommand(String name, CommandBase command) {
 		commands.put(name, command);
-		for(String alias : command.getCommandAliases()) {
+		for (String alias : command.getCommandAliases()) {
 			commands.put(alias, command);
 		}
 
@@ -393,7 +332,7 @@ public final class Client {
 	public CommandBase unregisterCommand(String name) {
 		CommandBase command;
 
-		for(String alias : (command = commands.remove(name)).getCommandAliases()) {
+		for (String alias : (command = commands.remove(name)).getCommandAliases()) {
 			commands.remove(alias);
 		}
 
@@ -403,10 +342,9 @@ public final class Client {
 	public void setChatChannelSystem(ChatChannelSystem chatChannelSystem) {
 		this.chatChannelSystem = chatChannelSystem;
 
-		if(chatChannelSystem != null) {
+		if (chatChannelSystem != null) {
 			registerChatButton(ChatChannelSystem.ChatChannelButton.INSTANCE);
-		}
-		else {
+		} else {
 			unregisterChatButton(ChatChannelSystem.ChatChannelButton.INSTANCE);
 		}
 	}
@@ -422,8 +360,7 @@ public final class Client {
 
 		try {
 			unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
-		}
-		catch(NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
+		} catch (NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
 			// OptiFine is not enabled.
 		}
 	}
@@ -432,28 +369,26 @@ public final class Client {
 	public void onSendMessage(SendChatMessageEvent event) {
 		// TODO Tab completion. Skipped during port to mixin.
 
-		if(event.message.startsWith("/")) {
+		if (event.message.startsWith("/")) {
 			List<String> args = new ArrayList<>(Arrays.asList(event.message.split(" ")));
 			String commandKey = args.get(0).substring(1);
-			if(commands.containsKey(commandKey)) {
+			if (commands.containsKey(commandKey)) {
 				event.cancelled = true;
 
 				try {
 					args.remove(0);
 
 					commands.get(commandKey).processCommand(mc.thePlayer, args.toArray(new String[0]));
-				}
-				catch(CommandException error) {
-					mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(EnumChatFormatting.RED + error.getMessage()));
-				}
-				catch(Exception error) {
-					mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could " +
-							"not execute client-sided command, see log for details"));
+				} catch (CommandException error) {
+					mc.ingameGUI.getChatGUI()
+							.printChatMessage(new ChatComponentText(EnumChatFormatting.RED + error.getMessage()));
+				} catch (Exception error) {
+					mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could "
+							+ "not execute client-sided command, see log for details"));
 					LOGGER.info("Could not execute client-sided command: " + event.message + ", error: ", error);
 				}
 			}
-		}
-		else if(getChatChannelSystem() != null) {
+		} else if (getChatChannelSystem() != null) {
 			event.cancelled = true;
 			getChatChannelSystem().getChannel().sendMessage(mc.thePlayer, event.message);
 		}
@@ -462,11 +397,12 @@ public final class Client {
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
 		Utils.USER_DATA.cancel();
-		if(!remindedUpdate && SolClientMod.instance.remindMeToUpdate) {
+		if (!remindedUpdate && SolClientMod.instance.remindMeToUpdate) {
 			remindedUpdate = true;
 			SemVer latest = SolClientMod.instance.latestRelease;
-			if(latest != null && latest.isNewerThan(GlobalConstants.VERSION)) {
-				IChatComponent message = new ChatComponentText("A new version of Sol Client is available: " + latest + ".\nYou are currently on version " + GlobalConstants.VERSION_STRING + '.');
+			if (latest != null && latest.isNewerThan(GlobalConstants.VERSION)) {
+				IChatComponent message = new ChatComponentText("A new version of Sol Client is available: " + latest
+						+ ".\nYou are currently on version " + GlobalConstants.VERSION_STRING + '.');
 				message.setChatStyle(message.getChatStyle().setColor(EnumChatFormatting.GREEN));
 				mc.ingameGUI.getChatGUI().printChatMessage(message);
 			}
@@ -475,10 +411,9 @@ public final class Client {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(SolClientMod.instance.modsKey.isPressed()) {
+		if (SolClientMod.instance.modsKey.isPressed()) {
 			mc.displayGuiScreen(new ModsScreen());
-		}
-		else if(SolClientMod.instance.editHudKey.isPressed()) {
+		} else if (SolClientMod.instance.editHudKey.isPressed()) {
 			mc.displayGuiScreen(new ModsScreen());
 			mc.displayGuiScreen(new MoveHudsScreen());
 		}
@@ -501,14 +436,14 @@ public final class Client {
 	public void onServerChange(ServerData data) {
 		setChatChannelSystem(null);
 
-		if(data == null) {
+		if (data == null) {
 			detectedServer = null;
 			mods.forEach(Mod::unblock);
 		}
 
-		if(data != null) {
-			for(DetectedServer server : DetectedServer.values()) {
-				if(server.matches(data)) {
+		if (data != null) {
+			for (DetectedServer server : DetectedServer.values()) {
+				if (server.matches(data)) {
 					detectedServer = server;
 					mods.stream().filter(server::shouldBlockMod).forEach(Mod::block);
 					break;
@@ -527,7 +462,7 @@ public final class Client {
 	 * Saves if the mod screen is not opened.
 	 */
 	public void optionChanged() {
-		if(!(mc.currentScreen instanceof ModsScreen)) {
+		if (!(mc.currentScreen instanceof ModsScreen)) {
 			save();
 		}
 	}

@@ -3,17 +3,13 @@ package io.github.solclient.client.ui.component.impl;
 import java.util.function.Consumer;
 
 import io.github.solclient.client.mod.impl.SolClientMod;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.controller.Controller;
+import io.github.solclient.client.ui.component.*;
+import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 
 public class SliderComponent extends Component {
 
@@ -24,10 +20,12 @@ public class SliderComponent extends Component {
 	private final Consumer<Float> callback;
 	private boolean selected;
 	private final Controller<Colour> colour = new AnimatedColourController(
-			(component, defaultColour) -> component.isHovered() || selected ? SolClientMod.instance.uiHover : SolClientMod.instance.uiColour);
+			(component, defaultColour) -> component.isHovered() || selected ? SolClientMod.instance.uiHover
+					: SolClientMod.instance.uiColour);
 	private final Component hoverController;
 
-	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback, Component hoverController) {
+	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback,
+			Component hoverController) {
 		this.min = min;
 		this.max = max;
 		this.step = step;
@@ -36,7 +34,7 @@ public class SliderComponent extends Component {
 		this.hoverController = hoverController;
 
 		hoverController.onClick((info, button) -> {
-			if(super.isHovered()) {
+			if (super.isHovered()) {
 				return false;
 			}
 
@@ -57,24 +55,25 @@ public class SliderComponent extends Component {
 
 		int x = (int) (100 * (((value - min) / (max - min)))) - 4;
 
-		if(SolClientMod.instance.roundedUI) {
+		if (SolClientMod.instance.roundedUI) {
 			Colour.LIGHT_BUTTON.bind();
-			mc.getTextureManager().bindTexture(new ResourceLocation(
-					"textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));
+			mc.getTextureManager().bindTexture(
+					new ResourceLocation("textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(0, 4, 0, 0, 100, 2, 100, 2);
 
 			colour.get(this, null).bind();
-			mc.getTextureManager().bindTexture(new ResourceLocation(
-					"textures/gui/sol_client_slider_thumb_" + Utils.getTextureScale() + ".png"));
+			mc.getTextureManager().bindTexture(
+					new ResourceLocation("textures/gui/sol_client_slider_thumb_" + Utils.getTextureScale() + ".png"));
 			Gui.drawModalRectWithCustomSizedTexture(x, 1, 0, 0, 8, 8, 8, 8);
-		}
-		else {
+		} else {
 			Utils.drawRectangle(new Rectangle(0, 4, 100, 2), Colour.LIGHT_BUTTON);
 			Utils.drawRectangle(new Rectangle(x, 1, 8, 8), colour.get(this, null));
 		}
 
-		if(selected) {
-			value = MathHelper.clamp_float((float) (min + Math.floor(((info.getRelativeMouseX() / 100F) * (max - min)) / step) * step), min, max);
+		if (selected) {
+			value = MathHelper.clamp_float(
+					(float) (min + Math.floor(((info.getRelativeMouseX() / 100F) * (max - min)) / step) * step), min,
+					max);
 			callback.accept(value);
 		}
 
@@ -83,7 +82,7 @@ public class SliderComponent extends Component {
 
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
-		if(button == 0) {
+		if (button == 0) {
 			Utils.playClickSound(true);
 			selected = true;
 			return true;
@@ -94,7 +93,7 @@ public class SliderComponent extends Component {
 
 	@Override
 	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
-		if(selected) {
+		if (selected) {
 			selected = false;
 			return true;
 		}

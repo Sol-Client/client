@@ -21,15 +21,11 @@
 
 package io.github.solclient.client.mod.impl.replay.fix;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
-import com.replaymod.core.KeyBindingRegistry;
-import com.replaymod.core.Module;
-import com.replaymod.core.ReplayMod;
+import com.replaymod.core.*;
 import com.replaymod.recording.Setting;
-import com.replaymod.recording.handler.ConnectionEventHandler;
-import com.replaymod.recording.handler.GuiHandler;
+import com.replaymod.recording.handler.*;
 import com.replaymod.recording.mixin.NetworkManagerAccessor;
 import com.replaymod.recording.packet.PacketListener;
 
@@ -54,7 +50,7 @@ public class SCReplayModRecording implements Module {
 	public void registerKeyBindings(KeyBindingRegistry registry) {
 		registry.registerKeyBinding("replaymod.input.marker", 50, () -> {
 			PacketListener packetListener = connectionEventHandler.getPacketListener();
-			if(packetListener != null) {
+			if (packetListener != null) {
 				packetListener.addMarker(null);
 				core.printInfoToChat("replaymod.chat.addedmarker");
 			}
@@ -70,7 +66,7 @@ public class SCReplayModRecording implements Module {
 
 	public void initiateRecording(NetworkManager networkManager) {
 		Channel channel = ((NetworkManagerAccessor) networkManager).getChannel();
-		if(channel.pipeline().get("ReplayModReplay_replaySender") == null) {
+		if (channel.pipeline().get("ReplayModReplay_replaySender") == null) {
 			this.connectionEventHandler.onConnectedToServerEvent(networkManager);
 		}
 	}

@@ -3,9 +3,7 @@ package io.github.solclient.client.mod.impl.hud.chat;
 import net.minecraft.client.resources.I18n;
 
 public enum ChatVisibility {
-	SHOWN,
-	COMMANDS,
-	HIDDEN;
+	SHOWN, COMMANDS, HIDDEN;
 
 	@Override
 	public String toString() {

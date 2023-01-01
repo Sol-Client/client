@@ -1,7 +1,6 @@
 package io.github.solclient.client.event.impl;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.shader.ShaderGroup;
@@ -13,8 +12,7 @@ public class PostProcessingEvent {
 	public final List<ShaderGroup> groups = new LinkedList<>();
 
 	public enum Type {
-		RENDER,
-		UPDATE
+		RENDER, UPDATE
 	}
 
 }

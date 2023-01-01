@@ -1,24 +1,15 @@
 package io.github.solclient.client.mod.impl.hud.speedometer;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameOverlayElement;
-import io.github.solclient.client.event.impl.PostGameOverlayRenderEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessMinecraft;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
 
@@ -46,7 +37,7 @@ public class SpeedometerMod extends SimpleHudMod {
 
 	@Override
 	public Rectangle getBounds(Position position) {
-		if(!graphMode) {
+		if (!graphMode) {
 			return super.getBounds(position);
 		}
 
@@ -57,10 +48,10 @@ public class SpeedometerMod extends SimpleHudMod {
 	public void render(Position position, boolean editMode) {
 		super.render(position, editMode);
 
-		if(graphMode) {
+		if (graphMode) {
 			double[] speeds = this.speeds;
 
-			if(editMode) {
+			if (editMode) {
 				speeds = new double[SPEED_COUNT];
 			}
 
@@ -69,7 +60,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			textColour.bind();
 			GL11.glLineWidth(1.5F);
 
-			if(!editMode && !mc.isGamePaused()
+			if (!editMode && !mc.isGamePaused()
 					&& (lastUpdate == -1 || (System.currentTimeMillis() - lastUpdate) > 30)) {
 				addSpeed(getSpeed());
 				lastUpdate = System.currentTimeMillis();
@@ -84,8 +75,9 @@ public class SpeedometerMod extends SimpleHudMod {
 
 			GL11.glBegin(GL11.GL_LINE_STRIP);
 
-			for(int i = 0; i < SPEED_COUNT; i++) {
-				GL11.glVertex2d(position.getX() + (i * (((getBounds(position).getWidth() + 0.4) / (double) SPEED_COUNT))),
+			for (int i = 0; i < SPEED_COUNT; i++) {
+				GL11.glVertex2d(
+						position.getX() + (i * (((getBounds(position).getWidth() + 0.4) / (double) SPEED_COUNT))),
 						position.getY() - 2 + getBounds(position).getHeight() - (speeds[i] * 16));
 			}
 
@@ -107,14 +99,13 @@ public class SpeedometerMod extends SimpleHudMod {
 
 	@Override
 	public String getText(boolean editMode) {
-		if(graphMode) {
+		if (graphMode) {
 			return "";
 		}
 
-		if(editMode) {
+		if (editMode) {
 			return "0.00 m/s";
-		}
-		else {
+		} else {
 			return FORMAT.format(getSpeed() / 0.05F) + " m/s";
 		}
 	}

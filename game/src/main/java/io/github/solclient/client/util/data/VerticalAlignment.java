@@ -3,9 +3,7 @@ package io.github.solclient.client.util.data;
 import net.minecraft.client.resources.I18n;
 
 public enum VerticalAlignment {
-	TOP,
-	MIDDLE,
-	BOTTOM;
+	TOP, MIDDLE, BOTTOM;
 
 	@Override
 	public String toString() {

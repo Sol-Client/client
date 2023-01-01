@@ -3,8 +3,7 @@ package io.github.solclient.client.mod.impl.quickplay.database;
 import com.google.gson.JsonObject;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
+import io.github.solclient.client.mod.impl.quickplay.ui.*;
 import lombok.Getter;
 import net.minecraft.item.ItemStack;
 
@@ -22,10 +21,9 @@ public class QuickPlayGameMode implements QuickPlayOption {
 		name = object.get("name").getAsString();
 		String command = object.get("command").getAsString();
 
-		if(command.equals("/quickplay limbo")) {
+		if (command.equals("/quickplay limbo")) {
 			command = "/achat §";
-		}
-		else if(command.equals("/quickplay delivery")) {
+		} else if (command.equals("/quickplay delivery")) {
 			command = "/delivery";
 		}
 
@@ -38,7 +36,7 @@ public class QuickPlayGameMode implements QuickPlayOption {
 
 	@Override
 	public String getText() {
-		if(parent.getModes().size() == 1) {
+		if (parent.getModes().size() == 1) {
 			return parent.getName();
 		}
 		return parent.getName() + " - " + name;

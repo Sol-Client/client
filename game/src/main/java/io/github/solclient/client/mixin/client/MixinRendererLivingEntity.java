@@ -1,10 +1,7 @@
 package io.github.solclient.client.mixin.client;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.solclient.client.Client;
@@ -22,7 +19,7 @@ public class MixinRendererLivingEntity<T extends EntityLivingBase> {
 
 	@Inject(method = "setBrightness", at = @At("HEAD"))
 	public void initHitColour(T entitylivingbaseIn, float partialTicks, boolean combineTextures,
-							  CallbackInfoReturnable<Boolean> callback) {
+			CallbackInfoReturnable<Boolean> callback) {
 		HitOverlayEvent event = new HitOverlayEvent(1, 0, 0, 0.3F);
 		Client.INSTANCE.bus.post(event);
 

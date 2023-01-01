@@ -1,25 +1,19 @@
 package io.github.solclient.client.mod.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 import org.lwjgl.input.Keyboard;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.GlobalConstants;
-import io.github.solclient.client.mod.ConfigOnlyMod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.*;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.SemVer;
 import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.font.Font;
-import io.github.solclient.client.util.font.SlickFontRenderer;
+import io.github.solclient.client.util.font.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 
@@ -40,7 +34,8 @@ public class SolClientMod extends ConfigOnlyMod {
 	public boolean logoInInventory;
 
 	@Option
-	public KeyBinding modsKey = new KeyBinding(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT, GlobalConstants.KEY_CATEGORY);
+	public KeyBinding modsKey = new KeyBinding(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT,
+			GlobalConstants.KEY_CATEGORY);
 
 	@Option
 	public KeyBinding editHudKey = new KeyBinding(getTranslationKey() + ".edit_hud", 0, GlobalConstants.KEY_CATEGORY);
@@ -92,16 +87,14 @@ public class SolClientMod extends ConfigOnlyMod {
 		uiHover = getUiHover();
 
 		// yuck...
-		if(GlobalConstants.AUTOUPDATE) {
+		if (GlobalConstants.AUTOUPDATE) {
 			getOptions().remove(0);
-		}
-		else if(remindMeToUpdate) {
+		} else if (remindMeToUpdate) {
 			Thread thread = new Thread(() -> {
-				try(InputStream in = GlobalConstants.RELEASE_API.openStream()) {
+				try (InputStream in = GlobalConstants.RELEASE_API.openStream()) {
 					JsonObject object = JsonParser.parseReader(new InputStreamReader(in)).getAsJsonObject();
 					latestRelease = SemVer.parseOrNull(object.get("name").getAsString());
-				}
-				catch(Throwable error) {
+				} catch (Throwable error) {
 					logger.warn("Could not check for updates", error);
 				}
 			});
@@ -111,10 +104,9 @@ public class SolClientMod extends ConfigOnlyMod {
 	}
 
 	public static Font getFont() {
-		if(instance.fancyFont) {
+		if (instance.fancyFont) {
 			return SlickFontRenderer.DEFAULT;
-		}
-		else {
+		} else {
 			return (Font) Minecraft.getMinecraft().fontRendererObj;
 		}
 	}
@@ -123,12 +115,12 @@ public class SolClientMod extends ConfigOnlyMod {
 	public void postOptionChange(String key, Object value) {
 		super.postOptionChange(key, value);
 
-		if(key.equals("fancyFont") && mc.currentScreen instanceof ModsScreen) {
+		if (key.equals("fancyFont") && mc.currentScreen instanceof ModsScreen) {
 			ModsScreen screen = (ModsScreen) mc.currentScreen;
 			screen.updateFont();
 		}
 
-		if(key.equals("uiColour")) {
+		if (key.equals("uiColour")) {
 			uiHover = getUiHover();
 		}
 	}

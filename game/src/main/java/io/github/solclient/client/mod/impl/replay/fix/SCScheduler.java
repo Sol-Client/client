@@ -22,17 +22,13 @@
 package io.github.solclient.client.mod.impl.replay.fix;
 
 import java.util.Queue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 import com.google.common.util.concurrent.ListenableFutureTask;
 import com.replaymod.core.mixin.MinecraftAccessor;
 import com.replaymod.core.versions.scheduler.Scheduler;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreRenderTickEvent;
 import lombok.AllArgsConstructor;
@@ -46,10 +42,9 @@ public class SCScheduler implements Scheduler {
 
 	@Override
 	public void runSync(Runnable runnable) throws InterruptedException, ExecutionException, TimeoutException {
-		if(mc.isCallingFromMinecraftThread()) {
+		if (mc.isCallingFromMinecraftThread()) {
 			runnable.run();
-		}
-		else {
+		} else {
 			FutureTask<Void> future = new FutureTask<>(runnable, null);
 			runLater(future);
 			future.get(30L, TimeUnit.SECONDS);
@@ -72,25 +67,22 @@ public class SCScheduler implements Scheduler {
 	}
 
 	private void runLater(Runnable runnable, final Runnable defer) {
-		if(mc.isCallingFromMinecraftThread() && inRunLater) {
+		if (mc.isCallingFromMinecraftThread() && inRunLater) {
 			Client.INSTANCE.bus.register(new TickListener(defer));
-		}
-		else {
+		} else {
 			Queue<FutureTask<?>> tasks = ((MinecraftAccessor) mc).getScheduledTasks();
 
-			synchronized(tasks) {
+			synchronized (tasks) {
 				tasks.add(ListenableFutureTask.create(() -> {
 					this.inRunLater = true;
 
 					try {
 						runnable.run();
-					}
-					catch (ReportedException error) {
+					} catch (ReportedException error) {
 						error.printStackTrace();
 						System.err.println(error.getCrashReport().getCompleteReport());
 						mc.crashed(error.getCrashReport());
-					}
-					finally {
+					} finally {
 						this.inRunLater = false;
 					}
 				}, null));
@@ -116,4 +108,3 @@ public class SCScheduler implements Scheduler {
 	}
 
 }
-

@@ -30,8 +30,6 @@ package io.github.solclient.client.util;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -40,8 +38,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import io.github.solclient.client.GlobalConstants;
-import net.hypixel.api.http.HypixelHttpClient;
-import net.hypixel.api.http.HypixelHttpResponse;
+import net.hypixel.api.http.*;
 
 public class ApacheHttpClient implements HypixelHttpClient {
 
@@ -60,8 +57,7 @@ public class ApacheHttpClient implements HypixelHttpClient {
 				HttpResponse response = this.httpClient.execute(new HttpGet(url));
 				return new HypixelHttpResponse(response.getStatusLine().getStatusCode(),
 						EntityUtils.toString(response.getEntity(), "UTF-8"));
-			}
-			catch(IOException e) {
+			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}, Utils.USER_DATA);

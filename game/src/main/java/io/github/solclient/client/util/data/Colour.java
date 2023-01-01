@@ -7,9 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.util.Utils;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import net.minecraft.util.MathHelper;
 
 @ToString
@@ -43,10 +41,7 @@ public class Colour {
 	}
 
 	public Colour(int red, int green, int blue, int alpha) {
-		this(((alpha & 0xFF) << 24) |
-							((red & 0xFF) << 16) |
-							((green & 0xFF) << 8)  |
-							(blue & 0xFF));
+		this(((alpha & 0xFF) << 24) | ((red & 0xFF) << 16) | ((green & 0xFF) << 8) | (blue & 0xFF));
 	}
 
 	public Colour(int red, int green, int blue) {
@@ -65,7 +60,7 @@ public class Colour {
 	}
 
 	private void checkRange(int value, String name) {
-		if(value > 255 || value < 0) {
+		if (value > 255 || value < 0) {
 			throw new IllegalStateException("Invalid range for " + name + " (" + value + ")");
 		}
 	}
@@ -127,11 +122,12 @@ public class Colour {
 	}
 
 	public int[] getComponents() {
-		return new int[] {getRed(), getGreen(), getBlue(), getAlpha()};
+		return new int[] { getRed(), getGreen(), getBlue(), getAlpha() };
 	}
 
 	public Colour multiply(float factor) {
-		return new Colour(clamp((int) (getRed() * factor)), clamp((int) (getGreen() * factor)), clamp((int) (getBlue() * factor)), getAlpha());
+		return new Colour(clamp((int) (getRed() * factor)), clamp((int) (getGreen() * factor)),
+				clamp((int) (getBlue() * factor)), getAlpha());
 	}
 
 	private int clamp(int channel) {
@@ -171,17 +167,17 @@ public class Colour {
 	}
 
 	public Colour withComponent(int component, int value) {
-		switch(component) {
-			case 0:
-				return new Colour(value, getGreen(), getBlue(), getAlpha());
-			case 1:
-				return new Colour(getRed(), value, getBlue(), getAlpha());
-			case 2:
-				return new Colour(getRed(), getGreen(), value, getAlpha());
-			case 3:
-				return new Colour(getRed(), getGreen(), getBlue(), value);
-			default:
-				throw new IndexOutOfBoundsException(component + " out of bounds");
+		switch (component) {
+		case 0:
+			return new Colour(value, getGreen(), getBlue(), getAlpha());
+		case 1:
+			return new Colour(getRed(), value, getBlue(), getAlpha());
+		case 2:
+			return new Colour(getRed(), getGreen(), value, getAlpha());
+		case 3:
+			return new Colour(getRed(), getGreen(), getBlue(), value);
+		default:
+			throw new IndexOutOfBoundsException(component + " out of bounds");
 		}
 	}
 
@@ -206,15 +202,15 @@ public class Colour {
 	}
 
 	public static Colour fromHexString(String text) {
-		if(text.length() != 7 && text.length() != 9) {
+		if (text.length() != 7 && text.length() != 9) {
 			return null;
 		}
 
 		try {
 			return new Colour(Integer.valueOf(text.substring(1, 3), 16), Integer.valueOf(text.substring(3, 5), 16),
-					Integer.valueOf(text.substring(5, 7), 16), text.length() > 7 ? Integer.valueOf(text.substring(7, 9), 16) : 255);
-		}
-		catch(NumberFormatException error) {
+					Integer.valueOf(text.substring(5, 7), 16),
+					text.length() > 7 ? Integer.valueOf(text.substring(7, 9), 16) : 255);
+		} catch (NumberFormatException error) {
 			return null;
 		}
 	}

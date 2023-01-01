@@ -18,8 +18,7 @@ public class ReplayButton extends GuiButton {
 		super.drawButton(mc, mouseX, mouseY);
 		GlStateManager.color(1, 1, 1);
 		mc.getTextureManager().bindTexture(ICON);
-		drawModalRectWithCustomSizedTexture(xPosition, yPosition, 0, 0, width, height,
-				width, height);
+		drawModalRectWithCustomSizedTexture(xPosition, yPosition, 0, 0, width, height, width, height);
 	}
 
 }

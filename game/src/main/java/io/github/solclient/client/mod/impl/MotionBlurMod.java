@@ -1,7 +1,6 @@
 package io.github.solclient.client.mod.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import org.apache.commons.io.IOUtils;
 
@@ -11,21 +10,18 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.access.AccessShaderGroup;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.client.shader.ShaderUniform;
+import net.minecraft.client.shader.*;
 import net.minecraft.util.ResourceLocation;
 
 public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
-	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation("minecraft:shaders/post/motion_blur.json");
+	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(
+			"minecraft:shaders/post/motion_blur.json");
 
 	@Expose
 	@Option
@@ -55,20 +51,20 @@ public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	public void update() {
-		if(group == null) {
+		if (group == null) {
 			groupBlur = blur;
 			try {
-				group = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), RESOURCE_LOCATION);
+				group = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(),
+						RESOURCE_LOCATION);
 				group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
-			}
-			catch(JsonSyntaxException | IOException error) {
+			} catch (JsonSyntaxException | IOException error) {
 				logger.error("Could not load motion blur", error);
 			}
 		}
-		if(groupBlur != blur) {
+		if (groupBlur != blur) {
 			((AccessShaderGroup) group).getListShaders().forEach((shader) -> {
 				ShaderUniform blendFactor = shader.getShaderManager().getShaderUniform("BlendFactor");
-				if(blendFactor != null) {
+				if (blendFactor != null) {
 					blendFactor.set(blur);
 				}
 			});
@@ -107,41 +103,18 @@ public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 		@Override
 		public InputStream getInputStream() {
-			return IOUtils.toInputStream(String.format("{" +
-					"    \"targets\": [" +
-					"        \"swap\"," +
-					"        \"previous\"" +
-					"    ]," +
-					"    \"passes\": [" +
-					"        {" +
-					"            \"name\": \"motion_blur\"," +
-					"            \"intarget\": \"minecraft:main\"," +
-					"            \"outtarget\": \"swap\"," +
-					"            \"auxtargets\": [" +
-					"                {" +
-					"                    \"name\": \"PrevSampler\"," +
-					"                    \"id\": \"previous\"" +
-					"                }" +
-					"            ]," +
-					"            \"uniforms\": [" +
-					"                {" +
-					"                    \"name\": \"BlendFactor\"," +
-					"                    \"values\": [ %s ]" +
-					"                }" +
-					"            ]" +
-					"        }," +
-					"        {" +
-					"            \"name\": \"blit\"," +
-					"            \"intarget\": \"swap\"," +
-					"            \"outtarget\": \"previous\"" +
-					"        }," +
-					"        {" +
-					"            \"name\": \"blit\"," +
-					"            \"intarget\": \"swap\"," +
-					"            \"outtarget\": \"minecraft:main\"" +
-					"        }" +
-					"    ]" +
-					"}", blur, blur, blur));
+			return IOUtils.toInputStream(String.format("{" + "    \"targets\": [" + "        \"swap\","
+					+ "        \"previous\"" + "    ]," + "    \"passes\": [" + "        {"
+					+ "            \"name\": \"motion_blur\"," + "            \"intarget\": \"minecraft:main\","
+					+ "            \"outtarget\": \"swap\"," + "            \"auxtargets\": [" + "                {"
+					+ "                    \"name\": \"PrevSampler\"," + "                    \"id\": \"previous\""
+					+ "                }" + "            ]," + "            \"uniforms\": [" + "                {"
+					+ "                    \"name\": \"BlendFactor\"," + "                    \"values\": [ %s ]"
+					+ "                }" + "            ]" + "        }," + "        {"
+					+ "            \"name\": \"blit\"," + "            \"intarget\": \"swap\","
+					+ "            \"outtarget\": \"previous\"" + "        }," + "        {"
+					+ "            \"name\": \"blit\"," + "            \"intarget\": \"swap\","
+					+ "            \"outtarget\": \"minecraft:main\"" + "        }" + "    ]" + "}", blur, blur, blur));
 		}
 
 		@Override

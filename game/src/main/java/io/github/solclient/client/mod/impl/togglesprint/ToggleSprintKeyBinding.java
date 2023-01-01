@@ -22,22 +22,19 @@ public class ToggleSprintKeyBinding extends KeyBinding {
 	@EventHandler
 	public void tickBinding(PostTickEvent event) {
 		boolean down = super.isKeyDown();
-		if(mod.isEnabled()) {
-			if(down) {
-				if(!wasDown) {
+		if (mod.isEnabled()) {
+			if (down) {
+				if (!wasDown) {
 					startTime = System.currentTimeMillis();
-					if(mod.getSprint() == ToggleSprintState.TOGGLED) {
+					if (mod.getSprint() == ToggleSprintState.TOGGLED) {
 						mod.setSprint(ToggleSprintState.HELD);
-					}
-					else {
+					} else {
 						mod.setSprint(ToggleSprintState.TOGGLED);
 					}
-				}
-				else if((System.currentTimeMillis() - startTime) > 250) {
+				} else if ((System.currentTimeMillis() - startTime) > 250) {
 					mod.setSprint(ToggleSprintState.HELD);
 				}
-			}
-			else if(mod.getSprint() == ToggleSprintState.HELD) {
+			} else if (mod.getSprint() == ToggleSprintState.HELD) {
 				mod.setSprint(null);
 			}
 
@@ -47,7 +44,7 @@ public class ToggleSprintKeyBinding extends KeyBinding {
 
 	@Override
 	public boolean isKeyDown() {
-		if(mod.isEnabled()) {
+		if (mod.isEnabled()) {
 			return mc.currentScreen == null && mod.getSprint() != null;
 		}
 		return super.isKeyDown();

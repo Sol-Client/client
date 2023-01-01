@@ -1,7 +1,6 @@
 package io.github.solclient.client.util;
 
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
+import com.google.common.base.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +15,7 @@ public class DirtyMapper<I, O> {
 	public O get() {
 		I controlValue = controlValueSupplier.get();
 
-		if(!controlValue.equals(lastControlValue)) {
+		if (!controlValue.equals(lastControlValue)) {
 			lastControlValue = controlValue;
 			return lastOutput = mapper.apply(lastControlValue);
 		}

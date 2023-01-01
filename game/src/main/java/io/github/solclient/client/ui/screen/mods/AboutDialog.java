@@ -3,13 +3,9 @@ package io.github.solclient.client.ui.screen.mods;
 import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.component.impl.ButtonComponent;
-import io.github.solclient.client.ui.component.impl.LabelComponent;
-import io.github.solclient.client.ui.component.impl.ScaledIconComponent;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -45,7 +41,8 @@ public class AboutDialog extends ScaledIconComponent {
 		super.render(info);
 		GlStateManager.color(1, 1, 1, 1);
 		mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/sol_client_icon.png"));
-		Gui.drawModalRectWithCustomSizedTexture(getBounds().getWidth() / 2 - 32, getBounds().getHeight() / 2 - 60, 0, 0, 64, 64, 64, 64);
+		Gui.drawModalRectWithCustomSizedTexture(getBounds().getWidth() / 2 - 32, getBounds().getHeight() / 2 - 60, 0, 0,
+				64, 64, 64, 64);
 
 		String versionString = "Sol Client version " + GlobalConstants.VERSION_STRING;
 		font.renderString(versionString, getBounds().getWidth() / 2 - font.getWidth(versionString) / 2, 110, -1);

@@ -5,7 +5,6 @@ import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.Timer;
 
-
 // For some reason you do need a surrogate duck.
 public interface AccessMinecraft {
 

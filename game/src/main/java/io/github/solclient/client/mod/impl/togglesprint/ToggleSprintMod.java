@@ -3,14 +3,9 @@ package io.github.solclient.client.mod.impl.togglesprint;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PostTickEvent;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.settings.KeyBinding;
 
 public class ToggleSprintMod extends SimpleHudMod {
 
@@ -24,8 +19,8 @@ public class ToggleSprintMod extends SimpleHudMod {
 		super.onRegister();
 
 		Client.INSTANCE.unregisterKeyBinding(mc.gameSettings.keyBindSprint);
-		mc.gameSettings.keyBindSprint = new ToggleSprintKeyBinding(this, mc.gameSettings.keyBindSprint.getKeyDescription(), 29,
-				mc.gameSettings.keyBindSprint.getKeyCategory());
+		mc.gameSettings.keyBindSprint = new ToggleSprintKeyBinding(this,
+				mc.gameSettings.keyBindSprint.getKeyDescription(), 29, mc.gameSettings.keyBindSprint.getKeyCategory());
 		Client.INSTANCE.registerKeyBinding(mc.gameSettings.keyBindSprint);
 	}
 
@@ -46,10 +41,10 @@ public class ToggleSprintMod extends SimpleHudMod {
 
 	@Override
 	public String getText(boolean editMode) {
-		if(!hud) {
+		if (!hud) {
 			return null;
 		}
-		if(editMode) {
+		if (editMode) {
 			return ToggleSprintState.TOGGLED.toString();
 		}
 		return getSprint() == null ? null : getSprint().toString();

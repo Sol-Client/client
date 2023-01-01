@@ -211,7 +211,7 @@ if(workspaceReady) {
 
 	def libsDir = new File(project.getRootDir(), "replaymod")
 
-	def replayModBase = "replaymod-1.8.9-2.6.3"
+	def replayModBase = "replaymod-1.8.9-2.6.10"
 
 	def replayModJar = new File(libsDir, replayModBase + ".jar")
 	if(!replayModJar.exists()) {

@@ -1,16 +1,24 @@
 {
 	"required": true,
-	"package": "com.replaymod.core.mixin",
-	"mixins": [],
-	"server": [],
+	"package": "com.replaymod.recording.mixin",
+	"mixins": [
+	],
+	"server": [
+	],
 	"client": [
-		"Mixin_ContextualKeyBindings",
-		"MixinKeyboardListener",
-		"GuiMainMenuAccessor",
-		"GuiScreenAccessor",
-		"KeyBindingAccessor",
-		"MinecraftAccessor",
-		"TimerAccessor"
+		"AddServerScreenAccessor",
+		"ClientLoginNetworkHandlerAccessor",
+		"EntityLivingBaseAccessor",
+		"IntegratedServerAccessor",
+		"NetworkManagerAccessor",
+		"MixinClientConnection",
+		"SPacketSpawnMobAccessor",
+		"SPacketSpawnPlayerAccessor",
+		"MixinServerInfo",
+		"MixinNetHandlerLoginClient",
+		"MixinNetHandlerPlayClient",
+		"MixinNetworkDispatcher",
+		"MixinRenderGlobal"
 	],
 	"compatibilityLevel": "JAVA_8",
 	"minVersion": "0.6.11",

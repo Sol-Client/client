@@ -61,20 +61,20 @@ public class ModListing extends ColouredComponent {
 				(component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : "")),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
-								(int) (defaultBounds.getY() - (regularFont.getHeight() / 2)), defaultBounds.getWidth(),
+								(int) (defaultBounds.getY() - (regularFont.getLineHeight(nvg) / 2)) - 1, defaultBounds.getWidth(),
 								defaultBounds.getHeight())));
 		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
 				(component, defaultColour) -> new Colour(160, 160, 160)),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
-								(int) (defaultBounds.getY() + (regularFont.getHeight() / 2)), defaultBounds.getWidth(),
+								(int) (defaultBounds.getY() + (regularFont.getLineHeight(nvg) / 2)) + 1, defaultBounds.getWidth(),
 								defaultBounds.getHeight())));
 
 		Component credit;
 		add(credit = new LabelComponent((component, defaultText) -> mod.getCredit(),
 				(component, defaultColour) -> new Colour(120, 120, 120)),
 				new AlignedBoundsController(Alignment.START, Alignment.START,
-						(component, defaultBounds) -> defaultBounds.offset(name.getBounds().getEndX(), 5)));
+						(component, defaultBounds) -> defaultBounds.offset(name.getBounds().getEndX(), name.getBounds().getY())));
 
 		Controller<Rectangle> favouriteBounds = new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
 				(component, defaultBounds) -> new Rectangle(credit.getBounds().getEndX() + 2, defaultBounds.getY() + 5,

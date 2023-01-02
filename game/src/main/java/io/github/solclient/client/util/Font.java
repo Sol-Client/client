@@ -33,18 +33,17 @@ public final class Font {
 
 	public float getLineHeight(long ctx) {
 		bind(ctx);
+		float[] ascender = new float[1];
+		float[] descender = new float[1];
 		float[] lineh = new float[1];
-		NanoVG.nvgTextMetrics(ctx, null, null, lineh);
+		NanoVG.nvgFontSize(ctx, 8);
+		NanoVG.nvgTextMetrics(ctx, ascender, descender, lineh);
 		return lineh[0];
 	}
 
 	public float renderString(long ctx, String string, float x, float y) {
 		bind(ctx);
 		return NanoVG.nvgText(ctx, x, y + getLineHeight(ctx), string);
-	}
-
-	public float getHeight() {
-		return 10;
 	}
 
 }

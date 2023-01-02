@@ -111,7 +111,6 @@ public class ColourPickerDialog extends BlockComponent {
 					NanoVG.nvgRect(nvg, rectangle.getX() + x, rectangle.getY(), 5, 5);
 					NanoVG.nvgFill(nvg);
 
-
 					NanoVG.nvgBeginPath(nvg);
 					NanoVG.nvgFillColor(nvg, new Colour(70, 70, 70).nvg());
 					NanoVG.nvgRect(nvg, rectangle.getX() + x + 5, rectangle.getY() + 5, 5, 5);
@@ -123,7 +122,6 @@ public class ColourPickerDialog extends BlockComponent {
 					NanoVG.nvgFillColor(nvg, new Colour(50, 50, 50).nvg());
 					NanoVG.nvgRect(nvg, rectangle.getX() + x + 5, rectangle.getY(), 5, 5);
 					NanoVG.nvgFill(nvg);
-
 
 					NanoVG.nvgBeginPath(nvg);
 					NanoVG.nvgFillColor(nvg, new Colour(50, 50, 50).nvg());
@@ -148,7 +146,8 @@ public class ColourPickerDialog extends BlockComponent {
 					break;
 			}
 			NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
-			regularFont.renderString(nvg, name, rectangle.getX() - 10, rectangle.getY() + 5 - (regularFont.getHeight() / 2));
+			regularFont.renderString(nvg, name, rectangle.getX() - 10,
+					rectangle.getY() + 5 - (regularFont.getLineHeight(nvg) / 2));
 
 			NanoVG.nvgBeginPath(nvg);
 			NVGPaint paint = NVGPaint.malloc();
@@ -156,7 +155,8 @@ public class ColourPickerDialog extends BlockComponent {
 					Colour.BLACK.withComponent(component, 0).nvg(), Colour.BLACK.withComponent(component, 255).nvg(),
 					paint);
 			NanoVG.nvgFillPaint(nvg, paint);
-			NanoVG.nvgRoundedRect(nvg, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), 0);
+			NanoVG.nvgRoundedRect(nvg, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(),
+					0);
 			NanoVG.nvgFill(nvg);
 
 			paint.free();
@@ -168,7 +168,8 @@ public class ColourPickerDialog extends BlockComponent {
 			NanoVG.nvgRect(nvg, rectangle.getX() + value, rectangle.getY(), 1, rectangle.getHeight());
 			NanoVG.nvgFill(nvg);
 
-			regularFont.renderString(nvg, Integer.toString(value), RGB_OFFSET_LEFT + value - (regularFont.getWidth(nvg, Integer.toString(value)) / 2),
+			regularFont.renderString(nvg, Integer.toString(value),
+					RGB_OFFSET_LEFT + value - (regularFont.getWidth(nvg, Integer.toString(value)) / 2),
 					rectangle.getY() + 9);
 
 //

@@ -73,7 +73,7 @@ public class ModsScroll extends ScrollListComponent {
 		if (Client.INSTANCE.getPins().getMods().size() == 0) {
 			// this is the first one
 			add(0, new LabelComponent(ModCategory.PINNED.toString()));
-			scroll += regularFont.getHeight() + getSpacing();
+			scroll += regularFont.getLineHeight(nvg) + 2 + getSpacing();
 		}
 
 		add(Client.INSTANCE.getPins().getMods().size() + 1, new ModListing(mod, screen, true));
@@ -94,7 +94,7 @@ public class ModsScroll extends ScrollListComponent {
 		if (Client.INSTANCE.getPins().getMods().size() == 1) {
 			// this is the last one
 			remove(0);
-			scroll += regularFont.getHeight() + getSpacing();
+			scroll += regularFont.getLineHeight(nvg) + 2 + getSpacing();
 		} else {
 			index++;
 		}

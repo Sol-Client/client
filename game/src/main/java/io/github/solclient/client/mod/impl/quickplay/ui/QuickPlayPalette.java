@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.font.*;
 import lombok.RequiredArgsConstructor;

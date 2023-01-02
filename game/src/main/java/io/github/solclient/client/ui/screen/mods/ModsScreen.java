@@ -107,15 +107,12 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						scroll.load();
 					} else {
 						getScreen().close();
-						if (getScreen().getParentScreen() instanceof Screen) {
-							((Screen) getScreen().getParentScreen()).getRoot().setFont(font);
-						}
 					}
 				} else {
 					switchMod(null);
 				}
 			}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
-					(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - (singleModMode ? 0 : 51),
+					(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - (singleModMode ? 0 : 53),
 							getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
 
 			if (!singleModMode) {
@@ -131,7 +128,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 							return false;
 						}).withIcon("sol_client_hud"),
 						new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
-								(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 51,
+								(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 53,
 										getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
 			}
 

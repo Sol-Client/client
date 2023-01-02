@@ -3,11 +3,16 @@ package io.github.solclient.client.util;
 import java.awt.Desktop;
 import java.io.*;
 import java.net.*;
-import java.util.Comparator;
+import java.nio.ByteBuffer;
+import java.nio.channels.*;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.IntConsumer;
 
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.MemoryUtil;
 
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
@@ -36,11 +41,13 @@ import net.minecraft.util.Util.EnumOS;
 @UtilityClass
 public class Utils {
 
-	public static ModelBakery modelBakery;
+	public ModelBakery modelBakery;
 
-	public static final String REVEAL_SUFFIX = "§sol_client:showinfolder";
+	public final String REVEAL_SUFFIX = "§sol_client:showinfolder";
 	public final MonitoringExecutorService USER_DATA;
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
+
+	private final Map<ResourceLocation, Integer> NVG_CACHE = new HashMap<>();
 
 	static {
 		int threads = 8;
@@ -170,6 +177,10 @@ public class Utils {
 
 		GL11.glScissor((int) (x * scale), (int) ((resolution.getScaledHeight() - height - y) * scale),
 				(int) (width * scale), (int) (height * scale));
+	}
+
+	public void nvgScissor(long ctx, Rectangle rectangle) {
+		NanoVG.nvgScissor(ctx, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
 	}
 
 	public void playClickSound(boolean ui) {
@@ -499,7 +510,7 @@ public class Utils {
 		GlStateManager.disableBlend();
 	}
 
-	public static String getScoreboardTitle() {
+	public String getScoreboardTitle() {
 		Minecraft mc = Minecraft.getMinecraft();
 
 		if (mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
@@ -513,7 +524,7 @@ public class Utils {
 		return null;
 	}
 
-	public static String getNativeFileExtension() {
+	public String getNativeFileExtension() {
 		switch (Util.getOSType()) {
 		case WINDOWS:
 			return "dll";
@@ -592,7 +603,7 @@ public class Utils {
 		GlStateManager.enableCull();
 	}
 
-	public static String onlyKeepDigits(String string) {
+	public String onlyKeepDigits(String string) {
 		StringBuilder builder = new StringBuilder();
 
 		for (char character : string.toCharArray()) {
@@ -603,6 +614,47 @@ public class Utils {
 		}
 
 		return builder.toString();
+	}
+
+	// not managed by Java GC for performance reasons
+	public ByteBuffer mallocAndRead(@NotNull InputStream in) throws IOException {
+		try (ReadableByteChannel channel = Channels.newChannel(in)) {
+			ByteBuffer buffer = MemoryUtil.memAlloc(8192);
+
+			while (channel.read(buffer) != -1)
+				if (buffer.remaining() == 0)
+					buffer = MemoryUtil.memRealloc(buffer, buffer.capacity() + buffer.capacity() * 3 / 2);
+
+			buffer.flip();
+
+			return buffer;
+		}
+	}
+
+	public NVGPaint nvgMinecraftTexturePaint(long nvg, ResourceLocation location, int x, int y, int width, int height) {
+		try {
+			NVGPaint paint = NVGPaint.create();
+			NanoVG.nvgImagePattern(nvg, x, y, width, height, 0, nvgMinecraftTexture(nvg, location), 1, paint);
+			return paint;
+		} catch (IOException error) {
+			return NVGPaint.create().innerColor(Colour.WHITE.nvg());
+		}
+	}
+
+	public int nvgMinecraftTexture(long nvg, ResourceLocation location) throws IOException {
+		if (NVG_CACHE.containsKey(location))
+			return NVG_CACHE.get(location);
+
+		Minecraft mc = Minecraft.getMinecraft();
+		InputStream in = mc.getResourceManager().getResource(location).getInputStream();
+
+		ByteBuffer buffer = mallocAndRead(in);
+		int handle = NanoVG.nvgCreateImageMem(nvg, 0, buffer);
+		MemoryUtil.memFree(buffer);
+
+		NVG_CACHE.put(location, handle);
+
+		return handle;
 	}
 
 }

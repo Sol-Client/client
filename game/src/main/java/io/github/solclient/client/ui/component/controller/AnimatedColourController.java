@@ -34,11 +34,10 @@ public class AnimatedColourController implements Controller<Colour> {
 	}
 
 	private Colour animate(float progress) {
-		if (last == null) {
+		if (last == null)
 			return current;
-		}
 
-		return last.lerp((Colour) current, progress);
+		return last.lerp(current, progress);
 	}
 
 }

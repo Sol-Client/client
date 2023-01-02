@@ -1,7 +1,9 @@
 package io.github.solclient.client.util.data;
 
 import java.awt.Color;
+import java.lang.ref.WeakReference;
 
+import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
@@ -17,6 +19,8 @@ public class Colour {
 	@Getter
 	@Expose
 	private final int value;
+
+	private WeakReference<NVGColor> nvg;
 
 	public static final Colour WHITE = new Colour(255, 255, 255);
 	public static final Colour BLACK = new Colour(0, 0, 0);
@@ -168,16 +172,16 @@ public class Colour {
 
 	public Colour withComponent(int component, int value) {
 		switch (component) {
-		case 0:
-			return new Colour(value, getGreen(), getBlue(), getAlpha());
-		case 1:
-			return new Colour(getRed(), value, getBlue(), getAlpha());
-		case 2:
-			return new Colour(getRed(), getGreen(), value, getAlpha());
-		case 3:
-			return new Colour(getRed(), getGreen(), getBlue(), value);
-		default:
-			throw new IndexOutOfBoundsException(component + " out of bounds");
+			case 0:
+				return new Colour(value, getGreen(), getBlue(), getAlpha());
+			case 1:
+				return new Colour(getRed(), value, getBlue(), getAlpha());
+			case 2:
+				return new Colour(getRed(), getGreen(), value, getAlpha());
+			case 3:
+				return new Colour(getRed(), getGreen(), getBlue(), value);
+			default:
+				throw new IndexOutOfBoundsException(component + " out of bounds");
 		}
 	}
 
@@ -198,7 +202,17 @@ public class Colour {
 	}
 
 	public void bind() {
-		GL11.glColor4ub((byte) getRed(), (byte) getGreen(), (byte) getBlue(), (byte) getAlpha());
+		GL11.glColor4f(getRedFloat(), getGreenFloat(), getBlueFloat(), getAlphaFloat());
+	}
+
+	public NVGColor nvg() {
+		if (nvg == null || nvg.get() == null) {
+			NVGColor colour = NVGColor.create();
+			nvg = new WeakReference<NVGColor>(colour);
+			NanoVG.nvgRGBA((byte) getRed(), (byte) getGreen(), (byte) getBlue(), (byte) getAlpha(), colour);
+		}
+
+		return nvg.get();
 	}
 
 	public static Colour fromHexString(String text) {

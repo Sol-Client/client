@@ -3,26 +3,21 @@ package io.github.solclient.client.ui.component;
 import java.util.*;
 import java.util.function.BiPredicate;
 
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.*;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.font.Font;
 import lombok.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
 
 // 7 months later, I finally reintroduced the component API...
-public abstract class Component {
+public abstract class Component extends NanoVGManager {
 
 	protected Minecraft mc = Minecraft.getMinecraft();
 	protected Screen screen;
-	@Getter
-	protected Font font;
 	@Getter
 	@Setter
 	protected Component parent;
@@ -61,10 +56,6 @@ public abstract class Component {
 			component.setScreen(screen);
 		}
 
-		if (font != null) {
-			component.setFont(font);
-		}
-
 		component.setParent(this);
 	}
 
@@ -80,14 +71,6 @@ public abstract class Component {
 
 	public void clear() {
 		subComponents.clear();
-	}
-
-	public void setFont(Font font) {
-		this.font = font;
-
-		for (Component component : subComponents) {
-			component.setFont(font);
-		}
 	}
 
 	public void setScreen(Screen screen) {
@@ -149,21 +132,17 @@ public abstract class Component {
 
 			Rectangle bounds = getBounds(component);
 
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(bounds.getX(), bounds.getY(), 0);
+			NanoVG.nvgSave(nvg);
+			NanoVG.nvgTranslate(nvg, bounds.getX(), bounds.getY());
 
 			if (component.shouldScissor()) {
-				GL11.glEnable(GL11.GL_SCISSOR_TEST);
-				Utils.scissor(bounds);
+				NanoVG.nvgScissor(nvg, 0, 0, bounds.getWidth(), bounds.getHeight());
+//				Utils.nvgScissor(nvg, getRelativeBounds());
 			}
 
 			component.render(transform(info, bounds));
 
-			GlStateManager.popMatrix();
-
-			if (component.shouldScissor()) {
-				GL11.glDisable(GL11.GL_SCISSOR_TEST);
-			}
+			NanoVG.nvgRestore(nvg);
 		}
 
 		if (dialog == null) {
@@ -186,8 +165,10 @@ public abstract class Component {
 	}
 
 	private void drawDialogOverlay() {
-		GlStateManager.color(1, 1, 1);
-		Gui.drawRect(0, 0, screen.width, screen.height, overlayColour.get(this, Colour.WHITE).getValue());
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgFillColor(nvg, overlayColour.get(this, Colour.WHITE).nvg());
+		NanoVG.nvgRect(nvg, 0, 0, screen.width, screen.height);
+		NanoVG.nvgFill(nvg);
 	}
 
 	protected Rectangle getDefaultBounds() {

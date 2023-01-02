@@ -3,14 +3,16 @@ package io.github.solclient.client.ui.component;
 import java.io.IOException;
 
 import org.lwjgl.input.*;
+import org.lwjgl.nanovg.NanoVG;
+import org.lwjgl.opengl.GL11;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
+import io.github.solclient.client.util.NanoVGManager;
 import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.*;
 
 public class Screen extends GuiScreen {
 
@@ -34,9 +36,7 @@ public class Screen extends GuiScreen {
 		};
 
 		rootWrapper.add(root, new ParentBoundsController());
-
 		rootWrapper.setScreen(this);
-		rootWrapper.setFont(SolClientMod.getFont());
 
 		this.root = root;
 	}
@@ -58,7 +58,22 @@ public class Screen extends GuiScreen {
 			}
 		}
 
+		long nvg = NanoVGManager.getNvg();
+
+		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+		NanoVG.nvgBeginFrame(nvg, mc.displayWidth, mc.displayHeight, 1);
+		NanoVG.nvgSave(nvg);
+
+		NanoVG.nvgFontSize(nvg, 8);
+
+		ScaledResolution resolution = new ScaledResolution(mc);
+		NanoVG.nvgScale(nvg, resolution.getScaleFactor(), resolution.getScaleFactor());
+
 		rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, partialTicks));
+
+		NanoVG.nvgRestore(nvg);
+		NanoVG.nvgEndFrame(nvg);
+		GL11.glPopAttrib();
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
@@ -121,10 +136,6 @@ public class Screen extends GuiScreen {
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
-	}
-
-	public void updateFont() {
-		rootWrapper.setFont(SolClientMod.getFont());
 	}
 
 	public void close() {

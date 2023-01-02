@@ -1,9 +1,10 @@
 package io.github.solclient.client.ui.component.impl;
 
+import org.lwjgl.nanovg.NanoVG;
+
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 
 public class LabelComponent extends ColouredComponent {
@@ -25,16 +26,15 @@ public class LabelComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		// Why? Why? Why? Why?
-		GlStateManager.color(2, 1, 1, 1);
-		font.renderString(getText(), 0, 0, getColourValue());
+		NanoVG.nvgFillColor(nvg, getColour().nvg());
+		regularFont.renderString(nvg, getText(), 0, 0);
 
 		super.render(info);
 	}
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return new Rectangle(0, 0, (int) font.getWidth(getText()), font.getHeight());
+		return new Rectangle(0, 0, (int) regularFont.getWidth(nvg, getText()), (int) regularFont.getHeight());
 	}
 
 	public String getText() {

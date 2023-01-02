@@ -9,9 +9,4 @@ public enum ButtonType {
 	@Getter
 	private final int width;
 
-	@Override
-	public String toString() {
-		return super.toString().toLowerCase();
-	}
-
 }

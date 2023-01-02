@@ -1,5 +1,7 @@
 package io.github.solclient.client.ui.component.impl;
 
+import org.lwjgl.nanovg.NanoVG;
+
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
@@ -7,10 +9,7 @@ import io.github.solclient.client.ui.component.handler.ClickHandler;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
 
 public class ButtonComponent extends ColouredComponent {
 
@@ -31,26 +30,28 @@ public class ButtonComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if (SolClientMod.instance.roundedUI) {
-			GlStateManager.enableAlpha();
-			GlStateManager.enableBlend();
+		float radius = 0;
 
-			getColour().bind();
+		if (SolClientMod.instance.roundedUI)
+			radius = 5;
 
-			mc.getTextureManager().bindTexture(new ResourceLocation(
-					"textures/gui/sol_client_button_" + type + "_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, type.getWidth(), 20, type.getWidth(), 20);
-		} else {
-			Utils.drawRectangle(getRelativeBounds(), getColour().withAlpha(140));
-			Utils.drawOutline(getRelativeBounds(), getColour().withAlpha(140));
-		}
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgFillColor(nvg, getColour().withAlpha(140).nvg());
+		NanoVG.nvgRoundedRect(nvg, 0, 0, type.getWidth(), 20, radius);
+		NanoVG.nvgFill(nvg);
+
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgStrokeColor(nvg, getColour().withAlpha(255).nvg());
+		NanoVG.nvgStrokeWidth(nvg, 1);
+		NanoVG.nvgRoundedRect(nvg, 0, 0, type.getWidth(), 20, radius);
+		NanoVG.nvgStroke(nvg);
 
 		super.render(info);
 	}
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return new Rectangle(0, 0, type.getWidth(), 20);
+		return Rectangle.ofDimensions(type.getWidth(), 20);
 	}
 
 	@Override

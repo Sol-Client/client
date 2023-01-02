@@ -2,6 +2,8 @@ package io.github.solclient.client.ui.screen.mods;
 
 import java.net.URI;
 
+import org.lwjgl.nanovg.NanoVG;
+
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientMod;
@@ -12,9 +14,6 @@ import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
 
 public class ModListing extends ColouredComponent {
 
@@ -62,16 +61,14 @@ public class ModListing extends ColouredComponent {
 				(component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : "")),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
-								defaultBounds.getY() - (font.getHeight() / 2)
-										- (SolClientMod.instance.fancyFont ? 0 : 1),
-								defaultBounds.getWidth(), defaultBounds.getHeight())));
+								(int) (defaultBounds.getY() - (regularFont.getHeight() / 2)), defaultBounds.getWidth(),
+								defaultBounds.getHeight())));
 		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
 				(component, defaultColour) -> new Colour(160, 160, 160)),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
-								defaultBounds.getY() + (font.getHeight() / 2)
-										+ (SolClientMod.instance.fancyFont ? 0 : 1),
-								defaultBounds.getWidth(), defaultBounds.getHeight())));
+								(int) (defaultBounds.getY() + (regularFont.getHeight() / 2)), defaultBounds.getWidth(),
+								defaultBounds.getHeight())));
 
 		Component credit;
 		add(credit = new LabelComponent((component, defaultText) -> mod.getCredit(),
@@ -100,23 +97,21 @@ public class ModListing extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		GlStateManager.enableAlpha();
-		GlStateManager.enableBlend();
+		float radius = 0;
 
-		if (SolClientMod.instance.roundedUI) {
-			Colour.BLACK_128.bind();
-			mc.getTextureManager().bindTexture(
-					new ResourceLocation("textures/gui/sol_client_mod_listing_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
+		if (SolClientMod.instance.roundedUI)
+			radius = 10;
 
-			getColour().bind();
-			mc.getTextureManager().bindTexture(new ResourceLocation(
-					"textures/gui/sol_client_mod_listing_outline_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 300, 30, 300, 30);
-		} else {
-			Utils.drawRectangle(getRelativeBounds(), Colour.BLACK_128);
-			Utils.drawOutline(getRelativeBounds(), getColour());
-		}
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgFillColor(nvg, Colour.BLACK_128.nvg());
+		NanoVG.nvgRoundedRect(nvg, 0, 0, 300, 30, radius + 1);
+		NanoVG.nvgFill(nvg);
+
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgStrokeColor(nvg, getColour().nvg());
+		NanoVG.nvgStrokeWidth(nvg, 1);
+		NanoVG.nvgRoundedRect(nvg, .5F, .5F, 299, 29, radius);
+		NanoVG.nvgStroke(nvg);
 
 		if (dragStart != null && !dragging) {
 			dragging = Math.abs(info.getRelativeMouseX() - dragStart.getX()) > 2
@@ -131,7 +126,7 @@ public class ModListing extends ColouredComponent {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return new Rectangle(0, 0, 300, 30);
+		return Rectangle.ofDimensions(300, 30);
 	}
 
 	@Override

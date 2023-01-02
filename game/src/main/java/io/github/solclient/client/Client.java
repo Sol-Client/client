@@ -38,7 +38,6 @@ import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.ui.screen.mods.*;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.access.AccessMinecraft;
-import io.github.solclient.client.util.font.SlickFontRenderer;
 import lombok.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -92,8 +91,14 @@ public final class Client {
 	private boolean remindedUpdate;
 
 	public void init() {
-		Utils.resetLineWidth();
+		try {
+			NanoVGManager.createContext();
+		} catch (IOException error) {
+			throw new IllegalStateException("Cannot initialise NanoVG", error);
+		}
+
 		new File(mc.mcDataDir, "server-resource-packs").mkdirs(); // Fix crash
+		Utils.resetLineWidth();
 		System.setProperty("http.agent", "Sol Client/" + GlobalConstants.VERSION_STRING);
 
 		LOGGER.info("Initialising...");
@@ -421,7 +426,7 @@ public final class Client {
 
 	@EventHandler
 	public void onQuit(GameQuitEvent event) {
-		SlickFontRenderer.DEFAULT.free();
+		NanoVGManager.closeContext();
 	}
 
 	public void registerChatButton(ChatButton button) {

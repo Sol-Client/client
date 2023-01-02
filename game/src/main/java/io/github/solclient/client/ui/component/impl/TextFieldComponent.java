@@ -2,9 +2,10 @@ package io.github.solclient.client.ui.component.impl;
 
 import java.util.Objects;
 
+import org.lwjgl.nanovg.NanoVG;
+
 import com.google.common.base.Predicate;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.Utils;
@@ -100,7 +101,7 @@ public class TextFieldComponent extends Component {
 		int textOffset = 2;
 
 		if (centred) {
-			textOffset = (int) ((getBounds().getWidth() / 2) - (font.getWidth(text) / 2));
+			textOffset = (int) ((getBounds().getWidth() / 2) - (regularFont.getWidth(nvg, text) / 2));
 		}
 
 		if (hasIcon) {
@@ -111,25 +112,32 @@ public class TextFieldComponent extends Component {
 			int start = selectionEnd > cursor ? cursor : selectionEnd;
 			int end = selectionEnd > cursor ? selectionEnd : cursor;
 
-			float selectionWidth = font.getWidth(text.substring(start, end));
-			float offset = font.getWidth(text.substring(0, start));
+			float selectionWidth = regularFont.getWidth(nvg, text.substring(start, end));
+			float offset = regularFont.getWidth(nvg, text.substring(0, start));
 
-			Utils.drawFloatRectangle(textOffset + offset, 0, textOffset + offset + selectionWidth, 10,
-					Colour.BLUE.getValue());
+			NanoVG.nvgBeginPath(nvg);
+			NanoVG.nvgFillColor(nvg, Colour.BLUE.nvg());
+			NanoVG.nvgRect(nvg, textOffset + offset, 0, selectionWidth, 10);
+			NanoVG.nvgFill(nvg);
 		}
 
 		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
-		font.renderString(hasPlaceholder ? I18n.format(placeholder) : text, textOffset,
-				SolClientMod.instance.fancyFont ? 0 : 1, hasPlaceholder ? 0xFF888888 : -1);
+		NanoVG.nvgFillColor(nvg, (hasPlaceholder ? new Colour(0xFF888888) : Colour.WHITE).nvg());
+		regularFont.renderString(nvg, hasPlaceholder ? I18n.format(placeholder) : text, textOffset, 0);
 
 		if (focused && ticks / 12 % 2 == 0) {
-			float relativeCursorPosition = font.getWidth(text.substring(0, cursor));
-			Utils.drawFloatRectangle(textOffset + relativeCursorPosition, 0, textOffset + relativeCursorPosition + 1,
-					10, -1);
+			float relativeCursorPosition = regularFont.getWidth(nvg, text.substring(0, cursor));
+			NanoVG.nvgBeginPath(nvg);
+			NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
+			NanoVG.nvgRect(nvg, textOffset + relativeCursorPosition, 0, 1, 10);
+			NanoVG.nvgFill(nvg);
 		}
 
-		new Rectangle(0, getBounds().getHeight() - 1, getBounds().getWidth(), 1).fill(colour.get(this, null));
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgFillColor(nvg, colour.get(this, null).nvg());
+		NanoVG.nvgRect(nvg, 0, getBounds().getHeight() - 1, getBounds().getWidth(), 1);
+		NanoVG.nvgFill(nvg);
 	}
 
 	@Override

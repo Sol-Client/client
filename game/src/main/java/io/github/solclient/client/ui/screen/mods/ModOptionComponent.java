@@ -17,7 +17,7 @@ import lombok.Getter;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.*;
 
-public class ModOptionComponent extends ScaledIconComponent {
+public class ModOptionComponent extends BlockComponent {
 
 	@Getter
 	private ModOption option;
@@ -25,7 +25,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 	private int enumWidth;
 
 	public ModOptionComponent(ModOption option) {
-		super("sol_client_mod_option", 300, 21, (component, defaultColour) -> Colour.BLACK_128);
+		super(Colour.BLACK_128, 8, 0);
 
 		this.option = option;
 
@@ -122,7 +122,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 						(component, defaultBounds) -> {
 							if (enumWidth == 0) {
 								for (Enum<?> field : fields) {
-									int newWidth = (int) font.getWidth(field.toString());
+									int newWidth = (int) regularFont.getWidth(nvg, field.toString());
 
 									if (newWidth > enumWidth) {
 										enumWidth = newWidth;
@@ -133,7 +133,8 @@ public class ModOptionComponent extends ScaledIconComponent {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(
 									getBounds().getWidth() - enumWidth - 16 + (enumWidth / 2)
-											- ((int) font.getWidth(((LabelComponent) component).getText()) / 2),
+											- ((int) regularFont.getWidth(nvg, ((LabelComponent) component).getText())
+													/ 2),
 									defaultComponentBounds.getY(), defaultComponentBounds.getWidth(),
 									defaultComponentBounds.getHeight());
 						});
@@ -204,7 +205,7 @@ public class ModOptionComponent extends ScaledIconComponent {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(
 									(int) (getBounds().getWidth()
-											- font.getWidth(((LabelComponent) component).getText()) - 117),
+											- regularFont.getWidth(nvg, ((LabelComponent) component).getText()) - 117),
 									defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
 						});
 			}
@@ -247,16 +248,6 @@ public class ModOptionComponent extends ScaledIconComponent {
 		}
 	}
 
-	@Override
-	public void renderFallback(ComponentRenderInfo info) {
-		Utils.drawRectangle(getRelativeBounds(), getColour());
-	}
-
-	@Override
-	public boolean useFallback() {
-		return true;
-	}
-
 	private boolean isConflicting(KeyBinding binding) {
 		if (binding.getKeyCode() != 0) {
 			for (KeyBinding testKey : mc.gameSettings.keyBindings) {
@@ -267,6 +258,11 @@ public class ModOptionComponent extends ScaledIconComponent {
 		}
 
 		return false;
+	}
+
+	@Override
+	protected Rectangle getDefaultBounds() {
+		return Rectangle.ofDimensions(300, 20);
 	}
 
 }

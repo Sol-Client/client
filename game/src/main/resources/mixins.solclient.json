@@ -13,7 +13,6 @@
 		"client.MixinChunkRenderContainer",
 		"client.MixinEntityPlayerSP",
 		"client.MixinEntityRenderer",
-		"client.MixinFontRendererCompat",
 		"client.MixinGameSettings",
 		"client.MixinGuiChat",
 		"client.MixinGuiContainer",
@@ -96,6 +95,8 @@
 		"mod.MixinCosmeticaMod$MixinRenderPlayer",
 		"lwjgl.MixinWindowsDisplay",
 		"lwjgl.MixinLinuxKeyboard",
-		"lwjgl.MixinLinuxKeycodes"
+		"lwjgl.MixinLinuxKeycodes",
+		"lwjgl.MixinGLContext",
+		"lwjgl.MixinNanoVGGLConfig"
 	]
 }

@@ -1,6 +1,7 @@
 package io.github.solclient.client.ui.component.impl;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.ui.component.*;
@@ -27,13 +28,13 @@ public abstract class ScrollListComponent extends Component {
 	public void setParent(Component parent) {
 		super.setParent(parent);
 
-		parent.add(scrollbar = new BlockComponent(Colour.LIGHT_BUTTON) {
+		parent.add(scrollbar = new BlockComponent(Colour.LIGHT_BUTTON, 2.5F, 0) {
 
 			@Override
 			public void render(ComponentRenderInfo info) {
 				scrollPercent = (double) ScrollListComponent.this.getBounds().getHeight() / (double) getContentHeight();
 
-				GlStateManager.translate(0, calculatedY * scrollPercent, 0);
+				NanoVG.nvgTranslate(nvg, 0, (float) (calculatedY * scrollPercent));
 
 				if (maxScrolling != 0) {
 					super.render(info);
@@ -87,7 +88,7 @@ public abstract class ScrollListComponent extends Component {
 			calculatedY = (lastAnimatedY + (animatedY - lastAnimatedY) * info.getPartialTicks());
 		}
 
-		GlStateManager.translate(0, -calculatedY, 0);
+		NanoVG.nvgTranslate(nvg, 0, (float) -calculatedY);
 		maxScrolling = getContentHeight() - getBounds().getHeight();
 
 		if (maxScrolling < 0) {

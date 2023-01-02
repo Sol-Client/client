@@ -2,6 +2,8 @@ package io.github.solclient.client.ui.component.impl;
 
 import java.util.function.Consumer;
 
+import org.lwjgl.nanovg.NanoVG;
+
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
@@ -53,22 +55,19 @@ public class SliderComponent extends Component {
 		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
 
-		int x = (int) (100 * (((value - min) / (max - min)))) - 4;
+		int x = (int) (100 * (((value - min) / (max - min))));
 
-		if (SolClientMod.instance.roundedUI) {
-			Colour.LIGHT_BUTTON.bind();
-			mc.getTextureManager().bindTexture(
-					new ResourceLocation("textures/gui/sol_client_slider_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 4, 0, 0, 100, 2, 100, 2);
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgFillColor(nvg, Colour.LIGHT_BUTTON.nvg());
+		NanoVG.nvgRoundedRect(nvg, 0, 4, 100, 2, 1);
+		NanoVG.nvgFill(nvg);
 
-			colour.get(this, null).bind();
-			mc.getTextureManager().bindTexture(
-					new ResourceLocation("textures/gui/sol_client_slider_thumb_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(x, 1, 0, 0, 8, 8, 8, 8);
-		} else {
-			Utils.drawRectangle(new Rectangle(0, 4, 100, 2), Colour.LIGHT_BUTTON);
-			Utils.drawRectangle(new Rectangle(x, 1, 8, 8), colour.get(this, null));
-		}
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgFillColor(nvg, colour.get(this, null).nvg());
+		NanoVG.nvgCircle(nvg, x, 5, 4);
+		NanoVG.nvgFill(nvg);
+//		Utils.drawRectangle(new Rectangle(0, 4, 100, 2), Colour.LIGHT_BUTTON);
+//		Utils.drawRectangle(new Rectangle(x, 1, 8, 8), colour.get(this, null));
 
 		if (selected) {
 			value = MathHelper.clamp_float(

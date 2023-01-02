@@ -46,7 +46,6 @@ public class ArmourMod extends HudMod {
 	public Rectangle getBounds(Position position) {
 		if (horizontal) {
 			int width = 1;
-			int unit = 16;
 
 			if (armour) {
 				switch (durability) {

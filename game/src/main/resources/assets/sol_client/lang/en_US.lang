@@ -459,9 +459,10 @@ sol_client.screenshot.open_folder=Show in Folder
 
 sol_client.modified_from=, using code by %s
 sol_client.originally_by=, originally by %s
-sol_client.inspired_by=, inspired by %s
+sol_client.inspired_by=, partially inspired by %s
 sol_client.by=, by %s
 
 sol_client.about=About Sol Client
+sol_client.license=Licensed under the GPL v3 license.
 
 sol_client.default=(Default)

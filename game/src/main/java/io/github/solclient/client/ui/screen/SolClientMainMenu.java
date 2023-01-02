@@ -2,19 +2,20 @@ package io.github.solclient.client.ui.screen;
 
 import java.io.IOException;
 
+import org.lwjgl.nanovg.NanoVG;
+
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
 import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
-import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.font.Font;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
@@ -28,16 +29,6 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		drawPanorama(mouseX, mouseY, partialTicks);
-
-		Font font = SolClientMod.getFont();
-
-		String copyrightString = "Copyright Mojang AB. Do not distribute!";
-		font.renderString(copyrightString, (int) (width - font.getWidth(copyrightString) - 10), height - 15, -1);
-		String versionString = "Minecraft 1.8.9";
-		font.renderString(versionString, (int) (width - font.getWidth(versionString) - 10), height - 25, -1);
-
-		font.renderString("Copyright TheKodeToad and contributors.", 10, height - 15, -1);
-		font.renderString(GlobalConstants.NAME, 10, height - 25, -1);
 
 		mc.getTextureManager().bindTexture(
 				new ResourceLocation("textures/gui/sol_client_logo_with_text_" + Utils.getTextureScale() + ".png"));
@@ -167,6 +158,21 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					}).type(ButtonType.SMALL).withIcon("sol_client_exit"),
 					(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - 25, 5,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
+		}
+
+		@Override
+		public void render(ComponentRenderInfo info) {
+			super.render(info);
+
+			NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
+
+			String copyrightString = "Copyright Mojang AB. Do not distribute!";
+			regularFont.renderString(nvg, copyrightString, (int) (screen.width - regularFont.getWidth(nvg, copyrightString) - 10), screen.height - 15);
+			String versionString = "Minecraft 1.8.9";
+			regularFont.renderString(nvg, versionString, (int) (screen.width - regularFont.getWidth(nvg, versionString) - 10), screen.height - 25);
+
+			regularFont.renderString(nvg, GlobalConstants.COPYRIGHT, 10, screen.height - 15);
+			regularFont.renderString(nvg, GlobalConstants.NAME, 10, screen.height - 25);
 		}
 
 	}

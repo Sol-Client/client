@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.github.solclient.client.Client;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Categories of Sol Client mods.
@@ -14,9 +13,9 @@ import net.minecraft.util.EnumChatFormatting;
 @RequiredArgsConstructor
 public enum ModCategory {
 	/**
-	 * All mods.
+	 * User-pinned mods.
 	 */
-	ALL(false),
+	PINNED(true),
 	/**
 	 * General uncategorisable mods.
 	 */
@@ -38,34 +37,30 @@ public enum ModCategory {
 	 */
 	INTEGRATION(true);
 
+	@Getter
 	private final boolean showName;
 	private List<Mod> mods;
 
-	@Override
-	public String toString() {
-		return showName ? I18n.format("sol_client.mod.category." + name().toLowerCase() + ".name") : null;
+	public boolean shouldShowName() {
+		return !getMods().isEmpty() && showName;
 	}
 
-	public List<Mod> getMods(String filter) {
-		if(this == ALL) {
-			mods = Client.INSTANCE.getMods();
+	@Override
+	public String toString() {
+		return I18n.format("sol_client.mod.category." + name().toLowerCase() + ".name");
+	}
+
+	public List<Mod> getMods() {
+		if (this == PINNED) {
+			return Client.INSTANCE.getPins().getMods();
 		}
-		else if(mods == null) {
-			mods = Client.INSTANCE.getMods().stream().filter((mod) -> mod.getCategory() == ModCategory.this)
+
+		if (mods == null) {
+			mods = Client.INSTANCE.getMods().stream().filter((mod) -> mod.getCategory() == this)
 					.collect(Collectors.toList());
 		}
 
-		if(filter.isEmpty()) {
-			return mods;
-		}
-
-		return mods.stream().filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
-				|| mod.getDescription().toLowerCase().contains(filter.toLowerCase()))
-				.sorted((o1, o2) -> {
-					return Integer.compare(o1.getName().toLowerCase()
-							.startsWith(filter.toLowerCase()) ? -1 : 1, o2.getName().toLowerCase()
-							.startsWith(filter.toLowerCase()) ? -1 : 1);
-				}).collect(Collectors.toList());
+		return mods;
 	}
 
 }

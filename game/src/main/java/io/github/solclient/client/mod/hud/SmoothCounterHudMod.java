@@ -4,9 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostTickEvent;
-import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
-import io.github.solclient.client.mod.annotation.Option;
-import net.minecraft.client.Minecraft;
+import io.github.solclient.client.mod.annotation.*;
 
 @AbstractTranslationKey("sol_client.mod.smooth_counter_hud")
 public abstract class SmoothCounterHudMod extends SimpleHudMod {
@@ -23,29 +21,28 @@ public abstract class SmoothCounterHudMod extends SimpleHudMod {
 
 	@EventHandler
 	public void onTick(PostTickEvent event) {
-		if(mc.theWorld == null) return;
+		if (mc.theWorld == null)
+			return;
 
 		int actualValue = getIntValue();
 
-		if(!smoothNumbers) {
+		if (!smoothNumbers) {
 			counter = actualValue;
 			return;
 		}
 
-		if(actualValue > counter) {
+		if (actualValue > counter) {
 			counter += Math.max(((actualValue - counter) / 2), 1);
-		}
-		else if(actualValue < counter) {
+		} else if (actualValue < counter) {
 			counter -= Math.max(((counter - actualValue) / 2), 1);
 		}
 	}
 
 	@Override
 	public String getText(boolean editMode) {
-		if(editMode) {
+		if (editMode) {
 			return "0 " + getSuffix();
-		}
-		else {
+		} else {
 			return counter + " " + getSuffix();
 		}
 	}

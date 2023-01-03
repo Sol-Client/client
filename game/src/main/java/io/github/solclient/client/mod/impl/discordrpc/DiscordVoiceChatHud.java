@@ -1,24 +1,14 @@
 package io.github.solclient.client.mod.impl.discordrpc;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.hud.BaseHudElement;
-import io.github.solclient.client.mod.hud.HudPosition;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.discordrpc.socket.User;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
-import lombok.AllArgsConstructor;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.*;
 
 public class DiscordVoiceChatHud extends BaseHudElement {
 
@@ -41,15 +31,15 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 	public Rectangle getBounds(Position position) {
 		int yOffset = 0;
 
-		switch(mod.voiceChatHudAlignment) {
-			case MIDDLE:
-				yOffset = (USER_HEIGHT * 4) / 2;
-				break;
-			case BOTTOM:
-				yOffset = USER_HEIGHT * 4;
-				break;
-			default:
-				break;
+		switch (mod.voiceChatHudAlignment) {
+		case MIDDLE:
+			yOffset = (USER_HEIGHT * 4) / 2;
+			break;
+		case BOTTOM:
+			yOffset = USER_HEIGHT * 4;
+			break;
+		default:
+			break;
 		}
 
 		return position.offset(0, yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
@@ -59,7 +49,7 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 	public void render(Position position, boolean editMode) {
 		Collection<User> users;
 
-		if(editMode) {
+		if (editMode) {
 			users = new ArrayList<>();
 
 			User lynith = new User("0");
@@ -77,36 +67,36 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 			User midget = new User("0");
 			midget.setName("midget_3111");
 			users.add(midget);
-		}
-		else if(mod.socket == null) {
+		} else if (mod.socket == null) {
 			return;
-		}
-		else {
+		} else {
 			users = mod.socket.getVoiceCallUsers();
 		}
 
 		int y = position.getY();
 
-		switch(mod.voiceChatHudAlignment) {
-			case MIDDLE:
-				y -= (USER_HEIGHT * (users.size())) / 2;
-				break;
-			case BOTTOM:
-				y -= USER_HEIGHT * users.size();
-				break;
-			default:
-				break;
+		switch (mod.voiceChatHudAlignment) {
+		case MIDDLE:
+			y -= (USER_HEIGHT * (users.size())) / 2;
+			break;
+		case BOTTOM:
+			y -= USER_HEIGHT * users.size();
+			break;
+		default:
+			break;
 		}
 
-		for(User user : users) {
+		for (User user : users) {
 			user.bindTexture();
 			Gui.drawModalRectWithCustomSizedTexture(position.getX(), y, 0, 0, 16, 16, 16, 16);
 
-			if(user.isSpeaking()) {
-				Utils.drawOutline(position.getX() - 1, y - 1, position.getX() + 17, y + 17, mod.speakingColour.getValue());
+			if (user.isSpeaking()) {
+				Utils.drawOutline(position.getX() - 1, y - 1, position.getX() + 17, y + 17,
+						mod.speakingColour.getValue());
 			}
 
-			font.drawString(user.getName(), position.getX() + 20, y + 4, user.isMuted() ? mod.mutedColour.getValue() : mod.usernameColour.getValue(), mod.shadow);
+			font.drawString(user.getName(), position.getX() + 20, y + 4,
+					user.isMuted() ? mod.mutedColour.getValue() : mod.usernameColour.getValue(), mod.shadow);
 			y += 20;
 		}
 	}

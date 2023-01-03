@@ -1,18 +1,17 @@
 package io.github.solclient.client;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.MouseClickEvent;
-import io.github.solclient.client.event.impl.PostTickEvent;
+import io.github.solclient.client.event.impl.*;
 
 public class CpsMonitor {
 
 	public static final CpsMonitor LMB = new CpsMonitor(0);
 	public static final CpsMonitor RMB = new CpsMonitor(1);
 
-	public static void forceInit() {}
+	public static void forceInit() {
+	}
 
 	private int button;
 	private List<Long> presses = new ArrayList<Long>();
@@ -24,7 +23,7 @@ public class CpsMonitor {
 
 	@EventHandler
 	public void onMouseClickEvent(MouseClickEvent event) {
-		if(event.button == button) {
+		if (event.button == button) {
 			click();
 		}
 	}

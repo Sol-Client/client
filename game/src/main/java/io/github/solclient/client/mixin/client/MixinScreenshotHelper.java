@@ -8,30 +8,19 @@ import javax.imageio.ImageIO;
 
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.lwjgl.opengl.*;
+import org.spongepowered.asm.mixin.*;
 
 import com.replaymod.replay.ReplayModReplay;
 
 import io.github.solclient.client.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.event.ClickEvent;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.*;
 
 @Mixin(ScreenShotHelper.class)
 public class MixinScreenshotHelper {
@@ -43,14 +32,14 @@ public class MixinScreenshotHelper {
 			File screenshots = new File(gameDirectory, "screenshots");
 			screenshots.mkdir();
 
-			if(OpenGlHelper.isFramebufferEnabled()) {
+			if (OpenGlHelper.isFramebufferEnabled()) {
 				width = buffer.framebufferTextureWidth;
 				height = buffer.framebufferTextureHeight;
 			}
 
 			int pixels = width * height;
 
-			if(pixelBuffer == null || pixelBuffer.capacity() < pixels) {
+			if (pixelBuffer == null || pixelBuffer.capacity() < pixels) {
 				pixelBuffer = BufferUtils.createIntBuffer(pixels);
 				pixelValues = new int[pixels];
 			}
@@ -59,11 +48,10 @@ public class MixinScreenshotHelper {
 			GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
 			pixelBuffer.clear();
 
-			if(OpenGlHelper.isFramebufferEnabled()) {
+			if (OpenGlHelper.isFramebufferEnabled()) {
 				GlStateManager.bindTexture(buffer.framebufferTexture);
 				GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
-			}
-			else {
+			} else {
 				GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
 			}
 
@@ -71,27 +59,25 @@ public class MixinScreenshotHelper {
 			TextureUtil.processPixelValues(pixelValues, width, height);
 			BufferedImage image = null;
 
-			if(OpenGlHelper.isFramebufferEnabled()) {
+			if (OpenGlHelper.isFramebufferEnabled()) {
 				image = new BufferedImage(buffer.framebufferWidth, buffer.framebufferHeight, 1);
 				int j = buffer.framebufferTextureHeight - buffer.framebufferHeight;
 
-				for(int k = j; k < buffer.framebufferTextureHeight; ++k) {
-					for(int l = 0; l < buffer.framebufferWidth; ++l) {
+				for (int k = j; k < buffer.framebufferTextureHeight; ++k) {
+					for (int l = 0; l < buffer.framebufferWidth; ++l) {
 						image.setRGB(l, k - j, pixelValues[k * buffer.framebufferTextureWidth + l]);
 					}
 				}
-			}
-			else {
+			} else {
 				image = new BufferedImage(width, height, 1);
 				image.setRGB(0, 0, width, height, pixelValues, 0, width);
 			}
 
 			File screenshot;
 
-			if(screenshotName == null) {
+			if (screenshotName == null) {
 				screenshot = getTimestampedPNGFileForDirectory(screenshots);
-			}
-			else {
+			} else {
 				screenshot = new File(screenshots, screenshotName);
 			}
 
@@ -104,34 +90,32 @@ public class MixinScreenshotHelper {
 					Minecraft.getMinecraft().ingameGUI.getChatGUI()
 							.printChatMessage(new ChatComponentTranslation("screenshot.success", screenshot.getName()));
 
-					IChatComponent secondaryText = new ChatComponentText("[" + I18n.format("sol_client.screenshot.view") + "]")
+					IChatComponent secondaryText = new ChatComponentText(
+							"[" + I18n.format("sol_client.screenshot.view") + "]")
 							.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE).setChatClickEvent(
 									new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshot.getAbsolutePath())))
-							.appendSibling(
-									new ChatComponentText(" ").appendSibling(new ChatComponentText("[" + I18n.format("sol_client.screenshot.open_folder") + "]")
+							.appendSibling(new ChatComponentText(" ").appendSibling(
+									new ChatComponentText("[" + I18n.format("sol_client.screenshot.open_folder") + "]")
 											.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)
 													.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE,
 															screenshot.getAbsolutePath() + Utils.REVEAL_SUFFIX)))));
 
 					Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(secondaryText);
-				}
-				catch(Exception error) {
+				} catch (Exception error) {
 					logger.warn("Couldn't save screenshot", error);
 					Minecraft.getMinecraft().ingameGUI.getChatGUI()
 							.printChatMessage(new ChatComponentTranslation("screenshot.failure", error.getMessage()));
 				}
 			});
 
-			if(ReplayModReplay.instance.getReplayHandler() != null) {
+			if (ReplayModReplay.instance.getReplayHandler() != null) {
 				thread.run();
-			}
-			else {
+			} else {
 				thread.start();
 			}
 
 			return null;
-		}
-		catch(Exception exception) {
+		} catch (Exception exception) {
 			logger.warn("Couldn't save screenshot", exception);
 			return new ChatComponentTranslation("screenshot.failure", exception.getMessage());
 		}

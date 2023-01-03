@@ -1,12 +1,9 @@
 package io.github.solclient.client.mod.impl.hypixeladditions.commands;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.*;
 
 public class VisitHousingCommand extends HypixelAdditionsCommand {
 
@@ -16,17 +13,15 @@ public class VisitHousingCommand extends HypixelAdditionsCommand {
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-		if(args.length == 1) {
-			if(mod.isHousing()) {
+		if (args.length == 1) {
+			if (mod.isHousing()) {
 				mc.thePlayer.sendChatMessage("/visit " + args[0]);
-			}
-			else {
+			} else {
 				mc.thePlayer.sendChatMessage("/lobby housing");
 				new Thread(() -> {
 					try {
 						Thread.sleep(300);
-					}
-					catch(InterruptedException e) {
+					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					mc.thePlayer.sendChatMessage("/visit " + args[0]);

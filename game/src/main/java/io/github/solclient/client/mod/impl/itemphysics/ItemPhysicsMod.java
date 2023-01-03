@@ -5,25 +5,17 @@
 
 package io.github.solclient.client.mod.impl.itemphysics;
 
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.access.AccessEntity;
-import lombok.Data;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.item.*;
 
 public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 
@@ -31,7 +23,8 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	private float rotationSpeed = 100;
 	private final Map<EntityItem, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
-																	 	   // usage is prioritised.
+																			// usage is prioritised.
+
 	@Override
 	public String getId() {
 		return "item_physics";
@@ -49,7 +42,7 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 		ItemStack itemstack = event.entity.getEntityItem();
 		Item item = itemstack.getItem();
 
-		if(item != null) {
+		if (item != null) {
 			boolean is3d = event.model.isGui3d();
 			int clumpSize = getClumpSize(itemstack.stackSize);
 			GlStateManager.translate((float) event.x, (float) event.y + 0.1, (float) event.z);
@@ -63,15 +56,15 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 			GlStateManager.rotate(180, 0, 1, 1);
 			GlStateManager.rotate(event.entity.rotationYaw, 0, 0, 1);
 
-			if(!Minecraft.getMinecraft().isGamePaused()) {
-				if(!event.entity.onGround) {
+			if (!Minecraft.getMinecraft().isGamePaused()) {
+				if (!event.entity.onGround) {
 					int divisor = 2500000;
-					if(((AccessEntity) event.entity).getIsInWeb()) {
+					if (((AccessEntity) event.entity).getIsInWeb()) {
 						divisor *= 10;
 					}
-					data.setRotation(data.getRotation() + (((float) since) / ((float) divisor) * (rotationSpeed / 100F)));
-				}
-				else if(data.getRotation() != 0) {
+					data.setRotation(
+							data.getRotation() + (((float) since) / ((float) divisor) * (rotationSpeed / 100F)));
+				} else if (data.getRotation() != 0) {
 					data.setRotation(0);
 				}
 			}
@@ -80,7 +73,7 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 
 			data.setLastUpdate(now);
 
-			if(!is3d) {
+			if (!is3d) {
 				float rotationXAndY = -0.0F * (clumpSize - 1) * 0.5F;
 				float rotationZ = -0.046875F * (clumpSize - 1) * 0.5F;
 				GlStateManager.translate(rotationXAndY, rotationXAndY, rotationZ);
@@ -89,8 +82,7 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
 			event.result = clumpSize;
-		}
-		else {
+		} else {
 			event.result = 0;
 		}
 	}
@@ -106,16 +98,13 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	private int getClumpSize(int size) {
-		if(size > 48) {
+		if (size > 48) {
 			return 5;
-		}
-		else if(size > 32) {
+		} else if (size > 32) {
 			return 4;
-		}
-		else if(size > 16) {
+		} else if (size > 16) {
 			return 3;
-		}
-		else if(size > 1) {
+		} else if (size > 1) {
 			return 2;
 		}
 		return 1;

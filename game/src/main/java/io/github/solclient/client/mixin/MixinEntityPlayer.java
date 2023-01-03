@@ -1,14 +1,11 @@
 package io.github.solclient.client.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.impl.EntityAttackEvent;
-import io.github.solclient.client.event.impl.PlayerSleepEvent;
+import io.github.solclient.client.event.impl.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
@@ -18,7 +15,7 @@ public class MixinEntityPlayer {
 
 	@Inject(method = "attackTargetEntityWithCurrentItem", at = @At("HEAD"))
 	public void attackEntity(Entity entity, CallbackInfo callback) {
-		if(entity.canAttackWithItem()) {
+		if (entity.canAttackWithItem()) {
 			Client.INSTANCE.bus.post(new EntityAttackEvent(entity));
 		}
 	}

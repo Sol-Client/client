@@ -1,11 +1,9 @@
 package io.github.solclient.client.mod.impl.replay;
 
-import lombok.AllArgsConstructor;
 import net.minecraft.client.resources.I18n;
 
 public enum SCCameraType {
-	CLASSIC,
-	VANILLA_ISH;
+	CLASSIC, VANILLA_ISH;
 
 	@Override
 	public String toString() {

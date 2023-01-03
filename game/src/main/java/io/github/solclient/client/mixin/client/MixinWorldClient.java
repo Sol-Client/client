@@ -1,10 +1,7 @@
 package io.github.solclient.client.mixin.client;
 
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
@@ -17,13 +14,15 @@ import net.minecraft.util.ResourceLocation;
 @Mixin(WorldClient.class)
 public class MixinWorldClient {
 
-	@Shadow @Final private Minecraft mc;
+	@Shadow
+	@Final
+	private Minecraft mc;
 
 	@Inject(method = "playSound", at = @At(value = "HEAD"), cancellable = true)
 	public void handlePlaySound(double x, double y, double z, String soundName, float volume, float pitch,
-								boolean distanceDelay, CallbackInfo callback) {
+			boolean distanceDelay, CallbackInfo callback) {
 		SoundPlayEvent event = Client.INSTANCE.bus.post(new SoundPlayEvent(soundName, volume, pitch, volume, pitch));
-		if(event.pitch != event.originalPitch || event.volume != event.originalVolume) {
+		if (event.pitch != event.originalPitch || event.volume != event.originalVolume) {
 			callback.cancel();
 			volume = event.volume;
 			pitch = event.pitch;
@@ -31,11 +30,10 @@ public class MixinWorldClient {
 			PositionedSoundRecord positionedsoundrecord = new PositionedSoundRecord(new ResourceLocation(soundName),
 					volume, pitch, (float) x, (float) y, (float) z);
 
-			if(distanceDelay && distanceSq > 100.0D) {
+			if (distanceDelay && distanceSq > 100.0D) {
 				mc.getSoundHandler().playDelayedSound(positionedsoundrecord,
 						(int) (Math.sqrt(distanceSq) / 40.0D * 20.0D));
-			}
-			else {
+			} else {
 				mc.getSoundHandler().playSound(positionedsoundrecord);
 			}
 		}

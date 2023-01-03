@@ -1,14 +1,12 @@
 package io.github.solclient.client;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import io.github.solclient.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.access.AccessGuiChat;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -61,10 +59,9 @@ public abstract class ChatChannelSystem {
 
 			@Override
 			public void sendMessage(EntityPlayerSP player, String message) {
-				if(command == null) {
+				if (command == null) {
 					player.sendQueue.addToSendQueue(new C01PacketChatMessage(message));
-				}
-				else {
+				} else {
 					player.sendChatMessage("/" + command + " " + message);
 				}
 			}
@@ -76,11 +73,14 @@ public abstract class ChatChannelSystem {
 
 			@Override
 			public boolean equals(Object obj) {
-				if(this == obj) return true;
+				if (this == obj)
+					return true;
 
-				if(obj == null) return false;
+				if (obj == null)
+					return false;
 
-				if(getClass() != obj.getClass()) return false;
+				if (getClass() != obj.getClass())
+					return false;
 
 				DefaultChatChannel other = (DefaultChatChannel) obj;
 				return Objects.equals(command, other.command);
@@ -94,7 +94,8 @@ public abstract class ChatChannelSystem {
 
 		public static final ChatChannelButton INSTANCE = new ChatChannelButton();
 
-		private ChatChannelButton() {}
+		private ChatChannelButton() {
+		}
 
 		@Override
 		public int getPriority() {
@@ -110,7 +111,8 @@ public abstract class ChatChannelSystem {
 		public int getPopupWidth() {
 			return Math.max(ChatButton.super.getWidth(),
 					Minecraft.getMinecraft().fontRendererObj.getStringWidth(Client.INSTANCE.getChatChannelSystem()
-							.getChannels().stream().map(ChatChannel::getName).max(Utils.STRING_WIDTH_COMPARATOR).get()) + 2);
+							.getChannels().stream().map(ChatChannel::getName).max(Utils.STRING_WIDTH_COMPARATOR).get())
+							+ 2);
 		}
 
 		@Override
@@ -124,14 +126,15 @@ public abstract class ChatChannelSystem {
 		}
 
 		@Override
-		public void render(int x, int y, boolean mouseDown, boolean wasMouseDown, boolean wasMouseClicked, int mouseX, int mouseY) {
+		public void render(int x, int y, boolean mouseDown, boolean wasMouseDown, boolean wasMouseClicked, int mouseX,
+				int mouseY) {
 			FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
 
-			for(ChatChannel channel : Client.INSTANCE.getChatChannelSystem().getChannels()) {
+			for (ChatChannel channel : Client.INSTANCE.getChatChannelSystem().getChannels()) {
 				Rectangle optionBounds = new Rectangle(x, y, getPopupWidth(), 12);
 				boolean hovered = optionBounds.contains(mouseX, mouseY);
 				optionBounds.fill(hovered ? Colour.WHITE_128 : Colour.BLACK_128);
-				if(hovered && wasMouseClicked) {
+				if (hovered && wasMouseClicked) {
 					Utils.playClickSound(false);
 					AccessGuiChat.getInstance().setSelectedChatButton(null);
 					Client.INSTANCE.getChatChannelSystem().setChannel(channel);
@@ -140,8 +143,8 @@ public abstract class ChatChannelSystem {
 				font.drawString(channel.getName(),
 						optionBounds.getX() + (optionBounds.getWidth() / 2)
 								- (font.getStringWidth(channel.getName()) / 2),
-						optionBounds.getY() + (optionBounds.getHeight() / 2) - (font.FONT_HEIGHT / 2), hovered ? 0 :
-								-1);
+						optionBounds.getY() + (optionBounds.getHeight() / 2) - (font.FONT_HEIGHT / 2),
+						hovered ? 0 : -1);
 				y += 13;
 			}
 		}

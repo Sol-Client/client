@@ -1,9 +1,7 @@
 package io.github.solclient.client.ui.screen;
 
-import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.*;
 
 public class SplashScreen {
 
@@ -24,7 +22,7 @@ public class SplashScreen {
 	}
 
 	public void draw() {
-		if(stage > stages) {
+		if (stage > stages) {
 			throw new IndexOutOfBoundsException(Integer.toString(stage));
 		}
 

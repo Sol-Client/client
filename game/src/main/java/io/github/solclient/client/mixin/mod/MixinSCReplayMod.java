@@ -1,73 +1,56 @@
 package io.github.solclient.client.mixin.mod;
 
+import java.util.Collection;
+
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.replaymod.compat.optifine.OptifineReflection;
+import com.replaymod.core.*;
+import com.replaymod.core.events.*;
+import com.replaymod.core.versions.MCVer;
 import com.replaymod.lib.de.johni0702.minecraft.gui.GuiRenderer;
+import com.replaymod.lib.de.johni0702.minecraft.gui.container.GuiScreen;
 import com.replaymod.lib.de.johni0702.minecraft.gui.element.AbstractGuiSlider;
+import com.replaymod.lib.de.johni0702.minecraft.gui.element.GuiButton;
+import com.replaymod.lib.de.johni0702.minecraft.gui.versions.MatrixStack;
+import com.replaymod.recording.gui.*;
 import com.replaymod.recording.packet.PacketListener;
+import com.replaymod.replay.ReplayModReplay;
+import com.replaymod.replay.camera.*;
+import com.replaymod.replay.events.RenderHotbarCallback;
+import com.replaymod.replay.gui.screen.GuiReplayViewer;
 import com.replaymod.replay.handler.GuiHandler;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
-import io.github.solclient.client.mod.impl.replay.RecordingIndicator;
-import io.github.solclient.client.mod.impl.replay.SCReplayMod;
+import io.github.solclient.client.mod.impl.replay.*;
 import io.github.solclient.client.mod.impl.replay.fix.SCSettingsRegistry;
 import io.github.solclient.client.tweak.Tweaker;
 import io.github.solclient.client.ui.screen.JGuiPreviousScreen;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S02PacketChat;
-import net.minecraft.util.EnumChatFormatting;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.replaymod.compat.optifine.OptifineReflection;
-import com.replaymod.core.KeyBindingRegistry;
-import com.replaymod.core.ReplayMod;
-import com.replaymod.core.events.KeyBindingEventCallback;
-import com.replaymod.core.events.PostRenderWorldCallback;
-import com.replaymod.core.events.PreRenderHandCallback;
-import com.replaymod.core.versions.MCVer;
-import com.replaymod.lib.de.johni0702.minecraft.gui.container.GuiScreen;
-import com.replaymod.lib.de.johni0702.minecraft.gui.element.GuiButton;
-import com.replaymod.lib.de.johni0702.minecraft.gui.versions.MatrixStack;
-import com.replaymod.recording.gui.GuiRecordingControls;
-import com.replaymod.recording.gui.GuiRecordingOverlay;
-import com.replaymod.recording.gui.GuiSavingReplay;
-import com.replaymod.replay.ReplayModReplay;
-import com.replaymod.replay.camera.CameraEntity;
-import com.replaymod.replay.camera.ClassicCameraController;
-import com.replaymod.replay.camera.VanillaCameraController;
-import com.replaymod.replay.events.RenderHotbarCallback;
-import com.replaymod.replay.gui.screen.GuiReplayViewer;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.stats.StatFileWriter;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
-
-import java.util.Collection;
 
 public class MixinSCReplayMod {
 
 	@Mixin(Minecraft.class)
 	public static class MixinMinecraft {
 
-		@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;" +
-				"setKeyBindState(IZ)V"))
+		@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;"
+				+ "setKeyBindState(IZ)V"))
 		public void keyPressEvent(CallbackInfo callback) {
-			if(!SCReplayMod.enabled) return;
+			if (!SCReplayMod.enabled)
+				return;
 
 			KeyBindingEventCallback.EVENT.invoker().onKeybindingEvent();
 		}
@@ -79,17 +62,19 @@ public class MixinSCReplayMod {
 
 		@Inject(method = "renderHand", at = @At("HEAD"), cancellable = true)
 		public void skipRenderHand(float partialTicks, int xOffset, CallbackInfo callback) {
-			if(!SCReplayMod.enabled) return;
+			if (!SCReplayMod.enabled)
+				return;
 
-			if(PreRenderHandCallback.EVENT.invoker().preRenderHand()) {
+			if (PreRenderHandCallback.EVENT.invoker().preRenderHand()) {
 				callback.cancel();
 			}
 		}
 
-		@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;" +
-				"endStartSection(Ljava/lang/String;)V", ordinal = 18, shift = At.Shift.BEFORE))
+		@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;"
+				+ "endStartSection(Ljava/lang/String;)V", ordinal = 18, shift = At.Shift.BEFORE))
 		public void postRenderWorld(int pass, float partialTicks, long finishTimeNano, CallbackInfo callback) {
-			if(!SCReplayMod.enabled) return;
+			if (!SCReplayMod.enabled)
+				return;
 
 			PostRenderWorldCallback.EVENT.invoker().postRenderWorld(new MatrixStack());
 		}
@@ -101,14 +86,16 @@ public class MixinSCReplayMod {
 
 		@Inject(method = "renderTooltip", at = @At("HEAD"), cancellable = true)
 		public void skipHotbar(ScaledResolution res, float partialTicks, CallbackInfo callback) {
-			if(!SCReplayMod.enabled) return;
+			if (!SCReplayMod.enabled)
+				return;
 
-			if(RenderHotbarCallback.EVENT.invoker().shouldRenderHotbar() == Boolean.FALSE) {
+			if (RenderHotbarCallback.EVENT.invoker().shouldRenderHotbar() == Boolean.FALSE) {
 				callback.cancel();
 			}
 		}
 
 	}
+
 	@Mixin(MCVer.class)
 	public static class MixinMCVer {
 
@@ -126,7 +113,8 @@ public class MixinSCReplayMod {
 	@Mixin(CameraEntity.class)
 	public static abstract class MixinCameraEntity extends EntityPlayerSP {
 
-		public MixinCameraEntity(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFile) {
+		public MixinCameraEntity(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler,
+				StatFileWriter statFile) {
 			super(mcIn, worldIn, netHandler, statFile);
 		}
 
@@ -148,16 +136,15 @@ public class MixinSCReplayMod {
 		@Inject(method = "<init>", at = @At("RETURN"), remap = false)
 		public void overrideSettings(ReplayModReplay mod, CallbackInfo callback) {
 			Minecraft.getMinecraft().currentScreen = new JGuiPreviousScreen(this);
-			settingsButton.onClick(() -> Minecraft.getMinecraft().displayGuiScreen(
-					new ModsScreen(SCReplayMod.instance)));
+			settingsButton
+					.onClick(() -> Minecraft.getMinecraft().displayGuiScreen(new ModsScreen(SCReplayMod.instance)));
 		}
 
 		@Override
 		public void display() {
-			if(!SCReplayMod.enabled) {
+			if (!SCReplayMod.enabled) {
 				Minecraft.getMinecraft().displayGuiScreen(null);
-			}
-			else {
+			} else {
 				super.display();
 			}
 		}
@@ -177,8 +164,8 @@ public class MixinSCReplayMod {
 		 */
 		@Overwrite(remap = false)
 		public void registerKeyBindings(KeyBindingRegistry registry) {
-			registry.registerKeyBinding("replaymod.input.settings", 0, () -> mc.displayGuiScreen(
-					new ModsScreen(SCReplayMod.instance)), false);
+			registry.registerKeyBinding("replaymod.input.settings", 0,
+					() -> mc.displayGuiScreen(new ModsScreen(SCReplayMod.instance)), false);
 		}
 
 		@Final
@@ -190,12 +177,12 @@ public class MixinSCReplayMod {
 	@Mixin(GuiSavingReplay.class)
 	public static class MixinGuiSavingReplay {
 
-		@Redirect(method = "presentRenameDialog", at = @At(value = "INVOKE", target = "Lio/github/solclient/client/mod/impl/replay/fix" +
-				"/SCSettingsRegistry;get(Lio/github/solclient/client/mod/impl/replay/fix/SCSettingsRegistry$SettingKey;)" +
-				"Ljava/lang/Object;"), remap = false)
+		@Redirect(method = "presentRenameDialog", at = @At(value = "INVOKE", target = "Lio/github/solclient/client/mod/impl/replay/fix"
+				+ "/SCSettingsRegistry;get(Lio/github/solclient/client/mod/impl/replay/fix/SCSettingsRegistry$SettingKey;)"
+				+ "Ljava/lang/Object;"), remap = false)
 		public Object saveAnyway(SCSettingsRegistry instance, SCSettingsRegistry.SettingKey settingKey) {
-			return SCReplayMod.instance.renameDialog && SCReplayMod.enabled && !(SCReplayMod.deferedState
-					== Boolean.FALSE && Minecraft.getMinecraft().theWorld == null);
+			return SCReplayMod.instance.renameDialog && SCReplayMod.enabled
+					&& !(SCReplayMod.deferedState == Boolean.FALSE && Minecraft.getMinecraft().theWorld == null);
 		}
 
 	}
@@ -268,8 +255,7 @@ public class MixinSCReplayMod {
 	@Mixin(AbstractGuiSlider.class)
 	public static class MixinAbstractGuiSlider {
 
-		@Redirect(method = "draw", at = @At(value = "INVOKE",
-				target = "Lcom/replaymod/lib/de/johni0702/minecraft/gui/GuiRenderer;drawCenteredString(IIILjava/lang/String;)I"), remap = false)
+		@Redirect(method = "draw", at = @At(value = "INVOKE", target = "Lcom/replaymod/lib/de/johni0702/minecraft/gui/GuiRenderer;drawCenteredString(IIILjava/lang/String;)I"), remap = false)
 		public int useShadow(GuiRenderer instance, int x, int y, int colour, String text) {
 			return instance.drawCenteredString(x, y, colour, text, true);
 		}
@@ -283,27 +269,27 @@ public class MixinSCReplayMod {
 		 * @author TheKodeToad
 		 */
 		@Overwrite(remap = false)
-		private void injectIntoMainMenu(net.minecraft.client.gui.GuiScreen guiScreen, Collection<net.minecraft.client
-				.gui.GuiButton> buttonList) {}
-
+		private void injectIntoMainMenu(net.minecraft.client.gui.GuiScreen guiScreen,
+				Collection<net.minecraft.client.gui.GuiButton> buttonList) {
+		}
 
 	}
 
 	@Mixin(PacketListener.class)
 	public static class MixinPacketListener {
 
-		@Inject(method = "save", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target =
-				"Ljava/lang/System;currentTimeMillis()J"), cancellable = true)
+		@Inject(method = "save", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Ljava/lang/System;currentTimeMillis()J"), cancellable = true)
 		public void handleChat(Packet packet, CallbackInfo callback) {
-			if(packet instanceof S02PacketChat) {
-				String messageString = EnumChatFormatting.getTextWithoutFormattingCodes(((S02PacketChat) packet).getChatComponent().getUnformattedText());
+			if (packet instanceof S02PacketChat) {
+				String messageString = EnumChatFormatting.getTextWithoutFormattingCodes(
+						((S02PacketChat) packet).getChatComponent().getUnformattedText());
 
-				if(Client.INSTANCE.bus.post(new ReceiveChatMessageEvent(((S02PacketChat) packet).getType() == 2, messageString, true)).cancelled) {
+				if (Client.INSTANCE.bus.post(new ReceiveChatMessageEvent(((S02PacketChat) packet).getType() == 2,
+						messageString, true)).cancelled) {
 					callback.cancel();
 				}
 			}
 		}
-
 
 	}
 

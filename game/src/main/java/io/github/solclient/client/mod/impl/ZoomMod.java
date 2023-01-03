@@ -1,36 +1,29 @@
 package io.github.solclient.client.mod.impl;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
+import org.lwjgl.input.*;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.event.*;
-import io.github.solclient.client.event.impl.FovEvent;
-import io.github.solclient.client.event.impl.MouseClickEvent;
-import io.github.solclient.client.event.impl.PostTickEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.event.impl.ScrollEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.*;
+import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.MathHelper;
 
 public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
-	public static boolean enabled;
-	public static ZoomMod instance;
-
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C, Client.KEY_CATEGORY);
+	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C,
+			GlobalConstants.KEY_CATEGORY);
 	@Option
-	private final KeyBinding zoomOutKey = new KeyBinding(getTranslationKey() + ".zoom_out", Keyboard.KEY_MINUS, Client.KEY_CATEGORY);
+	private final KeyBinding zoomOutKey = new KeyBinding(getTranslationKey() + ".zoom_out", Keyboard.KEY_MINUS,
+			GlobalConstants.KEY_CATEGORY);
 	@Option
-	private final KeyBinding zoomInKey = new KeyBinding(getTranslationKey() + ".zoom_in", Keyboard.KEY_EQUALS, Client.KEY_CATEGORY);
+	private final KeyBinding zoomInKey = new KeyBinding(getTranslationKey() + ".zoom_in", Keyboard.KEY_EQUALS,
+			GlobalConstants.KEY_CATEGORY);
 
 	@Expose
 	@Option
@@ -60,6 +53,11 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public String getId() {
 		return "zoom";
+	}
+
+	@Override
+	public String getCredit() {
+		return I18n.format("sol_client.inspired_by", "EnnuiL");
 	}
 
 	@Override
@@ -94,19 +92,17 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(key.isKeyDown()) {
-			if(!active) {
+		if (key.isKeyDown()) {
+			if (!active) {
 				start();
 			}
-		}
-		else if(active) {
+		} else if (active) {
 			stop();
 		}
-		if(active) {
-			if(zoomOutKey.isKeyDown()) {
+		if (active) {
+			if (zoomOutKey.isKeyDown()) {
 				zoomOut();
-			}
-			else if(zoomInKey.isKeyDown()) {
+			} else if (zoomInKey.isKeyDown()) {
 				zoomIn();
 			}
 		}
@@ -114,7 +110,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void postTick(PostTickEvent event) {
-		if(smooth) {
+		if (smooth) {
 			lastAnimatedFactor = animatedFactor;
 
 			float multiplier = 0.75F;
@@ -124,10 +120,11 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void onFov(FovEvent event) {
-		if(smooth) {
-			float calculatedAnimatedFactor = lastAnimatedFactor + (animatedFactor - lastAnimatedFactor) * event.partialTicks;
+		if (smooth) {
+			float calculatedAnimatedFactor = lastAnimatedFactor
+					+ (animatedFactor - lastAnimatedFactor) * event.partialTicks;
 
-			if(calculatedAnimatedFactor != lastCalculatedAnimatedFactor) {
+			if (calculatedAnimatedFactor != lastCalculatedAnimatedFactor) {
 				mc.renderGlobal.setDisplayListEntitiesDirty();
 			}
 
@@ -135,7 +132,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 			event.fov *= calculatedAnimatedFactor;
 			return;
 		}
-		if(!active) {
+		if (!active) {
 			return;
 		}
 		event.fov *= currentFactor;
@@ -148,7 +145,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void onMouseClick(MouseClickEvent event) {
-		if(active && scrolling && event.button == 2) {
+		if (active && scrolling && event.button == 2) {
 			event.cancelled = true;
 			resetFactor();
 		}
@@ -156,15 +153,14 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public boolean onScroll(ScrollEvent event) {
-		if(active && scrolling) {
+		if (active && scrolling) {
 			event.cancelled = true;
-			if(Mouse.isButtonDown(2)) {
+			if (Mouse.isButtonDown(2)) {
 				return true;
 			}
-			if(event.amount < 0) {
+			if (event.amount < 0) {
 				zoomOut();
-			}
-			else if(event.amount > 0) {
+			} else if (event.amount > 0) {
 				zoomIn();
 			}
 		}
@@ -184,7 +180,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	public void setFactor(float factor) {
-		if(factor != currentFactor) {
+		if (factor != currentFactor) {
 			mc.renderGlobal.setDisplayListEntitiesDirty();
 			updateSensitivity();
 		}
@@ -194,23 +190,21 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	public void zoom(boolean in) {
 		float changedFactor;
 		float divFactor = 1 / currentFactor;
-		if(in) {
+		if (in) {
 			changedFactor = divFactor + 1;
-		}
-		else {
+		} else {
 			changedFactor = divFactor - 1;
 		}
 
 		setFactor(clamp(1 / changedFactor));
 	}
 
-
 	public float clamp(float factor) {
 		return MathHelper.clamp_float(factor, 0, 0.5F);
 	}
 
 	public void updateSensitivity() {
-		if(reduceSensitivity) {
+		if (reduceSensitivity) {
 			mc.gameSettings.mouseSensitivity = lastSensitivity * currentFactor;
 		}
 	}

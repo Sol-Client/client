@@ -1,7 +1,6 @@
 package io.github.solclient.client.ui.screen;
 
-import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.*;
 
 public class IngameServerList extends GuiMultiplayer {
 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg5"
+   width="8"
+   height="8"
+   version="1.1"
+   viewBox="0 0 2.1165 2.1165"
+   sodipodi:docname="sol_client_favourited.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:export-filename="sol_client_favourited_4x.png"
+   inkscape:export-xdpi="384"
+   inkscape:export-ydpi="384"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#141414"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#1e1e1e"
+     showgrid="false"
+     inkscape:zoom="37.08"
+     inkscape:cx="2.1170442"
+     inkscape:cy="3.0744336"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5"
+     showguides="false" />
+  <path
+     sodipodi:type="star"
+     style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:0.210604;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+     id="path851"
+     inkscape:flatsided="false"
+     sodipodi:sides="5"
+     sodipodi:cx="1.2751393"
+     sodipodi:cy="1.2061445"
+     sodipodi:r1="1.4380472"
+     sodipodi:r2="0.57521886"
+     sodipodi:arg1="-1.5707963"
+     sodipodi:arg2="-0.9424778"
+     inkscape:rounded="0"
+     inkscape:randomized="0"
+     d="M 1.2751394,-0.23190272 1.6132445,0.74078262 2.6428035,0.76176347 1.822205,1.3838969 2.1204022,2.3695491 1.2751393,1.7813633 0.42987638,2.369549 0.72807369,1.3838969 -0.09252479,0.7617634 0.93703417,0.74078262 Z"
+     inkscape:transform-center-y="-0.092776695"
+     transform="matrix(0.68534539,0,0,0.67561902,0.18433912,0.34809324)" />
+</svg>

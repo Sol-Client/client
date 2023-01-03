@@ -1,7 +1,6 @@
 package io.github.solclient.client.mod.annotation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.*;
 
 /**
  * Use this annotation if you have options on an abstract mod class.

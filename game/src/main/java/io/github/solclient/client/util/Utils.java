@@ -1,84 +1,73 @@
 package io.github.solclient.client.util;
 
 import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
-import java.util.Comparator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
+import java.io.*;
+import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.*;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.function.IntConsumer;
 
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.MemoryUtil;
 
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
-import com.replaymod.replaystudio.lib.viaversion.libs.kyori.adventure.text.event.ClickEvent.Action;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientMod;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.data.*;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.ServerAddress;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.launchwrapper.Launch;
-import net.minecraft.network.EnumConnectionState;
-import net.minecraft.network.NetworkManager;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.network.*;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.status.INetHandlerStatusClient;
-import net.minecraft.network.status.client.C00PacketServerQuery;
-import net.minecraft.network.status.client.C01PacketPing;
-import net.minecraft.network.status.server.S00PacketServerInfo;
-import net.minecraft.network.status.server.S01PacketPong;
+import net.minecraft.network.status.client.*;
+import net.minecraft.network.status.server.*;
 import net.minecraft.scoreboard.ScoreObjective;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
+import net.minecraft.util.*;
 import net.minecraft.util.Util.EnumOS;
 
 @UtilityClass
 public class Utils {
 
-	public static final String REVEAL_SUFFIX = "§sol_client:showinfolder";
-	public final ExecutorService MAIN_EXECUTOR = Executors.newFixedThreadPool(Math.max(Runtime.getRuntime().availableProcessors(), 2));
+	public ModelBakery modelBakery;
+
+	public final String REVEAL_SUFFIX = "§sol_client:showinfolder";
+	public final MonitoringExecutorService USER_DATA;
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
+
+	private final Map<ResourceLocation, Integer> NVG_CACHE = new HashMap<>();
+
+	static {
+		int threads = 8;
+		String threadsStr = System.getProperty("io.github.solclient.client.user_data_threads");
+		if (threadsStr != null) {
+			try {
+				threads = Integer.parseInt(threadsStr);
+			} catch (NumberFormatException ignored) {
+			}
+		}
+		USER_DATA = new MonitoringExecutorService(threads, threads, 0, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<>());
+	}
 
 	private int getStringWidth(String text) {
 		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
 	}
 
 	public void drawHorizontalLine(double startX, double endX, double y, int colour) {
-		if(endX < startX) {
+		if (endX < startX) {
 			double swap = startX;
 			startX = endX;
 			endX = swap;
@@ -88,7 +77,7 @@ public class Utils {
 	}
 
 	public void drawVerticalLine(double x, double startY, double endY, int colour) {
-		if(endY < startY) {
+		if (endY < startY) {
 			double swap = startY;
 			startY = endY;
 			endY = swap;
@@ -98,29 +87,29 @@ public class Utils {
 	}
 
 	public void drawOutline(Rectangle rectangle, Colour colour) {
-		drawOutline(rectangle.getX(), rectangle.getY(), rectangle.getX() + rectangle.getWidth(), rectangle.getY() + rectangle.getHeight(),
-				colour.getValue());
+		drawOutline(rectangle.getX(), rectangle.getY(), rectangle.getX() + rectangle.getWidth(),
+				rectangle.getY() + rectangle.getHeight(), colour.getValue());
 	}
 
 	public void drawOutline(double left, double top, double right, double bottom, int colour) {
 		drawHorizontalLine(left, right - 1, top, colour);
-		drawHorizontalLine(left, right - 1, bottom -1, colour);
+		drawHorizontalLine(left, right - 1, bottom - 1, colour);
 		drawVerticalLine(left, top, bottom - 1, colour);
 		drawVerticalLine(right - 1, top, bottom - 1, colour);
 	}
 
 	public void drawRectangle(double x, double y, double right, double bottom, int colour) {
-		if(x < right) {
-            double swap = x;
-            x = right;
-            right = swap;
-        }
+		if (x < right) {
+			double swap = x;
+			x = right;
+			right = swap;
+		}
 
-        if(y < bottom) {
-        	double swap = y;
-            y = bottom;
-            bottom = swap;
-        }
+		if (y < bottom) {
+			double swap = y;
+			y = bottom;
+			bottom = swap;
+		}
 
 		float r = (colour >> 24 & 255) / 255.0F;
 		float g = (colour >> 16 & 255) / 255.0F;
@@ -146,8 +135,8 @@ public class Utils {
 	}
 
 	public void drawRectangle(Rectangle rectangle, Colour colour) {
-		GuiScreen.drawRect(rectangle.getX(), rectangle.getY(), rectangle.getX() + rectangle.getWidth(), rectangle.getY() + rectangle.getHeight(),
-				colour.getValue());
+		GuiScreen.drawRect(rectangle.getX(), rectangle.getY(), rectangle.getX() + rectangle.getWidth(),
+				rectangle.getY() + rectangle.getHeight(), colour.getValue());
 	}
 
 	public long toMegabytes(long bytes) {
@@ -155,26 +144,23 @@ public class Utils {
 	}
 
 	public int lerpColour(int start, int end, float percent) {
-		if(percent >= 1) {
+		if (percent >= 1) {
 			return end;
 		}
 
 		Colour startColour = new Colour(start);
 		Colour endColour = new Colour(end);
 
-		if(startColour.getAlpha() == 0) {
+		if (startColour.getAlpha() == 0) {
 			startColour = endColour.withAlpha(0);
-		}
-		else if(endColour.getAlpha() == 0) {
+		} else if (endColour.getAlpha() == 0) {
 			endColour = startColour.withAlpha(0);
 		}
 
-		return new Colour(
-				lerp(startColour.getRed(), endColour.getRed(), percent),
+		return new Colour(lerp(startColour.getRed(), endColour.getRed(), percent),
 				lerp(startColour.getGreen(), endColour.getGreen(), percent),
 				lerp(startColour.getBlue(), endColour.getBlue(), percent),
-				lerp(startColour.getAlpha(), endColour.getAlpha(), percent)
-		).getValue();
+				lerp(startColour.getAlpha(), endColour.getAlpha(), percent)).getValue();
 	}
 
 	public int lerp(int start, int end, float percent) {
@@ -189,17 +175,21 @@ public class Utils {
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 		double scale = resolution.getScaleFactor();
 
-		GL11.glScissor((int) (x * scale),
-				(int) ((resolution.getScaledHeight() - height - y) * scale),
+		GL11.glScissor((int) (x * scale), (int) ((resolution.getScaledHeight() - height - y) * scale),
 				(int) (width * scale), (int) (height * scale));
 	}
 
+	public void nvgScissor(long ctx, Rectangle rectangle) {
+		NanoVG.nvgScissor(ctx, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+	}
+
 	public void playClickSound(boolean ui) {
-		if(ui && !SolClientMod.instance.buttonClicks) {
+		if (ui && !SolClientMod.instance.buttonClicks) {
 			return;
 		}
 
-		Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+		Minecraft.getMinecraft().getSoundHandler()
+				.playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 	}
 
 	@SneakyThrows
@@ -209,7 +199,7 @@ public class Utils {
 
 	public GuiChat getChatGui() {
 		GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
-		if(currentScreen != null && currentScreen instanceof GuiChat) {
+		if (currentScreen != null && currentScreen instanceof GuiChat) {
 			return (GuiChat) currentScreen;
 		}
 		return null;
@@ -221,12 +211,13 @@ public class Utils {
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		worldrenderer.pos(x, y + height, zLevel).tex(((textureX) * xMultiplier),
-				(textureY + height) * yMultiplier).endVertex();
-		worldrenderer.pos(x + width, y + height, zLevel).tex((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).endVertex();
-		worldrenderer.pos(x + width, y + 0, zLevel).tex((textureX + width) * xMultiplier, (textureY + 0) * yMultiplier).endVertex();
-		worldrenderer.pos(x, y, zLevel).tex(((textureX) * xMultiplier),
-				((textureY + 0) * yMultiplier)).endVertex();
+		worldrenderer.pos(x, y + height, zLevel).tex(((textureX) * xMultiplier), (textureY + height) * yMultiplier)
+				.endVertex();
+		worldrenderer.pos(x + width, y + height, zLevel)
+				.tex((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).endVertex();
+		worldrenderer.pos(x + width, y + 0, zLevel).tex((textureX + width) * xMultiplier, (textureY + 0) * yMultiplier)
+				.endVertex();
+		worldrenderer.pos(x, y, zLevel).tex(((textureX) * xMultiplier), ((textureY + 0) * yMultiplier)).endVertex();
 		tessellator.draw();
 	}
 
@@ -266,7 +257,7 @@ public class Utils {
 	public String getTextureScale() {
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 
-		if(resolution.getScaleFactor() > 0 && resolution.getScaleFactor() < 5) {
+		if (resolution.getScaleFactor() > 0 && resolution.getScaleFactor() < 5) {
 			return resolution.getScaleFactor() + "x";
 		}
 
@@ -283,7 +274,7 @@ public class Utils {
 		StringBuilder result = new StringBuilder();
 
 		String line;
-		while((line = reader.readLine()) != null) {
+		while ((line = reader.readLine()) != null) {
 			result.append(line).append("\n");
 		}
 
@@ -306,10 +297,9 @@ public class Utils {
 
 			@Override
 			public void handleServerInfo(S00PacketServerInfo packetIn) {
-				if(expected) {
+				if (expected) {
 					networkManager.closeChannel(new ChatComponentText("Received unrequested status"));
-				}
-				else {
+				} else {
 					expected = true;
 					time = Minecraft.getSystemTime();
 					networkManager.sendPacket(new C01PacketPing(time));
@@ -341,8 +331,7 @@ public class Utils {
 	private String decodeUrl(String url) {
 		try {
 			return URLDecoder.decode(url, "UTF-8");
-		}
-		catch(UnsupportedEncodingException error) {
+		} catch (UnsupportedEncodingException error) {
 			// UTF-8 is required
 			throw new Error(error);
 		}
@@ -352,7 +341,7 @@ public class Utils {
 		int lastSlash = url.lastIndexOf('/');
 		int lastBacklash = url.lastIndexOf('\\');
 
-		if(lastBacklash > lastSlash) {
+		if (lastBacklash > lastSlash) {
 			lastSlash = lastBacklash;
 		}
 
@@ -364,112 +353,109 @@ public class Utils {
 		boolean reveal = false;
 
 		// ensure that the url starts with file:/// as opposed to file://
-		if(url.startsWith("file:")) {
+		if (url.startsWith("file:")) {
 			url = url.replace("file:", "file://");
 			url = url.substring(0, url.indexOf('/')) + '/' + url.substring(url.indexOf('/'));
 
-			if(url.endsWith(REVEAL_SUFFIX)) {
+			if (url.endsWith(REVEAL_SUFFIX)) {
 				url = url.substring(0, url.length() - REVEAL_SUFFIX.length());
 				reveal = true;
 			}
 		}
 
-		switch(Util.getOSType()) {
-			case LINUX:
-				if(reveal) {
-					if(new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
-						try {
-							Process process = new ProcessBuilder("xdg-mime", "query", "default", "inode/directory").start();
-							int code = process.waitFor();
+		switch (Util.getOSType()) {
+		case LINUX:
+			if (reveal) {
+				if (new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
+					try {
+						Process process = new ProcessBuilder("xdg-mime", "query", "default", "inode/directory").start();
+						int code = process.waitFor();
 
-							if(code > 0) {
-								throw new IllegalStateException("xdg-mime exited with code " + code);
-							}
-
-							String file;
-							try(BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-								file = reader.readLine();
-							}
-
-							if(file != null) {
-								url = decodeUrl(url);
-								url = url.substring(7);
-
-								if(!file.startsWith("/")) {
-									file = "/usr/share/applications/" + file;
-								}
-
-								command = new String[] { "gio", "launch", file, url };
-								break;
-							}
+						if (code > 0) {
+							throw new IllegalStateException("xdg-mime exited with code " + code);
 						}
-						catch(IOException | InterruptedException | IllegalStateException error) {
-							Client.LOGGER.error("Could not determine directory handler:", error);
+
+						String file;
+						try (BufferedReader reader = new BufferedReader(
+								new InputStreamReader(process.getInputStream()))) {
+							file = reader.readLine();
 						}
+
+						if (file != null) {
+							url = decodeUrl(url);
+							url = url.substring(7);
+
+							if (!file.startsWith("/")) {
+								file = "/usr/share/applications/" + file;
+							}
+
+							command = new String[] { "gio", "launch", file, url };
+							break;
+						}
+					} catch (IOException | InterruptedException | IllegalStateException error) {
+						Client.LOGGER.error("Could not determine directory handler:", error);
 					}
-					url = urlDirname(url);
 				}
+				url = urlDirname(url);
+			}
 
-				if(new File("/usr/bin/xdg-open").exists()) {
-					command = new String[] { "xdg-open", url };
-					break;
-				}
-				// fall through to default
-			default:
-				// fall back to AWT, but without a message
-				command = null;
+			if (new File("/usr/bin/xdg-open").exists()) {
+				command = new String[] { "xdg-open", url };
 				break;
-			case OSX:
-				if(reveal) {
-					command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
-				}
-				else {
-					command = new String[] { "open", url };
-				}
-				break;
-			case WINDOWS:
-				if(reveal) {
-					command = new String[] { "Explorer", "/select," + decodeUrl(url).substring(8).replace('/', '\\') };
-				}
-				else {
-					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
-				}
+			}
+			// fall through to default
+		default:
+			// fall back to AWT, but without a message
+			command = null;
+			break;
+		case OSX:
+			if (reveal) {
+				command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
+			} else {
+				command = new String[] { "open", url };
+			}
+			break;
+		case WINDOWS:
+			if (reveal) {
+				command = new String[] { "Explorer", "/select," + decodeUrl(url).substring(8).replace('/', '\\') };
+			} else {
+				command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
+			}
 
-				break;
+			break;
 		}
 
-		if(command != null) {
+		if (command != null) {
 			try {
 				Process proc = new ProcessBuilder(command).start();
 				proc.getInputStream().close();
 				proc.getErrorStream().close();
 				proc.getOutputStream().close();
 				return;
-			}
-			catch(IOException error) {
+			} catch (IOException error) {
 				Client.LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:", error);
 			}
 		}
 
 		try {
 			Desktop.getDesktop().browse(URI.create(url));
-		}
-		catch(IOException error) {
+		} catch (IOException error) {
 			Client.LOGGER.error("Could not open " + url + " with AWT:", error);
 
 			// null checks in case a link is opened before Minecraft is fully initialised
 
 			Minecraft mc = Minecraft.getMinecraft();
-			if(mc == null) {
+			if (mc == null) {
 				return;
 			}
 
 			GuiIngame gui = mc.ingameGUI;
-			if(gui == null) {
+			if (gui == null) {
 				return;
 			}
 
-			gui.getChatGUI().printChatMessage(new ChatComponentText("§cCould not open " + url + ". Please open it manually."));
+			gui.getChatGUI()
+					.printChatMessage(new ChatComponentText("§cCould not open " + url + ". Please open it manually."));
 		}
 	}
 
@@ -477,7 +463,7 @@ public class Utils {
 		String relative = new File(Minecraft.getMinecraft().mcDataDir, "resourcepacks").toPath().toAbsolutePath()
 				.relativize(packFile.toPath().toAbsolutePath()).toString();
 
-		if(Util.getOSType() == EnumOS.WINDOWS) {
+		if (Util.getOSType() == EnumOS.WINDOWS) {
 			relative = relative.replace("\\", "/"); // Just to be safe
 		}
 
@@ -492,13 +478,13 @@ public class Utils {
 	}
 
 	public void drawFloatRectangle(float left, float top, float right, float bottom, int colour) {
-		if(left < right) {
+		if (left < right) {
 			float swap = left;
 			left = right;
 			right = swap;
 		}
 
-		if(top < bottom) {
+		if (top < bottom) {
 			float swap = top;
 			top = bottom;
 			bottom = swap;
@@ -524,13 +510,13 @@ public class Utils {
 		GlStateManager.disableBlend();
 	}
 
-	public static String getScoreboardTitle() {
+	public String getScoreboardTitle() {
 		Minecraft mc = Minecraft.getMinecraft();
 
-		if(mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
+		if (mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
 			ScoreObjective first = mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
 
-			if(first != null) {
+			if (first != null) {
 				return EnumChatFormatting.getTextWithoutFormattingCodes(first.getDisplayName());
 			}
 		}
@@ -538,22 +524,22 @@ public class Utils {
 		return null;
 	}
 
-	public static String getNativeFileExtension() {
-		switch(Util.getOSType()) {
-			case WINDOWS:
-				return "dll";
-			case OSX:
-				return "dylib";
-			default:
-				return "so";
+	public String getNativeFileExtension() {
+		switch (Util.getOSType()) {
+		case WINDOWS:
+			return "dll";
+		case OSX:
+			return "dylib";
+		default:
+			return "so";
 		}
 	}
 
 	public double max(double[] doubles) {
 		double max = 0;
 
-		for(double d : doubles) {
-			if(max < d) {
+		for (double d : doubles) {
+			if (max < d) {
 				max = d;
 			}
 		}
@@ -615,6 +601,60 @@ public class Utils {
 		tessellator.draw();
 
 		GlStateManager.enableCull();
+	}
+
+	public String onlyKeepDigits(String string) {
+		StringBuilder builder = new StringBuilder();
+
+		for (char character : string.toCharArray()) {
+			if (character < '0' || character > '9') {
+				continue;
+			}
+			builder.append(character);
+		}
+
+		return builder.toString();
+	}
+
+	// not managed by Java GC for performance reasons
+	public ByteBuffer mallocAndRead(@NotNull InputStream in) throws IOException {
+		try (ReadableByteChannel channel = Channels.newChannel(in)) {
+			ByteBuffer buffer = MemoryUtil.memAlloc(8192);
+
+			while (channel.read(buffer) != -1)
+				if (buffer.remaining() == 0)
+					buffer = MemoryUtil.memRealloc(buffer, buffer.capacity() + buffer.capacity() * 3 / 2);
+
+			buffer.flip();
+
+			return buffer;
+		}
+	}
+
+	public NVGPaint nvgMinecraftTexturePaint(long nvg, ResourceLocation location, int x, int y, int width, int height) {
+		try {
+			NVGPaint paint = NVGPaint.create();
+			NanoVG.nvgImagePattern(nvg, x, y, width, height, 0, nvgMinecraftTexture(nvg, location), 1, paint);
+			return paint;
+		} catch (IOException error) {
+			return NVGPaint.create().innerColor(Colour.WHITE.nvg());
+		}
+	}
+
+	public int nvgMinecraftTexture(long nvg, ResourceLocation location) throws IOException {
+		if (NVG_CACHE.containsKey(location))
+			return NVG_CACHE.get(location);
+
+		Minecraft mc = Minecraft.getMinecraft();
+		InputStream in = mc.getResourceManager().getResource(location).getInputStream();
+
+		ByteBuffer buffer = mallocAndRead(in);
+		int handle = NanoVG.nvgCreateImageMem(nvg, 0, buffer);
+		MemoryUtil.memFree(buffer);
+
+		NVG_CACHE.put(location, handle);
+
+		return handle;
 	}
 
 }

@@ -1,22 +1,14 @@
 package io.github.solclient.client.mixin.client;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.client.resources.ResourcePackRepository;
+import net.minecraft.client.resources.*;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.client.settings.GameSettings;
 
@@ -36,12 +28,12 @@ public class MixinResourcePackRepository {
 
 		Iterator<String> packIterator = settings.resourcePacks.iterator();
 
-		while(packIterator.hasNext()) {
+		while (packIterator.hasNext()) {
 			String packName = packIterator.next();
 
 			File file = new File(dirResourcepacksIn, packName);
 
-			if(!file.exists()) {
+			if (!file.exists()) {
 				continue;
 			}
 
@@ -49,25 +41,23 @@ public class MixinResourcePackRepository {
 
 			ResourcePackRepository applicableRepo;
 
-			if(packName.contains("/")) {
-				applicableRepo = repos.computeIfAbsent(parent,
-						(ignored) -> {
-							ResourcePackRepository repo = new ResourcePackRepository(parent, dirServerResourcepacksIn,
-									rprDefaultResourcePackIn, rprMetadataSerializerIn, settings);
+			if (packName.contains("/")) {
+				applicableRepo = repos.computeIfAbsent(parent, (ignored) -> {
+					ResourcePackRepository repo = new ResourcePackRepository(parent, dirServerResourcepacksIn,
+							rprDefaultResourcePackIn, rprMetadataSerializerIn, settings);
 
-							repo.getRepositoryEntriesAll();
+					repo.getRepositoryEntriesAll();
 
-							return repo;
-						});
-			}
-			else {
+					return repo;
+				});
+			} else {
 				applicableRepo = (ResourcePackRepository) (Object) this;
 			}
 
-			for(ResourcePackRepository.Entry entry : applicableRepo.getRepositoryEntriesAll()) {
-				if(entry.getResourcePackName().equals(packName)) {
-					if(entry.func_183027_f() == 1 || settings.incompatibleResourcePacks
-							.contains(entry.getResourcePackName())) {
+			for (ResourcePackRepository.Entry entry : applicableRepo.getRepositoryEntriesAll()) {
+				if (entry.getResourcePackName().equals(packName)) {
+					if (entry.func_183027_f() == 1
+							|| settings.incompatibleResourcePacks.contains(entry.getResourcePackName())) {
 						repositoryEntries.add(entry);
 						break;
 					}

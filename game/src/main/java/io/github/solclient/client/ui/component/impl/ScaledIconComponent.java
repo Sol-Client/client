@@ -1,13 +1,11 @@
 package io.github.solclient.client.ui.component.impl;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import org.lwjgl.nanovg.*;
+
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.util.ResourceLocation;
 
 public class ScaledIconComponent extends ColouredComponent {
@@ -31,28 +29,18 @@ public class ScaledIconComponent extends ColouredComponent {
 		this.height = height;
 	}
 
-	public void renderFallback(ComponentRenderInfo info) {
-	}
-
-	public boolean useFallback() {
-		return false;
-	}
-
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if(useFallback() && !SolClientMod.instance.roundedUI) {
-			renderFallback(info);
-		}
-		else {
-			GlStateManager.enableAlpha();
-			GlStateManager.enableBlend();
+		NanoVG.nvgBeginPath(nvg);
 
-			getColour().bind();
+		NVGPaint paint = Utils.nvgMinecraftTexturePaint(nvg, new ResourceLocation(
+				"textures/gui/" + iconName.get(this, "sol_client_confusion") + "_" + Utils.getTextureScale() + ".png"),
+				0, 0, width, height);
+		paint.innerColor(getColour().nvg());
 
-			mc.getTextureManager().bindTexture(new ResourceLocation(
-					"textures/gui/" + iconName.get(this, "sol_client_confusion") + "_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, width, height, width, height);
-		}
+		NanoVG.nvgFillPaint(nvg, paint);
+		NanoVG.nvgRect(nvg, 0, 0, width, height);
+		NanoVG.nvgFill(nvg);
 
 		super.render(info);
 	}

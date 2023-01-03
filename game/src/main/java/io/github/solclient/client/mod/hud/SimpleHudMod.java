@@ -1,17 +1,10 @@
 package io.github.solclient.client.mod.hud;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.DirtyMapper;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.Minecraft;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.resources.I18n;
 
 /**
@@ -40,16 +33,17 @@ public abstract class SimpleHudMod extends HudMod {
 	@Expose
 	@Option
 	protected boolean shadow = true;
-	private DirtyMapper<String, Integer> langWidth = new DirtyMapper<>(() -> mc.getLanguageManager().getCurrentLanguage().getLanguageCode(), (key) -> {
-		String translationKey = getTranslationKey() + ".default_width";
-		String width = I18n.format(translationKey);
+	private DirtyMapper<String, Integer> langWidth = new DirtyMapper<>(
+			() -> mc.getLanguageManager().getCurrentLanguage().getLanguageCode(), (key) -> {
+				String translationKey = getTranslationKey() + ".default_width";
+				String width = I18n.format(translationKey);
 
-		if(width.equals(translationKey)) {
-			return 53;
-		}
+				if (width.equals(translationKey)) {
+					return 53;
+				}
 
-		return Integer.parseInt(width);
-	});
+				return Integer.parseInt(width);
+			});
 
 	@Override
 	public Rectangle getBounds(Position position) {
@@ -63,20 +57,19 @@ public abstract class SimpleHudMod extends HudMod {
 	@Override
 	public void render(Position position, boolean editMode) {
 		String text = getText(editMode);
-		if(text != null) {
-			if(background) {
+		if (text != null) {
+			if (background) {
 				getBounds(position).fill(backgroundColour);
-			}
-			else {
-				if(!text.isEmpty()) {
+			} else {
+				if (!text.isEmpty()) {
 					text = "[" + text + "]";
 				}
 			}
 
-			if(border) {
+			if (border) {
 				getBounds(position).stroke(borderColour);
 			}
- 			font.drawString(text,
+			font.drawString(text,
 					position.getX() + (getBounds(position).getWidth() / 2F) - (font.getStringWidth(text) / 2F),
 					position.getY() + 4, textColour.getValue(), shadow);
 		}

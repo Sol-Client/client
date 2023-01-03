@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 public interface ChatButton {
 
 	int getPriority();
-	
+
 	default int getWidth() {
 		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(getText()) + 4;
 	}

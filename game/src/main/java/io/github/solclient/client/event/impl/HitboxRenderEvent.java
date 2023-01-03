@@ -1,6 +1,5 @@
 package io.github.solclient.client.event.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.entity.Entity;
 

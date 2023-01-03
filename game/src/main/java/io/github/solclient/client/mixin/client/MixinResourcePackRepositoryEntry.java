@@ -3,8 +3,7 @@ package io.github.solclient.client.mixin.client;
 import java.io.File;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 
 import io.github.solclient.client.util.Utils;
 import net.minecraft.client.resources.ResourcePackRepository;

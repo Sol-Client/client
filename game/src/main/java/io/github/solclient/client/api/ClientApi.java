@@ -1,12 +1,8 @@
 package io.github.solclient.client.api;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
@@ -19,28 +15,26 @@ public class ClientApi {
 
 	@EventHandler
 	public void onCustomPayload(S3FPacketCustomPayload payload) {
-		if(payload.getChannelName().startsWith("solclient:")) {
+		if (payload.getChannelName().startsWith("solclient:")) {
 			String message = payload.getBufferData().readStringFromBuffer(32767);
 
-			if(payload.getChannelName().equals("solclient:block_mods")) {
+			if (payload.getChannelName().equals("solclient:block_mods")) {
 				JsonArray array = JsonParser.parseString(message).getAsJsonArray();
 
 				Client.INSTANCE.getMods().forEach(Mod::unblock);
 
-				for(JsonElement element : array) {
+				for (JsonElement element : array) {
 					String modId = element.getAsString();
 
 					Mod mod = Client.INSTANCE.getModById(modId);
 
-					if(mod != null) {
+					if (mod != null) {
 						mod.block();
-					}
-					else {
+					} else {
 						LOGGER.warn("Cannot block mod " + modId + ": not found");
 					}
 				}
-			}
-			else if(payload.getChannelName().equals("solclient:popup")) {
+			} else if (payload.getChannelName().equals("solclient:popup")) {
 				JsonObject data = JsonParser.parseString(message).getAsJsonObject();
 
 				String text = data.get("text").getAsString();

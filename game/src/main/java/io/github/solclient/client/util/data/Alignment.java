@@ -18,13 +18,13 @@ public enum Alignment {
 	END;
 
 	public int getPosition(int areaSize, int objectSize) {
-		switch(this) {
-			case CENTRE:
-				return (areaSize / 2) - (objectSize / 2);
-			case END:
-				return areaSize - objectSize;
-			default:
-				return 0;
+		switch (this) {
+		case CENTRE:
+			return (areaSize / 2) - (objectSize / 2);
+		case END:
+			return areaSize - objectSize;
+		default:
+			return 0;
 		}
 	}
 }

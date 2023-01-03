@@ -1,21 +1,17 @@
 package io.github.solclient.client.mod.impl;
 
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PreRenderChunkEvent;
-import io.github.solclient.client.event.impl.RenderChunkPositionEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.data.EasingFunction;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.client.resources.I18n;
 
 // Based on lumien231's chunk animator.
 public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
@@ -36,6 +32,11 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	@Override
+	public String getCredit() {
+		return I18n.format("sol_client.originally_by", "lumien231");
+	}
+
+	@Override
 	public ModCategory getCategory() {
 		return ModCategory.VISUAL;
 	}
@@ -46,18 +47,18 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void preRenderChunk(PreRenderChunkEvent event) {
-		if(chunks.containsKey(event.chunk)) {
+		if (chunks.containsKey(event.chunk)) {
 			long time = chunks.get(event.chunk);
 			long now = System.currentTimeMillis();
 
-			if(time == -1L) {
+			if (time == -1L) {
 				chunks.put(event.chunk, now);
 				time = now;
 			}
 
 			long passedTime = now - time;
 
-			if(passedTime < getDuration()) {
+			if (passedTime < getDuration()) {
 				int chunkY = event.chunk.getPosition().getY();
 				GlStateManager.translate(0, -chunkY + ease(passedTime, 0, chunkY, getDuration()), 0);
 			}
@@ -66,7 +67,7 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void setPosition(RenderChunkPositionEvent event) {
-		if(mc.thePlayer != null) {
+		if (mc.thePlayer != null) {
 			chunks.put(event.chunk, -1L);
 		}
 	}

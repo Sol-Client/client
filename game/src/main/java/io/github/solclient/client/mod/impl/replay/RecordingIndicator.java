@@ -2,16 +2,11 @@ package io.github.solclient.client.mod.impl.replay;
 
 import org.lwjgl.opengl.GL11;
 
-import com.replaymod.core.ReplayMod;
 import com.replaymod.recording.gui.GuiRecordingControls;
 
 import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.hud.BaseHudElement;
-import io.github.solclient.client.mod.hud.HudPosition;
-import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
@@ -20,10 +15,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class RecordingIndicator extends BaseHudElement {
 
-	private static final ResourceLocation RECORDING = new ResourceLocation(
-			"textures/gui/sol_client_recording.png");
-	private static final ResourceLocation PAUSED = new ResourceLocation(
-			"textures/gui/sol_client_paused.png");
+	private static final ResourceLocation RECORDING = new ResourceLocation("textures/gui/sol_client_recording.png");
+	private static final ResourceLocation PAUSED = new ResourceLocation("textures/gui/sol_client_paused.png");
 
 	public static GuiRecordingControls guiControls;
 	private final SCReplayMod mod;
@@ -39,7 +32,7 @@ public class RecordingIndicator extends BaseHudElement {
 
 	@Override
 	public void render(Position position, boolean editMode) {
-		if(!editMode && (guiControls == null || guiControls.isStopped())) {
+		if (!editMode && (guiControls == null || guiControls.isStopped())) {
 			return;
 		}
 

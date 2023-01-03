@@ -2,12 +2,9 @@ package io.github.solclient.client.mod.impl;
 
 import java.text.DecimalFormat;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.DetectedServer;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.*;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -31,19 +28,17 @@ public class TNTTimerMod extends Mod {
 		float fuse = tnt.fuse;
 
 		// Based on Sk1er's mod
-		if(Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL && "BED WARS".equals(Utils.getScoreboardTitle())) {
+		if (Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL && "BED WARS".equals(Utils.getScoreboardTitle())) {
 			fuse -= 28;
 		}
 
 		EnumChatFormatting colour = EnumChatFormatting.GREEN;
 
-		if(fuse < 20) {
+		if (fuse < 20) {
 			colour = EnumChatFormatting.DARK_RED;
-		}
-		else if(fuse < 40) {
+		} else if (fuse < 40) {
 			colour = EnumChatFormatting.RED;
-		}
-		else if (fuse < 60) {
+		} else if (fuse < 60) {
 			colour = EnumChatFormatting.GOLD;
 		}
 

@@ -5,25 +5,17 @@
 
 package io.github.solclient.client.mod.impl;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PreRenderTickEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.event.impl.TransformFirstPersonItemEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.access.AccessEntityLivingBase;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemFishingRod;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
 
 public class V1_7VisualsMod extends Mod {
 
@@ -90,20 +82,20 @@ public class V1_7VisualsMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(mc.thePlayer != null && mc.thePlayer.capabilities.allowEdit
-				&& isEnabled() && useAndMine && mc.objectMouseOver != null
-				&& mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
-				&& mc.thePlayer != null
+		if (mc.thePlayer != null && mc.thePlayer.capabilities.allowEdit && isEnabled() && useAndMine
+				&& mc.objectMouseOver != null
+				&& mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && mc.thePlayer != null
 				&& mc.gameSettings.keyBindAttack.isKeyDown() && mc.gameSettings.keyBindUseItem.isKeyDown()
 				&& mc.thePlayer.getItemInUseCount() > 0) {
-			if((!mc.thePlayer.isSwingInProgress
-				|| mc.thePlayer.swingProgressInt >= ((AccessEntityLivingBase) mc.thePlayer).accessArmSwingAnimationEnd()
-				/ 2 || mc.thePlayer.swingProgressInt < 0)) {
+			if ((!mc.thePlayer.isSwingInProgress
+					|| mc.thePlayer.swingProgressInt >= ((AccessEntityLivingBase) mc.thePlayer)
+							.accessArmSwingAnimationEnd() / 2
+					|| mc.thePlayer.swingProgressInt < 0)) {
 				mc.thePlayer.swingProgressInt = -1;
 				mc.thePlayer.isSwingInProgress = true;
 			}
 
-			if(particles) {
+			if (particles) {
 				mc.effectRenderer.addBlockHitEffects(mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit);
 			}
 		}
@@ -111,18 +103,17 @@ public class V1_7VisualsMod extends Mod {
 
 	@EventHandler
 	public void onItemTransform(TransformFirstPersonItemEvent event) {
-		if(!(bow || rod)) {
+		if (!(bow || rod)) {
 			return;
 		}
 
 		// https://github.com/sp614x/optifine/issues/2098
-		if(mc.thePlayer.isUsingItem() && event.itemToRender.getItem() instanceof ItemBow) {
-			if(bow) {
+		if (mc.thePlayer.isUsingItem() && event.itemToRender.getItem() instanceof ItemBow) {
+			if (bow) {
 				GlStateManager.translate(-0.01f, 0.05f, -0.06f);
 			}
-		}
-		else if(event.itemToRender.getItem() instanceof ItemFishingRod) {
-			if(rod) {
+		} else if (event.itemToRender.getItem() instanceof ItemFishingRod) {
+			if (rod) {
 				GlStateManager.translate(0.08f, -0.027f, -0.33f);
 				GlStateManager.scale(0.93f, 1.0f, 1.0f);
 			}
@@ -147,7 +138,7 @@ public class V1_7VisualsMod extends Mod {
 		GlStateManager.translate(0, -0.0F, 0.06F);
 		GlStateManager.rotate(-4F, 1, 0, 0);
 	}
-		
+
 	public static void oldBlocking() {
 		GlStateManager.scale(0.83F, 0.88F, 0.85F);
 		GlStateManager.translate(-0.3F, 0.1F, 0.0F);

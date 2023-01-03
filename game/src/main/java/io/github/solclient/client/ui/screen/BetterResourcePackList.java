@@ -1,26 +1,18 @@
 package io.github.solclient.client.ui.screen;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
+import java.io.*;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiResourcePackAvailable;
-import net.minecraft.client.gui.GuiScreenResourcePacks;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.ResourcePackListEntry;
-import net.minecraft.client.resources.ResourcePackListEntryFound;
-import net.minecraft.client.resources.ResourcePackRepository;
+import net.minecraft.client.resources.*;
 import net.minecraft.util.EnumChatFormatting;
 
 public class BetterResourcePackList extends GuiResourcePackAvailable {
@@ -36,7 +28,7 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 	}
 
 	public File getFolder() {
-		if(delegate != null) {
+		if (delegate != null) {
 			return delegate.getFolder();
 		}
 
@@ -44,7 +36,7 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 	}
 
 	public BetterResourcePackList(Minecraft mcIn, GuiScreenResourcePacks parent, int p_i45054_2_, int p_i45054_3_,
-									  ResourcePackRepository repository, Supplier<String> supplier) throws IOException {
+			ResourcePackRepository repository, Supplier<String> supplier) throws IOException {
 		super(mcIn, p_i45054_2_, p_i45054_3_, null);
 		this.supplier = supplier;
 		this.folder = repository.getDirResourcepacks();
@@ -53,13 +45,13 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 
 		entries = new ArrayList<>();
 
-		for(File file : folder.listFiles()) {
-			if(!file.isDirectory()) {
+		for (File file : folder.listFiles()) {
+			if (!file.isDirectory()) {
 				continue;
 			}
 
 			// Do not include actual packs.
-			if(new File(file, "pack.mcmeta").exists()) {
+			if (new File(file, "pack.mcmeta").exists()) {
 				continue;
 			}
 
@@ -69,10 +61,10 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 
 				@Override
 				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-					if(file.toString().endsWith(".zip")) {
+					if (file.toString().endsWith(".zip")) {
 						ZipFile zip = new ZipFile(file.toFile());
 
-						if(zip.getEntry("pack.mcmeta") == null) {
+						if (zip.getEntry("pack.mcmeta") == null) {
 							zip.close();
 							return FileVisitResult.CONTINUE;
 						}
@@ -88,7 +80,7 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 
 				@Override
 				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-					if(Files.isRegularFile(dir.resolve("pack.mcmeta"))) {
+					if (Files.isRegularFile(dir.resolve("pack.mcmeta"))) {
 						result.set(true);
 						return FileVisitResult.TERMINATE;
 					}
@@ -98,12 +90,12 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 
 			});
 
-			if(result.get()) {
+			if (result.get()) {
 				entries.add(new FolderResourcePackEntry(parent, this, file));
 			}
 		}
 
-		for(ResourcePackRepository.Entry entry : repository.getRepositoryEntriesAll()) {
+		for (ResourcePackRepository.Entry entry : repository.getRepositoryEntriesAll()) {
 			entries.add(new ResourcePackListEntryFound(parent, entry));
 		}
 	}
@@ -119,16 +111,15 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 
 	@Override
 	public List<ResourcePackListEntry> getList() {
-		if(delegate != null) {
+		if (delegate != null) {
 			return delegate.getList();
 		}
 
 		List<ResourcePackListEntry> entries;
 
-		if(supplier.get().isEmpty()) {
+		if (supplier.get().isEmpty()) {
 			entries = this.entries;
-		}
-		else {
+		} else {
 			entries = new ArrayList<>();
 			populate(entries);
 		}
@@ -137,45 +128,40 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 			String name = "";
 			String description = "";
 
-			if(entry instanceof ResourcePackListEntryFound) {
+			if (entry instanceof ResourcePackListEntryFound) {
 				ResourcePackRepository.Entry repoEntry = ((ResourcePackListEntryFound) entry).func_148318_i();
 
 				name = repoEntry.getResourcePackName();
 				description = repoEntry.getTexturePackDescription();
 
+				for (ResourcePackListEntry compareEntry : parent.getSelectedResourcePacks()) {
 
-				for(ResourcePackListEntry compareEntry : parent.getSelectedResourcePacks()) {
-
-					if(compareEntry instanceof ResourcePackListEntryFound) {
-						if(((ResourcePackListEntryFound) compareEntry).func_148318_i().equals(repoEntry)) {
+					if (compareEntry instanceof ResourcePackListEntryFound) {
+						if (((ResourcePackListEntryFound) compareEntry).func_148318_i().equals(repoEntry)) {
 							return false;
 						}
 					}
 				}
-			}
-			else if(entry instanceof FolderResourcePackEntry) {
+			} else if (entry instanceof FolderResourcePackEntry) {
 				FolderResourcePackEntry folder = (FolderResourcePackEntry) entry;
 
 				name = folder.func_148312_b();
 				description = folder.func_148311_a();
 			}
 
-			return EnumChatFormatting
-					.getTextWithoutFormattingCodes(name + " " + description.replace("\n", " "))
+			return EnumChatFormatting.getTextWithoutFormattingCodes(name + " " + description.replace("\n", " "))
 					.toLowerCase().contains(supplier.get().toLowerCase());
 		}).collect(Collectors.toList());
 	}
 
 	private void populate(List<ResourcePackListEntry> entries) {
-		for(ResourcePackListEntry entry : this.entries) {
-			if(entry instanceof FolderResourcePackEntry) {
+		for (ResourcePackListEntry entry : this.entries) {
+			if (entry instanceof FolderResourcePackEntry) {
 				try {
 					((FolderResourcePackEntry) entry).getSublist().populate(entries);
+				} catch (IOException error) {
 				}
-				catch(IOException error) {
-				}
-			}
-			else {
+			} else {
 				entries.add(entry);
 			}
 		}
@@ -186,7 +172,7 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 	}
 
 	public void up() {
-		if(delegate != null && delegate.delegate != null) {
+		if (delegate != null && delegate.delegate != null) {
 			delegate.up();
 			return;
 		}

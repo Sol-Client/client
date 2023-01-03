@@ -6,7 +6,7 @@ import net.minecraft.entity.item.EntityItem;
 
 @RequiredArgsConstructor
 public class ItemEntityRenderEvent {
-	
+
 	public boolean cancelled;
 	public final EntityItem entity;
 	public final double x;

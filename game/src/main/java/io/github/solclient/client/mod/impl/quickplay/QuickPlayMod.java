@@ -1,33 +1,28 @@
 package io.github.solclient.client.mod.impl.quickplay;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.DetectedServer;
+import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayDatabase;
-import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
-import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGameMode;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
-import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.mod.impl.quickplay.database.*;
+import io.github.solclient.client.mod.impl.quickplay.ui.*;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 
 public class QuickPlayMod extends Mod {
 
 	@Option
-	private final KeyBinding menuKey = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_M, Client.KEY_CATEGORY);
+	private final KeyBinding menuKey = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_M,
+			GlobalConstants.KEY_CATEGORY);
 	private boolean got;
 	private QuickPlayDatabase database;
 	@Expose
@@ -45,14 +40,18 @@ public class QuickPlayMod extends Mod {
 	}
 
 	@Override
+	public String getCredit() {
+		return I18n.format("sol_client.originally_by", "robere2");
+	}
+
+	@Override
 	public ModCategory getCategory() {
 		return ModCategory.INTEGRATION;
 	}
 
 	public List<QuickPlayOption> getRecentlyPlayed() {
 		return recentlyPlayed.stream().map((fullId) -> database.getGame(fullId.substring(0, fullId.indexOf('.')))
-						.getMode(fullId.substring(fullId.indexOf('.') + 1)))
-				.collect(Collectors.toList());
+				.getMode(fullId.substring(fullId.indexOf('.') + 1))).collect(Collectors.toList());
 	}
 
 	public List<QuickPlayOption> getGameOptions() {
@@ -65,8 +64,7 @@ public class QuickPlayMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(database != null && menuKey.isPressed()
-				&& Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL) {
+		if (database != null && menuKey.isPressed() && Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL) {
 			mc.displayGuiScreen(new QuickPlayPalette(this));
 		}
 	}
@@ -74,11 +72,13 @@ public class QuickPlayMod extends Mod {
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		if(!got) {
+		if (!got) {
 			got = true;
-			Utils.MAIN_EXECUTOR.submit(() -> {
+			Thread thread = new Thread(() -> {
 				database = new QuickPlayDatabase();
 			});
+			thread.setDaemon(true);
+			thread.start();
 		}
 	}
 
@@ -90,14 +90,14 @@ public class QuickPlayMod extends Mod {
 	public void playGame(QuickPlayGameMode mode) {
 		mc.thePlayer.sendChatMessage(mode.getCommand());
 
-		if(!GuiScreen.isShiftKeyDown()) {
+		if (!GuiScreen.isShiftKeyDown()) {
 			mc.displayGuiScreen(null);
 		}
 
 		recentlyPlayed.removeIf(mode.getFullId()::equals);
 		recentlyPlayed.add(0, mode.getFullId());
 
-		if(recentlyPlayed.size() > 15) {
+		if (recentlyPlayed.size() > 15) {
 			recentlyPlayed.remove(recentlyPlayed.size() - 1);
 		}
 

@@ -1,7 +1,6 @@
 package io.github.solclient.client.api;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @RequiredArgsConstructor
 public class Popup {

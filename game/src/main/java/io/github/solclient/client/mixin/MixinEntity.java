@@ -5,8 +5,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import io.github.solclient.client.culling.Cullable;
 import io.github.solclient.client.util.access.AccessEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import net.minecraft.entity.Entity;
 
 @Mixin(Entity.class)

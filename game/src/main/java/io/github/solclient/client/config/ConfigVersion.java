@@ -1,7 +1,6 @@
 package io.github.solclient.client.config;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import com.google.gson.JsonObject;
 
@@ -41,9 +40,7 @@ public enum ConfigVersion {
 
 	},
 	/**
-	 * First version to have a number.
-	 * Created to migrate mod names.
-	 * Added in 1.5.8.
+	 * First version to have a number. Created to migrate mod names. Added in 1.5.8.
 	 */
 	V1 {
 
@@ -53,15 +50,20 @@ public enum ConfigVersion {
 
 			JsonObject tweaksMod = new JsonObject();
 			tweaksMod.addProperty("enabled", true);
-			tweaksMod.addProperty("fullbright", newObject.get("fullbright").getAsJsonObject().get("enabled").getAsBoolean());
-			tweaksMod.addProperty("showOwnTag", newObject.get("show_own_tag").getAsJsonObject().get("enabled").getAsBoolean());
-			tweaksMod.addProperty("arabicNumerals", newObject.get("arabic_numerals").getAsJsonObject().get("enabled").getAsBoolean());
-			tweaksMod.addProperty("betterTooltips", newObject.get("better_tootips").getAsJsonObject().get("enabled").getAsBoolean());
+			tweaksMod.addProperty("fullbright",
+					newObject.get("fullbright").getAsJsonObject().get("enabled").getAsBoolean());
+			tweaksMod.addProperty("showOwnTag",
+					newObject.get("show_own_tag").getAsJsonObject().get("enabled").getAsBoolean());
+			tweaksMod.addProperty("arabicNumerals",
+					newObject.get("arabic_numerals").getAsJsonObject().get("enabled").getAsBoolean());
+			tweaksMod.addProperty("betterTooltips",
+					newObject.get("better_tootips").getAsJsonObject().get("enabled").getAsBoolean());
 			newObject.add("tweaks", tweaksMod);
 
 			JsonObject tabListMod = new JsonObject();
 			tabListMod.addProperty("enabled", true);
-			tabListMod.addProperty("pingType", newObject.get("numeral_ping").getAsJsonObject().get("enabled").getAsBoolean() ? "NUMERAL" : "ICON");
+			tabListMod.addProperty("pingType",
+					newObject.get("numeral_ping").getAsJsonObject().get("enabled").getAsBoolean() ? "NUMERAL" : "ICON");
 			newObject.add("tab_list", tabListMod);
 
 			newObject.remove("fullbright");
@@ -111,7 +113,7 @@ public enum ConfigVersion {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	public static JsonObject migrate(JsonObject object) {
-		for(int i = 0; i < values().length - 1; i++) {
+		for (int i = 0; i < values().length - 1; i++) {
 			ConfigVersion current = values()[i];
 			ConfigVersion ahead = values()[i + 1];
 
@@ -132,7 +134,7 @@ public enum ConfigVersion {
 	 * @return The migrated config.
 	 */
 	public JsonObject attemptTransform(JsonObject object, String nextVersion) {
-		if(!check(object)) {
+		if (!check(object)) {
 			return object; // Skip to next version.
 		}
 

@@ -166,6 +166,16 @@ class Launcher {
 			}
 		});
 
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://jitpack.io/com/github/Cosmetica-cc/CosmeticaDotJava/1.7.0/CosmeticaDotJava-1.7.0.jar",
+					path: "com/github/Cosmetica-cc/CosmeticaDotJava/1.7.0/CosmeticaDotJava-1.7.0.jar",
+					size: 68374
+				}
+			}
+		});
+
 		for(let library of version.libraries) {
 			if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"
 					|| library.name == "org.apache.logging.log4j:log4j-core:2.0-beta9"
@@ -406,6 +416,8 @@ class Launcher {
 		args.push("-Djava.library.path=" + nativesFolder);
 
 		args.push("-Dio.github.solclient.client.version=" + Utils.version);
+		args.push("-Dio.github.solclient.client.launcher=ours");
+		args.push("-Dio.github.solclient.client.autoupdate=true");
 		args.push("-Dio.github.solclient.client.secret=" + secret);
 
 		args.push("-Dlog4j2.formatMsgNoLookups=true");

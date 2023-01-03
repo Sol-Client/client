@@ -21,11 +21,9 @@
 
 package io.github.solclient.client.mod.impl.replay.fix;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import com.replaymod.lib.de.johni0702.minecraft.gui.utils.Event;
-import com.replaymod.lib.de.johni0702.minecraft.gui.utils.EventRegistration;
+import com.replaymod.lib.de.johni0702.minecraft.gui.utils.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventBus;

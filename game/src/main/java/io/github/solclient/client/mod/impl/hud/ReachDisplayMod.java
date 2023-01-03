@@ -20,20 +20,19 @@ public class ReachDisplayMod extends SimpleHudMod {
 
 	@Override
 	public String getText(boolean editMode) {
-		if((System.currentTimeMillis() - hitTime) > 5000) {
+		if ((System.currentTimeMillis() - hitTime) > 5000) {
 			distance = 0;
 		}
-		if(editMode) {
+		if (editMode) {
 			return "0 mts";
-		}
-		else {
+		} else {
 			return FORMAT.format(distance) + " m" + (distance != 1.0 ? "ts" : "");
 		}
 	}
 
 	@EventHandler
 	public void totallyNoReachHax(EntityAttackEvent event) {
-		if(mc.objectMouseOver != null && mc.objectMouseOver.hitVec != null) {
+		if (mc.objectMouseOver != null && mc.objectMouseOver.hitVec != null) {
 			distance = mc.objectMouseOver.hitVec.distanceTo(mc.thePlayer.getPositionEyes(1.0F));
 			hitTime = System.currentTimeMillis();
 		}

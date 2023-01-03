@@ -22,30 +22,16 @@
 package io.github.solclient.client.mod.impl.replay.fix;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 
 import com.replaymod.core.ReplayMod;
-import com.replaymod.core.events.PostRenderCallback;
-import com.replaymod.core.events.PreRenderCallback;
+import com.replaymod.core.events.*;
 import com.replaymod.lib.de.johni0702.minecraft.gui.versions.MatrixStack;
-import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.InitScreenCallback;
-import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.OpenGuiScreenCallback;
-import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.PostRenderScreenCallback;
-import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.PreTickCallback;
-import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.RenderHudCallback;
+import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.*;
 import com.replaymod.replay.events.RenderSpectatorCrosshairCallback;
 
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameOverlayElement;
-import io.github.solclient.client.event.impl.OpenGuiEvent;
-import io.github.solclient.client.event.impl.PostGuiInitEvent;
-import io.github.solclient.client.event.impl.PostGuiRenderEvent;
-import io.github.solclient.client.event.impl.PostRenderTickEvent;
-import io.github.solclient.client.event.impl.PreGameOverlayRenderEvent;
-import io.github.solclient.client.event.impl.PreGuiInitEvent;
-import io.github.solclient.client.event.impl.PreRenderTickEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
+import io.github.solclient.client.event.impl.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 
@@ -60,15 +46,12 @@ public class SCReplayModBackend extends SCEventRegistrations {
 			Method initModulesMethod = mod.getClass().getDeclaredMethod("initModules");
 			initModulesMethod.setAccessible(true);
 			initModulesMethod.invoke(mod);
-		}
-		catch(NoSuchMethodException | IllegalAccessException error) {
+		} catch (NoSuchMethodException | IllegalAccessException error) {
 			throw new Error(error);
-		}
-		catch (InvocationTargetException error) {
-			if(error.getCause() instanceof Error) {
+		} catch (InvocationTargetException error) {
+			if (error.getCause() instanceof Error) {
 				throw (Error) error.getCause();
-			}
-			else if(error.getCause() instanceof RuntimeException) {
+			} else if (error.getCause() instanceof RuntimeException) {
 				throw (RuntimeException) error.getCause();
 			}
 		}
@@ -89,13 +72,12 @@ public class SCReplayModBackend extends SCEventRegistrations {
 
 	@EventHandler
 	public void onRenderHud(PreGameOverlayRenderEvent event) {
-		if(!event.cancelled) {
-			if(event.type == GameOverlayElement.ALL) {
+		if (!event.cancelled) {
+			if (event.type == GameOverlayElement.ALL) {
 				RenderHudCallback.EVENT.invoker().renderHud(new MatrixStack(), event.partialTicks);
-			}
-			else if(event.type == GameOverlayElement.CROSSHAIRS) {
-				event.cancelled =
-						RenderSpectatorCrosshairCallback.EVENT.invoker().shouldRenderSpectatorCrosshair() == Boolean.FALSE;
+			} else if (event.type == GameOverlayElement.CROSSHAIRS) {
+				event.cancelled = RenderSpectatorCrosshairCallback.EVENT.invoker()
+						.shouldRenderSpectatorCrosshair() == Boolean.FALSE;
 			}
 		}
 	}

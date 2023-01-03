@@ -2,16 +2,10 @@ package io.github.solclient.client.mod.impl.discordrpc.socket;
 
 import com.google.gson.JsonObject;
 
-import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 
@@ -46,16 +40,16 @@ public class User {
 	public void update(JsonObject data, JsonObject user) {
 		name = data.get("nick").getAsString();
 
-		if(user != null) {
+		if (user != null) {
 			username = user.get("username").getAsString();
 			discriminator = user.get("discriminator").getAsString();
 
-			if(!user.get("avatar").isJsonNull()) {
+			if (!user.get("avatar").isJsonNull()) {
 				avatar = user.get("avatar").getAsString();
 			}
 		}
 
-		if(data.has("voice_state")) {
+		if (data.has("voice_state")) {
 			JsonObject voiceState = data.get("voice_state").getAsJsonObject();
 			mute = voiceState.get("mute").getAsBoolean();
 			selfMute = voiceState.get("self_mute").getAsBoolean();
@@ -79,16 +73,17 @@ public class User {
 
 		GlStateManager.color(1, 1, 1);
 
-		if(avatar == null) {
+		if (avatar == null) {
 			texman.bindTexture(new ResourceLocation("textures/gui/discord_avatar_generic.png"));
 			return;
 		}
 
-		if(!avatar.equals(boundAvatar) || boundScale != scale) {
+		if (!avatar.equals(boundAvatar) || boundScale != scale) {
 			deleteTexture();
 
 			location = new ResourceLocation("discord_avatar/" + avatar);
-			texman.loadTexture(location, new ThreadDownloadImageData(null, String.format(AVATAR_FORMAT, id, avatar, (int) (16 * scale)), null, null));
+			texman.loadTexture(location, new ThreadDownloadImageData(null,
+					String.format(AVATAR_FORMAT, id, avatar, (int) (16 * scale)), null, null));
 
 			boundAvatar = avatar;
 			boundScale = scale;
@@ -101,7 +96,7 @@ public class User {
 		Minecraft mc = Minecraft.getMinecraft();
 
 		mc.addScheduledTask(() -> {
-			if(location != null) {
+			if (location != null) {
 				Minecraft.getMinecraft().getTextureManager().deleteTexture(location);
 			}
 		});

@@ -30,7 +30,7 @@ import io.github.solclient.client.tweak.Tweaker;
 public class SCReplayModCompat implements Module {
 
 	public void initClient() {
-		if(Tweaker.optiFine) {
+		if (Tweaker.optiFine) {
 			new ShaderBeginRender().register();
 			new DisableFastRender().register();
 		}

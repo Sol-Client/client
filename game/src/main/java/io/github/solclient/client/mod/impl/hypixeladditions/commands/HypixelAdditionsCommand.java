@@ -10,5 +10,5 @@ public abstract class HypixelAdditionsCommand extends CommandBase {
 
 	protected final HypixelAdditionsMod mod;
 	protected final Minecraft mc = Minecraft.getMinecraft();
-	
+
 }

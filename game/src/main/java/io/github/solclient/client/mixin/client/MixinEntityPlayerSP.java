@@ -1,8 +1,7 @@
 package io.github.solclient.client.mixin.client;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.authlib.GameProfile;
@@ -10,8 +9,7 @@ import com.mojang.authlib.GameProfile;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.SendChatMessageEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.*;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.world.World;
 
@@ -24,7 +22,7 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer {
 
 	@Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
 	public void sendChatMessage(String message, CallbackInfo callback) {
-		if(Client.INSTANCE.bus.post(new SendChatMessageEvent(message)).cancelled) {
+		if (Client.INSTANCE.bus.post(new SendChatMessageEvent(message)).cancelled) {
 			callback.cancel();
 		}
 	}

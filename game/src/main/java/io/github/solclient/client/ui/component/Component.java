@@ -1,38 +1,23 @@
 package io.github.solclient.client.ui.component;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiPredicate;
 
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.ui.component.controller.Controller;
-import io.github.solclient.client.ui.component.handler.ClickHandler;
-import io.github.solclient.client.ui.component.handler.KeyHandler;
+import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.handler.*;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;
-import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Alignment;
-import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.font.Font;
-import lombok.Getter;
-import lombok.Setter;
+import io.github.solclient.client.util.*;
+import io.github.solclient.client.util.data.*;
+import lombok.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
 
 // 7 months later, I finally reintroduced the component API...
-public abstract class Component {
+public abstract class Component extends NanoVGManager {
 
 	protected Minecraft mc = Minecraft.getMinecraft();
 	protected Screen screen;
-	@Getter
-	protected Font font;
 	@Getter
 	@Setter
 	protected Component parent;
@@ -56,14 +41,19 @@ public abstract class Component {
 
 	public void add(Component component, Controller<Rectangle> position) {
 		subComponents.add(component);
+		register(component, position);
+	}
+
+	public void add(int index, Component component, Controller<Rectangle> position) {
+		subComponents.add(index, component);
+		register(component, position);
+	}
+
+	private void register(Component component, Controller<Rectangle> position) {
 		subComponentControllers.put(component, position);
 
-		if(screen != null) {
+		if (screen != null) {
 			component.setScreen(screen);
-		}
-
-		if(font != null) {
-			component.setFont(font);
 		}
 
 		component.setParent(this);
@@ -71,24 +61,22 @@ public abstract class Component {
 
 	public void remove(Component component) {
 		subComponents.remove(component);
+		subComponentControllers.remove(component);
+		component.setParent(null);
+	}
+
+	public void remove(int index) {
+		subComponentControllers.remove(subComponents.remove(index));
 	}
 
 	public void clear() {
 		subComponents.clear();
 	}
 
-	public void setFont(Font font) {
-		this.font = font;
-
-		for(Component component : subComponents) {
-			component.setFont(font);
-		}
-	}
-
 	public void setScreen(Screen screen) {
 		this.screen = screen;
 
-		for(Component component : subComponents) {
+		for (Component component : subComponents) {
 			component.setScreen(screen);
 		}
 	}
@@ -102,6 +90,10 @@ public abstract class Component {
 	}
 
 	public Rectangle getBounds(Component component) {
+		if (!subComponentControllers.containsKey(component)) {
+			throw new IllegalArgumentException(component + " is not a child of " + this);
+		}
+
 		return subComponentControllers.get(component).get(component, component.getDefaultBounds());
 	}
 
@@ -113,7 +105,7 @@ public abstract class Component {
 	public void render(ComponentRenderInfo info) {
 		ComponentRenderInfo actualInfo = info;
 
-		if(this instanceof ScrollListComponent) {
+		if (this instanceof ScrollListComponent) {
 			actualInfo = ((ScrollListComponent) this).reverseTranslation(info);
 		}
 
@@ -121,43 +113,39 @@ public abstract class Component {
 				&& actualInfo.getRelativeMouseX() < getBounds().getWidth()
 				&& actualInfo.getRelativeMouseY() < getBounds().getHeight();
 
-		if(parent != null) {
+		if (parent != null) {
 			hovered = hovered && (parent.isHovered() || parent.dialog == this);
 		}
 
-		if(dialog != null) {
+		if (dialog != null) {
 			hovered = false;
 		}
 
-		for(Component component : subComponents) {
-			if(component == dialog && dialog != null) {
+		for (Component component : subComponents) {
+			if (component == dialog && dialog != null) {
 				drawDialogOverlay();
 			}
 
-			if(component.shouldSkip() || (shouldScissor() && shouldCull(component))) {
+			if (component.shouldSkip() || (shouldScissor() && shouldCull(component))) {
 				continue;
 			}
 
 			Rectangle bounds = getBounds(component);
 
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(bounds.getX(), bounds.getY(), 0);
+			NanoVG.nvgSave(nvg);
+			NanoVG.nvgTranslate(nvg, bounds.getX(), bounds.getY());
 
-			if(component.shouldScissor()) {
-				GL11.glEnable(GL11.GL_SCISSOR_TEST);
-				Utils.scissor(bounds);
+			if (component.shouldScissor()) {
+				NanoVG.nvgScissor(nvg, 0, 0, bounds.getWidth(), bounds.getHeight());
+//				Utils.nvgScissor(nvg, getRelativeBounds());
 			}
 
 			component.render(transform(info, bounds));
 
-			GlStateManager.popMatrix();
-
-			if(component.shouldScissor()) {
-				GL11.glDisable(GL11.GL_SCISSOR_TEST);
-			}
+			NanoVG.nvgRestore(nvg);
 		}
 
-		if(dialog == null) {
+		if (dialog == null) {
 			drawDialogOverlay();
 		}
 	}
@@ -167,10 +155,9 @@ public abstract class Component {
 	}
 
 	protected boolean shouldCull(Component component) {
-		if(component.getBounds().getEndY() < getBounds().getY()) {
+		if (component.getBounds().getEndY() < getBounds().getY()) {
 			return true;
-		}
-		else if(component.getBounds().getY() > getBounds().getHeight()) {
+		} else if (component.getBounds().getY() > getBounds().getHeight()) {
 			return true;
 		}
 
@@ -178,8 +165,10 @@ public abstract class Component {
 	}
 
 	private void drawDialogOverlay() {
-		GlStateManager.color(1, 1, 1);
-		Gui.drawRect(0, 0, screen.width, screen.height, overlayColour.get(this, Colour.WHITE).getValue());
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgFillColor(nvg, overlayColour.get(this, Colour.WHITE).nvg());
+		NanoVG.nvgRect(nvg, 0, 0, screen.width, screen.height);
+		NanoVG.nvgFill(nvg);
 	}
 
 	protected Rectangle getDefaultBounds() {
@@ -194,16 +183,16 @@ public abstract class Component {
 	 * @return <code>true</code> if event has been processed.
 	 */
 	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-		if(onKeyPressed != null && onKeyPressed.keyPressed(info, keyCode, character)) {
+		if (onKeyPressed != null && onKeyPressed.keyPressed(info, keyCode, character)) {
 			return true;
 		}
 
-		for(Component component : subComponents) {
-			if(component.shouldSkip()) {
+		for (Component component : subComponents) {
+			if (component.shouldSkip()) {
 				continue;
 			}
 
-			if(component.keyPressed(transform(info, getBounds(component)), keyCode, character)) {
+			if (component.keyPressed(transform(info, getBounds(component)), keyCode, character)) {
 				return true;
 			}
 		}
@@ -212,45 +201,47 @@ public abstract class Component {
 	}
 
 	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside, boolean processed) {
-		if(dialog != null) {
+		if (dialog != null) {
 			boolean insideDialog = dialog.getBounds().contains(info.getRelativeMouseX(), info.getRelativeMouseY());
 
-			if(dialog.mouseClickedAnywhere(transform(info, dialog.getBounds()), button, insideDialog, processed)) {
+			if (dialog.mouseClickedAnywhere(transform(info, dialog.getBounds()), button, insideDialog, processed)) {
 				processed = true;
-			}
-			else if(!insideDialog && button == 0) {
+			} else if (!insideDialog && button == 0) {
 				setDialog(null);
 			}
 
 			return processed;
 		}
 
-		if(!processed && onClickAnywhere != null && onClickAnywhere.onClick(info, button)) {
+		if (!processed && onClickAnywhere != null && onClickAnywhere.onClick(info, button)) {
 			processed = true;
 		}
 
 		try {
-			for(Component component : subComponents) {
-				if(component.shouldSkip()) {
+			for (Component component : subComponents) {
+				if (component.shouldSkip()) {
 					continue;
 				}
 
 				Rectangle bounds = getBounds(component);
 
-				if(component.mouseClickedAnywhere(transform(info, bounds), button, inside && bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()), processed)) {
-					processed = true;
+				if (component.mouseClickedAnywhere(transform(info, bounds), button,
+						inside && bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()), processed)) {
+					return true;
 				}
 			}
-		}
-		catch(ConcurrentModificationException error) {
-		}
-
-		if(inside && onClick != null && onClick.onClick(info, button)) {
-			processed = true;
+		} catch (ConcurrentModificationException error) {
+			// ArGHHHHHHH
 		}
 
-		if(inside && !processed && mouseClicked(info, button)) {
-			processed = true;
+		if (inside) {
+			if (onClick != null && onClick.onClick(info, button)) {
+				return true;
+			}
+
+			if (mouseClicked(info, button)) {
+				return true;
+			}
 		}
 
 		return processed;
@@ -264,33 +255,35 @@ public abstract class Component {
 	}
 
 	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
-		if(dialog != null) {
-			if(dialog.mouseReleasedAnywhere(transform(info, dialog.getBounds()), button, dialog.getBounds().contains(info.getRelativeMouseX(), info.getRelativeMouseY()))) {
+		if (dialog != null) {
+			if (dialog.mouseReleasedAnywhere(transform(info, dialog.getBounds()), button,
+					dialog.getBounds().contains(info.getRelativeMouseX(), info.getRelativeMouseY()))) {
 				return true;
 			}
 		}
 
-		if(onReleaseAnywhere != null && onReleaseAnywhere.onClick(info, button)) {
+		if (onReleaseAnywhere != null && onReleaseAnywhere.onClick(info, button)) {
 			return true;
 		}
 
-		for(Component component : subComponents) {
-			if(component.shouldSkip()) {
+		for (Component component : subComponents) {
+			if (component.shouldSkip()) {
 				continue;
 			}
 
 			Rectangle bounds = getBounds(component);
 
-			if(component.mouseReleasedAnywhere(transform(info, bounds), button, bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()))) {
+			if (component.mouseReleasedAnywhere(transform(info, bounds), button,
+					bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()))) {
 				return true;
 			}
 		}
 
-		if(inside && onRelease != null && onRelease.onClick(info, button)) {
+		if (inside && onRelease != null && onRelease.onClick(info, button)) {
 			return true;
 		}
 
-		if(inside && mouseReleased(info, button)) {
+		if (inside && mouseReleased(info, button)) {
 			return true;
 		}
 
@@ -304,15 +297,16 @@ public abstract class Component {
 		return false;
 	}
 
-	private boolean forEachHoveredSubComponent(ComponentRenderInfo info, BiPredicate<Component, ComponentRenderInfo> action) {
-		for(Component component : subComponents) {
+	private boolean forEachHoveredSubComponent(ComponentRenderInfo info,
+			BiPredicate<Component, ComponentRenderInfo> action) {
+		for (Component component : subComponents) {
 			Rectangle bounds = getBounds(component);
 
-			if(!bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY())) {
+			if (!bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY())) {
 				continue;
 			}
 
-			if(action.test(component, transform(info, bounds))) {
+			if (action.test(component, transform(info, bounds))) {
 				return true;
 			}
 		}
@@ -324,11 +318,12 @@ public abstract class Component {
 	 * @return <code>true</code> if the event has been processed.
 	 */
 	public boolean mouseScroll(ComponentRenderInfo info, int delta) {
-		if(dialog != null) {
+		if (dialog != null) {
 			return dialog.mouseScroll(transform(info, dialog.getBounds()), delta);
 		}
 
-		if(forEachHoveredSubComponent(info, (component, transformedInfo) -> component.mouseScroll(transformedInfo, delta))) {
+		if (forEachHoveredSubComponent(info,
+				(component, transformedInfo) -> component.mouseScroll(transformedInfo, delta))) {
 			return true;
 		}
 
@@ -336,7 +331,7 @@ public abstract class Component {
 	}
 
 	public void tick() {
-		for(Component component : subComponents) {
+		for (Component component : subComponents) {
 			component.tick();
 		}
 	}
@@ -371,15 +366,16 @@ public abstract class Component {
 	}
 
 	public void setDialog(Component dialog) {
-		if(this.dialog != null) {
+		if (this.dialog != null) {
 			remove(this.dialog);
 		}
 
-		this.dialog = dialog;
-
-		if(dialog != null) {
-			add(dialog, new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE, (component, defaultBounds) -> defaultBounds));
+		if (dialog != null) {
+			add(dialog, new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
+					(component, defaultBounds) -> defaultBounds));
 		}
+
+		this.dialog = dialog;
 	}
 
 	public Component visibilityController(Controller<Boolean> visibilityController) {

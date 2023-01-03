@@ -1,14 +1,11 @@
 package io.github.solclient.client.mod.impl;
 
-import org.lwjgl.input.Keyboard;
-
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.event.*;
+import io.github.solclient.client.*;
+import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.Perspective;
 import net.minecraft.client.settings.KeyBinding;
@@ -16,7 +13,7 @@ import net.minecraft.client.settings.KeyBinding;
 public class TaplookMod extends Mod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", 0, Client.KEY_CATEGORY);
+	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", 0, GlobalConstants.KEY_CATEGORY);
 	private int previousPerspective;
 	private boolean active;
 	@Expose
@@ -41,12 +38,11 @@ public class TaplookMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if(key.isKeyDown()) {
-			if(!active) {
+		if (key.isKeyDown()) {
+			if (!active) {
 				start();
 			}
-		}
-		else if(active) {
+		} else if (active) {
 			stop();
 		}
 	}

@@ -211,7 +211,7 @@ if(workspaceReady) {
 
 	def libsDir = new File(project.getRootDir(), "replaymod")
 
-	def replayModBase = "replaymod-1.8.9-2.6.3"
+	def replayModBase = "replaymod-1.8.9-2.6.10"
 
 	def replayModJar = new File(libsDir, replayModBase + ".jar")
 	if(!replayModJar.exists()) {
@@ -354,7 +354,6 @@ dependencies {
 		exclude module: "gson"
 		exclude module: "commons-io"
 	}
-	dependency "org.slick2d:slick2d-core:1.0.2"
 	ship files("libs/occlusionculling.jar")
 	dependency "net.hypixel:hypixel-api-core:4.0"
 	
@@ -365,6 +364,12 @@ dependencies {
 
 	dependency "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
 	dependency "org.java-websocket:Java-WebSocket:1.5.3"
+	dependency "com.github.Cosmetica-cc:CosmeticaDotJava:1.7.0"
+	dependency "com.github.Sol-Client:LWJGL-Patched:bf1d105853"
+
+	runtimeOnly "org.lwjgl:lwjgl:3.3.1:natives-linux"
+	runtimeOnly "org.lwjgl:lwjgl-stb:3.3.1:natives-linux"
+	runtimeOnly "org.lwjgl:lwjgl-nanovg:3.3.1:natives-linux"
 }
 
 mixin {

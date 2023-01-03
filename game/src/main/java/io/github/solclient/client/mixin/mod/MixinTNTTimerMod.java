@@ -3,11 +3,8 @@ package io.github.solclient.client.mixin.mod;
 import org.spongepowered.asm.mixin.Mixin;
 
 import io.github.solclient.client.mod.impl.TNTTimerMod;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderTNTPrimed;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.util.EnumChatFormatting;
 
 public class MixinTNTTimerMod {
 
@@ -20,7 +17,7 @@ public class MixinTNTTimerMod {
 
 		@Override
 		protected void renderName(EntityTNTPrimed tnt, double x, double y, double z) {
-			if(TNTTimerMod.enabled) {
+			if (TNTTimerMod.enabled) {
 				renderLivingLabel(tnt, TNTTimerMod.getText(tnt), x, y, z, 64);
 			}
 		}

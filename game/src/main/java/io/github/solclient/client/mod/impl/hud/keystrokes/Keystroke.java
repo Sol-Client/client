@@ -28,56 +28,53 @@ public class Keystroke {
 		boolean down = keyBinding.isKeyDown();
 		GlStateManager.enableBlend();
 
-		if((wasDown && !down) || (!wasDown && down)) {
+		if ((wasDown && !down) || (!wasDown && down)) {
 			end = System.currentTimeMillis();
 		}
 
 		float progress = 1F;
 
-		if(mod.smoothColours) {
+		if (mod.smoothColours) {
 			progress = (System.currentTimeMillis() - end) / 100.0F;
 		}
 
-		if(down) {
+		if (down) {
 			progress = 1F - progress;
 		}
 
 		progress = MathHelper.clamp_float(progress, 0, 1);
 
-		if(mod.background) {
-			GuiScreen.drawRect(x, y, x + width, y + height,
-					Utils.lerpColour(mod.backgroundColourPressed.getValue(), mod.backgroundColour.getValue(), progress));
+		if (mod.background) {
+			GuiScreen.drawRect(x, y, x + width, y + height, Utils.lerpColour(mod.backgroundColourPressed.getValue(),
+					mod.backgroundColour.getValue(), progress));
 		}
 
-		if(mod.border) {
+		if (mod.border) {
 			Utils.drawOutline(x, y, x + width, y + height,
 					Utils.lerpColour(mod.borderColourPressed.getValue(), mod.borderColour.getValue(), progress));
 		}
 
 		int fgColour = Utils.lerpColour(mod.textColourPressed.getValue(), mod.textColour.getValue(), progress);
 
-		if(name == null) {
+		if (name == null) {
 			GuiScreen.drawRect(x + 10, y + 3, x + width - 10, y + 4, fgColour);
 
-			if(mod.shadow) {
+			if (mod.shadow) {
 				GuiScreen.drawRect(x + 11, y + 4, x + width - 9, y + 5, Utils.getShadowColour(fgColour));
 			}
-		}
-		else {
-			if(mod.cps) {
+		} else {
+			if (mod.cps) {
 				CpsMonitor monitor;
 
-				if(name.equals("LMB")) {
+				if (name.equals("LMB")) {
 					monitor = CpsMonitor.LMB;
-				}
-				else if(name.equals("RMB")) {
+				} else if (name.equals("RMB")) {
 					monitor = CpsMonitor.RMB;
-				}
-				else {
+				} else {
 					monitor = null;
 				}
 
-				if(monitor != null) {
+				if (monitor != null) {
 					String cpsText = monitor.getCps() + " CPS";
 					float scale = 0.5F;
 

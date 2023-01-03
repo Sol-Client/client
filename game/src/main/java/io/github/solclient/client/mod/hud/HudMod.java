@@ -1,19 +1,12 @@
 package io.github.solclient.client.mod.hud;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
-import io.github.solclient.client.mod.annotation.AbstractTranslationKey;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.util.data.Position;
-import io.github.solclient.client.util.data.Rectangle;
-import lombok.Getter;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.FontRenderer;
 
 /**
@@ -78,7 +71,8 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 		element.render(editMode);
 	}
 
-	public void render(Position position, boolean editMode) {}
+	public void render(Position position, boolean editMode) {
+	}
 
 	public boolean isShownInReplay() {
 		return false;
@@ -143,4 +137,3 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 }
-

@@ -3,9 +3,7 @@ package io.github.solclient.client.mod.impl.hud.tablist;
 import net.minecraft.client.resources.I18n;
 
 public enum PingType {
-	NONE,
-	ICON,
-	NUMERAL;
+	NONE, ICON, NUMERAL;
 
 	@Override
 	public String toString() {

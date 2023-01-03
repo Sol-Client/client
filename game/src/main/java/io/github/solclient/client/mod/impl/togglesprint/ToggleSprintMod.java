@@ -3,15 +3,16 @@ package io.github.solclient.client.mod.impl.togglesprint;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PostTickEvent;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
+<<<<<<< HEAD
 import io.github.solclient.client.mod.keybinding.ToggleState;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 import net.minecraft.client.settings.KeyBinding;
+=======
+>>>>>>> db1f082532f3f99af9c0ede9952bbbe6214be358
 
 public class ToggleSprintMod extends SimpleHudMod {
 
@@ -50,7 +51,7 @@ public class ToggleSprintMod extends SimpleHudMod {
 
 	@Override
 	public String getText(boolean editMode) {
-		if(!hud) {
+		if (!hud) {
 			return null;
 		}
 		if(editMode) {

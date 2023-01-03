@@ -44,7 +44,8 @@ sol_client.mod.smooth_counter_hud.option.smoothNumbers=Smooth Numbers
 sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=General settings for Sol Client.
 
-sol_client.mod.sol_client.option.fancyMainMenu=Main Menu
+sol_client.mod.sol_client.option.remindMeToUpdate=Update Notifications
+sol_client.mod.sol_client.option.fancyMainMenu=Replace Main Menu
 sol_client.mod.sol_client.option.logoInInventory=Show Logo in Inventory
 sol_client.mod.sol_client.mods=Mods
 sol_client.mod.sol_client.option.modsKey=Mods Key
@@ -228,6 +229,7 @@ sol_client.mod.tweaks.option.betterTooltips=Better Tooltips
 sol_client.mod.tweaks.option.minimalViewBobbing=Minimal View Bobbing
 sol_client.mod.tweaks.option.minimalDamageShake=Minimal Damage Shake
 sol_client.mod.tweaks.option.damageShakeIntensity=Damage Shake Intensity
+sol_client.mod.tweaks.option.lowerFireBy=Lower Fire By
 sol_client.mod.tweaks.option.confirmDisconnect=Confirm Disconnect
 sol_client.mod.tweaks.option.borderlessFullscreen=Borderless Fullscreen
 sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
@@ -379,6 +381,12 @@ sol_client.mod.particles.option.snow=Snow
 sol_client.mod.particles.option.slime=Slime
 sol_client.mod.particles.option.flames=Flames
 
+sol_client.mod.scrollable_tooltips.name=Scrollable Tooltips
+sol_client.mod.scrollable_tooltips.description=Use the mouse wheel to move inventory item tooltips.
+
+sol_client.mod.scrollable_tooltips.option.scrollSensitivity=Scroll Sensitivity
+sol_client.mod.scrollable_tooltips.option.reverse=Reverse
+
 sol_client.mod.time_changer.name=Time Changer
 sol_client.mod.time_changer.description=Change the visual time without affecting gameplay.
 
@@ -412,6 +420,7 @@ sol_client.mod.hitbox.option.lookVector=Show Look Vector
 sol_client.mod.hitbox.option.lookVectorColour=Look Vector Color
 sol_client.mod.hitbox.option.lineWidth=Line Width
 
+sol_client.mod.category.pinned.name=Pinned
 sol_client.mod.category.general.name=General
 sol_client.mod.category.hud.name=HUD
 sol_client.mod.category.utility.name=Utility
@@ -421,12 +430,19 @@ sol_client.mod.category.integration.name=Integration
 sol_client.mod.discord_integration.name=Discord Integration
 sol_client.mod.discord_integration.description=Integration features for Discord including activities and overlay.
 
+sol_client.mod.discord_integration.option.applicationId=Application ID
+sol_client.mod.discord_integration.option.icon=Icon
 sol_client.mod.discord_integration.option.voiceChatHud=Voice Chat HUD
 sol_client.mod.discord_integration.option.voiceChatHudScale=Voice Chat HUD Scale
 sol_client.mod.discord_integration.option.voiceChatHudAlignment=Voice Chat HUD Alignment
 sol_client.mod.discord_integration.option.usernameColour=Username Colour
 sol_client.mod.discord_integration.option.mutedColour=Muted Colour
 sol_client.mod.discord_integration.option.speakingColour=Speaking Colour
+
+sol_client.mod.discord_integration.multiplayer=Multiplayer: %s
+
+sol_client.mod.cosmetica.name=Cosmetica
+sol_client.mod.cosmetica.description=Support for cosmetics with Cosmetica's API.
 
 sol_client.mod.screen.title=Mods
 sol_client.mod.screen.search=Type to search
@@ -440,3 +456,13 @@ sol_client.packs.folder=Folder (%d items)
 
 sol_client.screenshot.view=View
 sol_client.screenshot.open_folder=Show in Folder
+
+sol_client.modified_from=, using code by %s
+sol_client.originally_by=, originally by %s
+sol_client.inspired_by=, partially inspired by %s
+sol_client.by=, by %s
+
+sol_client.about=About Sol Client
+sol_client.license=Licensed under the GPL v3 license.
+
+sol_client.default=(Default)

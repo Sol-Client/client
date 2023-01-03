@@ -3,29 +3,29 @@ package io.github.solclient.client.ui.component.impl;
 import java.util.function.Consumer;
 
 import io.github.solclient.client.mod.impl.SolClientMod;
-import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
+import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Colour;
+import io.github.solclient.client.util.data.*;
 
-public class TickboxComponent extends ScaledIconComponent {
+public class TickboxComponent extends BlockComponent {
 
 	private boolean value;
 	private final Consumer<Boolean> booleanConsumer;
 	private final Component hoverController;
 
 	public TickboxComponent(boolean value, Consumer<Boolean> booleanConsumer, Component hoverController) {
-		super("sol_client_tickbox", 16, 16,
-				new AnimatedColourController((component, defaultColour) -> component.isHovered() ? SolClientMod.instance.uiHover
-						: SolClientMod.instance.uiColour));
+		super(new AnimatedColourController(
+				(component, defaultColour) -> component.isHovered() ? SolClientMod.instance.uiHover
+						: SolClientMod.instance.uiColour),
+				(component, defaultRadius) -> 5F, (component, defaultStrokeWidth) -> 1F);
 
 		this.value = value;
 		this.booleanConsumer = booleanConsumer;
 		this.hoverController = hoverController;
 
 		hoverController.onClick((info, button) -> {
-			if(!super.isHovered() && button == 0) {
+			if (!super.isHovered() && button == 0) {
 				mouseClicked(info, button);
 			}
 
@@ -46,7 +46,7 @@ public class TickboxComponent extends ScaledIconComponent {
 
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
-		if(button != 0) {
+		if (button != 0) {
 			return false;
 		}
 
@@ -58,13 +58,8 @@ public class TickboxComponent extends ScaledIconComponent {
 	}
 
 	@Override
-	public boolean useFallback() {
-		return true;
-	}
-
-	@Override
-	public void renderFallback(ComponentRenderInfo info) {
-		Utils.drawOutline(getRelativeBounds(), getColour());
+	protected Rectangle getDefaultBounds() {
+		return Rectangle.ofDimensions(16, 16);
 	}
 
 }

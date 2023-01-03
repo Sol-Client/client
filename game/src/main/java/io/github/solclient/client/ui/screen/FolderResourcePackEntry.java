@@ -1,16 +1,11 @@
 package io.github.solclient.client.ui.screen;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import java.io.*;
 
 import io.github.solclient.client.util.access.AccessMinecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreenResourcePacks;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.resources.ResourcePackListEntry;
-import net.minecraft.client.resources.ResourcePackRepository;
+import net.minecraft.client.resources.*;
 import net.minecraft.util.ResourceLocation;
 
 public class FolderResourcePackEntry extends ResourcePackListEntry {
@@ -22,7 +17,8 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 	private BetterResourcePackList list;
 	private BetterResourcePackList sublist;
 
-	public FolderResourcePackEntry(GuiScreenResourcePacks resourcePacksGUIIn, BetterResourcePackList list, File folder) {
+	public FolderResourcePackEntry(GuiScreenResourcePacks resourcePacksGUIIn, BetterResourcePackList list,
+			File folder) {
 		super(resourcePacksGUIIn);
 		this.folder = folder;
 		this.list = list;
@@ -35,13 +31,13 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 			boolean isSelected) {
 		super.drawEntry(slotIndex, x, y, listWidth, slotHeight, mouseX, mouseY, isSelected);
 
-		if(mc.gameSettings.touchscreen || isSelected) {
+		if (mc.gameSettings.touchscreen || isSelected) {
 			Gui.drawRect(x, y, x + 32, y + 32, -1601138544);
 		}
 	}
 
 	public BetterResourcePackList getSublist() throws IOException {
-		if(sublist == null) {
+		if (sublist == null) {
 			ResourcePackRepository repo = new ResourcePackRepository(folder,
 					new File(mc.mcDataDir, "server-resource-packs"),
 					AccessMinecraft.getInstance().getDefaultResourcePack(),
@@ -58,14 +54,13 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 	@Override
 	public boolean mousePressed(int slotIndex, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_,
 			int p_148278_6_) {
-		if(!folder.exists()) {
+		if (!folder.exists()) {
 			return false;
 		}
 
 		try {
 			list.delegate = getSublist();
-		}
-		catch(IOException error) {
+		} catch (IOException error) {
 		}
 
 		return true;

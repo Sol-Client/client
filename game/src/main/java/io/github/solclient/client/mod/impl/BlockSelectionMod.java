@@ -6,27 +6,18 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.BlockHighlightRenderEvent;
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.PrimaryIntegerSettingMod;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.WorldSettings;
 
 public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
@@ -68,17 +59,18 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 		Entity entity = this.mc.getRenderViewEntity();
 		boolean result = entity instanceof EntityPlayer && !this.mc.gameSettings.hideGUI;
 
-		if(result && !((EntityPlayer)entity).capabilities.allowEdit && !persistent) {
-			ItemStack itemstack = ((EntityPlayer)entity).getCurrentEquippedItem();
+		if (result && !((EntityPlayer) entity).capabilities.allowEdit && !persistent) {
+			ItemStack itemstack = ((EntityPlayer) entity).getCurrentEquippedItem();
 
-			if(this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+			if (this.mc.objectMouseOver != null
+					&& this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
 				BlockPos selectedBlock = this.mc.objectMouseOver.getBlockPos();
 				Block block = this.mc.theWorld.getBlockState(selectedBlock).getBlock();
 
-				if(this.mc.playerController.getCurrentGameType() == WorldSettings.GameType.SPECTATOR) {
-					result = block.hasTileEntity() && this.mc.theWorld.getTileEntity(selectedBlock) instanceof IInventory;
-				}
-				else {
+				if (this.mc.playerController.getCurrentGameType() == WorldSettings.GameType.SPECTATOR) {
+					result = block.hasTileEntity()
+							&& this.mc.theWorld.getTileEntity(selectedBlock) instanceof IInventory;
+				} else {
 					result = itemstack != null && (itemstack.canDestroy(block) || itemstack.canPlaceOn(block));
 				}
 			}
@@ -93,14 +85,14 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 	public void onBlockHighlightRenderEvent(BlockHighlightRenderEvent event) {
 		event.cancelled = true;
 
-		if(!canRender(event.movingObjectPosition)) {
+		if (!canRender(event.movingObjectPosition)) {
 			return;
 		}
 
 		GlStateManager.enableBlend();
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 
-		if(!depth) {
+		if (!depth) {
 			GlStateManager.disableDepth();
 		}
 
@@ -110,25 +102,28 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 		BlockPos blockpos = event.movingObjectPosition.getBlockPos();
 		Block block = mc.theWorld.getBlockState(blockpos).getBlock();
 
-		if(block.getMaterial() != Material.air && mc.theWorld.getWorldBorder().contains(blockpos)) {
+		if (block.getMaterial() != Material.air && mc.theWorld.getWorldBorder().contains(blockpos)) {
 			block.setBlockBoundsBasedOnState(mc.theWorld, blockpos);
 			double x = mc.getRenderViewEntity().lastTickPosX
-					+ (mc.getRenderViewEntity().posX - mc.getRenderViewEntity().lastTickPosX) * (double) event.partialTicks;
+					+ (mc.getRenderViewEntity().posX - mc.getRenderViewEntity().lastTickPosX)
+							* (double) event.partialTicks;
 			double y = mc.getRenderViewEntity().lastTickPosY
-					+ (mc.getRenderViewEntity().posY - mc.getRenderViewEntity().lastTickPosY) * (double) event.partialTicks;
+					+ (mc.getRenderViewEntity().posY - mc.getRenderViewEntity().lastTickPosY)
+							* (double) event.partialTicks;
 			double z = mc.getRenderViewEntity().lastTickPosZ
-					+ (mc.getRenderViewEntity().posZ - mc.getRenderViewEntity().lastTickPosZ) * (double) event.partialTicks;
+					+ (mc.getRenderViewEntity().posZ - mc.getRenderViewEntity().lastTickPosZ)
+							* (double) event.partialTicks;
 
 			AxisAlignedBB selectedBox = block.getSelectedBoundingBox(mc.theWorld, blockpos);
 			selectedBox = selectedBox.expand(0.0020000000949949026D, 0.0020000000949949026D, 0.0020000000949949026D)
 					.offset(-x, -y, -z);
 
-			if(fill) {
+			if (fill) {
 				fillColour.bind();
 				Utils.fillBox(selectedBox);
 			}
 
-			if(outline) {
+			if (outline) {
 				outlineColour.bind();
 				GL11.glLineWidth(outlineWidth);
 				RenderGlobal.drawSelectionBoundingBox(selectedBox);
@@ -140,7 +135,7 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
 		GlStateManager.disableBlend();
 
-		if(!depth) {
+		if (!depth) {
 			GlStateManager.enableDepth();
 		}
 

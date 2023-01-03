@@ -1,20 +1,10 @@
 package io.github.solclient.client;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
 
-import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.ModOption;
+import io.github.solclient.client.mod.*;
 import net.minecraft.client.Minecraft;
 
 public class FilePollingTask implements Runnable, Closeable {
@@ -25,11 +15,12 @@ public class FilePollingTask implements Runnable, Closeable {
 	public FilePollingTask(List<Mod> mods) throws IOException {
 		WatchService service = FileSystems.getDefault().newWatchService();
 
-		key = Minecraft.getMinecraft().mcDataDir.toPath().register(service, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
+		key = Minecraft.getMinecraft().mcDataDir.toPath().register(service, StandardWatchEventKinds.ENTRY_MODIFY,
+				StandardWatchEventKinds.ENTRY_CREATE);
 
-		for(Mod mod : mods) {
-			for(ModOption option : mod.getOptions()) {
-				if(option.isFile()) {
+		for (Mod mod : mods) {
+			for (ModOption option : mod.getOptions()) {
+				if (option.isFile()) {
 					files.put(option.getFile().getName(), option);
 				}
 			}
@@ -38,16 +29,15 @@ public class FilePollingTask implements Runnable, Closeable {
 
 	@Override
 	public void run() {
-		for(WatchEvent<?> event : key.pollEvents()) {
+		for (WatchEvent<?> event : key.pollEvents()) {
 			File changedFile = ((Path) event.context()).toFile();
 
 			ModOption option = files.get(changedFile.getName());
 
-			if(option != null) {
+			if (option != null) {
 				try {
 					option.readFile();
-				}
-				catch(IOException error) {
+				} catch (IOException error) {
 				}
 			}
 		}

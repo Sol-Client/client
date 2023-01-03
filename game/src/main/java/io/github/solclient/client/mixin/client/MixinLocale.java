@@ -1,15 +1,11 @@
 package io.github.solclient.client.mixin.client;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.*;
 import net.minecraft.client.resources.Locale;
 import net.minecraft.util.ResourceLocation;
 
@@ -20,16 +16,15 @@ public abstract class MixinLocale {
 	public synchronized void loadLocaleDataFiles(IResourceManager resourceManager, List<String> languageCodes) {
 		properties.clear();
 
-		for(String language : languageCodes) {
+		for (String language : languageCodes) {
 			String vanillaLang = String.format("lang/%s.lang", language);
 			String ofLang = String.format("optifine/lang/%s.lang", language);
 
-			for(String domain : resourceManager.getResourceDomains()) {
+			for (String domain : resourceManager.getResourceDomains()) {
 				try {
 					loadLocaleData(resourceManager.getAllResources(new ResourceLocation(domain, vanillaLang)));
 					loadLocaleData(resourceManager.getAllResources(new ResourceLocation(domain, ofLang)));
-				}
-				catch(IOException ignored) {
+				} catch (IOException ignored) {
 				}
 			}
 		}

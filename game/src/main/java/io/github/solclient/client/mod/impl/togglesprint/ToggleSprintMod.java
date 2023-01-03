@@ -9,56 +9,56 @@ import io.github.solclient.client.mod.keybinding.ToggleState;
 
 public class ToggleSprintMod extends SimpleHudMod {
 
-    private ToggleState sprint;
-    @Expose
-    @Option
-    private boolean hud;
+	private ToggleState sprint;
+	@Expose
+	@Option
+	private boolean hud;
 
-    private ToggleSprintKeyBinding keybinding;
+	private ToggleSprintKeyBinding keybinding;
 
-    @Override
-    public void onRegister() {
-        super.onRegister();
+	@Override
+	public void onRegister() {
+		super.onRegister();
 
-        Client.INSTANCE.unregisterKeyBinding(mc.gameSettings.keyBindSprint);
-        keybinding = new ToggleSprintKeyBinding(this, mc.gameSettings.keyBindSprint.getKeyDescription(), 29,
-                mc.gameSettings.keyBindSprint.getKeyCategory());
-        mc.gameSettings.keyBindSprint = keybinding;
-        Client.INSTANCE.registerKeyBinding(mc.gameSettings.keyBindSprint);
-    }
+		Client.INSTANCE.unregisterKeyBinding(mc.gameSettings.keyBindSprint);
+		keybinding = new ToggleSprintKeyBinding(this, mc.gameSettings.keyBindSprint.getKeyDescription(), 29,
+				mc.gameSettings.keyBindSprint.getKeyCategory());
+		mc.gameSettings.keyBindSprint = keybinding;
+		Client.INSTANCE.registerKeyBinding(mc.gameSettings.keyBindSprint);
+	}
 
-    @Override
-    public String getId() {
-        return "toggle_sprint";
-    }
+	@Override
+	public String getId() {
+		return "toggle_sprint";
+	}
 
-    @Override
-    public ModCategory getCategory() {
-        return ModCategory.UTILITY;
-    }
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.UTILITY;
+	}
 
-    @Override
-    public boolean isVisible() {
-        return hud;
-    }
+	@Override
+	public boolean isVisible() {
+		return hud;
+	}
 
-    @Override
-    public String getText(boolean editMode) {
-        if (!hud) {
-            return null;
-        }
-        if (editMode) {
-            return keybinding.getText(true);
-        }
-        return getSprint() == null ? null : keybinding.getText(false);
-    }
+	@Override
+	public String getText(boolean editMode) {
+		if (!hud) {
+			return null;
+		}
+		if (editMode) {
+			return keybinding.getText(true);
+		}
+		return getSprint() == null ? null : keybinding.getText(false);
+	}
 
-    public ToggleState getSprint() {
-        return sprint;
-    }
+	public ToggleState getSprint() {
+		return sprint;
+	}
 
-    public void setSprint(ToggleState sprint) {
-        this.sprint = sprint;
-    }
+	public void setSprint(ToggleState sprint) {
+		this.sprint = sprint;
+	}
 
 }

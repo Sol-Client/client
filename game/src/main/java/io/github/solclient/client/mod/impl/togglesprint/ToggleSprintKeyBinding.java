@@ -1,53 +1,22 @@
 package io.github.solclient.client.mod.impl.togglesprint;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.PostTickEvent;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
+import io.github.solclient.client.mod.keybinding.ToggleState;
+import io.github.solclient.client.mod.keybinding.ToggledKeyBinding;
 
-public class ToggleSprintKeyBinding extends KeyBinding {
-
-	private final Minecraft mc = Minecraft.getMinecraft();
-	private final ToggleSprintMod mod;
-	private boolean wasDown;
-	private long startTime;
-
+public class ToggleSprintKeyBinding extends ToggledKeyBinding<ToggleSprintMod> {
 	public ToggleSprintKeyBinding(ToggleSprintMod mod, String description, int keyCode, String category) {
-		super(description, keyCode, category);
-		this.mod = mod;
+		super(mod, description, keyCode, category);
 		Client.INSTANCE.bus.register(this);
 	}
 
-	@EventHandler
-	public void tickBinding(PostTickEvent event) {
-		boolean down = super.isKeyDown();
-		if (mod.isEnabled()) {
-			if (down) {
-				if (!wasDown) {
-					startTime = System.currentTimeMillis();
-					if (mod.getSprint() == ToggleSprintState.TOGGLED) {
-						mod.setSprint(ToggleSprintState.HELD);
-					} else {
-						mod.setSprint(ToggleSprintState.TOGGLED);
-					}
-				} else if ((System.currentTimeMillis() - startTime) > 250) {
-					mod.setSprint(ToggleSprintState.HELD);
-				}
-			} else if (mod.getSprint() == ToggleSprintState.HELD) {
-				mod.setSprint(null);
-			}
-
-			wasDown = down;
-		}
+	@Override
+	public void postStateUpdate(ToggleState newState) {
+		this.mod.setSprint(newState);
 	}
 
 	@Override
-	public boolean isKeyDown() {
-		if (mod.isEnabled()) {
-			return mc.currentScreen == null && mod.getSprint() != null;
-		}
-		return super.isKeyDown();
+	public ToggleState getState() {
+		return this.mod.getSprint();
 	}
-
 }

@@ -21,24 +21,27 @@ public class ToggleSneakMod extends SimpleHudMod {
 		super.onRegister();
 
 		Client.INSTANCE.unregisterKeyBinding(mc.gameSettings.keyBindSneak);
-		keybinding = new ToggleSneakKeyBinding(this, mc.gameSettings.keyBindSneak.getKeyDescription(), 42,
-				mc.gameSettings.keyBindSneak.getKeyCategory());
+		keybinding = new ToggleSneakKeyBinding(this, mc.gameSettings.keyBindSneak.getKeyDescription(), 42, mc.gameSettings.keyBindSneak.getKeyCategory());
 		mc.gameSettings.keyBindSneak = keybinding;
 		Client.INSTANCE.registerKeyBinding(mc.gameSettings.keyBindSneak);
 	}
 
 	@Override
 	public String getText(boolean editMode) {
-		if(!hud) return null;
-		if(editMode) return keybinding.getText(editMode);
+		if (!hud) return null;
+		if (editMode) return keybinding.getText(editMode);
 		return getSneak() == null ? null : keybinding.getText(false);
 	}
 
 	@Override
-	public String getId() { return "toggle_sneak"; }
+	public String getId() {
+		return "toggle_sneak";
+	}
 
 	@Override
-	public boolean isVisible() { return hud; }
+	public boolean isVisible() {
+		return hud;
+	}
 
 	@Override
 	public ModCategory getCategory() {

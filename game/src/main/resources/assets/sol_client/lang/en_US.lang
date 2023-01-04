@@ -265,6 +265,15 @@ sol_client.mod.toggle_sprint.option.hud=HUD
 sol_client.mod.toggle_sprint.held=Sprinting (Held)
 sol_client.mod.toggle_sprint.toggled=Sprinting (Toggled)
 
+sol_client.mod.toggle_sneak.name=Toggle Sneak
+sol_client.mod.toggle_sneak.description=Toggle the sneak key.
+
+sol_client.mod.toggle_sneak.option.hud=HUD
+sol_client.mod.toggle_sneak.held=Sneaking (Held)
+sol_client.mod.toggle_sneak.toggled=Sneaking (Toggled)
+
+sol_client.mod.toggle_sneak.default_width=113
+
 sol_client.mod.zoom.name=Zoom
 sol_client.mod.zoom.description=Zoom in when pressing a button.
 

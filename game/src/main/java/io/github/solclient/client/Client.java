@@ -3,6 +3,7 @@ package io.github.solclient.client;
 import java.io.*;
 import java.util.*;
 
+import io.github.solclient.client.mod.impl.togglesneak.ToggleSneakMod;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.*;
@@ -156,6 +157,7 @@ public final class Client {
 		register(new QuickPlayMod());
 		register(new DiscordIntegrationMod());
 		register(new ScrollableTooltipsMod());
+		register(new ToggleSneakMod());
 
 		LOGGER.info("Loaded {} mods", mods.size());
 

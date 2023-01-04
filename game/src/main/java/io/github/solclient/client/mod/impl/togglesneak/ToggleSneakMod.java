@@ -5,7 +5,6 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.mod.impl.togglesprint.ToggleSprintKeyBinding;
 import io.github.solclient.client.mod.keybinding.ToggleState;
 
 public class ToggleSneakMod extends SimpleHudMod {
@@ -23,8 +22,8 @@ public class ToggleSneakMod extends SimpleHudMod {
 
 		Client.INSTANCE.unregisterKeyBinding(mc.gameSettings.keyBindSneak);
 		keybinding = new ToggleSneakKeyBinding(this, mc.gameSettings.keyBindSneak.getKeyDescription(), 42,
-				mc.gameSettings.keyBindSprint.getKeyCategory());
-		mc.gameSettings.keyBindSprint = keybinding;
+				mc.gameSettings.keyBindSneak.getKeyCategory());
+		mc.gameSettings.keyBindSneak = keybinding;
 		Client.INSTANCE.registerKeyBinding(mc.gameSettings.keyBindSneak);
 	}
 

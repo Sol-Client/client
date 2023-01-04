@@ -345,8 +345,7 @@ configurations {
 }
 
 dependencies {
-	compileOnly "org.projectlombok:lombok:1.18.20"
-	annotationProcessor "org.projectlombok:lombok:1.18.20"
+	compileOnly annotationProcessor("org.projectlombok:lombok:1.18.20")
 	annotationProcessor "org.spongepowered:mixin:0.7.11-SNAPSHOT"
 	dependency("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
 		exclude module: "launchwrapper"
@@ -365,7 +364,7 @@ dependencies {
 	dependency "com.github.JnCrMx:discord-game-sdk4j:v0.5.4"
 	dependency "org.java-websocket:Java-WebSocket:1.5.3"
 	dependency "com.github.Cosmetica-cc:CosmeticaDotJava:1.7.0"
-	dependency "com.github.Sol-Client:LWJGL-Patched:bf1d105853"
+	ship dependency("com.github.Sol-Client:LWJGL-Patched:bf1d105853")
 
 	runtimeOnly "org.lwjgl:lwjgl:3.3.1:natives-linux"
 	runtimeOnly "org.lwjgl:lwjgl-stb:3.3.1:natives-linux"

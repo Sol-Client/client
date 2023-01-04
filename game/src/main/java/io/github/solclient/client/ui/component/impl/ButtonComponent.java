@@ -41,9 +41,9 @@ public class ButtonComponent extends ColouredComponent {
 		NanoVG.nvgFill(nvg);
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgStrokeColor(nvg, getColour().withAlpha(255).nvg());
+		NanoVG.nvgStrokeColor(nvg, getColour().nvg());
 		NanoVG.nvgStrokeWidth(nvg, 1);
-		NanoVG.nvgRoundedRect(nvg, 0, 0, type.getWidth(), 20, radius);
+		NanoVG.nvgRoundedRect(nvg, .5F, .5F, type.getWidth() - 1, 19, radius);
 		NanoVG.nvgStroke(nvg);
 
 		super.render(info);

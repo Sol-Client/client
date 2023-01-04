@@ -1,18 +1,19 @@
 package io.github.solclient.client.mod.impl.quickplay.ui;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
+import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPlayPaletteComponent;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class BackOption implements QuickPlayOption {
+public class BackOption extends QuickPlayOption {
 
 	@Override
 	public String getText() {
-		return "< Back";
+		return "← Back";
 	}
 
 	@Override
-	public void onClick(QuickPlayPalette palette, QuickPlayMod mod) {
+	public void onClick(QuickPlayPaletteComponent palette, QuickPlayMod mod) {
 		palette.back();
 	}
 

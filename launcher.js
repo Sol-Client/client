@@ -56,11 +56,91 @@ class Launcher {
 
 		version.libraries.push({
 			downloads: {
-				artifact: {
-					url: "https://repo.maven.apache.org/maven2/org/slick2d/slick2d-core/1.0.2/slick2d-core-1.0.2.jar",
-					path: "org/slick2d/slick2d-core/1.0.2/slick2d-core-1.0.2.jar",
-					size: 590652
+				classifiers: {
+					"natives-linux": {
+						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-linux.jar",
+						size: 110704,
+						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-linux.jar"
+					},
+					"natives-macos": {
+						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-macos.jar",
+						size: 55706,
+						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-macos.jar"
+					},
+					"natives-windows": {
+						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-windows.jar",
+						size: 159361,
+						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-windows.jar"
+					}
 				}
+			},
+			natives: {
+				linux: "natives-linux",
+				osx: "natives-mac",
+				windows: "natives-windows"
+			},
+			extract: {
+				exclude: ["META-INF/"]
+			}
+		});
+
+		version.libraries.push({
+			downloads: {
+				classifiers: {
+					"natives-linux": {
+						path: "org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-linux.jar",
+						size: 110704,
+						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-linux.jar"
+					},
+					"natives-macos": {
+						path: "org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-macos.jar",
+						size: 55706,
+						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-macos.jar"
+					},
+					"natives-windows": {
+						path: "org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-windows.jar",
+						size: 159361,
+						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-windows.jar"
+					}
+				}
+			},
+			natives: {
+				linux: "natives-linux",
+				osx: "natives-mac",
+				windows: "natives-windows"
+			},
+			extract: {
+				exclude: ["META-INF/"]
+			}
+		});
+
+		version.libraries.push({
+			downloads: {
+				classifiers: {
+					"natives-linux": {
+						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-linux.jar",
+						size: 110704,
+						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-linux.jar"
+					},
+					"natives-macos": {
+						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-macos.jar",
+						size: 55706,
+						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-macos.jar"
+					},
+					"natives-windows": {
+						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-windows.jar",
+						size: 159361,
+						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-windows.jar"
+					}
+				}
+			},
+			natives: {
+				linux: "natives-linux",
+				osx: "natives-mac",
+				windows: "natives-windows"
+			},
+			extract: {
+				exclude: ["META-INF/"]
 			}
 		});
 
@@ -202,9 +282,17 @@ class Launcher {
 							.pipe(unzipper.Parse({ forceStream: true }));
 
 						for await(const entry of zip) {
-							const fileName = entry.path;
+							let fileName = entry.path;
 
-							if(library.extract.exclude != null && library.extract.exclude.includes(fileName)) {
+							if(fileName.endsWith("/")) {
+								continue;
+							}
+							
+							if(fileName.includes("/")) {
+								fileName = path.basename(fileName);
+							}
+
+							if(library?.extract?.exclude?.includes(fileName)) {
 								await entry.autodrain();
 							}
 							else {
@@ -212,8 +300,8 @@ class Launcher {
 								if(!fs.existsSync(path.dirname(destination))) {
 									fs.mkdirSync(path.dirname(destination), { recursive: true });
 								}
-
-								await entry.pipe(fs.createWriteStream(nativesFolder + "/" + fileName));
+								
+								await entry.pipe(fs.createWriteStream(destination));
 							}
 						}
 					}

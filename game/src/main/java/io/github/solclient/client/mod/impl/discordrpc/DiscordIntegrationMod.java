@@ -60,11 +60,11 @@ public class DiscordIntegrationMod extends Mod {
 	protected boolean shadow = true;
 	@Expose
 	@Option
-	@StringOption("sol_client.default")
+	@StringOption("sol_client.mod.screen.default")
 	private String applicationId = "";
 	@Expose
 	@Option
-	@StringOption("sol_client.default")
+	@StringOption("sol_client.mod.screen.default")
 	private String icon = "";
 
 	private DiscordVoiceChatHud discordVoiceChatHud;

@@ -1,41 +1,28 @@
 package io.github.solclient.client.mod.impl.quickplay.ui;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import org.lwjgl.input.Keyboard;
 
-import org.lwjgl.input.*;
-import org.lwjgl.opengl.GL11;
-
-import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
-import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
-import io.github.solclient.client.util.*;
+import io.github.solclient.client.mod.impl.quickplay.database.*;
+import io.github.solclient.client.ui.component.*;
+import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.font.*;
-import lombok.RequiredArgsConstructor;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.*;
-import net.minecraft.util.*;
+import lombok.*;
+import net.minecraft.util.MathHelper;
 
-@RequiredArgsConstructor
-public class QuickPlayPalette extends GuiScreen {
+public class QuickPlayPalette extends Screen {
 
-	private final QuickPlayMod mod;
-	private Font font = SolClientMod.getFont();
-	private String query = "";
-	private int selectedIndex;
-	private boolean inAllGames;
-	private QuickPlayGame currentGame;
-	private int maxScrolling;
-	private int scroll;
-	private boolean mouseDown;
-	private boolean wasMouseDown;
-	private int lastMouseX = -1;
-	private int lastMouseY = -1;
-	private int recentGamesScroll;
-	private int allGamesScroll;
-	private int nextScroll = -1;
+	public QuickPlayPalette(QuickPlayMod mod) {
+		super(new Component() {
+			{
+				add(new QuickPlayPaletteComponent(mod),
+						new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
+			}
+		});
+
+		background = false;
+	}
 
 	@Override
 	public void initGui() {
@@ -49,230 +36,107 @@ public class QuickPlayPalette extends GuiScreen {
 		Keyboard.enableRepeatEvents(false);
 	}
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
+	public static class QuickPlayPaletteComponent extends BlockComponent {
 
-		GlStateManager.enableBlend();
+		@Getter
+		private final QuickPlayMod mod;
+		private final TextFieldComponent search;
+		@Getter
+		@Setter
+		private boolean allGames;
+		@Getter
+		@Setter
+		private QuickPlayGame game;
+		private final QuickPlayScroll scroll;
+		@Setter
+		@Getter
+		private QuickPlayOptionComponent selected;
 
-		Rectangle box = new Rectangle(0, 0, 200, 250);
-		box = box.offset(width / 2 - (box.getWidth() / 2), height / 2 - (box.getHeight() / 2));
-
-		Utils.drawRectangle(box, new Colour(20, 20, 20));
-
-		font.renderString(query.isEmpty() ? "Search" : query, box.getX() + 10 + (query.isEmpty() ? 2 : 0),
-				box.getY() + 10 + (font instanceof SlickFontRenderer ? 0 : 1), query.isEmpty() ? 0xFF666666 : -1);
-
-		drawRect((int) (box.getX() + 10 + font.getWidth(query)), box.getY() + 10,
-				(int) (box.getX() + 11 + font.getWidth(query)), box.getY() + 20, -1);
-
-		drawHorizontalLine(box.getX(), box.getX() + box.getWidth() - 1, box.getY() + 30, 0xFF000000);
-
-		Rectangle entriesBox = new Rectangle(box.getX(), box.getY() + 31, box.getWidth(), box.getHeight() - 31);
-		Rectangle base = new Rectangle(entriesBox.getX(), entriesBox.getY(), entriesBox.getWidth(), 20);
-
-		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-		Utils.scissor(entriesBox);
-
-		int x = box.getX();
-
-		int y = 0;
-
-		scroll = MathHelper.clamp_int(scroll, 0, maxScrolling);
-
-		List<QuickPlayOption> options = getGames();
-
-		if (selectedIndex > options.size() - 1) {
-			selectedIndex = options.size() - 1;
+		public QuickPlayPaletteComponent(QuickPlayMod mod) {
+			super(Colour.DISABLED_MOD.add(-15), 12, 0);
+			this.mod = mod;
+			scroll = new QuickPlayScroll(this);
+			add(scroll, (component, defaultBounds) -> new Rectangle(0, 30, getBounds().getWidth(),
+					getBounds().getHeight() - 40));
+			search = new TextFieldComponent(200, false).withPlaceholder("sol_client.mod.screen.search").autoFlush()
+					.onUpdate((ignored) -> {
+						scroll.load();
+						return true;
+					}).withIcon("sol_client_search").withoutUnderline();
+			add(search, (component, defaultBounds) -> defaultBounds.offset(10, 10).grow(-20, 0));
+			scroll.load();
 		}
 
-		if (selectedIndex < 0) {
-			selectedIndex = 0;
+		@Override
+		protected Rectangle getDefaultBounds() {
+			return Rectangle.ofDimensions(250, 250);
 		}
 
-		for (int i = 0; i < options.size(); i++) {
-			QuickPlayOption game = options.get(i);
+		@Override
+		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
+			if (keyCode == Keyboard.KEY_F && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown()) {
+				search.setFocused(true);
+				return true;
+			}
 
-			Rectangle gameBounds = base.offset(0, y - scroll);
+			if (character > 31 && !search.isFocused()) {
+				search.setFocused(true);
+				search.setText("");
+			}
 
-			boolean containsMouse = gameBounds.contains(mouseX, mouseY) && entriesBox.contains(mouseX, mouseY);
+			if (keyCode == Keyboard.KEY_UP || keyCode == Keyboard.KEY_DOWN && !scroll.getSubComponents().isEmpty()) {
+				int direction = keyCode == Keyboard.KEY_UP ? -1 : 1;
+				int index = scroll.getSubComponents().indexOf(selected);
+				index += direction;
+				index = MathHelper.clamp_int(index, 0, scroll.getSubComponents().size() - 1);
 
-			if (selectedIndex == i) {
-				gameBounds.fill(new Colour(60, 60, 60));
+				if (scroll.getSubComponents().get(index) instanceof QuickPlayOptionComponent) {
+					selected = (QuickPlayOptionComponent) scroll.getSubComponents().get(index);
 
-				if (containsMouse && mouseDown && !wasMouseDown) {
-					game.onClick(this, mod);
+					while (selected.getBounds().getEndY() - scroll.getScroll() > scroll.getBounds().getHeight())
+						scroll.jumpTo(scroll.getScroll() + selected.getBounds().getHeight());
+
+					while (selected.getBounds().getY() - scroll.getScroll() < 0)
+						scroll.jumpTo(scroll.getScroll() - selected.getBounds().getHeight());
+
+					return true;
 				}
 			}
 
-			if ((lastMouseX != mouseX || lastMouseY != mouseY) && lastMouseX != -1 && lastMouseY != -1
-					&& containsMouse) {
-				selectedIndex = i;
+			if ((keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_RIGHT) && selected != null) {
+				selected.mouseClicked(null, 0);
+				return true;
 			}
 
-			if (game.getIcon() != null) {
-				RenderHelper.enableGUIStandardItemLighting();
-				mc.getRenderItem().renderItemIntoGUI(game.getIcon(), x + 3, gameBounds.getY() + 1);
-				RenderHelper.disableStandardItemLighting();
-			}
-
-			font.renderString(game.getText(), x + 25,
-					gameBounds.getY() + 4 + (font instanceof SlickFontRenderer ? 0 : 1), -1);
-
-			y += gameBounds.getHeight();
+			return super.keyPressed(info, keyCode, character);
 		}
 
-		maxScrolling = Math.max(0, y - entriesBox.getHeight());
-
-		GL11.glDisable(GL11.GL_SCISSOR_TEST);
-
-		lastMouseX = mouseX;
-		lastMouseY = mouseY;
-
-		wasMouseDown = mouseDown;
-
-		if (nextScroll != -1) {
-			scroll = nextScroll;
-			nextScroll = -1;
-		}
-	}
-
-	private List<QuickPlayOption> getGames() {
-		List<QuickPlayOption> result;
-		if (inAllGames) {
-			if (currentGame != null) {
-				result = currentGame.getModeOptions();
-			} else {
-				result = mod.getGameOptions();
-			}
-			result.add(0, new BackOption());
-		} else if (query.isEmpty()) {
-			result = mod.getRecentlyPlayed();
-			result.add(new AllGamesOption());
-		} else {
-			result = mod.getGames().stream().flatMap((entry) -> entry.getModes().stream())
-					.filter((mode) -> EnumChatFormatting
-							.getTextWithoutFormattingCodes(mode.getText().toLowerCase(Locale.ROOT))
-							.contains(query.toLowerCase(Locale.ROOT)))
-					.sorted((o1, o2) -> {
-						return Integer.compare(
-								EnumChatFormatting.getTextWithoutFormattingCodes(o1.getText().toLowerCase())
-										.startsWith(query.toLowerCase()) ? 0 : 1,
-								EnumChatFormatting.getTextWithoutFormattingCodes(o2.getText().toLowerCase())
-										.startsWith(query.toLowerCase()) ? 0 : 1);
-					}).collect(Collectors.toList());
+		public String getFilter() {
+			return search.getText();
 		}
 
-		return result;
-	}
+		public void back() {
+			if (!allGames)
+				return;
 
-	private void clampIndex() {
-		selectedIndex = MathHelper.clamp_int(selectedIndex, 0, getGames().size() - 1);
-	}
+			if (game != null)
+				game = null;
+			else
+				allGames = false;
 
-	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		super.keyTyped(typedChar, keyCode);
-
-		if (keyCode == Keyboard.KEY_BACK) {
-			if (!query.isEmpty()) {
-				if (GuiScreen.isCtrlKeyDown()) {
-					query = "";
-				} else {
-					query = query.substring(0, query.length() - 1);
-				}
-			}
-		} else if (typedChar > 31 && typedChar != '§') {
-			query += typedChar;
-			inAllGames = false;
+			scroll.load();
 		}
 
-		if (keyCode == Keyboard.KEY_DOWN) {
-			selectedIndex++;
-			scroll += 20;
-			clampIndex();
-		} else if (keyCode == Keyboard.KEY_UP) {
-			selectedIndex--;
-			scroll -= 20;
-			clampIndex();
-		} else if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_RIGHT) {
-			try {
-				getGames().get(selectedIndex).onClick(this, mod);
-			} catch (IndexOutOfBoundsException ignored) {
-				// Prevent crash in the rare case that the index is desynchronised.
-			}
-		} else if (keyCode == Keyboard.KEY_LEFT) {
-			back();
+		public void openAllGames() {
+			selectGame(null);
 		}
-	}
 
-	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		super.mouseClicked(mouseX, mouseY, mouseButton);
-
-		if (mouseButton == 0) {
-			mouseDown = true;
-			lastMouseX = lastMouseY = 0;
+		public void selectGame(QuickPlayGame game) {
+			allGames = true;
+			this.game = game;
+			scroll.load();
 		}
-	}
 
-	@Override
-	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		super.mouseReleased(mouseX, mouseY, state);
-
-		if (state == 0) {
-			mouseDown = false;
-		}
-	}
-
-	@Override
-	public void handleMouseInput() throws IOException {
-		super.handleMouseInput();
-
-		int dWheel = Mouse.getEventDWheel();
-
-		if (dWheel != 0) {
-			if (dWheel > 0) {
-				dWheel = -1;
-			} else if (dWheel < 0) {
-				dWheel = 1;
-			}
-
-			scroll += 20 * dWheel;
-			lastMouseX = lastMouseY = 0;
-		}
-	}
-
-	public void openAllGames() {
-		recentGamesScroll = scroll;
-		inAllGames = true;
-		currentGame = null;
-		scroll = 0;
-		selectedIndex = 1;
-	}
-
-	public void back() {
-		if (currentGame != null) {
-			selectedIndex = mod.getGames().indexOf(currentGame) + 1;
-			currentGame = null;
-
-			nextScroll = allGamesScroll;
-		} else if (inAllGames) {
-			selectedIndex = mod.getRecentlyPlayed().size();
-			inAllGames = false;
-
-			nextScroll = recentGamesScroll;
-		} else {
-			mc.displayGuiScreen(null);
-			return;
-		}
-	}
-
-	public void selectGame(QuickPlayGame game) {
-		allGamesScroll = scroll;
-		selectedIndex = 1;
-		scroll = 0;
-		currentGame = game;
 	}
 
 }

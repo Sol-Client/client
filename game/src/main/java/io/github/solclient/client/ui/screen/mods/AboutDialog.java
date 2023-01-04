@@ -14,9 +14,9 @@ import net.minecraft.util.ResourceLocation;
 public class AboutDialog extends BlockComponent {
 
 	public AboutDialog() {
-		super(Colour.DISABLED_MOD, 30, 0);
+		super(Colour.DISABLED_MOD, 12, 0);
 
-		add(new LabelComponent("sol_client.about"),
+		add(new LabelComponent("sol_client.mod.screen.about"),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() + 9,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -49,7 +49,7 @@ public class AboutDialog extends BlockComponent {
 				getBounds().getWidth() / 2 - regularFont.getWidth(nvg, versionString) / 2, 110);
 		regularFont.renderString(nvg, GlobalConstants.COPYRIGHT,
 				getBounds().getWidth() / 2 - regularFont.getWidth(nvg, GlobalConstants.COPYRIGHT) / 2, 125);
-		String licenseString = I18n.format("sol_client.license");
+		String licenseString = I18n.format("sol_client.mod.screen.license");
 		regularFont.renderString(nvg, licenseString,
 				getBounds().getWidth() / 2 - regularFont.getWidth(nvg, licenseString) / 2, 140);
 	}

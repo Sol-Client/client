@@ -32,7 +32,7 @@ public class ScrollableTooltipsMod extends Mod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.by", "moehreag"); // maybe also add original creator
+		return I18n.format("sol_client.mod.screen.by", "moehreag"); // maybe also add original creator
 	}
 
 	@Override

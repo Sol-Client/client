@@ -7,7 +7,6 @@ import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
 
 public abstract class ScrollListComponent extends Component {
@@ -187,7 +186,10 @@ public abstract class ScrollListComponent extends Component {
 	}
 
 	private int getContentHeight() {
-		return subComponents.size() == 0 ? 0 : subComponents.get(subComponents.size() - 1).getBounds().getEndY();
+		if (subComponents.isEmpty())
+			return 0;
+
+		return getBounds(subComponents.get(subComponents.size() - 1)).getEndY();
 	}
 
 	@Override
@@ -220,7 +222,13 @@ public abstract class ScrollListComponent extends Component {
 
 	@Override
 	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-		if (keyCode == Keyboard.KEY_DOWN) {
+		if (keyCode == Keyboard.KEY_HOME) {
+			targetY = 0;
+			return true;
+		} else if (keyCode == Keyboard.KEY_END) {
+			targetY = Double.POSITIVE_INFINITY;
+			return true;
+		} else if (keyCode == Keyboard.KEY_DOWN) {
 			targetY += getScrollStep();
 			return true;
 		} else if (keyCode == Keyboard.KEY_UP) {
@@ -234,7 +242,6 @@ public abstract class ScrollListComponent extends Component {
 	@Override
 	public void tick() {
 		super.tick();
-
 		clamp();
 
 		lastAnimatedY = animatedY;

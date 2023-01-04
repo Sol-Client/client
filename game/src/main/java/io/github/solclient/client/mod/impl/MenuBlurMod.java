@@ -52,7 +52,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.originally_by", "tterrag1098");
+		return I18n.format("sol_client.mod.screen.originally_by", "tterrag1098");
 	}
 
 	@Override

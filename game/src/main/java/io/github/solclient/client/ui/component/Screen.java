@@ -2,9 +2,10 @@ package io.github.solclient.client.ui.component;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.*;
 import org.lwjgl.nanovg.NanoVG;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.NanoVGManager;
@@ -13,6 +14,7 @@ import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.util.ChatComponentText;
 
 public class Screen extends GuiScreen {
 
@@ -47,35 +49,41 @@ public class Screen extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		this.mouseX = mouseX;
-		this.mouseY = mouseY;
+		try {
+			this.mouseX = mouseX;
+			this.mouseY = mouseY;
 
-		if (background) {
-			if (mc.theWorld == null) {
-				drawRect(0, 0, width, height, Colour.BACKGROUND.getValue());
-			} else {
-				drawDefaultBackground();
+			if (background) {
+				if (mc.theWorld == null) {
+					drawRect(0, 0, width, height, Colour.BACKGROUND.getValue());
+				} else {
+					drawDefaultBackground();
+				}
 			}
+
+			long nvg = NanoVGManager.getNvg();
+
+			GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+			NanoVG.nvgBeginFrame(nvg, mc.displayWidth, mc.displayHeight, 1);
+			NanoVG.nvgSave(nvg);
+
+			NanoVG.nvgFontSize(nvg, 8);
+
+			ScaledResolution resolution = new ScaledResolution(mc);
+			NanoVG.nvgScale(nvg, resolution.getScaleFactor(), resolution.getScaleFactor());
+
+			rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, partialTicks));
+
+			NanoVG.nvgRestore(nvg);
+			NanoVG.nvgEndFrame(nvg);
+			GL11.glPopAttrib();
+
+			super.drawScreen(mouseX, mouseY, partialTicks);
+		} catch (Throwable error) {
+			LogManager.getLogger().error("Error rendering " + this, error);
+			mc.displayGuiScreen(null);
 		}
-
-		long nvg = NanoVGManager.getNvg();
-
-		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-		NanoVG.nvgBeginFrame(nvg, mc.displayWidth, mc.displayHeight, 1);
-		NanoVG.nvgSave(nvg);
-
-		NanoVG.nvgFontSize(nvg, 8);
-
-		ScaledResolution resolution = new ScaledResolution(mc);
-		NanoVG.nvgScale(nvg, resolution.getScaleFactor(), resolution.getScaleFactor());
-
-		rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, partialTicks));
-
-		NanoVG.nvgRestore(nvg);
-		NanoVG.nvgEndFrame(nvg);
-		GL11.glPopAttrib();
-
-		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
 	@Override

@@ -35,6 +35,7 @@ public class TextFieldComponent extends Component {
 	private boolean flush;
 	private int ticks;
 	private boolean hasIcon;
+	private boolean underline = true;
 
 	public TextFieldComponent(int width, boolean centred) {
 		this.width = width;
@@ -130,14 +131,16 @@ public class TextFieldComponent extends Component {
 			float relativeCursorPosition = regularFont.getWidth(nvg, text.substring(0, cursor));
 			NanoVG.nvgBeginPath(nvg);
 			NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
-			NanoVG.nvgRect(nvg, textOffset + relativeCursorPosition, 0, 1, 10);
+			NanoVG.nvgRect(nvg, textOffset + relativeCursorPosition, 0, 0.5F, 10);
 			NanoVG.nvgFill(nvg);
 		}
 
-		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgFillColor(nvg, colour.get(this, null).nvg());
-		NanoVG.nvgRect(nvg, 0, getBounds().getHeight() - 1, getBounds().getWidth(), 1);
-		NanoVG.nvgFill(nvg);
+		if (underline) {
+			NanoVG.nvgBeginPath(nvg);
+			NanoVG.nvgFillColor(nvg, colour.get(this, null).nvg());
+			NanoVG.nvgRect(nvg, 0, getBounds().getHeight() - 1, getBounds().getWidth(), 1);
+			NanoVG.nvgFill(nvg);
+		}
 	}
 
 	@Override
@@ -429,8 +432,13 @@ public class TextFieldComponent extends Component {
 		return this;
 	}
 
-	public TextFieldComponent placeholder(String placeholder) {
+	public TextFieldComponent withPlaceholder(String placeholder) {
 		this.placeholder = placeholder;
+		return this;
+	}
+
+	public TextFieldComponent withoutUnderline() {
+		underline = false;
 		return this;
 	}
 

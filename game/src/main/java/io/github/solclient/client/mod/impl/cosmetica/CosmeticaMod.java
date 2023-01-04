@@ -21,19 +21,21 @@ public class CosmeticaMod extends Mod {
 	private CosmeticaAPI api;
 	private Map<UUID, UserInfo> dataCache = new HashMap<>();
 	private Map<Model, IBakedModel> bakeryCache = new WeakHashMap<>();
+	private boolean loginStarted;
 
 	@Override
 	public void onRegister() {
 		super.onRegister();
 		instance = this;
-		clear();
-		logIn();
 	}
 
 	@Override
 	protected void onEnable() {
 		super.onEnable();
 		enabled = true;
+		clear();
+		if (!loginStarted)
+			logIn();
 	}
 
 	@Override
@@ -59,17 +61,22 @@ public class CosmeticaMod extends Mod {
 	}
 
 	private void logIn() {
-		try {
-			if (mc.getSession().getProfile().getId() != null) {
-				api = CosmeticaAPI.fromMinecraftToken(mc.getSession().getToken(), mc.getSession().getUsername(),
-						mc.getSession().getProfile().getId());
-				return;
+		loginStarted = true;
+		Thread thread = new Thread(() -> {
+			try {
+				if (mc.getSession().getProfile().getId() != null) {
+					api = CosmeticaAPI.fromMinecraftToken(mc.getSession().getToken(), mc.getSession().getUsername(),
+							mc.getSession().getProfile().getId());
+					return;
+				}
+			} catch (NullPointerException | CosmeticaAPIException | IllegalStateException | FatalServerErrorException
+					| IOException error) {
+				logger.warn("Failed to authenticate with Cosmetica API; falling back to anonymous requests", error);
 			}
-		} catch (NullPointerException | CosmeticaAPIException | IllegalStateException | FatalServerErrorException
-				| IOException error) {
-			logger.warn("Failed to authenticate with Cosmetica API; falling back to anonymous requests", error);
-		}
-		api = CosmeticaAPI.newUnauthenticatedInstance();
+			api = CosmeticaAPI.newUnauthenticatedInstance();
+		});
+		thread.setDaemon(true);
+		thread.start();
 	}
 
 	@Override
@@ -113,7 +120,7 @@ public class CosmeticaMod extends Mod {
 	}
 
 	public Optional<UserInfo> get(UUID uuid, String username) {
-		if (uuid.version() != 4) {
+		if (api == null || uuid.version() != 4) {
 			return Optional.empty();
 		}
 

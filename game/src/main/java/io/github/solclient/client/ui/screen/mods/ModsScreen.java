@@ -30,6 +30,12 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	@Override
+	public void initGui() {
+		super.initGui();
+		Keyboard.enableRepeatEvents(true);
+	}
+
+	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		if (mc.theWorld == null) {
 			if (SolClientMod.instance.fancyMainMenu) {
@@ -53,6 +59,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	public void onGuiClosed() {
 		super.onGuiClosed();
 		Client.INSTANCE.save();
+		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override
@@ -132,11 +139,11 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 										getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
 			}
 
-			search = new TextFieldComponent(100, false).autoFlush().onUpdate((value) -> {
+			search = new TextFieldComponent(100, false).autoFlush().onUpdate((ignored) -> {
 				scroll.snapTo(0);
 				scroll.load();
 				return true;
-			}).placeholder("sol_client.mod.screen.search").withIcon("sol_client_search");
+			}).withPlaceholder("sol_client.mod.screen.search").withIcon("sol_client_search");
 
 			add(new ScaledIconComponent("sol_client_about", 16, 16,
 					new AnimatedColourController((component,
@@ -275,7 +282,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			return result;
 		}
 
-		public String getQuery() {
+		public String getFilter() {
 			return search.getText();
 		}
 

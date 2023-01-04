@@ -237,7 +237,7 @@ public class ModOptionComponent extends BlockComponent {
 				return false;
 			});
 		} else if (option.getType().equals(String.class)) {
-			TextFieldComponent field = new TextFieldComponent(100, false).placeholder(option.getPlaceholder())
+			TextFieldComponent field = new TextFieldComponent(100, false).withPlaceholder(option.getPlaceholder())
 					.onUpdate((string) -> {
 						option.setValue(string);
 						return true;

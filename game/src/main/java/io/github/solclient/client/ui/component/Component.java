@@ -86,15 +86,21 @@ public abstract class Component extends NanoVGManager {
 	}
 
 	public Rectangle getBounds() {
+		if (parent == null)
+			throw new IllegalArgumentException("Parent of " + this + " is null");
+
 		return parent.getBounds(this);
 	}
 
 	public Rectangle getBounds(Component component) {
-		if (!subComponentControllers.containsKey(component)) {
+		if (!subComponentControllers.containsKey(component))
 			throw new IllegalArgumentException(component + " is not a child of " + this);
-		}
 
-		return subComponentControllers.get(component).get(component, component.getDefaultBounds());
+		Controller<Rectangle> controller = subComponentControllers.get(component);
+		if (controller == null)
+			return component.getDefaultBounds();
+
+		return controller.get(component, component.getDefaultBounds());
 	}
 
 	private static ComponentRenderInfo transform(ComponentRenderInfo info, Rectangle bounds) {
@@ -137,7 +143,6 @@ public abstract class Component extends NanoVGManager {
 
 			if (component.shouldScissor()) {
 				NanoVG.nvgScissor(nvg, 0, 0, bounds.getWidth(), bounds.getHeight());
-//				Utils.nvgScissor(nvg, getRelativeBounds());
 			}
 
 			component.render(transform(info, bounds));
@@ -183,18 +188,15 @@ public abstract class Component extends NanoVGManager {
 	 * @return <code>true</code> if event has been processed.
 	 */
 	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-		if (onKeyPressed != null && onKeyPressed.keyPressed(info, keyCode, character)) {
+		if (onKeyPressed != null && onKeyPressed.keyPressed(info, keyCode, character))
 			return true;
-		}
 
 		for (Component component : subComponents) {
-			if (component.shouldSkip()) {
+			if (component.shouldSkip())
 				continue;
-			}
 
-			if (component.keyPressed(transform(info, getBounds(component)), keyCode, character)) {
+			if (component.keyPressed(transform(info, getBounds(component)), keyCode, character))
 				return true;
-			}
 		}
 
 		return false;
@@ -204,44 +206,38 @@ public abstract class Component extends NanoVGManager {
 		if (dialog != null) {
 			boolean insideDialog = dialog.getBounds().contains(info.getRelativeMouseX(), info.getRelativeMouseY());
 
-			if (dialog.mouseClickedAnywhere(transform(info, dialog.getBounds()), button, insideDialog, processed)) {
+			if (dialog.mouseClickedAnywhere(transform(info, dialog.getBounds()), button, insideDialog, processed))
 				processed = true;
-			} else if (!insideDialog && button == 0) {
+			else if (!insideDialog && button == 0)
 				setDialog(null);
-			}
 
 			return processed;
 		}
 
-		if (!processed && onClickAnywhere != null && onClickAnywhere.onClick(info, button)) {
+		if (!processed && onClickAnywhere != null && onClickAnywhere.onClick(info, button))
 			processed = true;
-		}
 
 		try {
 			for (Component component : subComponents) {
-				if (component.shouldSkip()) {
+				if (component.shouldSkip())
 					continue;
-				}
 
 				Rectangle bounds = getBounds(component);
 
 				if (component.mouseClickedAnywhere(transform(info, bounds), button,
-						inside && bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()), processed)) {
+						inside && bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()), processed))
 					return true;
-				}
 			}
 		} catch (ConcurrentModificationException error) {
 			// ArGHHHHHHH
 		}
 
 		if (inside) {
-			if (onClick != null && onClick.onClick(info, button)) {
+			if (onClick != null && onClick.onClick(info, button))
 				return true;
-			}
 
-			if (mouseClicked(info, button)) {
+			if (mouseClicked(info, button))
 				return true;
-			}
 		}
 
 		return processed;
@@ -255,37 +251,29 @@ public abstract class Component extends NanoVGManager {
 	}
 
 	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
-		if (dialog != null) {
-			if (dialog.mouseReleasedAnywhere(transform(info, dialog.getBounds()), button,
-					dialog.getBounds().contains(info.getRelativeMouseX(), info.getRelativeMouseY()))) {
-				return true;
-			}
-		}
-
-		if (onReleaseAnywhere != null && onReleaseAnywhere.onClick(info, button)) {
+		if (dialog != null && dialog.mouseReleasedAnywhere(transform(info, dialog.getBounds()), button,
+				dialog.getBounds().contains(info.getRelativeMouseX(), info.getRelativeMouseY())))
 			return true;
-		}
+
+		if (onReleaseAnywhere != null && onReleaseAnywhere.onClick(info, button))
+			return true;
 
 		for (Component component : subComponents) {
-			if (component.shouldSkip()) {
+			if (component.shouldSkip())
 				continue;
-			}
 
 			Rectangle bounds = getBounds(component);
 
 			if (component.mouseReleasedAnywhere(transform(info, bounds), button,
-					bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()))) {
+					bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY())))
 				return true;
-			}
 		}
 
-		if (inside && onRelease != null && onRelease.onClick(info, button)) {
+		if (inside && onRelease != null && onRelease.onClick(info, button))
 			return true;
-		}
 
-		if (inside && mouseReleased(info, button)) {
+		if (inside && mouseReleased(info, button))
 			return true;
-		}
 
 		return false;
 	}
@@ -302,13 +290,11 @@ public abstract class Component extends NanoVGManager {
 		for (Component component : subComponents) {
 			Rectangle bounds = getBounds(component);
 
-			if (!bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY())) {
+			if (!bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()))
 				continue;
-			}
 
-			if (action.test(component, transform(info, bounds))) {
+			if (action.test(component, transform(info, bounds)))
 				return true;
-			}
 		}
 
 		return false;
@@ -318,22 +304,19 @@ public abstract class Component extends NanoVGManager {
 	 * @return <code>true</code> if the event has been processed.
 	 */
 	public boolean mouseScroll(ComponentRenderInfo info, int delta) {
-		if (dialog != null) {
+		if (dialog != null)
 			return dialog.mouseScroll(transform(info, dialog.getBounds()), delta);
-		}
 
 		if (forEachHoveredSubComponent(info,
-				(component, transformedInfo) -> component.mouseScroll(transformedInfo, delta))) {
+				(component, transformedInfo) -> component.mouseScroll(transformedInfo, delta)))
 			return true;
-		}
 
 		return false;
 	}
 
 	public void tick() {
-		for (Component component : subComponents) {
+		for (Component component : subComponents)
 			component.tick();
-		}
 	}
 
 	public Screen getScreen() {
@@ -366,14 +349,12 @@ public abstract class Component extends NanoVGManager {
 	}
 
 	public void setDialog(Component dialog) {
-		if (this.dialog != null) {
+		if (this.dialog != null)
 			remove(this.dialog);
-		}
 
-		if (dialog != null) {
+		if (dialog != null)
 			add(dialog, new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
 					(component, defaultBounds) -> defaultBounds));
-		}
 
 		this.dialog = dialog;
 	}

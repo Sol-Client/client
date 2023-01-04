@@ -41,7 +41,7 @@ public class QuickPlayMod extends Mod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.originally_by", "robere2");
+		return I18n.format("sol_client.mod.screen.originally_by", "robere2");
 	}
 
 	@Override
@@ -64,9 +64,8 @@ public class QuickPlayMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (database != null && menuKey.isPressed() && Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL) {
+		if (database != null && menuKey.isPressed() && Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL)
 			mc.displayGuiScreen(new QuickPlayPalette(this));
-		}
 	}
 
 	@Override
@@ -74,9 +73,7 @@ public class QuickPlayMod extends Mod {
 		super.onEnable();
 		if (!got) {
 			got = true;
-			Thread thread = new Thread(() -> {
-				database = new QuickPlayDatabase();
-			});
+			Thread thread = new Thread(() -> database = new QuickPlayDatabase());
 			thread.setDaemon(true);
 			thread.start();
 		}
@@ -90,16 +87,14 @@ public class QuickPlayMod extends Mod {
 	public void playGame(QuickPlayGameMode mode) {
 		mc.thePlayer.sendChatMessage(mode.getCommand());
 
-		if (!GuiScreen.isShiftKeyDown()) {
+		if (!GuiScreen.isShiftKeyDown())
 			mc.displayGuiScreen(null);
-		}
 
 		recentlyPlayed.removeIf(mode.getFullId()::equals);
 		recentlyPlayed.add(0, mode.getFullId());
 
-		if (recentlyPlayed.size() > 15) {
+		if (recentlyPlayed.size() > 15)
 			recentlyPlayed.remove(recentlyPlayed.size() - 1);
-		}
 
 		Client.INSTANCE.save();
 	}

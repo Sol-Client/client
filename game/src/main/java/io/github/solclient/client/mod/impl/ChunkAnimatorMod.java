@@ -33,7 +33,7 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.originally_by", "lumien231");
+		return I18n.format("sol_client.mod.screen.originally_by", "lumien231");
 	}
 
 	@Override

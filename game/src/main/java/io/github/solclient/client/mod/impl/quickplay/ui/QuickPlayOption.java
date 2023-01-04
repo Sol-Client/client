@@ -1,14 +1,20 @@
 package io.github.solclient.client.mod.impl.quickplay.ui;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
+import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPlayPaletteComponent;
+import io.github.solclient.client.ui.component.Component;
 import net.minecraft.item.ItemStack;
 
-public interface QuickPlayOption {
+public abstract class QuickPlayOption {
 
-	String getText();
+	public abstract String getText();
 
-	void onClick(QuickPlayPalette palette, QuickPlayMod mod);
+	public abstract void onClick(QuickPlayPaletteComponent palette, QuickPlayMod mod);
 
-	ItemStack getIcon();
+	public abstract ItemStack getIcon();
+
+	public Component component(QuickPlayPaletteComponent screen) {
+		return new QuickPlayOptionComponent(screen, this);
+	}
 
 }

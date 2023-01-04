@@ -448,6 +448,16 @@ sol_client.mod.screen.title=Mods
 sol_client.mod.screen.search=Type to search
 sol_client.mod.screen.apply_to_all=Apply to All
 
+sol_client.mod.screen.modified_from=, using code by %s
+sol_client.mod.screen.originally_by=, originally by %s
+sol_client.mod.screen.inspired_by=, partially inspired by %s
+sol_client.mod.screen.by=, by %s
+
+sol_client.mod.screen.about=About Sol Client
+sol_client.mod.screen.license=Licensed under the GPL v3 license.
+
+sol_client.mod.screen.default=(Default)
+
 sol_client.hud.edit=Edit HUD
 
 sol_client.packs.apply=Apply
@@ -457,12 +467,4 @@ sol_client.packs.folder=Folder (%d items)
 sol_client.screenshot.view=View
 sol_client.screenshot.open_folder=Show in Folder
 
-sol_client.modified_from=, using code by %s
-sol_client.originally_by=, originally by %s
-sol_client.inspired_by=, partially inspired by %s
-sol_client.by=, by %s
-
-sol_client.about=About Sol Client
-sol_client.license=Licensed under the GPL v3 license.
-
-sol_client.default=(Default)
+sol_client.no_results=No results :(

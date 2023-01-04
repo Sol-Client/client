@@ -25,7 +25,7 @@ public class ColourPickerDialog extends BlockComponent {
 	private final ButtonComponent done;
 
 	public ColourPickerDialog(ModOption colourOption, Colour colour, Consumer<Colour> callback) {
-		super(Colour.DISABLED_MOD, 8, 0);
+		super(Colour.DISABLED_MOD, 12, 0);
 
 		add(hex = new TextFieldComponent(60, true),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.END,

@@ -6,16 +6,16 @@ import java.util.stream.Collectors;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
+import io.github.solclient.client.util.data.*;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class ModsScroll extends ScrollListComponent {
 
-	private ModsScreenComponent screen;
-
-	public ModsScroll(ModsScreenComponent screen) {
-		this.screen = screen;
-	}
+	private final ModsScreenComponent screen;
 
 	@Override
 	protected int getScrollStep() {
@@ -31,18 +31,16 @@ public class ModsScroll extends ScrollListComponent {
 		clear();
 
 		if (screen.getMod() == null) {
-			if (screen.getQuery().isEmpty()) {
+			if (screen.getFilter().isEmpty()) {
 				for (ModCategory category : ModCategory.values()) {
-					if (category.shouldShowName()) {
+					if (category.shouldShowName())
 						add(new LabelComponent(category.toString()));
-					}
 
-					for (Mod mod : category.getMods()) {
+					for (Mod mod : category.getMods())
 						add(new ModListing(mod, screen, category == ModCategory.PINNED));
-					}
 				}
 			} else {
-				String filter = screen.getQuery();
+				String filter = screen.getFilter();
 				List<Mod> filtered = Client.INSTANCE.getMods().stream()
 						.filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
 								|| mod.getDescription().toLowerCase().contains(filter.toLowerCase())
@@ -52,9 +50,12 @@ public class ModsScroll extends ScrollListComponent {
 								.reversed())
 						.collect(Collectors.toList());
 
-				for (Mod mod : filtered) {
+
+				if (filtered.isEmpty())
+					add(new LabelComponent("sol_client.no_results"), new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
+
+				for (Mod mod : filtered)
 					add(new ModListing(mod, screen, false));
-				}
 			}
 		} else {
 			for (ModOption option : screen.getMod().getOptions()) {
@@ -64,7 +65,7 @@ public class ModsScroll extends ScrollListComponent {
 	}
 
 	void notifyAddPin(Mod mod) {
-		if (!screen.getQuery().isEmpty()) {
+		if (!screen.getFilter().isEmpty()) {
 			return;
 		}
 
@@ -84,7 +85,7 @@ public class ModsScroll extends ScrollListComponent {
 	}
 
 	void notifyRemovePin(Mod mod) {
-		if (!screen.getQuery().isEmpty()) {
+		if (!screen.getFilter().isEmpty()) {
 			return;
 		}
 

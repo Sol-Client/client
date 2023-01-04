@@ -4,10 +4,12 @@ import com.google.gson.JsonObject;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.ui.*;
+import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPlayPaletteComponent;
 import lombok.Getter;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
-public class QuickPlayGameMode implements QuickPlayOption {
+public class QuickPlayGameMode extends QuickPlayOption {
 
 	@Getter
 	private final QuickPlayGame parent;
@@ -36,14 +38,14 @@ public class QuickPlayGameMode implements QuickPlayOption {
 
 	@Override
 	public String getText() {
-		if (parent.getModes().size() == 1) {
+		if (parent.getModes().size() == 1)
 			return parent.getName();
-		}
-		return parent.getName() + " - " + name;
+
+		return EnumChatFormatting.getTextWithoutFormattingCodes(parent.getName() + ": " + name);
 	}
 
 	@Override
-	public void onClick(QuickPlayPalette palette, QuickPlayMod mod) {
+	public void onClick(QuickPlayPaletteComponent palette, QuickPlayMod mod) {
 		mod.playGame(this);
 	}
 

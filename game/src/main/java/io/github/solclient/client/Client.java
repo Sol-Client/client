@@ -1,6 +1,7 @@
 package io.github.solclient.client;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import org.apache.commons.io.FileUtils;
@@ -10,7 +11,6 @@ import org.apache.logging.log4j.*;
 import com.google.gson.*;
 import com.logisticscraft.occlusionculling.*;
 
-import io.github.solclient.client.api.*;
 import io.github.solclient.client.config.ConfigVersion;
 import io.github.solclient.client.culling.CullTask;
 import io.github.solclient.client.event.*;
@@ -34,6 +34,7 @@ import io.github.solclient.client.mod.impl.itemphysics.ItemPhysicsMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.mod.impl.togglesprint.ToggleSprintMod;
+import io.github.solclient.client.packet.*;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.ui.screen.mods.*;
 import io.github.solclient.client.util.*;
@@ -89,6 +90,9 @@ public final class Client {
 	private GuiMainMenu mainMenu;
 
 	private boolean remindedUpdate;
+
+	@Getter
+	private PacketApi api;
 
 	public void init() {
 		try {
@@ -218,7 +222,7 @@ public final class Client {
 			LOGGER.error("Could not start async updates thread", error);
 		}
 
-		bus.register(new ClientApi());
+		bus.register(api = new PacketApi());
 		bus.register(popupManager = new PopupManager());
 	}
 
@@ -233,9 +237,9 @@ public final class Client {
 
 	private Gson getGson(Mod mod) {
 		GsonBuilder builder = new GsonBuilder();
-		if (mod != null) {
+		if (mod != null)
 			builder.registerTypeAdapter(mod.getClass(), (InstanceCreator<Mod>) (type) -> mod);
-		}
+
 		return builder.excludeFieldsWithoutExposeAnnotation().create();
 	}
 
@@ -246,12 +250,13 @@ public final class Client {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean load() {
 		try {
 			if (modsFile.exists()) {
-				// 1.8 uses old libraries, so this warning cannot be easily fixed.
-				data = new JsonParser().parse(FileUtils.readFileToString(modsFile)).getAsJsonObject();
+				try (Reader reader = new InputStreamReader(new FileInputStream(modsFile), StandardCharsets.UTF_8)) {
+					data = JsonParser.parseReader(reader).getAsJsonObject();
+				}
+
 				data = ConfigVersion.migrate(data);
 			} else {
 				data = new JsonObject();

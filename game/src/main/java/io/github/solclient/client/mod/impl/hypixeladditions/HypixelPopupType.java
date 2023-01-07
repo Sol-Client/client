@@ -2,7 +2,7 @@ package io.github.solclient.client.mod.impl.hypixeladditions;
 
 import java.util.regex.*;
 
-import io.github.solclient.client.api.Popup;
+import io.github.solclient.client.packet.Popup;
 
 public enum HypixelPopupType {
 	// Taken from
@@ -37,7 +37,7 @@ public enum HypixelPopupType {
 				groups[i - 1] = matcher.group(i);
 			}
 
-			return new Popup(String.format(this.message, groups), String.format(command, groups));
+			return new Popup(String.format(this.message, groups), String.format(command, groups), 10000);
 		}
 
 		return null;

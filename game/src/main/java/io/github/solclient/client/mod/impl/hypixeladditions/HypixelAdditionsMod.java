@@ -12,12 +12,12 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.*;
-import io.github.solclient.client.api.Popup;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.impl.hypixeladditions.commands.*;
+import io.github.solclient.client.packet.Popup;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import net.hypixel.api.HypixelAPI;

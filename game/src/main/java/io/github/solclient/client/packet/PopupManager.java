@@ -1,4 +1,4 @@
-package io.github.solclient.client.api;
+package io.github.solclient.client.packet;
 
 import java.util.*;
 
@@ -23,7 +23,9 @@ public class PopupManager {
 	private final KeyBinding keyDismissRequest = new KeyBinding(
 			GlobalConstants.KEY_TRANSLATION_KEY + ".dismiss_request", Keyboard.KEY_N, GlobalConstants.KEY_CATEGORY);
 
-	private final Deque<Popup> popups = new ArrayDeque<>();
+	private final LinkedList<Popup> popups = new LinkedList<>();
+	private final Map<UUID, Popup> popupsByHandle = new HashMap<>();
+	private final Map<Popup, UUID> handlesByPopup = new HashMap<>();
 	private Popup currentPopup;
 
 	public PopupManager() {
@@ -37,9 +39,9 @@ public class PopupManager {
 			return;
 
 		if (currentPopup != null) {
-			long since = System.currentTimeMillis() - currentPopup.getTime();
-			if (since > 10000) {
-				currentPopup = null;
+			long since = System.currentTimeMillis() - currentPopup.getStartTime();
+			if (since > currentPopup.getTime()) {
+				hidePopup();
 			} else {
 				String message = currentPopup.getText();
 				String keys = EnumChatFormatting.GREEN + " [ "
@@ -57,7 +59,7 @@ public class PopupManager {
 						new Rectangle(popupBounds.getX(), popupBounds.getY() + popupBounds.getHeight() - 1, width, 2),
 						Colour.BLACK);
 				Utils.drawRectangle(new Rectangle(popupBounds.getX(), popupBounds.getY() + popupBounds.getHeight() - 1,
-						(int) ((popupBounds.getWidth() / 10000F) * (since)), 2), Colour.BLUE);
+						(int) ((popupBounds.getWidth() / currentPopup.getTime()) * since), 2), Colour.BLUE);
 
 				mc.fontRendererObj.drawString(message, popupBounds.getX() + (popupBounds.getWidth() / 2)
 						- (mc.fontRendererObj.getStringWidth(message) / 2), 20, -1);
@@ -67,9 +69,9 @@ public class PopupManager {
 
 				if (keyAcceptRequest.isPressed()) {
 					mc.thePlayer.sendChatMessage(currentPopup.getCommand());
-					currentPopup = null;
+					hidePopup();
 				} else if (keyDismissRequest.isPressed()) {
-					currentPopup = null;
+					hidePopup();
 				}
 			}
 		}
@@ -82,8 +84,38 @@ public class PopupManager {
 		keyDismissRequest.isPressed();
 	}
 
+	private void hidePopup() {
+		if (currentPopup != null) {
+			UUID handle = handlesByPopup.remove(currentPopup);
+			if (handle != null)
+				popupsByHandle.remove(handle);
+		}
+
+		currentPopup = null;
+	}
+
 	public void add(Popup popup) {
 		popups.add(popup);
+	}
+
+	public void add(Popup popup, UUID handle) {
+		add(popup);
+
+		if (handle != null) {
+			popupsByHandle.put(handle, popup);
+			handlesByPopup.put(popup, handle);
+		}
+	}
+
+	public boolean remove(UUID handle) {
+		Popup popup = popupsByHandle.remove(handle);
+		if (popup == null)
+			return false;
+		if (currentPopup == popup)
+			currentPopup = null;
+
+		handlesByPopup.remove(popup);
+		return popups.remove(popup);
 	}
 
 }

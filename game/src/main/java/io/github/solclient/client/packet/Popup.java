@@ -1,4 +1,4 @@
-package io.github.solclient.client.api;
+package io.github.solclient.client.packet;
 
 import lombok.*;
 
@@ -10,10 +10,12 @@ public class Popup {
 	@Getter
 	private final String command;
 	@Getter
-	private long time;
+	private final int time;
+	@Getter
+	private long startTime;
 
 	public void setTime() {
-		this.time = System.currentTimeMillis();
+		this.startTime = System.currentTimeMillis();
 	}
 
 }

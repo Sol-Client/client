@@ -31,7 +31,7 @@ public class ScaledIconComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if (getColour().equals(Colour.TRANSPARENT))
+		if (getColour().getAlpha() == 0)
 			return;
 
 		NanoVG.nvgBeginPath(nvg);

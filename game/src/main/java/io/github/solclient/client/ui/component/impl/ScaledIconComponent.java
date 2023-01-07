@@ -31,6 +31,9 @@ public class ScaledIconComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
+		if (getColour().equals(Colour.TRANSPARENT))
+			return;
+
 		NanoVG.nvgBeginPath(nvg);
 
 		NVGPaint paint = Utils.nvgMinecraftTexturePaint(nvg, new ResourceLocation(

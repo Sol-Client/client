@@ -128,11 +128,15 @@ public class TextFieldComponent extends Component {
 		regularFont.renderString(nvg, hasPlaceholder ? I18n.format(placeholder) : text, textOffset, 0);
 
 		if (focused && ticks / 12 % 2 == 0) {
+			NanoVG.nvgShapeAntiAlias(nvg, false);
+
 			float relativeCursorPosition = regularFont.getWidth(nvg, text.substring(0, cursor));
 			NanoVG.nvgBeginPath(nvg);
 			NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
 			NanoVG.nvgRect(nvg, textOffset + relativeCursorPosition, 0, 0.5F, 10);
 			NanoVG.nvgFill(nvg);
+
+			NanoVG.nvgShapeAntiAlias(nvg, true);
 		}
 
 		if (underline) {

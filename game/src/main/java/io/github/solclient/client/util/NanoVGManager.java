@@ -14,7 +14,7 @@ public class NanoVGManager {
 	protected static Font regularFont;
 
 	public static void createContext() throws IOException {
-		nvg = NanoVGGL3.nvgCreate(NanoVGGL3.NVG_ANTIALIAS | NanoVGGL3.NVG_STENCIL_STROKES);
+		nvg = NanoVGGL3.nvgCreate(NanoVGGL3.NVG_ANTIALIAS);
 		regularFont = new Font(nvg, NanoVGManager.class.getResourceAsStream("/fonts/Inter-Regular.ttf"));
 	}
 

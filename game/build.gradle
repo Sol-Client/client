@@ -366,9 +366,15 @@ dependencies {
 	dependency "com.github.Cosmetica-cc:CosmeticaDotJava:1.7.0"
 	ship dependency("com.github.Sol-Client:LWJGL-Patched:bf1d105853")
 
-	runtimeOnly "org.lwjgl:lwjgl:3.3.1:natives-linux"
-	runtimeOnly "org.lwjgl:lwjgl-stb:3.3.1:natives-linux"
-	runtimeOnly "org.lwjgl:lwjgl-nanovg:3.3.1:natives-linux"
+	runtimeOnly("org.lwjgl:lwjgl:3.3.1:natives-linux") {
+		transitive = false
+	}
+	runtimeOnly("org.lwjgl:lwjgl-stb:3.3.1:natives-linux") {
+		transitive = false
+	}
+	runtimeOnly("org.lwjgl:lwjgl-nanovg:3.3.1:natives-linux") {
+		transitive = false
+	}
 }
 
 mixin {

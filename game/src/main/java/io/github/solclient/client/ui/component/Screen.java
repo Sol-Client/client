@@ -87,6 +87,14 @@ public class Screen extends GuiScreen {
 	}
 
 	@Override
+	public void handleKeyboardInput() throws IOException {
+		if (!Keyboard.getEventKeyState())
+			rootWrapper.keyReleased(getInfo(), Keyboard.getEventKey(), Keyboard.getEventCharacter());
+
+		super.handleKeyboardInput();
+	}
+
+	@Override
 	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 

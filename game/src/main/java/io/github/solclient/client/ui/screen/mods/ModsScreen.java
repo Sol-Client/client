@@ -11,6 +11,7 @@ import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.Getter;
 import net.minecraft.client.resources.I18n;
 
@@ -268,7 +269,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			boolean result = super.keyPressed(info, keyCode, character);
 
 			if (!result) {
-				if (keyCode == SolClientMod.instance.modsKey.getKeyCode()) {
+				if (keyCode == SolClientMod.instance.modsKey.getKeyCode() && ((KeyBindingExtension) SolClientMod.instance.modsKey).areModsPressed()) {
 					mc.displayGuiScreen(null);
 					return true;
 				} else if (mod != null && (keyCode == Keyboard.KEY_BACK

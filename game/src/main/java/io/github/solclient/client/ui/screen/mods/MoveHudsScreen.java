@@ -13,6 +13,7 @@ import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.extension.KeyBindingExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 
@@ -121,7 +122,7 @@ public class MoveHudsScreen extends Screen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if (keyCode == 1 || keyCode == SolClientMod.instance.editHudKey.getKeyCode()) {
+		if (keyCode == 1 || (keyCode == SolClientMod.instance.editHudKey.getKeyCode() && ((KeyBindingExtension) SolClientMod.instance.editHudKey).areModsPressed())) {
 			Client.INSTANCE.save();
 			if (title != null) {
 				mc.displayGuiScreen(title);

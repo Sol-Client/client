@@ -122,6 +122,7 @@ public class ModOptionComponent extends BlockComponent {
 							return false;
 
 						mc.gameSettings.setOptionKeyBinding(binding, key);
+						((KeyBindingExtension) binding).setMods(0);
 
 						postSet.run();
 						return true;

@@ -12,7 +12,7 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessGuiScreen;
+import io.github.solclient.client.util.extension.GuiScreenExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -21,7 +21,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
 @Mixin(GuiScreen.class)
-public abstract class MixinGuiScreen implements AccessGuiScreen {
+public abstract class MixinGuiScreen implements GuiScreenExtension {
 
 	@Override
 	public boolean canBeForceClosed() {

@@ -20,6 +20,7 @@ import com.replaymod.replay.camera.CameraEntity;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
@@ -29,6 +30,7 @@ import net.minecraft.client.multiplayer.ServerAddress;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.*;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.status.INetHandlerStatusClient;
@@ -655,6 +657,19 @@ public class Utils {
 		NVG_CACHE.put(location, handle);
 
 		return handle;
+	}
+
+	public boolean isConflicting(KeyBinding keybinding) {
+		if (keybinding.getKeyCode() == 0)
+			return false;
+
+		for (KeyBinding other : Minecraft.getMinecraft().gameSettings.keyBindings)
+			if (other != keybinding && other.getKeyCode() == keybinding.getKeyCode()
+					&& ((KeyBindingExtension) other).getMods() == ((KeyBindingExtension) keybinding)
+							.getMods())
+				return true;
+
+		return false;
 	}
 
 }

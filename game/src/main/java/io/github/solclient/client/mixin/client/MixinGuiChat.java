@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.injection.*;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessGuiChat;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.extension.GuiChatExtension;
 import net.minecraft.client.gui.*;
 
 @Mixin(GuiChat.class)
-public abstract class MixinGuiChat extends GuiScreen implements AccessGuiChat {
+public abstract class MixinGuiChat extends GuiScreen implements GuiChatExtension {
 
 	private ChatButton selectedButton;
 	private boolean wasMouseDown;

@@ -18,8 +18,8 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessShaderGroup;
 import io.github.solclient.client.util.data.Colour;
+import io.github.solclient.client.util.extension.ShaderGroupExtension;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.*;
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -102,7 +102,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 			}
 		}
 
-		((AccessShaderGroup) group).getListShaders().forEach((shader) -> {
+		((ShaderGroupExtension) group).getListShaders().forEach((shader) -> {
 			ShaderUniform radius = shader.getShaderManager().getShaderUniform("Radius");
 			ShaderUniform progress = shader.getShaderManager().getShaderUniform("Progress");
 

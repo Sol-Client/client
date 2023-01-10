@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.mod.impl.V1_7VisualsMod;
-import io.github.solclient.client.util.access.AccessMinecraft;
+import io.github.solclient.client.util.extension.MinecraftExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.*;
@@ -24,7 +24,7 @@ public abstract class MixinV1_7VisualsMod {
 			transformFirstPersonItem(equipProgress,
 					swingProgress == 0.0F && V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine
 							? mc.thePlayer
-									.getSwingProgress(AccessMinecraft.getInstance().getTimerSC().renderPartialTicks)
+									.getSwingProgress(MinecraftExtension.getInstance().getTimerSC().renderPartialTicks)
 							: swingProgress);
 		}
 

@@ -7,16 +7,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.ItemPickupEvent;
-import io.github.solclient.client.util.access.AccessEntityLivingBase;
+import io.github.solclient.client.util.extension.EntityLivingBaseExtension;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 
 @Mixin(EntityLivingBase.class)
-public abstract class MixinEntityLivingBase implements AccessEntityLivingBase {
+public abstract class MixinEntityLivingBase implements EntityLivingBaseExtension {
 
 	@Invoker("getArmSwingAnimationEnd")
-	public abstract int accessArmSwingAnimationEnd();
+	public abstract int privateGetArmSwingAnimationEnd();
 
 	@Inject(method = "onItemPickup", at = @At("HEAD"))
 	public void onItemPickup(Entity entity, int stackSize, CallbackInfo callback) {

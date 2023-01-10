@@ -38,7 +38,7 @@ import io.github.solclient.client.packet.*;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.ui.screen.mods.*;
 import io.github.solclient.client.util.*;
-import io.github.solclient.client.util.access.AccessMinecraft;
+import io.github.solclient.client.util.extension.MinecraftExtension;
 import lombok.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -198,7 +198,7 @@ public final class Client {
 			FilePollingTask filePolling = new FilePollingTask(mods);
 
 			Thread generalUpdateThread = new Thread(() -> {
-				while (((AccessMinecraft) mc).isRunning()) {
+				while (((MinecraftExtension) mc).isRunning()) {
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException error) {

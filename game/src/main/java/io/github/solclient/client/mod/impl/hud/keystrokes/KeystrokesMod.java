@@ -9,8 +9,8 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.extension.MinecraftExtension;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.*;
@@ -125,7 +125,7 @@ public class KeystrokesMod extends HudMod {
 	public void render(Position position, boolean editMode) {
 		int x = position.getX();
 		int y = position.getY();
-		float partialTicks = AccessMinecraft.getInstance().getTimerSC().renderPartialTicks;
+		float partialTicks = MinecraftExtension.getInstance().getTimerSC().renderPartialTicks;
 
 		if (movement) {
 			w.render(x, y);

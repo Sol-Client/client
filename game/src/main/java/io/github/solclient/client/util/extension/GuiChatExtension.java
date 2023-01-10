@@ -1,9 +1,9 @@
-package io.github.solclient.client.util.access;
+package io.github.solclient.client.util.extension;
 
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
 
-public interface AccessGuiChat {
+public interface GuiChatExtension {
 
 	void type(char typedChar, int keyCode);
 
@@ -11,8 +11,8 @@ public interface AccessGuiChat {
 
 	void setSelectedChatButton(ChatButton button);
 
-	static AccessGuiChat getInstance() {
-		return (AccessGuiChat) Utils.getChatGui();
+	static GuiChatExtension getInstance() {
+		return (GuiChatExtension) Utils.getChatGui();
 	}
 
 }

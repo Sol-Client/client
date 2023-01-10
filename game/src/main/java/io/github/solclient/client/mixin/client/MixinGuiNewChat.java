@@ -10,17 +10,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.ChatRenderEvent;
 import io.github.solclient.client.mod.impl.hud.chat.ChatMod;
-import io.github.solclient.client.util.access.*;
+import io.github.solclient.client.util.extension.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.IChatComponent;
 
 @Mixin(GuiNewChat.class)
-public abstract class MixinGuiNewChat implements AccessGuiNewChat {
+public abstract class MixinGuiNewChat implements GuiNewChatExtension {
 
 	@Inject(at = @At("HEAD"), cancellable = true, method = "drawChat")
 	public void drawChat(int updateCounter, CallbackInfo callback) {
 		if (Client.INSTANCE.bus.post(new ChatRenderEvent((GuiNewChat) (Object) /* hax */ this, updateCounter,
-				AccessMinecraft.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
+				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
 			callback.cancel();
 		}
 	}

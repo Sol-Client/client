@@ -1,6 +1,6 @@
-package io.github.solclient.client.util.access;
+package io.github.solclient.client.util.extension;
 
-public interface AccessGuiMainMenu {
+public interface GuiMainMenuExtension {
 
 	void renderPanorama(int mouseX, int mouseY, float partialTicks);
 

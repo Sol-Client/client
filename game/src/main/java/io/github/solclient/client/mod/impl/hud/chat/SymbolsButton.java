@@ -4,8 +4,8 @@ import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessGuiChat;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.extension.GuiChatExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
@@ -84,7 +84,7 @@ public class SymbolsButton implements ChatButton {
 
 				if (selected && wasMouseClicked) {
 					Utils.playClickSound(false);
-					((AccessGuiChat) Utils.getChatGui()).type(character, Keyboard.KEY_0);
+					((GuiChatExtension) Utils.getChatGui()).type(character, Keyboard.KEY_0);
 				}
 				x += 13;
 			}

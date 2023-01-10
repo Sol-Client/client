@@ -2,7 +2,7 @@ package io.github.solclient.client.ui.screen;
 
 import java.io.*;
 
-import io.github.solclient.client.util.access.AccessMinecraft;
+import io.github.solclient.client.util.extension.MinecraftExtension;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.*;
@@ -40,8 +40,8 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 		if (sublist == null) {
 			ResourcePackRepository repo = new ResourcePackRepository(folder,
 					new File(mc.mcDataDir, "server-resource-packs"),
-					AccessMinecraft.getInstance().getDefaultResourcePack(),
-					AccessMinecraft.getInstance().getMetadataSerialiser(), mc.gameSettings);
+					MinecraftExtension.getInstance().getDefaultResourcePack(),
+					MinecraftExtension.getInstance().getMetadataSerialiser(), mc.gameSettings);
 
 			repo.updateRepositoryEntriesAll();
 

@@ -9,7 +9,7 @@ import com.replaymod.replay.camera.CameraEntity;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.culling.Cullable;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.util.access.AccessRender;
+import io.github.solclient.client.util.extension.RenderExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.*;
@@ -30,7 +30,7 @@ public abstract class MixinRenderManager {
 		}
 
 		if (((Cullable) entity).isCulled()) {
-			((AccessRender<Entity>) getEntityRenderObject(entity)).doRenderName(entity, x, y, z);
+			((RenderExtension<Entity>) getEntityRenderObject(entity)).doRenderName(entity, x, y, z);
 			callback.setReturnValue(renderEngine == null);
 		}
 	}

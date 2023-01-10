@@ -4,17 +4,20 @@ import java.lang.reflect.*;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
-import com.replaymod.replaystudio.util.I18n;
+import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.mod.ModOption;
 import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.ui.component.*;
+import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.data.Modifier;
+import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.Getter;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.*;
 
 public class ModOptionComponent extends BlockComponent {
@@ -57,13 +60,12 @@ public class ModOptionComponent extends BlockComponent {
 		} else if (option.getType() == KeyBinding.class) {
 			KeyBinding binding = (KeyBinding) option.getValue();
 
-			add(new LabelComponent((component, defaultText) -> GameSettings.getKeyDisplayString(binding.getKeyCode()),
+			add(new LabelComponent((component, defaultText) -> ((KeyBindingExtension) binding).getPrefix() + GameSettings.getKeyDisplayString(binding.getKeyCode()),
 					new AnimatedColourController((component, defaultColour) -> {
-						if (listening) {
+						if (listening)
 							return new Colour(255, 255, 85);
-						} else if (isConflicting(binding)) {
+						else if (Utils.isConflicting(binding))
 							return new Colour(255, 85, 85);
-						}
 
 						return isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON;
 					})), defaultBoundController);
@@ -72,36 +74,56 @@ public class ModOptionComponent extends BlockComponent {
 				if (button == 0) {
 					Utils.playClickSound(true);
 
+					// local functions at home...
+					Runnable postSet = () -> {
+						listening = false;
+						mc.gameSettings.saveOptions();
+						KeyBinding.resetKeyBindingArrayAndHash();
+						screen.getRoot().onKeyPressed(null);
+						screen.getRoot().onKeyReleased(null);
+						screen.getRoot().onClickAnwhere(null);
+					};
+
 					listening = true;
 					screen.getRoot().onClickAnwhere((ignoredInfo, pressedButton) -> {
 						mc.gameSettings.setOptionKeyBinding(binding, pressedButton - 100);
-
-						listening = false;
-
-						mc.gameSettings.saveOptions();
-						KeyBinding.resetKeyBindingArrayAndHash();
-
-						screen.getRoot().onKeyPressed(null);
-						screen.getRoot().onClickAnwhere(null);
-						listening = false;
+						((KeyBindingExtension) binding).setMods(0);
+						postSet.run();
 						return true;
 					});
 
-					screen.getRoot().onKeyPressed((ignoredInfo, key, character) -> {
-						if (key == 1) {
+					screen.getRoot().onKeyPressed((ignored, key, character) -> {
+						if (Modifier.isModifier(key))
+							return false;
+						int mods = 0;
+
+						if (key == 1)
 							mc.gameSettings.setOptionKeyBinding(binding, 0);
-						} else if (key != 0) {
+						else if (key != 0) {
+							if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+								mods |= Modifier.CTRL;
+							if (Keyboard.isKeyDown(Keyboard.KEY_LMENU))
+								mods |= Modifier.ALT;
+							if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+								mods |= Modifier.SHIFT;
+
 							mc.gameSettings.setOptionKeyBinding(binding, key);
-						} else if (character > 0) {
-							mc.gameSettings.setOptionKeyBinding(binding, character + 256);
 						}
+						else if (character > 0)
+							mc.gameSettings.setOptionKeyBinding(binding, character + 256);
 
-						listening = false;
+						((KeyBindingExtension) binding).setMods(mods);
+						postSet.run();
+						return true;
+					});
 
-						mc.gameSettings.saveOptions();
-						KeyBinding.resetKeyBindingArrayAndHash();
-						screen.getRoot().onKeyPressed(null);
-						screen.getRoot().onClickAnwhere(null);
+					screen.getRoot().onKeyReleased((ignored, key, character) -> {
+						if (!Modifier.isModifier(key))
+							return false;
+
+						mc.gameSettings.setOptionKeyBinding(binding, key);
+
+						postSet.run();
 						return true;
 					});
 					return true;
@@ -246,18 +268,6 @@ public class ModOptionComponent extends BlockComponent {
 			field.setText((String) option.getValue());
 			add(field, defaultBoundController);
 		}
-	}
-
-	private boolean isConflicting(KeyBinding binding) {
-		if (binding.getKeyCode() != 0) {
-			for (KeyBinding testKey : mc.gameSettings.keyBindings) {
-				if (testKey != binding && testKey.getKeyCode() == binding.getKeyCode()) {
-					return true;
-				}
-			}
-		}
-
-		return false;
 	}
 
 	@Override

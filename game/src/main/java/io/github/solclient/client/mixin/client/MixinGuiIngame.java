@@ -8,7 +8,7 @@ import com.replaymod.render.hooks.EntityRendererHandler;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.util.access.AccessMinecraft;
+import io.github.solclient.client.util.extension.MinecraftExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -40,7 +40,7 @@ public abstract class MixinGuiIngame {
 			+ "showCrosshair()Z"))
 	public boolean preRenderCrosshair(GuiIngame guiIngame) {
 		boolean result = !Client.INSTANCE.bus.post(new PreGameOverlayRenderEvent(
-				AccessMinecraft.getInstance().getTimerSC().renderPartialTicks, GameOverlayElement.CROSSHAIRS)).cancelled
+				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks, GameOverlayElement.CROSSHAIRS)).cancelled
 				&& showCrosshair();
 		mc.getTextureManager().bindTexture(Gui.icons);
 		return result;
@@ -64,7 +64,7 @@ public abstract class MixinGuiIngame {
 	@Inject(method = "renderHorseJumpBar", at = @At("HEAD"), cancellable = true)
 	public void preJumpBar(ScaledResolution scaledRes, int x, CallbackInfo callback) {
 		if (Client.INSTANCE.bus.post(new PreGameOverlayRenderEvent(
-				AccessMinecraft.getInstance().getTimerSC().renderPartialTicks, GameOverlayElement.JUMPBAR)).cancelled) {
+				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks, GameOverlayElement.JUMPBAR)).cancelled) {
 			mc.getTextureManager().bindTexture(Gui.icons);
 			callback.cancel();
 		}
@@ -73,7 +73,7 @@ public abstract class MixinGuiIngame {
 	@Inject(method = "renderHorseJumpBar", at = @At("RETURN"))
 	public void postJumpBar(ScaledResolution scaledRes, int x, CallbackInfo callback) {
 		Client.INSTANCE.bus.post(new PostGameOverlayRenderEvent(
-				AccessMinecraft.getInstance().getTimerSC().renderPartialTicks, GameOverlayElement.JUMPBAR));
+				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks, GameOverlayElement.JUMPBAR));
 	}
 
 	@Shadow

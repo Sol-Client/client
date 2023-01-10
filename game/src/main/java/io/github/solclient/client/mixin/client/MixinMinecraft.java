@@ -19,7 +19,7 @@ import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.ui.component.Screen;
 import io.github.solclient.client.ui.screen.*;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.*;
+import io.github.solclient.client.util.extension.*;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -35,7 +35,7 @@ import net.minecraft.client.settings.GameSettings.Options;
 import net.minecraft.util.*;
 
 @Mixin(Minecraft.class)
-public abstract class MixinMinecraft implements AccessMinecraft, MCVer.MinecraftMethodAccessor {
+public abstract class MixinMinecraft implements MinecraftExtension, MCVer.MinecraftMethodAccessor {
 
 	private boolean debugPressed;
 	private boolean cancelDebug;
@@ -372,7 +372,7 @@ public abstract class MixinMinecraft implements AccessMinecraft, MCVer.Minecraft
 	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;"
 			+ "clearChatMessages()V"))
 	public void betterClearMessages(GuiNewChat guiNewChat) {
-		((AccessGuiNewChat) guiNewChat).clearChat();
+		((GuiNewChatExtension) guiNewChat).clearChat();
 		cancelDebug = true;
 	}
 

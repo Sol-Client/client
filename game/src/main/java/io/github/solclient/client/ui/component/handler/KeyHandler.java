@@ -5,6 +5,6 @@ import io.github.solclient.client.ui.component.ComponentRenderInfo;
 @FunctionalInterface
 public interface KeyHandler {
 
-	boolean keyPressed(ComponentRenderInfo info, int keyCode, char character);
+	boolean onKey(ComponentRenderInfo info, int keyCode, char character);
 
 }

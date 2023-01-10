@@ -9,8 +9,8 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.util.extension.MinecraftExtension;
 
 public class TweaksMod extends Mod {
 
@@ -158,12 +158,12 @@ public class TweaksMod extends Mod {
 				Display.setDisplayMode(new DisplayMode(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight()));
 				Display.setLocation(0, 0);
-				AccessMinecraft.getInstance().resizeWindow(Display.getDesktopDisplayMode().getWidth(),
+				MinecraftExtension.getInstance().resizeWindow(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight());
 			} else {
 				Display.setDisplayMode(new DisplayMode(previousBounds.getWidth(), previousBounds.getHeight()));
 				Display.setLocation(previousBounds.getX(), previousBounds.getY());
-				AccessMinecraft.getInstance().resizeWindow(previousBounds.getWidth(), previousBounds.getHeight());
+				MinecraftExtension.getInstance().resizeWindow(previousBounds.getWidth(), previousBounds.getHeight());
 
 				if (mc.inGameHasFocus) {
 					mc.mouseHelper.ungrabMouseCursor();

@@ -1,10 +1,10 @@
-package io.github.solclient.client.util.access;
+package io.github.solclient.client.util.extension;
 
 import java.util.List;
 
 import net.minecraft.client.gui.ChatLine;
 
-public interface AccessGuiNewChat {
+public interface GuiNewChatExtension {
 
 	List<ChatLine> getDrawnChatLines();
 

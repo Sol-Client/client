@@ -1,12 +1,11 @@
-package io.github.solclient.client.util.access;
+package io.github.solclient.client.util.extension;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.Timer;
 
-// For some reason you do need a surrogate duck.
-public interface AccessMinecraft {
+public interface MinecraftExtension {
 
 	boolean isRunning();
 
@@ -18,8 +17,8 @@ public interface AccessMinecraft {
 
 	void resizeWindow(int width, int height);
 
-	static AccessMinecraft getInstance() {
-		return (AccessMinecraft) Minecraft.getMinecraft();
+	static MinecraftExtension getInstance() {
+		return (MinecraftExtension) Minecraft.getMinecraft();
 	}
 
 }

@@ -11,7 +11,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.util.access.AccessEntityLivingBase;
+import io.github.solclient.client.util.extension.EntityLivingBaseExtension;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.*;
@@ -88,8 +88,8 @@ public class V1_7VisualsMod extends Mod {
 				&& mc.gameSettings.keyBindAttack.isKeyDown() && mc.gameSettings.keyBindUseItem.isKeyDown()
 				&& mc.thePlayer.getItemInUseCount() > 0) {
 			if ((!mc.thePlayer.isSwingInProgress
-					|| mc.thePlayer.swingProgressInt >= ((AccessEntityLivingBase) mc.thePlayer)
-							.accessArmSwingAnimationEnd() / 2
+					|| mc.thePlayer.swingProgressInt >= ((EntityLivingBaseExtension) mc.thePlayer)
+							.privateGetArmSwingAnimationEnd() / 2
 					|| mc.thePlayer.swingProgressInt < 0)) {
 				mc.thePlayer.swingProgressInt = -1;
 				mc.thePlayer.isSwingInProgress = true;

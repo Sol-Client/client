@@ -9,8 +9,8 @@ import org.lwjgl.opengl.*;
 
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.NanoVGManager;
-import io.github.solclient.client.util.access.AccessMinecraft;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.extension.MinecraftExtension;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -155,7 +155,7 @@ public class Screen extends GuiScreen {
 	}
 
 	private ComponentRenderInfo getInfo() {
-		return new ComponentRenderInfo(mouseX, mouseY, AccessMinecraft.getInstance().getTimerSC().renderPartialTicks);
+		return new ComponentRenderInfo(mouseX, mouseY, MinecraftExtension.getInstance().getTimerSC().renderPartialTicks);
 	}
 
 }

@@ -5,8 +5,8 @@ import java.util.*;
 import io.github.solclient.client.ChatChannelSystem.ChatChannel.DefaultChatChannel;
 import io.github.solclient.client.ui.ChatButton;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessGuiChat;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.extension.GuiChatExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -136,7 +136,7 @@ public abstract class ChatChannelSystem {
 				optionBounds.fill(hovered ? Colour.WHITE_128 : Colour.BLACK_128);
 				if (hovered && wasMouseClicked) {
 					Utils.playClickSound(false);
-					AccessGuiChat.getInstance().setSelectedChatButton(null);
+					GuiChatExtension.getInstance().setSelectedChatButton(null);
 					Client.INSTANCE.getChatChannelSystem().setChannel(channel);
 				}
 

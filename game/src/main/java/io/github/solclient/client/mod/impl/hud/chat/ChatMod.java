@@ -9,8 +9,8 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
-import io.github.solclient.client.util.access.AccessGuiNewChat;
 import io.github.solclient.client.util.data.Colour;
+import io.github.solclient.client.util.extension.GuiNewChatExtension;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
@@ -201,7 +201,7 @@ public class ChatMod extends HudMod {
 
 			animatedOffset *= ANIMATION_MULTIPLIER;
 
-			for (ChatAnimationData line : (Iterable<ChatAnimationData>) (Object) (((AccessGuiNewChat) mc.ingameGUI
+			for (ChatAnimationData line : (Iterable<ChatAnimationData>) (Object) (((GuiNewChatExtension) mc.ingameGUI
 					.getChatGUI()).getDrawnChatLines())) {
 				line.setLastTransparency(line.getTransparency());
 				line.setTransparency(line.getTransparency() * ANIMATION_MULTIPLIER);
@@ -236,7 +236,7 @@ public class ChatMod extends HudMod {
 	@EventHandler
 	public void onChatRender(ChatRenderEvent event) {
 		event.cancelled = true;
-		AccessGuiNewChat accessor = ((AccessGuiNewChat) event.chat);
+		GuiNewChatExtension accessor = ((GuiNewChatExtension) event.chat);
 
 		if (visibility != ChatVisibility.HIDDEN) {
 			int linesCount = event.chat.getLineCount();

@@ -2,8 +2,8 @@ package io.github.solclient.client.ui.screen;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.util.access.AccessGuiMainMenu;
 import io.github.solclient.client.util.data.Colour;
+import io.github.solclient.client.util.extension.GuiMainMenuExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.*;
@@ -34,7 +34,7 @@ public abstract class PanoramaBackgroundScreen extends Screen {
 	}
 
 	protected void drawPanorama(int mouseX, int mouseY, float partialTicks) {
-		AccessGuiMainMenu access = (AccessGuiMainMenu) mainMenu;
+		GuiMainMenuExtension access = (GuiMainMenuExtension) mainMenu;
 
 		mc.getFramebuffer().unbindFramebuffer();
 

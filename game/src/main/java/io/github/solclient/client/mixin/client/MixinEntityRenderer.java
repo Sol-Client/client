@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.*;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.access.AccessMinecraft;
+import io.github.solclient.client.util.extension.MinecraftExtension;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -32,7 +32,7 @@ public abstract class MixinEntityRenderer {
 			GlStateManager.matrixMode(5890);
 			GlStateManager.pushMatrix();
 			GlStateManager.loadIdentity();
-			group.loadShaderGroup(AccessMinecraft.getInstance().getTimerSC().renderPartialTicks);
+			group.loadShaderGroup(MinecraftExtension.getInstance().getTimerSC().renderPartialTicks);
 			GlStateManager.popMatrix();
 		}
 	}
@@ -129,7 +129,7 @@ public abstract class MixinEntityRenderer {
 		boolean maybeWould = entity.isInsideOfMaterial(materialIn);
 		boolean would = maybeWould && isDrawBlockOutline();
 		if (maybeWould && Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
-				AccessMinecraft.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
+				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
 			return false;
 		}
 		return would;
@@ -140,7 +140,7 @@ public abstract class MixinEntityRenderer {
 		boolean totallyWouldNot = entity.isInsideOfMaterial(materialIn);
 		boolean wouldNot = totallyWouldNot || !isDrawBlockOutline();
 		if (!totallyWouldNot && Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
-				AccessMinecraft.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
+				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
 			return true;
 		}
 		return wouldNot;

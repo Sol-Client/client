@@ -35,6 +35,7 @@ public abstract class Component extends NanoVGManager {
 			(component, defaultColour) -> dialog == null ? Colour.TRANSPARENT : new Colour(0, 0, 0, 150));
 	private ClickHandler onRelease;
 	private KeyHandler onKeyPressed;
+	private KeyHandler onKeyReleased;
 	private ClickHandler onClickAnywhere;
 	private ClickHandler onReleaseAnywhere;
 	private Controller<Boolean> visibilityController;
@@ -188,7 +189,7 @@ public abstract class Component extends NanoVGManager {
 	 * @return <code>true</code> if event has been processed.
 	 */
 	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-		if (onKeyPressed != null && onKeyPressed.keyPressed(info, keyCode, character))
+		if (onKeyPressed != null && onKeyPressed.onKey(info, keyCode, character))
 			return true;
 
 		for (Component component : subComponents) {
@@ -196,6 +197,24 @@ public abstract class Component extends NanoVGManager {
 				continue;
 
 			if (component.keyPressed(transform(info, getBounds(component)), keyCode, character))
+				return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @return <code>true</code> if event has been processed.
+	 */
+	public boolean keyReleased(ComponentRenderInfo info, int keyCode, char character) {
+		if (onKeyReleased != null && onKeyReleased.onKey(info, keyCode, character))
+			return true;
+
+		for (Component component : subComponents) {
+			if (component.shouldSkip())
+				continue;
+
+			if (component.keyReleased(transform(info, getBounds(component)), keyCode, character))
 				return true;
 		}
 
@@ -343,8 +362,13 @@ public abstract class Component extends NanoVGManager {
 		return this;
 	}
 
-	public Component onKeyPressed(KeyHandler onKeyTyped) {
-		this.onKeyPressed = onKeyTyped;
+	public Component onKeyPressed(KeyHandler onKeyPressed) {
+		this.onKeyPressed = onKeyPressed;
+		return this;
+	}
+
+	public Component onKeyReleased(KeyHandler onKeyReleased) {
+		this.onKeyReleased = onKeyReleased;
 		return this;
 	}
 

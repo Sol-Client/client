@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.util.access.AccessGuiScreen;
+import io.github.solclient.client.util.extension.GuiScreenExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -56,7 +56,7 @@ public class MixinNetHandlerPlayClient {
 	@Inject(method = "handleCloseWindow", at = @At("HEAD"), cancellable = true)
 	public void handleCloseWindow(S2EPacketCloseWindow packetIn, CallbackInfo callback) {
 		if (gameController.currentScreen != null
-				&& !(((AccessGuiScreen) gameController.currentScreen).canBeForceClosed()
+				&& !(((GuiScreenExtension) gameController.currentScreen).canBeForceClosed()
 						|| gameController.currentScreen instanceof GuiContainer)) {
 			callback.cancel();
 		}

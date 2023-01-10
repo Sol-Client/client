@@ -11,7 +11,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.access.AccessEntity;
+import io.github.solclient.client.util.extension.EntityExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.item.EntityItem;
@@ -59,7 +59,7 @@ public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
 			if (!Minecraft.getMinecraft().isGamePaused()) {
 				if (!event.entity.onGround) {
 					int divisor = 2500000;
-					if (((AccessEntity) event.entity).getIsInWeb()) {
+					if (((EntityExtension) event.entity).getIsInWeb()) {
 						divisor *= 10;
 					}
 					data.setRotation(

@@ -12,12 +12,12 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.ui.ReplayButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.util.access.AccessGuiMainMenu;
+import io.github.solclient.client.util.extension.GuiMainMenuExtension;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
 
 @Mixin(GuiMainMenu.class)
-public abstract class MixinGuiMainMenu extends GuiScreen implements AccessGuiMainMenu {
+public abstract class MixinGuiMainMenu extends GuiScreen implements GuiMainMenuExtension {
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	public void setActiveMainMenu(CallbackInfo callback) {

@@ -1,6 +1,6 @@
 package io.github.solclient.client.ui;
 
-import io.github.solclient.client.util.access.AccessGuiChat;
+import io.github.solclient.client.util.extension.GuiChatExtension;
 import net.minecraft.client.Minecraft;
 
 public interface ChatButton {
@@ -20,7 +20,7 @@ public interface ChatButton {
 	void render(int x, int y, boolean mouseDown, boolean wasMouseDown, boolean wasMouseClicked, int mouseX, int mouseY);
 
 	default boolean isOpen() {
-		AccessGuiChat chat = AccessGuiChat.getInstance();
+		GuiChatExtension chat = GuiChatExtension.getInstance();
 		return chat != null && chat.getSelectedChatButton() == this;
 	}
 

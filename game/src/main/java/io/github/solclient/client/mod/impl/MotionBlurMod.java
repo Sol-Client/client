@@ -12,7 +12,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.access.AccessShaderGroup;
+import io.github.solclient.client.util.extension.ShaderGroupExtension;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.shader.*;
@@ -62,7 +62,7 @@ public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 			}
 		}
 		if (groupBlur != blur) {
-			((AccessShaderGroup) group).getListShaders().forEach((shader) -> {
+			((ShaderGroupExtension) group).getListShaders().forEach((shader) -> {
 				ShaderUniform blendFactor = shader.getShaderManager().getShaderUniform("BlendFactor");
 				if (blendFactor != null) {
 					blendFactor.set(blur);

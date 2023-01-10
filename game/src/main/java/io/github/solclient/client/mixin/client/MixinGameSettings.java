@@ -49,6 +49,8 @@ public class MixinGameSettings {
 	@Redirect(method = "loadOptions", at = @At(value = "INVOKE", target = "Ljava/io/BufferedReader;readLine()Ljava/lang/String;"))
 	public String readCustomOptions(BufferedReader reader) throws IOException {
 		String result = reader.readLine();
+		if (result == null)
+			return null;
 
 		if (result.startsWith("key_mods_") && result.indexOf(':') != -1) {
 			String key = result.substring(9, result.indexOf(':'));

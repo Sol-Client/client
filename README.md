@@ -142,13 +142,13 @@ npm run make
 ```
 The installer will be in a directory named "out".
 
-### Game
+### Wrapper
 
 Make sure to build it with Java 8 and not any newer versions.
 
 Move into folder:
 ```sh
-cd game
+cd wrapper
 ```
 
 Setup:
@@ -160,5 +160,5 @@ Build JAR:
 ```sh
 ./gradlew build
 ```
-You will find the result in build/libs/game.jar.
+You will find the result in wrapper/build/libs/wrapper.jar.
 

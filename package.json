@@ -4,8 +4,8 @@
   "description": "Simple and easy to use Minecraft client.",
   "main": "main.js",
   "scripts": {
-    "buildGame": "cd game; ./gradlew build; cd ..",
-    "buildGameAndStart": "npm run buildGame && npm run start",
+    "buildWrapper": "cd wrapper; ./gradlew build; cd ..",
+    "buildWrapperAndStart": "npm run buildWrapper && npm run start",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make"

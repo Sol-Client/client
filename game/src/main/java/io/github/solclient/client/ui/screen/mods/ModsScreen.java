@@ -269,7 +269,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			boolean result = super.keyPressed(info, keyCode, character);
 
 			if (!result) {
-				if (keyCode == SolClientMod.instance.modsKey.getKeyCode() && ((KeyBindingExtension) SolClientMod.instance.modsKey).areModsPressed()) {
+				if (keyCode == SolClientMod.instance.modsKey.getKeyCode() && KeyBindingExtension.from(SolClientMod.instance.modsKey).areModsPressed()) {
 					mc.displayGuiScreen(null);
 					return true;
 				} else if (mod != null && (keyCode == Keyboard.KEY_BACK

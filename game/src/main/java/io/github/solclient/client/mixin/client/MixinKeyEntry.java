@@ -18,12 +18,12 @@ public class MixinKeyEntry {
 	@Inject(method = "drawEntry", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/GuiButton;displayString:Ljava/lang/String;", ordinal = 0, shift = Shift.AFTER))
 	public void addModifiersToLabel(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY,
 			boolean isSelected, CallbackInfo callback) {
-		btnChangeKeyBinding.displayString = ((KeyBindingExtension) keybinding).getPrefix() + btnChangeKeyBinding.displayString;
+		btnChangeKeyBinding.displayString = KeyBindingExtension.from(keybinding).getPrefix() + btnChangeKeyBinding.displayString;
 	}
 
 	@Redirect(method = "drawEntry", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/GuiButton;enabled:Z"))
 	public void resetEnabledWithMods(GuiButton instance, boolean modifiedKey) {
-		instance.enabled = modifiedKey || ((KeyBindingExtension) keybinding).getMods() != 0;
+		instance.enabled = modifiedKey || KeyBindingExtension.from(keybinding).getMods() != 0;
 	}
 
 	// :'(
@@ -42,7 +42,7 @@ public class MixinKeyEntry {
 	@Inject(method = "mousePressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;setOptionKeyBinding(Lnet/minecraft/client/settings/KeyBinding;I)V"))
 	public void reset(int slotIndex, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_,
 			int p_148278_6_, CallbackInfoReturnable<Boolean> callback) {
-		((KeyBindingExtension) keybinding).setMods(0);
+		KeyBindingExtension.from(keybinding).setMods(0);
 	}
 
 	@Shadow

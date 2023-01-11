@@ -387,6 +387,20 @@ sol_client.mod.scrollable_tooltips.description=Use the mouse wheel to move inven
 sol_client.mod.scrollable_tooltips.option.scrollSensitivity=Scroll Sensitivity
 sol_client.mod.scrollable_tooltips.option.reverse=Reverse
 
+sol_client.mod.screenshots.name=Screenshots
+sol_client.mod.screenshots.description=Add more actions to screenshots.
+
+sol_client.mod.screenshots.option.view=View Button
+sol_client.mod.screenshots.option.folder=Open Folder Button
+sol_client.mod.screenshots.option.upload=Imgur Upload Button
+
+sol_client.mod.screenshots.view=View
+sol_client.mod.screenshots.open_folder=Show in Folder
+sol_client.mod.screenshots.upload=Upload
+sol_client.mod.screenshots.deleted=The screenshot was deleted
+sol_client.mod.screenshots.upload_error=An error occurred during upload: %s
+sol_client.mod.screenshots.link=The screenshot has been uploaded to %s
+
 sol_client.mod.time_changer.name=Time Changer
 sol_client.mod.time_changer.description=Change the visual time without affecting gameplay.
 
@@ -463,8 +477,5 @@ sol_client.hud.edit=Edit HUD
 sol_client.packs.apply=Apply
 sol_client.packs.open_folder=Pack Folder
 sol_client.packs.folder=Folder (%d items)
-
-sol_client.screenshot.view=View
-sol_client.screenshot.open_folder=Show in Folder
 
 sol_client.no_results=No results :(

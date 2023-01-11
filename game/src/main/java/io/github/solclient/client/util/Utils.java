@@ -5,10 +5,12 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.IntConsumer;
 
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.GL11;
@@ -45,7 +47,7 @@ public class Utils {
 
 	public ModelBakery modelBakery;
 
-	public final String REVEAL_SUFFIX = "§sol_client:showinfolder";
+	public final String REVEAL_SUFFIX = "\0sol_client:showinfolder";
 	public final MonitoringExecutorService USER_DATA;
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
@@ -194,9 +196,12 @@ public class Utils {
 				.playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 	}
 
-	@SneakyThrows
 	public URL sneakyParse(String url) {
-		return new URL(url);
+		try {
+			return new URL(url);
+		} catch (MalformedURLException error) {
+			throw new AssertionError(error);
+		}
 	}
 
 	public GuiChat getChatGui() {
@@ -270,17 +275,9 @@ public class Utils {
 		URLConnection connection = url.openConnection();
 		connection.addRequestProperty("User-Agent", System.getProperty("http.agent")); // Force consistent behaviour
 
-		InputStream in = connection.getInputStream();
-
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		StringBuilder result = new StringBuilder();
-
-		String line;
-		while ((line = reader.readLine()) != null) {
-			result.append(line).append("\n");
+		try (InputStream in = connection.getInputStream()) {
+			return IOUtils.toString(in);
 		}
-
-		return result.toString();
 	}
 
 	public int getShadowColour(int value) {
@@ -350,6 +347,10 @@ public class Utils {
 		return url.substring(0, lastSlash);
 	}
 
+	public void revealUrl(String url) {
+		openUrl(url + REVEAL_SUFFIX);
+	}
+
 	public void openUrl(String url) {
 		String[] command;
 		boolean reveal = false;
@@ -366,65 +367,66 @@ public class Utils {
 		}
 
 		switch (Util.getOSType()) {
-		case LINUX:
-			if (reveal) {
-				if (new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
-					try {
-						Process process = new ProcessBuilder("xdg-mime", "query", "default", "inode/directory").start();
-						int code = process.waitFor();
+			case LINUX:
+				if (reveal) {
+					if (new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
+						try {
+							Process process = new ProcessBuilder("xdg-mime", "query", "default", "inode/directory")
+									.start();
+							int code = process.waitFor();
 
-						if (code > 0) {
-							throw new IllegalStateException("xdg-mime exited with code " + code);
-						}
-
-						String file;
-						try (BufferedReader reader = new BufferedReader(
-								new InputStreamReader(process.getInputStream()))) {
-							file = reader.readLine();
-						}
-
-						if (file != null) {
-							url = decodeUrl(url);
-							url = url.substring(7);
-
-							if (!file.startsWith("/")) {
-								file = "/usr/share/applications/" + file;
+							if (code > 0) {
+								throw new IllegalStateException("xdg-mime exited with code " + code);
 							}
 
-							command = new String[] { "gio", "launch", file, url };
-							break;
+							String file;
+							try (BufferedReader reader = new BufferedReader(
+									new InputStreamReader(process.getInputStream()))) {
+								file = reader.readLine();
+							}
+
+							if (file != null) {
+								url = decodeUrl(url);
+								url = url.substring(7);
+
+								if (!file.startsWith("/")) {
+									file = "/usr/share/applications/" + file;
+								}
+
+								command = new String[] { "gio", "launch", file, url };
+								break;
+							}
+						} catch (IOException | InterruptedException | IllegalStateException error) {
+							Client.LOGGER.error("Could not determine directory handler:", error);
 						}
-					} catch (IOException | InterruptedException | IllegalStateException error) {
-						Client.LOGGER.error("Could not determine directory handler:", error);
 					}
+					url = urlDirname(url);
 				}
-				url = urlDirname(url);
-			}
 
-			if (new File("/usr/bin/xdg-open").exists()) {
-				command = new String[] { "xdg-open", url };
+				if (new File("/usr/bin/xdg-open").exists()) {
+					command = new String[] { "xdg-open", url };
+					break;
+				}
+				// fall through to default
+			default:
+				// fall back to AWT, but without a message
+				command = null;
 				break;
-			}
-			// fall through to default
-		default:
-			// fall back to AWT, but without a message
-			command = null;
-			break;
-		case OSX:
-			if (reveal) {
-				command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
-			} else {
-				command = new String[] { "open", url };
-			}
-			break;
-		case WINDOWS:
-			if (reveal) {
-				command = new String[] { "Explorer", "/select," + decodeUrl(url).substring(8).replace('/', '\\') };
-			} else {
-				command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
-			}
+			case OSX:
+				if (reveal) {
+					command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
+				} else {
+					command = new String[] { "open", url };
+				}
+				break;
+			case WINDOWS:
+				if (reveal) {
+					command = new String[] { "Explorer", "/select," + decodeUrl(url).substring(8).replace('/', '\\') };
+				} else {
+					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
+				}
 
-			break;
+				break;
 		}
 
 		if (command != null) {
@@ -528,12 +530,12 @@ public class Utils {
 
 	public String getNativeFileExtension() {
 		switch (Util.getOSType()) {
-		case WINDOWS:
-			return "dll";
-		case OSX:
-			return "dylib";
-		default:
-			return "so";
+			case WINDOWS:
+				return "dll";
+			case OSX:
+				return "dylib";
+			default:
+				return "so";
 		}
 	}
 
@@ -665,11 +667,28 @@ public class Utils {
 
 		for (KeyBinding other : Minecraft.getMinecraft().gameSettings.keyBindings)
 			if (other != keybinding && other.getKeyCode() == keybinding.getKeyCode()
-					&& ((KeyBindingExtension) other).getMods() == ((KeyBindingExtension) keybinding)
-							.getMods())
+					&& KeyBindingExtension.from(other).getMods() == KeyBindingExtension.from(keybinding).getMods())
 				return true;
 
 		return false;
+	}
+
+	// losely based on
+	// https://github.com/apache/httpcomponents-client/blob/d2016eaacf31c0de4b2ca788d74e65c18c5fc8d7/httpclient5/src/main/java/org/apache/hc/client5/http/entity/mime/MultipartEntityBuilder.java#L192
+	// CharBuffers could be better ¯\(°_o)/¯
+
+	private final byte[] BOUNDARY_CHARS = { '-', '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c',
+			'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+			'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+			'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+	public String generateHttpBoundary() {
+		int count = ThreadLocalRandom.current().nextInt(11) + 30;
+		byte[] result = new byte[count];
+		for (int i = 0; i < count; i++) {
+			result[i] = BOUNDARY_CHARS[ThreadLocalRandom.current().nextInt(BOUNDARY_CHARS.length)];
+		}
+		return new String(result, StandardCharsets.US_ASCII);
 	}
 
 }

@@ -3,8 +3,13 @@ package io.github.solclient.client.util.extension;
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.util.data.Modifier;
+import net.minecraft.client.settings.KeyBinding;
 
 public interface KeyBindingExtension {
+
+	static KeyBindingExtension from(KeyBinding keybinding) {
+		return (KeyBindingExtension) keybinding;
+	}
 
 	int getMods();
 

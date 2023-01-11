@@ -16,6 +16,8 @@ public class GlobalConstants {
 	public static final URL RELEASE_API = Utils.sneakyParse(System.getProperty("io.github.solclient.client.release_api",
 			"https://api.github.com/repos/Sol-Client/Client/releases/latest"));
 	public static final long DISCORD_APPLICATION = 925701938211868683L;
+	// please change
+	public static final String IMGUR_APPLICATION = "4efd63137720136";
 	// please don't remove :(
 	public static final String COPYRIGHT = "© 2023 TheKodeToad and contributors";
 

@@ -121,7 +121,12 @@ public final class Client {
 		load();
 
 		LOGGER.info("Loading mods...");
+
+		// general
 		register(new SolClientMod());
+		register(new TweaksMod());
+
+		// hud
 		register(new FpsMod());
 		register(new CoordinatesMod());
 		register(new KeystrokesMod());
@@ -137,29 +142,35 @@ public final class Client {
 		register(new TabListMod());
 		register(new CrosshairMod());
 		register(new ScoreboardMod());
-		register(new TweaksMod());
-		register(new MotionBlurMod());
-		register(new MenuBlurMod());
-		register(new ColourSaturationMod());
-		register(new ChunkAnimatorMod());
+
+		// utility
 		register(new SCReplayMod());
 		register(new FreelookMod());
 		register(new TaplookMod());
 		register(new ToggleSprintMod());
 		register(new TNTTimerMod());
+		register(new ZoomMod());
+		register(new ScrollableTooltipsMod());
+		register(new ScreenshotsMod());
+
+		// visual
+		register(new MotionBlurMod());
+		register(new MenuBlurMod());
+		register(new ColourSaturationMod());
+		register(new ChunkAnimatorMod());
 		register(new V1_7VisualsMod());
 		register(new ItemPhysicsMod());
-		register(new ZoomMod());
 		register(new ParticlesMod());
 		register(new TimeChangerMod());
 		register(new BlockSelectionMod());
 		register(new HitboxMod());
 		register(new HitColourMod());
+
+		// integration
 		register(new CosmeticaMod());
 		register(new HypixelAdditionsMod());
 		register(new QuickPlayMod());
 		register(new DiscordIntegrationMod());
-		register(new ScrollableTooltipsMod());
 
 		LOGGER.info("Loaded {} mods", mods.size());
 

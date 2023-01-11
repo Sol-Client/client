@@ -34,7 +34,7 @@ public class MixinGameSettings {
 	@Redirect(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;close()V"))
 	public void injectCustomOptions(PrintWriter writer) {
 		for (KeyBinding keyBinding : keyBindings) {
-			int mods = ((KeyBindingExtension) keyBinding).getMods();
+			int mods = KeyBindingExtension.from(keyBinding).getMods();
 			if (mods == 0)
 				continue;
 
@@ -52,12 +52,15 @@ public class MixinGameSettings {
 		if (result == null)
 			return null;
 
+		if (result == null)
+			return null;
+
 		if (result.startsWith("key_mods_") && result.indexOf(':') != -1) {
 			String key = result.substring(9, result.indexOf(':'));
 			String value = result.substring(result.indexOf(':') + 1);
 			StreamSupport.stream(Arrays.spliterator(keyBindings), false)
 					.filter((binding) -> binding.getKeyDescription().equals(key)).findFirst()
-					.ifPresent((binding) -> ((KeyBindingExtension) binding).setMods(Integer.parseInt(value)));
+					.ifPresent((binding) -> KeyBindingExtension.from(binding).setMods(Integer.parseInt(value)));
 		}
 
 		return result;
@@ -65,7 +68,7 @@ public class MixinGameSettings {
 
 	@Inject(method = "isKeyDown", at = @At("RETURN"), cancellable = true)
 	private static void requireMods(KeyBinding key, CallbackInfoReturnable<Boolean> callback) {
-		if (callback.getReturnValueZ() && !((KeyBindingExtension) key).areModsPressed())
+		if (callback.getReturnValueZ() && !KeyBindingExtension.from(key).areModsPressed())
 			callback.setReturnValue(false);
 	}
 

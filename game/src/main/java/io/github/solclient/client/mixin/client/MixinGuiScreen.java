@@ -6,19 +6,19 @@ import java.util.List;
 
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.extension.GuiScreenExtension;
+import io.github.solclient.client.util.extension.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 
 @Mixin(GuiScreen.class)
 public abstract class MixinGuiScreen implements GuiScreenExtension {
@@ -94,8 +94,21 @@ public abstract class MixinGuiScreen implements GuiScreenExtension {
 	}
 
 	@Overwrite
-	private void openWebLink(URI uri) {
+	public void openWebLink(URI uri) {
 		Utils.openUrl(uri.toString());
+	}
+
+	@Inject(method = "handleComponentClick", at = @At("HEAD"), cancellable = true)
+	public void callReceiver(IChatComponent component, CallbackInfoReturnable<Boolean> callback) {
+		if (component == null)
+			return;
+
+		ClickEventExtension event = ClickEventExtension.from(component.getChatStyle().getChatClickEvent());
+		if (event == null || event.getReceiver() == null)
+			return;
+
+		event.getReceiver().run();
+		callback.setReturnValue(true);
 	}
 
 	@Shadow

@@ -2,7 +2,6 @@ package io.github.solclient.client.mixin.client;
 
 import java.io.IOException;
 
-import org.intellij.lang.annotations.RegExp;
 import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -30,7 +29,7 @@ public class MixinGuiControls extends GuiScreen {
 		if (buttonId == null)
 			return;
 
-		((KeyBindingExtension) buttonId).setMods(0);
+		KeyBindingExtension.from(buttonId).setMods(0);
 	}
 
 	@Inject(method = "keyTyped", at = @At("HEAD"), cancellable = true)
@@ -49,7 +48,7 @@ public class MixinGuiControls extends GuiScreen {
 				if (shift)
 					mods |= Modifier.SHIFT;
 
-				((KeyBindingExtension) buttonId).setMods(mods);
+				KeyBindingExtension.from(buttonId).setMods(mods);
 
 				options.setOptionKeyBinding(buttonId, keyCode);
 				buttonId = null;
@@ -58,7 +57,7 @@ public class MixinGuiControls extends GuiScreen {
 			} else {
 				if (buttonId != null)
 					// clear mods - none are held
-					((KeyBindingExtension) buttonId).setMods(0);
+					KeyBindingExtension.from(buttonId).setMods(0);
 
 				return;
 			}
@@ -73,7 +72,7 @@ public class MixinGuiControls extends GuiScreen {
 
 		if (buttonId != null) {
 			// clear mods - this is a mod key on its own
-			((KeyBindingExtension) buttonId).setMods(0);
+			KeyBindingExtension.from(buttonId).setMods(0);
 			options.setOptionKeyBinding(buttonId, key);
 			buttonId = null;
 			time = Minecraft.getSystemTime();
@@ -85,7 +84,7 @@ public class MixinGuiControls extends GuiScreen {
 	public void resetWithMods(GuiButton instance, boolean enabled) {
 		if (!enabled) {
 			for (KeyBinding binding : mc.gameSettings.keyBindings) {
-				if (((KeyBindingExtension) binding).getMods() != 0) {
+				if (KeyBindingExtension.from(binding).getMods() != 0) {
 					enabled = true;
 					break;
 				}
@@ -98,7 +97,7 @@ public class MixinGuiControls extends GuiScreen {
 	@Redirect(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyCode(I)V"))
 	public void resetMods(KeyBinding instance, int keyCode) {
 		instance.setKeyCode(keyCode);
-		((KeyBindingExtension) instance).setMods(0);
+		KeyBindingExtension.from(instance).setMods(0);
 	}
 
 	@Shadow

@@ -1,9 +1,0 @@
-repositories {
-    maven {
-        url "https://files.minecraftforge.net/maven"
-    }
-}
-
-dependencies {
-    implementation "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
-}

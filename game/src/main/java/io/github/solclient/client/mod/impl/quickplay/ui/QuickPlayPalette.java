@@ -3,7 +3,7 @@ package io.github.solclient.client.mod.impl.quickplay.ui;
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
-import io.github.solclient.client.mod.impl.quickplay.database.*;
+import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;

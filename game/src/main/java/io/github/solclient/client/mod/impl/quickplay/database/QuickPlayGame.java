@@ -5,7 +5,7 @@ import java.util.*;
 import com.google.gson.*;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
-import io.github.solclient.client.mod.impl.quickplay.ui.*;
+import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPlayPaletteComponent;
 import lombok.*;
 import net.minecraft.init.*;

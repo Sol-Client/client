@@ -2,7 +2,7 @@ package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.*;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.mod.*;

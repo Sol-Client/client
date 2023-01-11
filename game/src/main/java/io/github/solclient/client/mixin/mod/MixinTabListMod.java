@@ -124,19 +124,19 @@ public class MixinTabListMod {
 					int colour = 0x00FF00;
 
 					switch (level) {
-					case 1:
-						colour = 0xFFFF00;
-						break;
-					case 2:
-						colour = 0xFF9600;
-						break;
-					case 3:
-						colour = 0xFF6400;
-						break;
-					case 4:
-					case 5:
-						colour = 0xFF0000;
-						break;
+						case 1:
+							colour = 0xFFFF00;
+							break;
+						case 2:
+							colour = 0xFF9600;
+							break;
+						case 3:
+							colour = 0xFF6400;
+							break;
+						case 4:
+						case 5:
+							colour = 0xFF0000;
+							break;
 					}
 
 					float scale = 0.5F;

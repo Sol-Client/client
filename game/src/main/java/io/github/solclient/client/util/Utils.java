@@ -438,7 +438,8 @@ public class Utils {
 				proc.getOutputStream().close();
 				return;
 			} catch (IOException error) {
-				Client.LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:", error);
+				Client.LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:",
+						error);
 			}
 		}
 
@@ -696,7 +697,8 @@ public class Utils {
 		if (Files.isDirectory(path))
 			return;
 
-		// if the file is just an empty one created by mistake - or a broken link - delete it
+		// if the file is just an empty one created by mistake - or a broken link -
+		// delete it
 		if (Files.isRegularFile(path) && Files.size(path) == 0)
 			Files.delete(path);
 

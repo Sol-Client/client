@@ -121,7 +121,8 @@ public class MoveHudsScreen extends Screen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if (keyCode == 1 || (keyCode == SolClientConfig.instance.editHudKey.getKeyCode() && KeyBindingExtension.from(SolClientConfig.instance.editHudKey).areModsPressed())) {
+		if (keyCode == 1 || (keyCode == SolClientConfig.instance.editHudKey.getKeyCode()
+				&& KeyBindingExtension.from(SolClientConfig.instance.editHudKey).areModsPressed())) {
 			Client.INSTANCE.save();
 			if (title != null) {
 				mc.displayGuiScreen(title);

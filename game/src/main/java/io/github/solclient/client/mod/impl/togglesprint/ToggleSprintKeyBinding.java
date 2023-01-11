@@ -1,8 +1,7 @@
 package io.github.solclient.client.mod.impl.togglesprint;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.keybinding.ToggleState;
-import io.github.solclient.client.mod.keybinding.ToggledKeyBinding;
+import io.github.solclient.client.mod.keybinding.*;
 
 public class ToggleSprintKeyBinding extends ToggledKeyBinding<ToggleSprintMod> {
 	public ToggleSprintKeyBinding(ToggleSprintMod mod, String description, int keyCode, String category) {

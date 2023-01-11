@@ -17,7 +17,8 @@ public class MixinItemRenderer {
 
 	@Inject(method = "transformFirstPersonItem", at = @At("HEAD"))
 	public void transformFirstPersonItem(float equipProgress, float swingProgress, CallbackInfo callback) {
-		Client.INSTANCE.getEvents().post(new TransformFirstPersonItemEvent(itemToRender, equipProgress, swingProgress));
+		Client.INSTANCE.getEvents()
+				.post(new TransformFirstPersonItemEvent(itemToRender, equipProgress, swingProgress));
 	}
 
 }

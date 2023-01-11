@@ -10,7 +10,7 @@ import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.*;
+import net.minecraft.util.MathHelper;
 
 public class SliderComponent extends Component {
 

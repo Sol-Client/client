@@ -88,34 +88,34 @@ public class CoordinatesMod extends HudMod {
 		String xDirection = null;
 		String zDirection = null;
 		switch (cardinalDirectionIndex) {
-		case 0:
-			zDirection = "--";
-			break;
-		case 1:
-			zDirection = "-";
-			xDirection = "+";
-			break;
-		case 2:
-			xDirection = "++";
-			break;
-		case 3:
-			zDirection = "+";
-			xDirection = "+";
-			break;
-		case 4:
-			zDirection = "++";
-			break;
-		case 5:
-			zDirection = "+";
-			xDirection = "-";
-			break;
-		case 6:
-			xDirection = "--";
-			break;
-		case 7:
-			zDirection = "-";
-			xDirection = "-";
-			break;
+			case 0:
+				zDirection = "--";
+				break;
+			case 1:
+				zDirection = "-";
+				xDirection = "+";
+				break;
+			case 2:
+				xDirection = "++";
+				break;
+			case 3:
+				zDirection = "+";
+				xDirection = "+";
+				break;
+			case 4:
+				zDirection = "++";
+				break;
+			case 5:
+				zDirection = "+";
+				xDirection = "-";
+				break;
+			case 6:
+				xDirection = "--";
+				break;
+			case 7:
+				zDirection = "-";
+				xDirection = "-";
+				break;
 		}
 		String facing = cardinalDirections[cardinalDirectionIndex];
 		font.drawString(Integer.toString((int) x),

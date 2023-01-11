@@ -187,90 +187,90 @@ public class TextFieldComponent extends Component {
 		}
 
 		switch (keyCode) {
-		case 14:
-			if (GuiScreen.isCtrlKeyDown()) {
-				if (enabled) {
-					deleteWords(-1);
-				}
-			} else if (enabled) {
-				deleteFromCursor(-1);
-			}
-
-			return true;
-
-		case 199:
-			if (GuiScreen.isShiftKeyDown()) {
-				setSelectionPosition(0);
-			} else {
-				setCursorPosition(0);
-			}
-
-			return true;
-
-		case 203:
-			if (GuiScreen.isShiftKeyDown()) {
+			case 14:
 				if (GuiScreen.isCtrlKeyDown()) {
-					setSelectionPosition(getWordFromPosition(-1, selectionEnd));
-				} else {
-					setSelectionPosition(selectionEnd - 1);
-				}
-			} else if (GuiScreen.isCtrlKeyDown()) {
-				setCursorPosition(getWordFromCursor(-1));
-			} else {
-				moveCursorBy(-1);
-			}
-
-			return true;
-
-		case 205:
-			if (GuiScreen.isShiftKeyDown()) {
-				if (GuiScreen.isCtrlKeyDown()) {
-					this.setSelectionPosition(getWordFromPosition(1, selectionEnd));
-				} else {
-					this.setSelectionPosition(selectionEnd + 1);
-				}
-			} else if (GuiScreen.isCtrlKeyDown()) {
-				setCursorPosition(getWordFromCursor(1));
-			} else {
-				moveCursorBy(1);
-			}
-
-			return true;
-
-		case 207:
-			if (GuiScreen.isShiftKeyDown()) {
-				setSelectionPosition(text.length());
-			} else {
-				setCursorPositionEnd();
-			}
-
-			return true;
-
-		case 211:
-			if (GuiScreen.isCtrlKeyDown()) {
-				if (enabled) {
-					deleteWords(1);
-				}
-			} else if (enabled) {
-				deleteFromCursor(1);
-			}
-
-			return true;
-
-		case 28:
-			flush();
-			return true;
-
-		default:
-			if (ChatAllowedCharacters.isAllowedCharacter(character)) {
-				if (enabled) {
-					writeText(Character.toString(character));
+					if (enabled) {
+						deleteWords(-1);
+					}
+				} else if (enabled) {
+					deleteFromCursor(-1);
 				}
 
 				return true;
-			} else {
-				return false;
-			}
+
+			case 199:
+				if (GuiScreen.isShiftKeyDown()) {
+					setSelectionPosition(0);
+				} else {
+					setCursorPosition(0);
+				}
+
+				return true;
+
+			case 203:
+				if (GuiScreen.isShiftKeyDown()) {
+					if (GuiScreen.isCtrlKeyDown()) {
+						setSelectionPosition(getWordFromPosition(-1, selectionEnd));
+					} else {
+						setSelectionPosition(selectionEnd - 1);
+					}
+				} else if (GuiScreen.isCtrlKeyDown()) {
+					setCursorPosition(getWordFromCursor(-1));
+				} else {
+					moveCursorBy(-1);
+				}
+
+				return true;
+
+			case 205:
+				if (GuiScreen.isShiftKeyDown()) {
+					if (GuiScreen.isCtrlKeyDown()) {
+						this.setSelectionPosition(getWordFromPosition(1, selectionEnd));
+					} else {
+						this.setSelectionPosition(selectionEnd + 1);
+					}
+				} else if (GuiScreen.isCtrlKeyDown()) {
+					setCursorPosition(getWordFromCursor(1));
+				} else {
+					moveCursorBy(1);
+				}
+
+				return true;
+
+			case 207:
+				if (GuiScreen.isShiftKeyDown()) {
+					setSelectionPosition(text.length());
+				} else {
+					setCursorPositionEnd();
+				}
+
+				return true;
+
+			case 211:
+				if (GuiScreen.isCtrlKeyDown()) {
+					if (enabled) {
+						deleteWords(1);
+					}
+				} else if (enabled) {
+					deleteFromCursor(1);
+				}
+
+				return true;
+
+			case 28:
+				flush();
+				return true;
+
+			default:
+				if (ChatAllowedCharacters.isAllowedCharacter(character)) {
+					if (enabled) {
+						writeText(Character.toString(character));
+					}
+
+					return true;
+				} else {
+					return false;
+				}
 		}
 	}
 

@@ -1,7 +1,7 @@
 package io.github.solclient.client.mod.impl.togglesprint;
 
 import com.google.gson.annotations.Expose;
-import io.github.solclient.client.Client;
+
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;

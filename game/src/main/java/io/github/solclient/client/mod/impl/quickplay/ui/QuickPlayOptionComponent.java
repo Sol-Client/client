@@ -3,7 +3,6 @@ package io.github.solclient.client.mod.impl.quickplay.ui;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPlayPaletteComponent;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;

@@ -2,7 +2,7 @@ package io.github.solclient.client.mod.impl;
 
 import java.text.DecimalFormat;
 
-import io.github.solclient.client.*;
+import io.github.solclient.client.DetectedServer;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.util.Utils;
 import net.minecraft.entity.item.EntityTNTPrimed;

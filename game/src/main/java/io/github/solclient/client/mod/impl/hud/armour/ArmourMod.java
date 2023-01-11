@@ -49,35 +49,35 @@ public class ArmourMod extends HudMod {
 
 			if (armour) {
 				switch (durability) {
-				case FRACTION:
-					width += 296;
-					break;
-				case REMAINING:
-					width += 168;
-					break;
-				case PERCENTAGE:
-					width += 192;
-					break;
-				default:
-					width += 73;
-					break;
+					case FRACTION:
+						width += 296;
+						break;
+					case REMAINING:
+						width += 168;
+						break;
+					case PERCENTAGE:
+						width += 192;
+						break;
+					default:
+						width += 73;
+						break;
 				}
 			}
 
 			if (hand) {
 				switch (durability) {
-				case FRACTION:
-					width += 85;
-					break;
-				case REMAINING:
-					width += 47;
-					break;
-				case PERCENTAGE:
-					width += 48;
-					break;
-				default:
-					width += 17;
-					break;
+					case FRACTION:
+						width += 85;
+						break;
+					case REMAINING:
+						width += 47;
+						break;
+					case PERCENTAGE:
+						width += 48;
+						break;
+					default:
+						width += 17;
+						break;
 				}
 			}
 
@@ -161,19 +161,19 @@ public class ArmourMod extends HudMod {
 		if (hasDurability && stack.getMaxDamage() > 0) {
 			String text;
 			switch (durability) {
-			case FRACTION:
-				text = stack.getMaxDamage() - stack.getItemDamage() + " / " + (stack.getMaxDamage());
-				break;
-			case REMAINING:
-				text = Integer.toString(stack.getMaxDamage() - stack.getItemDamage());
-				break;
-			case PERCENTAGE:
-				text = ((int) (((double) stack.getMaxDamage() - stack.getItemDamage()) / (stack.getMaxDamage()) * 100))
-						+ "%";
-				break;
-			default:
-				text = "??";
-				break;
+				case FRACTION:
+					text = stack.getMaxDamage() - stack.getItemDamage() + " / " + (stack.getMaxDamage());
+					break;
+				case REMAINING:
+					text = Integer.toString(stack.getMaxDamage() - stack.getItemDamage());
+					break;
+				case PERCENTAGE:
+					text = ((int) (((double) stack.getMaxDamage() - stack.getItemDamage()) / (stack.getMaxDamage())
+							* 100)) + "%";
+					break;
+				default:
+					text = "??";
+					break;
 			}
 
 			if (rtl) {

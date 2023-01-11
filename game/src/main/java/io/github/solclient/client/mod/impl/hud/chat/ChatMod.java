@@ -10,7 +10,7 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.extension.*;
+import io.github.solclient.client.util.extension.GuiNewChatExtension;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;

@@ -8,7 +8,8 @@ public class ModGhost extends BlockComponent {
 
 	public ModGhost() {
 		super((component, defaultColour) -> Colour.BLACK.withAlpha(90),
-				(component, defaultRadius) -> SolClientConfig.instance.roundedUI ? 10F : 0F, (component, defaultOutlineWidth) -> defaultOutlineWidth);
+				(component, defaultRadius) -> SolClientConfig.instance.roundedUI ? 10F : 0F,
+				(component, defaultOutlineWidth) -> defaultOutlineWidth);
 	}
 
 	@Override

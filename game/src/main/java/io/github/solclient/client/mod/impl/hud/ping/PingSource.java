@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod.impl.hud.ping;
 
-import io.github.solclient.client.*;
+import io.github.solclient.client.DetectedServer;
 import net.minecraft.client.resources.I18n;
 
 public enum PingSource {

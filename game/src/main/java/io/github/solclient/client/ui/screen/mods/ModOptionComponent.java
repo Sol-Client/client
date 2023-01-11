@@ -60,7 +60,9 @@ public class ModOptionComponent extends BlockComponent {
 		} else if (option.getType() == KeyBinding.class) {
 			KeyBinding binding = (KeyBinding) option.getValue();
 
-			add(new LabelComponent((component, defaultText) -> KeyBindingExtension.from(binding).getPrefix() + GameSettings.getKeyDisplayString(binding.getKeyCode()),
+			add(new LabelComponent(
+					(component, defaultText) -> KeyBindingExtension.from(binding).getPrefix()
+							+ GameSettings.getKeyDisplayString(binding.getKeyCode()),
 					new AnimatedColourController((component, defaultColour) -> {
 						if (listening)
 							return new Colour(255, 255, 85);
@@ -108,8 +110,7 @@ public class ModOptionComponent extends BlockComponent {
 								mods |= Modifier.SHIFT;
 
 							mc.gameSettings.setOptionKeyBinding(binding, key);
-						}
-						else if (character > 0)
+						} else if (character > 0)
 							mc.gameSettings.setOptionKeyBinding(binding, character + 256);
 
 						KeyBindingExtension.from(binding).setMods(mods);

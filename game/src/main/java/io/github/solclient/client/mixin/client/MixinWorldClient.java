@@ -21,7 +21,8 @@ public class MixinWorldClient {
 	@Inject(method = "playSound", at = @At(value = "HEAD"), cancellable = true)
 	public void handlePlaySound(double x, double y, double z, String soundName, float volume, float pitch,
 			boolean distanceDelay, CallbackInfo callback) {
-		SoundPlayEvent event = Client.INSTANCE.getEvents().post(new SoundPlayEvent(soundName, volume, pitch, volume, pitch));
+		SoundPlayEvent event = Client.INSTANCE.getEvents()
+				.post(new SoundPlayEvent(soundName, volume, pitch, volume, pitch));
 		if (event.pitch != event.originalPitch || event.volume != event.originalVolume) {
 			callback.cancel();
 			volume = event.volume;

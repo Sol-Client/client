@@ -95,8 +95,9 @@ public class MixinScreenshotsMod {
 						ScreenshotsMod.instance.postShot(screenshot);
 					} catch (Exception error) {
 						logger.warn("Couldn't save screenshot", error);
-						Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(
-								new ChatComponentTranslation("screenshot.failure", error).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+						Minecraft.getMinecraft().ingameGUI.getChatGUI()
+								.printChatMessage(new ChatComponentTranslation("screenshot.failure", error)
+										.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					}
 				});
 

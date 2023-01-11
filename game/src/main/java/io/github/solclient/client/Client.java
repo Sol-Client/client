@@ -119,9 +119,8 @@ public final class Client {
 	 * Saves if the mod screen is not opened.
 	 */
 	public void optionChanged() {
-		if (!(mc.currentScreen instanceof ModsScreen)) {
+		if (!(mc.currentScreen instanceof ModsScreen))
 			save();
-		}
 	}
 
 }

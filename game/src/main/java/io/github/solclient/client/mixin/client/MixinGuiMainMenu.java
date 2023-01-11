@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
-import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.ui.ReplayButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;

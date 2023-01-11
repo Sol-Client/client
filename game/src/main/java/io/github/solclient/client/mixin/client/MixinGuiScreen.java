@@ -40,8 +40,8 @@ public abstract class MixinGuiScreen implements GuiScreenExtension {
 
 	@Redirect(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;mousePressed(Lnet/minecraft/client/Minecraft;II)Z"))
 	public boolean onActionPerformed(GuiButton instance, Minecraft mc, int mouseX, int mouseY) {
-		return instance.mousePressed(mc, mouseX, mouseY)
-				&& !Client.INSTANCE.getEvents().post(new ActionPerformedEvent((GuiScreen) (Object) this, instance)).cancelled;
+		return instance.mousePressed(mc, mouseX, mouseY) && !Client.INSTANCE.getEvents()
+				.post(new ActionPerformedEvent((GuiScreen) (Object) this, instance)).cancelled;
 	}
 
 	@Redirect(method = "setWorldAndResolution", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui"

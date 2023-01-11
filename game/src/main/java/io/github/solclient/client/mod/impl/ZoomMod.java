@@ -4,7 +4,7 @@ import org.lwjgl.input.*;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.*;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;

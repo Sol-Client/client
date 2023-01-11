@@ -64,7 +64,8 @@ public abstract class MixinEntityRenderer {
 		prevRotationPitch = mc.getRenderViewEntity().prevRotationPitch;
 		float roll = 0;
 
-		CameraRotateEvent event = Client.INSTANCE.getEvents().post(new CameraRotateEvent(rotationYaw, rotationPitch, roll));
+		CameraRotateEvent event = Client.INSTANCE.getEvents()
+				.post(new CameraRotateEvent(rotationYaw, rotationPitch, roll));
 		rotationYaw = event.yaw;
 		rotationPitch = event.pitch;
 		roll = event.roll;
@@ -113,7 +114,8 @@ public abstract class MixinEntityRenderer {
 
 	@Inject(method = "getFOVModifier", at = @At("RETURN"), cancellable = true)
 	public void getFov(float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Float> callback) {
-		callback.setReturnValue(Client.INSTANCE.getEvents().post(new FovEvent(callback.getReturnValue(), partialTicks)).fov);
+		callback.setReturnValue(
+				Client.INSTANCE.getEvents().post(new FovEvent(callback.getReturnValue(), partialTicks)).fov);
 	}
 
 	// region Block Highlight

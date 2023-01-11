@@ -9,7 +9,7 @@ import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
-import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.data.Alignment;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

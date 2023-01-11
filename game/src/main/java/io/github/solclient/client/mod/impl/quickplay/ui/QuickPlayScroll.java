@@ -32,8 +32,7 @@ public class QuickPlayScroll extends ScrollListComponent {
 							.getTextWithoutFormattingCodes(mode.getText().toLowerCase())
 							.startsWith(screen.getFilter().toLowerCase())).reversed())
 					.forEach((mode) -> add(mode.component(screen)));
-		}
-		else if (screen.isAllGames()) {
+		} else if (screen.isAllGames()) {
 			add(new BackOption().component(screen));
 
 			if (screen.getGame() != null) {
@@ -53,7 +52,8 @@ public class QuickPlayScroll extends ScrollListComponent {
 			screen.setSelected((QuickPlayOptionComponent) getSubComponents().get(0));
 		else {
 			screen.setSelected(null);
-			add(new LabelComponent("sol_client.no_results"), new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
+			add(new LabelComponent("sol_client.no_results"),
+					new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
 		}
 	}
 
@@ -70,7 +70,6 @@ public class QuickPlayScroll extends ScrollListComponent {
 			else if (keyCode == Keyboard.KEY_END)
 				screen.setSelected((QuickPlayOptionComponent) getSubComponents().get(getSubComponents().size() - 1));
 		}
-
 
 		return super.keyPressed(info, keyCode, character);
 	}

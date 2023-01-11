@@ -34,7 +34,8 @@ public class LabelComponent extends ColouredComponent {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return new Rectangle(0, 0, (int) regularFont.getWidth(nvg, getText()), (int) regularFont.getLineHeight(nvg) + 2);
+		return new Rectangle(0, 0, (int) regularFont.getWidth(nvg, getText()),
+				(int) regularFont.getLineHeight(nvg) + 2);
 	}
 
 	public String getText() {

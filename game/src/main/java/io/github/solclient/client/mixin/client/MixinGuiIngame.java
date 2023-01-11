@@ -25,7 +25,8 @@ public abstract class MixinGuiIngame {
 			+ "/GlStateManager;enableBlend()V", ordinal = 1, shift = At.Shift.AFTER), cancellable = true)
 	public void preRenderGameOverlay(float partialTicks, CallbackInfo callback) {
 		GlStateManager.disableLighting();
-		if (Client.INSTANCE.getEvents().post(new PreGameOverlayRenderEvent(partialTicks, GameOverlayElement.ALL)).cancelled) {
+		if (Client.INSTANCE.getEvents()
+				.post(new PreGameOverlayRenderEvent(partialTicks, GameOverlayElement.ALL)).cancelled) {
 			callback.cancel();
 		}
 	}
@@ -39,8 +40,9 @@ public abstract class MixinGuiIngame {
 	@Redirect(method = "renderGameOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiIngame;"
 			+ "showCrosshair()Z"))
 	public boolean preRenderCrosshair(GuiIngame guiIngame) {
-		boolean result = !Client.INSTANCE.getEvents().post(new PreGameOverlayRenderEvent(
-				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks, GameOverlayElement.CROSSHAIRS)).cancelled
+		boolean result = !Client.INSTANCE.getEvents()
+				.post(new PreGameOverlayRenderEvent(MinecraftExtension.getInstance().getTimerSC().renderPartialTicks,
+						GameOverlayElement.CROSSHAIRS)).cancelled
 				&& showCrosshair();
 		mc.getTextureManager().bindTexture(Gui.icons);
 		return result;
@@ -49,7 +51,8 @@ public abstract class MixinGuiIngame {
 	@Inject(method = "renderGameOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiIngame;"
 			+ "drawTexturedModalRect(IIIIII)V"))
 	public void overrideCrosshair(float partialTicks, CallbackInfo ci) {
-		Client.INSTANCE.getEvents().post(new PostGameOverlayRenderEvent(partialTicks, GameOverlayElement.CROSSHAIRS));
+		Client.INSTANCE.getEvents()
+				.post(new PostGameOverlayRenderEvent(partialTicks, GameOverlayElement.CROSSHAIRS));
 	}
 
 	@Inject(method = "renderScoreboard", at = @At("HEAD"), cancellable = true)
@@ -63,8 +66,9 @@ public abstract class MixinGuiIngame {
 
 	@Inject(method = "renderHorseJumpBar", at = @At("HEAD"), cancellable = true)
 	public void preJumpBar(ScaledResolution scaledRes, int x, CallbackInfo callback) {
-		if (Client.INSTANCE.getEvents().post(new PreGameOverlayRenderEvent(
-				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks, GameOverlayElement.JUMPBAR)).cancelled) {
+		if (Client.INSTANCE.getEvents()
+				.post(new PreGameOverlayRenderEvent(MinecraftExtension.getInstance().getTimerSC().renderPartialTicks,
+						GameOverlayElement.JUMPBAR)).cancelled) {
 			mc.getTextureManager().bindTexture(Gui.icons);
 			callback.cancel();
 		}

@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import io.github.solclient.client.mod.Mod;
-import lombok.*;
+import lombok.Setter;
 import net.minecraft.client.multiplayer.ServerData;
 
 public enum DetectedServer {

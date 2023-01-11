@@ -53,13 +53,13 @@ public class TimersMod extends HudMod {
 	public Rectangle getBounds(Position position) {
 		int y = position.getY();
 		switch (alignment) {
-		case TOP:
-			break;
-		case MIDDLE:
-			y -= ((TIMER_HEIGHT * 3) / 2) * getScale();
-			break;
-		case BOTTOM:
-			y -= (TIMER_HEIGHT * 3) * getScale();
+			case TOP:
+				break;
+			case MIDDLE:
+				y -= ((TIMER_HEIGHT * 3) / 2) * getScale();
+				break;
+			case BOTTOM:
+				y -= (TIMER_HEIGHT * 3) * getScale();
 		}
 		return new Rectangle(position.getX(), y,
 				22 + font.getStringWidth("Dishwasher") + 4 + font.getStringWidth("00:00"), 19 * 3);
@@ -81,13 +81,13 @@ public class TimersMod extends HudMod {
 		int y = position.getY();
 
 		switch (alignment) {
-		case TOP:
-			break;
-		case MIDDLE:
-			y -= (TIMER_HEIGHT * (timers.size())) / 2;
-			break;
-		case BOTTOM:
-			y -= TIMER_HEIGHT * timers.size();
+			case TOP:
+				break;
+			case MIDDLE:
+				y -= (TIMER_HEIGHT * (timers.size())) / 2;
+				break;
+			case BOTTOM:
+				y -= TIMER_HEIGHT * timers.size();
 		}
 
 		for (Timer timer : timers.values()) {

@@ -253,7 +253,8 @@ public final class ModManager implements Iterable<Mod> {
 	}
 
 	/**
-	 * Gets the list of mods' huds. Note: for efficiency, this returns the internal one.
+	 * Gets the list of mods' huds. Note: for efficiency, this returns the internal
+	 * one.
 	 *
 	 * @return the list.
 	 */

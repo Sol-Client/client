@@ -55,14 +55,14 @@ public class PotionEffectsMod extends HudMod {
 		int y = position.getY();
 
 		switch (alignment) {
-		case TOP:
-			break;
-		case MIDDLE:
-			y -= getHeight(2) / 2 * getScale();
-			break;
-		case BOTTOM:
-			y -= getHeight(2) * getScale();
-			break;
+			case TOP:
+				break;
+			case MIDDLE:
+				y -= getHeight(2) / 2 * getScale();
+				break;
+			case BOTTOM:
+				y -= getHeight(2) * getScale();
+				break;
 		}
 
 		return new Rectangle(position.getX(), y, getWidth(), getHeight(2) + 12 + (background ? 2 : 0));
@@ -90,13 +90,13 @@ public class PotionEffectsMod extends HudMod {
 		}
 
 		switch (alignment) {
-		case TOP:
-			break;
-		case MIDDLE:
-			y -= (getHeight(effects.size()) / 2);
-			break;
-		case BOTTOM:
-			y -= getHeight(effects.size());
+			case TOP:
+				break;
+			case MIDDLE:
+				y -= (getHeight(effects.size()) / 2);
+				break;
+			case BOTTOM:
+				y -= getHeight(effects.size());
 		}
 
 		if (!effects.isEmpty()) {

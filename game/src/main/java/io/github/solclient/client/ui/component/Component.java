@@ -8,7 +8,7 @@ import org.lwjgl.nanovg.NanoVG;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.*;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;
-import io.github.solclient.client.util.*;
+import io.github.solclient.client.util.NanoVGManager;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
 import net.minecraft.client.Minecraft;

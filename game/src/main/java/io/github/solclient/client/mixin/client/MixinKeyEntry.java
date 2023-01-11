@@ -17,7 +17,8 @@ public class MixinKeyEntry {
 	@Inject(method = "drawEntry", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/GuiButton;displayString:Ljava/lang/String;", ordinal = 0, shift = Shift.AFTER))
 	public void addModifiersToLabel(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY,
 			boolean isSelected, CallbackInfo callback) {
-		btnChangeKeyBinding.displayString = KeyBindingExtension.from(keybinding).getPrefix() + btnChangeKeyBinding.displayString;
+		btnChangeKeyBinding.displayString = KeyBindingExtension.from(keybinding).getPrefix()
+				+ btnChangeKeyBinding.displayString;
 	}
 
 	@Redirect(method = "drawEntry", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/GuiButton;enabled:Z"))

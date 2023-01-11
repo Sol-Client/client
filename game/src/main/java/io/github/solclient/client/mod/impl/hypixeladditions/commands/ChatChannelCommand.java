@@ -2,7 +2,7 @@ package io.github.solclient.client.mod.impl.hypixeladditions.commands;
 
 import java.util.*;
 
-import io.github.solclient.client.*;
+import io.github.solclient.client.Client;
 import io.github.solclient.client.chatextensions.channel.ChatChannelSystem;
 import io.github.solclient.client.mod.impl.hypixeladditions.*;
 import net.minecraft.command.*;

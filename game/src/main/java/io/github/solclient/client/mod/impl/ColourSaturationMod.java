@@ -7,7 +7,7 @@ import org.apache.commons.io.IOUtils;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.*;
+import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
 import io.github.solclient.client.mod.*;

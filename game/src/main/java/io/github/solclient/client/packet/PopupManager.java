@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.lwjgl.input.Keyboard;
 
-import io.github.solclient.client.*;
+import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.util.Utils;

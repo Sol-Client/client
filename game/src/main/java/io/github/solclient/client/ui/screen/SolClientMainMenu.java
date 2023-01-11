@@ -14,7 +14,7 @@ import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.util.*;
+import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
@@ -167,9 +167,11 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 			NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
 
 			String copyrightString = "Copyright Mojang AB. Do not distribute!";
-			regularFont.renderString(nvg, copyrightString, (int) (screen.width - regularFont.getWidth(nvg, copyrightString) - 10), screen.height - 15);
+			regularFont.renderString(nvg, copyrightString,
+					(int) (screen.width - regularFont.getWidth(nvg, copyrightString) - 10), screen.height - 15);
 			String versionString = "Minecraft 1.8.9";
-			regularFont.renderString(nvg, versionString, (int) (screen.width - regularFont.getWidth(nvg, versionString) - 10), screen.height - 25);
+			regularFont.renderString(nvg, versionString,
+					(int) (screen.width - regularFont.getWidth(nvg, versionString) - 10), screen.height - 25);
 
 			regularFont.renderString(nvg, GlobalConstants.COPYRIGHT, 10, screen.height - 15);
 			regularFont.renderString(nvg, GlobalConstants.NAME, 10, screen.height - 25);

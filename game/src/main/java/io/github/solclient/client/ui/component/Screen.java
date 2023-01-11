@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.*;
 import org.lwjgl.nanovg.NanoVG;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
 
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.NanoVGManager;
@@ -162,7 +162,8 @@ public class Screen extends GuiScreen {
 	}
 
 	private ComponentRenderInfo getInfo() {
-		return new ComponentRenderInfo(mouseX, mouseY, MinecraftExtension.getInstance().getTimerSC().renderPartialTicks);
+		return new ComponentRenderInfo(mouseX, mouseY,
+				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks);
 	}
 
 }

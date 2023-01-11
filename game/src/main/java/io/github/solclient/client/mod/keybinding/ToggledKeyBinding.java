@@ -53,7 +53,8 @@ public abstract class ToggledKeyBinding<ModType extends Mod> extends KeyBinding 
 	public String getText(boolean editMode) {
 		String translationId;
 		if (editMode) {
-			translationId = String.format("sol_client.mod.%s.%s", mod.getId(), ToggleState.TOGGLED.name().toLowerCase());
+			translationId = String.format("sol_client.mod.%s.%s", mod.getId(),
+					ToggleState.TOGGLED.name().toLowerCase());
 		} else {
 			translationId = String.format("sol_client.mod.%s.%s", mod.getId(), getState().name().toLowerCase());
 		}

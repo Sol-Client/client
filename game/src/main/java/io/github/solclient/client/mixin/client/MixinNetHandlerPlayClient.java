@@ -38,9 +38,10 @@ public class MixinNetHandlerPlayClient {
 
 	@Redirect(method = "handleChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;printChatMessage(Lnet/minecraft/util/IChatComponent;)V"))
 	public void handleChat(GuiNewChat guiNewChat, IChatComponent chatComponent) {
-		if (!Client.INSTANCE.getEvents().post(new ReceiveChatMessageEvent(false,
-				EnumChatFormatting.getTextWithoutFormattingCodes(chatComponent.getUnformattedText()),
-				false)).cancelled) {
+		if (!Client.INSTANCE.getEvents()
+				.post(new ReceiveChatMessageEvent(false,
+						EnumChatFormatting.getTextWithoutFormattingCodes(chatComponent.getUnformattedText()),
+						false)).cancelled) {
 			guiNewChat.printChatMessage(chatComponent);
 		}
 	}

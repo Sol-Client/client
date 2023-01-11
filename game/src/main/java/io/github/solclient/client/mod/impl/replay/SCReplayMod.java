@@ -125,7 +125,7 @@ public class SCReplayMod extends Mod {
 		backend = new SCReplayModBackend();
 		backend.init();
 
-		Client.INSTANCE.bus.register(new ConstantListener());
+		Client.INSTANCE.getEvents().register(new ConstantListener());
 
 		super.onRegister();
 	}
@@ -188,7 +188,7 @@ public class SCReplayMod extends Mod {
 			enabled = deferedState;
 			if (deferedState) {
 				for (Object event : registerOnEnable) {
-					Client.INSTANCE.bus.register(event);
+					Client.INSTANCE.getEvents().register(event);
 					unregisterOnDisable.add(event);
 				}
 				registerOnEnable.clear();
@@ -196,7 +196,7 @@ public class SCReplayMod extends Mod {
 				OpenGuiScreenCallback.EVENT.invoker().openGuiScreen(mc.currentScreen);
 			} else {
 				for (Object event : unregisterOnDisable) {
-					Client.INSTANCE.bus.unregister(event);
+					Client.INSTANCE.getEvents().unregister(event);
 					registerOnEnable.add(event);
 				}
 				unregisterOnDisable.clear();
@@ -210,7 +210,7 @@ public class SCReplayMod extends Mod {
 			unregisterOnDisable.add(event);
 		} else {
 			registerOnEnable.add(event);
-			Client.INSTANCE.bus.unregister(event);
+			Client.INSTANCE.getEvents().unregister(event);
 		}
 	}
 

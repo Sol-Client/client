@@ -14,7 +14,7 @@ public final class HidePopupAction implements ApiAction {
 
 	@Override
 	public void exec(PacketApi api) {
-		if (!Client.INSTANCE.getPopupManager().remove(uuid) && api.isDevMode())
+		if (!Client.INSTANCE.getPopups().remove(uuid) && api.isDevMode())
 			PacketApi.LOGGER.warn("Tried to remove popup which wasn't present: {}", uuid);
 	}
 

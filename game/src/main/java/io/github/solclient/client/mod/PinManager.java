@@ -2,6 +2,7 @@ package io.github.solclient.client.mod;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.*;
 
 import com.google.gson.*;
@@ -10,30 +11,24 @@ import io.github.solclient.client.Client;
 
 public final class PinManager {
 
-	private final LinkedList<Mod> pinnedMods;
+	private final LinkedList<Mod> pinnedMods = new LinkedList<>();
 
-	public PinManager() {
-		this.pinnedMods = new LinkedList<>();
-	}
-
-	public void load(File file) throws FileNotFoundException, IOException {
-		if (!file.exists()) {
+	public void load(Path file) throws FileNotFoundException, IOException {
+		if (!Files.exists(file))
 			return;
-		}
 
 		pinnedMods.clear();
 		Client.INSTANCE.getMods().forEach(Mod::notifyUnpin);
 
-		try (InputStream in = new FileInputStream(file)) {
-			JsonArray array = JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8))
-					.getAsJsonArray();
+		try (Reader reader = new InputStreamReader(Files.newInputStream(file), StandardCharsets.UTF_8)) {
+			JsonArray array = JsonParser.parseReader(reader).getAsJsonArray();
 			array.forEach((mod) -> addById(mod.getAsString()));
 		}
 	}
 
-	public void save(File file) throws IOException {
+	public void save(Path file) throws IOException {
 		// dirty...
-		try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
+		try (Writer writer = new OutputStreamWriter(Files.newOutputStream(file), StandardCharsets.UTF_8)) {
 			int i = 0;
 			writer.write('[');
 			for (Mod mod : pinnedMods) {
@@ -49,13 +44,10 @@ public final class PinManager {
 	}
 
 	private void addById(String id) {
-		Mod mod = Client.INSTANCE.getModById(id);
-		if (mod == null) {
-			return;
-		}
-
-		pinnedMods.add(mod);
-		mod.notifyPin();
+		Client.INSTANCE.getMods().getById(id).ifPresent((mod) -> {
+			pinnedMods.add(mod);
+			mod.notifyPin();
+		});
 	}
 
 	boolean determinePinState(Mod mod) {

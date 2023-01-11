@@ -18,7 +18,7 @@ public class CpsMonitor {
 
 	public CpsMonitor(int button) {
 		this.button = button;
-		Client.INSTANCE.bus.register(this);
+		Client.INSTANCE.getEvents().register(this);
 	}
 
 	@EventHandler

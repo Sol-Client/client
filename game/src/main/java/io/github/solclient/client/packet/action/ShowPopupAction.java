@@ -23,7 +23,7 @@ public final class ShowPopupAction implements ApiAction {
 		if (command == null)
 			throw new ApiUsageError("No command provided");
 
-		Client.INSTANCE.getPopupManager().add(new Popup(text, command, time), handle);
+		Client.INSTANCE.getPopups().add(new Popup(text, command, time), handle);
 	}
 
 }

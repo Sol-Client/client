@@ -7,19 +7,19 @@ import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.discordrpc.socket.User;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.Minecraft;
+import lombok.Setter;
 import net.minecraft.client.gui.*;
 
 public class DiscordVoiceChatHud extends BaseHudElement {
 
 	private static final int USER_HEIGHT = 20;
 
-	protected final FontRenderer font;
 	private final DiscordIntegrationMod mod;
+	@Setter
+	private FontRenderer font;
 
 	public DiscordVoiceChatHud(DiscordIntegrationMod mod) {
 		this.mod = mod;
-		font = Minecraft.getMinecraft().fontRendererObj;
 	}
 
 	@Override
@@ -32,14 +32,14 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 		int yOffset = 0;
 
 		switch (mod.voiceChatHudAlignment) {
-		case MIDDLE:
-			yOffset = (USER_HEIGHT * 4) / 2;
-			break;
-		case BOTTOM:
-			yOffset = USER_HEIGHT * 4;
-			break;
-		default:
-			break;
+			case MIDDLE:
+				yOffset = (USER_HEIGHT * 4) / 2;
+				break;
+			case BOTTOM:
+				yOffset = USER_HEIGHT * 4;
+				break;
+			default:
+				break;
 		}
 
 		return position.offset(0, yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
@@ -76,14 +76,14 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 		int y = position.getY();
 
 		switch (mod.voiceChatHudAlignment) {
-		case MIDDLE:
-			y -= (USER_HEIGHT * (users.size())) / 2;
-			break;
-		case BOTTOM:
-			y -= USER_HEIGHT * users.size();
-			break;
-		default:
-			break;
+			case MIDDLE:
+				y -= (USER_HEIGHT * (users.size())) / 2;
+				break;
+			case BOTTOM:
+				y -= USER_HEIGHT * users.size();
+				break;
+			default:
+				break;
 		}
 
 		for (User user : users) {

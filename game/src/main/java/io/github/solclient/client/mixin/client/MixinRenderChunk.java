@@ -32,7 +32,7 @@ public class MixinRenderChunk {
 
 	@Inject(method = "setPosition", at = @At("RETURN"))
 	public void setPosition(BlockPos pos, CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new RenderChunkPositionEvent((RenderChunk) (Object) this, pos));
+		Client.INSTANCE.getEvents().post(new RenderChunkPositionEvent((RenderChunk) (Object) this, pos));
 	}
 
 }

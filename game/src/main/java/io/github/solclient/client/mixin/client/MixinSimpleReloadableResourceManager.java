@@ -15,8 +15,8 @@ public class MixinSimpleReloadableResourceManager {
 
 	@Inject(method = "getResource", at = @At("HEAD"), cancellable = true)
 	public void getResource(ResourceLocation location, CallbackInfoReturnable<IResource> callback) {
-		if (Client.INSTANCE.getResource(location) != null) {
-			callback.setReturnValue(Client.INSTANCE.getResource(location));
+		if (Client.INSTANCE.getPseudoResources().get(location) != null) {
+			callback.setReturnValue(Client.INSTANCE.getPseudoResources().get(location));
 		}
 	}
 

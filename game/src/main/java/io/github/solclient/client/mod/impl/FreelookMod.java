@@ -43,12 +43,6 @@ public class FreelookMod extends Mod {
 		return ModCategory.UTILITY;
 	}
 
-	@Override
-	public void onRegister() {
-		super.onRegister();
-		Client.INSTANCE.registerKeyBinding(key);
-	}
-
 	@EventHandler
 	public void onTick(PreTickEvent event) {
 		if (key.isKeyDown()) {

@@ -17,7 +17,7 @@ public class MixinRenderEntityItem {
 	public void preItemEntityRender(EntityItem itemIn, double x, double y, double z, float partialTicks,
 			IBakedModel model, CallbackInfoReturnable<Integer> callback) {
 		int result;
-		if ((result = Client.INSTANCE.bus
+		if ((result = Client.INSTANCE.getEvents()
 				.post(new ItemEntityRenderEvent(itemIn, x, y, z, partialTicks, model)).result) != -1) {
 			callback.setReturnValue(result);
 		}

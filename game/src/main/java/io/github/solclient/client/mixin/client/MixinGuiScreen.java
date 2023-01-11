@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.extension.*;
 import net.minecraft.client.Minecraft;
@@ -31,7 +31,7 @@ public abstract class MixinGuiScreen implements GuiScreenExtension {
 	@Redirect(method = "drawWorldBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawGradientRect(IIIIII)V"))
 	public void getTopColour(GuiScreen guiScreen, int left, int top, int right, int bottom, int startColor,
 			int endColor) {
-		if (!Client.INSTANCE.bus.post(new RenderGuiBackgroundEvent()).cancelled) {
+		if (!Client.INSTANCE.getEvents().post(new RenderGuiBackgroundEvent()).cancelled) {
 			Utils.drawGradientRect(left, top, right, bottom, startColor, endColor);
 		} else {
 			Utils.drawGradientRect(left, top, right, bottom, 0, 0);
@@ -41,29 +41,29 @@ public abstract class MixinGuiScreen implements GuiScreenExtension {
 	@Redirect(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;mousePressed(Lnet/minecraft/client/Minecraft;II)Z"))
 	public boolean onActionPerformed(GuiButton instance, Minecraft mc, int mouseX, int mouseY) {
 		return instance.mousePressed(mc, mouseX, mouseY)
-				&& !Client.INSTANCE.bus.post(new ActionPerformedEvent((GuiScreen) (Object) this, instance)).cancelled;
+				&& !Client.INSTANCE.getEvents().post(new ActionPerformedEvent((GuiScreen) (Object) this, instance)).cancelled;
 	}
 
 	@Redirect(method = "setWorldAndResolution", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui"
 			+ "/GuiScreen;initGui()V"))
 	public void guiInit(GuiScreen instance) {
-		if (!Client.INSTANCE.bus.post(new PreGuiInitEvent(instance)).cancelled) {
+		if (!Client.INSTANCE.getEvents().post(new PreGuiInitEvent(instance)).cancelled) {
 			instance.initGui();
-			Client.INSTANCE.bus.post(new PostGuiInitEvent(instance, buttonList));
+			Client.INSTANCE.getEvents().post(new PostGuiInitEvent(instance, buttonList));
 		}
 	}
 
 	@Inject(method = "drawScreen", at = @At("HEAD"))
 	public void preGuiRender(int mouseX, int mouseY, float partialTicks, CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new PreGuiRenderEvent(partialTicks));
+		Client.INSTANCE.getEvents().post(new PreGuiRenderEvent(partialTicks));
 	}
 
 	@Inject(method = "drawScreen", at = @At("RETURN"))
 	public void postGuiRender(int mouseX, int mouseY, float partialTicks, CallbackInfo callback) {
 		GlStateManager.color(1, 1, 1, 1); // Prevent colour from leaking
-		Client.INSTANCE.bus.post(new PostGuiRenderEvent(partialTicks));
+		Client.INSTANCE.getEvents().post(new PostGuiRenderEvent(partialTicks));
 
-		if (SolClientMod.instance.logoInInventory && (Object) this instanceof GuiContainer) {
+		if (SolClientConfig.instance.logoInInventory && (Object) this instanceof GuiContainer) {
 			GlStateManager.enableBlend();
 
 			mc.getTextureManager().bindTexture(
@@ -76,7 +76,7 @@ public abstract class MixinGuiScreen implements GuiScreenExtension {
 	@Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;"
 			+ "handleMouseInput()V"))
 	public void handleMouseInput(GuiScreen instance) throws IOException {
-		if (!Client.INSTANCE.bus.post(new PreGuiMouseInputEvent()).cancelled) {
+		if (!Client.INSTANCE.getEvents().post(new PreGuiMouseInputEvent()).cancelled) {
 			instance.handleMouseInput();
 		}
 	}

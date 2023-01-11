@@ -52,9 +52,6 @@ public class MixinGameSettings {
 		if (result == null)
 			return null;
 
-		if (result == null)
-			return null;
-
 		if (result.startsWith("key_mods_") && result.indexOf(':') != -1) {
 			String key = result.substring(9, result.indexOf(':'));
 			String value = result.substring(result.indexOf(':') + 1);

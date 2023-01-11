@@ -1,6 +1,6 @@
 package io.github.solclient.client.ui.component.controller;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.util.data.Colour;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class AnimatedColourController implements Controller<Colour> {
 			currentTime = System.currentTimeMillis();
 		}
 
-		return animate(SolClientMod.instance.smoothUIColours
+		return animate(SolClientConfig.instance.smoothUIColours
 				? Math.max(0, (System.currentTimeMillis() - currentTime) / ((float) duration))
 				: 1);
 	}

@@ -43,7 +43,7 @@ public class SCReplayModRecording implements Module {
 		instance = this;
 		core = mod;
 		core.getSettingsRegistry().register(Setting.class);
-		Client.INSTANCE.bus.register(this);
+		Client.INSTANCE.getEvents().register(this);
 	}
 
 	@Override

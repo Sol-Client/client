@@ -28,7 +28,7 @@ public class TNTTimerMod extends Mod {
 		float fuse = tnt.fuse;
 
 		// Based on Sk1er's mod
-		if (Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL && "BED WARS".equals(Utils.getScoreboardTitle())) {
+		if (DetectedServer.current() == DetectedServer.HYPIXEL && "BED WARS".equals(Utils.getScoreboardTitle())) {
 			fuse -= 28;
 		}
 

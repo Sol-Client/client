@@ -21,7 +21,7 @@ public abstract class MixinEntityLivingBase implements EntityLivingBaseExtension
 	@Inject(method = "onItemPickup", at = @At("HEAD"))
 	public void onItemPickup(Entity entity, int stackSize, CallbackInfo callback) {
 		if (entity instanceof EntityItem && (Object) this instanceof EntityPlayer) {
-			Client.INSTANCE.bus.post(new ItemPickupEvent((EntityPlayer) (Object) this, (EntityItem) entity));
+			Client.INSTANCE.getEvents().post(new ItemPickupEvent((EntityPlayer) (Object) this, (EntityItem) entity));
 		}
 	}
 

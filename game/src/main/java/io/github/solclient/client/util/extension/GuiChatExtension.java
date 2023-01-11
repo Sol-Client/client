@@ -1,6 +1,6 @@
 package io.github.solclient.client.util.extension;
 
-import io.github.solclient.client.ui.ChatButton;
+import io.github.solclient.client.chatextensions.ChatButton;
 import io.github.solclient.client.util.Utils;
 
 public interface GuiChatExtension {

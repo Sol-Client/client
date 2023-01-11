@@ -100,9 +100,7 @@ public class ChatMod extends HudMod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-
 		instance = this;
-		Client.INSTANCE.registerKeyBinding(peekKey);
 	}
 
 	@Override
@@ -111,9 +109,8 @@ public class ChatMod extends HudMod {
 
 		symbolsButton = new SymbolsButton(this);
 
-		if (enabled) {
-			Client.INSTANCE.registerChatButton(symbolsButton);
-		}
+		if (enabled)
+			Client.INSTANCE.getChatExtensions().registerButton(symbolsButton);
 	}
 
 	@Override
@@ -121,9 +118,8 @@ public class ChatMod extends HudMod {
 		super.onEnable();
 		enabled = true;
 
-		if (symbolsButton != null) {
-			Client.INSTANCE.registerChatButton(symbolsButton);
-		}
+		if (symbolsButton != null)
+			Client.INSTANCE.getChatExtensions().registerButton(symbolsButton);
 
 		if (mc.theWorld != null) {
 			mc.ingameGUI.getChatGUI().refreshChat();
@@ -134,7 +130,7 @@ public class ChatMod extends HudMod {
 	protected void onDisable() {
 		super.onDisable();
 		enabled = false;
-		Client.INSTANCE.unregisterChatButton(symbolsButton);
+		Client.INSTANCE.getChatExtensions().unregisterButton(symbolsButton);
 
 		if (mc.theWorld != null) {
 			mc.ingameGUI.getChatGUI().refreshChat();

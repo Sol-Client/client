@@ -26,19 +26,19 @@ public class MixinNetHandlerPlayClient {
 
 	@Inject(method = "handleCustomPayload", at = @At("RETURN"))
 	public void handleCustomPayload(S3FPacketCustomPayload payload, CallbackInfo callback) {
-		Client.INSTANCE.bus.post(payload); // Post as normal event object
+		Client.INSTANCE.getEvents().post(payload); // Post as normal event object
 	}
 
 	@Inject(method = "handleEntityStatus", at = @At("RETURN"))
 	public void handleEntityStatus(S19PacketEntityStatus packetIn, CallbackInfo callback) {
 		if (packetIn.getOpCode() == 2) {
-			Client.INSTANCE.bus.post(new EntityDamageEvent(packetIn.getEntity(clientWorldController)));
+			Client.INSTANCE.getEvents().post(new EntityDamageEvent(packetIn.getEntity(clientWorldController)));
 		}
 	}
 
 	@Redirect(method = "handleChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;printChatMessage(Lnet/minecraft/util/IChatComponent;)V"))
 	public void handleChat(GuiNewChat guiNewChat, IChatComponent chatComponent) {
-		if (!Client.INSTANCE.bus.post(new ReceiveChatMessageEvent(false,
+		if (!Client.INSTANCE.getEvents().post(new ReceiveChatMessageEvent(false,
 				EnumChatFormatting.getTextWithoutFormattingCodes(chatComponent.getUnformattedText()),
 				false)).cancelled) {
 			guiNewChat.printChatMessage(chatComponent);
@@ -47,7 +47,7 @@ public class MixinNetHandlerPlayClient {
 
 	@Redirect(method = "handleChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiIngame;setRecordPlaying(Lnet/minecraft/util/IChatComponent;Z)V"))
 	public void handleActionBar(GuiIngame guiIngame, IChatComponent component, boolean isPlaying) {
-		if (!Client.INSTANCE.bus.post(new ReceiveChatMessageEvent(true,
+		if (!Client.INSTANCE.getEvents().post(new ReceiveChatMessageEvent(true,
 				EnumChatFormatting.getTextWithoutFormattingCodes(component.getUnformattedText()), false)).cancelled) {
 			guiIngame.setRecordPlaying(component, isPlaying);
 		}

@@ -7,15 +7,13 @@ public enum PingSource {
 	AUTO, MULTIPLAYER_SCREEN, TAB_LIST;
 
 	public PingSource resolve() {
-		if (this == AUTO) {
-			if (Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL) {
-				return MULTIPLAYER_SCREEN;
-			}
+		if (this != AUTO)
+			return this;
 
-			return TAB_LIST;
-		}
+		if (DetectedServer.current() == DetectedServer.HYPIXEL)
+			return MULTIPLAYER_SCREEN;
 
-		return this;
+		return TAB_LIST;
 	}
 
 	@Override

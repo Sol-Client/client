@@ -14,7 +14,6 @@ import io.github.solclient.client.util.extension.MinecraftExtension;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.util.ChatComponentText;
 
 public class Screen extends GuiScreen {
 

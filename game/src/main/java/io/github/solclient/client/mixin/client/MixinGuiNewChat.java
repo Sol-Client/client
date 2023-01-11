@@ -19,7 +19,7 @@ public abstract class MixinGuiNewChat implements GuiNewChatExtension {
 
 	@Inject(at = @At("HEAD"), cancellable = true, method = "drawChat")
 	public void drawChat(int updateCounter, CallbackInfo callback) {
-		if (Client.INSTANCE.bus.post(new ChatRenderEvent((GuiNewChat) (Object) /* hax */ this, updateCounter,
+		if (Client.INSTANCE.getEvents().post(new ChatRenderEvent((GuiNewChat) (Object) /* hax */ this, updateCounter,
 				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
 			callback.cancel();
 		}

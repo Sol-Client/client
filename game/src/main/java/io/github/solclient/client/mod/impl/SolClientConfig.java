@@ -10,15 +10,13 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.Colour;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 
-public class SolClientMod extends ConfigOnlyMod {
+public class SolClientConfig extends ConfigOnlyMod {
 
-	public static SolClientMod instance;
+	public static SolClientConfig instance;
 
 	@Expose
 	@Option
@@ -77,14 +75,12 @@ public class SolClientMod extends ConfigOnlyMod {
 		super.onRegister();
 
 		instance = this;
-		Client.INSTANCE.registerKeyBinding(modsKey);
-		Client.INSTANCE.registerKeyBinding(editHudKey);
 		uiHover = getUiHover();
 
 		// yuck...
-		if (GlobalConstants.AUTOUPDATE) {
+		if (GlobalConstants.AUTOUPDATE)
 			getOptions().remove(0);
-		} else if (remindMeToUpdate) {
+		else if (remindMeToUpdate) {
 			Thread thread = new Thread(() -> {
 				try (InputStream in = GlobalConstants.RELEASE_API.openStream()) {
 					JsonObject object = JsonParser.parseReader(new InputStreamReader(in)).getAsJsonObject();

@@ -32,7 +32,7 @@ public interface HudElement {
 
 	Mod getMod();
 
-	boolean isSelected(int mouseX, int mouseY);
+	boolean isHovered(int mouseX, int mouseY);
 
 	boolean isShownInReplay();
 

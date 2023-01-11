@@ -4,12 +4,12 @@ import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.Getter;
@@ -39,7 +39,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		if (mc.theWorld == null) {
-			if (SolClientMod.instance.fancyMainMenu) {
+			if (SolClientConfig.instance.fancyMainMenu) {
 				background = false;
 				drawPanorama(mouseX, mouseY, partialTicks);
 			} else {
@@ -65,8 +65,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 	@Override
 	public void closeAll() {
-		if (mc.theWorld == null && SolClientMod.instance.fancyMainMenu) {
-			mc.displayGuiScreen(Client.INSTANCE.getMainMenu());
+		if (mc.theWorld == null && SolClientConfig.instance.fancyMainMenu) {
+			mc.displayGuiScreen(ActiveMainMenu.getInstance());
 			return;
 		}
 
@@ -269,7 +269,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			boolean result = super.keyPressed(info, keyCode, character);
 
 			if (!result) {
-				if (keyCode == SolClientMod.instance.modsKey.getKeyCode() && KeyBindingExtension.from(SolClientMod.instance.modsKey).areModsPressed()) {
+				if (keyCode == SolClientConfig.instance.modsKey.getKeyCode() && KeyBindingExtension.from(SolClientConfig.instance.modsKey).areModsPressed()) {
 					mc.displayGuiScreen(null);
 					return true;
 				} else if (mod != null && (keyCode == Keyboard.KEY_BACK

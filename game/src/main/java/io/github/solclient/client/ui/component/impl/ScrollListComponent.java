@@ -3,7 +3,7 @@ package io.github.solclient.client.ui.component.impl;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.util.data.*;
@@ -81,7 +81,7 @@ public abstract class ScrollListComponent extends Component {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if (!SolClientMod.instance.smoothScrolling) {
+		if (!SolClientConfig.instance.smoothScrolling) {
 			calculatedY = targetY;
 		} else {
 			calculatedY = (lastAnimatedY + (animatedY - lastAnimatedY) * info.getPartialTicks());

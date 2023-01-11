@@ -17,7 +17,7 @@ public class MixinWorldInfo {
 	@Inject(method = "getWorldTime", at = @At("HEAD"), cancellable = true)
 	public void overrideWorldTime(CallbackInfoReturnable<Long> callback) {
 		if (mc.theWorld != null && (Object) this == mc.theWorld.getWorldInfo()) {
-			callback.setReturnValue(Client.INSTANCE.bus.post(new TimeEvent(worldTime)).time);
+			callback.setReturnValue(Client.INSTANCE.getEvents().post(new TimeEvent(worldTime)).time);
 		}
 	}
 

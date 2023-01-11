@@ -29,8 +29,8 @@ public class PopupManager {
 	private Popup currentPopup;
 
 	public PopupManager() {
-		Client.INSTANCE.registerKeyBinding(keyAcceptRequest);
-		Client.INSTANCE.registerKeyBinding(keyDismissRequest);
+		Utils.registerKeyBinding(keyAcceptRequest);
+		Utils.registerKeyBinding(keyDismissRequest);
 	}
 
 	@EventHandler

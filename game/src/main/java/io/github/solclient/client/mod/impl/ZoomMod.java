@@ -65,14 +65,6 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 		return ModCategory.UTILITY;
 	}
 
-	@Override
-	public void onRegister() {
-		super.onRegister();
-		Client.INSTANCE.registerKeyBinding(key);
-		Client.INSTANCE.registerKeyBinding(zoomOutKey);
-		Client.INSTANCE.registerKeyBinding(zoomInKey);
-	}
-
 	public void start() {
 		active = true;
 		lastSensitivity = mc.gameSettings.mouseSensitivity;

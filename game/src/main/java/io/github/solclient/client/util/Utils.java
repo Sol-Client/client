@@ -6,11 +6,13 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.IntConsumer;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.GL11;
@@ -20,10 +22,9 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -32,7 +33,7 @@ import net.minecraft.client.multiplayer.ServerAddress;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.settings.*;
 import net.minecraft.network.*;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.status.INetHandlerStatusClient;
@@ -188,7 +189,7 @@ public class Utils {
 	}
 
 	public void playClickSound(boolean ui) {
-		if (ui && !SolClientMod.instance.buttonClicks) {
+		if (ui && !SolClientConfig.instance.buttonClicks) {
 			return;
 		}
 
@@ -689,6 +690,31 @@ public class Utils {
 			result[i] = BOUNDARY_CHARS[ThreadLocalRandom.current().nextInt(BOUNDARY_CHARS.length)];
 		}
 		return new String(result, StandardCharsets.US_ASCII);
+	}
+
+	public void ensureDirectory(Path path) throws IOException {
+		if (Files.isDirectory(path))
+			return;
+
+		// if the file is just an empty one created by mistake - or a broken link - delete it
+		if (Files.isRegularFile(path) && Files.size(path) == 0)
+			Files.delete(path);
+
+		if (!Files.isDirectory(path.getParent()))
+			ensureDirectory(path.getParent());
+
+		Files.createDirectory(path);
+	}
+
+	public void registerKeyBinding(KeyBinding keyBinding) {
+		GameSettings settings = Minecraft.getMinecraft().gameSettings;
+		settings.keyBindings = ArrayUtils.add(settings.keyBindings, keyBinding);
+	}
+
+	public void unregisterKeyBinding(KeyBinding keyBinding) {
+		GameSettings settings = Minecraft.getMinecraft().gameSettings;
+		settings.keyBindings = ArrayUtils.removeElement(settings.keyBindings, keyBinding);
+		keyBinding.setKeyCode(0);
 	}
 
 }

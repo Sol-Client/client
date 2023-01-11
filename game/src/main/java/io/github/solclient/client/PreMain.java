@@ -12,6 +12,7 @@ public class PreMain {
 		if (LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_LINUX) {
 			preload("org.lwjgl.opengl.LinuxKeycodes");
 		}
+
 		Main.main(args);
 	}
 

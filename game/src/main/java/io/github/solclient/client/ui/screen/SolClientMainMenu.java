@@ -8,7 +8,7 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
 import io.github.solclient.client.GlobalConstants;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
@@ -52,8 +52,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 		public MainMenuComponent() {
 			Controller<Colour> defaultColourController = (component, defaultColour) -> component.isHovered()
-					? SolClientMod.instance.uiHover
-					: SolClientMod.instance.uiColour;
+					? SolClientConfig.instance.uiHover
+					: SolClientConfig.instance.uiColour;
 
 			add(new ButtonComponent((component, defaultText) -> I18n.format("menu.singleplayer"),
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_player")

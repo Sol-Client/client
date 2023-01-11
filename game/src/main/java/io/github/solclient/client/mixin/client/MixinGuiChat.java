@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.*;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.ui.ChatButton;
+import io.github.solclient.client.chatextensions.ChatButton;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.GuiChatExtension;
@@ -29,7 +29,7 @@ public abstract class MixinGuiChat extends GuiScreen implements GuiChatExtension
 			float partialTicks) {
 		boolean mouseDown = Mouse.isButtonDown(0);
 
-		List<ChatButton> buttons = Client.INSTANCE.getChatButtons();
+		List<ChatButton> buttons = Client.INSTANCE.getChatExtensions().getButtons();
 
 		for (ChatButton button : buttons) {
 			int start = right - button.getWidth();

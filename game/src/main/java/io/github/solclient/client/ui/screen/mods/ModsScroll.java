@@ -50,9 +50,9 @@ public class ModsScroll extends ScrollListComponent {
 								.reversed())
 						.collect(Collectors.toList());
 
-
 				if (filtered.isEmpty())
-					add(new LabelComponent("sol_client.no_results"), new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
+					add(new LabelComponent("sol_client.no_results"),
+							new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
 
 				for (Mod mod : filtered)
 					add(new ModListing(mod, screen, false));

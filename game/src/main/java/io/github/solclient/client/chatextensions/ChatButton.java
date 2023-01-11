@@ -1,4 +1,4 @@
-package io.github.solclient.client.ui;
+package io.github.solclient.client.chatextensions;
 
 import io.github.solclient.client.util.extension.GuiChatExtension;
 import net.minecraft.client.Minecraft;

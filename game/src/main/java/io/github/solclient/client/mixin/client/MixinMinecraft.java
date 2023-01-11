@@ -15,10 +15,11 @@ import com.replaymod.replay.InputReplayTimer;
 
 import io.github.solclient.client.*;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.ui.component.Screen;
 import io.github.solclient.client.ui.screen.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.extension.*;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
@@ -65,17 +66,17 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 
 	@Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiMainMenu;<init>()V"))
 	public void postStart(CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new PostGameStartEvent());
+		Client.INSTANCE.getEvents().post(new PostGameStartEvent());
 	}
 
 	@Inject(method = "runTick", at = @At("HEAD"))
 	public void preRunTick(CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new PreTickEvent());
+		Client.INSTANCE.getEvents().post(new PreTickEvent());
 	}
 
 	@Inject(method = "runTick", at = @At("RETURN"))
 	public void postRunTick(CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new PostTickEvent());
+		Client.INSTANCE.getEvents().post(new PostTickEvent());
 	}
 
 	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;next()Z"))
@@ -83,7 +84,7 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 		boolean next = Mouse.next();
 
 		if (next && Mouse.getEventButtonState()) {
-			if (Client.INSTANCE.bus.post(new MouseClickEvent(Mouse.getEventButton())).cancelled) {
+			if (Client.INSTANCE.getEvents().post(new MouseClickEvent(Mouse.getEventButton())).cancelled) {
 				next = next(); // Skip
 			}
 		}
@@ -94,13 +95,13 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 	@Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer"
 			+ "/EntityRenderer;updateCameraAndRender(FJ)V", shift = At.Shift.BEFORE))
 	public void preRenderTick(CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new PreRenderTickEvent());
+		Client.INSTANCE.getEvents().post(new PreRenderTickEvent());
 	}
 
 	@Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer"
 			+ "/EntityRenderer;updateCameraAndRender(FJ)V", shift = At.Shift.AFTER))
 	public void postRenderTick(CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new PostRenderTickEvent());
+		Client.INSTANCE.getEvents().post(new PostRenderTickEvent());
 	}
 
 	/**
@@ -135,32 +136,31 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 
 	@Inject(method = "loadWorld(Lnet/minecraft/client/multiplayer/WorldClient;Ljava/lang/String;)V", at = @At("HEAD"))
 	public void loadWorld(WorldClient world, String message, CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new WorldLoadEvent(world));
+		Client.INSTANCE.getEvents().post(new WorldLoadEvent(world));
 	}
 
 	@Inject(method = "displayGuiScreen", at = @At(value = "HEAD"), cancellable = true)
 	public void openGui(GuiScreen screen, CallbackInfo callback) {
 		if (((screen == null && theWorld == null) || screen instanceof GuiMainMenu)
-				&& SolClientMod.instance.fancyMainMenu) {
+				&& SolClientConfig.instance.fancyMainMenu) {
 			callback.cancel();
 
-			if (screen == null) {
+			if (screen == null)
 				new GuiMainMenu();
-			} else {
-				Client.INSTANCE.setMainMenu((GuiMainMenu) screen);
-			}
+			else
+				ActiveMainMenu.setInstance((GuiMainMenu) screen);
 
 			displayGuiScreen(new SolClientMainMenu());
 			return;
-		} else if (screen instanceof SolClientMainMenu && !SolClientMod.instance.fancyMainMenu) {
+		} else if (screen instanceof SolClientMainMenu && !SolClientConfig.instance.fancyMainMenu) {
 			callback.cancel();
 			displayGuiScreen(null);
 			return;
 		}
 
-		Client.INSTANCE.bus.post(new OpenGuiEvent(screen));
+		Client.INSTANCE.getEvents().post(new OpenGuiEvent(screen));
 		if (currentScreen == null && screen != null) {
-			Client.INSTANCE.bus.post(new InitialOpenGuiEvent(screen));
+			Client.INSTANCE.getEvents().post(new InitialOpenGuiEvent(screen));
 		}
 	}
 
@@ -173,7 +173,7 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 		if (dWheel != 0) {
 			divided = dWheel / Math.abs(dWheel);
 
-			if (Client.INSTANCE.bus.post(new ScrollEvent(dWheel)).cancelled) {
+			if (Client.INSTANCE.getEvents().post(new ScrollEvent(dWheel)).cancelled) {
 				dWheel = 0;
 			} else if (Utils.isSpectatingEntityInReplay()) {
 				dWheel = 0;
@@ -195,11 +195,43 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 		Display.setTitle(GlobalConstants.NAME + " on " + oldTitle);
 	}
 
+	private boolean hadWorld;
+
 	@Inject(method = "setServerData", at = @At("TAIL"))
 	public void onDisconnect(ServerData serverDataIn, CallbackInfo callback) {
-		if (serverDataIn == null) {
-			Client.INSTANCE.onServerChange(null);
+		if (serverDataIn == null)
+			onServerChange(null);
+	}
+
+	@Inject(method = "loadWorld(Lnet/minecraft/client/multiplayer/WorldClient;Ljava/lang/String;)V", at = @At("RETURN"))
+	public void onWorldLoad(WorldClient world, String loadingText, CallbackInfo callback) {
+		if (world == null && hadWorld) {
+			hadWorld = false;
+		} else if (world != null && !hadWorld) {
+			hadWorld = true;
+			onServerChange(currentServerData);
 		}
+	}
+
+	private static void onServerChange(ServerData data) {
+		Client.INSTANCE.getChatExtensions().setChannelSystem(null);
+
+		if (data == null) {
+			DetectedServer.setCurrent(null);
+			Client.INSTANCE.getMods().forEach(Mod::unblock);
+		}
+
+		if (data != null) {
+			for (DetectedServer server : DetectedServer.values()) {
+				if (server.matches(data)) {
+					DetectedServer.setCurrent(server);
+					Client.INSTANCE.getMods().stream().filter(server::shouldBlockMod).forEach(Mod::block);
+					break;
+				}
+			}
+		}
+
+		Client.INSTANCE.getEvents().post(new ServerConnectEvent(data, DetectedServer.current()));
 	}
 
 	@Override
@@ -416,7 +448,7 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 
 	@Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RenderManager;setDebugBoundingBox(Z)V"))
 	public void betterHitboxes(RenderManager instance, boolean value) {
-		if (!Client.INSTANCE.bus.post(new HitboxToggleEvent(value)).cancelled) {
+		if (!Client.INSTANCE.getEvents().post(new HitboxToggleEvent(value)).cancelled) {
 			instance.setDebugBoundingBox(value);
 			debugChatInfo("Entity Hitboxes: " + value);
 			cancelDebug = true;
@@ -437,18 +469,6 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 	}
 
 	// endregion
-
-	private boolean hadWorld;
-
-	@Inject(method = "loadWorld(Lnet/minecraft/client/multiplayer/WorldClient;Ljava/lang/String;)V", at = @At("RETURN"))
-	public void onWorldLoad(WorldClient world, String loadingText, CallbackInfo callback) {
-		if (world == null && hadWorld) {
-			hadWorld = false;
-		} else if (world != null && !hadWorld) {
-			hadWorld = true;
-			Client.INSTANCE.onServerChange(currentServerData);
-		}
-	}
 
 	@Redirect(method = "startGame", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;serverName:Ljava/lang/String;"))
 	public String joinServer(Minecraft instance) {
@@ -471,7 +491,7 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 
 	@Inject(method = "toggleFullscreen", at = @At("HEAD"), cancellable = true)
 	public void handleToggle(CallbackInfo callback) {
-		FullscreenToggleEvent event = Client.INSTANCE.bus.post(new FullscreenToggleEvent(!fullscreen));
+		FullscreenToggleEvent event = Client.INSTANCE.getEvents().post(new FullscreenToggleEvent(!fullscreen));
 
 		if (event.cancelled) {
 			callback.cancel();
@@ -524,7 +544,7 @@ public abstract class MixinMinecraft implements MinecraftExtension, MCVer.Minecr
 
 	@Inject(method = "shutdownMinecraftApplet" /* applet? looks like MCP is a bit outdated */, at = @At("HEAD"))
 	public void preShutdown(CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new GameQuitEvent());
+		Client.INSTANCE.getEvents().post(new GameQuitEvent());
 	}
 
 	@Shadow

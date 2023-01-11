@@ -17,7 +17,7 @@ public class MixinLightMap {
 	public void overrideGamma(World world, float torchFlickerX, int[] lmColors, boolean nightVision,
 			CallbackInfoReturnable<Boolean> callback) {
 		GammaEvent event = new GammaEvent(Minecraft.getMinecraft().gameSettings.gammaSetting);
-		Client.INSTANCE.bus.post(event);
+		Client.INSTANCE.getEvents().post(event);
 		if (event.gamma > 1) {
 			callback.setReturnValue(false);
 		}

@@ -6,7 +6,7 @@ import org.lwjgl.input.Mouse;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
@@ -36,13 +36,12 @@ public class MoveHudsScreen extends Screen {
 	}
 
 	public HudElement getSelectedHud(int mouseX, int mouseY) {
-		for (HudElement hud : Client.INSTANCE.getHuds()) {
+		for (HudElement hud : Client.INSTANCE.getMods().getHuds()) {
 			if (!hud.isVisible())
 				continue;
 
-			if (hud.isSelected(mouseX, mouseY)) {
+			if (hud.isHovered(mouseX, mouseY))
 				return hud;
-			}
 		}
 		return null;
 	}
@@ -87,7 +86,7 @@ public class MoveHudsScreen extends Screen {
 			title.drawScreen(0, 0, partialTicks);
 		}
 
-		for (HudElement hud : Client.INSTANCE.getHuds()) {
+		for (HudElement hud : Client.INSTANCE.getMods().getHuds()) {
 			if (!hud.isVisible())
 				continue;
 
@@ -98,7 +97,7 @@ public class MoveHudsScreen extends Screen {
 			}
 
 			if (bounds != null) {
-				bounds.stroke(SolClientMod.instance.uiColour);
+				bounds.stroke(SolClientConfig.instance.uiColour);
 			}
 		}
 
@@ -122,7 +121,7 @@ public class MoveHudsScreen extends Screen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if (keyCode == 1 || (keyCode == SolClientMod.instance.editHudKey.getKeyCode() && KeyBindingExtension.from(SolClientMod.instance.editHudKey).areModsPressed())) {
+		if (keyCode == 1 || (keyCode == SolClientConfig.instance.editHudKey.getKeyCode() && KeyBindingExtension.from(SolClientConfig.instance.editHudKey).areModsPressed())) {
 			Client.INSTANCE.save();
 			if (title != null) {
 				mc.displayGuiScreen(title);

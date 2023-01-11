@@ -6,6 +6,7 @@ import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.mod.keybinding.ToggleState;
+import io.github.solclient.client.util.Utils;
 
 public class ToggleSprintMod extends SimpleHudMod {
 
@@ -20,11 +21,11 @@ public class ToggleSprintMod extends SimpleHudMod {
 	public void onRegister() {
 		super.onRegister();
 
-		Client.INSTANCE.unregisterKeyBinding(mc.gameSettings.keyBindSprint);
+		Utils.unregisterKeyBinding(mc.gameSettings.keyBindSprint);
 		keybinding = new ToggleSprintKeyBinding(this, mc.gameSettings.keyBindSprint.getKeyDescription(), 29,
 				mc.gameSettings.keyBindSprint.getKeyCategory());
 		mc.gameSettings.keyBindSprint = keybinding;
-		Client.INSTANCE.registerKeyBinding(mc.gameSettings.keyBindSprint);
+		Utils.registerKeyBinding(keybinding);
 	}
 
 	@Override

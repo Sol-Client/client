@@ -21,13 +21,13 @@ public abstract class MixinEntityRenderer {
 
 	@Redirect(method = "updateLightmap", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;gammaSetting:F"))
 	public float overrideGamma(GameSettings settings) {
-		return Client.INSTANCE.bus.post(new GammaEvent(settings.gammaSetting)).gamma;
+		return Client.INSTANCE.getEvents().post(new GammaEvent(settings.gammaSetting)).gamma;
 	}
 
 	@Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/shader"
 			+ "/Framebuffer;bindFramebuffer(Z)V", shift = At.Shift.BEFORE))
 	public void addShaders(float partialTicks, long nanoTime, CallbackInfo callback) {
-		for (ShaderGroup group : Client.INSTANCE.bus
+		for (ShaderGroup group : Client.INSTANCE.getEvents()
 				.post(new PostProcessingEvent(PostProcessingEvent.Type.RENDER)).groups) {
 			GlStateManager.matrixMode(5890);
 			GlStateManager.pushMatrix();
@@ -43,7 +43,7 @@ public abstract class MixinEntityRenderer {
 			return;
 		}
 
-		for (ShaderGroup group : Client.INSTANCE.bus
+		for (ShaderGroup group : Client.INSTANCE.getEvents()
 				.post(new PostProcessingEvent(PostProcessingEvent.Type.UPDATE)).groups) {
 			group.createBindFramebuffers(width, height);
 		}
@@ -64,12 +64,12 @@ public abstract class MixinEntityRenderer {
 		prevRotationPitch = mc.getRenderViewEntity().prevRotationPitch;
 		float roll = 0;
 
-		CameraRotateEvent event = Client.INSTANCE.bus.post(new CameraRotateEvent(rotationYaw, rotationPitch, roll));
+		CameraRotateEvent event = Client.INSTANCE.getEvents().post(new CameraRotateEvent(rotationYaw, rotationPitch, roll));
 		rotationYaw = event.yaw;
 		rotationPitch = event.pitch;
 		roll = event.roll;
 
-		event = Client.INSTANCE.bus.post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch, roll));
+		event = Client.INSTANCE.getEvents().post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch, roll));
 		prevRotationYaw = event.yaw;
 		prevRotationPitch = event.pitch;
 		GlStateManager.rotate(event.roll, 0, 0, 1);
@@ -102,7 +102,7 @@ public abstract class MixinEntityRenderer {
 	@Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;setAngles(FF)V"))
 	public void lookinAround(EntityPlayerSP entityPlayerSP, float yaw, float pitch) {
 		PlayerHeadRotateEvent event = new PlayerHeadRotateEvent(yaw, pitch);
-		Client.INSTANCE.bus.post(event);
+		Client.INSTANCE.getEvents().post(event);
 		yaw = event.yaw;
 		pitch = event.pitch;
 
@@ -113,7 +113,7 @@ public abstract class MixinEntityRenderer {
 
 	@Inject(method = "getFOVModifier", at = @At("RETURN"), cancellable = true)
 	public void getFov(float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Float> callback) {
-		callback.setReturnValue(Client.INSTANCE.bus.post(new FovEvent(callback.getReturnValue(), partialTicks)).fov);
+		callback.setReturnValue(Client.INSTANCE.getEvents().post(new FovEvent(callback.getReturnValue(), partialTicks)).fov);
 	}
 
 	// region Block Highlight
@@ -128,7 +128,7 @@ public abstract class MixinEntityRenderer {
 	public boolean overrideWetBlockHighlight(Entity entity, Material materialIn) {
 		boolean maybeWould = entity.isInsideOfMaterial(materialIn);
 		boolean would = maybeWould && isDrawBlockOutline();
-		if (maybeWould && Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
+		if (maybeWould && Client.INSTANCE.getEvents().post(new BlockHighlightRenderEvent(mc.objectMouseOver,
 				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
 			return false;
 		}
@@ -139,7 +139,7 @@ public abstract class MixinEntityRenderer {
 	public boolean overrideBlockHighlight(Entity entity, Material materialIn) {
 		boolean totallyWouldNot = entity.isInsideOfMaterial(materialIn);
 		boolean wouldNot = totallyWouldNot || !isDrawBlockOutline();
-		if (!totallyWouldNot && Client.INSTANCE.bus.post(new BlockHighlightRenderEvent(mc.objectMouseOver,
+		if (!totallyWouldNot && Client.INSTANCE.getEvents().post(new BlockHighlightRenderEvent(mc.objectMouseOver,
 				MinecraftExtension.getInstance().getTimerSC().renderPartialTicks)).cancelled) {
 			return true;
 		}

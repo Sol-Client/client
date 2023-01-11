@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import io.github.solclient.client.mod.Mod;
+import lombok.*;
 import net.minecraft.client.multiplayer.ServerData;
 
 public enum DetectedServer {
@@ -16,9 +17,12 @@ public enum DetectedServer {
 			"https://docs.google.com/document/d/1g_NRnhHER2Rruwk6ysbNtaURrHGns_7_0U7OpPwrhqk/edit"),
 	MINEPLEX("([A-z]+\\.)?mineplex\\.com(:[0-9]+)?", "https://www.mineplex.com/rules/", "freelook");
 
-	private Pattern pattern;
-	private URI blockedModPage;
-	private List<String> blockedMods;
+	@Setter
+	private static DetectedServer current;
+
+	private final Pattern pattern;
+	private final URI blockedModPage;
+	private final List<String> blockedMods;
 
 	private DetectedServer(String regex, String blockModPage, String... blockedMods) {
 		pattern = Pattern.compile(regex);
@@ -28,6 +32,10 @@ public enum DetectedServer {
 			throw new IllegalStateException(error);
 		}
 		this.blockedMods = Arrays.asList(blockedMods);
+	}
+
+	public static DetectedServer current() {
+		return current;
 	}
 
 	public URI getBlockedModPage() {

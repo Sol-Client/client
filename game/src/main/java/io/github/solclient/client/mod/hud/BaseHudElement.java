@@ -73,7 +73,7 @@ public abstract class BaseHudElement implements HudElement {
 	}
 
 	@Override
-	public boolean isSelected(int mouseX, int mouseY) {
+	public boolean isHovered(int mouseX, int mouseY) {
 		Rectangle bounds = getMultipliedBounds();
 		return bounds != null && bounds.contains(mouseX, mouseY);
 	}

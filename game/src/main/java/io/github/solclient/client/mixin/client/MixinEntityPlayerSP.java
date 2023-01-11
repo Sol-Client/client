@@ -22,7 +22,7 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer {
 
 	@Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
 	public void sendChatMessage(String message, CallbackInfo callback) {
-		if (Client.INSTANCE.bus.post(new SendChatMessageEvent(message)).cancelled) {
+		if (Client.INSTANCE.getEvents().post(new SendChatMessageEvent(message)).cancelled) {
 			callback.cancel();
 		}
 	}

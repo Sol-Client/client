@@ -4,12 +4,11 @@ import java.util.function.Consumer;
 
 import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.*;
 
@@ -22,8 +21,8 @@ public class SliderComponent extends Component {
 	private final Consumer<Float> callback;
 	private boolean selected;
 	private final Controller<Colour> colour = new AnimatedColourController(
-			(component, defaultColour) -> component.isHovered() || selected ? SolClientMod.instance.uiHover
-					: SolClientMod.instance.uiColour);
+			(component, defaultColour) -> component.isHovered() || selected ? SolClientConfig.instance.uiHover
+					: SolClientConfig.instance.uiColour);
 	private final Component hoverController;
 
 	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback,
@@ -59,12 +58,12 @@ public class SliderComponent extends Component {
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillColor(nvg, Colour.LIGHT_BUTTON.nvg());
-		NanoVG.nvgRoundedRect(nvg, 0, 4, 100, 2, SolClientMod.instance.roundedUI ? 1 : 0);
+		NanoVG.nvgRoundedRect(nvg, 0, 4, 100, 2, SolClientConfig.instance.roundedUI ? 1 : 0);
 		NanoVG.nvgFill(nvg);
 
 		NanoVG.nvgFillColor(nvg, colour.get(this, null).nvg());
 
-		if (SolClientMod.instance.roundedUI) {
+		if (SolClientConfig.instance.roundedUI) {
 			NanoVG.nvgBeginPath(nvg);
 			NanoVG.nvgCircle(nvg, x, 5, 4);
 			NanoVG.nvgFill(nvg);

@@ -13,13 +13,13 @@ import org.apache.logging.log4j.*;
  * Event bus system focused on performance.
  */
 @NotThreadSafe
-public class EventBus {
+public final class EventBus {
 
-	private static class MethodData {
+	private static final class MethodData {
 
-		public Object instance;
-		public String name;
-		public MethodHandle target;
+		public final Object instance;
+		public final String name;
+		public final MethodHandle target;
 
 		public MethodData(Object instance, Method method) throws IllegalAccessException {
 			this.instance = instance;
@@ -32,8 +32,8 @@ public class EventBus {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private boolean inPost;
-	private List<Object> toRemove = new ArrayList<>();
-	private Map<Class<?>, List<MethodData>> handlers = new HashMap<Class<?>, List<MethodData>>();
+	private final List<Object> toRemove = new LinkedList<>();
+	private final Map<Class<?>, List<MethodData>> handlers = new HashMap<Class<?>, List<MethodData>>();
 
 	private Set<Method> getMethods(Class<?> clazz) {
 		Set<Method> methods = new HashSet<>();

@@ -1,4 +1,4 @@
-package io.github.solclient.client.config;
+package io.github.solclient.client.util;
 
 import org.apache.logging.log4j.*;
 

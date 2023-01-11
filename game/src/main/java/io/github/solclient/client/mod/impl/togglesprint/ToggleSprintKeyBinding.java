@@ -7,7 +7,7 @@ import io.github.solclient.client.mod.keybinding.ToggledKeyBinding;
 public class ToggleSprintKeyBinding extends ToggledKeyBinding<ToggleSprintMod> {
 	public ToggleSprintKeyBinding(ToggleSprintMod mod, String description, int keyCode, String category) {
 		super(mod, description, keyCode, category);
-		Client.INSTANCE.bus.register(this);
+		Client.INSTANCE.getEvents().register(this);
 	}
 
 	@Override

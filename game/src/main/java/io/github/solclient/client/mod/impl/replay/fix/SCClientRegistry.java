@@ -1,7 +1,7 @@
 package io.github.solclient.client.mod.impl.replay.fix;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.annotation.ForgeCompat;
+import io.github.solclient.client.util.*;
 import net.minecraft.client.settings.KeyBinding;
 
 @Deprecated
@@ -9,7 +9,7 @@ import net.minecraft.client.settings.KeyBinding;
 public class SCClientRegistry {
 
 	public static void registerKeyBinding(KeyBinding keyBinding) {
-		Client.INSTANCE.registerKeyBinding(keyBinding);
+		Utils.registerKeyBinding(keyBinding);
 	}
 
 }

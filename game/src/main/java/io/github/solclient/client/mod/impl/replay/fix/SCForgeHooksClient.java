@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod.impl.replay.fix;
 
-import io.github.solclient.client.annotation.ForgeCompat;
+import io.github.solclient.client.util.ForgeCompat;
 import net.minecraft.client.renderer.RenderGlobal;
 
 @Deprecated

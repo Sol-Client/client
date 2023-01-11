@@ -10,6 +10,7 @@ import org.apache.logging.log4j.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.util.Utils;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -51,13 +52,14 @@ public class ModOption {
 
 			String name = field.getDeclaringClass() + "." + field.getName();
 
-			if (Modifier.isFinal(field.getModifiers()) && !(field.getType() == KeyBinding.class)) {
+			if (Modifier.isFinal(field.getModifiers()) && !(field.getType() == KeyBinding.class))
 				LOGGER.warn("Mod option {} is final", name);
-			}
 
-			if (getValue() == null) {
+			if (getValue() == null)
 				LOGGER.warn("Mod option {} has no default value. This may cause a crash.", name);
-			}
+
+			if (field.getType() == KeyBinding.class)
+				Utils.registerKeyBinding((KeyBinding) getValue());
 		}
 
 		priority = option.priority();
@@ -111,7 +113,7 @@ public class ModOption {
 		try {
 			return field.get(mod);
 		} catch (IllegalArgumentException | IllegalAccessException error) {
-			throw new IllegalStateException(error);
+			throw new AssertionError(error);
 		}
 	}
 
@@ -129,7 +131,7 @@ public class ModOption {
 	}
 
 	public static List<ModOption> get(Mod mod) throws IOException {
-		List<ModOption> result = new ArrayList<ModOption>();
+		List<ModOption> result = new ArrayList<>();
 		add(mod, mod.getClass(), result);
 
 		if (mod instanceof ConfigOnlyMod) {

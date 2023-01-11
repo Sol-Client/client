@@ -38,7 +38,7 @@ public abstract class MixinRenderManager {
 	@Inject(method = "renderDebugBoundingBox", at = @At("HEAD"), cancellable = true)
 	public void hitboxEvent(Entity entityIn, double x, double y, double z, float entityYaw, float partialTicks,
 			CallbackInfo callback) {
-		if (Client.INSTANCE.bus.post(new HitboxRenderEvent(entityIn, x, y, z, entityYaw, partialTicks)).cancelled) {
+		if (Client.INSTANCE.getEvents().post(new HitboxRenderEvent(entityIn, x, y, z, entityYaw, partialTicks)).cancelled) {
 			callback.cancel();
 		}
 	}
@@ -58,11 +58,11 @@ public abstract class MixinRenderManager {
 		rotationPitch = Minecraft.getMinecraft().getRenderViewEntity().rotationPitch;
 		prevRotationPitch = Minecraft.getMinecraft().getRenderViewEntity().prevRotationPitch;
 
-		CameraRotateEvent event = Client.INSTANCE.bus.post(new CameraRotateEvent(rotationYaw, rotationPitch, 0));
+		CameraRotateEvent event = Client.INSTANCE.getEvents().post(new CameraRotateEvent(rotationYaw, rotationPitch, 0));
 		rotationYaw = event.yaw;
 		rotationPitch = event.pitch;
 
-		event = Client.INSTANCE.bus.post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch, 0));
+		event = Client.INSTANCE.getEvents().post(new CameraRotateEvent(prevRotationYaw, prevRotationPitch, 0));
 		prevRotationYaw = event.yaw;
 		prevRotationPitch = event.pitch;
 	}

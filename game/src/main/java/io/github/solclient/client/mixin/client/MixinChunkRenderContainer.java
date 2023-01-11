@@ -14,7 +14,7 @@ public class MixinChunkRenderContainer {
 
 	@Inject(method = "preRenderChunk", at = @At("RETURN"))
 	public void preRenderChunk(RenderChunk renderChunkIn, CallbackInfo callback) {
-		Client.INSTANCE.bus.post(new PreRenderChunkEvent(renderChunkIn));
+		Client.INSTANCE.getEvents().post(new PreRenderChunkEvent(renderChunkIn));
 	}
 
 }

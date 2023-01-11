@@ -8,7 +8,6 @@ import com.google.common.base.Predicate;
 
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
-import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
 import net.minecraft.client.gui.GuiScreen;

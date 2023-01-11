@@ -3,6 +3,7 @@ package io.github.solclient.client.mod.impl.hypixeladditions.commands;
 import java.util.*;
 
 import io.github.solclient.client.*;
+import io.github.solclient.client.chatextensions.channel.ChatChannelSystem;
 import io.github.solclient.client.mod.impl.hypixeladditions.*;
 import net.minecraft.command.*;
 import net.minecraft.util.*;
@@ -15,7 +16,7 @@ public class ChatChannelCommand extends HypixelAdditionsCommand {
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-		ChatChannelSystem system = Client.INSTANCE.getChatChannelSystem();
+		ChatChannelSystem system = Client.INSTANCE.getChatExtensions().getChannelSystem();
 		if (args.length == 1) {
 			if (args[0].equals("c") || args[0].equals("coop") || args[0].equals("co-op")
 					|| args[0].equals("skyblock_coop") || args[0].equals("skyblock_co-op")) {

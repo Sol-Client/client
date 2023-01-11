@@ -2,7 +2,7 @@ package io.github.solclient.client.ui.component.impl;
 
 import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.ClickHandler;
@@ -32,7 +32,7 @@ public class ButtonComponent extends ColouredComponent {
 	public void render(ComponentRenderInfo info) {
 		float radius = 0;
 
-		if (SolClientMod.instance.roundedUI)
+		if (SolClientConfig.instance.roundedUI)
 			radius = 5;
 
 		NanoVG.nvgBeginPath(nvg);

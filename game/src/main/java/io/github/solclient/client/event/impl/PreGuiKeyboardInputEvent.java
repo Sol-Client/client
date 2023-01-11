@@ -1,6 +1,6 @@
 package io.github.solclient.client.event.impl;
 
-import io.github.solclient.client.annotation.ForgeCompat;
+import io.github.solclient.client.util.ForgeCompat;
 
 public class PreGuiKeyboardInputEvent {
 

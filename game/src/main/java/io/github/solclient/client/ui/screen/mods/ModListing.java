@@ -4,9 +4,9 @@ import java.net.URI;
 
 import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.*;
 import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -29,7 +29,7 @@ public class ModListing extends ColouredComponent {
 	public ModListing(Mod mod, ModsScreenComponent screen, boolean pinnedCategory) {
 		super(new AnimatedColourController((component, defaultColour) -> {
 			if (mod.isEnabled()) {
-				return component.isHovered() ? SolClientMod.instance.uiHover : SolClientMod.instance.uiColour;
+				return component.isHovered() ? SolClientConfig.instance.uiHover : SolClientConfig.instance.uiColour;
 			} else if (mod.isBlocked()) {
 				return component.isHovered() ? Colour.RED_HOVER : Colour.PURE_RED;
 			}
@@ -99,7 +99,7 @@ public class ModListing extends ColouredComponent {
 	public void render(ComponentRenderInfo info) {
 		float radius = 0;
 
-		if (SolClientMod.instance.roundedUI)
+		if (SolClientConfig.instance.roundedUI)
 			radius = 10;
 
 		NanoVG.nvgBeginPath(nvg);
@@ -187,11 +187,10 @@ public class ModListing extends ColouredComponent {
 	private void primaryFunction() {
 		if (mod.isBlocked()) {
 			// passive-agressive
-			if (Client.INSTANCE.detectedServer == null) {
+			if (DetectedServer.current() == null)
 				return;
-			}
 
-			URI blockedModPage = Client.INSTANCE.detectedServer.getBlockedModPage();
+			URI blockedModPage = DetectedServer.current().getBlockedModPage();
 			if (blockedModPage != null) {
 				Utils.openUrl(blockedModPage.toString());
 			}

@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.util.Utils;
-import io.github.solclient.client.util.data.Modifier;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.settings.KeyBinding;

@@ -1,4 +1,4 @@
-package io.github.solclient.client.annotation;
+package io.github.solclient.client.util;
 
 import java.lang.annotation.*;
 

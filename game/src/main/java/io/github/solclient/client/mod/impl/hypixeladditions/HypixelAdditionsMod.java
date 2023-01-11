@@ -161,7 +161,7 @@ public class HypixelAdditionsMod extends Mod {
 
 	public static boolean isHypixel() {
 //        return true; // Uncomment for testing purposes
-		return Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL;
+		return DetectedServer.current() == DetectedServer.HYPIXEL;
 	}
 
 	public static boolean isEffective() {
@@ -174,36 +174,34 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	private void updateState() {
-		if (Client.INSTANCE.getCommand("visithousing") == null) {
+		if (Client.INSTANCE.getCommands().isRegistered("visithousing")) {
 			if (isEffective()) {
-				Client.INSTANCE.registerCommand("visithousing", new VisitHousingCommand(this));
+				Client.INSTANCE.getCommands().register("visithousing", new VisitHousingCommand(this));
 			}
-		} else {
-			if (!isEffective()) {
-				Client.INSTANCE.unregisterCommand("visithousing");
-			}
-		}
+		} else if (!isEffective())
+			Client.INSTANCE.getCommands().unregister("visithousing");
 
-		if (Client.INSTANCE.getCommand("chat") == null) {
+		if (Client.INSTANCE.getCommands().isRegistered("chat")) {
 			if (isEffective()) {
 				if (mc.thePlayer != null) {
 					mc.thePlayer.sendChatMessage("/chat a");
 				}
-				Client.INSTANCE.registerCommand("chat", new ChatChannelCommand(this));
+				Client.INSTANCE.getCommands().register("chat", new ChatChannelCommand(this));
 			}
 		} else {
 			if (!isEffective()) {
-				Client.INSTANCE.unregisterCommand("chat");
+				Client.INSTANCE.getCommands().unregister("chat");
 			}
 		}
 
-		if (Client.INSTANCE.getChatChannelSystem() == null) {
+		if (Client.INSTANCE.getChatExtensions().getChannelSystem() == null) {
 			if (isEffective()) {
-				Client.INSTANCE.setChatChannelSystem(new HypixelChatChannels());
+				Client.INSTANCE.getChatExtensions().setChannelSystem(new HypixelChatChannels());
 			}
 		} else {
-			if (!isEffective() && Client.INSTANCE.getChatChannelSystem() instanceof HypixelChatChannels) {
-				Client.INSTANCE.setChatChannelSystem(null);
+			if (!isEffective()
+					&& Client.INSTANCE.getChatExtensions().getChannelSystem() instanceof HypixelChatChannels) {
+				Client.INSTANCE.getChatExtensions().setChannelSystem(null);
 			}
 		}
 
@@ -311,7 +309,7 @@ public class HypixelAdditionsMod extends Mod {
 			for (String line : event.message.split("\\n")) {
 				Popup popup = HypixelPopupType.popupFromMessage(line);
 				if (popup != null) {
-					Client.INSTANCE.getPopupManager().add(popup);
+					Client.INSTANCE.getPopups().add(popup);
 					return;
 				}
 			}

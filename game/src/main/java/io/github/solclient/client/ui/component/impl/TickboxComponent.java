@@ -2,7 +2,7 @@ package io.github.solclient.client.ui.component.impl;
 
 import java.util.function.Consumer;
 
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
 import io.github.solclient.client.util.Utils;
@@ -16,8 +16,8 @@ public class TickboxComponent extends BlockComponent {
 
 	public TickboxComponent(boolean value, Consumer<Boolean> booleanConsumer, Component hoverController) {
 		super(new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? SolClientMod.instance.uiHover
-						: SolClientMod.instance.uiColour),
+				(component, defaultColour) -> component.isHovered() ? SolClientConfig.instance.uiHover
+						: SolClientConfig.instance.uiColour),
 				(component, defaultRadius) -> 5F, (component, defaultStrokeWidth) -> 1F);
 
 		this.value = value;
@@ -34,7 +34,7 @@ public class TickboxComponent extends BlockComponent {
 
 		add(new ScaledIconComponent("sol_client_small_tick", 16, 16,
 				new AnimatedColourController((component, defaultColour) -> this.value
-						? (isHovered() ? SolClientMod.instance.uiHover : SolClientMod.instance.uiColour)
+						? (isHovered() ? SolClientConfig.instance.uiHover : SolClientConfig.instance.uiColour)
 						: Colour.TRANSPARENT)),
 				(component, defaultBounds) -> defaultBounds);
 	}

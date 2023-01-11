@@ -1,7 +1,7 @@
 package io.github.solclient.client.ui.screen;
 
-import io.github.solclient.client.Client;
 import io.github.solclient.client.ui.component.*;
+import io.github.solclient.client.util.ActiveMainMenu;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.extension.GuiMainMenuExtension;
 import net.minecraft.client.Minecraft;
@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 public abstract class PanoramaBackgroundScreen extends Screen {
 
-	private GuiScreen mainMenu = Client.INSTANCE.getMainMenu();
+	private final GuiScreen mainMenu = ActiveMainMenu.getInstance();
 
 	public PanoramaBackgroundScreen(Component root) {
 		super(root);
@@ -22,9 +22,8 @@ public abstract class PanoramaBackgroundScreen extends Screen {
 	public void setWorldAndResolution(Minecraft mc, int width, int height) {
 		super.setWorldAndResolution(mc, width, height);
 
-		if (mc.theWorld == null) {
+		if (mc.theWorld == null)
 			mainMenu.setWorldAndResolution(mc, width, height);
-		}
 	}
 
 	@Override

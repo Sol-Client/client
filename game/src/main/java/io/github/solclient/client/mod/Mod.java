@@ -13,7 +13,7 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
-import lombok.Getter;
+import lombok.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
@@ -21,6 +21,7 @@ import net.minecraft.client.resources.I18n;
 public abstract class Mod {
 
 	protected final Minecraft mc = Minecraft.getMinecraft();
+	@Getter
 	private List<ModOption> options;
 	private boolean blocked;
 	@Expose
@@ -30,6 +31,10 @@ public abstract class Mod {
 
 	@Getter
 	private boolean pinned;
+
+	@Getter
+	@Setter
+	private int index = -1;
 
 	/**
 	 * Called after the game has started.
@@ -67,7 +72,7 @@ public abstract class Mod {
 
 	/**
 	 * Choose a string to display on the right side of the mod component.
-	 * 
+	 *
 	 * @return an additional credit string.
 	 */
 	public String getCredit() {
@@ -100,10 +105,6 @@ public abstract class Mod {
 	public void postOptionChange(String key, Object value) {
 	}
 
-	public List<ModOption> getOptions() {
-		return options;
-	}
-
 	public void setEnabled(boolean enabled) {
 		if (blocked)
 			return;
@@ -134,11 +135,11 @@ public abstract class Mod {
 	}
 
 	protected void onEnable() {
-		Client.INSTANCE.bus.register(this);
+		Client.INSTANCE.getEvents().register(this);
 	}
 
 	protected void onDisable() {
-		Client.INSTANCE.bus.unregister(this);
+		Client.INSTANCE.getEvents().unregister(this);
 	}
 
 	public boolean isBlocked() {
@@ -215,10 +216,6 @@ public abstract class Mod {
 
 	public String getLockMessage() {
 		return "";
-	}
-
-	public int getIndex() {
-		return Client.INSTANCE.getMods().indexOf(this);
 	}
 
 	public List<HudElement> getHudElements() {

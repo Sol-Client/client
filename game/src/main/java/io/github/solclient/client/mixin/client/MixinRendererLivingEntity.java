@@ -21,7 +21,7 @@ public class MixinRendererLivingEntity<T extends EntityLivingBase> {
 	public void initHitColour(T entitylivingbaseIn, float partialTicks, boolean combineTextures,
 			CallbackInfoReturnable<Boolean> callback) {
 		HitOverlayEvent event = new HitOverlayEvent(1, 0, 0, 0.3F);
-		Client.INSTANCE.bus.post(event);
+		Client.INSTANCE.getEvents().post(event);
 
 		red = event.r;
 		green = event.g;

@@ -12,6 +12,7 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.ui.ReplayButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
+import io.github.solclient.client.util.ActiveMainMenu;
 import io.github.solclient.client.util.extension.GuiMainMenuExtension;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
@@ -21,7 +22,7 @@ public abstract class MixinGuiMainMenu extends GuiScreen implements GuiMainMenuE
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	public void setActiveMainMenu(CallbackInfo callback) {
-		Client.INSTANCE.setMainMenu((GuiMainMenu) (Object) this);
+		ActiveMainMenu.setInstance((GuiMainMenu) (Object) this);
 	}
 
 	@Inject(method = "addSingleplayerMultiplayerButtons", at = @At("RETURN"))

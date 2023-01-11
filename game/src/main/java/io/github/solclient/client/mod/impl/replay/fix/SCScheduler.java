@@ -68,7 +68,7 @@ public class SCScheduler implements Scheduler {
 
 	private void runLater(Runnable runnable, final Runnable defer) {
 		if (mc.isCallingFromMinecraftThread() && inRunLater) {
-			Client.INSTANCE.bus.register(new TickListener(defer));
+			Client.INSTANCE.getEvents().register(new TickListener(defer));
 		} else {
 			Queue<FutureTask<?>> tasks = ((MinecraftAccessor) mc).getScheduledTasks();
 
@@ -101,7 +101,7 @@ public class SCScheduler implements Scheduler {
 
 		@EventHandler
 		public void onTick(PreRenderTickEvent event) {
-			Client.INSTANCE.bus.unregister(this);
+			Client.INSTANCE.getEvents().unregister(this);
 			defer.run();
 		}
 

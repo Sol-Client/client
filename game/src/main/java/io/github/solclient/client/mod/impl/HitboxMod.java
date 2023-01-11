@@ -49,12 +49,6 @@ public class HitboxMod extends Mod {
 	private boolean toggled;
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
-		Client.INSTANCE.registerKeyBinding(toggleHitboxes);
-	}
-
-	@Override
 	public void postStart() {
 		super.postStart();
 		if (isEnabled()) {

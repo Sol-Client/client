@@ -67,7 +67,17 @@ public class DiscordIntegrationMod extends Mod {
 	@StringOption("sol_client.mod.screen.default")
 	private String icon = "";
 
-	private DiscordVoiceChatHud discordVoiceChatHud;
+	private final DiscordVoiceChatHud discordVoiceChatHud = new DiscordVoiceChatHud(this);
+
+	@Override
+	public String getId() {
+		return "discord_integration";
+	}
+
+	@Override
+	public ModCategory getCategory() {
+		return ModCategory.INTEGRATION;
+	}
 
 	@Override
 	public List<HudElement> getHudElements() {
@@ -101,7 +111,7 @@ public class DiscordIntegrationMod extends Mod {
 	@Override
 	public void postStart() {
 		super.postStart();
-		discordVoiceChatHud = new DiscordVoiceChatHud(this);
+		discordVoiceChatHud.setFont(mc.fontRendererObj);
 	}
 
 	@Override
@@ -234,16 +244,6 @@ public class DiscordIntegrationMod extends Mod {
 		core.activityManager().updateActivity(activity);
 
 		state = true;
-	}
-
-	@Override
-	public String getId() {
-		return "discord_integration";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.INTEGRATION;
 	}
 
 	public void socketError(Exception error) {

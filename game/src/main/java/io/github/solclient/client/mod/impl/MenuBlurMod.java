@@ -63,7 +63,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-		Client.INSTANCE.addResource(RESOURCE_LOCATION, new MenuBlurShader());
+		Client.INSTANCE.getPseudoResources().register(RESOURCE_LOCATION, new MenuBlurShader());
 	}
 
 	@EventHandler

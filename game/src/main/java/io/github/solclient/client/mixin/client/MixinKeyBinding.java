@@ -2,12 +2,10 @@ package io.github.solclient.client.mixin.client;
 
 import java.util.*;
 
-import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.*;
 
-import io.github.solclient.client.util.data.Modifier;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.*;
 import net.minecraft.client.settings.KeyBinding;

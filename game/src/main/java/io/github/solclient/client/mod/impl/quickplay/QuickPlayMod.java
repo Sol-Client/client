@@ -29,12 +29,6 @@ public class QuickPlayMod extends Mod {
 	private final List<String> recentlyPlayed = new ArrayList<>();
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
-		Client.INSTANCE.registerKeyBinding(menuKey);
-	}
-
-	@Override
 	public String getId() {
 		return "quickplay";
 	}
@@ -64,7 +58,7 @@ public class QuickPlayMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (database != null && menuKey.isPressed() && Client.INSTANCE.detectedServer == DetectedServer.HYPIXEL)
+		if (database != null && menuKey.isPressed() && DetectedServer.current() == DetectedServer.HYPIXEL)
 			mc.displayGuiScreen(new QuickPlayPalette(this));
 	}
 

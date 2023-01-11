@@ -188,9 +188,9 @@ dist/
 **/.classpath
 
 # Minecraft
-game/run/
+wrapper/run/
 # For symlinks
-game/run
+wrapper/run
 
 # JetBrains IDEs
 
@@ -202,4 +202,4 @@ game/run
 # Electron Forge
 out/
 
-game/replaymod/
+wrapper/replaymod/

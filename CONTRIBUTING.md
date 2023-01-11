@@ -1,7 +1,5 @@
 # Contributing
-If you are contributing features, try to base on the latest dev/x.x.x branch unless it's already merged.
-I realise this is confusing, so we may use a single develop branch in future.
-If you are contributing bugfixes, use the main/master branch.
+If you are contributing features, use the develop branch. If you are contributing bugfixes, use the stable branch.
 
 ## Code Formatting
 Please use standard Java formatting conventions (the default Eclipse formatting profile, but with indented switch cases).

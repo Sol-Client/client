@@ -1,1 +1,15 @@
-rootProject.name = "sol-client-wrapper"
+pluginManagement {
+	repositories {
+		maven {
+			name = 'Quilt'
+			url = 'https://maven.quiltmc.org/repository/release'
+		}
+		maven {
+			name = 'Fabric'
+			url = 'https://maven.fabricmc.net/'
+		}
+		gradlePluginPortal()
+	}
+}
+
+rootProject.name = 'sol-client-wrapper'

@@ -1,0 +1,10 @@
+[versions]
+minecraft = "1.8.9"
+mcp_mappings = "1.8.9+build.442"
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+quilt_mappings = { module = "net.legacyfabric:yarn", version.ref = "mcp_mappings" }
+
+[plugins]
+quilt_loom = { id = "org.quiltmc.loom", version = "1.0.+" }

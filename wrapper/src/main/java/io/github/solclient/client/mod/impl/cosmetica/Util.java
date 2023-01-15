@@ -84,7 +84,7 @@ class Util {
 		model.getTransformation().apply(transformType);
 		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 
-		((MixinRenderItem) MinecraftClient.getInstance().getItemRenderer()).renderBakedModel(model, -1);
+		((MixinItemRenderer) MinecraftClient.getInstance().getItemRenderer()).renderBakedModel(model, -1);
 
 		// ItemRenderer#render end
 

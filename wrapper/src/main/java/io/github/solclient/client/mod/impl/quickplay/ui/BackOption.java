@@ -2,8 +2,7 @@ package io.github.solclient.client.mod.impl.quickplay.ui;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPlayPaletteComponent;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 
 public class BackOption extends QuickPlayOption {
 
@@ -19,7 +18,7 @@ public class BackOption extends QuickPlayOption {
 
 	@Override
 	public ItemStack getIcon() {
-		return new ItemStack(Items.arrow);
+		return new ItemStack(Items.ARROW);
 	}
 
 }

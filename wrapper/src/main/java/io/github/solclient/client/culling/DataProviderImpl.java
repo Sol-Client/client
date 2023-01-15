@@ -2,17 +2,17 @@ package io.github.solclient.client.culling;
 
 import com.logisticscraft.occlusionculling.DataProvider;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.util.BlockPos;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.BlockPos;
 
 public class DataProviderImpl implements DataProvider {
 
-	private WorldClient world;
+	private ClientWorld world;
 
 	@Override
 	public boolean prepareChunk(int x, int z) {
-		world = Minecraft.getMinecraft().theWorld;
+		world = MinecraftClient.getInstance().world;
 		return world != null;
 	}
 
@@ -21,7 +21,7 @@ public class DataProviderImpl implements DataProvider {
 		if (world == null)
 			return false;
 
-		return world.isBlockNormalCube(new BlockPos(x, y, z), false);
+		return world.renderAsNormalBlock(new BlockPos(x, y, z), false);
 	}
 
 	@Override

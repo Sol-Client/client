@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
@@ -12,11 +13,11 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.*;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.*;
 
 public class HitboxMod extends Mod {
 
@@ -51,17 +52,16 @@ public class HitboxMod extends Mod {
 	@Override
 	public void postStart() {
 		super.postStart();
-		if (isEnabled()) {
-			mc.getRenderManager().setDebugBoundingBox(toggled);
-		}
+		if (isEnabled())
+			mc.getEntityRenderManager().setRenderHitboxes(toggled);
 	}
 
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		if (mc.getRenderManager() != null) {
-			toggled = mc.getRenderManager().isDebugBoundingBox();
-		}
+		if (mc.getEntityRenderManager() != null)
+			toggled = mc.getEntityRenderManager().getRenderHitboxes();
+
 		while (toggleHitboxes.isPressed())
 			;
 	}
@@ -80,7 +80,7 @@ public class HitboxMod extends Mod {
 	public void onHitboxRender(HitboxRenderEvent event) {
 		event.cancelled = true;
 		GlStateManager.depthMask(false);
-		GlStateManager.disableTexture2D();
+		GlStateManager.disableTexture();
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 		GlStateManager.enableBlend();
@@ -89,18 +89,17 @@ public class HitboxMod extends Mod {
 		float half = event.entity.width / 2.0F;
 
 		if (boundingBox) {
-			AxisAlignedBB box = event.entity.getEntityBoundingBox();
-			AxisAlignedBB offsetBox = new AxisAlignedBB(box.minX - event.entity.posX + event.x,
-					box.minY - event.entity.posY + event.y, box.minZ - event.entity.posZ + event.z,
-					box.maxX - event.entity.posX + event.x, box.maxY - event.entity.posY + event.y,
-					box.maxZ - event.entity.posZ + event.z);
-			RenderGlobal.drawOutlinedBoundingBox(offsetBox, boundingBoxColour.getRed(), boundingBoxColour.getGreen(),
+			Box box = event.entity.getBoundingBox();
+			Box offsetBox = new Box(box.minX - event.entity.x + event.x, box.minY - event.entity.y + event.y,
+					box.minZ - event.entity.z + event.z, box.maxX - event.entity.x + event.x,
+					box.maxY - event.entity.y + event.y, box.maxZ - event.entity.z + event.z);
+			WorldRenderer.drawBox(offsetBox, boundingBoxColour.getRed(), boundingBoxColour.getGreen(),
 					boundingBoxColour.getBlue(), boundingBoxColour.getAlpha());
 		}
 
-		if (eyeHeight && event.entity instanceof EntityLivingBase) {
-			RenderGlobal.drawOutlinedBoundingBox(
-					new AxisAlignedBB(event.x - half, event.y + event.entity.getEyeHeight() - 0.009999999776482582D,
+		if (eyeHeight && event.entity instanceof LivingEntity) {
+			WorldRenderer.drawBox(
+					new Box(event.x - half, event.y + event.entity.getEyeHeight() - 0.009999999776482582D,
 							event.z - half, event.x + half,
 							event.y + event.entity.getEyeHeight() + 0.009999999776482582D, event.z + half),
 					eyeHeightColour.getRed(), eyeHeightColour.getGreen(), eyeHeightColour.getBlue(),
@@ -108,23 +107,21 @@ public class HitboxMod extends Mod {
 		}
 
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		BufferBuilder buffer = tessellator.getBuffer();
 
 		if (lookVector) {
-			Vec3 look = event.entity.getLook(event.partialTicks);
-			worldrenderer.begin(3, DefaultVertexFormats.POSITION_COLOR);
-			worldrenderer.pos(event.x, event.y + event.entity.getEyeHeight(), event.z).color(0, 0, 255, 255)
-					.endVertex();
-			worldrenderer
-					.pos(event.x + look.xCoord * 2, event.y + event.entity.getEyeHeight() + look.yCoord * 2,
-							event.z + look.zCoord * 2)
+			Vec3d look = event.entity.getRotationVector(event.partialTicks);
+			buffer.begin(3, VertexFormats.POSITION_COLOR);
+			buffer.vertex(event.x, event.y + event.entity.getEyeHeight(), event.z).color(0, 0, 255, 255).end();
+			buffer.vertex(event.x + look.x * 2, event.y + event.entity.getEyeHeight() + look.y * 2,
+					event.z + look.z * 2)
 					.color(lookVectorColour.getRed(), lookVectorColour.getGreen(), lookVectorColour.getBlue(),
 							lookVectorColour.getAlpha())
-					.endVertex();
+					.end();
 			tessellator.draw();
 		}
 
-		GlStateManager.enableTexture2D();
+		GlStateManager.enableTexture();
 		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.disableBlend();
@@ -142,12 +139,12 @@ public class HitboxMod extends Mod {
 	public void onTick(PreTickEvent event) {
 		while (toggleHitboxes.isPressed()) {
 			// If debug shortcut is used, don't conflict.
-			if (toggleHitboxes.getKeyCode() == Keyboard.KEY_B && Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+			if (toggleHitboxes.getCode() == Keyboard.KEY_B && Keyboard.isKeyDown(Keyboard.KEY_F3)) {
 				continue;
 			}
 
-			toggled = !mc.getRenderManager().isDebugBoundingBox();
-			mc.getRenderManager().setDebugBoundingBox(toggled);
+			toggled = !mc.getEntityRenderManager().getRenderHitboxes();
+			mc.getEntityRenderManager().setRenderHitboxes(toggled);
 			Client.INSTANCE.save();
 		}
 	}

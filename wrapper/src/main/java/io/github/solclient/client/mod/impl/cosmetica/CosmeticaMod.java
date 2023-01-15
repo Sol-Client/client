@@ -9,9 +9,9 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.WorldLoadEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.util.Utils;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 
 public class CosmeticaMod extends Mod {
 
@@ -20,7 +20,7 @@ public class CosmeticaMod extends Mod {
 
 	private CosmeticaAPI api;
 	private Map<UUID, UserInfo> dataCache = new HashMap<>();
-	private Map<Model, IBakedModel> bakeryCache = new WeakHashMap<>();
+	private Map<Model, BakedModel> bakeryCache = new WeakHashMap<>();
 	private boolean loginStarted;
 
 	@Override
@@ -54,9 +54,9 @@ public class CosmeticaMod extends Mod {
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
 		clear();
-		if (mc.thePlayer != null) {
+		if (mc.player != null) {
 			// prioritise the main player
-			get(mc.thePlayer);
+			get(mc.player);
 		}
 	}
 
@@ -65,7 +65,7 @@ public class CosmeticaMod extends Mod {
 		Thread thread = new Thread(() -> {
 			try {
 				if (mc.getSession().getProfile().getId() != null) {
-					api = CosmeticaAPI.fromMinecraftToken(mc.getSession().getToken(), mc.getSession().getUsername(),
+					api = CosmeticaAPI.fromMinecraftToken(mc.getSession().getAccessToken(), mc.getSession().getUsername(),
 							mc.getSession().getProfile().getId());
 					return;
 				}
@@ -89,19 +89,19 @@ public class CosmeticaMod extends Mod {
 		return ModCategory.INTEGRATION;
 	}
 
-	public IBakedModel bakeIfAbsent(Model model) {
+	public BakedModel bakeIfAbsent(Model model) {
 		return bakeryCache.computeIfAbsent(model, Util::createModel);
 	}
 
-	public List<Model> getHats(EntityPlayer player) {
+	public List<Model> getHats(PlayerEntity player) {
 		return get(player).map(UserInfo::getHats).orElse(Collections.emptyList());
 	}
 
-	public Optional<ShoulderBuddies> getShoulderBuddies(EntityPlayer player) {
+	public Optional<ShoulderBuddies> getShoulderBuddies(PlayerEntity player) {
 		return get(player).flatMap(UserInfo::getShoulderBuddies);
 	}
 
-	public Optional<ResourceLocation> getCapeTexture(EntityPlayer player) {
+	public Optional<Identifier> getCapeTexture(PlayerEntity player) {
 		Optional<Cape> optCape = get(player).flatMap(UserInfo::getCape);
 		if (!optCape.isPresent()) {
 			return Optional.empty();
@@ -110,13 +110,13 @@ public class CosmeticaMod extends Mod {
 		return Optional.of(Texture.load(2, cape.getFrameDelay() / 50, cape.getImage()));
 	}
 
-	public Optional<String> getLore(EntityPlayer player) {
+	public Optional<String> getLore(PlayerEntity player) {
 		return get(player).map(UserInfo::getLore)
 				.flatMap((lore) -> lore.isEmpty() ? Optional.empty() : Optional.of(lore));
 	}
 
-	public Optional<UserInfo> get(EntityPlayer player) {
-		return get(player.getUniqueID(), player.getName());
+	public Optional<UserInfo> get(PlayerEntity player) {
+		return get(player.getUuid(), player.getTranslationKey());
 	}
 
 	public Optional<UserInfo> get(UUID uuid, String username) {

@@ -1,0 +1,29 @@
+plugins {
+	id "java"
+}
+
+repositories { 
+	maven { url 'https://jitpack.io' }
+	maven { url 'https://maven.fabricmc.net' }
+	maven { url 'https://repo.legacyfabric.net/repository/legacyfabric' }
+	maven {
+		url 'https://maven.minecraftforge.net'
+		metadataSources {
+			artifact()
+		}
+	}
+	mavenCentral()
+}
+
+dependencies {
+	implementation gradleApi()
+	implementation 'com.github.masecla22:Modrinth4J:master-SNAPSHOT'
+	implementation 'commons-codec:commons-codec:1.15'
+	implementation 'net.fabricmc:mapping-io:0.3.0'
+	implementation 'net.md-5:SpecialSource:1.11.0'
+	implementation 'org.ow2.asm:asm:9.4'
+	implementation 'org.ow2.asm:asm-util:9.4'
+	implementation 'com.google.guava:guava:31.1-jre'
+	runtimeOnly 'net.legacyfabric:yarn:1.8.9+build.454:mergedv2'
+	runtimeOnly 'de.oceanlabs.mcp:mcp:1.8.9:srg@zip'
+}

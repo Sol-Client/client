@@ -1,28 +1,67 @@
+import org.gradle.internal.os.OperatingSystem
+import io.github.solclient.gradle.ReplayModRemapper
+
 plugins {
 	id 'maven-publish'
 	alias libs.plugins.quilt.loom
+	alias libs.plugins.lombok
 }
 
-version = "${project.version}+${libs.versions.minecraft.get()}"
-group = "io.github.solclient"
-
-loom {
-	setIntermediaryUrl 'https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar'
-}
+group = 'io.github.solclient'
 
 repositories {
-	maven { url 'https://raw.githubusercontent.com/TheKodeToad/mcp-tiny/main' }
+	mavenCentral()
+	maven { url 'https://maven.fabricmc.net' }
 	maven { url 'https://repo.legacyfabric.net/repository/legacyfabric' }
+	maven { url 'https://repo.hypixel.net/repository/Hypixel' }
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
 	minecraft libs.minecraft
-	mappings variantOf(libs.quilt.mappings) { classifier 'v2' }
+	mappings variantOf(libs.yarn) { classifier 'v2' }
+
+	implementation libs.mixin
+	implementation libs.gson
+	implementation files('libs/occlusionculling.jar')
+	implementation libs.hypixel.api
+	implementation libs.discord.game.sdk4j
+	implementation libs.java.websocket
+	implementation libs.cosmetica.dot.java
+	implementation libs.lwjgl.patched
+
+	def remapper = new ReplayModRemapper(project)
+	remapper.prepare()
+	implementation files(remapper.createNamedMapped())
+
+	switch (OperatingSystem.current()) {
+		case OperatingSystem.LINUX:
+			def osArch = System.getProperty('os.arch')
+			project.ext.lwjglNatives = osArch.startsWith('arm') || osArch.startsWith('aarch64')
+				? "natives-linux-${osArch.contains('64') || osArch.startsWith('armv8') ? 'arm64' : 'arm32'}"
+				: "natives-linux"
+			break
+		case OperatingSystem.MAC_OS:
+			project.ext.lwjglNatives = System.getProperty('os.arch').startsWith('aarch64') ? 'natives-macos-arm64' : 'natives-macos'
+			break
+		case OperatingSystem.WINDOWS:
+			def osArch = System.getProperty('os.arch')
+			project.ext.lwjglNatives = osArch.contains('64')
+				? "natives-windows${osArch.startsWith('aarch64') ? '-arm64' : ''}"
+				: 'natives-windows-x86'
+			break
+	}
+
+	runtimeOnly("org.lwjgl:lwjgl:$libs.versions.lwjgl:$project.ext.lwjglNatives") {
+		transitive = false
+	}
+	runtimeOnly("org.lwjgl:lwjgl-nanovg:$libs.versions.lwjgl:$project.ext.lwjglNatives") {
+		transitive = false
+	}
 }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = 'UTF-8'
-	it.options.release = 17
+loom {
+	setIntermediaryUrl 'https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar'
 }
 
 java {
@@ -36,6 +75,11 @@ jar {
 	from('../LICENSE') {
 		rename { "${it}_${name}" }
 	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = 'UTF-8'
+	it.options.release = 17
 }
 
 // Configure the maven publication

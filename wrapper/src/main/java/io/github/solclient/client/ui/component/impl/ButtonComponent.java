@@ -9,7 +9,7 @@ import io.github.solclient.client.ui.component.handler.ClickHandler;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 public class ButtonComponent extends ColouredComponent {
 
@@ -18,7 +18,7 @@ public class ButtonComponent extends ColouredComponent {
 	private ButtonType type = ButtonType.NORMAL;
 
 	public ButtonComponent(String text, Controller<Colour> colour) {
-		this((component, defaultText) -> I18n.format(text), colour);
+		this((component, defaultText) -> I18n.translate(text), colour);
 	}
 
 	public ButtonComponent(Controller<String> text, Controller<Colour> colour) {

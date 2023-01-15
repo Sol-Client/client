@@ -3,16 +3,16 @@ package io.github.solclient.client.mod.impl.hud;
 import java.util.*;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.TweaksMod;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.potion.*;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.entity.effect.*;
+import net.minecraft.util.Identifier;
 
 public class PotionEffectsMod extends HudMod {
 
@@ -80,13 +80,13 @@ public class PotionEffectsMod extends HudMod {
 	public void render(Position position, boolean editMode) {
 		int x = position.getX();
 		int y = position.getY();
-		Collection<PotionEffect> effects;
+		Collection<StatusEffectInstance> effects;
 
-		if (editMode || mc.thePlayer == null) {
-			effects = Arrays.asList(new PotionEffect(1, 0), new PotionEffect(5, 0));
-		} else {
+		if (editMode || mc.player == null)
+			effects = Arrays.asList(new StatusEffectInstance(1, 0), new StatusEffectInstance(5, 0));
+		else {
 			GlStateManager.enableBlend();
-			effects = mc.thePlayer.getActivePotionEffects();
+			effects = mc.player.getStatusEffectInstances();
 		}
 
 		switch (alignment) {
@@ -100,13 +100,12 @@ public class PotionEffectsMod extends HudMod {
 		}
 
 		if (!effects.isEmpty()) {
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.disableLighting();
 
-			for (PotionEffect effect : effects) {
-				Potion potion = Potion.potionTypes[effect.getPotionID()];
-				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
+			for (StatusEffectInstance effect : effects) {
+				StatusEffect effectType = StatusEffect.STATUS_EFFECTS[effect.getEffectId()];
+				GlStateManager.color(1, 1, 1, 1);
+				mc.getTextureManager().bindTexture(new Identifier("textures/gui/container/inventory.png"));
 
 				int width = getWidth();
 				int iconX = x + 6;
@@ -127,28 +126,28 @@ public class PotionEffectsMod extends HudMod {
 
 				int centreText = y + 12;
 
-				if (icon && potion.hasStatusIcon()) {
-					int icon = potion.getStatusIconIndex();
+				if (icon && effectType.hasIcon()) {
+					int icon = effectType.getIconLevel();
 					Utils.drawTexture(iconX, y + 7, icon % 8 * 18, 198 + icon / 8 * 18, 18, 18, 0);
 				}
 
 				if (title) {
-					String titleText = I18n.format(potion.getName());
+					String titleText = I18n.translate(effectType.getTranslationKey());
 
 					if (effect.getAmplifier() > 0 && effect.getAmplifier() < 4) {
 						if (TweaksMod.enabled && TweaksMod.instance.arabicNumerals) {
 							titleText += " " + (effect.getAmplifier() + 1);
 						} else {
-							titleText += " " + I18n.format("enchantment.level." + (effect.getAmplifier() + 1));
+							titleText += " " + I18n.translate("enchantment.level." + (effect.getAmplifier() + 1));
 						}
 					}
 
-					font.drawString(titleText, textX, duration ? y + 7 : centreText, titleColour.getValue(), shadow);
+					font.draw(titleText, textX, duration ? y + 7 : centreText, titleColour.getValue(), shadow);
 				}
 
 				if (duration) {
-					String duration = Potion.getDurationString(effect);
-					font.drawString(duration, textX, title ? y + 17 : centreText, durationColour.getValue(), shadow);
+					String duration = StatusEffect.getFormattedDuration(effect);
+					font.draw(duration, textX, title ? y + 17 : centreText, durationColour.getValue(), shadow);
 				}
 
 				y += getEffectHeight();

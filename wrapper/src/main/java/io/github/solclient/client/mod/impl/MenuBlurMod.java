@@ -19,16 +19,19 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.extension.ShaderGroupExtension;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.resources.*;
-import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.shader.*;
-import net.minecraft.util.ResourceLocation;
+import io.github.solclient.client.util.extension.ShaderEffectExtension;
+import net.minecraft.client.gl.*;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.resource.ResourceMetadataProvider;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.util.Window;
+import net.minecraft.resource.Resource;
+import net.minecraft.util.Identifier;
 
 public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
-	private static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(
+	private static final Identifier ID = new Identifier(
 			"minecraft:shaders/post/menu_blur.json");
 
 	@Expose
@@ -42,7 +45,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Expose
 	@Option
 	private Colour backgroundColour = new Colour(0, 0, 0, 100);
-	private ShaderGroup group;
+	private ShaderEffect effect;
 	private long openTime;
 
 	@Override
@@ -52,7 +55,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.mod.screen.originally_by", "tterrag1098");
+		return I18n.translate("sol_client.mod.screen.originally_by", "tterrag1098");
 	}
 
 	@Override
@@ -63,7 +66,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-		Client.INSTANCE.getPseudoResources().register(RESOURCE_LOCATION, new MenuBlurShader());
+		Client.INSTANCE.getPseudoResources().register(ID, new MenuBlurShader());
 	}
 
 	@EventHandler
@@ -74,37 +77,37 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@EventHandler
 	public void onPostProcessing(PostProcessingEvent event) {
 		if (event.type == PostProcessingEvent.Type.UPDATE
-				|| (blur != 0 && (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat)
+				|| (blur != 0 && (mc.currentScreen != null && !(mc.currentScreen instanceof ChatScreen)
 						&& !(mc.currentScreen.getClass().getName().startsWith(
-								"com.replaymod.lib.de.johni0702.minecraft.gui" + ".container." + "AbstractGuiOverlay$")
-								&& ReplayModReplay.instance.getReplayHandler() != null && mc.theWorld != null)))) {
+								"com.replaymod.lib.de.johni0702.MinecraftClient.gui" + ".container." + "AbstractGuiOverlay$")
+								&& ReplayModReplay.instance.getReplayHandler() != null && mc.world != null)))) {
 			update();
-			event.groups.add(group);
+			event.effects.add(effect);
 		}
 	}
 
 	@EventHandler
 	public void onRenderGuiBackground(RenderGuiBackgroundEvent event) {
 		event.cancelled = true;
-		ScaledResolution resolution = new ScaledResolution(mc);
-		Gui.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(),
+		Window window = new Window(mc);
+		DrawableHelper.fill(0, 0, window.getWidth(), window.getHeight(),
 				Utils.lerpColour(0, backgroundColour.getValue(), getProgress()));
 	}
 
 	public void update() {
-		if (group == null) {
+		if (effect == null) {
 			try {
-				group = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(),
-						RESOURCE_LOCATION);
-				group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(),
+						ID);
+				effect.setupDimensions(this.mc.width, this.mc.height);
 			} catch (JsonSyntaxException | IOException error) {
 				logger.error("Could not load menu blur", error);
 			}
 		}
 
-		((ShaderGroupExtension) group).getListShaders().forEach((shader) -> {
-			ShaderUniform radius = shader.getShaderManager().getShaderUniform("Radius");
-			ShaderUniform progress = shader.getShaderManager().getShaderUniform("Progress");
+		((ShaderEffectExtension) effect).getPasses().forEach((shader) -> {
+			GlUniform radius = shader.getProgram().getUniformByName("Radius");
+			GlUniform progress = shader.getProgram().getUniformByName("Progress");
 
 			if (radius != null) {
 				radius.set(blur);
@@ -127,7 +130,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		group = null;
+		effect = null;
 	}
 
 	@Override
@@ -140,10 +143,10 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 		blur = Math.min(100, blur + 1);
 	}
 
-	public class MenuBlurShader implements IResource {
+	public class MenuBlurShader implements Resource {
 
 		@Override
-		public ResourceLocation getResourceLocation() {
+		public Identifier getId() {
 			return null;
 		}
 
@@ -183,7 +186,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 		}
 
 		@Override
-		public <T extends IMetadataSection> T getMetadata(String p_110526_1_) {
+		public <T extends ResourceMetadataProvider> T getMetadata(String paramString) {
 			return null;
 		}
 

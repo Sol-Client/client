@@ -5,14 +5,14 @@ import org.lwjgl.nanovg.NanoVG;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 public class LabelComponent extends ColouredComponent {
 
 	private final Controller<String> text;
 
 	public LabelComponent(String text) {
-		this((component, defaultText) -> I18n.format(text), (component, defaultColour) -> defaultColour);
+		this((component, defaultText) -> I18n.translate(text), (component, defaultColour) -> defaultColour);
 	}
 
 	public LabelComponent(Controller<String> text) {

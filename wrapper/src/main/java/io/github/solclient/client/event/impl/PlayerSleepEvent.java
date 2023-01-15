@@ -1,13 +1,13 @@
 package io.github.solclient.client.event.impl;
 
 import lombok.AllArgsConstructor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 @AllArgsConstructor
 public class PlayerSleepEvent {
 
-	public final EntityPlayer entityPlayer;
+	public final PlayerEntity player;
 	public final BlockPos pos;
 
 }

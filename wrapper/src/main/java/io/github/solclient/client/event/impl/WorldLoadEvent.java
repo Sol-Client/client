@@ -1,11 +1,11 @@
 package io.github.solclient.client.event.impl;
 
 import lombok.AllArgsConstructor;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.world.ClientWorld;
 
 @AllArgsConstructor
 public class WorldLoadEvent {
 
-	public final WorldClient world;
+	public final ClientWorld world;
 
 }

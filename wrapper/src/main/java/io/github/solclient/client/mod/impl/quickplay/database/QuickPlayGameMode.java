@@ -7,7 +7,7 @@ import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayOption;
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPlayPaletteComponent;
 import lombok.Getter;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 
 public class QuickPlayGameMode extends QuickPlayOption {
 
@@ -41,7 +41,7 @@ public class QuickPlayGameMode extends QuickPlayOption {
 		if (parent.getModes().size() == 1)
 			return parent.getName();
 
-		return EnumChatFormatting.getTextWithoutFormattingCodes(parent.getName() + ": " + name);
+		return Formatting.strip(parent.getName() + ": " + name);
 	}
 
 	@Override

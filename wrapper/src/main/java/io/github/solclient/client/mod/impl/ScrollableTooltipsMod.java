@@ -6,8 +6,8 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.resource.language.I18n;
 
 public class ScrollableTooltipsMod extends Mod {
 
@@ -32,7 +32,7 @@ public class ScrollableTooltipsMod extends Mod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.mod.screen.by", "moehreag"); // maybe also add original creator
+		return I18n.translate("sol_client.mod.screen.by", "moehreag"); // maybe also add original creator
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class ScrollableTooltipsMod extends Mod {
 			scrollStep = -scrollStep;
 		}
 
-		if (GuiScreen.isShiftKeyDown()) {
+		if (Screen.hasShiftDown()) {
 			offsetX += scrollStep;
 		} else {
 			offsetY += scrollStep;

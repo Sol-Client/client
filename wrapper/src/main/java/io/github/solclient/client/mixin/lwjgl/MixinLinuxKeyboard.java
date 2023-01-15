@@ -9,7 +9,7 @@ public class MixinLinuxKeyboard {
 	private @Final int numlock_mask, modeswitch_mask, caps_lock_mask, shift_lock_mask;
 
 	@Overwrite(remap = false)
-	private int getKeycode(long eventp, int eventState) {
+	private int getCode(long eventp, int eventState) {
 		/*
 		 * Copyright (c) 2002-2008 LWJGL Project All rights reserved.
 		 *

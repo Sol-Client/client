@@ -3,6 +3,7 @@ package io.github.solclient.client.mixin.client;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.model.IBakedModel;
 
@@ -10,6 +11,6 @@ import net.minecraft.client.resources.model.IBakedModel;
 public interface MixinRenderItem {
 
 	@Invoker("renderModel")
-	void renderBakedModel(IBakedModel model, int colour);
+	void renderBakedModel(BakedModel model, int colour);
 
 }

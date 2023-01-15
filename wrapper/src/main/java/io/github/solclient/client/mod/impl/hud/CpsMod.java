@@ -35,8 +35,7 @@ public class CpsMod extends SimpleHudMod {
 			int x = position.getX() + (53 / 2) - (width / 2);
 			int y = position.getY() + 4;
 
-			x = font.drawString(prefix + Integer.toString(CpsMonitor.LMB.getCps()), x, y, textColour.getValue(),
-					shadow);
+			x = font.draw(prefix + Integer.toString(CpsMonitor.LMB.getCps()), x, y, textColour.getValue(), shadow);
 
 			x--;
 			if (shadow)
@@ -54,7 +53,7 @@ public class CpsMod extends SimpleHudMod {
 
 			x += font.getCharWidth(' ');
 
-			font.drawString(CpsMonitor.RMB.getCps() + " CPS" + suffix, x, y, textColour.getValue(), shadow);
+			font.draw(CpsMonitor.RMB.getCps() + " CPS" + suffix, x, y, textColour.getValue(), shadow);
 		}
 	}
 

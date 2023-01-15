@@ -1,14 +1,14 @@
 package io.github.solclient.client.chatextensions;
 
-import io.github.solclient.client.util.extension.GuiChatExtension;
-import net.minecraft.client.Minecraft;
+import io.github.solclient.client.util.extension.ChatScreenExtension;
+import net.minecraft.client.*;
 
 public interface ChatButton {
 
 	int getPriority();
 
 	default int getWidth() {
-		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(getText()) + 4;
+		return MinecraftClient.getInstance().textRenderer.getStringWidth(getText()) + 4;
 	}
 
 	int getPopupWidth();
@@ -20,7 +20,7 @@ public interface ChatButton {
 	void render(int x, int y, boolean mouseDown, boolean wasMouseDown, boolean wasMouseClicked, int mouseX, int mouseY);
 
 	default boolean isOpen() {
-		GuiChatExtension chat = GuiChatExtension.getInstance();
+		ChatScreenExtension chat = ChatScreenExtension.active();
 		return chat != null && chat.getSelectedChatButton() == this;
 	}
 

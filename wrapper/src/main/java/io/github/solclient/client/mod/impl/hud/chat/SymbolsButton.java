@@ -5,9 +5,9 @@ import org.lwjgl.input.Keyboard;
 import io.github.solclient.client.chatextensions.ChatButton;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.extension.GuiChatExtension;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import io.github.solclient.client.util.extension.ChatScreenExtension;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 
 public class SymbolsButton implements ChatButton {
 
@@ -33,12 +33,12 @@ public class SymbolsButton implements ChatButton {
 		return table;
 	}
 
-	private int priority;
-	private FontRenderer font;
+	private final int priority;
+	private final TextRenderer font;
 
 	public SymbolsButton(ChatMod mod) {
 		priority = mod.getIndex();
-		font = Minecraft.getMinecraft().fontRendererObj;
+		font = MinecraftClient.getInstance().textRenderer;
 	}
 
 	@Override
@@ -77,14 +77,14 @@ public class SymbolsButton implements ChatButton {
 				boolean selected = character != 0 && characterBounds.contains(mouseX, mouseY);
 				Utils.drawRectangle(characterBounds, selected ? Colour.WHITE_128 : Colour.BLACK_128);
 				if (character != 0) {
-					font.drawString(character + "", x + (13 / 2) - (font.getCharWidth(character) / 2),
-							characterBounds.getY() + (characterBounds.getHeight() / 2) - (font.FONT_HEIGHT / 2),
+					font.draw(character + "", x + (13 / 2) - (font.getCharWidth(character) / 2),
+							characterBounds.getY() + (characterBounds.getHeight() / 2) - (font.fontHeight / 2),
 							characterBounds.contains(mouseX, mouseY) ? 0 : -1);
 				}
 
 				if (selected && wasMouseClicked) {
 					Utils.playClickSound(false);
-					((GuiChatExtension) Utils.getChatGui()).type(character, Keyboard.KEY_0);
+					((ChatScreenExtension) Utils.getChatScreen()).type(character, Keyboard.KEY_0);
 				}
 				x += 13;
 			}

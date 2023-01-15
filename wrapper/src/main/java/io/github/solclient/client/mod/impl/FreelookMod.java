@@ -10,9 +10,9 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.Perspective;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class FreelookMod extends Mod {
 
@@ -45,7 +45,7 @@ public class FreelookMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (key.isKeyDown()) {
+		if (key.isPressed()) {
 			if (!hasStarted()) {
 				start();
 			}
@@ -62,17 +62,17 @@ public class FreelookMod extends Mod {
 
 	public void start() {
 		active = true;
-		previousPerspective = mc.gameSettings.thirdPersonView;
-		mc.gameSettings.thirdPersonView = perspective.ordinal();
-		Entity renderView = mc.getRenderViewEntity();
-		yaw = renderView.rotationYaw;
-		pitch = renderView.rotationPitch;
+		previousPerspective = mc.options.perspective;
+		mc.options.perspective = perspective.ordinal();
+		Entity camera = mc.getCameraEntity();
+		yaw = camera.yaw;
+		pitch = camera.pitch;
 	}
 
 	public void stop() {
 		active = false;
-		mc.gameSettings.thirdPersonView = previousPerspective;
-		mc.renderGlobal.setDisplayListEntitiesDirty();
+		mc.options.perspective = previousPerspective;
+		mc.worldRenderer.scheduleTerrainUpdate();
 	}
 
 	public float getYaw() {
@@ -102,8 +102,8 @@ public class FreelookMod extends Mod {
 			if (invertYaw)
 				yaw = -yaw;
 			this.yaw += yaw * 0.15F;
-			this.pitch = MathHelper.clamp_float(this.pitch + (pitch * 0.15F), -90, 90);
-			mc.renderGlobal.setDisplayListEntitiesDirty();
+			this.pitch = MathHelper.clamp(this.pitch + (pitch * 0.15F), -90, 90);
+			mc.worldRenderer.scheduleTerrainUpdate();
 		}
 	}
 

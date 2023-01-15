@@ -8,7 +8,7 @@ import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.Perspective;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 
 public class TaplookMod extends Mod {
 
@@ -32,7 +32,7 @@ public class TaplookMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (key.isKeyDown()) {
+		if (key.isPressed()) {
 			if (!active) {
 				start();
 			}
@@ -43,15 +43,15 @@ public class TaplookMod extends Mod {
 
 	public void start() {
 		active = true;
-		previousPerspective = mc.gameSettings.thirdPersonView;
-		mc.gameSettings.thirdPersonView = perspective.ordinal();
-		mc.renderGlobal.setDisplayListEntitiesDirty();
+		previousPerspective = mc.options.perspective;
+		mc.options.perspective = perspective.ordinal();
+		mc.worldRenderer.scheduleTerrainUpdate();
 	}
 
 	public void stop() {
 		active = false;
-		mc.gameSettings.thirdPersonView = previousPerspective;
-		mc.renderGlobal.setDisplayListEntitiesDirty();
+		mc.options.perspective = previousPerspective;
+		mc.worldRenderer.scheduleTerrainUpdate();
 	}
 
 	@Override

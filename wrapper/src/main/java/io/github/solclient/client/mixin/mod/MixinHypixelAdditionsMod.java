@@ -5,35 +5,31 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.entity.*;
+import net.minecraft.util.Formatting;
 
 public class MixinHypixelAdditionsMod {
 
-	@Mixin(RenderPlayer.class)
-	public static abstract class MixinRenderPlayer extends Render<AbstractClientPlayer> {
+	@Mixin(PlayerEntityRenderer.class)
+	public static abstract class MixinPlayerEntityRenderer extends EntityRenderer<AbstractClientPlayerEntity> {
 
-		protected MixinRenderPlayer(RenderManager renderManager) {
-			super(renderManager);
+		protected MixinPlayerEntityRenderer(EntityRenderDispatcher dispatcher) {
+			super(dispatcher);
 		}
 
-		@Inject(method = "renderOffsetLivingLabel", at = @At("RETURN"))
-		public void renderLevelhead(AbstractClientPlayer entityIn, double x, double y, double z, String str,
+		@Inject(method = "method_10209(Lnet/minecraft/client/network/AbstractClientPlayerEntity;DDDLjava/lang/String;FD)V", at = @At("RETURN"))
+		public void renderLevelhead(AbstractClientPlayerEntity entityIn, double x, double y, double z, String str,
 				float p_177069_9_, double p_177069_10_, CallbackInfo callback) {
 			if (HypixelAdditionsMod.isEffective()) {
 				String levelhead = HypixelAdditionsMod.instance.getLevelhead(
-						entityIn == Minecraft.getMinecraft().thePlayer, entityIn.getDisplayName().getFormattedText(),
-						entityIn.getUniqueID());
+						entityIn == MinecraftClient.getInstance().player, entityIn.getName().asFormattedString(),
+						entityIn.getUuid());
 
-				if (levelhead != null) {
-					renderLivingLabel(entityIn,
-							EnumChatFormatting.AQUA + "Level: " + EnumChatFormatting.YELLOW + levelhead, x,
-							y + ((double) ((float) getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F
-									* p_177069_9_)),
-							z, 64);
-				}
+				if (levelhead != null)
+					renderLabelIfPresent(entityIn, Formatting.AQUA + "Level: " + Formatting.YELLOW + levelhead, x,
+							y + ((double) ((float) getFontRenderer().fontHeight * 1.15F * p_177069_9_)), z, 64);
 			}
 		}
 

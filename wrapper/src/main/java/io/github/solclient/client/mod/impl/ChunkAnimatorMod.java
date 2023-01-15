@@ -3,20 +3,20 @@ package io.github.solclient.client.mod.impl;
 import java.util.*;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.data.EasingFunction;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.chunk.RenderChunk;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.world.BuiltChunk;
 
 // Based on lumien231's chunk animator.
 public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
-	private final Map<RenderChunk, Long> chunks = new WeakHashMap<>();
+	private final Map<BuiltChunk, Long> chunks = new WeakHashMap<>();
 
 	@Expose
 	@Option
@@ -33,7 +33,7 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.mod.screen.originally_by", "lumien231");
+		return I18n.translate("sol_client.mod.screen.originally_by", "lumien231");
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 			long passedTime = now - time;
 
 			if (passedTime < getDuration()) {
-				int chunkY = event.chunk.getPosition().getY();
+				int chunkY = event.chunk.getPos().getY();
 				GlStateManager.translate(0, -chunkY + ease(passedTime, 0, chunkY, getDuration()), 0);
 			}
 		}
@@ -67,7 +67,7 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void setPosition(RenderChunkPositionEvent event) {
-		if (mc.thePlayer != null) {
+		if (mc.player != null) {
 			chunks.put(event.chunk, -1L);
 		}
 	}

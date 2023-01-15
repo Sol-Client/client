@@ -2,14 +2,14 @@ package io.github.solclient.client.mixin.client;
 
 import java.util.*;
 
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.util.collection.IntObjectStorage;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.*;
 
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.*;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.IntHashMap;
 
 @Mixin(KeyBinding.class)
 public abstract class MixinKeyBinding implements KeyBindingExtension {
@@ -18,16 +18,16 @@ public abstract class MixinKeyBinding implements KeyBindingExtension {
 	@Setter
 	private int mods;
 
-	@Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/IntHashMap;addKey(ILjava/lang/Object;)V"))
-	public void rewireAdd(IntHashMap<?> instance, int key, Object value) {
+	@Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/IntObjectStorage;set(ILjava/lang/Object;)V"))
+	public void rewireAdd(IntObjectStorage<?> instance, int key, Object value) {
 		add((KeyBinding) (Object) this);
 	}
 
 	@Overwrite
 	@SuppressWarnings("unchecked")
-	public static void onTick(int keyCode) {
+	public static void onKeyPressed(int keyCode) {
 		if (keyCode != 0) {
-			List<KeyBindingExtension> keybindings = (List<KeyBindingExtension>) (Object) hash.lookup(keyCode);
+			List<KeyBindingExtension> keybindings = (List<KeyBindingExtension>) (Object) KEY_MAP.get(keyCode);
 			if (keybindings == null)
 				return;
 
@@ -35,16 +35,16 @@ public abstract class MixinKeyBinding implements KeyBindingExtension {
 				if (!keybinding.areModsPressed())
 					continue;
 
-				keybinding.increasePressTime();
+				keybinding.increaseTimesPressed();
 			}
 		}
 	}
 
 	@Overwrite
 	@SuppressWarnings("unchecked")
-	public static void setKeyBindState(int keyCode, boolean pressed) {
+	public static void setKeyPressed(int keyCode, boolean pressed) {
 		if (keyCode != 0) {
-			List<KeyBindingExtension> keybindings = (List<KeyBindingExtension>) (Object) hash.lookup(keyCode);
+			List<KeyBindingExtension> keybindings = (List<KeyBindingExtension>) (Object) KEY_MAP.get(keyCode);
 			if (keybindings == null)
 				return;
 
@@ -58,26 +58,26 @@ public abstract class MixinKeyBinding implements KeyBindingExtension {
 	}
 
 	@Overwrite
-	public static void resetKeyBindingArrayAndHash() {
-		hash.clearMap();
+	public static void updateKeysByCode() {
+		KEY_MAP.clear();
 
-		for (KeyBinding keybinding : keybindArray)
+		for (KeyBinding keybinding : KEYS)
 			add(keybinding);
 	}
 
 	private static void add(KeyBinding keybinding) {
-		List<KeyBinding> existing = hash.lookup(keybinding.getKeyCode());
+		List<KeyBinding> existing = KEY_MAP.get(keybinding.getCode());
 		if (existing == null) {
 			LinkedList<KeyBinding> list = new LinkedList<>();
 			list.add(keybinding);
-			hash.addKey(keybinding.getKeyCode(), list);
+			KEY_MAP.set(keybinding.getCode(), list);
 		} else
 			existing.add(keybinding);
 	}
 
 	@Override
-	public void increasePressTime() {
-		pressTime++;
+	public void increaseTimesPressed() {
+		timesPressed++;
 	}
 
 	@Accessor
@@ -85,11 +85,11 @@ public abstract class MixinKeyBinding implements KeyBindingExtension {
 
 	// haha naughty!
 	@Shadow
-	private static @Final IntHashMap<List<KeyBinding>> hash;
+	private static @Final IntObjectStorage<List<KeyBinding>> KEY_MAP;
 	@Shadow
-	private static @Final List<KeyBinding> keybindArray;
+	private static @Final List<KeyBinding> KEYS;
 
 	@Shadow
-	private int pressTime;
+	private int timesPressed;
 
 }

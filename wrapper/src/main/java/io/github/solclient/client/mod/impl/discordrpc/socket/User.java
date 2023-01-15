@@ -1,13 +1,13 @@
 package io.github.solclient.client.mod.impl.discordrpc.socket;
 
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import lombok.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.*;
+import net.minecraft.client.util.Window;
+import net.minecraft.util.Identifier;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
@@ -35,7 +35,7 @@ public class User {
 	@Getter
 	@Setter
 	private boolean speaking;
-	private ResourceLocation location;
+	private Identifier location;
 
 	public void update(JsonObject data, JsonObject user) {
 		name = data.get("nick").getAsString();
@@ -67,38 +67,37 @@ public class User {
 	}
 
 	public void bindTexture() {
-		Minecraft mc = Minecraft.getMinecraft();
-		TextureManager texman = mc.getTextureManager();
-		int scale = new ScaledResolution(mc).getScaleFactor();
+		MinecraftClient mc = MinecraftClient.getInstance();
+		TextureManager textures = mc.getTextureManager();
+		int scale = new Window(mc).getScaleFactor();
 
 		GlStateManager.color(1, 1, 1);
 
 		if (avatar == null) {
-			texman.bindTexture(new ResourceLocation("textures/gui/discord_avatar_generic.png"));
+			textures.bindTexture(new Identifier("textures/gui/discord_avatar_generic.png"));
 			return;
 		}
 
 		if (!avatar.equals(boundAvatar) || boundScale != scale) {
 			deleteTexture();
 
-			location = new ResourceLocation("discord_avatar/" + avatar);
-			texman.loadTexture(location, new ThreadDownloadImageData(null,
+			location = new Identifier("discord_avatar/" + avatar);
+			textures.loadTexture(location, new PlayerSkinTexture(null,
 					String.format(AVATAR_FORMAT, id, avatar, (int) (16 * scale)), null, null));
 
 			boundAvatar = avatar;
 			boundScale = scale;
 		}
 
-		texman.bindTexture(location);
+		textures.bindTexture(location);
 	}
 
 	public void deleteTexture() {
-		Minecraft mc = Minecraft.getMinecraft();
+		MinecraftClient mc = MinecraftClient.getInstance();
 
-		mc.addScheduledTask(() -> {
-			if (location != null) {
-				Minecraft.getMinecraft().getTextureManager().deleteTexture(location);
-			}
+		mc.submit(() -> {
+			if (location != null)
+				MinecraftClient.getInstance().getTextureManager().close(location);
 		});
 	}
 

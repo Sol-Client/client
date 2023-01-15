@@ -75,7 +75,7 @@ public enum BukkitMaterial {
 	private final int id;
 
 	public Item getItem() {
-		return Item.getItemById(id);
+		return Item.byRawId(id);
 	}
 
 }

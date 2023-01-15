@@ -1,13 +1,13 @@
 package io.github.solclient.client.event.impl;
 
 import lombok.AllArgsConstructor;
-import net.minecraft.client.renderer.chunk.RenderChunk;
-import net.minecraft.util.BlockPos;
+import net.minecraft.client.world.BuiltChunk;
+import net.minecraft.util.math.BlockPos;
 
 @AllArgsConstructor
 public class RenderChunkPositionEvent {
 
-	public final RenderChunk chunk;
+	public final BuiltChunk chunk;
 	public final BlockPos position;
 
 }

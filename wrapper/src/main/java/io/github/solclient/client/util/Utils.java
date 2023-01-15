@@ -18,6 +18,7 @@ import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
@@ -26,33 +27,36 @@ import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.experimental.UtilityClass;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.multiplayer.ServerAddress;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.settings.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.option.*;
+import net.minecraft.client.render.*;
+import net.minecraft.client.render.model.ModelLoader;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.util.Window;
 import net.minecraft.network.*;
-import net.minecraft.network.handshake.client.C00Handshake;
-import net.minecraft.network.status.INetHandlerStatusClient;
-import net.minecraft.network.status.client.*;
-import net.minecraft.network.status.server.*;
-import net.minecraft.scoreboard.ScoreObjective;
+import net.minecraft.network.listener.ClientQueryPacketListener;
+import net.minecraft.network.packet.c2s.handshake.HandshakeC2SPacket;
+import net.minecraft.network.packet.c2s.query.*;
+import net.minecraft.network.packet.s2c.query.*;
+import net.minecraft.scoreboard.ScoreboardObjective;
+import net.minecraft.text.*;
 import net.minecraft.util.*;
-import net.minecraft.util.Util.EnumOS;
+import net.minecraft.util.Util.OperatingSystem;
+import net.minecraft.util.math.Box;
 
 @UtilityClass
 public class Utils {
 
-	public ModelBakery modelBakery;
+	public ModelLoader modelLoader;
 
 	public final String REVEAL_SUFFIX = "\0sol_client:showinfolder";
 	public final MonitoringExecutorService USER_DATA;
 	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
 
-	private final Map<ResourceLocation, Integer> NVG_CACHE = new HashMap<>();
+	private final Map<Identifier, Integer> NVG_CACHE = new HashMap<>();
 
 	static {
 		int threads = 8;
@@ -68,7 +72,7 @@ public class Utils {
 	}
 
 	private int getStringWidth(String text) {
-		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
+		return MinecraftClient.getInstance().textRenderer.getStringWidth(text);
 	}
 
 	public void drawHorizontalLine(double startX, double endX, double y, int colour) {
@@ -122,25 +126,25 @@ public class Utils {
 		float a = (colour & 255) / 255.0F;
 
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		BufferBuilder buffer = tessellator.getBuffer();
 		GlStateManager.enableBlend();
-		GlStateManager.disableTexture2D();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.disableTexture();
+		GlStateManager.blendFuncSeparate(770, 771, 1, 0);
 		GlStateManager.color(g, b, a, r);
 
-		worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(x, bottom, 0.0D).endVertex();
-		worldrenderer.pos(right, bottom, 0.0D).endVertex();
-		worldrenderer.pos(right, y, 0.0D).endVertex();
-		worldrenderer.pos(x, y, 0.0D).endVertex();
+		buffer.begin(7, VertexFormats.POSITION);
+		buffer.vertex(x, bottom, 0.0D).end();
+		buffer.vertex(right, bottom, 0.0D).end();
+		buffer.vertex(right, y, 0.0D).end();
+		buffer.vertex(x, y, 0.0D).end();
 		tessellator.draw();
 
-		GlStateManager.enableTexture2D();
+		GlStateManager.enableTexture();
 		GlStateManager.disableBlend();
 	}
 
 	public void drawRectangle(Rectangle rectangle, Colour colour) {
-		GuiScreen.drawRect(rectangle.getX(), rectangle.getY(), rectangle.getX() + rectangle.getWidth(),
+		DrawableHelper.fill(rectangle.getX(), rectangle.getY(), rectangle.getX() + rectangle.getWidth(),
 				rectangle.getY() + rectangle.getHeight(), colour.getValue());
 	}
 
@@ -177,10 +181,10 @@ public class Utils {
 	}
 
 	public void scissor(double x, double y, double width, double height) {
-		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-		double scale = resolution.getScaleFactor();
+		Window window = new Window(MinecraftClient.getInstance());
+		double scale = window.getScaleFactor();
 
-		GL11.glScissor((int) (x * scale), (int) ((resolution.getScaledHeight() - height - y) * scale),
+		GL11.glScissor((int) (x * scale), (int) ((window.getScaledHeight() - height - y) * scale),
 				(int) (width * scale), (int) (height * scale));
 	}
 
@@ -193,8 +197,7 @@ public class Utils {
 			return;
 		}
 
-		Minecraft.getMinecraft().getSoundHandler()
-				.playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+	    MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
 	}
 
 	public URL sneakyParse(String url) {
@@ -205,10 +208,10 @@ public class Utils {
 		}
 	}
 
-	public GuiChat getChatGui() {
-		GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
-		if (currentScreen != null && currentScreen instanceof GuiChat) {
-			return (GuiChat) currentScreen;
+	public ChatScreen getChatScreen() {
+		Screen currentScreen = MinecraftClient.getInstance().currentScreen;
+		if (currentScreen != null && currentScreen instanceof ChatScreen) {
+			return (ChatScreen) currentScreen;
 		}
 		return null;
 	}
@@ -217,15 +220,15 @@ public class Utils {
 		float xMultiplier = 0.00390625F;
 		float yMultiplier = 0.00390625F;
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		worldrenderer.pos(x, y + height, zLevel).tex(((textureX) * xMultiplier), (textureY + height) * yMultiplier)
-				.endVertex();
-		worldrenderer.pos(x + width, y + height, zLevel)
-				.tex((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).endVertex();
-		worldrenderer.pos(x + width, y + 0, zLevel).tex((textureX + width) * xMultiplier, (textureY + 0) * yMultiplier)
-				.endVertex();
-		worldrenderer.pos(x, y, zLevel).tex(((textureX) * xMultiplier), ((textureY + 0) * yMultiplier)).endVertex();
+		BufferBuilder buffer = tessellator.getBuffer();
+		buffer.begin(7, VertexFormats.POSITION_TEXTURE);
+		buffer.vertex(x, y + height, zLevel).texture(((textureX) * xMultiplier), (textureY + height) * yMultiplier)
+				.end();
+		buffer.vertex(x + width, y + height, zLevel)
+				.texture((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).end();
+		buffer.vertex(x + width, y + 0, zLevel).texture((textureX + width) * xMultiplier, (textureY + 0) * yMultiplier)
+				.end();
+		buffer.vertex(x, y, zLevel).texture(((textureX) * xMultiplier), ((textureY + 0) * yMultiplier)).end();
 		tessellator.draw();
 	}
 
@@ -238,35 +241,35 @@ public class Utils {
 		float red2 = (endColour >> 16 & 255) / 255.0F;
 		float green2 = (endColour >> 8 & 255) / 255.0F;
 		float blue2 = (endColour & 255) / 255.0F;
-		GlStateManager.disableTexture2D();
+		GlStateManager.disableTexture();
 		GlStateManager.enableBlend();
-		GlStateManager.disableAlpha();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.disableAlphaTest();
+		GlStateManager.blendFuncSeparate(770, 771, 1, 0);
 		GlStateManager.shadeModel(7425);
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-		worldrenderer.pos(right, top, 0).color(red1, green1, blue1, alpha1).endVertex();
-		worldrenderer.pos(left, top, 0).color(red1, green1, blue1, alpha1).endVertex();
-		worldrenderer.pos(left, bottom, 0).color(red2, green2, blue2, alpha2).endVertex();
-		worldrenderer.pos(right, bottom, 0).color(red2, green2, blue2, alpha2).endVertex();
+		BufferBuilder buffer = tessellator.getBuffer();
+		buffer.begin(7, VertexFormats.POSITION_COLOR);
+		buffer.vertex(right, top, 0).color(red1, green1, blue1, alpha1).end();
+		buffer.vertex(left, top, 0).color(red1, green1, blue1, alpha1).end();
+		buffer.vertex(left, bottom, 0).color(red2, green2, blue2, alpha2).end();
+		buffer.vertex(right, bottom, 0).color(red2, green2, blue2, alpha2).end();
 		tessellator.draw();
 		GlStateManager.shadeModel(7424);
 		GlStateManager.disableBlend();
-		GlStateManager.enableAlpha();
-		GlStateManager.enableTexture2D();
+		GlStateManager.enableAlphaTest();
+		GlStateManager.enableTexture();
 	}
 
 	public boolean isSpectatingEntityInReplay() {
 		return ReplayModReplay.instance.getReplayHandler() != null
-				&& !(Minecraft.getMinecraft().getRenderViewEntity() instanceof CameraEntity);
+				&& !(MinecraftClient.getInstance().getCameraEntity() instanceof CameraEntity);
 	}
 
 	public String getTextureScale() {
-		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
+		Window window = new Window(MinecraftClient.getInstance());
 
-		if (resolution.getScaleFactor() > 0 && resolution.getScaleFactor() < 5) {
-			return resolution.getScaleFactor() + "x";
+		if (window.getScaleFactor() > 0 && window.getScaleFactor() < 5) {
+			return window.getScaleFactor() + "x";
 		}
 
 		return "4x";
@@ -286,42 +289,43 @@ public class Utils {
 	}
 
 	public void pingServer(String address, IntConsumer callback) throws UnknownHostException {
-		ServerAddress serverAddress = ServerAddress.fromString(address);
-		NetworkManager networkManager = NetworkManager.createNetworkManagerAndConnect(
-				InetAddress.getByName(serverAddress.getIP()), serverAddress.getPort(), false);
+		ServerAddress serverAddress = ServerAddress.parse(address);
+		ClientConnection connection = ClientConnection.connect(InetAddress.getByName(serverAddress.getAddress()),
+				serverAddress.getPort(), false);
 
-		networkManager.setNetHandler(new INetHandlerStatusClient() {
+		connection.setPacketListener(new ClientQueryPacketListener() {
 
 			private boolean expected = false;
 			private long time = 0L;
 
 			@Override
-			public void handleServerInfo(S00PacketServerInfo packetIn) {
+			public void onResponse(QueryResponseS2CPacket paramQueryResponseS2CPacket) {
 				if (expected) {
-					networkManager.closeChannel(new ChatComponentText("Received unrequested status"));
+					connection.disconnect(new LiteralText("Received unrequested status"));
 				} else {
 					expected = true;
-					time = Minecraft.getSystemTime();
-					networkManager.sendPacket(new C01PacketPing(time));
+					time = MinecraftClient.getTime();
+					connection.send(new QueryPingC2SPacket(time));
 				}
 			}
 
 			@Override
-			public void handlePong(S01PacketPong packetIn) {
-				long systemTime = Minecraft.getSystemTime();
+			public void onPong(QueryPongS2CPacket paramQueryPongS2CPacket) {
+				long systemTime = MinecraftClient.getTime();
 				callback.accept((int) (systemTime - time));
-				networkManager.closeChannel(new ChatComponentText("Finished"));
+				connection.disconnect(new LiteralText("Finished"));
 			}
 
 			@Override
-			public void onDisconnect(IChatComponent reason) {
+			public void onDisconnected(Text reason) {
 				callback.accept(-1);
 			}
+
 		});
 
-		networkManager.sendPacket(
-				new C00Handshake(47, serverAddress.getIP(), serverAddress.getPort(), EnumConnectionState.STATUS));
-		networkManager.sendPacket(new C00PacketServerQuery());
+		connection.send(
+				new HandshakeC2SPacket(47, serverAddress.getAddress(), serverAddress.getPort(), NetworkState.STATUS));
+		connection.send(new QueryRequestC2SPacket());
 	}
 
 	public int randomInt(int from, int to) {
@@ -367,7 +371,7 @@ public class Utils {
 			}
 		}
 
-		switch (Util.getOSType()) {
+		switch (Util.getOperatingSystem()) {
 			case LINUX:
 				if (reveal) {
 					if (new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
@@ -413,7 +417,7 @@ public class Utils {
 				// fall back to AWT, but without a message
 				command = null;
 				break;
-			case OSX:
+			case MACOS:
 				if (reveal) {
 					command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
 				} else {
@@ -438,8 +442,7 @@ public class Utils {
 				proc.getOutputStream().close();
 				return;
 			} catch (IOException error) {
-				Client.LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:",
-						error);
+				Client.LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:", error);
 			}
 		}
 
@@ -448,28 +451,28 @@ public class Utils {
 		} catch (IOException error) {
 			Client.LOGGER.error("Could not open " + url + " with AWT:", error);
 
-			// null checks in case a link is opened before Minecraft is fully initialised
+			// null checks in case a link is opened before MinecraftClient is fully
+			// initialised
 
-			Minecraft mc = Minecraft.getMinecraft();
+			MinecraftClient mc = MinecraftClient.getInstance();
 			if (mc == null) {
 				return;
 			}
 
-			GuiIngame gui = mc.ingameGUI;
-			if (gui == null) {
+			InGameHud hud = mc.inGameHud;
+			if (hud == null) {
 				return;
 			}
 
-			gui.getChatGUI()
-					.printChatMessage(new ChatComponentText("§cCould not open " + url + ". Please open it manually."));
+			hud.getChatHud().addMessage(new LiteralText("§cCould not open " + url + ". Please open it manually."));
 		}
 	}
 
 	public String getRelativeToPackFolder(File packFile) {
-		String relative = new File(Minecraft.getMinecraft().mcDataDir, "resourcepacks").toPath().toAbsolutePath()
-				.relativize(packFile.toPath().toAbsolutePath()).toString();
+		String relative = new File(MinecraftClient.getInstance().runDirectory, "resourcepacks").toPath()
+				.toAbsolutePath().relativize(packFile.toPath().toAbsolutePath()).toString();
 
-		if (Util.getOSType() == EnumOS.WINDOWS) {
+		if (Util.getOperatingSystem() == OperatingSystem.WINDOWS) {
 			relative = relative.replace("\\", "/"); // Just to be safe
 		}
 
@@ -501,29 +504,29 @@ public class Utils {
 		float f1 = (colour >> 8 & 255) / 255.0F;
 		float f2 = (colour & 255) / 255.0F;
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		BufferBuilder buffer = tessellator.getBuffer();
 		GlStateManager.enableBlend();
-		GlStateManager.disableTexture2D();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.disableTexture();
+		GlStateManager.blendFuncSeparate(770, 771, 1, 0);
 		GlStateManager.color(f, f1, f2, f3);
-		worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(left, bottom, 0.0D).endVertex();
-		worldrenderer.pos(right, bottom, 0.0D).endVertex();
-		worldrenderer.pos(right, top, 0.0D).endVertex();
-		worldrenderer.pos(left, top, 0.0D).endVertex();
+		buffer.begin(7, VertexFormats.POSITION);
+		buffer.vertex(left, bottom, 0.0D).end();
+		buffer.vertex(right, bottom, 0.0D).end();
+		buffer.vertex(right, top, 0.0D).end();
+		buffer.vertex(left, top, 0.0D).end();
 		tessellator.draw();
-		GlStateManager.enableTexture2D();
+		GlStateManager.enableTexture();
 		GlStateManager.disableBlend();
 	}
 
 	public String getScoreboardTitle() {
-		Minecraft mc = Minecraft.getMinecraft();
+		MinecraftClient mc = MinecraftClient.getInstance();
 
-		if (mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
-			ScoreObjective first = mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
+		if (mc.world != null && mc.world.getScoreboard() != null) {
+			ScoreboardObjective first = mc.world.getScoreboard().getObjectiveForSlot(1);
 
 			if (first != null) {
-				return EnumChatFormatting.getTextWithoutFormattingCodes(first.getDisplayName());
+				return Formatting.strip(first.getDisplayName());
 			}
 		}
 
@@ -531,10 +534,10 @@ public class Utils {
 	}
 
 	public String getNativeFileExtension() {
-		switch (Util.getOSType()) {
+		switch (Util.getOperatingSystem()) {
 			case WINDOWS:
 				return "dll";
-			case OSX:
+			case MACOS:
 				return "dylib";
 			default:
 				return "so";
@@ -553,57 +556,57 @@ public class Utils {
 		return max;
 	}
 
-	public void fillBox(AxisAlignedBB box) {
+	public void fillBox(Box box) {
 		GlStateManager.disableCull();
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		BufferBuilder buffer = tessellator.getBuffer();
 
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
+		buffer.begin(6, VertexFormats.POSITION);
+		buffer.vertex(box.minX, box.minY, box.minZ).end();
+		buffer.vertex(box.maxX, box.minY, box.minZ).end();
+		buffer.vertex(box.maxX, box.maxY, box.minZ).end();
+		buffer.vertex(box.minX, box.maxY, box.minZ).end();
+		buffer.vertex(box.minX, box.minY, box.minZ).end();
 		tessellator.draw();
 
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
+		buffer.begin(6, VertexFormats.POSITION);
+		buffer.vertex(box.maxX, box.minY, box.minZ).end();
+		buffer.vertex(box.maxX, box.minY, box.maxZ).end();
+		buffer.vertex(box.maxX, box.maxY, box.maxZ).end();
+		buffer.vertex(box.maxX, box.maxY, box.minZ).end();
+		buffer.vertex(box.maxX, box.minY, box.minZ).end();
 		tessellator.draw();
 
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
+		buffer.begin(6, VertexFormats.POSITION);
+		buffer.vertex(box.minX, box.minY, box.maxZ).end();
+		buffer.vertex(box.maxX, box.minY, box.maxZ).end();
+		buffer.vertex(box.maxX, box.maxY, box.maxZ).end();
+		buffer.vertex(box.minX, box.maxY, box.maxZ).end();
+		buffer.vertex(box.minX, box.minY, box.maxZ).end();
 		tessellator.draw();
 
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
+		buffer.begin(6, VertexFormats.POSITION);
+		buffer.vertex(box.minX, box.minY, box.maxZ).end();
+		buffer.vertex(box.minX, box.minY, box.minZ).end();
+		buffer.vertex(box.minX, box.maxY, box.minZ).end();
+		buffer.vertex(box.minX, box.maxY, box.maxZ).end();
+		buffer.vertex(box.minX, box.minY, box.maxZ).end();
 		tessellator.draw();
 
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.maxY, box.minZ).endVertex();
+		buffer.begin(6, VertexFormats.POSITION);
+		buffer.vertex(box.minX, box.maxY, box.minZ).end();
+		buffer.vertex(box.maxX, box.maxY, box.minZ).end();
+		buffer.vertex(box.maxX, box.maxY, box.maxZ).end();
+		buffer.vertex(box.minX, box.maxY, box.maxZ).end();
+		buffer.vertex(box.minX, box.maxY, box.minZ).end();
 		tessellator.draw();
 
-		worldrenderer.begin(6, DefaultVertexFormats.POSITION);
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.minZ).endVertex();
-		worldrenderer.pos(box.maxX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.maxZ).endVertex();
-		worldrenderer.pos(box.minX, box.minY, box.minZ).endVertex();
+		buffer.begin(6, VertexFormats.POSITION);
+		buffer.vertex(box.minX, box.minY, box.minZ).end();
+		buffer.vertex(box.maxX, box.minY, box.minZ).end();
+		buffer.vertex(box.maxX, box.minY, box.maxZ).end();
+		buffer.vertex(box.minX, box.minY, box.maxZ).end();
+		buffer.vertex(box.minX, box.minY, box.minZ).end();
 		tessellator.draw();
 
 		GlStateManager.enableCull();
@@ -637,38 +640,38 @@ public class Utils {
 		}
 	}
 
-	public NVGPaint nvgMinecraftTexturePaint(long nvg, ResourceLocation location, int x, int y, int width, int height) {
+	public NVGPaint nvgMinecraftTexturePaint(long nvg, Identifier id, int x, int y, int width, int height) {
 		try {
 			NVGPaint paint = NVGPaint.create();
-			NanoVG.nvgImagePattern(nvg, x, y, width, height, 0, nvgMinecraftTexture(nvg, location), 1, paint);
+			NanoVG.nvgImagePattern(nvg, x, y, width, height, 0, nvgMinecraftTexture(nvg, id), 1, paint);
 			return paint;
 		} catch (IOException error) {
 			return NVGPaint.create().innerColor(Colour.WHITE.nvg());
 		}
 	}
 
-	public int nvgMinecraftTexture(long nvg, ResourceLocation location) throws IOException {
-		if (NVG_CACHE.containsKey(location))
-			return NVG_CACHE.get(location);
+	public int nvgMinecraftTexture(long nvg, Identifier id) throws IOException {
+		if (NVG_CACHE.containsKey(id))
+			return NVG_CACHE.get(id);
 
-		Minecraft mc = Minecraft.getMinecraft();
-		InputStream in = mc.getResourceManager().getResource(location).getInputStream();
+		MinecraftClient mc = MinecraftClient.getInstance();
+		InputStream in = mc.getResourceManager().getResource(id).getInputStream();
 
 		ByteBuffer buffer = mallocAndRead(in);
 		int handle = NanoVG.nvgCreateImageMem(nvg, 0, buffer);
 		MemoryUtil.memFree(buffer);
 
-		NVG_CACHE.put(location, handle);
+		NVG_CACHE.put(id, handle);
 
 		return handle;
 	}
 
 	public boolean isConflicting(KeyBinding keybinding) {
-		if (keybinding.getKeyCode() == 0)
+		if (keybinding.getCode() == 0)
 			return false;
 
-		for (KeyBinding other : Minecraft.getMinecraft().gameSettings.keyBindings)
-			if (other != keybinding && other.getKeyCode() == keybinding.getKeyCode()
+		for (KeyBinding other : MinecraftClient.getInstance().options.allKeys)
+			if (other != keybinding && other.getCode() == keybinding.getCode()
 					&& KeyBindingExtension.from(other).getMods() == KeyBindingExtension.from(keybinding).getMods())
 				return true;
 
@@ -709,14 +712,14 @@ public class Utils {
 	}
 
 	public void registerKeyBinding(KeyBinding keyBinding) {
-		GameSettings settings = Minecraft.getMinecraft().gameSettings;
-		settings.keyBindings = ArrayUtils.add(settings.keyBindings, keyBinding);
+		GameOptions options = MinecraftClient.getInstance().options;
+		options.allKeys = ArrayUtils.add(options.allKeys, keyBinding);
 	}
 
 	public void unregisterKeyBinding(KeyBinding keyBinding) {
-		GameSettings settings = Minecraft.getMinecraft().gameSettings;
-		settings.keyBindings = ArrayUtils.removeElement(settings.keyBindings, keyBinding);
-		keyBinding.setKeyCode(0);
+		GameOptions options = MinecraftClient.getInstance().options;
+		options.allKeys = ArrayUtils.removeElement(options.allKeys, keyBinding);
+		keyBinding.setCode(0);
 	}
 
 }

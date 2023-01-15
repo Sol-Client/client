@@ -1,8 +1,9 @@
 package io.github.solclient.client.ui.screen;
 
 import com.replaymod.lib.de.johni0702.minecraft.gui.container.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 
-public class JGuiPreviousScreen extends net.minecraft.client.gui.GuiScreen {
+public class JGuiPreviousScreen extends Screen {
 
 	private GuiScreen previous;
 
@@ -11,8 +12,8 @@ public class JGuiPreviousScreen extends net.minecraft.client.gui.GuiScreen {
 	}
 
 	@Override
-	public void initGui() {
-		super.initGui();
+	public void init() {
+		super.init();
 		previous.display();
 	}
 

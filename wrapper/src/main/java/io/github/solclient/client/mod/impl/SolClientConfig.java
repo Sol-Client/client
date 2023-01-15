@@ -12,7 +12,7 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.SemVer;
 import io.github.solclient.client.util.data.Colour;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 
 public class SolClientConfig extends ConfigOnlyMod {
 

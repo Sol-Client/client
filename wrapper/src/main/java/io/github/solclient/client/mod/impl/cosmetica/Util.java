@@ -1,14 +1,15 @@
 package io.github.solclient.client.mod.impl.cosmetica;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import cc.cosmetica.api.Model;
 import io.github.solclient.client.mixin.client.*;
 import io.github.solclient.client.util.Utils;
 import lombok.experimental.UtilityClass;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.resources.model.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.model.*;
+import net.minecraft.client.render.model.json.BlockModel;
+import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 
 @UtilityClass
 class Util {
@@ -32,16 +33,15 @@ class Util {
 	 * License for the specific language governing permissions and limitations under
 	 * the License.
 	 */
-	public void render(ModelRenderer part, IBakedModel model, float x, float y, float z, boolean flip) {
+	public void render(ModelPart part, BakedModel model, float x, float y, float z, boolean flip) {
 		GlStateManager.pushMatrix();
 		transform(part);
 		GlStateManager.scale(MAGIC_SCALE, -MAGIC_SCALE, -MAGIC_SCALE);
 		GlStateManager.rotate(180, 0, 1, 0);
 		GlStateManager.translate(x, y, z);
 
-		if (flip) {
+		if (flip)
 			GlStateManager.scale(-1, 1, 1);
-		}
 
 		renderBakedModel(model);
 
@@ -65,27 +65,27 @@ class Util {
 	 * License for the specific language governing permissions and limitations under
 	 * the License.
 	 */
-	private void renderBakedModel(IBakedModel model) {
+	private void renderBakedModel(BakedModel model) {
 		GlStateManager.pushMatrix();
-		boolean isGUI3D = model.isGui3d();
+		boolean isGUI3D = model.hasDepth();
 		float transformStrength = 0.25F;
 		float rotation = 0.0f;
-		float transform = model.getItemCameraTransforms()
-				.getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
-		GlStateManager.translate(0.0D, rotation + transformStrength * transform, 0.0D);
-		float xScale = model.getItemCameraTransforms().ground.scale.x;
-		float yScale = model.getItemCameraTransforms().ground.scale.y;
-		float zScale = model.getItemCameraTransforms().ground.scale.z;
+		float transform = model.getTransformation()
+				.getTransformation(Mode.GROUND).scale.y;
+		GlStateManager.translate(0, rotation + transformStrength * transform, 0);
+		float xScale = model.getTransformation().ground.scale.x;
+		float yScale = model.getTransformation().ground.scale.y;
+		float zScale = model.getTransformation().ground.scale.z;
 
 		GlStateManager.pushMatrix();
 
-		ItemCameraTransforms.TransformType transformType = ItemCameraTransforms.TransformType.NONE;
+		Mode transformType = Mode.NONE;
 		// ItemRenderer#render start
 
-		model.getItemCameraTransforms().applyTransform(transformType);
-		GlStateManager.translate(-0.5, -0.5, -0.5);
+		model.getTransformation().apply(transformType);
+		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 
-		((MixinRenderItem) Minecraft.getMinecraft().getRenderItem()).renderBakedModel(model, -1);
+		((MixinRenderItem) MinecraftClient.getInstance().getItemRenderer()).renderBakedModel(model, -1);
 
 		// ItemRenderer#render end
 
@@ -98,25 +98,22 @@ class Util {
 	}
 
 	// taken from ModelRenderer
-	public void transform(ModelRenderer part) {
-		GlStateManager.translate(part.rotationPointX / 16, part.rotationPointY / 16, part.rotationPointZ / 16);
+	public void transform(ModelPart part) {
+		GlStateManager.translate(part.pivotX / 16, part.pivotY / 16, part.pivotZ / 16);
 
-		if (part.rotateAngleY != 0) {
-			GlStateManager.rotate(part.rotateAngleY * (180 / (float) Math.PI), 0, 1, 0);
-		}
+		if (part.posY != 0)
+			GlStateManager.rotate(part.posY * (180 / (float) Math.PI), 0, 1, 0);
 
-		if (part.rotateAngleX != 0) {
-			GlStateManager.rotate(part.rotateAngleX * (180 / (float) Math.PI), 1, 0, 0);
-		}
+		if (part.posX != 0)
+			GlStateManager.rotate(part.posX * (180 / (float) Math.PI), 1, 0, 0);
 
-		if (part.rotateAngleZ != 0) {
-			GlStateManager.rotate(part.rotateAngleZ * (180 / (float) Math.PI), 0, 0, 1);
-		}
+		if (part.posZ != 0)
+			GlStateManager.rotate(part.posZ * (180 / (float) Math.PI), 0, 0, 1);
 	}
 
-	public IBakedModel createModel(Model model) {
-		ModelBlock blockModel = ModelBlock.deserialize(model.getModel());
-		blockModel.name = model.getId();
+	public BakedModel createModel(Model model) {
+		BlockModel blockModel = BlockModel.create(model.getModel());
+		blockModel.field_10928 = model.getId();
 		// TODO fix??
 		// weird leftover stuff down here v
 //		blockModel.getElements().forEach((part) -> {
@@ -124,8 +121,8 @@ class Util {
 //				System.out.println(Arrays.toString(value.blockFaceUV.uvs));
 //			});
 //		});
-		((MixinModelBlock) blockModel).getTextures().put("1", "missingno");
-		return ((MixinModelBakery) Utils.modelBakery).bakeBlockModel(blockModel, ModelRotation.X0_Y0, false);
+		((MixinBlockModel) blockModel).getTextures().put("1", "missingno");
+		return ((MixinModelLoader) Utils.modelLoader).bakeBlockModel(blockModel, ModelRotation.X0_Y0, false);
 	}
 
 }

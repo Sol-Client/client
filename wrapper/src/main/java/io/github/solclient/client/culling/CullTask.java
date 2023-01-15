@@ -35,14 +35,14 @@ import org.apache.logging.log4j.*;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 import com.logisticscraft.occlusionculling.util.Vec3d;
 
-import io.github.solclient.client.util.extension.MinecraftExtension;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ActiveRenderInfo;
+import io.github.solclient.client.util.extension.MinecraftClientExtension;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.entity.decoration.ArmorStandEntity;
+import net.minecraft.util.math.*;
 import net.minecraft.world.chunk.Chunk;
 
 public class CullTask implements Runnable {
@@ -52,7 +52,7 @@ public class CullTask implements Runnable {
 	public static boolean requestCull = false;
 
 	private final OcclusionCullingInstance culling = new OcclusionCullingInstance(128, new DataProviderImpl());
-	private final Minecraft mc = Minecraft.getMinecraft();
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 	private final int hitboxLimit = 15;
 
 	// reused preallocated vars
@@ -64,29 +64,29 @@ public class CullTask implements Runnable {
 
 	@Override
 	public void run() {
-		while (((MinecraftExtension) mc).isRunning()) {
+		while (((MinecraftClientExtension) mc).isRunning()) {
 			try {
 				Thread.sleep(10);
 
-				if (mc.thePlayer != null && mc.getRenderViewEntity() != null) {
-					Vec3 cameraMC = ActiveRenderInfo.projectViewFromEntity(mc.getRenderViewEntity(), 1);
+				if (mc.player != null && mc.getCameraEntity() != null) {
+					net.minecraft.util.math.Vec3d cameraMC = Camera.getEntityPos(mc.getCameraEntity(), ((MinecraftClientExtension) mc).getTicker().tickDelta);
 
-					if (requestCull || !(cameraMC.xCoord == lastPos.x && cameraMC.yCoord == lastPos.y
-							&& cameraMC.zCoord == lastPos.z)) {
+					if (requestCull || !(cameraMC.x == lastPos.x && cameraMC.y == lastPos.y
+							&& cameraMC.z == lastPos.z)) {
 						long start = System.currentTimeMillis();
 						requestCull = false;
-						lastPos.set(cameraMC.xCoord, cameraMC.yCoord, cameraMC.zCoord);
+						lastPos.set(cameraMC.x, cameraMC.y, cameraMC.z);
 						Vec3d camera = lastPos;
 						culling.resetCache();
-						boolean spectator = mc.thePlayer.isSpectator();
+						boolean spectator = mc.player.isSpectator();
 
 						for (int x = -8; x <= 8; x++) {
 							for (int z = -8; z <= 8; z++) {
-								Chunk chunk = mc.theWorld.getChunkFromChunkCoords(mc.thePlayer.chunkCoordX + x,
-										mc.thePlayer.chunkCoordZ + z);
-								Iterator<Entry<BlockPos, TileEntity>> iterator = chunk.getTileEntityMap().entrySet()
+								Chunk chunk = mc.world.getChunk(mc.player.chunkX + x,
+										mc.player.chunkZ + z);
+								Iterator<Entry<BlockPos, BlockEntity>> iterator = chunk.getBlockEntities().entrySet()
 										.iterator();
-								Entry<BlockPos, TileEntity> entry;
+								Entry<BlockPos, BlockEntity> entry;
 								while (iterator.hasNext()) {
 									try {
 										entry = iterator.next();
@@ -96,11 +96,10 @@ public class CullTask implements Runnable {
 										// overhead probably than trying to sync stuff up for no really good reason
 									}
 
-									if (entry.getValue().getBlockType() == Blocks.beacon) {
+									if (entry.getValue().getBlock() == Blocks.BEACON)
 										continue;
-									}
 
-									TileEntity tile = entry.getValue();
+									BlockEntity tile = entry.getValue();
 
 									if (spectator) {
 										((Cullable) tile).setCulled(false);
@@ -109,7 +108,7 @@ public class CullTask implements Runnable {
 
 									BlockPos pos = entry.getKey();
 
-									if (pos.distanceSq(cameraMC.xCoord, cameraMC.yCoord, cameraMC.zCoord) < 4096.0D) {
+									if (pos.squaredDistanceTo(cameraMC.x, cameraMC.y, cameraMC.z) < 4096.0D) {
 										aabbMin.set(pos.getX(), pos.getY(), pos.getZ());
 										aabbMax.set(pos.getX() + 1d, pos.getY() + 1d, pos.getZ() + 1d);
 
@@ -122,7 +121,7 @@ public class CullTask implements Runnable {
 						}
 
 						Entity entity = null;
-						Iterator<Entity> iterable = mc.theWorld.loadedEntityList.iterator();
+						Iterator<Entity> iterable = mc.world.loadedEntities.iterator();
 
 						while (iterable.hasNext()) {
 							try {
@@ -138,13 +137,13 @@ public class CullTask implements Runnable {
 								continue;
 							}
 
-							if (!(entity.getPositionVector().distanceTo(cameraMC) < 128)) {
+							if (!(entity.getPos().distanceTo(cameraMC) < 128)) {
 								((Cullable) entity).setCulled(false); // If your entity view distance is larger than
 								// tracingDistance just render it
 								continue;
 							}
 
-							AxisAlignedBB boundingBox = entity.getEntityBoundingBox();
+							Box boundingBox = entity.getBoundingBox();
 							if (boundingBox.maxX - boundingBox.minX > hitboxLimit
 									|| boundingBox.maxY - boundingBox.minY > hitboxLimit
 									|| boundingBox.maxZ - boundingBox.minZ > hitboxLimit) {
@@ -168,7 +167,7 @@ public class CullTask implements Runnable {
 	}
 
 	private boolean isSkippableArmorstand(Entity entity) {
-		return entity instanceof EntityArmorStand && ((EntityArmorStand) entity).hasMarker();
+		return entity instanceof ArmorStandEntity && ((ArmorStandEntity) entity).shouldShowName();
 	}
 
 }

@@ -32,17 +32,17 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreRenderTickEvent;
 import lombok.AllArgsConstructor;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ReportedException;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.crash.CrashException;
 
 public class SCScheduler implements Scheduler {
 
-	private static final Minecraft mc = Minecraft.getMinecraft();
+	private static final MinecraftClient mc = MinecraftClient.getInstance();
 	private boolean inRunLater = false;
 
 	@Override
 	public void runSync(Runnable runnable) throws InterruptedException, ExecutionException, TimeoutException {
-		if (mc.isCallingFromMinecraftThread()) {
+		if (mc.isOnThread()) {
 			runnable.run();
 		} else {
 			FutureTask<Void> future = new FutureTask<>(runnable, null);
@@ -67,7 +67,7 @@ public class SCScheduler implements Scheduler {
 	}
 
 	private void runLater(Runnable runnable, final Runnable defer) {
-		if (mc.isCallingFromMinecraftThread() && inRunLater) {
+		if (mc.isOnThread() && inRunLater) {
 			Client.INSTANCE.getEvents().register(new TickListener(defer));
 		} else {
 			Queue<FutureTask<?>> tasks = ((MinecraftAccessor) mc).getScheduledTasks();
@@ -78,10 +78,10 @@ public class SCScheduler implements Scheduler {
 
 					try {
 						runnable.run();
-					} catch (ReportedException error) {
+					} catch (CrashException error) {
 						error.printStackTrace();
-						System.err.println(error.getCrashReport().getCompleteReport());
-						mc.crashed(error.getCrashReport());
+						System.err.println(error.getReport().asString());
+						mc.crash(error.getReport());
 					} finally {
 						this.inRunLater = false;
 					}

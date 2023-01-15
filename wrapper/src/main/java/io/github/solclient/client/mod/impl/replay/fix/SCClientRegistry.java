@@ -1,7 +1,7 @@
 package io.github.solclient.client.mod.impl.replay.fix;
 
 import io.github.solclient.client.util.*;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 
 @Deprecated
 @ForgeCompat

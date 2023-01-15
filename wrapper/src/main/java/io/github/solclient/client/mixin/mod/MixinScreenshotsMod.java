@@ -13,23 +13,25 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.mojang.blaze3d.platform.*;
 import com.replaymod.replay.ReplayModReplay;
 
 import io.github.solclient.client.mod.impl.ScreenshotsMod;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.texture.TextureUtil;
+import net.minecraft.client.util.ScreenshotUtils;
+import net.minecraft.text.*;
 import net.minecraft.util.*;
 
 public class MixinScreenshotsMod {
 
-	@Mixin(ScreenShotHelper.class)
+	@Mixin(ScreenshotUtils.class)
 	public static class MixinScreenshotHelper {
 
-		@Inject(method = "saveScreenshot(Ljava/io/File;Ljava/lang/String;IILnet/minecraft/client/shader/Framebuffer;)Lnet/minecraft/util/IChatComponent;", at = @At("HEAD"), cancellable = true)
+		@Inject(method = "saveScreenshot(Ljava/io/File;Ljava/lang/String;IILnet/minecraft/client/gl/Framebuffer;)Lnet/minecraft/text/Text;", at = @At("HEAD"), cancellable = true)
 		private static void saveScreenshot(File gameDirectory, String screenshotName, int width, int height,
-				Framebuffer buffer, CallbackInfoReturnable<IChatComponent> callback) {
+				Framebuffer framebuffer, CallbackInfoReturnable<Text> callback) {
 			if (!ScreenshotsMod.enabled)
 				return;
 
@@ -37,52 +39,51 @@ public class MixinScreenshotsMod {
 				File screenshots = new File(gameDirectory, "screenshots");
 				screenshots.mkdir();
 
-				if (OpenGlHelper.isFramebufferEnabled()) {
-					width = buffer.framebufferTextureWidth;
-					height = buffer.framebufferTextureHeight;
+				if (GLX.supportsFbo()) {
+					width = framebuffer.textureWidth;
+					height = framebuffer.textureHeight;
 				}
 
 				int pixels = width * height;
 
-				if (pixelBuffer == null || pixelBuffer.capacity() < pixels) {
-					pixelBuffer = BufferUtils.createIntBuffer(pixels);
-					pixelValues = new int[pixels];
+				if (intBuffer == null || intBuffer.capacity() < pixels) {
+					intBuffer = BufferUtils.createIntBuffer(pixels);
+					field_1035 = new int[pixels];
 				}
 
 				GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
 				GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-				pixelBuffer.clear();
+				intBuffer.clear();
 
-				if (OpenGlHelper.isFramebufferEnabled()) {
-					GlStateManager.bindTexture(buffer.framebufferTexture);
+				if (GLX.supportsFbo()) {
+					GlStateManager.bindTexture(framebuffer.colorAttachment);
 					GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV,
-							pixelBuffer);
-				} else {
-					GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
-				}
+							intBuffer);
+				} else
+					GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, intBuffer);
 
-				pixelBuffer.get(pixelValues);
-				TextureUtil.processPixelValues(pixelValues, width, height);
+				intBuffer.get(field_1035);
+				TextureUtil.flipXY(field_1035, width, height);
 				BufferedImage image = null;
 
-				if (OpenGlHelper.isFramebufferEnabled()) {
-					image = new BufferedImage(buffer.framebufferWidth, buffer.framebufferHeight, 1);
-					int j = buffer.framebufferTextureHeight - buffer.framebufferHeight;
+				if (GLX.supportsFbo()) {
+					image = new BufferedImage(framebuffer.viewportWidth, framebuffer.viewportHeight, 1);
+					int j = framebuffer.textureHeight - framebuffer.viewportHeight;
 
-					for (int k = j; k < buffer.framebufferTextureHeight; ++k) {
-						for (int l = 0; l < buffer.framebufferWidth; ++l) {
-							image.setRGB(l, k - j, pixelValues[k * buffer.framebufferTextureWidth + l]);
+					for (int k = j; k < framebuffer.textureHeight; ++k) {
+						for (int l = 0; l < framebuffer.viewportWidth; ++l) {
+							image.setRGB(l, k - j, field_1035[k * framebuffer.textureWidth + l]);
 						}
 					}
 				} else {
 					image = new BufferedImage(width, height, 1);
-					image.setRGB(0, 0, width, height, pixelValues, 0, width);
+					image.setRGB(0, 0, width, height, field_1035, 0, width);
 				}
 
 				File screenshot;
 
 				if (screenshotName == null) {
-					screenshot = getTimestampedPNGFileForDirectory(screenshots);
+					screenshot = getScreenshotFile(screenshots);
 				} else {
 					screenshot = new File(screenshots, screenshotName);
 				}
@@ -94,10 +95,10 @@ public class MixinScreenshotsMod {
 						ImageIO.write(finalImage, "png", screenshot);
 						ScreenshotsMod.instance.postShot(screenshot);
 					} catch (Exception error) {
-						logger.warn("Couldn't save screenshot", error);
-						Minecraft.getMinecraft().ingameGUI.getChatGUI()
-								.printChatMessage(new ChatComponentTranslation("screenshot.failure", error)
-										.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+						LOGGER.warn("Couldn't save screenshot", error);
+						MinecraftClient.getInstance().inGameHud.getChatHud()
+								.addMessage(new TranslatableText("screenshot.failure", error)
+										.setStyle(new Style().setFormatting(Formatting.RED)));
 					}
 				});
 
@@ -109,25 +110,24 @@ public class MixinScreenshotsMod {
 
 				callback.setReturnValue(null);
 			} catch (Throwable error) {
-				logger.warn("Couldn't save screenshot", error);
-				callback.setReturnValue(new ChatComponentTranslation("screenshot.failure", error));
+				LOGGER.warn("Couldn't save screenshot", error);
+				callback.setReturnValue(new TranslatableText("screenshot.failure", error));
 			}
 		}
 
 		@Shadow
-		private static IntBuffer pixelBuffer;
+		private static IntBuffer intBuffer;
 
 		@Shadow
-		@Final
-		private static Logger logger;
+		private static @Final Logger LOGGER;
 
 		@Shadow
-		private static File getTimestampedPNGFileForDirectory(File gameDirectory) {
+		private static File getScreenshotFile(File gameDirectory) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Shadow
-		private static int[] pixelValues;
+		private static int[] field_1035;
 
 	}
 

@@ -12,27 +12,22 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.extension.ShaderGroupExtension;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.shader.*;
-import net.minecraft.util.ResourceLocation;
+import io.github.solclient.client.util.extension.ShaderEffectExtension;
+import net.minecraft.client.gl.*;
+import net.minecraft.client.resource.ResourceMetadataProvider;
+import net.minecraft.resource.Resource;
+import net.minecraft.util.Identifier;
 
 public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
-	public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(
-			"minecraft:shaders/post/motion_blur.json");
+	public static final Identifier ID = new Identifier("minecraft:shaders/post/motion_blur.json");
 
 	@Expose
 	@Option
 	@Slider(min = 0, max = 0.99F, step = 0.01F)
 	private float blur = 0.5f;
-	private ShaderGroup group;
+	private ShaderEffect effect;
 	private float groupBlur;
-
-	public ShaderGroup getGroup() {
-		return group;
-	}
 
 	@Override
 	public String getId() {
@@ -47,23 +42,22 @@ public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@Override
 	public void onRegister() {
 		super.onRegister();
-		Client.INSTANCE.getPseudoResources().register(RESOURCE_LOCATION, new MotionBlurShader());
+		Client.INSTANCE.getPseudoResources().register(ID, new MotionBlurShader());
 	}
 
 	public void update() {
-		if (group == null) {
+		if (effect == null) {
 			groupBlur = blur;
 			try {
-				group = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(),
-						RESOURCE_LOCATION);
-				group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), ID);
+				effect.setupDimensions(mc.width, mc.height);
 			} catch (JsonSyntaxException | IOException error) {
 				logger.error("Could not load motion blur", error);
 			}
 		}
 		if (groupBlur != blur) {
-			((ShaderGroupExtension) group).getListShaders().forEach((shader) -> {
-				ShaderUniform blendFactor = shader.getShaderManager().getShaderUniform("BlendFactor");
+			((ShaderEffectExtension) effect).getPasses().forEach((pass) -> {
+				GlUniform blendFactor = pass.getProgram().getUniformByName("BlendFactor");
 				if (blendFactor != null) {
 					blendFactor.set(blur);
 				}
@@ -75,13 +69,13 @@ public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	@EventHandler
 	public void onPostProcessing(PostProcessingEvent event) {
 		update();
-		event.groups.add(getGroup());
+		event.effects.add(effect);
 	}
 
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		group = null;
+		effect = null;
 	}
 
 	@Override
@@ -94,10 +88,10 @@ public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 		blur = Math.min(1, blur + 0.1F);
 	}
 
-	public class MotionBlurShader implements IResource {
+	public class MotionBlurShader implements Resource {
 
 		@Override
-		public ResourceLocation getResourceLocation() {
+		public Identifier getId() {
 			return null;
 		}
 
@@ -123,7 +117,7 @@ public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 		}
 
 		@Override
-		public <T extends IMetadataSection> T getMetadata(String p_110526_1_) {
+		public <T extends ResourceMetadataProvider> T getMetadata(String paramString) {
 			return null;
 		}
 

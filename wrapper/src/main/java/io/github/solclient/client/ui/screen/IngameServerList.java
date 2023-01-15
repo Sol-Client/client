@@ -1,27 +1,23 @@
 package io.github.solclient.client.ui.screen;
 
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 
-public class IngameServerList extends GuiMultiplayer {
+public class IngameServerList extends MultiplayerScreen {
 
-	public IngameServerList(GuiScreen parentScreen) {
+	public IngameServerList(Screen parentScreen) {
 		super(parentScreen);
 	}
 
 	@Override
-	public void connectToSelected() {
+	public void connect() {
 		disconnect();
-		super.connectToSelected();
-	}
-
-	@Override
-	public void confirmClicked(boolean result, int id) {
-		super.confirmClicked(result, id);
+		super.connect();
 	}
 
 	private void disconnect() {
-		mc.theWorld.sendQuittingDisconnectingPacket();
-		mc.loadWorld(null);
+		client.world.disconnect();
+		client.connect(null);
 	}
 
 }

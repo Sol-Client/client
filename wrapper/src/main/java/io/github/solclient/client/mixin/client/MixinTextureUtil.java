@@ -2,20 +2,19 @@ package io.github.solclient.client.mixin.client;
 
 import java.nio.IntBuffer;
 
+import net.minecraft.client.texture.TextureUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.*;
-
-import net.minecraft.client.renderer.texture.TextureUtil;
 
 @Mixin(TextureUtil.class)
 public interface MixinTextureUtil {
 
-	@Accessor
-	static IntBuffer getDataBuffer() {
+	@Accessor("BUFFER")
+	static IntBuffer getBuffer() {
 		throw new UnsupportedOperationException();
 	}
 
-	@Invoker("copyToBuffer")
+	@Invoker("method_5866")
 	static void copyToBuffer(int[] array, int length) {
 		throw new UnsupportedOperationException();
 	}

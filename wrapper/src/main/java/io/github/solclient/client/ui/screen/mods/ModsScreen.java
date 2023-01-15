@@ -13,7 +13,7 @@ import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.Getter;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 public class ModsScreen extends PanoramaBackgroundScreen {
 
@@ -31,25 +31,23 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void initGui() {
-		super.initGui();
+	public void init() {
+		super.init();
 		Keyboard.enableRepeatEvents(true);
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		if (mc.theWorld == null) {
+	public void render(int mouseX, int mouseY, float tickDelta) {
+		if (client.world == null) {
 			if (SolClientConfig.instance.fancyMainMenu) {
 				background = false;
-				drawPanorama(mouseX, mouseY, partialTicks);
-			} else {
+				drawPanorama(mouseX, mouseY, tickDelta);
+			} else
 				background = true;
-			}
-		} else {
-			drawDefaultBackground();
-		}
+		} else
+			renderBackground();
 
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		super.render(mouseX, mouseY, tickDelta);
 	}
 
 	public void switchMod(Mod mod) {
@@ -57,16 +55,16 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void onGuiClosed() {
-		super.onGuiClosed();
+	public void removed() {
+		super.removed();
 		Client.INSTANCE.save();
 		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override
 	public void closeAll() {
-		if (mc.theWorld == null && SolClientConfig.instance.fancyMainMenu) {
-			mc.displayGuiScreen(ActiveMainMenu.getInstance());
+		if (client.world == null && SolClientConfig.instance.fancyMainMenu) {
+			client.setScreen(ActiveMainMenu.getInstance());
 			return;
 		}
 
@@ -99,7 +97,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			}
 
 			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName()
-					: I18n.format("sol_client.mod.screen.title")),
+					: I18n.translate("sol_client.mod.screen.title")),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
 							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), 10,
 									defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -129,7 +127,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						.onClick((info, button) -> {
 							if (button == 0) {
 								Utils.playClickSound(true);
-								mc.displayGuiScreen(new MoveHudsScreen());
+								mc.setScreen(new MoveHudsScreen());
 								return true;
 							}
 
@@ -255,8 +253,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				Component firstComponent = scroll.getSubComponents().get(0);
 				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true,
 						false);
-			} else if (draggingMod == null && mod == null && keyCode == Keyboard.KEY_F && isCtrlKeyDown()
-					&& !isShiftKeyDown() && !isAltKeyDown()) {
+			} else if (draggingMod == null && mod == null && keyCode == Keyboard.KEY_F && hasControlDown()
+					&& !hasShiftDown() && !hasAltDown()) {
 				search.setFocused(true);
 				return true;
 			}
@@ -269,12 +267,12 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			boolean result = super.keyPressed(info, keyCode, character);
 
 			if (!result) {
-				if (keyCode == SolClientConfig.instance.modsKey.getKeyCode()
+				if (keyCode == SolClientConfig.instance.modsKey.getCode()
 						&& KeyBindingExtension.from(SolClientConfig.instance.modsKey).areModsPressed()) {
-					mc.displayGuiScreen(null);
+					mc.setScreen(null);
 					return true;
 				} else if (mod != null && (keyCode == Keyboard.KEY_BACK
-						|| (keyCode == Keyboard.KEY_LEFT && isAltKeyDown() && !isCtrlKeyDown() && !isShiftKeyDown()))
+						|| (keyCode == Keyboard.KEY_LEFT && hasAltDown() && !hasControlDown() && !hasShiftDown()))
 						&& screen.getRoot().getDialog() == null) {
 					switchMod(null);
 					return true;

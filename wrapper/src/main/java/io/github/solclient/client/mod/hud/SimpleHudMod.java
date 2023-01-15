@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.DirtyMapper;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 /**
  * A simple HUD mod that rendered a simple string.
@@ -34,9 +34,9 @@ public abstract class SimpleHudMod extends HudMod {
 	@Option
 	protected boolean shadow = true;
 	private DirtyMapper<String, Integer> langWidth = new DirtyMapper<>(
-			() -> mc.getLanguageManager().getCurrentLanguage().getLanguageCode(), (key) -> {
+			() -> mc.getLanguageManager().getLanguage().getCode(), (key) -> {
 				String translationKey = getTranslationKey() + ".default_width";
-				String width = I18n.format(translationKey);
+				String width = I18n.translate(translationKey);
 
 				if (width.equals(translationKey)) {
 					return 53;
@@ -69,8 +69,7 @@ public abstract class SimpleHudMod extends HudMod {
 			if (border) {
 				getBounds(position).stroke(borderColour);
 			}
-			font.drawString(text,
-					position.getX() + (getBounds(position).getWidth() / 2F) - (font.getStringWidth(text) / 2F),
+			font.draw(text, position.getX() + (getBounds(position).getWidth() / 2F) - (font.getStringWidth(text) / 2F),
 					position.getY() + 4, textColour.getValue(), shadow);
 		}
 	}

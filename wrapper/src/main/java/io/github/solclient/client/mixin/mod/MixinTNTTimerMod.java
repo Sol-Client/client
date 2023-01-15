@@ -1,25 +1,26 @@
 package io.github.solclient.client.mixin.mod;
 
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.TntEntityRenderer;
+import net.minecraft.entity.TntEntity;
 import org.spongepowered.asm.mixin.Mixin;
 
 import io.github.solclient.client.mod.impl.TNTTimerMod;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.entity.item.EntityTNTPrimed;
 
 public class MixinTNTTimerMod {
 
-	@Mixin(RenderTNTPrimed.class)
-	public static abstract class MixinRenderTNTPrimed extends Render<EntityTNTPrimed> {
+	@Mixin(TntEntityRenderer.class)
+	public static abstract class MixinTntEntityRenderer extends EntityRenderer<TntEntity> {
 
-		protected MixinRenderTNTPrimed(RenderManager renderManager) {
-			super(renderManager);
+		protected MixinTntEntityRenderer(EntityRenderDispatcher dispatcher) {
+			super(dispatcher);
 		}
 
 		@Override
-		protected void renderName(EntityTNTPrimed tnt, double x, double y, double z) {
-			if (TNTTimerMod.enabled) {
-				renderLivingLabel(tnt, TNTTimerMod.getText(tnt), x, y, z, 64);
-			}
+		protected void method_10208(TntEntity tnt, double x, double y, double z) {
+			if (TNTTimerMod.enabled)
+				renderLabelIfPresent(tnt, TNTTimerMod.getText(tnt), x, y, z, 64);
 		}
 
 	}

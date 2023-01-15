@@ -1,6 +1,6 @@
 package io.github.solclient.client.util.extension;
 
-import net.minecraft.event.ClickEvent;
+import net.minecraft.text.ClickEvent;
 
 public interface ClickEventExtension {
 

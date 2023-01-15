@@ -6,7 +6,6 @@ import java.util.*;
 
 import com.google.gson.annotations.Expose;
 import com.replaymod.replay.ReplayModReplay;
-import com.replaymod.replaystudio.util.I18n;
 
 import de.jcm.discordgamesdk.*;
 import de.jcm.discordgamesdk.CreateParams.Flags;
@@ -21,8 +20,10 @@ import io.github.solclient.client.mod.impl.discordrpc.socket.DiscordSocket;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.world.ClientWorld;
 
 public class DiscordIntegrationMod extends Mod {
 
@@ -111,7 +112,7 @@ public class DiscordIntegrationMod extends Mod {
 	@Override
 	public void postStart() {
 		super.postStart();
-		discordVoiceChatHud.setFont(mc.fontRendererObj);
+		discordVoiceChatHud.setFont(mc.textRenderer);
 	}
 
 	@Override
@@ -134,7 +135,7 @@ public class DiscordIntegrationMod extends Mod {
 			params.setFlags(Flags.NO_REQUIRE_DISCORD);
 			core = new Core(params);
 
-			startActivity(mc.theWorld);
+			startActivity(mc.world);
 		} catch (Throwable error) {
 			logger.warn("Could not start GameSDK", error);
 		}
@@ -194,8 +195,8 @@ public class DiscordIntegrationMod extends Mod {
 			return;
 		}
 
-		if ((event.screen == null || event.screen instanceof GuiMainMenu || event.screen instanceof SolClientMainMenu
-				|| event.screen instanceof GuiMultiplayer) && state && mc.theWorld == null) {
+		if ((event.screen == null || event.screen instanceof TitleScreen || event.screen instanceof SolClientMainMenu
+				|| event.screen instanceof MultiplayerScreen) && state && mc.world == null) {
 			startActivity(null);
 		}
 	}
@@ -211,20 +212,20 @@ public class DiscordIntegrationMod extends Mod {
 		}
 	}
 
-	private void startActivity(WorldClient world) {
+	private void startActivity(ClientWorld world) {
 		if (world != null) {
 			if (mc.isIntegratedServerRunning()) {
-				setActivity(I18n.format("menu.singleplayer"));
+				setActivity(I18n.translate("menu.singleplayer"));
 			} else {
 				if (ReplayModReplay.instance.getReplayHandler() != null) {
-					setActivity(I18n.format("replaymod.gui.replayviewer"));
+					setActivity(I18n.translate("replaymod.gui.replayviewer"));
 				} else {
-					setActivity(I18n.format("sol_client.mod.discord_integration.multiplayer",
-							mc.getCurrentServerData().serverName));
+					setActivity(I18n.translate("sol_client.mod.discord_integration.multiplayer",
+							mc.getCurrentServerEntry().name));
 				}
 			}
 		} else {
-			setActivity(I18n.format("sol_client.mod.discord_integration.main_menu"));
+			setActivity(I18n.translate("sol_client.mod.discord_integration.main_menu"));
 			state = false;
 		}
 	}

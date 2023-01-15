@@ -21,10 +21,10 @@ public class ToggleSprintMod extends SimpleHudMod {
 	public void onRegister() {
 		super.onRegister();
 
-		Utils.unregisterKeyBinding(mc.gameSettings.keyBindSprint);
-		keybinding = new ToggleSprintKeyBinding(this, mc.gameSettings.keyBindSprint.getKeyDescription(), 29,
-				mc.gameSettings.keyBindSprint.getKeyCategory());
-		mc.gameSettings.keyBindSprint = keybinding;
+		Utils.unregisterKeyBinding(mc.options.sprintKey);
+		keybinding = new ToggleSprintKeyBinding(this, mc.options.sprintKey.getTranslationKey(), 29,
+				mc.options.sprintKey.getCategory());
+		mc.options.sprintKey = keybinding;
 		Utils.registerKeyBinding(keybinding);
 	}
 

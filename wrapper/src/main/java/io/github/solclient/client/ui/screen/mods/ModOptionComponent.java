@@ -16,9 +16,9 @@ import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.data.Modifier;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.Getter;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.*;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.option.*;
+import net.minecraft.client.resource.language.I18n;
 
 public class ModOptionComponent extends BlockComponent {
 
@@ -62,7 +62,7 @@ public class ModOptionComponent extends BlockComponent {
 
 			add(new LabelComponent(
 					(component, defaultText) -> KeyBindingExtension.from(binding).getPrefix()
-							+ GameSettings.getKeyDisplayString(binding.getKeyCode()),
+							+ GameOptions.getFormattedNameForKeyCode(binding.getCode()),
 					new AnimatedColourController((component, defaultColour) -> {
 						if (listening)
 							return new Colour(255, 255, 85);
@@ -79,8 +79,8 @@ public class ModOptionComponent extends BlockComponent {
 					// local functions at home...
 					Runnable postSet = () -> {
 						listening = false;
-						mc.gameSettings.saveOptions();
-						KeyBinding.resetKeyBindingArrayAndHash();
+						mc.options.save();
+						KeyBinding.updateKeysByCode();
 						screen.getRoot().onKeyPressed(null);
 						screen.getRoot().onKeyReleased(null);
 						screen.getRoot().onClickAnwhere(null);
@@ -88,7 +88,7 @@ public class ModOptionComponent extends BlockComponent {
 
 					listening = true;
 					screen.getRoot().onClickAnwhere((ignoredInfo, pressedButton) -> {
-						mc.gameSettings.setOptionKeyBinding(binding, pressedButton - 100);
+						mc.options.setKeyBindingCode(binding, pressedButton - 100);
 						KeyBindingExtension.from(binding).setMods(0);
 						postSet.run();
 						return true;
@@ -100,7 +100,7 @@ public class ModOptionComponent extends BlockComponent {
 						int mods = 0;
 
 						if (key == 1)
-							mc.gameSettings.setOptionKeyBinding(binding, 0);
+							mc.options.setKeyBindingCode(binding, 0);
 						else if (key != 0) {
 							if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
 								mods |= Modifier.CTRL;
@@ -109,9 +109,9 @@ public class ModOptionComponent extends BlockComponent {
 							if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 								mods |= Modifier.SHIFT;
 
-							mc.gameSettings.setOptionKeyBinding(binding, key);
+							mc.options.setKeyBindingCode(binding, key);
 						} else if (character > 0)
-							mc.gameSettings.setOptionKeyBinding(binding, character + 256);
+							mc.options.setKeyBindingCode(binding, character + 256);
 
 						KeyBindingExtension.from(binding).setMods(mods);
 						postSet.run();
@@ -122,7 +122,7 @@ public class ModOptionComponent extends BlockComponent {
 						if (!Modifier.isModifier(key))
 							return false;
 
-						mc.gameSettings.setOptionKeyBinding(binding, key);
+						mc.options.setKeyBindingCode(binding, key);
 						KeyBindingExtension.from(binding).setMods(0);
 
 						postSet.run();
@@ -188,13 +188,10 @@ public class ModOptionComponent extends BlockComponent {
 
 						boolean direction = false;
 
-						if (GuiScreen.isShiftKeyDown()) {
+						if (Screen.hasShiftDown())
 							direction = !direction;
-						}
-
-						if (previous.isHovered()) {
+						if (previous.isHovered())
 							direction = !direction;
-						}
 
 						if (direction) {
 							current--;
@@ -224,7 +221,7 @@ public class ModOptionComponent extends BlockComponent {
 			Slider sliderAnnotation = option.getField().getAnnotation(Slider.class);
 
 			if (sliderAnnotation.showValue()) {
-				add(new LabelComponent((component, defaultText) -> I18n.format(sliderAnnotation.format(),
+				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderAnnotation.format(),
 						new DecimalFormat("0.##").format(option.getValue()))), (component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(

@@ -1,17 +1,18 @@
 package io.github.solclient.client.ui.screen;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.util.ActiveMainMenu;
 import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.extension.GuiMainMenuExtension;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import io.github.solclient.client.util.extension.TitleScreenExtension;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.*;
 
-public abstract class PanoramaBackgroundScreen extends Screen {
+public abstract class PanoramaBackgroundScreen extends ComponentScreen {
 
-	private final GuiScreen mainMenu = ActiveMainMenu.getInstance();
+	private final Screen mainMenu = ActiveMainMenu.getInstance();
 
 	public PanoramaBackgroundScreen(Component root) {
 		super(root);
@@ -19,23 +20,23 @@ public abstract class PanoramaBackgroundScreen extends Screen {
 	}
 
 	@Override
-	public void setWorldAndResolution(Minecraft mc, int width, int height) {
-		super.setWorldAndResolution(mc, width, height);
+	public void init(MinecraftClient mc, int width, int height) {
+		super.init(mc, width, height);
 
-		if (mc.theWorld == null)
-			mainMenu.setWorldAndResolution(mc, width, height);
+		if (mc.world == null)
+			mainMenu.init(mc, width, height);
 	}
 
 	@Override
-	public void updateScreen() {
-		super.updateScreen();
-		mainMenu.updateScreen();
+	public void tick() {
+		super.tick();
+		mainMenu.tick();
 	}
 
 	protected void drawPanorama(int mouseX, int mouseY, float partialTicks) {
-		GuiMainMenuExtension access = (GuiMainMenuExtension) mainMenu;
+		TitleScreenExtension access = (TitleScreenExtension) mainMenu;
 
-		mc.getFramebuffer().unbindFramebuffer();
+		client.getFramebuffer().unbind();
 
 		GlStateManager.viewport(0, 0, 256, 256);
 		access.renderPanorama(mouseX, mouseY, partialTicks);
@@ -46,25 +47,26 @@ public abstract class PanoramaBackgroundScreen extends Screen {
 		access.rotateAndBlurPanorama(partialTicks);
 		access.rotateAndBlurPanorama(partialTicks);
 		access.rotateAndBlurPanorama(partialTicks);
-		mc.getFramebuffer().bindFramebuffer(true);
+		client.getFramebuffer().bind(true);
 
-		GlStateManager.viewport(0, 0, mc.displayWidth, mc.displayHeight);
+		GlStateManager.viewport(0, 0, client.width, client.height);
 
 		float uvBase = width > height ? 120.0F / width : 120.0F / height;
 		float uBase = height * uvBase / 256.0F;
 		float vBase = width * uvBase / 256.0F;
 
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer renderer = tessellator.getWorldRenderer();
-		renderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-		renderer.pos(0.0D, height, zLevel).tex((0.5F - uBase), (0.5F + vBase)).color(1.0F, 1.0F, 1.0F, 1.0F)
-				.endVertex();
-		renderer.pos(width, height, zLevel).tex(0.5F - uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
-		renderer.pos(width, 0.0D, zLevel).tex(0.5F + uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
-		renderer.pos(0.0D, 0.0D, zLevel).tex(0.5F + uBase, 0.5F + vBase).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+		BufferBuilder buffer = tessellator.getBuffer();
+		buffer.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+		buffer.vertex(0.0D, height, zOffset)
+				.texture((0.5F - uBase), (0.5F + vBase)).color(1.0F, 1.0F, 1.0F, 1.0F)
+				.end();
+		buffer.vertex(width, height, zOffset).texture(0.5F - uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).end();
+		buffer.vertex(width, 0.0D, zOffset).texture(0.5F + uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).end();
+		buffer.vertex(0.0D, 0.0D, zOffset).texture(0.5F + uBase, 0.5F + vBase).color(1.0F, 1.0F, 1.0F, 1.0F).end();
 		tessellator.draw();
 
-		drawRect(0, 0, width, height, new Colour(0, 0, 0, 100).getValue());
+		fill(0, 0, width, height, new Colour(0, 0, 0, 100).getValue());
 
 		GlStateManager.enableBlend();
 		GlStateManager.color(1, 1, 1);

@@ -2,6 +2,16 @@ package io.github.solclient.client.mixin.mod;
 
 import java.util.Collection;
 
+import io.github.solclient.client.launch.ClassWrapper;
+import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.util.Window;
+import net.minecraft.entity.player.ClientPlayerEntity;
+import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
+import net.minecraft.stat.StatHandler;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,27 +37,20 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
 import io.github.solclient.client.mod.impl.replay.*;
 import io.github.solclient.client.mod.impl.replay.fix.SCSettingsRegistry;
-import io.github.solclient.client.tweak.Tweaker;
 import io.github.solclient.client.ui.screen.JGuiPreviousScreen;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S02PacketChat;
-import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 public class MixinSCReplayMod {
 
-	@Mixin(Minecraft.class)
-	public static class MixinMinecraft {
+	@Mixin(MinecraftClient.class)
+	public static class MixinMinecraftClient {
 
-		@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;"
-				+ "setKeyBindState(IZ)V"))
+		@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBinding;setKeyPressed(IZ)V"))
 		public void keyPressEvent(CallbackInfo callback) {
 			if (!SCReplayMod.enabled)
 				return;
@@ -57,21 +60,20 @@ public class MixinSCReplayMod {
 
 	}
 
-	@Mixin(EntityRenderer.class)
-	public static class MixinEntityRenderer {
+	@Mixin(GameRenderer.class)
+	public static class MixinGameRenderer {
 
 		@Inject(method = "renderHand", at = @At("HEAD"), cancellable = true)
 		public void skipRenderHand(float partialTicks, int xOffset, CallbackInfo callback) {
 			if (!SCReplayMod.enabled)
 				return;
 
-			if (PreRenderHandCallback.EVENT.invoker().preRenderHand()) {
+			if (PreRenderHandCallback.EVENT.invoker().preRenderHand())
 				callback.cancel();
-			}
 		}
 
-		@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;"
-				+ "endStartSection(Ljava/lang/String;)V", ordinal = 18, shift = At.Shift.BEFORE))
+		@Inject(method = "renderWorld(IFJ)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;"
+				+ "swap(Ljava/lang/String;)V", ordinal = 18, shift = At.Shift.BEFORE))
 		public void postRenderWorld(int pass, float partialTicks, long finishTimeNano, CallbackInfo callback) {
 			if (!SCReplayMod.enabled)
 				return;
@@ -81,17 +83,16 @@ public class MixinSCReplayMod {
 
 	}
 
-	@Mixin(GuiIngame.class)
-	public static class MixinGuiIngame {
+	@Mixin(InGameHud.class)
+	public static class MixinInGameHud {
 
-		@Inject(method = "renderTooltip", at = @At("HEAD"), cancellable = true)
-		public void skipHotbar(ScaledResolution res, float partialTicks, CallbackInfo callback) {
+		@Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
+		public void skipHotbar(Window window, float partialTicks, CallbackInfo callback) {
 			if (!SCReplayMod.enabled)
 				return;
 
-			if (RenderHotbarCallback.EVENT.invoker().shouldRenderHotbar() == Boolean.FALSE) {
+			if (RenderHotbarCallback.EVENT.invoker().shouldRenderHotbar() == Boolean.FALSE)
 				callback.cancel();
-			}
 		}
 
 	}
@@ -101,21 +102,20 @@ public class MixinSCReplayMod {
 
 		/**
 		 * @author TheKodeToad - blame me
-		 * @reason Why not?
+		 * @reason no one else will be messing with this
 		 */
 		@Overwrite
 		public static boolean hasOptifine() {
-			return Tweaker.optiFine;
+			return ClassWrapper.OPTIFINE;
 		}
 
 	}
 
 	@Mixin(CameraEntity.class)
-	public static abstract class MixinCameraEntity extends EntityPlayerSP {
+	public static abstract class MixinCameraEntity extends ClientPlayerEntity {
 
-		public MixinCameraEntity(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler,
-				StatFileWriter statFile) {
-			super(mcIn, worldIn, netHandler, statFile);
+		public MixinCameraEntity(MinecraftClient client, World world, ClientPlayNetworkHandler networkHandler, StatHandler stats) {
+			super(client, world, networkHandler, stats);
 		}
 
 		/**
@@ -124,8 +124,8 @@ public class MixinSCReplayMod {
 		 */
 		@Override
 		@Overwrite
-		public void addChatMessage(IChatComponent message) {
-			super.addChatMessage(message);
+		public void sendMessage(Text message) {
+			super.sendMessage(message);
 		}
 
 	}
@@ -135,23 +135,21 @@ public class MixinSCReplayMod {
 
 		@Inject(method = "<init>", at = @At("RETURN"), remap = false)
 		public void overrideSettings(ReplayModReplay mod, CallbackInfo callback) {
-			Minecraft.getMinecraft().currentScreen = new JGuiPreviousScreen(this);
+			MinecraftClient.getInstance().currentScreen = new JGuiPreviousScreen(this);
 			settingsButton
-					.onClick(() -> Minecraft.getMinecraft().displayGuiScreen(new ModsScreen(SCReplayMod.instance)));
+					.onClick(() -> MinecraftClient.getInstance().setScreen(new ModsScreen(SCReplayMod.instance)));
 		}
 
 		@Override
 		public void display() {
-			if (!SCReplayMod.enabled) {
-				Minecraft.getMinecraft().displayGuiScreen(null);
-			} else {
+			if (!SCReplayMod.enabled)
+				MinecraftClient.getInstance().setScreen(null);
+			else
 				super.display();
-			}
 		}
 
-		@Final
 		@Shadow
-		public GuiButton settingsButton;
+		public @Final GuiButton settingsButton;
 
 	}
 
@@ -165,12 +163,12 @@ public class MixinSCReplayMod {
 		@Overwrite(remap = false)
 		public void registerKeyBindings(KeyBindingRegistry registry) {
 			registry.registerKeyBinding("replaymod.input.settings", 0,
-					() -> mc.displayGuiScreen(new ModsScreen(SCReplayMod.instance)), false);
+					() -> mc.setScreen(new ModsScreen(SCReplayMod.instance)), false);
 		}
 
 		@Final
 		@Shadow
-		private static Minecraft mc;
+		private static MinecraftClient mc;
 
 	}
 
@@ -182,7 +180,7 @@ public class MixinSCReplayMod {
 				+ "Ljava/lang/Object;"), remap = false)
 		public Object saveAnyway(SCSettingsRegistry instance, SCSettingsRegistry.SettingKey settingKey) {
 			return SCReplayMod.instance.renameDialog && SCReplayMod.enabled
-					&& !(SCReplayMod.deferedState == Boolean.FALSE && Minecraft.getMinecraft().theWorld == null);
+					&& !(SCReplayMod.deferedState == Boolean.FALSE && MinecraftClient.getInstance().world == null);
 		}
 
 	}
@@ -221,16 +219,6 @@ public class MixinSCReplayMod {
 
 	}
 
-	@Mixin(OptifineReflection.class)
-	public static class MixinOptifineReflection {
-
-		@ModifyConstant(method = "<clinit>", constant = @Constant(stringValue = "Config"), remap = false)
-		private static String getConfigClass(String clazz) {
-			return "net.minecraft.src." + clazz;
-		}
-
-	}
-
 	@Mixin(GuiRecordingOverlay.class)
 	public static class MixinGuiRecordingOverlay {
 
@@ -241,6 +229,7 @@ public class MixinSCReplayMod {
 
 		/**
 		 * @author TheKodeToad
+		 * @reason we do this anyway
 		 */
 		@Overwrite(remap = false)
 		private void renderRecordingIndicator(MatrixStack stack) {
@@ -267,10 +256,10 @@ public class MixinSCReplayMod {
 
 		/**
 		 * @author TheKodeToad
+		 * @reason we do this ourselves
 		 */
 		@Overwrite(remap = false)
-		private void injectIntoMainMenu(net.minecraft.client.gui.GuiScreen guiScreen,
-				Collection<net.minecraft.client.gui.GuiButton> buttonList) {
+		private void injectIntoIngameMenu(Screen screen, Collection<ButtonWidget> buttonList) {
 		}
 
 	}
@@ -278,16 +267,15 @@ public class MixinSCReplayMod {
 	@Mixin(PacketListener.class)
 	public static class MixinPacketListener {
 
-		@Inject(method = "save", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Ljava/lang/System;currentTimeMillis()J"), cancellable = true)
-		public void handleChat(Packet packet, CallbackInfo callback) {
-			if (packet instanceof S02PacketChat) {
-				String messageString = EnumChatFormatting.getTextWithoutFormattingCodes(
-						((S02PacketChat) packet).getChatComponent().getUnformattedText());
+		@Inject(method = "save(Lnet/minecraft/network/Packet;)V", at = @At("HEAD"), cancellable = true)
+		public void handleChat(Packet<?> packet, CallbackInfo callback) {
+			if (packet instanceof ChatMessageS2CPacket) {
+				String messageString = Formatting.strip(
+						((ChatMessageS2CPacket) packet).getMessage().asUnformattedString());
 
 				if (Client.INSTANCE.getEvents().post(new ReceiveChatMessageEvent(
-						((S02PacketChat) packet).getType() == 2, messageString, true)).cancelled) {
+						((ChatMessageS2CPacket) packet).getType() == 2, messageString, true)).cancelled)
 					callback.cancel();
-				}
 			}
 		}
 

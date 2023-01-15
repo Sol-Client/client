@@ -3,6 +3,7 @@ package io.github.solclient.client.mod.impl.hud.keystrokes;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
@@ -10,10 +11,10 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.extension.MinecraftExtension;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.*;
+import io.github.solclient.client.util.extension.MinecraftClientExtension;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 
 public class KeystrokesMod extends HudMod {
 
@@ -78,13 +79,13 @@ public class KeystrokesMod extends HudMod {
 	@Override
 	public void postStart() {
 		super.postStart();
-		w = new Keystroke(this, mc.gameSettings.keyBindForward, "W", 18, 17, 17);
-		a = new Keystroke(this, mc.gameSettings.keyBindLeft, "A", 0, 17, 17);
-		s = new Keystroke(this, mc.gameSettings.keyBindBack, "S", 18, 17, 17);
-		d = new Keystroke(this, mc.gameSettings.keyBindRight, "D", 36, 17, 17);
-		lmb = new Keystroke(this, mc.gameSettings.keyBindAttack, "LMB", 0, 26, 17);
-		rmb = new Keystroke(this, mc.gameSettings.keyBindUseItem, "RMB", 27, 26, 17);
-		space = new Keystroke(this, mc.gameSettings.keyBindJump, null, 0, 53, 8);
+		w = new Keystroke(this, mc.options.forwardKey, "W", 18, 17, 17);
+		a = new Keystroke(this, mc.options.leftKey, "A", 0, 17, 17);
+		s = new Keystroke(this, mc.options.backKey, "S", 18, 17, 17);
+		d = new Keystroke(this, mc.options.rightKey, "D", 36, 17, 17);
+		lmb = new Keystroke(this, mc.options.attackKey, "LMB", 0, 26, 17);
+		rmb = new Keystroke(this, mc.options.useKey, "RMB", 27, 26, 17);
+		space = new Keystroke(this, mc.options.jumpKey, null, 0, 53, 8);
 	}
 
 	@Override
@@ -109,8 +110,8 @@ public class KeystrokesMod extends HudMod {
 	public void setAngles(PlayerHeadRotateEvent event) {
 		mouseX += event.yaw / 40F;
 		mouseY -= event.pitch / 40F;
-		mouseX = MathHelper.clamp_float(mouseX, -(space.width / 2) + 4, space.width / 2 - 4);
-		mouseY = MathHelper.clamp_float(mouseY, -34 / 2 + 4, 34 / 2 - 4);
+		mouseX = MathHelper.clamp(mouseX, -(space.width / 2) + 4, space.width / 2 - 4);
+		mouseY = MathHelper.clamp(mouseY, -34 / 2 + 4, 34 / 2 - 4);
 	}
 
 	@EventHandler
@@ -125,7 +126,7 @@ public class KeystrokesMod extends HudMod {
 	public void render(Position position, boolean editMode) {
 		int x = position.getX();
 		int y = position.getY();
-		float partialTicks = MinecraftExtension.getInstance().getTimerSC().renderPartialTicks;
+		float partialTicks = MinecraftClientExtension.getInstance().getTicker().tickDelta;
 
 		if (movement) {
 			w.render(x, y);
@@ -137,30 +138,27 @@ public class KeystrokesMod extends HudMod {
 		}
 
 		if (mouseMovement) {
-			if (background) {
-				GuiScreen.drawRect(x, y, x + space.width, y + 34, backgroundColour.getValue());
-			}
+			if (background)
+				DrawableHelper.fill(x, y, x + space.width, y + 34, backgroundColour.getValue());
 
-			if (border) {
+			if (border)
 				Utils.drawOutline(x, y, x + space.width, y + 34, borderColour.getValue());
-			}
 
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			GlStateManager.color(1, 1, 1);
 
-			mc.getTextureManager().bindTexture(new ResourceLocation(
+			mc.getTextureManager().bindTexture(new Identifier(
 					"textures/gui/sol_client_keystrokes_mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
+			DrawableHelper.drawTexture(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
 
 			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * partialTicks)) - 5;
 			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * partialTicks)) - 5;
 			GL11.glTranslatef(calculatedMouseX, calculatedMouseY, 0);
 
-			mc.getTextureManager().bindTexture(new ResourceLocation(
+			mc.getTextureManager().bindTexture(new Identifier(
 					"textures/gui/sol_client_keystrokes_mouse_ring_" + Utils.getTextureScale() + ".png"));
-			Gui.drawModalRectWithCustomSizedTexture(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
-//			Utils.drawCircle(x + space.width / 2F + calculatedMouseX, y + (34F / 2F) + calculatedMouseY, 4, textColour.getValue());
+			DrawableHelper.drawTexture(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
 
 			GlStateManager.popMatrix();
 			y += 35;
@@ -172,9 +170,8 @@ public class KeystrokesMod extends HudMod {
 			y += 18;
 		}
 
-		if (showSpace) {
+		if (showSpace)
 			space.render(x, y);
-		}
 	}
 
 }

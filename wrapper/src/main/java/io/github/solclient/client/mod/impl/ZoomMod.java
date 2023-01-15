@@ -9,9 +9,9 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.util.math.MathHelper;
 
 public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
@@ -57,7 +57,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.mod.screen.inspired_by", "EnnuiL");
+		return I18n.translate("sol_client.mod.screen.inspired_by", "EnnuiL");
 	}
 
 	@Override
@@ -67,36 +67,34 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public void start() {
 		active = true;
-		lastSensitivity = mc.gameSettings.mouseSensitivity;
+		lastSensitivity = mc.options.sensitivity;
 		resetFactor();
 		updateSensitivity();
-		wasCinematic = this.mc.gameSettings.smoothCamera;
-		mc.gameSettings.smoothCamera = cinematic;
-		mc.renderGlobal.setDisplayListEntitiesDirty();
+		wasCinematic = mc.options.smoothCameraEnabled;
+		mc.options.smoothCameraEnabled = cinematic;
+		mc.worldRenderer.scheduleTerrainUpdate();
 	}
 
 	public void stop() {
 		active = false;
 		setFactor(1);
-		mc.gameSettings.mouseSensitivity = lastSensitivity;
-		mc.gameSettings.smoothCamera = wasCinematic;
+		mc.options.sensitivity = lastSensitivity;
+		mc.options.smoothCameraEnabled = wasCinematic;
 	}
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (key.isKeyDown()) {
-			if (!active) {
+		if (key.isPressed()) {
+			if (!active)
 				start();
-			}
-		} else if (active) {
+		} else if (active)
 			stop();
-		}
+
 		if (active) {
-			if (zoomOutKey.isKeyDown()) {
+			if (zoomOutKey.isPressed())
 				zoomOut();
-			} else if (zoomInKey.isKeyDown()) {
+			else if (zoomInKey.isPressed())
 				zoomIn();
-			}
 		}
 	}
 
@@ -117,7 +115,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 					+ (animatedFactor - lastAnimatedFactor) * event.partialTicks;
 
 			if (calculatedAnimatedFactor != lastCalculatedAnimatedFactor) {
-				mc.renderGlobal.setDisplayListEntitiesDirty();
+				mc.worldRenderer.scheduleTerrainUpdate();
 			}
 
 			lastCalculatedAnimatedFactor = calculatedAnimatedFactor;
@@ -173,7 +171,7 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public void setFactor(float factor) {
 		if (factor != currentFactor) {
-			mc.renderGlobal.setDisplayListEntitiesDirty();
+			mc.worldRenderer.scheduleTerrainUpdate();
 			updateSensitivity();
 		}
 		currentFactor = factor;
@@ -192,12 +190,12 @@ public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	public float clamp(float factor) {
-		return MathHelper.clamp_float(factor, 0, 0.5F);
+		return MathHelper.clamp(factor, 0, 0.5F);
 	}
 
 	public void updateSensitivity() {
 		if (reduceSensitivity) {
-			mc.gameSettings.mouseSensitivity = lastSensitivity * currentFactor;
+			mc.options.sensitivity = lastSensitivity * currentFactor;
 		}
 	}
 

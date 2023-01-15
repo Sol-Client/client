@@ -9,12 +9,12 @@ import com.replaymod.replay.camera.CameraEntity;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.culling.Cullable;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.util.extension.RenderExtension;
-import net.minecraft.client.Minecraft;
+import io.github.solclient.client.util.extension.EntityRendererExtension;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.GameOptions;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
@@ -30,7 +30,7 @@ public abstract class MixinRenderManager {
 		}
 
 		if (((Cullable) entity).isCulled()) {
-			((RenderExtension<Entity>) getEntityRenderObject(entity)).doRenderName(entity, x, y, z);
+			((EntityRendererExtension<Entity>) getEntityRenderObject(entity)).renderName(entity, x, y, z);
 			callback.setReturnValue(renderEngine == null);
 		}
 	}
@@ -53,11 +53,11 @@ public abstract class MixinRenderManager {
 
 	@Inject(method = "cacheActiveRenderInfo", at = @At("HEAD"))
 	public void orientCamera(World worldIn, FontRenderer textRendererIn, Entity livingPlayerIn, Entity pointedEntityIn,
-			GameSettings optionsIn, float partialTicks, CallbackInfo callback) {
-		rotationYaw = Minecraft.getMinecraft().getRenderViewEntity().rotationYaw;
-		prevRotationYaw = Minecraft.getMinecraft().getRenderViewEntity().prevRotationYaw;
-		rotationPitch = Minecraft.getMinecraft().getRenderViewEntity().rotationPitch;
-		prevRotationPitch = Minecraft.getMinecraft().getRenderViewEntity().prevRotationPitch;
+			GameOptions optionsIn, float partialTicks, CallbackInfo callback) {
+		rotationYaw = MinecraftClient.getInstance().getRenderViewEntity().rotationYaw;
+		prevRotationYaw = MinecraftClient.getInstance().getRenderViewEntity().prevRotationYaw;
+		rotationPitch = MinecraftClient.getInstance().getRenderViewEntity().rotationPitch;
+		prevRotationPitch = MinecraftClient.getInstance().getRenderViewEntity().prevRotationPitch;
 
 		CameraRotateEvent event = Client.INSTANCE.getEvents()
 				.post(new CameraRotateEvent(rotationYaw, rotationPitch, 0));

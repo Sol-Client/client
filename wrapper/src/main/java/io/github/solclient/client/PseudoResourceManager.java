@@ -2,19 +2,19 @@ package io.github.solclient.client;
 
 import java.util.*;
 
-import net.minecraft.client.resources.IResource;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resource.Resource;
+import net.minecraft.util.Identifier;
 
 public final class PseudoResourceManager {
 
-	private final Map<ResourceLocation, IResource> map = new HashMap<>();
+	private final Map<Identifier, Resource> map = new HashMap<>();
 
-	public void register(ResourceLocation location, IResource resource) {
-		map.put(location, resource);
+	public void register(Identifier id, Resource resource) {
+		map.put(id, resource);
 	}
 
-	public IResource get(ResourceLocation location) {
-		return map.get(location);
+	public Resource get(Identifier id) {
+		return map.get(id);
 	}
 
 }

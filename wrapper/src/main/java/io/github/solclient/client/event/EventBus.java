@@ -4,15 +4,12 @@ import java.lang.invoke.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.*;
 
 /**
  * Event bus system focused on performance.
  */
-@NotThreadSafe
 public final class EventBus {
 
 	private static final class MethodData {

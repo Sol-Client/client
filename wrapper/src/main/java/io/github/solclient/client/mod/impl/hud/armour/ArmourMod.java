@@ -1,22 +1,22 @@
 package io.github.solclient.client.mod.impl.hud.armour;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.*;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.render.DiffuseLighting;
+import net.minecraft.client.util.Window;
+import net.minecraft.item.*;
 
 public class ArmourMod extends HudMod {
 
-	private static final ItemStack HELMET = new ItemStack(Items.iron_helmet);
-	private static final ItemStack CHESTPLATE = new ItemStack(Items.iron_chestplate);
-	private static final ItemStack LEGGINGS = new ItemStack(Items.iron_leggings);
-	private static final ItemStack BOOTS = new ItemStack(Items.iron_boots);
-	private static final ItemStack HAND = new ItemStack(Items.diamond_sword);
+	private static final ItemStack HELMET = new ItemStack(Items.IRON_HELMET);
+	private static final ItemStack CHESTPLATE = new ItemStack(Items.IRON_CHESTPLATE);
+	private static final ItemStack LEGGINGS = new ItemStack(Items.IRON_LEGGINGS);
+	private static final ItemStack BOOTS = new ItemStack(Items.IRON_BOOTS);
+	private static final ItemStack HAND = new ItemStack(Items.DIAMOND_SWORD);
 
 	@Expose
 	@Option
@@ -98,10 +98,10 @@ public class ArmourMod extends HudMod {
 
 	@Override
 	public void render(Position position, boolean editMode) {
-		RenderHelper.enableGUIStandardItemLighting();
+		DiffuseLighting.enable();
 
-		ScaledResolution resolution = new ScaledResolution(mc);
-		boolean rtl = !horizontal && position.getX() > resolution.getScaledWidth() / 2;
+		Window window = new Window(mc);
+		boolean rtl = !horizontal && position.getX() > window.getWidth() / 2;
 
 		int x = position.getX(), y = position.getY();
 
@@ -112,12 +112,12 @@ public class ArmourMod extends HudMod {
 		ItemStack[] playerArmour;
 		ItemStack handItem;
 
-		if (mc.thePlayer == null || editMode) {
+		if (mc.player == null || editMode) {
 			playerArmour = new ItemStack[] { BOOTS, LEGGINGS, CHESTPLATE, HELMET };
 			handItem = HAND;
 		} else {
-			playerArmour = mc.thePlayer.inventory.armorInventory;
-			handItem = mc.thePlayer.inventory.getCurrentItem();
+			playerArmour = mc.player.inventory.armor;
+			handItem = mc.player.inventory.getMainHandStack();
 		}
 
 		if (armour) {
@@ -143,7 +143,7 @@ public class ArmourMod extends HudMod {
 			renderStack(handItem, x, y, rtl);
 		}
 
-		RenderHelper.disableStandardItemLighting();
+		DiffuseLighting.disable();
 	}
 
 	private int renderStack(ItemStack stack, int x, int y, boolean rtl) {
@@ -154,21 +154,21 @@ public class ArmourMod extends HudMod {
 			itemX += durability.getWidth() - 1;
 		}
 
-		mc.getRenderItem().renderItemIntoGUI(stack, itemX, y);
-		mc.getRenderItem().renderItemOverlays(font, stack, itemX, y);
+		mc.getItemRenderer().renderInGuiWithOverrides(stack, itemX, y);
+		mc.getItemRenderer().renderGuiItemOverlay(font, stack, itemX, y);
 		GlStateManager.disableLighting();
 
 		if (hasDurability && stack.getMaxDamage() > 0) {
 			String text;
 			switch (durability) {
 				case FRACTION:
-					text = stack.getMaxDamage() - stack.getItemDamage() + " / " + (stack.getMaxDamage());
+					text = stack.getMaxDamage() - stack.getDamage() + " / " + (stack.getMaxDamage());
 					break;
 				case REMAINING:
-					text = Integer.toString(stack.getMaxDamage() - stack.getItemDamage());
+					text = Integer.toString(stack.getMaxDamage() - stack.getDamage());
 					break;
 				case PERCENTAGE:
-					text = ((int) (((double) stack.getMaxDamage() - stack.getItemDamage()) / (stack.getMaxDamage())
+					text = ((int) (((double) stack.getMaxDamage() - stack.getDamage()) / (stack.getMaxDamage())
 							* 100)) + "%";
 					break;
 				default:
@@ -182,7 +182,7 @@ public class ArmourMod extends HudMod {
 				x += 20;
 			}
 
-			font.drawString(text, x, y + 4, textColour.getValue(), shadow);
+			font.draw(text, x, y + 4, textColour.getValue(), shadow);
 
 			return font.getStringWidth(text);
 		}

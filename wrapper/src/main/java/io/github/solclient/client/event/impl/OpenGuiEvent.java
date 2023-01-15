@@ -1,11 +1,11 @@
 package io.github.solclient.client.event.impl;
 
 import lombok.AllArgsConstructor;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 
 @AllArgsConstructor
 public class OpenGuiEvent {
 
-	public final GuiScreen screen;
+	public final Screen screen;
 
 }

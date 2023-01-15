@@ -6,16 +6,19 @@
 package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.util.extension.EntityLivingBaseExtension;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.GlStateManager;
+import io.github.solclient.client.util.extension.LivingEntityExtension;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.BlockHitResult.Type;
+import net.minecraft.util.math.MathHelper;
 
 public class V1_7VisualsMod extends Mod {
 
@@ -82,21 +85,21 @@ public class V1_7VisualsMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (mc.thePlayer != null && mc.thePlayer.capabilities.allowEdit && isEnabled() && useAndMine
-				&& mc.objectMouseOver != null
-				&& mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && mc.thePlayer != null
-				&& mc.gameSettings.keyBindAttack.isKeyDown() && mc.gameSettings.keyBindUseItem.isKeyDown()
-				&& mc.thePlayer.getItemInUseCount() > 0) {
-			if ((!mc.thePlayer.isSwingInProgress
-					|| mc.thePlayer.swingProgressInt >= ((EntityLivingBaseExtension) mc.thePlayer)
+		if (mc.player != null && mc.player.abilities.allowModifyWorld && isEnabled() && useAndMine
+				&& mc.result  != null
+				&& mc.result.type == BlockHitResult.Type.BLOCK && mc.player != null
+				&& mc.options.attackKey.isPressed() && mc.options.useKey.isPressed()
+				&& mc.player.getItemUseTicks() > 0) {
+			if ((!mc.player.handSwinging
+					|| mc.player.handSwingTicks >= ((LivingEntityExtension) mc.player)
 							.privateGetArmSwingAnimationEnd() / 2
-					|| mc.thePlayer.swingProgressInt < 0)) {
-				mc.thePlayer.swingProgressInt = -1;
-				mc.thePlayer.isSwingInProgress = true;
+					|| mc.player.handSwingTicks < 0)) {
+				mc.player.handSwingTicks = -1;
+				mc.player.handSwinging = true;
 			}
 
 			if (particles) {
-				mc.effectRenderer.addBlockHitEffects(mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit);
+				mc.particleManager.addBlockBreakingParticles(mc.result.getBlockPos(), mc.result.direction);
 			}
 		}
 	}
@@ -108,11 +111,10 @@ public class V1_7VisualsMod extends Mod {
 		}
 
 		// https://github.com/sp614x/optifine/issues/2098
-		if (mc.thePlayer.isUsingItem() && event.itemToRender.getItem() instanceof ItemBow) {
-			if (bow) {
+		if (mc.player.isUsingItem() && event.itemToRender.getItem() instanceof BowItem) {
+			if (bow)
 				GlStateManager.translate(-0.01f, 0.05f, -0.06f);
-			}
-		} else if (event.itemToRender.getItem() instanceof ItemFishingRod) {
+		} else if (event.itemToRender.getItem() instanceof FishingRodItem) {
 			if (rod) {
 				GlStateManager.translate(0.08f, -0.027f, -0.33f);
 				GlStateManager.scale(0.93f, 1.0f, 1.0f);
@@ -120,9 +122,9 @@ public class V1_7VisualsMod extends Mod {
 		}
 	}
 
-	public static void oldDrinking(ItemStack itemToRender, AbstractClientPlayer clientPlayer, float partialTicks) {
-		float var14 = clientPlayer.getItemInUseCount() - partialTicks + 1.0F;
-		float var15 = 1.0F - var14 / itemToRender.getMaxItemUseDuration();
+	public static void oldDrinking(ItemStack itemToRender, AbstractClientPlayerEntity clientPlayer, float partialTicks) {
+		float var14 = clientPlayer.getItemUseTicks() - partialTicks + 1.0F;
+		float var15 = 1.0F - var14 / itemToRender.getMaxUseTime();
 		float var16 = 1.0F - var15;
 		var16 = var16 * var16 * var16;
 		var16 = var16 * var16 * var16;

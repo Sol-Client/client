@@ -2,71 +2,66 @@ package io.github.solclient.client.mixin.mod;
 
 import java.util.UUID;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.hud.PlayerListHud;
+import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.mod.impl.hud.tablist.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.network.NetworkPlayerInfo;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class MixinTabListMod {
 
-	@Mixin(GuiPlayerTabOverlay.class)
-	public static class MixinGuiPlayerTabOverlay {
+	@Mixin(PlayerListHud.class)
+	public static class MixinPlayerListHud {
 
-		@Redirect(method = "renderPlayerlist", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRender"
-				+ "er;drawStringWithShadow(Ljava/lang/String;FFI)I"))
-		public int overrideShadow(FontRenderer instance, String text, float x, float y, int color) {
+		@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;drawWithShadow(Ljava/lang/String;FFI)I"))
+		public int overrideShadow(TextRenderer instance, String text, float x, float y, int color) {
 			if (TabListMod.enabled && !TabListMod.instance.textShadow) {
-				return instance.drawString(text, x, y, color, false);
+				return instance.draw(text, x, y, color, false);
 			}
 
-			return instance.drawStringWithShadow(text, x, y, color);
+			return instance.drawWithShadow(text, x, y, color);
 		}
 
-		@Redirect(method = "renderPlayerlist", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/"
-				+ "WorldClient;getPlayerEntityByUUID(Ljava/util/UUID;)Lnet/minecraft/entity/player/EntityPlayer;"))
-		public EntityPlayer overridePlayerHeads(WorldClient instance, UUID uuid) {
-			if (TabListMod.enabled && TabListMod.instance.hidePlayerHeads) {
+		@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;getPlayerByUuid(Ljava/util/UUID;)Lnet/minecraft/entity/player/PlayerEntity;"))
+		public PlayerEntity overridePlayerHeads(ClientWorld instance, UUID uuid) {
+			if (TabListMod.enabled && TabListMod.instance.hidePlayerHeads)
 				return null;
-			}
 
-			return instance.getPlayerEntityByUUID(uuid);
+			return instance.getPlayerByUuid(uuid);
 		}
 
-		@Redirect(method = "renderPlayerlist", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;"
-				+ "isIntegratedServerRunning()Z"))
-		public boolean overrideHead(Minecraft instance) {
+		@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;isIntegratedServerRunning()Z"))
+		public boolean overrideHead(MinecraftClient instance) {
 			return instance.isIntegratedServerRunning() && shouldShowHeads();
 		}
 
-		@Redirect(method = "renderPlayerlist", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/"
-				+ "NetworkManager;getIsencrypted()Z"))
-		public boolean overrideHead(NetworkManager instance) {
-			return instance.getIsencrypted() && shouldShowHeads();
+		@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;isEncrypted()Z"))
+		public boolean overrideHead(ClientConnection instance) {
+			return instance.isEncrypted() && shouldShowHeads();
 		}
 
 		private boolean shouldShowHeads() {
 			return !(TabListMod.enabled && TabListMod.instance.hidePlayerHeads);
 		}
 
-		@ModifyConstant(method = "renderPlayerlist", constant = @Constant(intValue = Integer.MIN_VALUE))
+		@ModifyConstant(method = "render", constant = @Constant(intValue = Integer.MIN_VALUE))
 		public int overrideBackground(int original) {
-			if (TabListMod.enabled) {
+			if (TabListMod.enabled)
 				return TabListMod.instance.backgroundColour.getValue();
-			}
 
 			return original;
 		}
 
-		@ModifyConstant(method = "renderPlayerlist", constant = @Constant(intValue = 553648127))
+		@ModifyConstant(method = "render", constant = @Constant(intValue = 553648127))
 		public int overrideEntryBackground(int original) {
 			if (TabListMod.enabled) {
 				return TabListMod.instance.entryBackgroundColour.getValue();
@@ -75,36 +70,32 @@ public class MixinTabListMod {
 			return original;
 		}
 
-		@Redirect(method = "renderPlayerlist", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/"
-				+ "GuiPlayerTabOverlay;header:Lnet/minecraft/util/IChatComponent;"))
-		public IChatComponent hideHeader(GuiPlayerTabOverlay instance) {
-			if (TabListMod.enabled && TabListMod.instance.hideHeader) {
+		@Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/PlayerListHud;header:Lnet/minecraft/text/Text;"))
+		public Text hideHeader(PlayerListHud instance) {
+			if (TabListMod.enabled && TabListMod.instance.hideHeader)
 				return null;
-			}
 
 			return header;
 		}
 
-		@Redirect(method = "renderPlayerlist", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/"
-				+ "GuiPlayerTabOverlay;footer:Lnet/minecraft/util/IChatComponent;"))
-		public IChatComponent hideFooter(GuiPlayerTabOverlay instance) {
-			if (TabListMod.enabled && TabListMod.instance.hideFooter) {
+		@Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/PlayerListHud;footer:Lnet/minecraft/text/Text;"))
+		public Text hideFooter(PlayerListHud instance) {
+			if (TabListMod.enabled && TabListMod.instance.hideFooter)
 				return null;
-			}
 
 			return footer;
 		}
 
-		@Inject(method = "drawPing", at = @At("HEAD"), cancellable = true)
+		@Inject(method = "renderLatencyIcon", at = @At("HEAD"), cancellable = true)
 		public void drawNumeralPing(int p_175245_1_, int p_175245_2_, int p_175245_3_,
-				NetworkPlayerInfo networkPlayerInfoIn, CallbackInfo callback) {
+									PlayerListEntry entry, CallbackInfo callback) {
 			if (TabListMod.enabled && TabListMod.instance.pingType != PingType.ICON) {
 				callback.cancel();
 
 				if (TabListMod.instance.pingType == PingType.NUMERAL) {
 					int level;
 
-					int ping = networkPlayerInfoIn.getResponseTime();
+					int ping = entry.getLatency();
 
 					if (ping < 0) {
 						level = 5;
@@ -143,8 +134,8 @@ public class MixinTabListMod {
 
 					GlStateManager.pushMatrix();
 					GlStateManager.scale(scale, scale, scale);
-					mc.fontRendererObj.drawString(pingText,
-							(p_175245_2_ + p_175245_1_ - (mc.fontRendererObj.getStringWidth(pingText) * scale)) / scale
+					client.textRenderer.draw(pingText,
+							(p_175245_2_ + p_175245_1_ - (client.textRenderer.getStringWidth(pingText) * scale)) / scale
 									- 2,
 							p_175245_3_ / scale + 4, colour, TabListMod.instance.textShadow);
 
@@ -154,14 +145,13 @@ public class MixinTabListMod {
 		}
 
 		@Shadow
-		private IChatComponent header;
+		private Text header;
 
 		@Shadow
-		private IChatComponent footer;
+		private Text footer;
 
-		@Final
 		@Shadow
-		private Minecraft mc;
+		private @Final MinecraftClient client;
 
 	}
 

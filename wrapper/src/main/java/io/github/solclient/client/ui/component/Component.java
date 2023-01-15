@@ -11,13 +11,13 @@ import io.github.solclient.client.ui.component.impl.ScrollListComponent;
 import io.github.solclient.client.util.NanoVGManager;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
 // 7 months later, I finally reintroduced the component API...
 public abstract class Component extends NanoVGManager {
 
-	protected Minecraft mc = Minecraft.getMinecraft();
-	protected Screen screen;
+	protected MinecraftClient mc = MinecraftClient.getInstance();
+	protected ComponentScreen screen;
 	@Getter
 	@Setter
 	protected Component parent;
@@ -74,7 +74,7 @@ public abstract class Component extends NanoVGManager {
 		subComponents.clear();
 	}
 
-	public void setScreen(Screen screen) {
+	public void setScreen(ComponentScreen screen) {
 		this.screen = screen;
 
 		for (Component component : subComponents) {
@@ -338,7 +338,7 @@ public abstract class Component extends NanoVGManager {
 			component.tick();
 	}
 
-	public Screen getScreen() {
+	public ComponentScreen getScreen() {
 		return screen;
 	}
 

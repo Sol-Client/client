@@ -12,9 +12,9 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.Utils;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.resource.language.I18n;
 
 public class ModOption {
 
@@ -42,7 +42,7 @@ public class ModOption {
 			if (field.isAnnotationPresent(FileOption.class)) {
 				configFile = field.getAnnotation(FileOption.class);
 
-				file = new File(Minecraft.getMinecraft().mcDataDir, configFile.file());
+				file = new File(MinecraftClient.getInstance().runDirectory, configFile.file());
 				readFile();
 			}
 
@@ -88,7 +88,7 @@ public class ModOption {
 	}
 
 	public String getEditText() {
-		return I18n.format(configFile.text());
+		return I18n.translate(configFile.text());
 	}
 
 	public void readFile() throws IOException {
@@ -102,7 +102,7 @@ public class ModOption {
 	}
 
 	public String getName() {
-		return I18n.format(translationKey + ".option." + field.getName());
+		return I18n.translate(translationKey + ".option." + field.getName());
 	}
 
 	public Class<?> getType() {

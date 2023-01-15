@@ -9,14 +9,14 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.settings.*;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.*;
+import net.minecraft.client.util.Window;
+import net.minecraft.util.Formatting;
 
 public class PopupManager {
 
-	private final Minecraft mc = Minecraft.getMinecraft();
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 
 	private final KeyBinding keyAcceptRequest = new KeyBinding(GlobalConstants.KEY_TRANSLATION_KEY + ".accept_request",
 			Keyboard.KEY_Y, GlobalConstants.KEY_CATEGORY);
@@ -44,16 +44,16 @@ public class PopupManager {
 				hidePopup();
 			} else {
 				String message = currentPopup.getText();
-				String keys = EnumChatFormatting.GREEN + " [ "
-						+ GameSettings.getKeyDisplayString(keyAcceptRequest.getKeyCode()) + " ] Accept"
-						+ EnumChatFormatting.RED + "  [ "
-						+ GameSettings.getKeyDisplayString(keyDismissRequest.getKeyCode()) + " ] Dismiss ";
-				int width = Math.max(mc.fontRendererObj.getStringWidth(message),
-						mc.fontRendererObj.getStringWidth(keys)) + 15;
+				String keys = Formatting.GREEN + " [ "
+						+ GameOptions.getFormattedNameForKeyCode(keyAcceptRequest.getCode()) + " ] Accept"
+						+ Formatting.RED + "  [ " + GameOptions.getFormattedNameForKeyCode(keyDismissRequest.getCode())
+						+ " ] Dismiss ";
+				int width = Math.max(mc.textRenderer.getStringWidth(message), mc.textRenderer.getStringWidth(keys))
+						+ 15;
 
-				ScaledResolution resolution = new ScaledResolution(mc);
+				Window window = new Window(mc);
 
-				Rectangle popupBounds = new Rectangle(resolution.getScaledWidth() / 2 - (width / 2), 10, width, 50);
+				Rectangle popupBounds = new Rectangle(window.getWidth() / 2 - (width / 2), 10, width, 50);
 				Utils.drawRectangle(popupBounds, new Colour(0, 0, 0, 100));
 				Utils.drawRectangle(
 						new Rectangle(popupBounds.getX(), popupBounds.getY() + popupBounds.getHeight() - 1, width, 2),
@@ -61,14 +61,15 @@ public class PopupManager {
 				Utils.drawRectangle(new Rectangle(popupBounds.getX(), popupBounds.getY() + popupBounds.getHeight() - 1,
 						(int) ((popupBounds.getWidth() / currentPopup.getTime()) * since), 2), Colour.BLUE);
 
-				mc.fontRendererObj.drawString(message, popupBounds.getX() + (popupBounds.getWidth() / 2)
-						- (mc.fontRendererObj.getStringWidth(message) / 2), 20, -1);
+				mc.textRenderer.draw(message, popupBounds.getX() + (popupBounds.getWidth() / 2)
+						- (mc.textRenderer.getStringWidth(message) / 2), 20, -1);
 
-				mc.fontRendererObj.drawString(keys, popupBounds.getX() + (popupBounds.getWidth() / 2)
-						- (mc.fontRendererObj.getStringWidth(keys) / 2), 40, -1);
+				mc.textRenderer.draw(keys,
+						popupBounds.getX() + (popupBounds.getWidth() / 2) - (mc.textRenderer.getStringWidth(keys) / 2),
+						40, -1);
 
 				if (keyAcceptRequest.isPressed()) {
-					mc.thePlayer.sendChatMessage(currentPopup.getCommand());
+					mc.player.sendChatMessage(currentPopup.getCommand());
 					hidePopup();
 				} else if (keyDismissRequest.isPressed()) {
 					hidePopup();

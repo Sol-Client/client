@@ -32,8 +32,8 @@ public class ReachDisplayMod extends SimpleHudMod {
 
 	@EventHandler
 	public void totallyNoReachHax(EntityAttackEvent event) {
-		if (mc.objectMouseOver != null && mc.objectMouseOver.hitVec != null) {
-			distance = mc.objectMouseOver.hitVec.distanceTo(mc.thePlayer.getPositionEyes(1.0F));
+		if (mc.result != null && mc.result.pos != null) {
+			distance = mc.result.pos.distanceTo(mc.player.getCameraPosVec(1.0F));
 			hitTime = System.currentTimeMillis();
 		}
 	}

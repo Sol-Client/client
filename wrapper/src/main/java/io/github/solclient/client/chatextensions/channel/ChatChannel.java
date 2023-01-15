@@ -1,11 +1,11 @@
 package io.github.solclient.client.chatextensions.channel;
 
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.ClientPlayerEntity;
 
 public interface ChatChannel {
 
 	public String getName();
 
-	public void sendMessage(EntityPlayerSP player, String message);
+	public void sendMessage(ClientPlayerEntity player, String message);
 
 }

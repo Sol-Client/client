@@ -5,13 +5,13 @@ import java.text.DecimalFormat;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class SpeedometerMod extends SimpleHudMod {
 
@@ -60,7 +60,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			textColour.bind();
 			GL11.glLineWidth(1.5F);
 
-			if (!editMode && !mc.isGamePaused()
+			if (!editMode && !mc.isPaused()
 					&& (lastUpdate == -1 || (System.currentTimeMillis() - lastUpdate) > 30)) {
 				addSpeed(getSpeed());
 				lastUpdate = System.currentTimeMillis();
@@ -85,16 +85,16 @@ public class SpeedometerMod extends SimpleHudMod {
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_LINE_SMOOTH);
 			GL11.glDisable(GL11.GL_SCISSOR_TEST);
-			GL11.glColor4f(1, 1, 1, 1);
+			GlStateManager.color(1, 1, 1, 1);
 
 			Utils.resetLineWidth();
 		}
 	}
 
 	private double getSpeed() {
-		double xTraveled = mc.thePlayer.posX - mc.thePlayer.prevPosX;
-		double zTraveled = mc.thePlayer.posZ - mc.thePlayer.prevPosZ;
-		return MathHelper.sqrt_double(xTraveled * xTraveled + zTraveled * zTraveled);
+		double xTraveled = mc.player.x - mc.player.prevX;
+		double zTraveled = mc.player.z - mc.player.prevZ;
+		return MathHelper.sqrt(xTraveled * xTraveled + zTraveled * zTraveled);
 	}
 
 	@Override

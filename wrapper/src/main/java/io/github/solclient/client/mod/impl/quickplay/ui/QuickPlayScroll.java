@@ -11,7 +11,7 @@ import io.github.solclient.client.ui.component.controller.AlignedBoundsControlle
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.data.Alignment;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 
 @RequiredArgsConstructor
 public class QuickPlayScroll extends ScrollListComponent {
@@ -23,14 +23,11 @@ public class QuickPlayScroll extends ScrollListComponent {
 		snapTo(0);
 
 		if (!screen.getFilter().isEmpty()) {
-			screen.getMod().getGames().stream().flatMap((entry) -> entry.getModes().stream())
-					.filter((
-							mode) -> EnumChatFormatting
-									.getTextWithoutFormattingCodes(mode.getText().toLowerCase()).contains(
-											screen.getFilter().toLowerCase()))
-					.sorted(Comparator.comparing((QuickPlayGameMode mode) -> EnumChatFormatting
-							.getTextWithoutFormattingCodes(mode.getText().toLowerCase())
-							.startsWith(screen.getFilter().toLowerCase())).reversed())
+			screen.getMod().getGames().stream().flatMap((entry) -> entry.getModes().stream()).filter(
+					(mode) -> Formatting.strip(mode.getText().toLowerCase()).contains(screen.getFilter().toLowerCase()))
+					.sorted(Comparator.comparing((QuickPlayGameMode mode) -> Formatting
+							.strip(mode.getText().toLowerCase()).startsWith(screen.getFilter().toLowerCase()))
+							.reversed())
 					.forEach((mode) -> add(mode.component(screen)));
 		} else if (screen.isAllGames()) {
 			add(new BackOption().component(screen));

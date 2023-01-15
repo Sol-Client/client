@@ -10,7 +10,7 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.util.Utils;
 import lombok.*;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 @ToString
 @EqualsAndHashCode
@@ -135,7 +135,7 @@ public class Colour {
 	}
 
 	private int clamp(int channel) {
-		return MathHelper.clamp_int(channel, 0, 255);
+		return MathHelper.clamp(channel, 0, 255);
 	}
 
 	public Colour add(int amount) {

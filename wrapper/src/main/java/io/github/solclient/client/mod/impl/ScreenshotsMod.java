@@ -17,7 +17,7 @@ import io.github.solclient.client.util.extension.ClickEventExtension;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.*;
 import net.minecraft.text.ClickEvent.Action;
-import net.minecraft.util.*;
+import net.minecraft.util.Formatting;
 
 public class ScreenshotsMod extends Mod {
 

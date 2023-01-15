@@ -31,8 +31,7 @@ import net.minecraft.util.Identifier;
 
 public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
-	private static final Identifier ID = new Identifier(
-			"minecraft:shaders/post/menu_blur.json");
+	private static final Identifier ID = new Identifier("minecraft:shaders/post/menu_blur.json");
 
 	@Expose
 	@Option
@@ -76,11 +75,11 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void onPostProcessing(PostProcessingEvent event) {
-		if (event.type == PostProcessingEvent.Type.UPDATE
-				|| (blur != 0 && (mc.currentScreen != null && !(mc.currentScreen instanceof ChatScreen)
-						&& !(mc.currentScreen.getClass().getName().startsWith(
-								"com.replaymod.lib.de.johni0702.MinecraftClient.gui" + ".container." + "AbstractGuiOverlay$")
-								&& ReplayModReplay.instance.getReplayHandler() != null && mc.world != null)))) {
+		if (event.type == PostProcessingEvent.Type.UPDATE || (blur != 0 && (mc.currentScreen != null
+				&& !(mc.currentScreen instanceof ChatScreen)
+				&& !(mc.currentScreen.getClass().getName().startsWith(
+						"com.replaymod.lib.de.johni0702.MinecraftClient.gui" + ".container." + "AbstractGuiOverlay$")
+						&& ReplayModReplay.instance.getReplayHandler() != null && mc.world != null)))) {
 			update();
 			event.effects.add(effect);
 		}
@@ -97,8 +96,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	public void update() {
 		if (effect == null) {
 			try {
-				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(),
-						ID);
+				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), ID);
 				effect.setupDimensions(this.mc.width, this.mc.height);
 			} catch (JsonSyntaxException | IOException error) {
 				logger.error("Could not load menu blur", error);

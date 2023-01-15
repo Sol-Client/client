@@ -2,19 +2,6 @@ package io.github.solclient.client.mixin.client;
 
 import java.util.ConcurrentModificationException;
 
-import net.minecraft.client.gui.hud.*;
-import net.minecraft.client.gui.screen.*;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.network.*;
-import net.minecraft.client.option.*;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.texture.TextureManager;
-import net.minecraft.client.util.Session;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.resource.DefaultResourcePack;
-import net.minecraft.text.LiteralText;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.*;
 import org.lwjgl.opengl.Display;
@@ -36,6 +23,19 @@ import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.extension.*;
 import lombok.SneakyThrows;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.*;
+import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.network.*;
+import net.minecraft.client.option.*;
+import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.render.*;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.texture.TextureManager;
+import net.minecraft.client.util.Session;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.resource.DefaultResourcePack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.*;
 
 @Mixin(MinecraftClient.class)
@@ -116,9 +116,8 @@ public abstract class MixinMinecraftClient implements MinecraftClientExtension, 
 	}
 
 	/**
-	 * Particles mod causes crashes.
-	 * GitHub gist authors: pls take note of this. This is bad!
-	 * I'll fix it later maybe.
+	 * Particles mod causes crashes. GitHub gist authors: pls take note of this.
+	 * This is bad! I'll fix it later maybe.
 	 */
 	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleManager;tick()V"))
 	public void concurrencyHack(ParticleManager effectRenderer) {
@@ -388,8 +387,8 @@ public abstract class MixinMinecraftClient implements MinecraftClientExtension, 
 	}
 
 	private void debugChatInfo(String message) {
-		inGameHud.getChatHud().addMessage(new LiteralText(
-				"[" + Formatting.GREEN + "Debug" + Formatting.RESET + "] " + message));
+		inGameHud.getChatHud()
+				.addMessage(new LiteralText("[" + Formatting.GREEN + "Debug" + Formatting.RESET + "] " + message));
 	}
 
 	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;clear()V"))

@@ -163,7 +163,8 @@ public class TweaksMod extends Mod {
 			} else {
 				Display.setDisplayMode(new DisplayMode(previousBounds.getWidth(), previousBounds.getHeight()));
 				Display.setLocation(previousBounds.getX(), previousBounds.getY());
-				MinecraftClientExtension.getInstance().resizeWindow(previousBounds.getWidth(), previousBounds.getHeight());
+				MinecraftClientExtension.getInstance().resizeWindow(previousBounds.getWidth(),
+						previousBounds.getHeight());
 
 				if (mc.focused) {
 					mc.mouse.grabMouse();

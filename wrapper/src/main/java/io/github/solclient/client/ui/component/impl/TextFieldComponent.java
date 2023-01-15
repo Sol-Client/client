@@ -12,7 +12,7 @@ import io.github.solclient.client.util.data.*;
 import lombok.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.util.*;
+import net.minecraft.util.SharedConstants;
 import net.minecraft.util.math.MathHelper;
 
 public class TextFieldComponent extends Component {

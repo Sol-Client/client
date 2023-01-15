@@ -1,11 +1,11 @@
 package io.github.solclient.client.mixin.client;
 
-import net.minecraft.client.gui.widget.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.widget.*;
 
 @Mixin(EntryListWidget.class)
 public abstract class MixinEntryListWidget extends ListWidget {

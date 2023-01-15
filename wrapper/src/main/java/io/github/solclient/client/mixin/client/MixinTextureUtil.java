@@ -2,9 +2,10 @@ package io.github.solclient.client.mixin.client;
 
 import java.nio.IntBuffer;
 
-import net.minecraft.client.texture.TextureUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.*;
+
+import net.minecraft.client.texture.TextureUtil;
 
 @Mixin(TextureUtil.class)
 public interface MixinTextureUtil {

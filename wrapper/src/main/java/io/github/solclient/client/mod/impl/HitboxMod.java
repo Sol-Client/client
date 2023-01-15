@@ -16,7 +16,6 @@ import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.*;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 
 public class HitboxMod extends Mod {

@@ -1,9 +1,10 @@
 package io.github.solclient.client.mixin.client;
 
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 
 /**
  * @reason Allow mouse hotkeys in container GUI.

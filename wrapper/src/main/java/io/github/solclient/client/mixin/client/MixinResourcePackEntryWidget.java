@@ -1,8 +1,9 @@
 package io.github.solclient.client.mixin.client;
 
+import org.spongepowered.asm.mixin.*;
+
 import net.minecraft.client.gui.screen.resourcepack.ResourcePackEntryWidget;
 import net.minecraft.client.resource.ResourcePackLoader;
-import org.spongepowered.asm.mixin.*;
 
 @Mixin(ResourcePackEntryWidget.class)
 public class MixinResourcePackEntryWidget {

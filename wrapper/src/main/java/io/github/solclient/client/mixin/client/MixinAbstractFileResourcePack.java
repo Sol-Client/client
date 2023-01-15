@@ -2,10 +2,10 @@ package io.github.solclient.client.mixin.client;
 
 import java.io.File;
 
-import net.minecraft.resource.AbstractFileResourcePack;
 import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.client.util.Utils;
+import net.minecraft.resource.AbstractFileResourcePack;
 
 @Mixin(AbstractFileResourcePack.class)
 public class MixinAbstractFileResourcePack {

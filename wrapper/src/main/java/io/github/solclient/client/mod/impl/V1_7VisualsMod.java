@@ -15,9 +15,7 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.extension.LivingEntityExtension;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.BlockHitResult.Type;
 import net.minecraft.util.math.MathHelper;
 
 public class V1_7VisualsMod extends Mod {
@@ -85,14 +83,12 @@ public class V1_7VisualsMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (mc.player != null && mc.player.abilities.allowModifyWorld && isEnabled() && useAndMine
-				&& mc.result  != null
-				&& mc.result.type == BlockHitResult.Type.BLOCK && mc.player != null
-				&& mc.options.attackKey.isPressed() && mc.options.useKey.isPressed()
-				&& mc.player.getItemUseTicks() > 0) {
+		if (mc.player != null && mc.player.abilities.allowModifyWorld && isEnabled() && useAndMine && mc.result != null
+				&& mc.result.type == BlockHitResult.Type.BLOCK && mc.player != null && mc.options.attackKey.isPressed()
+				&& mc.options.useKey.isPressed() && mc.player.getItemUseTicks() > 0) {
 			if ((!mc.player.handSwinging
-					|| mc.player.handSwingTicks >= ((LivingEntityExtension) mc.player)
-							.privateGetArmSwingAnimationEnd() / 2
+					|| mc.player.handSwingTicks >= ((LivingEntityExtension) mc.player).privateGetArmSwingAnimationEnd()
+							/ 2
 					|| mc.player.handSwingTicks < 0)) {
 				mc.player.handSwingTicks = -1;
 				mc.player.handSwinging = true;
@@ -122,7 +118,8 @@ public class V1_7VisualsMod extends Mod {
 		}
 	}
 
-	public static void oldDrinking(ItemStack itemToRender, AbstractClientPlayerEntity clientPlayer, float partialTicks) {
+	public static void oldDrinking(ItemStack itemToRender, AbstractClientPlayerEntity clientPlayer,
+			float partialTicks) {
 		float var14 = clientPlayer.getItemUseTicks() - partialTicks + 1.0F;
 		float var15 = 1.0F - var14 / itemToRender.getMaxUseTime();
 		float var16 = 1.0F - var15;

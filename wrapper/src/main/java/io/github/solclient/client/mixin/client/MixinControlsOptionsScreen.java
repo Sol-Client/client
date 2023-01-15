@@ -1,11 +1,5 @@
 package io.github.solclient.client.mixin.client;
 
-import java.io.IOException;
-
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.option.*;
 import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -14,6 +8,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import io.github.solclient.client.util.data.Modifier;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.option.*;
 
 @Mixin(ControlsOptionsScreen.class)
 public class MixinControlsOptionsScreen extends Screen {

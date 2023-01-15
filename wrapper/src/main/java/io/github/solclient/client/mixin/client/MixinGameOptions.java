@@ -4,12 +4,12 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.stream.StreamSupport;
 
-import net.minecraft.client.option.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.util.extension.KeyBindingExtension;
+import net.minecraft.client.option.*;
 
 @Mixin(GameOptions.class)
 public class MixinGameOptions {

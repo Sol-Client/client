@@ -69,10 +69,11 @@ public class CullTask implements Runnable {
 				Thread.sleep(10);
 
 				if (mc.player != null && mc.getCameraEntity() != null) {
-					net.minecraft.util.math.Vec3d cameraMC = Camera.getEntityPos(mc.getCameraEntity(), ((MinecraftClientExtension) mc).getTicker().tickDelta);
+					net.minecraft.util.math.Vec3d cameraMC = Camera.getEntityPos(mc.getCameraEntity(),
+							((MinecraftClientExtension) mc).getTicker().tickDelta);
 
-					if (requestCull || !(cameraMC.x == lastPos.x && cameraMC.y == lastPos.y
-							&& cameraMC.z == lastPos.z)) {
+					if (requestCull
+							|| !(cameraMC.x == lastPos.x && cameraMC.y == lastPos.y && cameraMC.z == lastPos.z)) {
 						long start = System.currentTimeMillis();
 						requestCull = false;
 						lastPos.set(cameraMC.x, cameraMC.y, cameraMC.z);
@@ -82,8 +83,7 @@ public class CullTask implements Runnable {
 
 						for (int x = -8; x <= 8; x++) {
 							for (int z = -8; z <= 8; z++) {
-								Chunk chunk = mc.world.getChunk(mc.player.chunkX + x,
-										mc.player.chunkZ + z);
+								Chunk chunk = mc.world.getChunk(mc.player.chunkX + x, mc.player.chunkZ + z);
 								Iterator<Entry<BlockPos, BlockEntity>> iterator = chunk.getBlockEntities().entrySet()
 										.iterator();
 								Entry<BlockPos, BlockEntity> entry;

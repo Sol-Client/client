@@ -59,8 +59,9 @@ public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 			return;
 		}
 
-		boolean crit = player.fallDistance > 0.0F && !player.onGround && !player.isClimbing() && !player.isTouchingWater()
-				&& !player.hasStatusEffect(StatusEffect.BLINDNESS) && player.vehicle == null;
+		boolean crit = player.fallDistance > 0.0F && !player.onGround && !player.isClimbing()
+				&& !player.isTouchingWater() && !player.hasStatusEffect(StatusEffect.BLINDNESS)
+				&& player.vehicle == null;
 
 		if (crit) {
 			for (int i = 0; i < multiplier - 1; i++) {

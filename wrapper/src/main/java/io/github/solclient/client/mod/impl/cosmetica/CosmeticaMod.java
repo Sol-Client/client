@@ -65,8 +65,8 @@ public class CosmeticaMod extends Mod {
 		Thread thread = new Thread(() -> {
 			try {
 				if (mc.getSession().getProfile().getId() != null) {
-					api = CosmeticaAPI.fromMinecraftToken(mc.getSession().getAccessToken(), mc.getSession().getUsername(),
-							mc.getSession().getProfile().getId());
+					api = CosmeticaAPI.fromMinecraftToken(mc.getSession().getAccessToken(),
+							mc.getSession().getUsername(), mc.getSession().getProfile().getId());
 					return;
 				}
 			} catch (NullPointerException | CosmeticaAPIException | IllegalStateException | FatalServerErrorException

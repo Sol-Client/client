@@ -70,8 +70,7 @@ class Util {
 		boolean isGUI3D = model.hasDepth();
 		float transformStrength = 0.25F;
 		float rotation = 0.0f;
-		float transform = model.getTransformation()
-				.getTransformation(Mode.GROUND).scale.y;
+		float transform = model.getTransformation().getTransformation(Mode.GROUND).scale.y;
 		GlStateManager.translate(0, rotation + transformStrength * transform, 0);
 		float xScale = model.getTransformation().ground.scale.x;
 		float yScale = model.getTransformation().ground.scale.y;

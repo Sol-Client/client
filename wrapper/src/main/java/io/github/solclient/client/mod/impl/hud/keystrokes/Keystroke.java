@@ -6,7 +6,7 @@ import io.github.solclient.client.CpsMonitor;
 import io.github.solclient.client.util.Utils;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.util.math.MathHelper;
 

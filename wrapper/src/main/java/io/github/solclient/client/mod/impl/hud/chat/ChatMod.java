@@ -4,7 +4,6 @@ import java.util.*;
 
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.replaymod.extras.HotkeyButtons.Gui;
 
 import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;

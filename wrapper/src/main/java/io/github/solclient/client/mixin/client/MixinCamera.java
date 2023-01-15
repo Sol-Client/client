@@ -1,12 +1,12 @@
 package io.github.solclient.client.mixin.client;
 
-import net.minecraft.client.render.Camera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.CameraRotateEvent;
+import net.minecraft.client.render.Camera;
 import net.minecraft.entity.player.PlayerEntity;
 
 @Mixin(Camera.class)

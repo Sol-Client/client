@@ -1,8 +1,5 @@
 package io.github.solclient.client.mixin.client;
 
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.entity.PlayerModelPart;
-import net.minecraft.entity.player.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -12,6 +9,9 @@ import com.mojang.authlib.GameProfile;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.SendChatMessageEvent;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.entity.PlayerModelPart;
+import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.world.World;
 
 @Mixin(ClientPlayerEntity.class)

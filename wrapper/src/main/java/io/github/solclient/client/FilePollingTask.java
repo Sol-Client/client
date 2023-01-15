@@ -15,8 +15,8 @@ public class FilePollingTask implements Runnable, Closeable {
 	public FilePollingTask(ModManager mods) throws IOException {
 		WatchService service = FileSystems.getDefault().newWatchService();
 
-		key = MinecraftClient.getInstance().runDirectory.toPath().register(service, StandardWatchEventKinds.ENTRY_MODIFY,
-				StandardWatchEventKinds.ENTRY_CREATE);
+		key = MinecraftClient.getInstance().runDirectory.toPath().register(service,
+				StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
 
 		for (Mod mod : mods)
 			for (ModOption option : mod.getOptions())

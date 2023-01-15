@@ -2,14 +2,14 @@ package io.github.solclient.client.mixin.client;
 
 import java.util.*;
 
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.util.collection.IntObjectStorage;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.*;
 
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.*;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.util.collection.IntObjectStorage;
 
 @Mixin(KeyBinding.class)
 public abstract class MixinKeyBinding implements KeyBindingExtension {

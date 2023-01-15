@@ -1,20 +1,20 @@
 package io.github.solclient.client.mixin.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.util.Window;
-import net.minecraft.scoreboard.ScoreboardObjective;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.replaymod.render.hooks.EntityRendererHandler;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.util.extension.MinecraftClientExtension;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.util.Window;
+import net.minecraft.scoreboard.ScoreboardObjective;
 
 @Mixin(InGameHud.class)
 public abstract class MixinInGameHud {
@@ -37,9 +37,8 @@ public abstract class MixinInGameHud {
 
 	@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;showCrosshair()Z"))
 	public boolean preRenderCrosshair(InGameHud instance) {
-		boolean result = !Client.INSTANCE.getEvents()
-				.post(new PreGameOverlayRenderEvent(MinecraftClientExtension.getInstance().getTicker().tickDelta,
-						GameOverlayElement.CROSSHAIRS)).cancelled
+		boolean result = !Client.INSTANCE.getEvents().post(new PreGameOverlayRenderEvent(
+				MinecraftClientExtension.getInstance().getTicker().tickDelta, GameOverlayElement.CROSSHAIRS)).cancelled
 				&& showCrosshair();
 		client.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
 		return result;
@@ -47,8 +46,7 @@ public abstract class MixinInGameHud {
 
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(IIIIII)V"))
 	public void overrideCrosshair(float partialTicks, CallbackInfo ci) {
-		Client.INSTANCE.getEvents()
-				.post(new PostGameOverlayRenderEvent(partialTicks, GameOverlayElement.CROSSHAIRS));
+		Client.INSTANCE.getEvents().post(new PostGameOverlayRenderEvent(partialTicks, GameOverlayElement.CROSSHAIRS));
 	}
 
 	@Inject(method = "renderScoreboardObjective", at = @At("HEAD"), cancellable = true)
@@ -62,9 +60,8 @@ public abstract class MixinInGameHud {
 
 	@Inject(method = "renderHorseHealth", at = @At("HEAD"), cancellable = true)
 	public void preJumpBar(Window window, int x, CallbackInfo callback) {
-		if (Client.INSTANCE.getEvents()
-				.post(new PreGameOverlayRenderEvent(MinecraftClientExtension.getInstance().getTicker().tickDelta,
-						GameOverlayElement.JUMPBAR)).cancelled) {
+		if (Client.INSTANCE.getEvents().post(new PreGameOverlayRenderEvent(
+				MinecraftClientExtension.getInstance().getTicker().tickDelta, GameOverlayElement.JUMPBAR)).cancelled) {
 			client.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
 			callback.cancel();
 		}

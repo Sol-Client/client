@@ -2,20 +2,21 @@ package io.github.solclient.client.mixin.mod;
 
 import java.util.UUID;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.hud.PlayerListHud;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import io.github.solclient.client.mod.impl.hud.tablist.*;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.hud.PlayerListHud;
+import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.text.Text;
 
 public class MixinTabListMod {
 
@@ -87,8 +88,8 @@ public class MixinTabListMod {
 		}
 
 		@Inject(method = "renderLatencyIcon", at = @At("HEAD"), cancellable = true)
-		public void drawNumeralPing(int p_175245_1_, int p_175245_2_, int p_175245_3_,
-									PlayerListEntry entry, CallbackInfo callback) {
+		public void drawNumeralPing(int p_175245_1_, int p_175245_2_, int p_175245_3_, PlayerListEntry entry,
+				CallbackInfo callback) {
 			if (TabListMod.enabled && TabListMod.instance.pingType != PingType.ICON) {
 				callback.cancel();
 

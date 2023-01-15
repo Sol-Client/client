@@ -1,7 +1,5 @@
 package io.github.solclient.client.ui.screen;
 
-import java.io.IOException;
-
 import org.lwjgl.nanovg.NanoVG;
 
 import com.replaymod.replay.ReplayModReplay;
@@ -16,7 +14,7 @@ import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.screen.SettingsScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.options.LanguageOptionsScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;

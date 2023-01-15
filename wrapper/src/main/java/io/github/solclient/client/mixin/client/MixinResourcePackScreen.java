@@ -3,19 +3,20 @@ package io.github.solclient.client.mixin.client;
 import java.io.IOException;
 import java.util.List;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.screen.*;
-import net.minecraft.client.gui.screen.resourcepack.*;
-import net.minecraft.client.gui.widget.*;
-import net.minecraft.client.resource.language.I18n;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import io.github.solclient.client.ui.screen.BetterResourcePackList;
 import io.github.solclient.client.util.data.Rectangle;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.screen.resourcepack.*;
+import net.minecraft.client.gui.widget.*;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.*;
 
 @Mixin(ResourcePackScreen.class)
@@ -83,7 +84,8 @@ public class MixinResourcePackScreen extends Screen {
 	@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen"
 			+ "/ResourcePackScreen;drawCenteredString(Lnet/minecraft/client/font/TextRenderer;Ljava/lang/String;III)"
 			+ "V", ordinal = 1))
-	public void removeText(ResourcePackScreen instance, TextRenderer textRenderer, String text, int x, int y, int color) {
+	public void removeText(ResourcePackScreen instance, TextRenderer textRenderer, String text, int x, int y,
+			int color) {
 	}
 
 	@Inject(method = "render", at = @At("RETURN"))
@@ -96,12 +98,12 @@ public class MixinResourcePackScreen extends Screen {
 			GlStateManager.color(1, 1, 1);
 			client.getTextureManager().bindTexture(new Identifier("textures/gui/resource_pack_up.png"));
 
-			DrawableHelper.drawTexture(arrowX, arrowBounds.getY(), 0,
-					arrowBounds.contains(mouseX, mouseY) ? 16 : 0, 16, 16, 16, 32);
+			DrawableHelper.drawTexture(arrowX, arrowBounds.getY(), 0, arrowBounds.contains(mouseX, mouseY) ? 16 : 0, 16,
+					16, 16, 32);
 		}
 
-		client.textRenderer.drawWithShadow(text,
-				availablePacksX + 100 - (client.textRenderer.getStringWidth(text) / 2), availablePacksY - 1, -1);
+		client.textRenderer.drawWithShadow(text, availablePacksX + 100 - (client.textRenderer.getStringWidth(text) / 2),
+				availablePacksY - 1, -1);
 
 		String selectedText = Formatting.BOLD + I18n.translate("resourcePack.selected.title");
 
@@ -115,9 +117,8 @@ public class MixinResourcePackScreen extends Screen {
 			+ "/ResourcePackScreen;availablePacks:Lnet/minecraft/client/gui/screen/resourcepack/AvailableResourcePackListWidget;", ordinal = 0))
 	public void searchableList(ResourcePackScreen instance, AvailableResourcePackListWidget value) {
 		try {
-			this.availablePacks = betterList = new BetterResourcePackList(client,
-					(ResourcePackScreen) (Object) this, availablePacks.getRowWidth(), height,
-					client.getResourcePackLoader(), () -> searchField.getText());
+			this.availablePacks = betterList = new BetterResourcePackList(client, (ResourcePackScreen) (Object) this,
+					availablePacks.getRowWidth(), height, client.getResourcePackLoader(), () -> searchField.getText());
 		} catch (IOException error) {
 		}
 	}

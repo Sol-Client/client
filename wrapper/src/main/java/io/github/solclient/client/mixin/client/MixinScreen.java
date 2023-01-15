@@ -4,16 +4,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
+
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
@@ -21,7 +16,13 @@ import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.extension.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.*;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 @Mixin(Screen.class)
 public abstract class MixinScreen implements ScreenExtension {
@@ -32,8 +33,7 @@ public abstract class MixinScreen implements ScreenExtension {
 	}
 
 	@Redirect(method = "renderBackground(I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;fillGradient(IIIIII)V"))
-	public void getTopColour(Screen screen, int left, int top, int right, int bottom, int startColor,
-			int endColor) {
+	public void getTopColour(Screen screen, int left, int top, int right, int bottom, int startColor, int endColor) {
 		if (!Client.INSTANCE.getEvents().post(new RenderGuiBackgroundEvent()).cancelled)
 			Utils.drawGradientRect(left, top, right, bottom, startColor, endColor);
 		else

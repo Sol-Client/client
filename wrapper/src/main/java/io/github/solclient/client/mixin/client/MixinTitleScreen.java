@@ -1,8 +1,5 @@
 package io.github.solclient.client.mixin.client;
 
-import net.minecraft.client.gui.screen.*;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.resource.language.I18n;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.*;
@@ -16,6 +13,9 @@ import io.github.solclient.client.ui.ReplayButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.ActiveMainMenu;
 import io.github.solclient.client.util.extension.TitleScreenExtension;
+import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.resource.language.I18n;
 
 @Mixin(TitleScreen.class)
 public abstract class MixinTitleScreen extends Screen implements TitleScreenExtension {

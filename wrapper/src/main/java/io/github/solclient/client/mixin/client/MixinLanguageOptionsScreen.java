@@ -2,14 +2,14 @@ package io.github.solclient.client.mixin.client;
 
 import java.io.IOException;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.options.LanguageOptionsScreen;
-import net.minecraft.client.resource.language.I18n;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.ui.screen.BetterLanguageGui;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.options.LanguageOptionsScreen;
+import net.minecraft.client.resource.language.I18n;
 
 @Mixin(LanguageOptionsScreen.class)
 public class MixinLanguageOptionsScreen extends Screen {

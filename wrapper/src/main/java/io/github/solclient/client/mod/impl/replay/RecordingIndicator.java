@@ -1,7 +1,5 @@
 package io.github.solclient.client.mod.impl.replay;
 
-import org.lwjgl.opengl.GL11;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.replaymod.recording.gui.GuiRecordingControls;
 

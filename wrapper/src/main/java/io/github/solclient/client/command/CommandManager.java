@@ -10,7 +10,7 @@ import io.github.solclient.client.event.impl.SendChatMessageEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.command.*;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.*;
+import net.minecraft.util.Formatting;
 
 // TODO: replace with https://github.com/moehreag/LegacyClientCommands
 public final class CommandManager {

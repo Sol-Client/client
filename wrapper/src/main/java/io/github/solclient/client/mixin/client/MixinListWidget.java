@@ -1,8 +1,9 @@
 package io.github.solclient.client.mixin.client;
 
-import net.minecraft.client.gui.widget.ListWidget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
+
+import net.minecraft.client.gui.widget.ListWidget;
 
 @Mixin(ListWidget.class)
 public class MixinListWidget {

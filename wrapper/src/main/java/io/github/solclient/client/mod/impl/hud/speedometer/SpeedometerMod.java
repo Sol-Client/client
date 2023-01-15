@@ -60,8 +60,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			textColour.bind();
 			GL11.glLineWidth(1.5F);
 
-			if (!editMode && !mc.isPaused()
-					&& (lastUpdate == -1 || (System.currentTimeMillis() - lastUpdate) > 30)) {
+			if (!editMode && !mc.isPaused() && (lastUpdate == -1 || (System.currentTimeMillis() - lastUpdate) > 30)) {
 				addSpeed(getSpeed());
 				lastUpdate = System.currentTimeMillis();
 			}

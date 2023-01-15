@@ -2,34 +2,31 @@ package io.github.solclient.client.mixin.mod;
 
 import java.util.List;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.gui.screen.GameMenuScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.item.HeldItemRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.Window;
-import net.minecraft.screen.ScreenHandler;
 import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import io.github.solclient.client.mod.impl.TweaksMod;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.screen.GameMenuScreen;
+import net.minecraft.client.gui.screen.ingame.*;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.option.*;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.entity.*;
+import net.minecraft.client.render.item.HeldItemRenderer;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.util.Window;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.*;
-import net.minecraft.util.*;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.util.Formatting;
 
 public class MixinTweaksMod {
 
@@ -113,8 +110,7 @@ public class MixinTweaksMod {
 
 		@Redirect(method = "drawStatusEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/I18n;translate(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;"))
 		public String overrideLevel(String key, Object[] parameters) {
-			if (TweaksMod.enabled && TweaksMod.instance.arabicNumerals
-					&& key.startsWith("enchantment.level.")) {
+			if (TweaksMod.enabled && TweaksMod.instance.arabicNumerals && key.startsWith("enchantment.level.")) {
 				return Integer.toString(Integer.parseInt(key.substring(18)));
 			}
 
@@ -208,8 +204,7 @@ public class MixinTweaksMod {
 		public void overrideButton(ButtonWidget button, CallbackInfo callback) {
 			if (button.id == 1 && !disconnect) {
 				callback.cancel();
-				button.message = Formatting.GREEN
-						+ I18n.translate("sol_client.mod.tweaks.confirm_disconnect");
+				button.message = Formatting.GREEN + I18n.translate("sol_client.mod.tweaks.confirm_disconnect");
 				disconnect = true;
 			}
 		}
@@ -229,7 +224,9 @@ public class MixinTweaksMod {
 				for (KeyBinding keyBinding : options.allKeys) {
 					try {
 						KeyBinding.setKeyPressed(keyBinding.getCode(),
-								keyBinding.getCode() < 256 && Keyboard.isKeyDown(keyBinding.getCode())); // TODO modifier support
+								keyBinding.getCode() < 256 && Keyboard.isKeyDown(keyBinding.getCode())); // TODO
+																											// modifier
+																											// support
 					} catch (IndexOutOfBoundsException ignored) {
 					}
 				}

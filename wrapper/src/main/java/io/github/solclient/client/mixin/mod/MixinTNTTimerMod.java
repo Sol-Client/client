@@ -1,12 +1,10 @@
 package io.github.solclient.client.mixin.mod;
 
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.TntEntityRenderer;
-import net.minecraft.entity.TntEntity;
 import org.spongepowered.asm.mixin.Mixin;
 
 import io.github.solclient.client.mod.impl.TNTTimerMod;
+import net.minecraft.client.render.entity.*;
+import net.minecraft.entity.TntEntity;
 
 public class MixinTNTTimerMod {
 

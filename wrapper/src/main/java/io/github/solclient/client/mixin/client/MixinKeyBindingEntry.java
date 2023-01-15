@@ -1,8 +1,5 @@
 package io.github.solclient.client.mixin.client;
 
-import net.minecraft.client.gui.screen.options.ControlsListWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.option.KeyBinding;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.At.Shift;
@@ -10,6 +7,9 @@ import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
+import net.minecraft.client.gui.screen.options.ControlsListWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.util.Formatting;
 
 @Mixin(ControlsListWidget.KeyBindingEntry.class)
@@ -18,8 +18,7 @@ public class MixinKeyBindingEntry {
 	@Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/ButtonWidget;message:Ljava/lang/String;", ordinal = 0, shift = Shift.AFTER))
 	public void addModifiersToLabel(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY,
 			boolean isSelected, CallbackInfo callback) {
-		keyBindingButton.message = KeyBindingExtension.from(keyBinding).getPrefix()
-				+ keyBindingButton.message;
+		keyBindingButton.message = KeyBindingExtension.from(keyBinding).getPrefix() + keyBindingButton.message;
 	}
 
 	@Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/ButtonWidget;active:Z"))

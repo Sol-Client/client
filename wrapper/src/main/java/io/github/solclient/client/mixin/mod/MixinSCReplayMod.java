@@ -2,28 +2,16 @@ package io.github.solclient.client.mixin.mod;
 
 import java.util.Collection;
 
-import io.github.solclient.client.launch.ClassWrapper;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.util.Window;
-import net.minecraft.entity.player.ClientPlayerEntity;
-import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
-import net.minecraft.stat.StatHandler;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.replaymod.compat.optifine.OptifineReflection;
 import com.replaymod.core.*;
 import com.replaymod.core.events.*;
 import com.replaymod.core.versions.MCVer;
 import com.replaymod.lib.de.johni0702.minecraft.gui.GuiRenderer;
 import com.replaymod.lib.de.johni0702.minecraft.gui.container.GuiScreen;
-import com.replaymod.lib.de.johni0702.minecraft.gui.element.AbstractGuiSlider;
-import com.replaymod.lib.de.johni0702.minecraft.gui.element.GuiButton;
+import com.replaymod.lib.de.johni0702.minecraft.gui.element.*;
 import com.replaymod.lib.de.johni0702.minecraft.gui.versions.MatrixStack;
 import com.replaymod.recording.gui.*;
 import com.replaymod.recording.packet.PacketListener;
@@ -35,14 +23,24 @@ import com.replaymod.replay.handler.GuiHandler;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
+import io.github.solclient.client.launch.ClassWrapper;
 import io.github.solclient.client.mod.impl.replay.*;
 import io.github.solclient.client.mod.impl.replay.fix.SCSettingsRegistry;
 import io.github.solclient.client.ui.screen.JGuiPreviousScreen;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.util.Window;
+import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.network.Packet;
-import net.minecraft.util.*;
+import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
+import net.minecraft.stat.StatHandler;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
 public class MixinSCReplayMod {
@@ -114,7 +112,8 @@ public class MixinSCReplayMod {
 	@Mixin(CameraEntity.class)
 	public static abstract class MixinCameraEntity extends ClientPlayerEntity {
 
-		public MixinCameraEntity(MinecraftClient client, World world, ClientPlayNetworkHandler networkHandler, StatHandler stats) {
+		public MixinCameraEntity(MinecraftClient client, World world, ClientPlayNetworkHandler networkHandler,
+				StatHandler stats) {
 			super(client, world, networkHandler, stats);
 		}
 
@@ -136,8 +135,7 @@ public class MixinSCReplayMod {
 		@Inject(method = "<init>", at = @At("RETURN"), remap = false)
 		public void overrideSettings(ReplayModReplay mod, CallbackInfo callback) {
 			MinecraftClient.getInstance().currentScreen = new JGuiPreviousScreen(this);
-			settingsButton
-					.onClick(() -> MinecraftClient.getInstance().setScreen(new ModsScreen(SCReplayMod.instance)));
+			settingsButton.onClick(() -> MinecraftClient.getInstance().setScreen(new ModsScreen(SCReplayMod.instance)));
 		}
 
 		@Override
@@ -270,8 +268,8 @@ public class MixinSCReplayMod {
 		@Inject(method = "save(Lnet/minecraft/network/Packet;)V", at = @At("HEAD"), cancellable = true)
 		public void handleChat(Packet<?> packet, CallbackInfo callback) {
 			if (packet instanceof ChatMessageS2CPacket) {
-				String messageString = Formatting.strip(
-						((ChatMessageS2CPacket) packet).getMessage().asUnformattedString());
+				String messageString = Formatting
+						.strip(((ChatMessageS2CPacket) packet).getMessage().asUnformattedString());
 
 				if (Client.INSTANCE.getEvents().post(new ReceiveChatMessageEvent(
 						((ChatMessageS2CPacket) packet).getType() == 2, messageString, true)).cancelled)

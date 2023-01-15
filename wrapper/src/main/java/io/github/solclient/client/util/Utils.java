@@ -197,7 +197,8 @@ public class Utils {
 			return;
 		}
 
-	    MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
+		MinecraftClient.getInstance().getSoundManager()
+				.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
 	}
 
 	public URL sneakyParse(String url) {

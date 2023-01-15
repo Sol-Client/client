@@ -18,7 +18,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.BlockHitResult.Type;
 import net.minecraft.util.math.*;
@@ -66,14 +65,12 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 		if (result && !((PlayerEntity) entity).abilities.allowModifyWorld && !persistent) {
 			ItemStack itemstack = ((PlayerEntity) entity).getMainHandStack();
 
-			if (mc.result != null
-					&& mc.result.type == Type.BLOCK) {
+			if (mc.result != null && mc.result.type == Type.BLOCK) {
 				BlockPos selectedBlock = mc.result.getBlockPos();
 				Block block = mc.world.getBlockState(selectedBlock).getBlock();
 
 				if (mc.interactionManager.getCurrentGameMode() == GameMode.SPECTATOR) {
-					result = block.hasBlockEntity()
-							&& mc.world.getBlockEntity(selectedBlock) instanceof Inventory;
+					result = block.hasBlockEntity() && mc.world.getBlockEntity(selectedBlock) instanceof Inventory;
 				} else {
 					result = itemstack != null && (itemstack.canDestroy(block) || itemstack.canPlaceOn(block));
 				}
@@ -107,14 +104,11 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 		if (block.getMaterial() != Material.AIR && mc.world.getWorldBorder().contains(blockpos)) {
 			block.setBoundingBox(mc.world, blockpos);
 			double x = mc.getCameraEntity().prevTickX
-					+ (mc.getCameraEntity().x - mc.getCameraEntity().prevTickX)
-							* (double) event.partialTicks;
+					+ (mc.getCameraEntity().x - mc.getCameraEntity().prevTickX) * (double) event.partialTicks;
 			double y = mc.getCameraEntity().prevTickY
-					+ (mc.getCameraEntity().y - mc.getCameraEntity().prevTickY)
-							* (double) event.partialTicks;
+					+ (mc.getCameraEntity().y - mc.getCameraEntity().prevTickY) * (double) event.partialTicks;
 			double z = mc.getCameraEntity().prevTickZ
-					+ (mc.getCameraEntity().z - mc.getCameraEntity().prevTickZ)
-							* (double) event.partialTicks;
+					+ (mc.getCameraEntity().z - mc.getCameraEntity().prevTickZ) * (double) event.partialTicks;
 
 			Box selectedBox = block.getSelectionBox(mc.world, blockpos);
 			selectedBox = selectedBox.expand(0.0020000000949949026D, 0.0020000000949949026D, 0.0020000000949949026D)

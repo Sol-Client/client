@@ -33,8 +33,9 @@ public final class ShoulderBuddies extends CosmeticLayer {
 		});
 	}
 
-	private void render(Model buddy, boolean right, AbstractClientPlayerEntity player, float p_177141_2_, float p_177141_3_,
-			float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
+	private void render(Model buddy, boolean right, AbstractClientPlayerEntity player, float p_177141_2_,
+			float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_,
+			float scale) {
 		if (!buddy.getId().equals("-sheep")) {
 			// work this out later
 			return;
@@ -53,8 +54,7 @@ public final class ShoulderBuddies extends CosmeticLayer {
 					player.isSneaking() ? -0.16 : 0);
 			Util.render(parent.getModel().body, model, 0, 0.044f, 0, flip);
 		} else {
-			Util.render(right ? parent.getModel().rightArm : parent.getModel().leftArm, model, 0,
-					0.37f, 0, flip);
+			Util.render(right ? parent.getModel().rightArm : parent.getModel().leftArm, model, 0, 0.37f, 0, flip);
 		}
 
 		GlStateManager.popMatrix();

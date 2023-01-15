@@ -168,8 +168,8 @@ public class ArmourMod extends HudMod {
 					text = Integer.toString(stack.getMaxDamage() - stack.getDamage());
 					break;
 				case PERCENTAGE:
-					text = ((int) (((double) stack.getMaxDamage() - stack.getDamage()) / (stack.getMaxDamage())
-							* 100)) + "%";
+					text = ((int) (((double) stack.getMaxDamage() - stack.getDamage()) / (stack.getMaxDamage()) * 100))
+							+ "%";
 					break;
 				default:
 					text = "??";

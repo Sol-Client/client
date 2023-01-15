@@ -3,6 +3,7 @@ package io.github.solclient.client;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.LWJGLUtil;
 
+import io.github.solclient.client.launch.ClassWrapper;
 import net.minecraft.client.main.Main;
 
 public class PreMain {

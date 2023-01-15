@@ -11,8 +11,8 @@ import net.minecraft.client.network.ServerInfo;
 public enum DetectedServer {
 	HYPIXEL("([A-z]+\\.)?hypixel\\.net(:[0-9]+)?",
 			"https://support.hypixel.net/hc/en-us/articles/6472550754962-Allowed-Modifications/", "freelook"),
-	GOMMEHD("gommehd\\.net(:[0-9]+)?", "https://www.gommehd.net/forum/threads/rules-MinecraftClient.941059/", "freelook",
-			"fullbright"),
+	GOMMEHD("gommehd\\.net(:[0-9]+)?", "https://www.gommehd.net/forum/threads/rules-MinecraftClient.941059/",
+			"freelook", "fullbright"),
 	MINEMEN("([A-z]+\\.)?minemen\\.club(:[0-9]+)?",
 			"https://docs.google.com/document/d/1g_NRnhHER2Rruwk6ysbNtaURrHGns_7_0U7OpPwrhqk/edit"),
 	MINEPLEX("([A-z]+\\.)?mineplex\\.com(:[0-9]+)?", "https://www.mineplex.com/rules/", "freelook");

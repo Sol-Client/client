@@ -2,13 +2,13 @@ package io.github.solclient.client.mixin.client;
 
 import java.util.*;
 
-import net.minecraft.client.resource.FallbackResourceManager;
-import net.minecraft.resource.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.Client;
+import net.minecraft.client.resource.FallbackResourceManager;
+import net.minecraft.resource.*;
 import net.minecraft.util.Identifier;
 
 @Mixin(ReloadableResourceManagerImpl.class)

@@ -3,10 +3,10 @@ package io.github.solclient.client.mixin.client;
 import java.io.IOException;
 import java.util.*;
 
-import net.minecraft.client.resource.language.TranslationStorage;
-import net.minecraft.resource.*;
 import org.spongepowered.asm.mixin.*;
 
+import net.minecraft.client.resource.language.TranslationStorage;
+import net.minecraft.resource.*;
 import net.minecraft.util.Identifier;
 
 @Mixin(TranslationStorage.class)

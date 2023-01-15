@@ -15,7 +15,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ResourcePackScreen;
 import net.minecraft.client.gui.screen.resourcepack.*;
 import net.minecraft.client.resource.ResourcePackLoader;
-import net.minecraft.util.*;
+import net.minecraft.util.Formatting;
 
 public class BetterResourcePackList extends AvailableResourcePackListWidget {
 

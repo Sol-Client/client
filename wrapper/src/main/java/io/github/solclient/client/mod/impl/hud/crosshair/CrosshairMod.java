@@ -1,10 +1,7 @@
 package io.github.solclient.client.mod.impl.hud.crosshair;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.replaymod.extras.HotkeyButtons.Gui;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;

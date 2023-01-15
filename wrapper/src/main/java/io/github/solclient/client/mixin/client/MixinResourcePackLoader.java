@@ -3,14 +3,15 @@ package io.github.solclient.client.mixin.client;
 import java.io.File;
 import java.util.*;
 
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.resource.ResourcePackLoader;
-import net.minecraft.resource.ResourcePack;
-import net.minecraft.util.MetadataSerializer;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.resource.ResourcePackLoader;
+import net.minecraft.resource.ResourcePack;
+import net.minecraft.util.MetadataSerializer;
 
 @Mixin(ResourcePackLoader.class)
 public class MixinResourcePackLoader {
@@ -27,7 +28,7 @@ public class MixinResourcePackLoader {
 
 		Iterator<String> iterator = gameOptions.resourcePacks.iterator();
 
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			String packName = iterator.next();
 			File file = new File(resourcePackDir, packName);
 
@@ -40,15 +41,14 @@ public class MixinResourcePackLoader {
 			ResourcePackLoader applicableLoader;
 
 			if (packName.indexOf('/') != -1)
-				applicableLoader = loaders.computeIfAbsent(parent, (ignored) -> new ResourcePackLoader(parent, serverResourcePackDir,
-						defaultPack, serializer, gameOptions));
+				applicableLoader = loaders.computeIfAbsent(parent, (ignored) -> new ResourcePackLoader(parent,
+						serverResourcePackDir, defaultPack, serializer, gameOptions));
 			else
 				applicableLoader = (ResourcePackLoader) (Object) this;
 
 			for (ResourcePackLoader.Entry entry : applicableLoader.getAvailableResourcePacks()) {
 				if (entry.getName().equals(packName)) {
-					if (entry.getFormat() == 1
-							|| gameOptions.incompatibleResourcePacks.contains(entry.getName())) {
+					if (entry.getFormat() == 1 || gameOptions.incompatibleResourcePacks.contains(entry.getName())) {
 						selectedResourcePacks.add(entry);
 						break;
 					}

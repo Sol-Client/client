@@ -58,8 +58,7 @@ public abstract class PanoramaBackgroundScreen extends ComponentScreen {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
-		buffer.vertex(0.0D, height, zOffset)
-				.texture((0.5F - uBase), (0.5F + vBase)).color(1.0F, 1.0F, 1.0F, 1.0F)
+		buffer.vertex(0.0D, height, zOffset).texture((0.5F - uBase), (0.5F + vBase)).color(1.0F, 1.0F, 1.0F, 1.0F)
 				.end();
 		buffer.vertex(width, height, zOffset).texture(0.5F - uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).end();
 		buffer.vertex(width, 0.0D, zOffset).texture(0.5F + uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).end();

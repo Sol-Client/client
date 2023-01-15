@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.mod.impl.hud.chat.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.util.extension.*;
+import io.github.solclient.client.util.extension.ScreenExtension;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.*;
@@ -16,7 +16,6 @@ import net.minecraft.client.gui.widget.*;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.Texts;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerEntity.ChatVisibilityType;
 
 public class MixinChatMod {

@@ -1,7 +1,5 @@
 package io.github.solclient.client.ui.screen.mods;
 
-import java.io.IOException;
-
 import org.lwjgl.input.Mouse;
 
 import io.github.solclient.client.Client;
@@ -15,7 +13,6 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.*;
 
 public class MoveHudsScreen extends ComponentScreen {
@@ -113,7 +110,6 @@ public class MoveHudsScreen extends ComponentScreen {
 
 		super.render(mouseX, mouseY, tickDelta);
 	}
-
 
 	@Override
 	protected void keyPressed(char character, int code) {

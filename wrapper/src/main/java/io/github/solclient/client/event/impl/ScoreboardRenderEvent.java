@@ -2,7 +2,7 @@ package io.github.solclient.client.event.impl;
 
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.util.Window;
-import net.minecraft.scoreboard.*;
+import net.minecraft.scoreboard.ScoreboardObjective;
 
 @RequiredArgsConstructor
 public class ScoreboardRenderEvent {

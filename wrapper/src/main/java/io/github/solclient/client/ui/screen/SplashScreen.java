@@ -1,7 +1,7 @@
 package io.github.solclient.client.ui.screen;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.Window;
 
 public class SplashScreen {

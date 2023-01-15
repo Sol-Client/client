@@ -10,7 +10,7 @@ import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPl
 import lombok.*;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.*;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.util.Formatting;
 
 public class QuickPlayGame extends QuickPlayOption {

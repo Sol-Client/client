@@ -1,13 +1,10 @@
 package io.github.solclient.client.mixin.client;
 
-import com.mojang.blaze3d.platform.*;
-import net.minecraft.client.gl.*;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.entity.player.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
+
+import com.mojang.blaze3d.platform.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
@@ -15,7 +12,11 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.extension.MinecraftClientExtension;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.*;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ClientPlayerEntity;
 
 @Mixin(GameRenderer.class)
 public abstract class MixinGameRenderer {
@@ -52,12 +53,14 @@ public abstract class MixinGameRenderer {
 
 	@Inject(method = "transformCamera", at = @At("HEAD"))
 	public void rotationEvent(float partialTicks, CallbackInfo callback) {
-		CameraRotateEvent event = Client.INSTANCE.getEvents().post(new CameraRotateEvent(client.getCameraEntity().yaw, client.getCameraEntity().pitch, 0));
+		CameraRotateEvent event = Client.INSTANCE.getEvents()
+				.post(new CameraRotateEvent(client.getCameraEntity().yaw, client.getCameraEntity().pitch, 0));
 		sc$yaw = event.yaw;
 		sc$pitch = event.pitch;
 		GlStateManager.rotate(event.roll, 0, 0, 1);
 
-		event = Client.INSTANCE.getEvents().post(new CameraRotateEvent(client.getCameraEntity().prevYaw, client.getCameraEntity().prevPitch, 0));
+		event = Client.INSTANCE.getEvents()
+				.post(new CameraRotateEvent(client.getCameraEntity().prevYaw, client.getCameraEntity().prevPitch, 0));
 		sc$prevYaw = event.yaw;
 		sc$prevPitch = event.pitch;
 	}

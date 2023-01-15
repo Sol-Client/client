@@ -24,7 +24,7 @@ import net.hypixel.api.HypixelAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.*;
 import net.minecraft.text.ClickEvent.Action;
-import net.minecraft.util.*;
+import net.minecraft.util.Formatting;
 
 public class HypixelAdditionsMod extends Mod {
 

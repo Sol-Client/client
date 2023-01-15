@@ -12,9 +12,9 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.util.extension.EntityRendererExtension;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.settings.GameOptions;
+import net.minecraft.client.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 

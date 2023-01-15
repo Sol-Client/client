@@ -22,7 +22,7 @@ import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.texture.TextureUtil;
 import net.minecraft.client.util.ScreenshotUtils;
 import net.minecraft.text.*;
-import net.minecraft.util.*;
+import net.minecraft.util.Formatting;
 
 public class MixinScreenshotsMod {
 

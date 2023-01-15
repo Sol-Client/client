@@ -2,7 +2,6 @@ package io.github.solclient.client.mixin.client;
 
 import java.util.List;
 
-import net.minecraft.client.gui.screen.*;
 import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -13,7 +12,8 @@ import io.github.solclient.client.chatextensions.ChatButton;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.ChatScreenExtension;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.screen.*;
 
 @Mixin(ChatScreen.class)
 public abstract class MixinChatScreen extends Screen implements ChatScreenExtension {
@@ -41,8 +41,7 @@ public abstract class MixinChatScreen extends Screen implements ChatScreenExtens
 
 			textRenderer.draw(button.getText(),
 					start + (button.getWidth() / 2) - (textRenderer.getStringWidth(button.getText()) / 2),
-					this.height - 8 - (textRenderer.fontHeight / 2),
-					buttonBounds.contains(mouseX, mouseY) ? 0 : -1);
+					this.height - 8 - (textRenderer.fontHeight / 2), buttonBounds.contains(mouseX, mouseY) ? 0 : -1);
 
 			if (mouseDown && !wasMouseDown && buttonBounds.contains(mouseX, mouseY)) {
 				if (selectedButton == button) {

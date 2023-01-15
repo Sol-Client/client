@@ -9,7 +9,7 @@ import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
 import lombok.Setter;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.DrawableHelper;
 
 public class DiscordVoiceChatHud extends BaseHudElement {
 

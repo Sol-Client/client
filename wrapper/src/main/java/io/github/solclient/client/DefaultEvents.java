@@ -2,20 +2,13 @@ package io.github.solclient.client;
 
 import io.github.solclient.client.culling.CullTask;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.GameQuitEvent;
-import io.github.solclient.client.event.impl.PostGameStartEvent;
-import io.github.solclient.client.event.impl.PreTickEvent;
-import io.github.solclient.client.event.impl.WorldLoadEvent;
+import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
-import io.github.solclient.client.util.NanoVGManager;
-import io.github.solclient.client.util.SemVer;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.ui.screen.mods.*;
+import io.github.solclient.client.util.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.option.*;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 

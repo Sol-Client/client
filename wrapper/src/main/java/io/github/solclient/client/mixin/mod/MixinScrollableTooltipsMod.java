@@ -1,16 +1,15 @@
 package io.github.solclient.client.mixin.mod;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.inventory.slot.Slot;
-import net.minecraft.item.itemgroup.ItemGroup;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import io.github.solclient.client.mod.impl.ScrollableTooltipsMod;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.*;
+import net.minecraft.inventory.slot.Slot;
+import net.minecraft.item.itemgroup.ItemGroup;
 
 public class MixinScrollableTooltipsMod {
 

@@ -27,7 +27,7 @@ import net.minecraft.util.*;
 public class MixinScreenshotsMod {
 
 	@Mixin(ScreenshotUtils.class)
-	public static class MixinScreenshotHelper {
+	public static class MixinScreenshotUtils {
 
 		@Inject(method = "saveScreenshot(Ljava/io/File;Ljava/lang/String;IILnet/minecraft/client/gl/Framebuffer;)Lnet/minecraft/text/Text;", at = @At("HEAD"), cancellable = true)
 		private static void saveScreenshot(File gameDirectory, String screenshotName, int width, int height,

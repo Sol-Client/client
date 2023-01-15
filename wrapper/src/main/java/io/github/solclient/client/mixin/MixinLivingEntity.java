@@ -14,7 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity implements LivingEntityExtension {
 
-	@Invoker("getArmSwingAnimationEnd")
+	@Invoker("getMiningSpeedMultiplier")
 	public abstract int privateGetArmSwingAnimationEnd();
 
 	@Inject(method = "sendPickup", at = @At("HEAD"))

@@ -7,14 +7,21 @@ plugins {
 	alias libs.plugins.lombok
 }
 
-group = 'io.github.solclient'
-
 repositories {
 	mavenCentral()
 	maven { url 'https://maven.fabricmc.net' }
 	maven { url 'https://repo.legacyfabric.net/repository/legacyfabric' }
 	maven { url 'https://repo.hypixel.net/repository/Hypixel' }
 	maven { url 'https://jitpack.io' }
+}
+
+group = 'io.github.solclient'
+
+configurations {
+	lwjglNatives {
+		transitive = false
+	}
+	runtimeOnly.extendsFrom lwjglNatives
 }
 
 dependencies {
@@ -51,17 +58,19 @@ dependencies {
 				: 'natives-windows-x86'
 			break
 	}
-
-	runtimeOnly("org.lwjgl:lwjgl:$libs.versions.lwjgl:$project.ext.lwjglNatives") {
-		transitive = false
-	}
-	runtimeOnly("org.lwjgl:lwjgl-nanovg:$libs.versions.lwjgl:$project.ext.lwjglNatives") {
-		transitive = false
-	}
+ 
+	lwjglNatives variantOf(libs.lwjgl) { classifier project.ext.lwjglNatives }
+	lwjglNatives variantOf(libs.lwjgl.nanovg) { classifier project.ext.lwjglNatives }
 }
 
 loom {
 	setIntermediaryUrl 'https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar'
+
+	runConfigs.each {
+		it.defaultMainClass 'io.github.solclient.wrapper.Springboard'
+		it.programArgs.add '--accessToken'
+		it.programArgs.add '0'
+	}
 }
 
 java {

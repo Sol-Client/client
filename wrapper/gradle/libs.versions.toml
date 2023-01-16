@@ -20,6 +20,8 @@ discord_game_sdk4j = { module = "com.github.JnCrMx:discord-game-sdk4j", version.
 java_websocket = { module = "org.java-websocket:Java-WebSocket", version.ref = "java_websocket" }
 cosmetica_dot_java = { module = "com.github.Cosmetica-cc:CosmeticaDotJava", version.ref = "cosmetica_dot_java" }
 lwjgl_patched = { module = "com.github.Sol-Client:lwjgl-patched", version.ref = "lwjgl_patched" }
+lwjgl = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
+lwjgl_nanovg = { module = "org.lwjgl:lwjgl-nanovg", version.ref = "lwjgl" }
 
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version = "1.0.+" }

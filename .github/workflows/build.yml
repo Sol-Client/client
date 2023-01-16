@@ -28,7 +28,7 @@ jobs:
       uses: actions/upload-artifact@v2-preview
       with:
         name: Wrapper
-        path: wrapper/build/libs/wrapper.jar
+        path: wrapper/build/libs/sol-client-wrapper.jar
     
   launcher:
     runs-on: ${{ matrix.os }}
@@ -56,7 +56,7 @@ jobs:
     - name: Remove Unnecessary Files
       run: rm -r wrapper
     - name: Relocate Wrapper
-      run: mkdir -p wrapper/build/libs && mv wrapper.jar wrapper/build/libs
+      run: mkdir -p wrapper/build/libs && mv sol-client-wrapper.jar wrapper/build/libs
     - name: Build Installer
       run: npm run make
     - name: Upload Artifact (Linux)
@@ -118,4 +118,4 @@ jobs:
           Sol-Client-Launcher-Linux/*.AppImage
           Sol-Client-Launcher-Windows/*.exe
           Sol-Client-Launcher-MacOS/*.dmg
-          Wrapper/wrapper.jar
+          Wrapper/sol-client-wrapper.jar

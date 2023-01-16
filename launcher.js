@@ -542,7 +542,7 @@ class Launcher {
 
 		classpath += versionToAdd;
 		classpath += classpathSeparator;
-		classpath += path.join(__dirname, "wrapper/build/libs/wrapper.jar");
+		classpath += path.join(__dirname, "wrapper/build/libs/sol-client-wrapper.jar");
 		classpath += classpathSeparator;
 
 		args.push(classpath);

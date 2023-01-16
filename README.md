@@ -159,5 +159,5 @@ Build JAR:
 ```sh
 ./gradlew build
 ```
-You will find the result in wrapper/build/libs/wrapper.jar.
+You will find the result in wrapper/build/libs/sol-client-wrapper.jar.
 

@@ -23,11 +23,11 @@ import com.replaymod.replay.handler.GuiHandler;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
-import io.github.solclient.client.launch.ClassWrapper;
 import io.github.solclient.client.mod.impl.replay.*;
 import io.github.solclient.client.mod.impl.replay.fix.SCSettingsRegistry;
 import io.github.solclient.client.ui.screen.JGuiPreviousScreen;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
+import io.github.solclient.wrapper.ClassWrapper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;

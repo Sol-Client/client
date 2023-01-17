@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.RenderChunkPositionEvent;
-import io.github.solclient.client.launch.ClassWrapper;
+import io.github.solclient.wrapper.ClassWrapper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexBuffer;
 import net.minecraft.client.world.BuiltChunk;

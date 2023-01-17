@@ -25,7 +25,7 @@ import com.replaymod.compat.optifine.DisableFastRender;
 import com.replaymod.compat.shaders.ShaderBeginRender;
 import com.replaymod.core.Module;
 
-import io.github.solclient.client.launch.ClassWrapper;
+import io.github.solclient.wrapper.ClassWrapper;
 
 public class SCReplayModCompat implements Module {
 

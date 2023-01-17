@@ -2,7 +2,7 @@
 minecraft = "1.8.9"
 mixin = "0.11.4+mixin.0.8.5"
 gson = "2.10.1"
-yarn = "1.8.9+build.455"
+yarn = "1.8.9+build.456"
 hypixel_api = "4.0"
 discord_game_sdk4j = "v0.5.4"
 java_websocket = "1.5.3"

@@ -24,6 +24,6 @@ dependencies {
 	implementation 'org.ow2.asm:asm:9.4'
 	implementation 'org.ow2.asm:asm-util:9.4'
 	implementation 'com.google.guava:guava:31.1-jre'
-	runtimeOnly 'net.legacyfabric:yarn:1.8.9+build.454:mergedv2'
+	runtimeOnly 'net.legacyfabric:yarn:1.8.9+build.456:mergedv2'
 	runtimeOnly 'de.oceanlabs.mcp:mcp:1.8.9:srg@zip'
 }

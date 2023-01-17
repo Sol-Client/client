@@ -38,6 +38,7 @@ public final class ClassWrapper extends URLClassLoader {
 			"com.logisticscraft.occlusionculling",
 			"cc.cosmetica",
 			"net.hypixel",
+			"org.spongepowered",
 			// important
 			"io.github.solclient.client.mixin",
 			"io.github.solclient.wrapper"

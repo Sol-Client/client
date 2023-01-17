@@ -107,7 +107,7 @@ public final class WrapperMixinService implements IMixinService, IClassProvider,
 
 	@Override
 	public InputStream getResourceAsStream(String name) {
-		return null;
+		return ClassWrapper.INSTANCE.getResourceAsStream(name);
 	}
 
 	@Override

@@ -11,6 +11,9 @@ public final class Springboard {
 	private static final MethodType MAIN_METHOD = MethodType.methodType(void.class, String[].class);
 
 	public static void main(String[] args) throws Throwable {
+		if (System.getProperty("mixin.service") == null)
+			System.setProperty("mixin.service", "io.github.solclient.wrapper.WrapperMixinService");
+
 		// @formatter:off
 		MethodHandle mainMethod = MethodHandles.lookup().findStatic(
 				ClassWrapper.INSTANCE.loadClass(MAIN_CLASS),

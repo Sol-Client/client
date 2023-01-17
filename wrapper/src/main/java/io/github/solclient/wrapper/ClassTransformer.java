@@ -4,22 +4,28 @@ import org.objectweb.asm.*;
 
 import com.google.common.util.concurrent.*;
 
-public final class ClassTransformer {
+import lombok.experimental.UtilityClass;
 
-	private static final String OBJECTS = "com.google.common.base.Objects";
-	private static final String ITERATORS = "com.google.common.collect.Iterators";
-	private static final String FUTURES = "com.google.common.util.concurrent.Futures";
+/**
+ * General small class transformations.
+ */
+@UtilityClass
+public class ClassTransformer {
 
-	private static final boolean DEV = Boolean.getBoolean("loader.development");
+	private final String OBJECTS = "com.google.common.base.Objects";
+	private final String ITERATORS = "com.google.common.collect.Iterators";
+	private final String FUTURES = "com.google.common.util.concurrent.Futures";
 
-	public static byte[] transformClass(String name, byte[] input) {
+	private final boolean DEV = Boolean.getBoolean("loader.development");
+
+	public byte[] transformClass(String name, byte[] input) {
 		input = transformGuava(name, input);
 		if (DEV && (name.startsWith("net.minecraft.") || name.startsWith("com.mojang.blaze3d.")))
 			input = fixPackageAccess(input);
 		return input;
 	}
 
-	private static byte[] fixPackageAccess(byte[] input) {
+	private byte[] fixPackageAccess(byte[] input) {
 		ClassReader reader = new ClassReader(input);
 		ClassWriter writer = new ClassWriter(0);
 		reader.accept(new ClassVisitor(Opcodes.ASM9, writer) {
@@ -72,7 +78,7 @@ public final class ClassTransformer {
 		return input;
 	}
 
-	private static byte[] transformObjects(byte[] input) {
+	private byte[] transformObjects(byte[] input) {
 		ClassReader reader = new ClassReader(input);
 		ClassWriter writer = new ClassWriter(0);
 		reader.accept(writer, 0);
@@ -89,7 +95,7 @@ public final class ClassTransformer {
 		return writer.toByteArray();
 	}
 
-	private static byte[] transformIterators(byte[] input) {
+	private byte[] transformIterators(byte[] input) {
 		ClassReader reader = new ClassReader(input);
 		ClassWriter writer = new ClassWriter(0);
 		reader.accept(new ClassVisitor(Opcodes.ASM9, writer) {
@@ -107,7 +113,7 @@ public final class ClassTransformer {
 		return writer.toByteArray();
 	}
 
-	private static byte[] transformFutures(byte[] input) {
+	private byte[] transformFutures(byte[] input) {
 		ClassReader reader = new ClassReader(input);
 		ClassWriter writer = new ClassWriter(0);
 		reader.accept(writer, 0);
@@ -127,7 +133,7 @@ public final class ClassTransformer {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void addCallback(ListenableFuture future, FutureCallback callback) {
+	public void addCallback(ListenableFuture future, FutureCallback callback) {
 		Futures.addCallback(future, callback, MoreExecutors.directExecutor());
 	}
 

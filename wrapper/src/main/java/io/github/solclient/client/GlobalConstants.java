@@ -4,7 +4,7 @@ import java.net.URL;
 
 import io.github.solclient.client.util.*;
 
-public class GlobalConstants {
+public final class GlobalConstants {
 
 	public static final String VERSION_STRING = System.getProperty("io.github.solclient.client.version", "unknown");
 	public static final SemVer VERSION = SemVer.parseOrNull(VERSION_STRING);

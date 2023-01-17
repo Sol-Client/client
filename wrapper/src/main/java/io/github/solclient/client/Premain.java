@@ -6,12 +6,11 @@ import org.lwjgl.LWJGLUtil;
 import io.github.solclient.wrapper.ClassWrapper;
 import net.minecraft.client.main.Main;
 
-public class PreMain {
+public class Premain {
 
 	public static void main(String[] args) {
-		if (LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_LINUX) {
+		if (LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_LINUX)
 			preload("org.lwjgl.opengl.LinuxKeycodes");
-		}
 
 		Main.main(args);
 	}

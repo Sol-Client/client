@@ -45,7 +45,7 @@ import net.md_5.specialsource.JarMapping;
 public final class ReplayModRemapper {
 
 	public static final Map<String, String> RELOCATIONS = new HashMap<>();
-	private static final String REMAPPER_VERSION = "2";
+	private static final String REMAPPER_VERSION = "3";
 	private static final String VERSION_ID = "thijJjIp";
 	private static final String VERSION_COMBINED;
 
@@ -208,10 +208,20 @@ public final class ReplayModRemapper {
 				if (entry.isDirectory())
 					continue;
 
+				ReplayModClassRemapper remapper = new ReplayModClassRemapper(mcp, yarn, classParents, namespace);
+
 				try (InputStream entryIn = in.getInputStream(entry)) {
 					ZipEntry newEntry = new ZipEntry(entry.getName());
 					newEntry.setLastModifiedTime(FileTime.from(Instant.now()));
 					out.putNextEntry(newEntry);
+
+					if (entry.getName().equals("mixins.replaymod.refmap.json")) {
+						String data = new String(entryIn.readAllBytes(), StandardCharsets.UTF_8);
+						ReplayModRefmapRemapper refremapper = new ReplayModRefmapRemapper(remapper);
+						data = refremapper.remap(data);
+						out.write(data.getBytes());
+						continue;
+					}
 
 					if (!entry.getName().endsWith(".class")) {
 						entryIn.transferTo(out);
@@ -222,7 +232,7 @@ public final class ReplayModRemapper {
 					ClassReader reader = new ClassReader(bytes);
 					ClassWriter writer = new ClassWriter(0);
 					reader.accept(
-							new ClassRemapper(writer, new ReplayModClassRemapper(mcp, yarn, classParents, namespace)),
+							new ClassRemapper(writer, remapper),
 							0);
 					bytes = writer.toByteArray();
 					out.write(bytes);

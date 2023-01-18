@@ -14,6 +14,7 @@ public class ClassTransformer {
 		if (GlobalConstants.DEV && (name.startsWith("net.minecraft.") || name.startsWith("com.mojang.blaze3d.")))
 			input = PackageAccessFixer.fix(input);
 		input = AccessWidenerTransformer.transform(name, input);
+		input = ReplayModMixinPluginCompat.transform(name, input);
 		return input;
 	}
 

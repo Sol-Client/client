@@ -161,7 +161,11 @@ public final class WrapperMixinService implements IMixinService, IClassProvider,
 
 	@Override
 	public ClassNode getClassNode(String name, boolean runTransformers) throws ClassNotFoundException, IOException {
-		ClassReader reader = new ClassReader(ClassWrapper.instance.getTransformedBytes(name.replace('/', '.'), false));
+		byte[] bytes = ClassWrapper.instance.getTransformedBytes(name.replace('/', '.'), false);
+		if (bytes == null)
+			throw new ClassNotFoundException(name);
+
+		ClassReader reader = new ClassReader(bytes);
 		ClassNode node = new ClassNode();
 		reader.accept(node, 0);
 		return node;

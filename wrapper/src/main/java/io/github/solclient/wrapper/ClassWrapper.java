@@ -135,6 +135,16 @@ public final class ClassWrapper extends URLClassLoader {
 	}
 
 	/**
+	 * Gets whether a class is directly available.
+	 *
+	 * @param name the class name.
+	 * @return <code>true</code> if the class file is avilable without generation.
+	 */
+	public boolean isAvailable(String name) {
+		return getResource(getClassFileName(name)) != null;
+	}
+
+	/**
 	 * Load and transform class bytes. This includes mixin.
 	 *
 	 * @param name the class name.
@@ -159,7 +169,8 @@ public final class ClassWrapper extends URLClassLoader {
 			data = ClassTransformer.transformClass(name, data);
 
 			if (mixin)
-				data = WrapperMixinService.transformer.transformClass(MixinEnvironment.getDefaultEnvironment(), name, data);
+				data = WrapperMixinService.transformer.transformClass(MixinEnvironment.getDefaultEnvironment(), name,
+						data);
 
 			return data;
 		} catch (Throwable error) {

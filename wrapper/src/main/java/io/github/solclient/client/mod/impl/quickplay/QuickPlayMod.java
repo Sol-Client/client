@@ -14,6 +14,7 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.impl.quickplay.database.*;
 import io.github.solclient.client.mod.impl.quickplay.ui.*;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;

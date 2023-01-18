@@ -4,11 +4,11 @@ import java.util.*;
 
 import org.lwjgl.input.Keyboard;
 
-import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.*;
 import net.minecraft.client.util.Window;

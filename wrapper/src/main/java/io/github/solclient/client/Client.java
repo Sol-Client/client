@@ -13,6 +13,7 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.packet.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.*;
+import io.github.solclient.util.GlobalConstants;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 

@@ -117,8 +117,8 @@ public class MixinResourcePackScreen extends Screen {
 			+ "/ResourcePackScreen;availablePacks:Lnet/minecraft/client/gui/screen/resourcepack/AvailableResourcePackListWidget;", ordinal = 0))
 	public void searchableList(ResourcePackScreen instance, AvailableResourcePackListWidget value) {
 		try {
-			this.availablePacks = betterList = new BetterResourcePackList(client, (ResourcePackScreen) (Object) this,
-					availablePacks.getRowWidth(), height, client.getResourcePackLoader(), () -> searchField.getText());
+			availablePacks = betterList = new BetterResourcePackList(client, (ResourcePackScreen) (Object) this,
+					value.getRowWidth(), height, client.getResourcePackLoader(), () -> searchField.getText());
 		} catch (IOException error) {
 		}
 	}

@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.*;
 
+import io.github.solclient.wrapper.transformer.ClassTransformer;
 import lombok.Getter;
 
 /**
@@ -43,7 +44,8 @@ public final class ClassWrapper extends URLClassLoader {
 			"net.hypixel",
 			"org.spongepowered",
 			// important
-			"io.github.solclient.wrapper"
+			"io.github.solclient.wrapper",
+			"io.github.solclient.utils"
 	};
 	private static final String[] EXCLUDED_CLASSES = {
 			"org.lwjgl.Version"

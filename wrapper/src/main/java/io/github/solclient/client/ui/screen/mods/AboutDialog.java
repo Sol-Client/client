@@ -2,12 +2,12 @@ package io.github.solclient.client.ui.screen.mods;
 
 import org.lwjgl.nanovg.*;
 
-import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 

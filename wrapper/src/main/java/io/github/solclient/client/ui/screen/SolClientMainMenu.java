@@ -5,7 +5,6 @@ import org.lwjgl.nanovg.NanoVG;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
-import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.ui.component.*;
@@ -14,6 +13,7 @@ import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.gui.screen.SettingsScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.options.LanguageOptionsScreen;

@@ -37,7 +37,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-import io.github.solclient.client.GlobalConstants;
+import io.github.solclient.util.GlobalConstants;
 import net.hypixel.api.http.*;
 
 public class ApacheHttpClient implements HypixelHttpClient {

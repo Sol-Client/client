@@ -1,4 +1,4 @@
-package io.github.solclient.client.util;
+package io.github.solclient.util;
 
 import lombok.*;
 

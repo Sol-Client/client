@@ -26,6 +26,7 @@ dependencies {
 	implementation libs.discord.game.sdk4j
 	implementation libs.java.websocket
 	implementation libs.cosmetica.dot.java
+	implementation libs.access.widener
 	implementation libs.lwjgl.patched
 	implementation libs.log4j.api
 	implementation libs.log4j.core
@@ -72,7 +73,7 @@ dependencies {
 
 loom {
 	setIntermediaryUrl 'https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar'
-	log4jConfigs.from 'log4j2.xml'
+	log4jConfigs.setFrom 'log4j2.xml'
 
 	runConfigs.each {
 		it.defaultMainClass 'io.github.solclient.wrapper.Springboard'

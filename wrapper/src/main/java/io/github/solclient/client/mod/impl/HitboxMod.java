@@ -13,6 +13,7 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.Utils;
 import io.github.solclient.client.util.data.Colour;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.*;
 import net.minecraft.entity.LivingEntity;

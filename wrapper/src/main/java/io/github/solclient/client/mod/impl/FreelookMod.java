@@ -4,12 +4,12 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.Perspective;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;

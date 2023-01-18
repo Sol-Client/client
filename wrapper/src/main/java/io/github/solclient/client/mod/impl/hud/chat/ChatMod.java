@@ -12,6 +12,7 @@ import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.extension.ChatHudExtension;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.screen.Screen;

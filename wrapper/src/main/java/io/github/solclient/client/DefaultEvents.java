@@ -7,6 +7,7 @@ import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.screen.mods.*;
 import io.github.solclient.client.util.*;
+import io.github.solclient.util.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.*;
 import net.minecraft.text.*;

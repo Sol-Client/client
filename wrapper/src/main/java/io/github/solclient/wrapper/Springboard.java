@@ -3,8 +3,6 @@ package io.github.solclient.wrapper;
 import java.lang.invoke.*;
 import java.net.URL;
 
-import net.minecraft.client.main.Main;
-
 /**
  * Loads and executes the main method of MAIN_CLASS, using ClassWrapper.
  */

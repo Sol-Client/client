@@ -170,7 +170,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 			String copyrightString = "Copyright Mojang AB. Do not distribute!";
 			regularFont.renderString(nvg, copyrightString,
 					(int) (screen.width - regularFont.getWidth(nvg, copyrightString) - 10), screen.height - 15);
-			String versionString = "MinecraftClient 1.8.9";
+			String versionString = "Minecraft 1.8.9";
 			regularFont.renderString(nvg, versionString,
 					(int) (screen.width - regularFont.getWidth(nvg, versionString) - 10), screen.height - 25);
 

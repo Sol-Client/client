@@ -52,9 +52,8 @@ public abstract class Mod {
 			throw new IllegalStateException(error);
 		}
 
-		if (this.enabled) {
+		if (this.enabled)
 			tryEnable();
-		}
 	}
 
 	public String getTranslationKey() {

@@ -257,7 +257,15 @@ public class MixinSCReplayMod {
 		 * @reason we do this ourselves
 		 */
 		@Overwrite(remap = false)
-		private void injectIntoIngameMenu(Screen screen, Collection<ButtonWidget> buttonList) {
+	    private void injectIntoIngameMenu(Screen screen, Collection<ButtonWidget> buttonList) {
+		}
+
+		/**
+		 * @author TheKodeToad
+		 * @reason we do this ourselves
+		 */
+		@Overwrite(remap = false)
+	    private void injectIntoMainMenu(Screen screen, Collection<ButtonWidget> buttonList) {
 		}
 
 	}

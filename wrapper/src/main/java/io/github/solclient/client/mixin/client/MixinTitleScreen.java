@@ -49,7 +49,7 @@ public abstract class MixinTitleScreen extends Screen implements TitleScreenExte
 	@Shadow
 	private ButtonWidget realmsButton;
 
-	@Invoker("renderBackground")
+	@Invoker("renderPanorama")
 	@Override
 	public abstract void drawPanorama(int mouseX, int mouseY, float partialTicks);
 

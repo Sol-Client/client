@@ -9,6 +9,8 @@ java_websocket = "1.5.3"
 cosmetica_dot_java = "1.7.0"
 lwjgl_patched = "bf1d105853"
 lwjgl = "3.3.1"
+log4j = "2.18.0"
+asm = "9.3"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -22,6 +24,13 @@ cosmetica_dot_java = { module = "com.github.Cosmetica-cc:CosmeticaDotJava", vers
 lwjgl_patched = { module = "com.github.Sol-Client:lwjgl-patched", version.ref = "lwjgl_patched" }
 lwjgl = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
 lwjgl_nanovg = { module = "org.lwjgl:lwjgl-nanovg", version.ref = "lwjgl" }
+log4j_api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+log4j_core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
+asm_analysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asm" }
+asm_commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
+asm_tree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
+asm_util = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
 
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version = "1.0.+" }

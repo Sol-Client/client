@@ -72,7 +72,7 @@ public final class WrapperMixinService implements IMixinService, IClassProvider,
 
 	@Override
 	public IClassBytecodeProvider getBytecodeProvider() {
-		return null;
+		return this;
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public final class WrapperMixinService implements IMixinService, IClassProvider,
 
 	@Override
 	public InputStream getResourceAsStream(String name) {
-		return ClassWrapper.INSTANCE.getResourceAsStream(name);
+		return ClassWrapper.instance.getResourceAsStream(name);
 	}
 
 	@Override
@@ -139,12 +139,12 @@ public final class WrapperMixinService implements IMixinService, IClassProvider,
 
 	@Override
 	public Class<?> findClass(String name) throws ClassNotFoundException {
-		return ClassWrapper.INSTANCE.loadClass(name);
+		return ClassWrapper.instance.loadClass(name);
 	}
 
 	@Override
 	public Class<?> findClass(String name, boolean initialize) throws ClassNotFoundException {
-		return Class.forName(name, initialize, ClassWrapper.INSTANCE);
+		return Class.forName(name, initialize, ClassWrapper.instance);
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public final class WrapperMixinService implements IMixinService, IClassProvider,
 
 	@Override
 	public ClassNode getClassNode(String name, boolean runTransformers) throws ClassNotFoundException, IOException {
-		ClassReader reader = new ClassReader(ClassWrapper.INSTANCE.getTransformedBytes(name.replace('/', '.'), false));
+		ClassReader reader = new ClassReader(ClassWrapper.instance.getTransformedBytes(name.replace('/', '.'), false));
 		ClassNode node = new ClassNode();
 		reader.accept(node, 0);
 		return node;

@@ -39,7 +39,7 @@ public abstract class PanoramaBackgroundScreen extends ComponentScreen {
 		client.getFramebuffer().unbind();
 
 		GlStateManager.viewport(0, 0, 256, 256);
-		access.renderPanorama(mouseX, mouseY, partialTicks);
+		access.drawPanorama(mouseX, mouseY, partialTicks);
 		access.rotateAndBlurPanorama(partialTicks);
 		access.rotateAndBlurPanorama(partialTicks);
 		access.rotateAndBlurPanorama(partialTicks);
@@ -59,10 +59,10 @@ public abstract class PanoramaBackgroundScreen extends ComponentScreen {
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
 		buffer.vertex(0.0D, height, zOffset).texture((0.5F - uBase), (0.5F + vBase)).color(1.0F, 1.0F, 1.0F, 1.0F)
-				.end();
-		buffer.vertex(width, height, zOffset).texture(0.5F - uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).end();
-		buffer.vertex(width, 0.0D, zOffset).texture(0.5F + uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).end();
-		buffer.vertex(0.0D, 0.0D, zOffset).texture(0.5F + uBase, 0.5F + vBase).color(1.0F, 1.0F, 1.0F, 1.0F).end();
+				.next();
+		buffer.vertex(width, height, zOffset).texture(0.5F - uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).next();
+		buffer.vertex(width, 0.0D, zOffset).texture(0.5F + uBase, 0.5F - vBase).color(1.0F, 1.0F, 1.0F, 1.0F).next();
+		buffer.vertex(0.0D, 0.0D, zOffset).texture(0.5F + uBase, 0.5F + vBase).color(1.0F, 1.0F, 1.0F, 1.0F).next();
 		tessellator.draw();
 
 		fill(0, 0, width, height, new Colour(0, 0, 0, 100).getValue());

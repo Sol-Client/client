@@ -2,6 +2,7 @@ package io.github.solclient.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.LWJGLUtil;
+import org.spongepowered.asm.mixin.*;
 
 import io.github.solclient.wrapper.ClassWrapper;
 import net.minecraft.client.main.Main;
@@ -12,12 +13,13 @@ public class Premain {
 		if (LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_LINUX)
 			preload("org.lwjgl.opengl.LinuxKeycodes");
 
+		Mixins.addConfiguration("mixins.solclient.json");
 		Main.main(args);
 	}
 
 	private static void preload(String name) {
 		try {
-			Class.forName(name, true, ClassWrapper.INSTANCE);
+			Class.forName(name, true, ClassWrapper.getInstance());
 		} catch (Exception error) {
 			LogManager.getLogger().error("Could not preload " + name + ". This may cause further issues.", error);
 		}

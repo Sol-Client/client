@@ -111,12 +111,12 @@ public class HitboxMod extends Mod {
 		if (lookVector) {
 			Vec3d look = event.entity.getRotationVector(event.partialTicks);
 			buffer.begin(3, VertexFormats.POSITION_COLOR);
-			buffer.vertex(event.x, event.y + event.entity.getEyeHeight(), event.z).color(0, 0, 255, 255).end();
+			buffer.vertex(event.x, event.y + event.entity.getEyeHeight(), event.z).color(0, 0, 255, 255).next();
 			buffer.vertex(event.x + look.x * 2, event.y + event.entity.getEyeHeight() + look.y * 2,
 					event.z + look.z * 2)
 					.color(lookVectorColour.getRed(), lookVectorColour.getGreen(), lookVectorColour.getBlue(),
 							lookVectorColour.getAlpha())
-					.end();
+					.next();
 			tessellator.draw();
 		}
 

@@ -51,7 +51,7 @@ public abstract class MixinTitleScreen extends Screen implements TitleScreenExte
 
 	@Invoker("renderBackground")
 	@Override
-	public abstract void renderPanorama(int mouseX, int mouseY, float partialTicks);
+	public abstract void drawPanorama(int mouseX, int mouseY, float partialTicks);
 
 	@Invoker("transformPanorama")
 	@Override

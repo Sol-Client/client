@@ -14,7 +14,6 @@ public class ClassTransformer {
 
 	private final String OBJECTS = "com.google.common.base.Objects";
 	private final String ITERATORS = "com.google.common.collect.Iterators";
-	private final String FUTURES = "com.google.common.util.concurrent.Futures";
 
 	private final boolean DEV = Boolean.getBoolean("loader.development");
 
@@ -71,8 +70,6 @@ public class ClassTransformer {
 				return transformObjects(input);
 			case ITERATORS:
 				return transformIterators(input);
-			case FUTURES:
-				return transformFutures(input);
 		}
 
 		return input;
@@ -110,25 +107,6 @@ public class ClassTransformer {
 			}
 
 		}, 0);
-		return writer.toByteArray();
-	}
-
-	private byte[] transformFutures(byte[] input) {
-		ClassReader reader = new ClassReader(input);
-		ClassWriter writer = new ClassWriter(0);
-		reader.accept(writer, 0);
-
-		MethodVisitor addCallback = writer.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "addCallback",
-				"(Lcom/google/common/util/concurrent/ListenableFuture;Lcom/google/common/util/concurrent/FutureCallback;)V",
-				null, null);
-		addCallback.visitVarInsn(Opcodes.ALOAD, 0);
-		addCallback.visitVarInsn(Opcodes.ALOAD, 1);
-		addCallback.visitMethodInsn(Opcodes.INVOKESTATIC, "io/github/solclient/wrapper", "addCallback",
-				"(Lcom/google/common/util/concurrent/ListenableFuture;Lcom/google/common/util/concurrent/FutureCallback;)V",
-				false);
-		addCallback.visitInsn(Opcodes.ARETURN);
-		addCallback.visitMaxs(3, 3);
-
 		return writer.toByteArray();
 	}
 

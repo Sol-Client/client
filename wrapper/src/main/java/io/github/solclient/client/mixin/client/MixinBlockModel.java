@@ -10,7 +10,7 @@ import net.minecraft.client.render.model.json.BlockModel;
 @Mixin(BlockModel.class)
 public interface MixinBlockModel {
 
-	@Accessor
+	@Accessor("textureMap")
 	Map<String, String> getTextures();
 
 }

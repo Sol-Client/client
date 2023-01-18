@@ -8,7 +8,7 @@ import io.github.solclient.client.util.Lwjgl2FunctionProvider;
 @Mixin(targets = "org.lwjgl.nanovg.NanoVGGLConfig")
 public class MixinNanoVGGLConfig {
 
-	@Overwrite
+	@Overwrite(remap = false)
 	private static FunctionProvider getFunctionProvider(String className) {
 		return new Lwjgl2FunctionProvider();
 	}

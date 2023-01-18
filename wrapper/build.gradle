@@ -15,17 +15,8 @@ repositories {
 	maven { url 'https://jitpack.io' }
 }
 
-group = 'io.github.solclient'
-
-configurations {
-	lwjglNatives {
-		transitive = false
-	}
-	runtimeOnly.extendsFrom lwjglNatives
-}
-
 dependencies {
-	minecraft libs.minecraft
+	minecraft(libs.minecraft) { exclude group: 'org.apache.logging.log4j' }
 	mappings variantOf(libs.yarn) { classifier 'v2' }
 
 	implementation libs.mixin
@@ -36,6 +27,14 @@ dependencies {
 	implementation libs.java.websocket
 	implementation libs.cosmetica.dot.java
 	implementation libs.lwjgl.patched
+	implementation libs.log4j.api
+	implementation libs.log4j.core
+
+	annotationProcessor libs.asm
+	annotationProcessor libs.asm.analysis
+	annotationProcessor libs.asm.commons
+	annotationProcessor libs.asm.tree
+	annotationProcessor libs.asm.util
 
 	def remapper = new ReplayModRemapper(project)
 	remapper.prepare()
@@ -59,25 +58,36 @@ dependencies {
 			break
 	}
  
-	lwjglNatives variantOf(libs.lwjgl) { classifier project.ext.lwjglNatives }
-	lwjglNatives variantOf(libs.lwjgl.nanovg) { classifier project.ext.lwjglNatives }
+	runtimeOnly(variantOf(libs.lwjgl) {
+		classifier project.ext.lwjglNatives
+	}) {
+		transitive = false
+	}
+	runtimeOnly(variantOf(libs.lwjgl.nanovg) {
+		classifier project.ext.lwjglNatives
+	}) {
+		transitive = false
+	}
 }
 
 loom {
 	setIntermediaryUrl 'https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar'
+	log4jConfigs.from 'log4j2.xml'
 
 	runConfigs.each {
 		it.defaultMainClass 'io.github.solclient.wrapper.Springboard'
 		it.programArgs.add '--accessToken'
 		it.programArgs.add '0'
+		it.programArgs.add '--username'
+		it.programArgs.add 'Player'
 	}
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	group = 'io.github.solclient'
 
-	withSourcesJar()
+	sourceCompatibility = 8
+	targetCompatibility = 8
 }
 
 jar {
@@ -88,7 +98,7 @@ jar {
 
 tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = 'UTF-8'
-	it.options.release = 17
+	it.options.release = 8
 }
 
 // Configure the maven publication

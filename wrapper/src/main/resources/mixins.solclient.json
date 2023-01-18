@@ -25,7 +25,7 @@
 		"client.MixinClientPlayerEntity",
 		"client.MixinClientWorld",
 		"client.MixinControlsOptionsScreen",
-		"client.MixinEntityRender",
+		"client.MixinEntityRenderer",
 		"client.MixinEntryListWidget",
 		"client.MixinGameMenuScreen",
 		"client.MixinGameOptions",

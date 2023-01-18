@@ -6,6 +6,9 @@ import java.util.Enumeration;
 
 import org.apache.commons.io.IOUtils;
 import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.mixin.*;
+
+import lombok.Getter;
 
 /**
  * A class loader which applies transformations 🪄. I assure you, any
@@ -15,12 +18,13 @@ import org.spongepowered.asm.launch.MixinBootstrap;
 public final class ClassWrapper extends URLClassLoader {
 
 	public static final boolean OPTIFINE = false;
-	public static final ClassWrapper INSTANCE = new ClassWrapper(new URL[0]);
+	@Getter
+	static ClassWrapper instance;
 
 	// exclude me
 	// thanks
 	// @formatter:off
-	private static final String[] EXCLUDEMES = {
+	private static final String[] EXCLUDED_PACKAGES = {
 			// builtin classes
 			"java",
 			"javax",
@@ -29,8 +33,7 @@ public final class ClassWrapper extends URLClassLoader {
 			"jdk",
 			// libraries, for truly great optimisation
 			// rule: if we touch it but it doesn't touch MC or anything which does
-			"org.apache.logging",
-			"org.apache.commons",
+			"org.apache",
 			"io.netty",
 			"com.mojang.authlib",
 			"com.mojang.util",
@@ -40,8 +43,10 @@ public final class ClassWrapper extends URLClassLoader {
 			"net.hypixel",
 			"org.spongepowered",
 			// important
-			"io.github.solclient.client.mixin",
 			"io.github.solclient.wrapper"
+	};
+	private static final String[] EXCLUDED_CLASSES = {
+			"org.lwjgl.Version"
 	};
 	// @formatter:on
 
@@ -50,11 +55,12 @@ public final class ClassWrapper extends URLClassLoader {
 	 */
 	private final ClassLoader upstream;
 
-	private ClassWrapper(URL[] urls) {
+	ClassWrapper(URL[] urls) {
 		super(urls);
 		upstream = getClass().getClassLoader();
-		MixinBootstrap.init();
+		instance = this;
 		Thread.currentThread().setContextClassLoader(this);
+		MixinBootstrap.init();
 	}
 
 	@Override
@@ -100,9 +106,15 @@ public final class ClassWrapper extends URLClassLoader {
 			return preexisting;
 
 		// we don't want to load these classes ourselves
-		for (String exclude : EXCLUDEMES)
-			if (name.startsWith(exclude) && name.charAt(exclude.length()) == '.')
-				return upstream.loadClass(name);
+		if (!name.startsWith("org.spongepowered.asm.synthetic")) {
+			for (String exclude : EXCLUDED_CLASSES)
+				if (name.equals(exclude))
+					return upstream.loadClass(name);
+
+			for (String exclude : EXCLUDED_PACKAGES)
+				if (name.startsWith(exclude) && name.charAt(exclude.length()) == '.')
+					return upstream.loadClass(name);
+		}
 
 		Class<?> found = findClass(name);
 		if (found == null)
@@ -114,6 +126,9 @@ public final class ClassWrapper extends URLClassLoader {
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		byte[] data = getTransformedBytes(name);
+		if (data == null)
+			return null;
+
 		return defineClass(name, data, 0, data.length);
 	}
 
@@ -129,23 +144,25 @@ public final class ClassWrapper extends URLClassLoader {
 	}
 
 	byte[] getTransformedBytes(String name, boolean mixin) throws ClassNotFoundException {
-		URL resource = getResource(getClassFileName(name));
-		if (resource == null)
-			throw new ClassNotFoundException(name);
+		try {
+			URL resource = getResource(getClassFileName(name));
+			if (resource == null)
+				return WrapperMixinService.transformer.generateClass(MixinEnvironment.getDefaultEnvironment(), name);
 
-		byte[] data;
-		try (InputStream in = resource.openStream()) {
-			data = IOUtils.toByteArray(in);
-		} catch (IOException error) {
+			byte[] data;
+			try (InputStream in = resource.openStream()) {
+				data = IOUtils.toByteArray(in);
+			}
+
+			data = ClassTransformer.transformClass(name, data);
+
+			if (mixin)
+				data = WrapperMixinService.transformer.transformClass(MixinEnvironment.getDefaultEnvironment(), name, data);
+
+			return data;
+		} catch (Throwable error) {
 			throw new ClassNotFoundException(name, error);
 		}
-
-		data = ClassTransformer.transformClass(name, data);
-
-		if (mixin)
-			data = WrapperMixinService.transformer.transformClassBytes(name, name, data);
-
-		return data;
 	}
 
 	private static String getClassFileName(String name) {

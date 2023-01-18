@@ -133,10 +133,10 @@ public class Utils {
 		GlStateManager.color(g, b, a, r);
 
 		buffer.begin(7, VertexFormats.POSITION);
-		buffer.vertex(x, bottom, 0.0D).end();
-		buffer.vertex(right, bottom, 0.0D).end();
-		buffer.vertex(right, y, 0.0D).end();
-		buffer.vertex(x, y, 0.0D).end();
+		buffer.vertex(x, bottom, 0.0D).next();
+		buffer.vertex(right, bottom, 0.0D).next();
+		buffer.vertex(right, y, 0.0D).next();
+		buffer.vertex(x, y, 0.0D).next();
 		tessellator.draw();
 
 		GlStateManager.enableTexture();
@@ -224,12 +224,12 @@ public class Utils {
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(7, VertexFormats.POSITION_TEXTURE);
 		buffer.vertex(x, y + height, zLevel).texture(((textureX) * xMultiplier), (textureY + height) * yMultiplier)
-				.end();
+				.next();
 		buffer.vertex(x + width, y + height, zLevel)
-				.texture((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).end();
+				.texture((textureX + width) * xMultiplier, (textureY + height) * yMultiplier).next();
 		buffer.vertex(x + width, y + 0, zLevel).texture((textureX + width) * xMultiplier, (textureY + 0) * yMultiplier)
-				.end();
-		buffer.vertex(x, y, zLevel).texture(((textureX) * xMultiplier), ((textureY + 0) * yMultiplier)).end();
+				.next();
+		buffer.vertex(x, y, zLevel).texture(((textureX) * xMultiplier), ((textureY + 0) * yMultiplier)).next();
 		tessellator.draw();
 	}
 
@@ -250,10 +250,10 @@ public class Utils {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(7, VertexFormats.POSITION_COLOR);
-		buffer.vertex(right, top, 0).color(red1, green1, blue1, alpha1).end();
-		buffer.vertex(left, top, 0).color(red1, green1, blue1, alpha1).end();
-		buffer.vertex(left, bottom, 0).color(red2, green2, blue2, alpha2).end();
-		buffer.vertex(right, bottom, 0).color(red2, green2, blue2, alpha2).end();
+		buffer.vertex(right, top, 0).color(red1, green1, blue1, alpha1).next();
+		buffer.vertex(left, top, 0).color(red1, green1, blue1, alpha1).next();
+		buffer.vertex(left, bottom, 0).color(red2, green2, blue2, alpha2).next();
+		buffer.vertex(right, bottom, 0).color(red2, green2, blue2, alpha2).next();
 		tessellator.draw();
 		GlStateManager.shadeModel(7424);
 		GlStateManager.disableBlend();
@@ -511,10 +511,10 @@ public class Utils {
 		GlStateManager.blendFuncSeparate(770, 771, 1, 0);
 		GlStateManager.color(f, f1, f2, f3);
 		buffer.begin(7, VertexFormats.POSITION);
-		buffer.vertex(left, bottom, 0.0D).end();
-		buffer.vertex(right, bottom, 0.0D).end();
-		buffer.vertex(right, top, 0.0D).end();
-		buffer.vertex(left, top, 0.0D).end();
+		buffer.vertex(left, bottom, 0.0D).next();
+		buffer.vertex(right, bottom, 0.0D).next();
+		buffer.vertex(right, top, 0.0D).next();
+		buffer.vertex(left, top, 0.0D).next();
 		tessellator.draw();
 		GlStateManager.enableTexture();
 		GlStateManager.disableBlend();
@@ -563,51 +563,51 @@ public class Utils {
 		BufferBuilder buffer = tessellator.getBuffer();
 
 		buffer.begin(6, VertexFormats.POSITION);
-		buffer.vertex(box.minX, box.minY, box.minZ).end();
-		buffer.vertex(box.maxX, box.minY, box.minZ).end();
-		buffer.vertex(box.maxX, box.maxY, box.minZ).end();
-		buffer.vertex(box.minX, box.maxY, box.minZ).end();
-		buffer.vertex(box.minX, box.minY, box.minZ).end();
+		buffer.vertex(box.minX, box.minY, box.minZ).next();
+		buffer.vertex(box.maxX, box.minY, box.minZ).next();
+		buffer.vertex(box.maxX, box.maxY, box.minZ).next();
+		buffer.vertex(box.minX, box.maxY, box.minZ).next();
+		buffer.vertex(box.minX, box.minY, box.minZ).next();
 		tessellator.draw();
 
 		buffer.begin(6, VertexFormats.POSITION);
-		buffer.vertex(box.maxX, box.minY, box.minZ).end();
-		buffer.vertex(box.maxX, box.minY, box.maxZ).end();
-		buffer.vertex(box.maxX, box.maxY, box.maxZ).end();
-		buffer.vertex(box.maxX, box.maxY, box.minZ).end();
-		buffer.vertex(box.maxX, box.minY, box.minZ).end();
+		buffer.vertex(box.maxX, box.minY, box.minZ).next();
+		buffer.vertex(box.maxX, box.minY, box.maxZ).next();
+		buffer.vertex(box.maxX, box.maxY, box.maxZ).next();
+		buffer.vertex(box.maxX, box.maxY, box.minZ).next();
+		buffer.vertex(box.maxX, box.minY, box.minZ).next();
 		tessellator.draw();
 
 		buffer.begin(6, VertexFormats.POSITION);
-		buffer.vertex(box.minX, box.minY, box.maxZ).end();
-		buffer.vertex(box.maxX, box.minY, box.maxZ).end();
-		buffer.vertex(box.maxX, box.maxY, box.maxZ).end();
-		buffer.vertex(box.minX, box.maxY, box.maxZ).end();
-		buffer.vertex(box.minX, box.minY, box.maxZ).end();
+		buffer.vertex(box.minX, box.minY, box.maxZ).next();
+		buffer.vertex(box.maxX, box.minY, box.maxZ).next();
+		buffer.vertex(box.maxX, box.maxY, box.maxZ).next();
+		buffer.vertex(box.minX, box.maxY, box.maxZ).next();
+		buffer.vertex(box.minX, box.minY, box.maxZ).next();
 		tessellator.draw();
 
 		buffer.begin(6, VertexFormats.POSITION);
-		buffer.vertex(box.minX, box.minY, box.maxZ).end();
-		buffer.vertex(box.minX, box.minY, box.minZ).end();
-		buffer.vertex(box.minX, box.maxY, box.minZ).end();
-		buffer.vertex(box.minX, box.maxY, box.maxZ).end();
-		buffer.vertex(box.minX, box.minY, box.maxZ).end();
+		buffer.vertex(box.minX, box.minY, box.maxZ).next();
+		buffer.vertex(box.minX, box.minY, box.minZ).next();
+		buffer.vertex(box.minX, box.maxY, box.minZ).next();
+		buffer.vertex(box.minX, box.maxY, box.maxZ).next();
+		buffer.vertex(box.minX, box.minY, box.maxZ).next();
 		tessellator.draw();
 
 		buffer.begin(6, VertexFormats.POSITION);
-		buffer.vertex(box.minX, box.maxY, box.minZ).end();
-		buffer.vertex(box.maxX, box.maxY, box.minZ).end();
-		buffer.vertex(box.maxX, box.maxY, box.maxZ).end();
-		buffer.vertex(box.minX, box.maxY, box.maxZ).end();
-		buffer.vertex(box.minX, box.maxY, box.minZ).end();
+		buffer.vertex(box.minX, box.maxY, box.minZ).next();
+		buffer.vertex(box.maxX, box.maxY, box.minZ).next();
+		buffer.vertex(box.maxX, box.maxY, box.maxZ).next();
+		buffer.vertex(box.minX, box.maxY, box.maxZ).next();
+		buffer.vertex(box.minX, box.maxY, box.minZ).next();
 		tessellator.draw();
 
 		buffer.begin(6, VertexFormats.POSITION);
-		buffer.vertex(box.minX, box.minY, box.minZ).end();
-		buffer.vertex(box.maxX, box.minY, box.minZ).end();
-		buffer.vertex(box.maxX, box.minY, box.maxZ).end();
-		buffer.vertex(box.minX, box.minY, box.maxZ).end();
-		buffer.vertex(box.minX, box.minY, box.minZ).end();
+		buffer.vertex(box.minX, box.minY, box.minZ).next();
+		buffer.vertex(box.maxX, box.minY, box.minZ).next();
+		buffer.vertex(box.maxX, box.minY, box.maxZ).next();
+		buffer.vertex(box.minX, box.minY, box.maxZ).next();
+		buffer.vertex(box.minX, box.minY, box.minZ).next();
 		tessellator.draw();
 
 		GlStateManager.enableCull();

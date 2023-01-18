@@ -1,6 +1,9 @@
 package io.github.solclient.wrapper;
 
 import java.lang.invoke.*;
+import java.net.URL;
+
+import net.minecraft.client.main.Main;
 
 /**
  * Loads and executes the main method of MAIN_CLASS, using ClassWrapper.
@@ -14,14 +17,16 @@ public final class Springboard {
 		if (System.getProperty("mixin.service") == null)
 			System.setProperty("mixin.service", "io.github.solclient.wrapper.WrapperMixinService");
 
-		// @formatter:off
-		MethodHandle mainMethod = MethodHandles.lookup().findStatic(
-				ClassWrapper.INSTANCE.loadClass(MAIN_CLASS),
-				"main",
-				MAIN_METHOD
-		);
-		// @formatter:on
-		mainMethod.invokeExact(args);
+		try (ClassWrapper wrapper = new ClassWrapper(new URL[0])) {
+			// @formatter:off
+			MethodHandle mainMethod = MethodHandles.lookup().findStatic(
+					wrapper.loadClass(MAIN_CLASS),
+					"main",
+					MAIN_METHOD
+			);
+			// @formatter:on
+			mainMethod.invokeExact(args);
+		}
 	}
 
 }

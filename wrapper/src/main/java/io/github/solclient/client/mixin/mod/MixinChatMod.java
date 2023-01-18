@@ -23,7 +23,7 @@ public class MixinChatMod {
 	@Mixin(Screen.class)
 	public static class MixinScreen {
 
-		@Redirect(method = "handleTextClick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/option/GameOptions;chatLink"))
+		@Redirect(method = "handleTextClick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/option/GameOptions;chatLink:Z"))
 		public boolean overrideChatLinks(GameOptions settings) {
 			if (ChatMod.enabled)
 				return ChatMod.instance.links;

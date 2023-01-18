@@ -45,7 +45,7 @@ import net.md_5.specialsource.JarMapping;
 public final class ReplayModRemapper {
 
 	public static final Map<String, String> RELOCATIONS = new HashMap<>();
-	private static final String REMAPPER_VERSION = "1";
+	private static final String REMAPPER_VERSION = "2";
 	private static final String VERSION_ID = "thijJjIp";
 	private static final String VERSION_COMBINED;
 
@@ -202,6 +202,9 @@ public final class ReplayModRemapper {
 		try (ZipFile in = new ZipFile(src.toFile());
 				ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(dest))) {
 			for (ZipEntry entry : Collections.list(in.entries())) {
+				if (entry.getName().startsWith("org/spongepowered"))
+					continue;
+
 				if (entry.isDirectory())
 					continue;
 

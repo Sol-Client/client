@@ -102,7 +102,7 @@ public class MixinSCReplayMod {
 		 * @author TheKodeToad - blame me
 		 * @reason no one else will be messing with this
 		 */
-		@Overwrite
+		@Overwrite(remap = false)
 		public static boolean hasOptifine() {
 			return ClassWrapper.OPTIFINE;
 		}

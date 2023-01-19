@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.RenderChunkPositionEvent;
-import io.github.solclient.wrapper.ClassWrapper;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexBuffer;
 import net.minecraft.client.world.BuiltChunk;
@@ -25,7 +25,7 @@ public class MixinBuiltChunk {
 	@Redirect(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexBuffer;delete()V"))
 	public void cancelDelete(VertexBuffer instance) {
 		if (Util.getOperatingSystem() == Util.OperatingSystem.LINUX && MinecraftClient.getInstance().options.vbo
-				&& ClassWrapper.OPTIFINE)
+				&& GlobalConstants.OPTIFINE)
 			return;
 
 		instance.delete();

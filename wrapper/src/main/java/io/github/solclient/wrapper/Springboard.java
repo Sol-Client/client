@@ -2,6 +2,9 @@ package io.github.solclient.wrapper;
 
 import java.lang.invoke.*;
 import java.net.URL;
+import java.util.Arrays;
+
+import io.github.solclient.util.GlobalConstants;
 
 /**
  * Loads and executes the main method of MAIN_CLASS, using ClassWrapper.
@@ -15,7 +18,7 @@ public final class Springboard {
 		if (System.getProperty("mixin.service") == null)
 			System.setProperty("mixin.service", "io.github.solclient.wrapper.WrapperMixinService");
 
-		try (ClassWrapper wrapper = new ClassWrapper(new URL[0])) {
+		try (ClassWrapper wrapper = new ClassWrapper(InjectedLibraries.get())) {
 			// @formatter:off
 			MethodHandle mainMethod = MethodHandles.lookup().findStatic(
 					wrapper.loadClass(MAIN_CLASS),
@@ -24,6 +27,8 @@ public final class Springboard {
 			);
 			// @formatter:on
 			mainMethod.invokeExact(args);
+		} catch (Throwable error) {
+			error.printStackTrace();
 		}
 	}
 

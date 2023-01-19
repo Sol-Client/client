@@ -18,7 +18,6 @@ import lombok.Getter;
  */
 public final class ClassWrapper extends URLClassLoader {
 
-	public static final boolean OPTIFINE = false;
 	@Getter
 	static ClassWrapper instance;
 
@@ -67,7 +66,7 @@ public final class ClassWrapper extends URLClassLoader {
 
 	@Override
 	public URL getResource(String name) {
-		URL superResource = super.getResource(name);
+		URL superResource = super.findResource(name);
 		if (superResource != null)
 			return superResource;
 

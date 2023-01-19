@@ -8,7 +8,6 @@ const axios = require("axios");
 const tar = require("tar");
 const Config = require("./config");
 const Utils = require("./utils");
-const Patcher = require("./patcher");
 const { ipcRenderer, shell } = require("electron");
 const crypto = require("crypto");
 const url = require("url");
@@ -40,10 +39,8 @@ class Launcher {
 		else {
 			version = JSON.parse(fs.readFileSync(versionJson, "UTF-8"))
 		}
-		
+
 		const nativesFolder = Version.getNatives(versionId);
-		const optifineRelative = "net/optifine/optifine/1.8.9_HD_U_M5/optifine-1.8.9_HD_U_M5.jar";
-		const optifine = Utils.librariesDirectory + "/" + optifineRelative;
 		const secret = crypto.randomBytes(32).toString("hex");
 		const alreadyRunning = this.games.length > 0;
 
@@ -54,6 +51,7 @@ class Launcher {
 		console.log("Downloading libraries...");
 		progress("Downloading libraries...");
 
+		// TODO json
 		version.libraries.push({
 			downloads: {
 				classifiers: {
@@ -159,9 +157,9 @@ class Launcher {
 		version.libraries.push({
 			downloads: {
 				artifact: {
-					url: "https://repo.spongepowered.org/repository/maven-public/org/spongepowered/mixin/0.7.11-SNAPSHOT/mixin-0.7.11-20180703.121122-1.jar",
-					path: "org/spongepowered/mixin/0.7.11-SNAPSHOT/mixin-0.7.11-20180703.121122-1.jar",
-					size: 1017668
+					url: "https://maven.fabricmc.net/net/fabricmc/sponge-mixin/0.11.4%2Bmixin.0.8.5/sponge-mixin-0.11.4%2Bmixin.0.8.5.jar",
+					path: "net/fabricmc/sponge-mixin/0.11.4+mixin.0.8.5/sponge-mixin-0.11.4+mixin.0.8.5.jar",
+					size: 1449377
 				}
 			}
 		});
@@ -169,9 +167,9 @@ class Launcher {
 		version.libraries.push({
 			downloads: {
 				artifact: {
-					url: "https://libraries.minecraft.net/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar",
-					path: "net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar",
-					size: 32999
+					url: "https://repo.maven.apache.org/maven2/org/ow2/asm/asm/9.4/asm-9.4.jar",
+					path: "org/ow2/asm/asm/9.4/asm-9.4.jar",
+					size: 122445
 				}
 			}
 		});
@@ -179,9 +177,49 @@ class Launcher {
 		version.libraries.push({
 			downloads: {
 				artifact: {
-					url: "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-debug-all/5.2/asm-debug-all-5.2.jar",
-					path: "org/ow2/asm/asm-debug-all/5.2/asm-debug-all-5.2.jar",
-					size: 387903
+					url: "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-tree/9.4/asm-tree-9.4.jar",
+					path: "org/ow2/asm/asm-tree/9.4/asm-tree-9.4.jar",
+					size: 52665
+				}
+			}
+		});
+
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-analysis/9.4/asm-analysis-9.4.jar",
+					path: "org/ow2/asm/asm-analysis/9.4/asm-analysis-9.4.jar",
+					size: 34331
+				}
+			}
+		});
+
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-commons/9.4/asm-commons-9.4.jar",
+					path: "org/ow2/asm/asm-commons/9.4/asm-commons-9.4.jar",
+					size: 72781
+				}
+			}
+		});
+
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://repo.maven.apache.org/maven2/org/ow2/asm/asm-util/9.4/asm-util-9.4.jar",
+					path: "org/ow2/asm/asm-util/9.4/asm-util-9.4.jar",
+					size: 91549
+				}
+			}
+		});
+
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://maven.fabricmc.net/net/fabricmc/access-widener/2.1.0/access-widener-2.1.0.jar",
+					path: "net/fabricmc/access-widener/2.1.0/access-widener-2.1.0.jar",
+					size: 30866
 				}
 			}
 		});
@@ -256,10 +294,32 @@ class Launcher {
 			}
 		});
 
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://maven.fabricmc.net/net/fabricmc/tiny-remapper/0.8.6/tiny-remapper-0.8.6.jar",
+					path: "net/fabricmc/tiny-remapper/0.8.6/tiny-remapper-0.8.6.jar",
+					size: 217190
+				}
+			}
+		});
+
+		version.libraries.push({
+			downloads: {
+				artifact: {
+					url: "https://libraries.minecraft.net/com/google/guava/guava/31.1-jre/guava-31.1-jre.jar",
+					path: "com/google/guava/guava/31.1-jre/guava-31.1-jre.jar",
+					size: 2959479
+				}
+			}
+
+		});
+
 		for(let library of version.libraries) {
 			if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"
 					|| library.name == "org.apache.logging.log4j:log4j-core:2.0-beta9"
-					|| library.name == "com.google.code.gson:gson:2.2.4") {
+					|| library.name == "com.google.code.gson:gson:2.2.4"
+					|| library.name == "com.google.guava:guava:17.0") {
 				continue;
 			}
 
@@ -287,7 +347,7 @@ class Launcher {
 							if(fileName.endsWith("/")) {
 								continue;
 							}
-							
+
 							if(fileName.includes("/")) {
 								fileName = path.basename(fileName);
 							}
@@ -300,7 +360,7 @@ class Launcher {
 								if(!fs.existsSync(path.dirname(destination))) {
 									fs.mkdirSync(path.dirname(destination), { recursive: true });
 								}
-								
+
 								await entry.pipe(fs.createWriteStream(destination));
 							}
 						}
@@ -386,7 +446,7 @@ class Launcher {
 									}
 
 									const destination = dest + "/" + fileName;
-									
+
 									if(!fs.existsSync(path.dirname(destination))) {
 										fs.mkdirSync(path.dirname(destination), { recursive: true });
 									}
@@ -420,36 +480,6 @@ class Launcher {
 
 		console.log("Patching...");
 		progress("Patching...");
-
-		let versionToAdd;
-		let optifineVersion;
-
-		if(Config.data.optifine) {
-			let optifinePatchedJar = versionFolder + "/" + version.id + "-patched-optifine.jar";
-			let optifineSize = 2585014;
-			optifineVersion = "1.8.9_HD_U_M5";
-
-			await Library.download({
-					url: await Utils.getOptiFine(optifineVersion),
-					size: optifineSize,
-					path: optifineRelative
-				});
-
-			if(!fs.existsSync(optifinePatchedJar)) {
-				await Patcher.patch(java, versionFolder, versionJar, optifinePatchedJar, optifine);
-			}
-
-			versionToAdd = optifinePatchedJar;
-		}
-		else {
-			const mappedJar = versionFolder + "/" + version.id + "-searge.jar";
-
-			if(!fs.existsSync(mappedJar)) {
-				await Patcher.patch(java, versionFolder, versionJar, mappedJar);
-			}
-
-			versionToAdd = mappedJar;
-		}
 
 		console.log("Preparing Discord library...");
 		progress("Downloading Discord library...");
@@ -507,6 +537,7 @@ class Launcher {
 		args.push("-Dio.github.solclient.client.launcher=ours");
 		args.push("-Dio.github.solclient.client.autoupdate=true");
 		args.push("-Dio.github.solclient.client.secret=" + secret);
+		args.push("-Dio.github.solclient.wrapper.jar=" + versionJar);
 
 		args.push("-Dlog4j2.formatMsgNoLookups=true");
 
@@ -540,14 +571,12 @@ class Launcher {
 			classpath += classpathSeparator;
 		}
 
-		classpath += versionToAdd;
-		classpath += classpathSeparator;
 		classpath += path.join(__dirname, "wrapper/build/libs/sol-client-wrapper.jar");
 		classpath += classpathSeparator;
 
 		args.push(classpath);
 
-		args.push("net.minecraft.launchwrapper.Launch");
+		args.push("io.github.solclient.wrapper.Springboard");
 
 		args.push("--version");
 		args.push("Sol Client");
@@ -613,14 +642,8 @@ class Launcher {
 		process.on("exit", (code) => {
 			if(code != 0) {
 				console.error("Game crashed with exit code " + code);
-				
-				let optifineName;
-				
-				if(optifineVersion) {
-					optifineName = "OptiFine " + optifineVersion.replace(/_/g, " ");
-				}
 
-				ipcRenderer.send("crash", fullOutput, Config.getGameDirectory(Utils.gameDirectory) + "/logs/latest.log", optifineName);
+				ipcRenderer.send("crash", fullOutput, Config.getGameDirectory(Utils.gameDirectory) + "/logs/latest.log");
 			}
 			else {
 				console.log("Game exited with code 0");

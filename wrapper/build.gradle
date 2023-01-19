@@ -5,6 +5,7 @@ plugins {
 	id 'maven-publish'
 	alias libs.plugins.quilt.loom
 	alias libs.plugins.lombok
+	alias libs.plugins.shadow
 }
 
 repositories {
@@ -15,21 +16,30 @@ repositories {
 	maven { url 'https://jitpack.io' }
 }
 
+configurations {
+	ship
+}
+
 dependencies {
 	minecraft(libs.minecraft) { exclude group: 'org.apache.logging.log4j' }
 	mappings variantOf(libs.yarn) { classifier 'v2' }
+	runtimeOnly variantOf(libs.intermediary) { classifier 'v2' }
+	ship variantOf(libs.intermediary) { classifier 'v2' }
 
 	implementation libs.mixin
 	implementation libs.gson
 	implementation files('libs/occlusionculling.jar')
+	ship files('libs/occlusionculling.jar')
 	implementation libs.hypixel.api
 	implementation libs.discord.game.sdk4j
 	implementation libs.java.websocket
 	implementation libs.cosmetica.dot.java
 	implementation libs.access.widener
 	implementation libs.lwjgl.patched
+	ship libs.lwjgl.patched
 	implementation libs.log4j.api
 	implementation libs.log4j.core
+	implementation libs.tiny.remapper
 
 	annotationProcessor libs.asm
 	annotationProcessor libs.asm.analysis
@@ -40,6 +50,7 @@ dependencies {
 	def remapper = new ReplayModRemapper(project)
 	remapper.prepare()
 	implementation files(remapper.createNamedMapped())
+	ship files(remapper.createIntermediaryMapped())
 
 	switch (OperatingSystem.current()) {
 		case OperatingSystem.LINUX:
@@ -58,7 +69,7 @@ dependencies {
 				: 'natives-windows-x86'
 			break
 	}
- 
+
 	runtimeOnly(variantOf(libs.lwjgl) {
 		classifier project.ext.lwjglNatives
 	}) {
@@ -74,6 +85,7 @@ dependencies {
 loom {
 	setIntermediaryUrl 'https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar'
 	log4jConfigs.setFrom 'log4j2.xml'
+	//accessWidenerPath = file("src/main/resources/sol-client.accesswidener")
 
 	runConfigs.each {
 		it.defaultMainClass 'io.github.solclient.wrapper.Springboard'
@@ -92,9 +104,19 @@ java {
 }
 
 jar {
+	enabled = false
+}
+
+build.dependsOn shadowJar
+
+shadowJar {
+	finalizedBy remapJar
 	from('../LICENSE') {
 		rename { "${it}_${name}" }
 	}
+	configurations = [project.configurations.ship]
+	classifier "dev"
+	destinationDirectory.set file("$buildDir/devlibs")
 }
 
 tasks.withType(JavaCompile).configureEach {

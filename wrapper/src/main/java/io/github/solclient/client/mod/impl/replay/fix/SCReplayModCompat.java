@@ -25,12 +25,12 @@ import com.replaymod.compat.optifine.DisableFastRender;
 import com.replaymod.compat.shaders.ShaderBeginRender;
 import com.replaymod.core.Module;
 
-import io.github.solclient.wrapper.ClassWrapper;
+import io.github.solclient.util.GlobalConstants;
 
 public class SCReplayModCompat implements Module {
 
 	public void initClient() {
-		if (ClassWrapper.OPTIFINE) {
+		if (GlobalConstants.OPTIFINE) {
 			new ShaderBeginRender().register();
 			new DisableFastRender().register();
 		}

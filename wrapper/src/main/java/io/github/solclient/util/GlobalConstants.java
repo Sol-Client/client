@@ -23,6 +23,7 @@ public class GlobalConstants {
 	public final String IMGUR_APPLICATION = "4efd63137720136";
 	// please don't remove :(
 	public final String COPYRIGHT = "© 2023 TheKodeToad and contributors";
+	public static final boolean OPTIFINE = Boolean.getBoolean("io.github.solclient.wrapper.optifine");
 
 	private URL sneakyParse(String url) {
 		try {

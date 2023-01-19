@@ -2,7 +2,7 @@
 	"required": true,
 	"package": "io.github.solclient.client.mixin",
 	"compatibilityLevel": "JAVA_8",
-	"refmap": "mixins.solclient.refmap.json",
+	"refmap": "sol-client-wrapper-refmap.json",
 	"minVersion": "0.8.5",
 	"mixins": [
 		"MixinBlockEntity",

@@ -3,6 +3,7 @@ minecraft = "1.8.9"
 mixin = "0.11.4+mixin.0.8.5"
 gson = "2.10.1"
 yarn = "1.8.9+build.456"
+intermediary = "1.8.9"
 hypixel_api = "4.0"
 discord_game_sdk4j = "v0.5.4"
 java_websocket = "1.5.3"
@@ -12,12 +13,15 @@ lwjgl = "3.3.1"
 log4j = "2.18.0"
 asm = "9.3"
 access_widener = "2.0.1"
+tiny_remapper = "0.8.2"
 
 [libraries]
+# bloat
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 mixin = { module = "net.fabricmc:sponge-mixin", version.ref = "mixin" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 yarn = { module = "net.legacyfabric:yarn", version.ref = "yarn" }
+intermediary = { module = "net.legacyfabric:intermediary", version.ref = "intermediary" }
 hypixel_api = { module = "net.hypixel:hypixel-api-core", version.ref = "hypixel_api" }
 discord_game_sdk4j = { module = "com.github.JnCrMx:discord-game-sdk4j", version.ref = "discord_game_sdk4j" }
 java_websocket = { module = "org.java-websocket:Java-WebSocket", version.ref = "java_websocket" }
@@ -33,7 +37,9 @@ asm_analysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asm" }
 asm_commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
 asm_tree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
 asm_util = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
+tiny_remapper = { module = "net.fabricmc:tiny-remapper", version.ref = "tiny-remapper" }
 
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version = "1.0.+" }
 lombok = { id = "io.freefair.lombok", version = "6.6.1" }
+shadow = { id = "com.github.johnrengelman.shadow", version = "7.1.2" }

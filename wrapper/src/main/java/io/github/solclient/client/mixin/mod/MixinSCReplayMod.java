@@ -27,7 +27,7 @@ import io.github.solclient.client.mod.impl.replay.*;
 import io.github.solclient.client.mod.impl.replay.fix.SCSettingsRegistry;
 import io.github.solclient.client.ui.screen.JGuiPreviousScreen;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.wrapper.ClassWrapper;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
@@ -104,7 +104,7 @@ public class MixinSCReplayMod {
 		 */
 		@Overwrite(remap = false)
 		public static boolean hasOptifine() {
-			return ClassWrapper.OPTIFINE;
+			return GlobalConstants.OPTIFINE;
 		}
 
 	}

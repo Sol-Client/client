@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.spongepowered.asm.mixin.Mixins;
 
-import io.github.solclient.wrapper.ClassWrapper;
+import io.github.solclient.util.GlobalConstants;
 import io.github.solclient.wrapper.transformer.AccessWidenerTransformer;
 import net.minecraft.client.main.Main;
 
@@ -21,7 +21,7 @@ public final class Premain {
 		Mixins.addConfiguration("mixins.render.replaymod.json");
 		Mixins.addConfiguration("mixins.render.blend.replaymod.json");
 		Mixins.addConfiguration("mixins.replay.replaymod.json");
-		if (ClassWrapper.OPTIFINE)
+		if (GlobalConstants.OPTIFINE)
 			Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
 		Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
 

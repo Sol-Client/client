@@ -102,26 +102,28 @@ public final class ClassWrapper extends URLClassLoader {
 
 	@Override
 	protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		Class<?> preexisting = findLoadedClass(name);
-		if (preexisting != null)
-			return preexisting;
+		synchronized (getClassLoadingLock(name)) {
+			Class<?> preexisting = findLoadedClass(name);
+			if (preexisting != null)
+				return preexisting;
 
-		// we don't want to load these classes ourselves
-		if (!name.startsWith("org.spongepowered.asm.synthetic.") && !name.startsWith("javax.vecmath.")) {
-			for (String exclude : EXCLUDED_CLASSES)
-				if (name.equals(exclude))
-					return upstream.loadClass(name);
+			// we don't want to load these classes ourselves
+			if (!name.startsWith("org.spongepowered.asm.synthetic.") && !name.startsWith("javax.vecmath.")) {
+				for (String exclude : EXCLUDED_CLASSES)
+					if (name.equals(exclude))
+						return upstream.loadClass(name);
 
-			for (String exclude : EXCLUDED_PACKAGES)
-				if (name.startsWith(exclude) && name.charAt(exclude.length()) == '.')
-					return upstream.loadClass(name);
+				for (String exclude : EXCLUDED_PACKAGES)
+					if (name.startsWith(exclude) && name.charAt(exclude.length()) == '.')
+						return upstream.loadClass(name);
+			}
+
+			Class<?> found = findClass(name);
+			if (found == null)
+				return upstream.loadClass(name);
+
+			return found;
 		}
-
-		Class<?> found = findClass(name);
-		if (found == null)
-			return upstream.loadClass(name);
-
-		return found;
 	}
 
 	@Override

@@ -9,9 +9,6 @@ const tar = require("tar");
 const Config = require("./config");
 const Utils = require("./utils");
 const { ipcRenderer, shell } = require("electron");
-const crypto = require("crypto");
-const url = require("url");
-const { AccountManager } = require("./auth").AccountManager;
 
 class Launcher {
 
@@ -41,7 +38,6 @@ class Launcher {
 		}
 
 		const nativesFolder = Version.getNatives(versionId);
-		const secret = crypto.randomBytes(32).toString("hex");
 		const alreadyRunning = this.games.length > 0;
 
 		if(!alreadyRunning && fs.existsSync(nativesFolder)) {
@@ -535,8 +531,11 @@ class Launcher {
 		args.push("-Dio.github.solclient.client.version=" + Utils.version);
 		args.push("-Dio.github.solclient.client.launcher=ours");
 		args.push("-Dio.github.solclient.client.autoupdate=true");
-		args.push("-Dio.github.solclient.client.secret=" + secret);
 		args.push("-Dio.github.solclient.wrapper.jar=" + versionJar);
+
+		if(Config.data.optifine) {
+			args.push("-Dio.github.solclient.wrapper.optifine=true");
+		}
 
 		args.push("-Dlog4j2.formatMsgNoLookups=true");
 

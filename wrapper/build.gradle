@@ -23,13 +23,14 @@ configurations {
 dependencies {
 	minecraft(libs.minecraft) { exclude group: 'org.apache.logging.log4j' }
 	mappings variantOf(libs.yarn) { classifier 'v2' }
-	runtimeOnly variantOf(libs.intermediary) { classifier 'v2' }
 	ship variantOf(libs.intermediary) { classifier 'v2' }
+
+	def occlusionCulling = files('libs/occlusionculling.jar')
 
 	implementation libs.mixin
 	implementation libs.gson
-	implementation files('libs/occlusionculling.jar')
-	ship files('libs/occlusionculling.jar')
+	implementation occlusionCulling
+	ship occlusionCulling
 	implementation libs.hypixel.api
 	implementation libs.discord.game.sdk4j
 	implementation libs.java.websocket
@@ -85,7 +86,7 @@ dependencies {
 loom {
 	setIntermediaryUrl 'https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar'
 	log4jConfigs.setFrom 'log4j2.xml'
-	//accessWidenerPath = file("src/main/resources/sol-client.accesswidener")
+	accessWidenerPath = file("src/main/resources/replay-mod.accesswidener")
 
 	runConfigs.each {
 		it.defaultMainClass 'io.github.solclient.wrapper.Springboard'
@@ -105,9 +106,8 @@ java {
 
 jar {
 	enabled = false
+	dependsOn shadowJar
 }
-
-build.dependsOn shadowJar
 
 shadowJar {
 	finalizedBy remapJar

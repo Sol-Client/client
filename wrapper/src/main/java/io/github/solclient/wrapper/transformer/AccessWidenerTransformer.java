@@ -29,12 +29,31 @@ public class AccessWidenerTransformer {
 	}
 
 	public byte[] transform(String name, byte[] input) {
+		if (name.equals("org.lwjgl.opengl.LinuxKeycodes"))
+			return transformLwjgl(input);
+
 		if (!WIDENER.getTargets().contains(name))
 			return input;
 
 		ClassReader reader = new ClassReader(input);
 		ClassWriter writer = new ClassWriter(0);
 		reader.accept(AccessWidenerClassVisitor.createClassVisitor(Opcodes.ASM9, writer, WIDENER), 0);
+		return writer.toByteArray();
+	}
+
+	// unfortunately access wideners only work on MC classes
+	private byte[] transformLwjgl(byte[] input) {
+		ClassReader reader = new ClassReader(input);
+		ClassWriter writer = new ClassWriter(0);
+		reader.accept(new ClassVisitor(Opcodes.ASM9, writer) {
+
+			@Override
+			public void visit(int version, int access, String name, String signature, String superName,
+					String[] interfaces) {
+				super.visit(version, access | Opcodes.ACC_PUBLIC, name, signature, superName, interfaces);
+			}
+
+		}, 0);
 		return writer.toByteArray();
 	}
 

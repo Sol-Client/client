@@ -41,7 +41,8 @@ public final class ReplayModClassRemapper extends Remapper {
 	}
 
 	private String map(String owner, String name, String desc, boolean field) {
-		if (name.startsWith("func_") || name.startsWith("field_")) {
+		if (name.startsWith("func_") || name.startsWith("field_")
+				|| (owner != null && owner.startsWith("net/minecraft/") && name.matches("[A-Z_]+"))) {
 			EntryTriple entry = null;
 			if (field)
 				entry = mcp.getField(name);
@@ -91,8 +92,9 @@ public final class ReplayModClassRemapper extends Remapper {
 
 	@Override
 	public String mapFieldName(String owner, String name, String desc) {
-		if (name.equals("OSX"))
-			return "MACOS";
+		// HACK
+		if (name.equals("GOLD"))
+			return "field_5489";
 
 		String result = map(owner, name, desc, true);
 		if (result != null)

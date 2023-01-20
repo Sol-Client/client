@@ -25,7 +25,7 @@ public final class Premain {
 			Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
 		Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
 
-		AccessWidenerTransformer.addWideners("sol-client.accesswidener");
+		AccessWidenerTransformer.addWideners("replay-mod.accesswidener");
 
 		Main.main(args);
 	}

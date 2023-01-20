@@ -2,13 +2,18 @@ package io.github.solclient.wrapper.transformer;
 
 import org.objectweb.asm.*;
 
+import io.github.solclient.util.GlobalConstants;
+
 public final class PackageAccessFixer extends ClassVisitor {
 
 	public PackageAccessFixer(ClassVisitor classVisitor) {
 		super(Opcodes.ASM9, classVisitor);
 	}
 
-	public static byte[] fix(byte[] input) {
+	public static byte[] fix(String name, byte[] input) {
+		if (!(GlobalConstants.DEV && (name.startsWith("net.minecraft.") || name.startsWith("com.mojang.blaze3d."))))
+			return input;
+
 		ClassReader reader = new ClassReader(input);
 		ClassWriter writer = new ClassWriter(0);
 		reader.accept(new PackageAccessFixer(writer), 0);

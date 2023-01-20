@@ -59,7 +59,7 @@ public class QuickPlayMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (database != null && menuKey.isPressed() && DetectedServer.current() == DetectedServer.HYPIXEL)
+		if (database != null && menuKey.wasPressed() && DetectedServer.current() == DetectedServer.HYPIXEL)
 			mc.setScreen(new QuickPlayPalette(this));
 	}
 

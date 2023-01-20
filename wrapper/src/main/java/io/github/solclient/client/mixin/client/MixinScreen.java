@@ -84,7 +84,7 @@ public abstract class MixinScreen implements ScreenExtension {
 	@Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V"))
 	public void saveFirst(MinecraftClient instance, Screen screen) throws IOException {
 		for (ButtonWidget button : buttons)
-			if (button.message.equals(I18n.translate("gui.done")))
+			if (button.message != null && button.message.equals(I18n.translate("gui.done")))
 				buttonClicked(button);
 
 		instance.setScreen(null);
@@ -120,6 +120,7 @@ public abstract class MixinScreen implements ScreenExtension {
 	@Shadow
 	protected MinecraftClient client;
 
+	@Shadow
 	protected @Final List<ButtonWidget> buttons;
 
 }

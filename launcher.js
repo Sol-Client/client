@@ -307,12 +307,11 @@ class Launcher {
 		version.libraries.push({
 			downloads: {
 				artifact: {
-					url: "https://libraries.minecraft.net/com/google/guava/guava/31.1-jre/guava-31.1-jre.jar",
-					path: "com/google/guava/guava/31.1-jre/guava-31.1-jre.jar",
-					size: 2959479
+					url: "https://libraries.minecraft.net/com/google/guava/guava/21.0/guava-21.0.jar",
+					path: "com/google/guava/guava/21.0/guava-21.0.jar",
+					size: 2521113
 				}
 			}
-
 		});
 
 		for(let library of version.libraries) {

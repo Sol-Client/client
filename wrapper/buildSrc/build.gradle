@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
 	implementation gradleApi()
-	implementation 'com.github.masecla22:Modrinth4J:master-SNAPSHOT'
+	implementation 'com.github.masecla22:Modrinth4J:67190acb62'
 	implementation 'commons-codec:commons-codec:1.15'
 	implementation 'net.fabricmc:mapping-io:0.3.0'
 	implementation 'net.md-5:SpecialSource:1.11.0'

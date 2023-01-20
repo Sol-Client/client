@@ -64,9 +64,9 @@ public final class DefaultEvents {
 		if (pollingTask != null)
 			pollingTask.run();
 
-		if (SolClientConfig.instance.modsKey.isPressed())
+		if (SolClientConfig.instance.modsKey.wasPressed())
 			mc.setScreen(new ModsScreen());
-		else if (SolClientConfig.instance.editHudKey.isPressed()) {
+		else if (SolClientConfig.instance.editHudKey.wasPressed()) {
 			mc.setScreen(new ModsScreen());
 			mc.setScreen(new MoveHudsScreen());
 		}

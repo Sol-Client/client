@@ -15,7 +15,7 @@ public final class ReverseMCP {
 		mapping.classes.forEach((src, dest) -> classes.put(dest, src));
 
 		mapping.methods.forEach((src, dest) -> {
-			// only use the first instance, we can handle this later with class_parents if
+			// only use the first instance, we can handle this latter with class_parents if
 			// yarn doesn't contain it
 			if (methods.containsKey(dest))
 				return;

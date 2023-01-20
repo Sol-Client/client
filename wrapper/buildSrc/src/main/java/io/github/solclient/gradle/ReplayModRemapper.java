@@ -45,7 +45,7 @@ import net.md_5.specialsource.JarMapping;
 public final class ReplayModRemapper {
 
 	public static final Map<String, String> RELOCATIONS = new HashMap<>();
-	private static final String REMAPPER_VERSION = "3";
+	private static final String REMAPPER_VERSION = "4";
 	private static final String VERSION_ID = "thijJjIp";
 	private static final String VERSION_COMBINED;
 
@@ -92,8 +92,10 @@ public final class ReplayModRemapper {
 				"io/github/solclient/client/event/impl/PreGuiKeyboardInputEvent");
 		RELOCATIONS.put("net/minecraftforge/fml/common/FMLCommonHandler",
 				"io/github/solclient/client/mod/impl/replay/fix/SCFMLCommonHandler");
-		RELOCATIONS.put("net/minecraftforge/client/ForgeHooksClient", "io/github/solclient/client/mod/impl/replay/fix/SCForgeHooksClient");
-		RELOCATIONS.put("com/replaymod/core/SettingsRegistry$SettingKey", "io/github/solclient/client/mod/impl/replay/fix/SCSettingsRegistry$SettingKey");
+		RELOCATIONS.put("net/minecraftforge/client/ForgeHooksClient",
+				"io/github/solclient/client/mod/impl/replay/fix/SCForgeHooksClient");
+		RELOCATIONS.put("com/replaymod/core/SettingsRegistry$SettingKey",
+				"io/github/solclient/client/mod/impl/replay/fix/SCSettingsRegistry$SettingKey");
 
 		VERSION_COMBINED = REMAPPER_VERSION + '-' + VERSION_ID + "-" + RELOCATIONS.hashCode();
 	}
@@ -199,6 +201,8 @@ public final class ReplayModRemapper {
 	}
 
 	public void remap(Path src, Path dest, ReverseMCP mcp, MappingTree yarn, String namespace) throws IOException {
+		ReplayModClassRemapper remapper = new ReplayModClassRemapper(mcp, yarn, classParents, namespace);
+
 		try (ZipFile in = new ZipFile(src.toFile());
 				ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(dest))) {
 			for (ZipEntry entry : Collections.list(in.entries())) {
@@ -208,9 +212,15 @@ public final class ReplayModRemapper {
 				if (entry.isDirectory())
 					continue;
 
-				ReplayModClassRemapper remapper = new ReplayModClassRemapper(mcp, yarn, classParents, namespace);
-
 				try (InputStream entryIn = in.getInputStream(entry)) {
+					boolean isClass = entry.getName().endsWith(".class");
+
+					if (isClass) {
+						String className = entry.getName().substring(0, entry.getName().lastIndexOf('.'));
+						if (RELOCATIONS.containsKey(className))
+							continue;
+					}
+
 					ZipEntry newEntry = new ZipEntry(entry.getName());
 					newEntry.setLastModifiedTime(FileTime.from(Instant.now()));
 					out.putNextEntry(newEntry);
@@ -223,7 +233,7 @@ public final class ReplayModRemapper {
 						continue;
 					}
 
-					if (!entry.getName().endsWith(".class")) {
+					if (!isClass) {
 						entryIn.transferTo(out);
 						continue;
 					}
@@ -231,9 +241,7 @@ public final class ReplayModRemapper {
 					byte[] bytes = entryIn.readAllBytes();
 					ClassReader reader = new ClassReader(bytes);
 					ClassWriter writer = new ClassWriter(0);
-					reader.accept(
-							new ClassRemapper(writer, remapper),
-							0);
+					reader.accept(new ClassRemapper(writer, remapper), 0);
 					bytes = writer.toByteArray();
 					out.write(bytes);
 				}

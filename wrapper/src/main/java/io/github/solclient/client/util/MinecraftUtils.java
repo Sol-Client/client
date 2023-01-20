@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.IntConsumer;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.nanovg.*;
@@ -47,14 +46,17 @@ import net.minecraft.util.*;
 import net.minecraft.util.Util.OperatingSystem;
 import net.minecraft.util.math.Box;
 
+/**
+ * Utils involving Minecraft classes.
+ */
 @UtilityClass
-public class Utils {
+public class MinecraftUtils {
 
 	public ModelLoader modelLoader;
 
 	public final String REVEAL_SUFFIX = "\0sol_client:showinfolder";
 	public final MonitoringExecutorService USER_DATA;
-	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(Utils::getStringWidth);
+	public final Comparator<String> STRING_WIDTH_COMPARATOR = Comparator.comparingInt(MinecraftUtils::getStringWidth);
 
 	private final Map<Identifier, Integer> NVG_CACHE = new HashMap<>();
 
@@ -201,14 +203,6 @@ public class Utils {
 				.play(PositionedSoundInstance.master(new Identifier("gui.button.press"), 1.0F));
 	}
 
-	public URL sneakyParse(String url) {
-		try {
-			return new URL(url);
-		} catch (MalformedURLException error) {
-			throw new AssertionError(error);
-		}
-	}
-
 	public ChatScreen getChatScreen() {
 		Screen currentScreen = MinecraftClient.getInstance().currentScreen;
 		if (currentScreen != null && currentScreen instanceof ChatScreen) {
@@ -274,15 +268,6 @@ public class Utils {
 		}
 
 		return "4x";
-	}
-
-	public String urlToString(URL url) throws IOException {
-		URLConnection connection = url.openConnection();
-		connection.addRequestProperty("User-Agent", System.getProperty("http.agent")); // Force consistent behaviour
-
-		try (InputStream in = connection.getInputStream()) {
-			return IOUtils.toString(in);
-		}
 	}
 
 	public int getShadowColour(int value) {

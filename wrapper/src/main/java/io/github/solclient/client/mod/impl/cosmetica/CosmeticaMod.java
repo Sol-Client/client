@@ -8,7 +8,7 @@ import cc.cosmetica.api.ShoulderBuddies;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.WorldLoadEvent;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
@@ -148,7 +148,7 @@ public class CosmeticaMod extends Mod {
 	}
 
 	private void fetch(UUID uuid, String username) {
-		Utils.USER_DATA.submit(() -> {
+		MinecraftUtils.USER_DATA.submit(() -> {
 			ServerResponse<UserInfo> result = api.getUserInfo(uuid, username);
 
 			if (!result.isSuccessful()) {

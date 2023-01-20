@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.MinecraftClient;
@@ -29,8 +29,8 @@ public class PopupManager {
 	private Popup currentPopup;
 
 	public PopupManager() {
-		Utils.registerKeyBinding(keyAcceptRequest);
-		Utils.registerKeyBinding(keyDismissRequest);
+		MinecraftUtils.registerKeyBinding(keyAcceptRequest);
+		MinecraftUtils.registerKeyBinding(keyDismissRequest);
 	}
 
 	@EventHandler
@@ -54,11 +54,11 @@ public class PopupManager {
 				Window window = new Window(mc);
 
 				Rectangle popupBounds = new Rectangle(window.getWidth() / 2 - (width / 2), 10, width, 50);
-				Utils.drawRectangle(popupBounds, new Colour(0, 0, 0, 100));
-				Utils.drawRectangle(
+				MinecraftUtils.drawRectangle(popupBounds, new Colour(0, 0, 0, 100));
+				MinecraftUtils.drawRectangle(
 						new Rectangle(popupBounds.getX(), popupBounds.getY() + popupBounds.getHeight() - 1, width, 2),
 						Colour.BLACK);
-				Utils.drawRectangle(new Rectangle(popupBounds.getX(), popupBounds.getY() + popupBounds.getHeight() - 1,
+				MinecraftUtils.drawRectangle(new Rectangle(popupBounds.getX(), popupBounds.getY() + popupBounds.getHeight() - 1,
 						(int) ((popupBounds.getWidth() / currentPopup.getTime()) * since), 2), Colour.BLUE);
 
 				mc.textRenderer.draw(message, popupBounds.getX() + (popupBounds.getWidth() / 2)

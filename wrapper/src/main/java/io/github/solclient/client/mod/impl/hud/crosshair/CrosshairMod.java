@@ -7,7 +7,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.Window;
@@ -82,11 +82,11 @@ public class CrosshairMod extends HudMod {
 
 			if (style == CrosshairStyle.DEFAULT) {
 				mc.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
-				Utils.drawTexture(0, 0, 0, 0, 16, 16, 0);
+				MinecraftUtils.drawTexture(0, 0, 0, 0, 16, 16, 0);
 			} else {
 				mc.getTextureManager().bindTexture(CLIENT_CROSSHAIRS);
 				int v = (style.ordinal() - 2) * 16;
-				Utils.drawTexture(0, 0, 0, v, 16, 16, 0);
+				MinecraftUtils.drawTexture(0, 0, 0, v, 16, 16, 0);
 				mc.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
 			}
 

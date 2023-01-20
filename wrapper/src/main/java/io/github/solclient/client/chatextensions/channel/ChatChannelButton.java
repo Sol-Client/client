@@ -2,7 +2,7 @@ package io.github.solclient.client.chatextensions.channel;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.chatextensions.ChatButton;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.ChatScreenExtension;
 import net.minecraft.client.MinecraftClient;
@@ -31,7 +31,7 @@ public class ChatChannelButton implements ChatButton {
 				.max(ChatButton.super.getWidth(),
 						MinecraftClient.getInstance().textRenderer
 								.getStringWidth(Client.INSTANCE.getChatExtensions().getChannelSystem().getChannels()
-										.stream().map(ChatChannel::getName).max(Utils.STRING_WIDTH_COMPARATOR).get())
+										.stream().map(ChatChannel::getName).max(MinecraftUtils.STRING_WIDTH_COMPARATOR).get())
 								+ 2);
 	}
 
@@ -55,7 +55,7 @@ public class ChatChannelButton implements ChatButton {
 			boolean hovered = optionBounds.contains(mouseX, mouseY);
 			optionBounds.fill(hovered ? Colour.WHITE_128 : Colour.BLACK_128);
 			if (hovered && wasMouseClicked) {
-				Utils.playClickSound(false);
+				MinecraftUtils.playClickSound(false);
 				ChatScreenExtension.active().setSelectedChatButton(null);
 				Client.INSTANCE.getChatExtensions().getChannelSystem().setChannel(channel);
 			}

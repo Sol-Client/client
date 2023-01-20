@@ -11,7 +11,7 @@ import io.github.solclient.client.event.impl.ScoreboardRenderEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.scoreboard.*;
@@ -169,7 +169,7 @@ public class ScoreboardMod extends Mod {
 
 		if (border) {
 			int top = ((0 - j * mc.textRenderer.fontHeight) - mc.textRenderer.fontHeight) - 2;
-			Utils.drawOutline(l1 - 3, top, scaledWidth - k1 + 2, top + mc.textRenderer.fontHeight + 3 + scoresHeight,
+			MinecraftUtils.drawOutline(l1 - 3, top, scaledWidth - k1 + 2, top + mc.textRenderer.fontHeight + 3 + scoresHeight,
 					borderColour.getValue());
 		}
 

@@ -11,7 +11,7 @@ import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.data.Modifier;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
@@ -52,7 +52,7 @@ public class ModOptionComponent extends BlockComponent {
 					return false;
 				}
 
-				Utils.playClickSound(true);
+				MinecraftUtils.playClickSound(true);
 				screen.getRoot().setDialog(new ColourPickerDialog(option, (Colour) option.getValue(),
 						(colour) -> option.setValue(colour)));
 				return true;
@@ -66,7 +66,7 @@ public class ModOptionComponent extends BlockComponent {
 					new AnimatedColourController((component, defaultColour) -> {
 						if (listening)
 							return new Colour(255, 255, 85);
-						else if (Utils.isConflicting(binding))
+						else if (MinecraftUtils.isConflicting(binding))
 							return new Colour(255, 85, 85);
 
 						return isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON;
@@ -74,7 +74,7 @@ public class ModOptionComponent extends BlockComponent {
 
 			onClick((info, button) -> {
 				if (button == 0) {
-					Utils.playClickSound(true);
+					MinecraftUtils.playClickSound(true);
 
 					// local functions at home...
 					Runnable postSet = () -> {
@@ -182,7 +182,7 @@ public class ModOptionComponent extends BlockComponent {
 
 				onClick((info, button) -> {
 					if (button == 0) {
-						Utils.playClickSound(true);
+						MinecraftUtils.playClickSound(true);
 
 						int current = ((Enum<?>) option.getValue()).ordinal();
 
@@ -246,9 +246,9 @@ public class ModOptionComponent extends BlockComponent {
 
 			onClick((info, button) -> {
 				if (button == 0) {
-					Utils.playClickSound(true);
+					MinecraftUtils.playClickSound(true);
 					try {
-						Utils.openUrl(option.getFile().toURI().toURL().toString());
+						MinecraftUtils.openUrl(option.getFile().toURI().toURL().toString());
 					} catch (MalformedURLException error) {
 						throw new IllegalStateException(error);
 					}

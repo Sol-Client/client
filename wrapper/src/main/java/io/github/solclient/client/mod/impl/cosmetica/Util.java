@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import cc.cosmetica.api.Model;
 import io.github.solclient.client.mixin.client.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.*;
@@ -121,7 +121,7 @@ class Util {
 //			});
 //		});
 		((MixinBlockModel) blockModel).getTextures().put("1", "missingno");
-		return ((MixinModelLoader) Utils.modelLoader).bakeBlockModel(blockModel, ModelRotation.X0_Y0, false);
+		return ((MixinModelLoader) MinecraftUtils.modelLoader).bakeBlockModel(blockModel, ModelRotation.X0_Y0, false);
 	}
 
 }

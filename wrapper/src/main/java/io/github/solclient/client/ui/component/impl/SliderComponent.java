@@ -9,7 +9,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 
@@ -87,7 +87,7 @@ public class SliderComponent extends Component {
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
 		if (button == 0) {
-			Utils.playClickSound(true);
+			MinecraftUtils.playClickSound(true);
 			selected = true;
 			return true;
 		}

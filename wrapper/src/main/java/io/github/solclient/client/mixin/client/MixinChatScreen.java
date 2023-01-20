@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.chatextensions.ChatButton;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.ChatScreenExtension;
 import net.minecraft.client.gui.DrawableHelper;
@@ -36,7 +36,7 @@ public abstract class MixinChatScreen extends Screen implements ChatScreenExtens
 			int start = right - button.getWidth();
 			Rectangle buttonBounds = new Rectangle(start, height - 14, button.getWidth(), 12);
 
-			Utils.drawRectangle(buttonBounds,
+			MinecraftUtils.drawRectangle(buttonBounds,
 					buttonBounds.contains(mouseX, mouseY) ? Colour.WHITE_128 : Colour.BLACK_128);
 
 			textRenderer.draw(button.getText(),
@@ -45,10 +45,10 @@ public abstract class MixinChatScreen extends Screen implements ChatScreenExtens
 
 			if (mouseDown && !wasMouseDown && buttonBounds.contains(mouseX, mouseY)) {
 				if (selectedButton == button) {
-					Utils.playClickSound(false);
+					MinecraftUtils.playClickSound(false);
 					selectedButton = null;
 				} else {
-					Utils.playClickSound(false);
+					MinecraftUtils.playClickSound(false);
 					selectedButton = button;
 				}
 			}

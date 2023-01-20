@@ -8,7 +8,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.TweaksMod;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.effect.*;
@@ -120,15 +120,15 @@ public class PotionEffectsMod extends HudMod {
 				}
 
 				if (background) {
-					Utils.drawTexture(x, y, 0, 166, width / 2, 32, 0);
-					Utils.drawTexture(x + width / 2, y, 120 - width / 2, 166, width / 2, 32, 0);
+					MinecraftUtils.drawTexture(x, y, 0, 166, width / 2, 32, 0);
+					MinecraftUtils.drawTexture(x + width / 2, y, 120 - width / 2, 166, width / 2, 32, 0);
 				}
 
 				int centreText = y + 12;
 
 				if (icon && effectType.hasIcon()) {
 					int icon = effectType.getIconLevel();
-					Utils.drawTexture(iconX, y + 7, icon % 8 * 18, 198 + icon / 8 * 18, 18, 18, 0);
+					MinecraftUtils.drawTexture(iconX, y + 7, icon % 8 * 18, 198 + icon / 8 * 18, 18, 18, 0);
 				}
 
 				if (title) {

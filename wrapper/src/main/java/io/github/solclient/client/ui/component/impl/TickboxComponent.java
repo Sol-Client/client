@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AnimatedColourController;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 
 public class TickboxComponent extends BlockComponent {
@@ -50,7 +50,7 @@ public class TickboxComponent extends BlockComponent {
 			return false;
 		}
 
-		Utils.playClickSound(true);
+		MinecraftUtils.playClickSound(true);
 		value = !value;
 		booleanConsumer.accept(value);
 

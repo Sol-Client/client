@@ -132,7 +132,7 @@ public class HypixelAdditionsMod extends Mod {
 				} else {
 					// At this stage, the player is either nicked, or an NPC, but all NPCs and fake
 					// players I've tested do not get to this stage.
-					levelCache.put(id, Integer.toString(Utils.randomInt(180, 280))); // Based on looking at YouTubers'
+					levelCache.put(id, Integer.toString(MinecraftUtils.randomInt(180, 280))); // Based on looking at YouTubers'
 																						// Hypixel levels. It won't
 																						// actually be the true level,
 																						// and may not look quite right,
@@ -156,7 +156,7 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	public boolean isHousing() {
-		return "HOUSING".equals(Utils.getScoreboardTitle());
+		return "HOUSING".equals(MinecraftUtils.getScoreboardTitle());
 	}
 
 	public static boolean isHypixel() {

@@ -36,7 +36,7 @@ public final class DefaultEvents {
 		Client.INSTANCE.getMods().forEach(Mod::postStart);
 
 		try {
-			Utils.unregisterKeyBinding((KeyBinding) GameOptions.class.getField("ofKeyBindZoom").get(mc.options));
+			MinecraftUtils.unregisterKeyBinding((KeyBinding) GameOptions.class.getField("ofKeyBindZoom").get(mc.options));
 		} catch (NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
 			// OptiFine is not enabled.
 		}
@@ -46,7 +46,7 @@ public final class DefaultEvents {
 
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
-		Utils.USER_DATA.cancel();
+		MinecraftUtils.USER_DATA.cancel();
 		if (!remindedUpdate && SolClientConfig.instance.remindMeToUpdate) {
 			remindedUpdate = true;
 			SemVer latest = SolClientConfig.instance.latestRelease;

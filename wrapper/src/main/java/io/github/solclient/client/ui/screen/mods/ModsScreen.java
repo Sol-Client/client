@@ -126,7 +126,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						defaultColour) -> component.isHovered() ? new Colour(255, 165, 65) : new Colour(255, 120, 20)))
 						.onClick((info, button) -> {
 							if (button == 0) {
-								Utils.playClickSound(true);
+								MinecraftUtils.playClickSound(true);
 								mc.setScreen(new MoveHudsScreen());
 								return true;
 							}
@@ -152,7 +152,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 							return false;
 						}
 
-						Utils.playClickSound(true);
+						MinecraftUtils.playClickSound(true);
 						setDialog(new AboutDialog());
 						return true;
 					}),

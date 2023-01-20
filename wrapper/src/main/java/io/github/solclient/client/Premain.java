@@ -14,6 +14,9 @@ import net.minecraft.client.main.Main;
 public final class Premain {
 
 	public static void main(String[] args) throws IOException {
+		// TODO this doesn't really work very well
+		System.setProperty("http.agent", GlobalConstants.USER_AGENT);
+
 		Mixins.addConfiguration("sol-client.mixins.json");
 
 		Mixins.addConfiguration("mixins.core.replaymod.json");
@@ -21,7 +24,7 @@ public final class Premain {
 		Mixins.addConfiguration("mixins.render.replaymod.json");
 		Mixins.addConfiguration("mixins.render.blend.replaymod.json");
 		Mixins.addConfiguration("mixins.replay.replaymod.json");
-		if (GlobalConstants.OPTIFINE)
+		if (GlobalConstants.optifine)
 			Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
 		Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
 

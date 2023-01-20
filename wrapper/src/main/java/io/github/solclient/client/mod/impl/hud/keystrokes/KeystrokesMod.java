@@ -9,7 +9,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.MinecraftClientExtension;
 import net.minecraft.client.gui.DrawableHelper;
@@ -142,14 +142,14 @@ public class KeystrokesMod extends HudMod {
 				DrawableHelper.fill(x, y, x + space.width, y + 34, backgroundColour.getValue());
 
 			if (border)
-				Utils.drawOutline(x, y, x + space.width, y + 34, borderColour.getValue());
+				MinecraftUtils.drawOutline(x, y, x + space.width, y + 34, borderColour.getValue());
 
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			GlStateManager.color(1, 1, 1);
 
 			mc.getTextureManager().bindTexture(new Identifier(
-					"textures/gui/sol_client_keystrokes_mouse_ring_centre_" + Utils.getTextureScale() + ".png"));
+					"textures/gui/sol_client_keystrokes_mouse_ring_centre_" + MinecraftUtils.getTextureScale() + ".png"));
 			DrawableHelper.drawTexture(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
 
 			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * partialTicks)) - 5;
@@ -157,7 +157,7 @@ public class KeystrokesMod extends HudMod {
 			GL11.glTranslatef(calculatedMouseX, calculatedMouseY, 0);
 
 			mc.getTextureManager().bindTexture(new Identifier(
-					"textures/gui/sol_client_keystrokes_mouse_ring_" + Utils.getTextureScale() + ".png"));
+					"textures/gui/sol_client_keystrokes_mouse_ring_" + MinecraftUtils.getTextureScale() + ".png"));
 			DrawableHelper.drawTexture(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
 
 			GlStateManager.popMatrix();

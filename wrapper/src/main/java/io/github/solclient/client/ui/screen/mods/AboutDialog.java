@@ -5,7 +5,7 @@ import org.lwjgl.nanovg.*;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.resource.language.I18n;
@@ -34,7 +34,7 @@ public class AboutDialog extends BlockComponent {
 		int logoX = getBounds().getWidth() / 2 - 32;
 		int logoY = getBounds().getHeight() / 2 - 60;
 
-		NVGPaint paint = Utils.nvgMinecraftTexturePaint(nvg, new Identifier("textures/gui/sol_client_icon.png"), logoX,
+		NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier("textures/gui/sol_client_icon.png"), logoX,
 				logoY, 64, 64);
 
 		NanoVG.nvgBeginPath(nvg);

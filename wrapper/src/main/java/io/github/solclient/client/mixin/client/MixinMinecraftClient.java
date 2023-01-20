@@ -113,7 +113,7 @@ public abstract class MixinMinecraftClient implements MinecraftClientExtension, 
 
 	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBinding;isPressed()Z", ordinal = 2))
 	public boolean cancelHotbarSwitch(KeyBinding instance) {
-		return instance.isPressed() && !Utils.isSpectatingEntityInReplay();
+		return instance.isPressed() && !MinecraftUtils.isSpectatingEntityInReplay();
 	}
 
 	/**
@@ -169,7 +169,7 @@ public abstract class MixinMinecraftClient implements MinecraftClientExtension, 
 
 			if (Client.INSTANCE.getEvents().post(new ScrollEvent(dWheel)).cancelled) {
 				dWheel = 0;
-			} else if (Utils.isSpectatingEntityInReplay()) {
+			} else if (MinecraftUtils.isSpectatingEntityInReplay()) {
 				dWheel = 0;
 			} else {
 				InputReplayTimer.handleScroll(divided);

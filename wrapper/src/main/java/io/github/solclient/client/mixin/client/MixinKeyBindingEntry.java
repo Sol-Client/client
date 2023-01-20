@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import net.minecraft.client.gui.screen.options.ControlsListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -35,7 +35,7 @@ public class MixinKeyBindingEntry {
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget;render(Lnet/minecraft/client/MinecraftClient;II)V"))
 	public void checkConflicts(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY,
 			boolean isSelected, CallbackInfo callback) {
-		if (Utils.isConflicting(this.keyBinding))
+		if (MinecraftUtils.isConflicting(this.keyBinding))
 			keyBindingButton.message = Formatting.RED + keyBindingButton.message;
 	}
 

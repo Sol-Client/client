@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.google.gson.*;
 
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.util.Utils;
 import lombok.Getter;
 
 // Credit to original QuickPlay for database.

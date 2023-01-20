@@ -9,7 +9,7 @@ import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.KeyBindingExtension;
 import net.minecraft.client.MinecraftClient;
@@ -51,7 +51,7 @@ public class MoveHudsScreen extends ComponentScreen {
 
 			if (hud != null) {
 				if (parentScreen instanceof ModsScreen) {
-					Utils.playClickSound(true);
+					MinecraftUtils.playClickSound(true);
 
 					((ModsScreen) parentScreen).switchMod(hud.getMod());
 

@@ -30,7 +30,7 @@ import io.github.solclient.util.GlobalConstants;
 public class SCReplayModCompat implements Module {
 
 	public void initClient() {
-		if (GlobalConstants.OPTIFINE) {
+		if (GlobalConstants.optifine) {
 			new ShaderBeginRender().register();
 			new DisableFastRender().register();
 		}

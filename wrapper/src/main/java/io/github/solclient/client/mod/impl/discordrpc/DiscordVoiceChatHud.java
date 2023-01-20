@@ -5,7 +5,7 @@ import java.util.*;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.discordrpc.socket.User;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import lombok.Setter;
 import net.minecraft.client.font.TextRenderer;
@@ -92,7 +92,7 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 			DrawableHelper.drawTexture(position.getX(), y, 0, 0, 16, 16, 16, 16);
 
 			if (user.isSpeaking()) {
-				Utils.drawOutline(position.getX() - 1, y - 1, position.getX() + 17, y + 17,
+				MinecraftUtils.drawOutline(position.getX() - 1, y - 1, position.getX() + 17, y + 17,
 						mod.speakingColour.getValue());
 			}
 

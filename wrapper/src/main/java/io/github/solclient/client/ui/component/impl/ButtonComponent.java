@@ -6,7 +6,7 @@ import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.ClickHandler;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.resource.language.I18n;
@@ -78,7 +78,7 @@ public class ButtonComponent extends ColouredComponent {
 				(component, defaultColour) -> component.isHovered() ? new Colour(20, 120, 20) : new Colour(0, 100, 0)))
 				.onClick((info, button) -> {
 					if (button == 0) {
-						Utils.playClickSound(true);
+						MinecraftUtils.playClickSound(true);
 						onClick.run();
 
 						return true;

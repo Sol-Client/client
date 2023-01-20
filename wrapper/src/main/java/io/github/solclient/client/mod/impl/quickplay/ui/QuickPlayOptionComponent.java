@@ -7,7 +7,7 @@ import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPl
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 
 public class QuickPlayOptionComponent extends ColouredComponent {
@@ -51,7 +51,7 @@ public class QuickPlayOptionComponent extends ColouredComponent {
 		if (button != 0)
 			return false;
 
-		Utils.playClickSound(true);
+		MinecraftUtils.playClickSound(true);
 		option.onClick(screen, screen.getMod());
 		return true;
 	}

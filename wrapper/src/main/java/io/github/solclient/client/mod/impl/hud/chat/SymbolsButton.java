@@ -3,7 +3,7 @@ package io.github.solclient.client.mod.impl.hud.chat;
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.chatextensions.ChatButton;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.extension.ChatScreenExtension;
 import net.minecraft.client.MinecraftClient;
@@ -75,7 +75,7 @@ public class SymbolsButton implements ChatButton {
 			for (char character : characters) {
 				Rectangle characterBounds = new Rectangle(x, y, 12, 12);
 				boolean selected = character != 0 && characterBounds.contains(mouseX, mouseY);
-				Utils.drawRectangle(characterBounds, selected ? Colour.WHITE_128 : Colour.BLACK_128);
+				MinecraftUtils.drawRectangle(characterBounds, selected ? Colour.WHITE_128 : Colour.BLACK_128);
 				if (character != 0) {
 					font.draw(character + "", x + (13 / 2) - (font.getCharWidth(character) / 2),
 							characterBounds.getY() + (characterBounds.getHeight() / 2) - (font.fontHeight / 2),
@@ -83,8 +83,8 @@ public class SymbolsButton implements ChatButton {
 				}
 
 				if (selected && wasMouseClicked) {
-					Utils.playClickSound(false);
-					((ChatScreenExtension) Utils.getChatScreen()).type(character, Keyboard.KEY_0);
+					MinecraftUtils.playClickSound(false);
+					((ChatScreenExtension) MinecraftUtils.getChatScreen()).type(character, Keyboard.KEY_0);
 				}
 				x += 13;
 			}

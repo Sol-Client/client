@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 import io.github.solclient.client.DetectedServer;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.util.Formatting;
 
@@ -28,7 +28,7 @@ public class TNTTimerMod extends Mod {
 		float fuse = tnt.fuseTimer;
 
 		// Based on Sk1er's mod
-		if (DetectedServer.current() == DetectedServer.HYPIXEL && "BED WARS".equals(Utils.getScoreboardTitle())) {
+		if (DetectedServer.current() == DetectedServer.HYPIXEL && "BED WARS".equals(MinecraftUtils.getScoreboardTitle())) {
 			fuse -= 28;
 		}
 

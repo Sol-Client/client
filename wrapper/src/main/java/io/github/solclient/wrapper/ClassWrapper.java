@@ -107,7 +107,7 @@ public final class ClassWrapper extends URLClassLoader {
 			return preexisting;
 
 		// we don't want to load these classes ourselves
-		if (!name.startsWith("org.spongepowered.asm.synthetic")) {
+		if (!name.startsWith("org.spongepowered.asm.synthetic.") && !name.startsWith("javax.vecmath.")) {
 			for (String exclude : EXCLUDED_CLASSES)
 				if (name.equals(exclude))
 					return upstream.loadClass(name);

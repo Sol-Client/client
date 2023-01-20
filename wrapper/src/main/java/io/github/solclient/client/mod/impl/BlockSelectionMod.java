@@ -9,7 +9,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.BlockHighlightRenderEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -116,7 +116,7 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
 			if (fill) {
 				fillColour.bind();
-				Utils.fillBox(selectedBox);
+				MinecraftUtils.fillBox(selectedBox);
 			}
 
 			if (outline) {
@@ -134,7 +134,7 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 		if (!depth)
 			GlStateManager.enableDepthTest();
 
-		Utils.resetLineWidth();
+		MinecraftUtils.resetLineWidth();
 	}
 
 	@Override

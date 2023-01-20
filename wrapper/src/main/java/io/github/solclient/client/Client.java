@@ -13,7 +13,6 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.packet.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.*;
-import io.github.solclient.util.GlobalConstants;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 
@@ -65,9 +64,8 @@ public final class Client {
 			throw new IllegalStateException("Cannot initialise NanoVG", error);
 		}
 
-		Utils.resetLineWidth();
+		MinecraftUtils.resetLineWidth();
 		Keyboard.enableRepeatEvents(false);
-		System.setProperty("http.agent", "Sol Client/" + GlobalConstants.VERSION);
 		new File(mc.runDirectory, "server-resource-packs").mkdirs();
 
 		// register events
@@ -93,7 +91,7 @@ public final class Client {
 
 	private void prepareLoad() {
 		try {
-			Utils.ensureDirectory(configFolder);
+			MinecraftUtils.ensureDirectory(configFolder);
 
 			if (Files.exists(legacyModsFile) && !Files.exists(modsFile))
 				Files.move(legacyModsFile, modsFile);

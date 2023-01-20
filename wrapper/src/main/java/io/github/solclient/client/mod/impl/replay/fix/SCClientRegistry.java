@@ -8,7 +8,7 @@ import net.minecraft.client.option.KeyBinding;
 public class SCClientRegistry {
 
 	public static void registerKeyBinding(KeyBinding keyBinding) {
-		Utils.registerKeyBinding(keyBinding);
+		MinecraftUtils.registerKeyBinding(keyBinding);
 	}
 
 }

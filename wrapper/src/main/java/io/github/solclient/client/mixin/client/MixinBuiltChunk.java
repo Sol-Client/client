@@ -25,7 +25,7 @@ public class MixinBuiltChunk {
 	@Redirect(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexBuffer;delete()V"))
 	public void cancelDelete(VertexBuffer instance) {
 		if (Util.getOperatingSystem() == Util.OperatingSystem.LINUX && MinecraftClient.getInstance().options.vbo
-				&& GlobalConstants.OPTIFINE)
+				&& GlobalConstants.optifine)
 			return;
 
 		instance.delete();

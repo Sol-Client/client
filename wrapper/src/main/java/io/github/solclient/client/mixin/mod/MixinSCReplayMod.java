@@ -104,7 +104,7 @@ public class MixinSCReplayMod {
 		 */
 		@Overwrite(remap = false)
 		public static boolean hasOptifine() {
-			return GlobalConstants.OPTIFINE;
+			return GlobalConstants.optifine;
 		}
 
 	}

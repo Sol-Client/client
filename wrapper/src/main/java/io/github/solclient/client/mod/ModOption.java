@@ -10,7 +10,7 @@ import org.apache.logging.log4j.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
@@ -59,7 +59,7 @@ public class ModOption {
 				LOGGER.warn("Mod option {} has no default value. This may cause a crash.", name);
 
 			if (field.getType() == KeyBinding.class)
-				Utils.registerKeyBinding((KeyBinding) getValue());
+				MinecraftUtils.registerKeyBinding((KeyBinding) getValue());
 		}
 
 		priority = option.priority();

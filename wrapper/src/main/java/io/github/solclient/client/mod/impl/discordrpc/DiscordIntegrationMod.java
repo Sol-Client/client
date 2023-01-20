@@ -17,7 +17,7 @@ import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.discordrpc.socket.DiscordSocket;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -89,7 +89,7 @@ public class DiscordIntegrationMod extends Mod {
 	public void onRegister() {
 		try {
 			Core.init(new File(System.getProperty("io.github.solclient.client.discord_lib",
-					"./discord." + Utils.getNativeFileExtension())));
+					"./discord." + MinecraftUtils.getNativeFileExtension())));
 		} catch (Exception error) {
 			logger.error("Could not load natives", error);
 		}
@@ -126,7 +126,7 @@ public class DiscordIntegrationMod extends Mod {
 
 			if (!applicationId.isEmpty()) {
 				try {
-					id = Long.parseLong(Utils.onlyKeepDigits(applicationId));
+					id = Long.parseLong(MinecraftUtils.onlyKeepDigits(applicationId));
 				} catch (NumberFormatException ignored) {
 				}
 			}

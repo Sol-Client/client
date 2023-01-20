@@ -7,7 +7,7 @@ import org.lwjgl.nanovg.*;
 import io.github.solclient.client.mod.ModOption;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 
@@ -53,7 +53,7 @@ public class ColourPickerDialog extends BlockComponent {
 						if (button == 0) {
 							hex.flush();
 							parent.setDialog(null);
-							Utils.playClickSound(true);
+							MinecraftUtils.playClickSound(true);
 							colourOption.applyToAll();
 							return true;
 						}
@@ -193,7 +193,7 @@ public class ColourPickerDialog extends BlockComponent {
 		int selected = getSelectedRGBComponent(info);
 
 		if (button == 0 && selected != -1 && selectedSlider == -1) {
-			Utils.playClickSound(true);
+			MinecraftUtils.playClickSound(true);
 
 			selectedSlider = selected;
 		}

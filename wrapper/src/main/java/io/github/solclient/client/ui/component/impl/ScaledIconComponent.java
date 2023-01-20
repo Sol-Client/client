@@ -4,7 +4,7 @@ import org.lwjgl.nanovg.*;
 
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.Identifier;
 
@@ -36,8 +36,8 @@ public class ScaledIconComponent extends ColouredComponent {
 
 		NanoVG.nvgBeginPath(nvg);
 
-		NVGPaint paint = Utils.nvgMinecraftTexturePaint(nvg, new Identifier(
-				"textures/gui/" + iconName.get(this, "sol_client_confusion") + "_" + Utils.getTextureScale() + ".png"),
+		NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier(
+				"textures/gui/" + iconName.get(this, "sol_client_confusion") + "_" + MinecraftUtils.getTextureScale() + ".png"),
 				0, 0, width, height);
 		paint.innerColor(getColour().nvg());
 

@@ -11,7 +11,7 @@ import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 
@@ -136,14 +136,14 @@ public class ModListing extends ColouredComponent {
 		}
 
 		if (!mod.isBlocked() && (settingsButton.isHovered() || button == 1)) {
-			Utils.playClickSound(true);
+			MinecraftUtils.playClickSound(true);
 			screen.switchMod(mod);
 			return true;
 		}
 
 		if (button == 0) {
 			if (pinButton.isHovered()) {
-				Utils.playClickSound(true);
+				MinecraftUtils.playClickSound(true);
 				if (!mod.isPinned()) {
 					screen.getScroll().notifyAddPin(mod);
 				} else {
@@ -158,7 +158,7 @@ public class ModListing extends ColouredComponent {
 				return true;
 			}
 
-			Utils.playClickSound(true);
+			MinecraftUtils.playClickSound(true);
 			primaryFunction();
 			return true;
 		}
@@ -170,7 +170,7 @@ public class ModListing extends ColouredComponent {
 	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
 		if (dragStart != null && button == 0) {
 			if (!dragging) {
-				Utils.playClickSound(true);
+				MinecraftUtils.playClickSound(true);
 				primaryFunction();
 			} else {
 				screen.notifyDrop(this);
@@ -192,7 +192,7 @@ public class ModListing extends ColouredComponent {
 
 			URI blockedModPage = DetectedServer.current().getBlockedModPage();
 			if (blockedModPage != null) {
-				Utils.openUrl(blockedModPage.toString());
+				MinecraftUtils.openUrl(blockedModPage.toString());
 			}
 		} else if (mod.isLocked()) {
 			screen.switchMod(mod);

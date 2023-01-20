@@ -17,7 +17,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.extension.ShaderEffectExtension;
 import net.minecraft.client.gl.*;
@@ -90,7 +90,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 		event.cancelled = true;
 		Window window = new Window(mc);
 		DrawableHelper.fill(0, 0, window.getWidth(), window.getHeight(),
-				Utils.lerpColour(0, backgroundColour.getValue(), getProgress()));
+				MinecraftUtils.lerpColour(0, backgroundColour.getValue(), getProgress()));
 	}
 
 	public void update() {

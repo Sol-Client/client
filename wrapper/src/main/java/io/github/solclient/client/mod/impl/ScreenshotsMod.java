@@ -11,9 +11,9 @@ import com.google.gson.*;
 
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.extension.ClickEventExtension;
-import io.github.solclient.util.GlobalConstants;
+import io.github.solclient.util.*;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.*;
 import net.minecraft.text.ClickEvent.Action;
@@ -68,7 +68,7 @@ public class ScreenshotsMod extends Mod {
 
 	public void postShot(File screenshot) {
 
-		Runnable viewReceiver = () -> Utils.openUrl(screenshot.toURI().toString());
+		Runnable viewReceiver = () -> MinecraftUtils.openUrl(screenshot.toURI().toString());
 		Text screenshotName = new LiteralText(screenshot.getName());
 
 		if (!view)
@@ -93,7 +93,7 @@ public class ScreenshotsMod extends Mod {
 				Text folderText = new LiteralText('[' + I18n.translate(getTranslationKey() + ".open_folder") + ']');
 				folderText.setStyle(new Style()
 						.setClickEvent(ClickEventExtension
-								.createStyleWithReceiver(() -> Utils.revealUrl(screenshot.toURI().toString())))
+								.createStyleWithReceiver(() -> MinecraftUtils.revealUrl(screenshot.toURI().toString())))
 						.setFormatting(Formatting.YELLOW));
 				secondaryText.append(folderText);
 				secondaryText.append(" ");
@@ -123,7 +123,7 @@ public class ScreenshotsMod extends Mod {
 
 				String base64 = new String(Base64.getEncoder().encode(FileUtils.readFileToByteArray(screenshot)),
 						StandardCharsets.US_ASCII);
-				String boundary = Utils.generateHttpBoundary();
+				String boundary = MinecraftUtils.generateHttpBoundary();
 
 				HttpURLConnection connection = (HttpURLConnection) IMGUR_URL.openConnection();
 				connection.setRequestMethod("POST");

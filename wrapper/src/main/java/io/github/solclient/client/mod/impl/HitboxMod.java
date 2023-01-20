@@ -11,7 +11,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.option.KeyBinding;
@@ -126,7 +126,7 @@ public class HitboxMod extends Mod {
 		GlStateManager.enableCull();
 		GlStateManager.disableBlend();
 		GlStateManager.depthMask(true);
-		Utils.resetLineWidth();
+		MinecraftUtils.resetLineWidth();
 	}
 
 	@EventHandler

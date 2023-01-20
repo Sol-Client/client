@@ -1,8 +1,8 @@
 package io.github.solclient.wrapper;
 
 import java.lang.invoke.*;
-import java.net.URL;
-import java.util.Arrays;
+
+import org.apache.logging.log4j.LogManager;
 
 import io.github.solclient.util.GlobalConstants;
 
@@ -12,23 +12,22 @@ import io.github.solclient.util.GlobalConstants;
 public final class Springboard {
 
 	private static final String MAIN_CLASS = "io.github.solclient.client.Premain";
-	private static final MethodType MAIN_METHOD = MethodType.methodType(void.class, String[].class);
 
 	public static void main(String[] args) throws Throwable {
 		if (System.getProperty("mixin.service") == null)
 			System.setProperty("mixin.service", "io.github.solclient.wrapper.WrapperMixinService");
 
-		try (ClassWrapper wrapper = new ClassWrapper(InjectedLibraries.get())) {
+		try (ClassWrapper wrapper = new ClassWrapper(Prelaunch.prepareClasspath())) {
 			// @formatter:off
 			MethodHandle mainMethod = MethodHandles.lookup().findStatic(
 					wrapper.loadClass(MAIN_CLASS),
 					"main",
-					MAIN_METHOD
+					GlobalConstants.MAIN_METHOD
 			);
 			// @formatter:on
 			mainMethod.invokeExact(args);
 		} catch (Throwable error) {
-			error.printStackTrace();
+			LogManager.getLogger().error("Launch error", error);
 		}
 	}
 

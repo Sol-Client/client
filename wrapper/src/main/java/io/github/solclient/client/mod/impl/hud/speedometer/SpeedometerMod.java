@@ -9,7 +9,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 
@@ -56,7 +56,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			}
 
 			float[] bounds = element.getHighPrecisionMultipliedBounds();
-			Utils.scissor(bounds[0], bounds[1], bounds[2], bounds[3]);
+			MinecraftUtils.scissor(bounds[0], bounds[1], bounds[2], bounds[3]);
 			textColour.bind();
 			GL11.glLineWidth(1.5F);
 
@@ -86,7 +86,7 @@ public class SpeedometerMod extends SimpleHudMod {
 			GL11.glDisable(GL11.GL_SCISSOR_TEST);
 			GlStateManager.color(1, 1, 1, 1);
 
-			Utils.resetLineWidth();
+			MinecraftUtils.resetLineWidth();
 		}
 	}
 

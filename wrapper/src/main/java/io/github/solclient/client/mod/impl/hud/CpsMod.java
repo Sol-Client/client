@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.CpsMonitor;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 
 public class CpsMod extends SimpleHudMod {
@@ -43,10 +43,10 @@ public class CpsMod extends SimpleHudMod {
 
 			x += font.getCharWidth(' ');
 
-			Utils.drawVerticalLine(x, y - 1, y + 7, separatorColour.getValue());
+			MinecraftUtils.drawVerticalLine(x, y - 1, y + 7, separatorColour.getValue());
 
 			if (shadow) {
-				Utils.drawVerticalLine(x + 1, y, y + 8, separatorColour.getShadowValue());
+				MinecraftUtils.drawVerticalLine(x + 1, y, y + 8, separatorColour.getShadowValue());
 			}
 
 			x += 1;

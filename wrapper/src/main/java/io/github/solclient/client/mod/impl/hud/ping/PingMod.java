@@ -8,7 +8,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SmoothCounterHudMod;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.client.network.PlayerListEntry;
 
 public class PingMod extends SmoothCounterHudMod {
@@ -47,7 +47,7 @@ public class PingMod extends SmoothCounterHudMod {
 
 				Thread thread = new Thread(() -> {
 					try {
-						Utils.pingServer(mc.getCurrentServerEntry().address, (newPing) -> {
+						MinecraftUtils.pingServer(mc.getCurrentServerEntry().address, (newPing) -> {
 							if (newPing != -1) {
 								if (ping != 0) {
 									ping = (ping * 3 + newPing) / 4;

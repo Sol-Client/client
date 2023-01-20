@@ -13,7 +13,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.extension.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
@@ -35,9 +35,9 @@ public abstract class MixinScreen implements ScreenExtension {
 	@Redirect(method = "renderBackground(I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;fillGradient(IIIIII)V"))
 	public void getTopColour(Screen screen, int left, int top, int right, int bottom, int startColor, int endColor) {
 		if (!Client.INSTANCE.getEvents().post(new RenderGuiBackgroundEvent()).cancelled)
-			Utils.drawGradientRect(left, top, right, bottom, startColor, endColor);
+			MinecraftUtils.drawGradientRect(left, top, right, bottom, startColor, endColor);
 		else
-			Utils.drawGradientRect(left, top, right, bottom, 0, 0);
+			MinecraftUtils.drawGradientRect(left, top, right, bottom, 0, 0);
 	}
 
 	@Redirect(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget;isMouseOver(Lnet/minecraft/client/MinecraftClient;II)Z"))
@@ -68,7 +68,7 @@ public abstract class MixinScreen implements ScreenExtension {
 			GlStateManager.enableBlend();
 
 			client.getTextureManager().bindTexture(
-					new Identifier("textures/gui/sol_client_logo_with_text_" + Utils.getTextureScale() + ".png"));
+					new Identifier("textures/gui/sol_client_logo_with_text_" + MinecraftUtils.getTextureScale() + ".png"));
 
 			DrawableHelper.drawTexture(width - 140, height - 40, 0, 0, 128, 32, 128, 32);
 		}
@@ -92,7 +92,7 @@ public abstract class MixinScreen implements ScreenExtension {
 
 	@Overwrite
 	public void openLink(URI uri) {
-		Utils.openUrl(uri.toString());
+		MinecraftUtils.openUrl(uri.toString());
 	}
 
 	@Inject(method = "handleTextClick", at = @At("HEAD"), cancellable = true)

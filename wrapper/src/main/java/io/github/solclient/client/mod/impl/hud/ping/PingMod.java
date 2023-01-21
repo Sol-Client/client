@@ -8,8 +8,8 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SmoothCounterHudMod;
-import io.github.solclient.client.util.Utils;
-import net.minecraft.client.network.NetworkPlayerInfo;
+import io.github.solclient.client.util.MinecraftUtils;
+import net.minecraft.client.network.PlayerListEntry;
 
 public class PingMod extends SmoothCounterHudMod {
 
@@ -39,7 +39,7 @@ public class PingMod extends SmoothCounterHudMod {
 			return;
 		}
 
-		if (mc.getCurrentServerData() != null && !mc.isIntegratedServerRunning()) {
+		if (mc.getCurrentServerEntry() != null && !mc.isIntegratedServerRunning()) {
 			if (nextPing > 0) {
 				nextPing--;
 			} else if (nextPing > -1) {
@@ -47,7 +47,7 @@ public class PingMod extends SmoothCounterHudMod {
 
 				Thread thread = new Thread(() -> {
 					try {
-						Utils.pingServer(mc.getCurrentServerData().serverIP, (newPing) -> {
+						MinecraftUtils.pingServer(mc.getCurrentServerEntry().address, (newPing) -> {
 							if (newPing != -1) {
 								if (ping != 0) {
 									ping = (ping * 3 + newPing) / 4;
@@ -74,12 +74,11 @@ public class PingMod extends SmoothCounterHudMod {
 			return ping;
 		}
 
-		if (source.resolve() == PingSource.TAB_LIST && !mc.isIntegratedServerRunning() && mc.thePlayer != null
-				&& mc.getCurrentServerData() != null) {
-			NetworkPlayerInfo info = mc.thePlayer.sendQueue.getPlayerInfo(mc.getSession().getProfile().getId());
-			if (info != null) {
-				return info.getResponseTime();
-			}
+		if (source.resolve() == PingSource.TAB_LIST && !mc.isIntegratedServerRunning() && mc.player != null
+				&& mc.getCurrentServerEntry() != null) {
+			PlayerListEntry entry = mc.player.networkHandler.getPlayerListEntry(mc.getSession().getProfile().getId());
+			if (entry != null)
+				return entry.getLatency();
 		}
 
 		return 0;

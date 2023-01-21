@@ -14,7 +14,7 @@ import io.github.solclient.client.packet.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.*;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
 /**
  * Main class for Sol Client.
@@ -24,7 +24,7 @@ public final class Client {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final Client INSTANCE = new Client();
 
-	private final Minecraft mc = Minecraft.getMinecraft();
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 
 	// all of the managers etc.
 	@Getter
@@ -46,11 +46,11 @@ public final class Client {
 
 	// for convenience with multimc
 	@Getter
-	private final Path configFolder = mc.mcDataDir.toPath().resolve("config/sol-client"),
+	private final Path configFolder = mc.runDirectory.toPath().resolve("config/sol-client"),
 			modsFile = configFolder.resolve("mods.json"), pinsFile = configFolder.resolve("pins.json");
 
 	// used before 1.9.x
-	private final Path legacyModsFile = mc.mcDataDir.toPath().resolve("sol_client_mods.json");
+	private final Path legacyModsFile = mc.runDirectory.toPath().resolve("sol_client_mods.json");
 
 	public void init() {
 		// in this function, we try to use fairly heavy exception padding so nothing
@@ -64,10 +64,9 @@ public final class Client {
 			throw new IllegalStateException("Cannot initialise NanoVG", error);
 		}
 
-		Utils.resetLineWidth();
+		MinecraftUtils.resetLineWidth();
 		Keyboard.enableRepeatEvents(false);
-		System.setProperty("http.agent", "Sol Client/" + GlobalConstants.VERSION);
-		new File(mc.mcDataDir, "server-resource-packs").mkdirs();
+		new File(mc.runDirectory, "server-resource-packs").mkdirs();
 
 		// register events
 		events.register(this);
@@ -92,7 +91,7 @@ public final class Client {
 
 	private void prepareLoad() {
 		try {
-			Utils.ensureDirectory(configFolder);
+			MinecraftUtils.ensureDirectory(configFolder);
 
 			if (Files.exists(legacyModsFile) && !Files.exists(modsFile))
 				Files.move(legacyModsFile, modsFile);

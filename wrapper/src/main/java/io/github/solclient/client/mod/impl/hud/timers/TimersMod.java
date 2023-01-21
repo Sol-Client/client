@@ -13,10 +13,10 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.BukkitMaterial;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S3FPacketCustomPayload;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.render.DiffuseLighting;
+import net.minecraft.item.*;
+import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 
 // Based around https://github.com/BadlionClient/BadlionClientTimerAPI.
 // Works with any server that supports Badlion timers.
@@ -71,13 +71,13 @@ public class TimersMod extends HudMod {
 		Map<Long, Timer> timers;
 		if (editMode) {
 			timers = new HashMap<>();
-			timers.put(0L, new Timer("Oven", new ItemStack(Blocks.furnace)));
-			timers.put(1L, new Timer("Toaster", new ItemStack(Items.bread)));
-			timers.put(2L, new Timer("Dishwasher", new ItemStack(Blocks.iron_bars)));
+			timers.put(0L, new Timer("Oven", new ItemStack(Blocks.FURNACE)));
+			timers.put(1L, new Timer("Toaster", new ItemStack(Items.BREAD)));
+			timers.put(2L, new Timer("Dishwasher", new ItemStack(Blocks.IRON_BARS)));
 		} else {
 			timers = this.timers;
 		}
-		RenderHelper.enableGUIStandardItemLighting();
+		DiffuseLighting.enable();
 		int y = position.getY();
 
 		switch (alignment) {
@@ -91,14 +91,14 @@ public class TimersMod extends HudMod {
 		}
 
 		for (Timer timer : timers.values()) {
-			mc.getRenderItem().renderItemIntoGUI(timer.getRenderItem(), position.getX(), y);
-			font.drawString(TIME_FORMAT.format(Math.ceil(timer.getTime() / 20F * 1000)),
-					font.drawString(timer.getName(), position.getX() + 22, y + 5, nameColour.getValue(), shadow)
+			mc.getItemRenderer().renderInGuiWithOverrides(timer.getRenderItem(), position.getX(), y);
+			font.draw(TIME_FORMAT.format(Math.ceil(timer.getTime() / 20F * 1000)),
+					font.draw(timer.getName(), position.getX() + 22, y + 5, nameColour.getValue(), shadow)
 							+ (shadow ? 3 : 4),
 					y + 5, timeColour.getValue(), shadow);
 			y += 19;
 		}
-		RenderHelper.disableStandardItemLighting();
+		DiffuseLighting.disable();
 	}
 
 	@EventHandler
@@ -112,11 +112,11 @@ public class TimersMod extends HudMod {
 	}
 
 	@EventHandler
-	public void onCustomPayload(S3FPacketCustomPayload payload) {
-		if (!payload.getChannelName().equals(CHANNEL_NAME)) {
+	public void onCustomPayload(CustomPayloadS2CPacket payload) {
+		if (!payload.getChannel().equals(CHANNEL_NAME)) {
 			return;
 		}
-		String message = new String(payload.getBufferData().array(), StandardCharsets.UTF_8);
+		String message = new String(payload.getPayload().array(), StandardCharsets.UTF_8);
 
 		String type = message.substring(0, message.indexOf('|'));
 		JsonObject data = JsonParser.parseString(message.substring(message.indexOf('|') + 1)).getAsJsonObject();

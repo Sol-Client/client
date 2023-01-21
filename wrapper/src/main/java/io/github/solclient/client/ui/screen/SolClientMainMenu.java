@@ -1,24 +1,25 @@
 package io.github.solclient.client.ui.screen;
 
-import java.io.IOException;
-
 import org.lwjgl.nanovg.NanoVG;
 
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
-import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import io.github.solclient.util.GlobalConstants;
+import net.minecraft.client.gui.screen.SettingsScreen;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.gui.screen.options.LanguageOptionsScreen;
+import net.minecraft.client.gui.screen.world.SelectWorldScreen;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.util.Identifier;
 
 public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
@@ -27,23 +28,23 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		drawPanorama(mouseX, mouseY, partialTicks);
 
-		mc.getTextureManager().bindTexture(
-				new ResourceLocation("textures/gui/sol_client_logo_with_text_" + Utils.getTextureScale() + ".png"));
-		Gui.drawModalRectWithCustomSizedTexture(width / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
+		client.getTextureManager().bindTexture(
+				new Identifier("textures/gui/sol_client_logo_with_text_" + MinecraftUtils.getTextureScale() + ".png"));
+		drawTexture(width / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
 
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		super.render(mouseX, mouseY, partialTicks);
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if (keyCode == 1) {
+	protected void keyPressed(char character, int code) {
+		if (code == 1) {
 			return;
 		}
 
-		super.keyTyped(typedChar, keyCode);
+		super.keyPressed(character, code);
 	}
 
 	private static class MainMenuComponent extends Component {
@@ -55,12 +56,12 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					? SolClientConfig.instance.uiHover
 					: SolClientConfig.instance.uiColour;
 
-			add(new ButtonComponent((component, defaultText) -> I18n.format("menu.singleplayer"),
+			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.singleplayer"),
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_player")
 					.type(ButtonType.LARGE).onClick((info, button) -> {
 						if (button == 0) {
-							Utils.playClickSound(true);
-							mc.displayGuiScreen(new GuiSelectWorld(screen));
+							MinecraftUtils.playClickSound(true);
+							mc.setScreen(new SelectWorldScreen(screen));
 							return true;
 						}
 
@@ -68,12 +69,12 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, screen.height / 4 + 48,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> I18n.format("menu.multiplayer"),
+			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.multiplayer"),
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_players")
 					.type(ButtonType.LARGE).onClick((info, button) -> {
 						if (button == 0) {
-							Utils.playClickSound(true);
-							mc.displayGuiScreen(new GuiMultiplayer(screen));
+							MinecraftUtils.playClickSound(true);
+							mc.setScreen(new MultiplayerScreen(screen));
 							return true;
 						}
 
@@ -85,8 +86,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_language")
 					.type(ButtonType.SMALL).onClick((info, button) -> {
 						if (button == 0) {
-							Utils.playClickSound(true);
-							mc.displayGuiScreen(new GuiLanguage(screen, mc.gameSettings, mc.getLanguageManager()));
+							MinecraftUtils.playClickSound(true);
+							mc.setScreen(new LanguageOptionsScreen(screen, mc.options, mc.getLanguageManager()));
 							return true;
 						}
 
@@ -108,8 +109,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_settings_small")
 					.type(ButtonType.SMALL).onClick((info, button) -> {
 						if (button == 0) {
-							Utils.playClickSound(true);
-							mc.displayGuiScreen(new GuiOptions(screen, mc.gameSettings));
+							MinecraftUtils.playClickSound(true);
+							mc.setScreen(new SettingsScreen(screen, mc.options));
 							return true;
 						}
 
@@ -121,8 +122,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_mods")
 					.type(ButtonType.SMALL).onClick((info, button) -> {
 						if (button == 0) {
-							Utils.playClickSound(true);
-							mc.displayGuiScreen(new ModsScreen());
+							MinecraftUtils.playClickSound(true);
+							mc.setScreen(new ModsScreen());
 							return true;
 						}
 
@@ -134,7 +135,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					new AnimatedColourController(defaultColourController)).withIcon("sol_client_replay_button")
 					.type(ButtonType.SMALL).onClick((info, button) -> {
 						if (button == 0) {
-							Utils.playClickSound(true);
+							MinecraftUtils.playClickSound(true);
 							new GuiReplayViewer(ReplayModReplay.instance).display();
 							return true;
 						}
@@ -149,8 +150,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 							(component, defaultColour) -> component.isHovered() ? Colour.RED_HOVER : Colour.PURE_RED))
 					.onClick((info, button) -> {
 						if (button == 0) {
-							Utils.playClickSound(true);
-							mc.shutdown();
+							MinecraftUtils.playClickSound(true);
+							mc.stop();
 							return true;
 						}
 

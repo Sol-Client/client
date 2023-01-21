@@ -3,7 +3,7 @@ package io.github.solclient.client.util.extension;
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.util.data.Modifier;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 
 public interface KeyBindingExtension {
 
@@ -15,7 +15,7 @@ public interface KeyBindingExtension {
 
 	void setMods(int mods);
 
-	void increasePressTime();
+	void increaseTimesPressed();
 
 	void setPressed(boolean pressed);
 

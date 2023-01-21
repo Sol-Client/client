@@ -37,7 +37,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-import io.github.solclient.client.GlobalConstants;
+import io.github.solclient.util.GlobalConstants;
 import net.hypixel.api.http.*;
 
 public class ApacheHttpClient implements HypixelHttpClient {
@@ -60,7 +60,7 @@ public class ApacheHttpClient implements HypixelHttpClient {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		}, Utils.USER_DATA);
+		}, MinecraftUtils.USER_DATA);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class ApacheHttpClient implements HypixelHttpClient {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		}, Utils.USER_DATA);
+		}, MinecraftUtils.USER_DATA);
 	}
 
 	@Override

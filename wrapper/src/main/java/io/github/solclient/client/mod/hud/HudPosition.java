@@ -3,12 +3,12 @@ package io.github.solclient.client.mod.hud;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.util.data.Position;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.Window;
 
 public class HudPosition {
 
-	private static Minecraft mc = Minecraft.getMinecraft();
+	private static MinecraftClient mc = MinecraftClient.getInstance();
 	@Expose
 	public float x;
 	@Expose
@@ -25,14 +25,14 @@ public class HudPosition {
 	}
 
 	public Position toAbsolute() {
-		ScaledResolution res = new ScaledResolution(mc);
-		return new Position((int) (res.getScaledWidth() * x), (int) (res.getScaledHeight() * y));
+		Window window = new Window(mc);
+		return new Position((int) (window.getScaledWidth() * x), (int) (window.getScaledHeight() * y));
 	}
 
 	public static HudPosition fromAbsolute(Position absolute) {
-		ScaledResolution res = new ScaledResolution(mc);
-		return new HudPosition((float) (absolute.getX() / res.getScaledWidth_double()),
-				(float) (absolute.getY() / res.getScaledHeight_double()));
+		Window window = new Window(mc);
+		return new HudPosition((float) (absolute.getX() / window.getScaledWidth()),
+				(float) (absolute.getY() / window.getScaledHeight()));
 	}
 
 }

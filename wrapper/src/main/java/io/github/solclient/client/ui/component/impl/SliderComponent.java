@@ -4,13 +4,14 @@ import java.util.function.Consumer;
 
 import org.lwjgl.nanovg.NanoVG;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class SliderComponent extends Component {
 
@@ -51,7 +52,7 @@ public class SliderComponent extends Component {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		GlStateManager.enableAlpha();
+		GlStateManager.enableAlphaTest();
 		GlStateManager.enableBlend();
 
 		int x = (int) (100 * (((value - min) / (max - min))));
@@ -74,7 +75,7 @@ public class SliderComponent extends Component {
 		}
 
 		if (selected) {
-			value = MathHelper.clamp_float(
+			value = MathHelper.clamp(
 					(float) (min + Math.floor(((info.getRelativeMouseX() / 100F) * (max - min)) / step) * step), min,
 					max);
 			callback.accept(value);
@@ -86,7 +87,7 @@ public class SliderComponent extends Component {
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
 		if (button == 0) {
-			Utils.playClickSound(true);
+			MinecraftUtils.playClickSound(true);
 			selected = true;
 			return true;
 		}

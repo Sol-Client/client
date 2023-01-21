@@ -21,10 +21,10 @@ import io.github.solclient.client.packet.Popup;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import net.hypixel.api.HypixelAPI;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.text.*;
+import net.minecraft.text.ClickEvent.Action;
+import net.minecraft.util.Formatting;
 
 public class HypixelAdditionsMod extends Mod {
 
@@ -108,7 +108,7 @@ public class HypixelAdditionsMod extends Mod {
 
 	public String getLevelhead(boolean isMainPlayer, String name, UUID id) {
 		if (id.version() != 4 || !(enabled && levelhead)
-				|| (name.contains(EnumChatFormatting.OBFUSCATED.toString()) && !isMainPlayer)) {
+				|| (name.contains(Formatting.OBFUSCATED.toString()) && !isMainPlayer)) {
 			return null;
 		}
 
@@ -132,7 +132,7 @@ public class HypixelAdditionsMod extends Mod {
 				} else {
 					// At this stage, the player is either nicked, or an NPC, but all NPCs and fake
 					// players I've tested do not get to this stage.
-					levelCache.put(id, Integer.toString(Utils.randomInt(180, 280))); // Based on looking at YouTubers'
+					levelCache.put(id, Integer.toString(MinecraftUtils.randomInt(180, 280))); // Based on looking at YouTubers'
 																						// Hypixel levels. It won't
 																						// actually be the true level,
 																						// and may not look quite right,
@@ -145,18 +145,18 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	public boolean isLobby() {
-		if (mc.thePlayer != null && mc.thePlayer.inventory != null) {
-			ItemStack stack = mc.thePlayer.inventory.getStackInSlot(8);
+		if (mc.player != null && mc.player.inventory != null) {
+			ItemStack stack = mc.player.inventory.getInvStack(8);
 			if (stack != null) {
-				return stack.getDisplayName().equals(
-						EnumChatFormatting.GREEN + "Lobby Selector " + EnumChatFormatting.GRAY + "(Right Click)");
+				return stack.getCustomName()
+						.equals(Formatting.GREEN + "Lobby Selector " + Formatting.GRAY + "(Right Click)");
 			}
 		}
 		return false;
 	}
 
 	public boolean isHousing() {
-		return "HOUSING".equals(Utils.getScoreboardTitle());
+		return "HOUSING".equals(MinecraftUtils.getScoreboardTitle());
 	}
 
 	public static boolean isHypixel() {
@@ -183,8 +183,8 @@ public class HypixelAdditionsMod extends Mod {
 
 		if (Client.INSTANCE.getCommands().isRegistered("chat")) {
 			if (isEffective()) {
-				if (mc.thePlayer != null) {
-					mc.thePlayer.sendChatMessage("/chat a");
+				if (mc.player != null) {
+					mc.player.sendChatMessage("/chat a");
 				}
 				Client.INSTANCE.getCommands().register("chat", new ChatChannelCommand(this));
 			}
@@ -206,12 +206,12 @@ public class HypixelAdditionsMod extends Mod {
 		}
 
 		if (isEffective() && apiKey == null) {
-			IChatComponent component = new ChatComponentText(
+			Text component = new LiteralText(
 					"Could not find API key (required for Levelhead). Click here or run /api new.");
-			component.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)
-					.setChatClickEvent(new ClickEvent(Action.RUN_COMMAND, "/api new")));
+			component.setStyle(new Style().setFormatting(Formatting.RED)
+					.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/api new")));
 
-			mc.ingameGUI.getChatGUI().printChatMessage(component);
+			mc.inGameHud.getChatHud().addMessage(component);
 		}
 	}
 
@@ -319,7 +319,7 @@ public class HypixelAdditionsMod extends Mod {
 			for (Pattern pattern : autoggTriggers) {
 				if (pattern.matcher(event.message).matches()) {
 					donegg = true;
-					mc.thePlayer.sendChatMessage("/achat " + autoggMessage);
+					mc.player.sendChatMessage("/achat " + autoggMessage);
 					return;
 				}
 			}
@@ -338,14 +338,14 @@ public class HypixelAdditionsMod extends Mod {
 
 	@EventHandler
 	public void onTick(PostTickEvent event) {
-		if (mc.theWorld == null) {
+		if (mc.world == null) {
 			return;
 		}
 
 		if (ticksUntilLocraw != -1 && --ticksUntilLocraw == 0) {
 			ticksUntilLocraw = -1;
 
-			mc.thePlayer.sendChatMessage("/locraw");
+			mc.player.sendChatMessage("/locraw");
 		}
 
 		if (ticksUntilAutogl != -1 && --ticksUntilAutogl == 0) {
@@ -375,9 +375,9 @@ public class HypixelAdditionsMod extends Mod {
 					|| ("UHC".equals(locationData.getType()) && !"SOLO".equals(locationData.getType()))
 					|| ("SPEED_UHC".equals(locationData.getType()) && !"solo_nomal".equals(locationData.getType()))
 					|| "BATTLEGROUND" /* Warlords */ .equals(locationData.getType()))) {
-				mc.thePlayer.sendChatMessage("/shout " + autoglMessage);
+				mc.player.sendChatMessage("/shout " + autoglMessage);
 			} else {
-				mc.thePlayer.sendChatMessage("/achat " + autoglMessage);
+				mc.player.sendChatMessage("/achat " + autoglMessage);
 			}
 
 			donegl = true;

@@ -10,17 +10,17 @@ import org.lwjgl.opengl.*;
 
 import io.github.solclient.client.mixin.client.MixinTextureUtil;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.*;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.*;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Identifier;
 
 /**
  * An animatable texture deserialised and uploaded from Base64.
  */
-final class Texture extends AbstractTexture implements ITickableTextureObject {
+final class Texture extends AbstractTexture implements TickableTexture {
 
-	private static Set<ResourceLocation> all = new HashSet<>();
+	private static Set<Identifier> all = new HashSet<>();
 
 	private int[] textures;
 	private int frame;
@@ -46,19 +46,19 @@ final class Texture extends AbstractTexture implements ITickableTextureObject {
 		return null;
 	}
 
-	private static ResourceLocation target(String base64) {
-		return new ResourceLocation("sol_client_base64", base64);
+	private static Identifier target(String base64) {
+		return new Identifier("sol_client_base64", base64);
 	}
 
 	static void disposeAll() {
-		all.forEach((location) -> Minecraft.getMinecraft().getTextureManager().deleteTexture(location));
+		all.forEach((location) -> MinecraftClient.getInstance().getTextureManager().close(location));
 
 		if (!all.isEmpty()) {
 			all = new HashSet<>();
 		}
 	}
 
-	static ResourceLocation load(int aspectRatio, int frameDelay, String base64) {
+	static Identifier load(int aspectRatio, int frameDelay, String base64) {
 		{
 			String newBase64 = strictParse(base64);
 			if (newBase64 == null) {
@@ -67,7 +67,7 @@ final class Texture extends AbstractTexture implements ITickableTextureObject {
 			base64 = newBase64;
 		}
 
-		ResourceLocation target = target(base64);
+		Identifier target = target(base64);
 
 		if (all.contains(target)) {
 			return target;
@@ -76,13 +76,13 @@ final class Texture extends AbstractTexture implements ITickableTextureObject {
 		all.add(target);
 
 		Texture texture = new Texture(aspectRatio, frameDelay, base64);
-		Minecraft.getMinecraft().getTextureManager().loadTickableTexture(target, texture);
+		MinecraftClient.getInstance().getTextureManager().loadTickableTexture(target, texture);
 		return target;
 	}
 
 	@Override
-	public void loadTexture(IResourceManager resources) throws IOException {
-		deleteGlTexture();
+	public void load(ResourceManager resources) throws IOException {
+		clearGlId();
 
 		try (ByteArrayInputStream in = new ByteArrayInputStream(Base64.getDecoder().decode(base64))) {
 			BufferedImage image = ImageIO.read(in);
@@ -102,7 +102,7 @@ final class Texture extends AbstractTexture implements ITickableTextureObject {
 			textures = new int[frames];
 			for (int i = 0; i < frames; i++) {
 				textures[i] = GL11.glGenTextures();
-				TextureUtil.allocateTexture(textures[i], image.getWidth(), frameHeight);
+				TextureUtil.prepareImage(textures[i], image.getWidth(), frameHeight);
 
 				// modified from code in TextureUtil
 				int z = 4194304 / frameWidth; // What is this?
@@ -120,14 +120,14 @@ final class Texture extends AbstractTexture implements ITickableTextureObject {
 					image.getRGB(0, i * frameHeight + y, frameWidth, sampleHeight, sample, 0, frameWidth);
 					MixinTextureUtil.copyToBuffer(sample, length);
 					GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, y, frameWidth, sampleHeight, GL12.GL_BGRA,
-							GL12.GL_UNSIGNED_INT_8_8_8_8_REV, MixinTextureUtil.getDataBuffer());
+							GL12.GL_UNSIGNED_INT_8_8_8_8_REV, MixinTextureUtil.getBuffer());
 				}
 			}
 		}
 	}
 
 	@Override
-	public int getGlTextureId() {
+	public int getGlId() {
 		if (textures == null) {
 			return -1;
 		}
@@ -136,7 +136,7 @@ final class Texture extends AbstractTexture implements ITickableTextureObject {
 	}
 
 	@Override
-	public void deleteGlTexture() {
+	public void clearGlId() {
 		if (textures == null) {
 			return;
 		}

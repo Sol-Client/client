@@ -9,17 +9,19 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.*;
-import net.minecraft.util.EnumChatFormatting;
+import com.mojang.blaze3d.platform.GlStateManager;
 
-public class BetterResourcePackList extends GuiResourcePackAvailable {
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ResourcePackScreen;
+import net.minecraft.client.gui.screen.resourcepack.*;
+import net.minecraft.client.resource.ResourcePackLoader;
+import net.minecraft.util.Formatting;
 
-	private GuiScreenResourcePacks parent;
+public class BetterResourcePackList extends AvailableResourcePackListWidget {
+
+	private ResourcePackScreen parent;
 	public BetterResourcePackList delegate;
-	protected List<ResourcePackListEntry> entries;
+	protected List<ResourcePackWidget> entries;
 	private Supplier<String> supplier;
 	private File folder;
 
@@ -35,11 +37,11 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 		return folder;
 	}
 
-	public BetterResourcePackList(Minecraft mcIn, GuiScreenResourcePacks parent, int p_i45054_2_, int p_i45054_3_,
-			ResourcePackRepository repository, Supplier<String> supplier) throws IOException {
+	public BetterResourcePackList(MinecraftClient mcIn, ResourcePackScreen parent, int p_i45054_2_, int p_i45054_3_,
+			ResourcePackLoader loader, Supplier<String> supplier) throws IOException {
 		super(mcIn, p_i45054_2_, p_i45054_3_, null);
 		this.supplier = supplier;
-		this.folder = repository.getDirResourcepacks();
+		this.folder = loader.getResourcePackDir();
 
 		this.parent = parent;
 
@@ -90,36 +92,32 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 
 			});
 
-			if (result.get()) {
+			if (result.get())
 				entries.add(new FolderResourcePackEntry(parent, this, file));
-			}
 		}
 
-		for (ResourcePackRepository.Entry entry : repository.getRepositoryEntriesAll()) {
-			entries.add(new ResourcePackListEntryFound(parent, entry));
-		}
+		for (ResourcePackLoader.Entry entry : loader.getAvailableResourcePacks())
+			entries.add(new ResourcePackEntryWidget(parent, entry));
 	}
 
 	@Override
-	protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn,
-			int mouseYIn) {
+	protected void renderEntry(int index, int x, int y, int rowHeight, int mouseX, int mouseY) {
 		GlStateManager.enableBlend();
-		GlStateManager.enableAlpha();
+		GlStateManager.enableAlphaTest();
 
-		super.drawSlot(entryID, p_180791_2_, p_180791_3_, p_180791_4_, mouseXIn, mouseYIn);
+		super.renderEntry(index, x, y, rowHeight, mouseX, mouseY);
 	}
 
 	@Override
-	public List<ResourcePackListEntry> getList() {
-		if (delegate != null) {
-			return delegate.getList();
-		}
+	public List<ResourcePackWidget> getWidgets() {
+		if (delegate != null)
+			return delegate.getWidgets();
 
-		List<ResourcePackListEntry> entries;
+		List<ResourcePackWidget> entries;
 
-		if (supplier.get().isEmpty()) {
+		if (supplier.get().isEmpty())
 			entries = this.entries;
-		} else {
+		else {
 			entries = new ArrayList<>();
 			populate(entries);
 		}
@@ -128,34 +126,30 @@ public class BetterResourcePackList extends GuiResourcePackAvailable {
 			String name = "";
 			String description = "";
 
-			if (entry instanceof ResourcePackListEntryFound) {
-				ResourcePackRepository.Entry repoEntry = ((ResourcePackListEntryFound) entry).func_148318_i();
+			if (entry instanceof ResourcePackEntryWidget) {
+				ResourcePackLoader.Entry repoEntry = ((ResourcePackEntryWidget) entry).getEntry();
 
-				name = repoEntry.getResourcePackName();
-				description = repoEntry.getTexturePackDescription();
+				name = repoEntry.getName();
+				description = repoEntry.getDescription();
 
-				for (ResourcePackListEntry compareEntry : parent.getSelectedResourcePacks()) {
-
-					if (compareEntry instanceof ResourcePackListEntryFound) {
-						if (((ResourcePackListEntryFound) compareEntry).func_148318_i().equals(repoEntry)) {
+				for (ResourcePackWidget compareEntry : parent.getSelectedPacks())
+					if (compareEntry instanceof ResourcePackEntryWidget)
+						if (((ResourcePackEntryWidget) compareEntry).getEntry().equals(repoEntry))
 							return false;
-						}
-					}
-				}
 			} else if (entry instanceof FolderResourcePackEntry) {
 				FolderResourcePackEntry folder = (FolderResourcePackEntry) entry;
 
-				name = folder.func_148312_b();
-				description = folder.func_148311_a();
+				name = folder.getName();
+				description = folder.getDescription();
 			}
 
-			return EnumChatFormatting.getTextWithoutFormattingCodes(name + " " + description.replace("\n", " "))
-					.toLowerCase().contains(supplier.get().toLowerCase());
+			return Formatting.strip(name + " " + description.replace("\n", " ")).toLowerCase()
+					.contains(supplier.get().toLowerCase());
 		}).collect(Collectors.toList());
 	}
 
-	private void populate(List<ResourcePackListEntry> entries) {
-		for (ResourcePackListEntry entry : this.entries) {
+	private void populate(List<ResourcePackWidget> entries) {
+		for (ResourcePackWidget entry : this.entries) {
 			if (entry instanceof FolderResourcePackEntry) {
 				try {
 					((FolderResourcePackEntry) entry).getSublist().populate(entries);

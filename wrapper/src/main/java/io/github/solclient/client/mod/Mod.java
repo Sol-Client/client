@@ -14,13 +14,13 @@ import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.resource.language.I18n;
 
 @AbstractTranslationKey("sol_client.mod.generic")
 public abstract class Mod {
 
-	protected final Minecraft mc = Minecraft.getMinecraft();
+	protected final MinecraftClient mc = MinecraftClient.getInstance();
 	@Getter
 	private List<ModOption> options;
 	private boolean blocked;
@@ -52,9 +52,8 @@ public abstract class Mod {
 			throw new IllegalStateException(error);
 		}
 
-		if (this.enabled) {
+		if (this.enabled)
 			tryEnable();
-		}
 	}
 
 	public String getTranslationKey() {
@@ -62,7 +61,7 @@ public abstract class Mod {
 	}
 
 	public String getName() {
-		return I18n.format(getTranslationKey() + ".name");
+		return I18n.translate(getTranslationKey() + ".name");
 	}
 
 	/**
@@ -80,7 +79,7 @@ public abstract class Mod {
 	}
 
 	public String getDescription() {
-		return I18n.format("sol_client.mod." + getId() + ".description");
+		return I18n.translate("sol_client.mod." + getId() + ".description");
 	}
 
 	/**

@@ -24,6 +24,7 @@ package io.github.solclient.client.mod.impl.replay.fix;
 import org.apache.logging.log4j.*;
 
 import com.replaymod.core.*;
+import com.replaymod.core.Module;
 import com.replaymod.recording.Setting;
 import com.replaymod.recording.handler.*;
 import com.replaymod.recording.mixin.NetworkManagerAccessor;
@@ -31,7 +32,7 @@ import com.replaymod.recording.packet.PacketListener;
 
 import io.github.solclient.client.Client;
 import io.netty.channel.Channel;
-import net.minecraft.network.NetworkManager;
+import net.minecraft.network.ClientConnection;
 
 public class SCReplayModRecording implements Module {
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -64,10 +65,10 @@ public class SCReplayModRecording implements Module {
 		new GuiHandler(this.core).register();
 	}
 
-	public void initiateRecording(NetworkManager networkManager) {
-		Channel channel = ((NetworkManagerAccessor) networkManager).getChannel();
+	public void initiateRecording(ClientConnection connection) {
+		Channel channel = ((NetworkManagerAccessor) connection).getChannel();
 		if (channel.pipeline().get("ReplayModReplay_replaySender") == null) {
-			this.connectionEventHandler.onConnectedToServerEvent(networkManager);
+			this.connectionEventHandler.onConnectedToServerEvent(connection);
 		}
 	}
 

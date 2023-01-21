@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import io.github.solclient.client.Client;
 import lombok.*;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 /**
  * Categories of Sol Client mods.
@@ -47,7 +47,7 @@ public enum ModCategory {
 
 	@Override
 	public String toString() {
-		return I18n.format("sol_client.mod.category." + name().toLowerCase() + ".name");
+		return I18n.translate("sol_client.mod.category." + name().toLowerCase() + ".name");
 	}
 
 	public List<Mod> getMods() {

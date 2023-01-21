@@ -2,8 +2,8 @@ package io.github.solclient.client.chatextensions.channel;
 
 import java.util.Objects;
 
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.network.play.client.C01PacketChatMessage;
+import net.minecraft.entity.player.ClientPlayerEntity;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 
 public class DefaultChatChannel implements ChatChannel {
 
@@ -21,9 +21,9 @@ public class DefaultChatChannel implements ChatChannel {
 	}
 
 	@Override
-	public void sendMessage(EntityPlayerSP player, String message) {
+	public void sendMessage(ClientPlayerEntity player, String message) {
 		if (command == null) {
-			player.sendQueue.addToSendQueue(new C01PacketChatMessage(message));
+			player.networkHandler.sendPacket(new ChatMessageC2SPacket(message));
 		} else {
 			player.sendChatMessage("/" + command + " " + message);
 		}

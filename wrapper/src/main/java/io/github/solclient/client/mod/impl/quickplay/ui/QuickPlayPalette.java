@@ -9,9 +9,9 @@ import io.github.solclient.client.ui.component.controller.AlignedBoundsControlle
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
-public class QuickPlayPalette extends Screen {
+public class QuickPlayPalette extends ComponentScreen {
 
 	public QuickPlayPalette(QuickPlayMod mod) {
 		super(new Component() {
@@ -25,14 +25,14 @@ public class QuickPlayPalette extends Screen {
 	}
 
 	@Override
-	public void initGui() {
-		super.initGui();
+	public void init() {
+		super.init();
 		Keyboard.enableRepeatEvents(true);
 	}
 
 	@Override
-	public void onGuiClosed() {
-		super.onGuiClosed();
+	public void removed() {
+		super.removed();
 		Keyboard.enableRepeatEvents(false);
 	}
 
@@ -74,7 +74,7 @@ public class QuickPlayPalette extends Screen {
 
 		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-			if (keyCode == Keyboard.KEY_F && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown()) {
+			if (keyCode == Keyboard.KEY_F && hasControlDown() && !hasShiftDown() && !hasAltDown()) {
 				search.setFocused(true);
 				return true;
 			}
@@ -88,7 +88,7 @@ public class QuickPlayPalette extends Screen {
 				int direction = keyCode == Keyboard.KEY_UP ? -1 : 1;
 				int index = scroll.getSubComponents().indexOf(selected);
 				index += direction;
-				index = MathHelper.clamp_int(index, 0, scroll.getSubComponents().size() - 1);
+				index = MathHelper.clamp(index, 0, scroll.getSubComponents().size() - 1);
 
 				if (scroll.getSubComponents().get(index) instanceof QuickPlayOptionComponent) {
 					selected = (QuickPlayOptionComponent) scroll.getSubComponents().get(index);

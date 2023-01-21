@@ -7,7 +7,7 @@ import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public abstract class ScrollListComponent extends Component {
 
@@ -250,7 +250,7 @@ public abstract class ScrollListComponent extends Component {
 	}
 
 	private void clamp() {
-		targetY = MathHelper.clamp_double(targetY, 0, maxScrolling);
+		targetY = MathHelper.clamp(targetY, 0, maxScrolling);
 	}
 
 	@Override

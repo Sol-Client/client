@@ -6,7 +6,8 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.chatextensions.channel.ChatChannelSystem;
 import io.github.solclient.client.mod.impl.hypixeladditions.*;
 import net.minecraft.command.*;
-import net.minecraft.util.*;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.Formatting;
 
 public class ChatChannelCommand extends HypixelAdditionsCommand {
 
@@ -15,7 +16,7 @@ public class ChatChannelCommand extends HypixelAdditionsCommand {
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+	public void execute(CommandSource sender, String[] args) throws CommandException {
 		ChatChannelSystem system = Client.INSTANCE.getChatExtensions().getChannelSystem();
 		if (args.length == 1) {
 			if (args[0].equals("c") || args[0].equals("coop") || args[0].equals("co-op")
@@ -31,24 +32,23 @@ public class ChatChannelCommand extends HypixelAdditionsCommand {
 			} else if (args[0].equals("g") || args[0].equals("guild")) {
 				system.setChannel(HypixelChatChannels.GUILD);
 			} else {
-				throw new WrongUsageException(getCommandUsage(sender));
+				throw new IncorrectUsageException(getUsageTranslationKey(sender));
 			}
 		} else if (args.length == 2 && (args[0].equals("2") || args[0].equals("t") || args[0].equals("to"))) {
 			system.setChannel(ChatChannelSystem.getPrivateChannel(args[1]));
 		} else {
-			throw new WrongUsageException("Usage: " + getCommandUsage(sender));
+			throw new IncorrectUsageException("Usage: " + getUsageTranslationKey(sender));
 		}
-		sender.addChatMessage(
-				new ChatComponentText(EnumChatFormatting.GREEN + "Chat Channel: " + system.getChannelName()));
+		sender.sendMessage(new LiteralText(Formatting.GREEN + "Chat Channel: " + system.getChannelName()));
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
+	public String getUsageTranslationKey(CommandSource sender) {
 		return "/chat (all|party|guild|officer|coop)";
 	}
 
 	@Override
-	public List<String> getCommandAliases() {
+	public List<String> getAliases() {
 		return Arrays.asList("channel");
 	}
 

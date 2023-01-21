@@ -4,7 +4,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
 import io.github.solclient.client.util.data.Position;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 public class ComboCounterMod extends SimpleHudMod {
 
@@ -28,11 +28,11 @@ public class ComboCounterMod extends SimpleHudMod {
 	@Override
 	public String getText(boolean editMode) {
 		if (editMode || combo == 0) {
-			return I18n.format("sol_client.mod.combo_counter.no_hits");
+			return I18n.translate("sol_client.mod.combo_counter.no_hits");
 		} else if (combo == 1) {
-			return I18n.format("sol_client.mod.combo_counter.one_hit");
+			return I18n.translate("sol_client.mod.combo_counter.one_hit");
 		} else {
-			return I18n.format("sol_client.mod.combo_counter.n_hits", combo);
+			return I18n.translate("sol_client.mod.combo_counter.n_hits", combo);
 		}
 	}
 
@@ -51,7 +51,7 @@ public class ComboCounterMod extends SimpleHudMod {
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.entity.getEntityId() == possibleTarget) {
 			dealHit();
-		} else if (event.entity == mc.thePlayer) {
+		} else if (event.entity == mc.player) {
 			takeHit();
 		}
 	}

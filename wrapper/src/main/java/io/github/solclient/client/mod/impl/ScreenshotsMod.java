@@ -9,15 +9,15 @@ import org.apache.commons.io.FileUtils;
 
 import com.google.gson.*;
 
-import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.extension.ClickEventExtension;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.event.ClickEvent.Action;
-import net.minecraft.util.*;
+import io.github.solclient.util.*;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.*;
+import net.minecraft.text.ClickEvent.Action;
+import net.minecraft.util.Formatting;
 
 public class ScreenshotsMod extends Mod {
 
@@ -68,52 +68,47 @@ public class ScreenshotsMod extends Mod {
 
 	public void postShot(File screenshot) {
 
-		Runnable viewReceiver = () -> Utils.openUrl(screenshot.toURI().toString());
-		IChatComponent screenshotName = new ChatComponentText(screenshot.getName());
+		Runnable viewReceiver = () -> MinecraftUtils.openUrl(screenshot.toURI().toString());
+		Text screenshotName = new LiteralText(screenshot.getName());
 
 		if (!view)
-			screenshotName.setChatStyle(new ChatStyle()
-					.setChatClickEvent(ClickEventExtension.createStyleWithReceiver(viewReceiver)).setUnderlined(true));
+			screenshotName.setStyle(new Style().setClickEvent(ClickEventExtension.createStyleWithReceiver(viewReceiver))
+					.setUnderline(true));
 
-		mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentTranslation("screenshot.success", screenshotName));
+		mc.inGameHud.getChatHud().addMessage(new TranslatableText("screenshot.success", screenshotName));
 
 		if (view || folder || upload) {
-			IChatComponent secondaryText = new ChatComponentText("");
+			Text secondaryText = new LiteralText("");
 
 			if (view) {
-				IChatComponent viewText = new ChatComponentText('[' + I18n.format(getTranslationKey() + ".view") + ']');
-				viewText.setChatStyle(
-						new ChatStyle().setChatClickEvent(ClickEventExtension.createStyleWithReceiver(viewReceiver))
-								.setColor(EnumChatFormatting.BLUE));
+				Text viewText = new LiteralText('[' + I18n.translate(getTranslationKey() + ".view") + ']');
+				viewText.setStyle(new Style().setClickEvent(ClickEventExtension.createStyleWithReceiver(viewReceiver))
+						.setFormatting(Formatting.BLUE));
 
-				secondaryText.appendSibling(viewText);
-				secondaryText.appendText(" ");
+				secondaryText.append(viewText);
+				secondaryText.append(" ");
 			}
 
 			if (folder) {
-				IChatComponent folderText = new ChatComponentText(
-						'[' + I18n.format(getTranslationKey() + ".open_folder") + ']');
-				folderText.setChatStyle(new ChatStyle()
-						.setChatClickEvent(ClickEventExtension
-								.createStyleWithReceiver(() -> Utils.revealUrl(screenshot.toURI().toString())))
-						.setColor(EnumChatFormatting.YELLOW));
-				secondaryText.appendSibling(folderText);
-
-				secondaryText.appendText(" ");
+				Text folderText = new LiteralText('[' + I18n.translate(getTranslationKey() + ".open_folder") + ']');
+				folderText.setStyle(new Style()
+						.setClickEvent(ClickEventExtension
+								.createStyleWithReceiver(() -> MinecraftUtils.revealUrl(screenshot.toURI().toString())))
+						.setFormatting(Formatting.YELLOW));
+				secondaryText.append(folderText);
+				secondaryText.append(" ");
 			}
 
 			if (upload) {
-				IChatComponent uploadText = new ChatComponentText(
-						'[' + I18n.format(getTranslationKey() + ".upload") + ']');
-				uploadText.setChatStyle(new ChatStyle()
-						.setChatClickEvent(ClickEventExtension.createStyleWithReceiver(() -> uploadToImgur(screenshot)))
-						.setColor(EnumChatFormatting.GREEN));
-				secondaryText.appendSibling(uploadText);
-
-				secondaryText.appendText(" ");
+				Text uploadText = new LiteralText('[' + I18n.translate(getTranslationKey() + ".upload") + ']');
+				uploadText.setStyle(new Style()
+						.setClickEvent(ClickEventExtension.createStyleWithReceiver(() -> uploadToImgur(screenshot)))
+						.setFormatting(Formatting.GREEN));
+				secondaryText.append(uploadText);
+				secondaryText.append(" ");
 			}
 
-			mc.ingameGUI.getChatGUI().printChatMessage(secondaryText);
+			mc.inGameHud.getChatHud().addMessage(secondaryText);
 		}
 	}
 
@@ -121,15 +116,14 @@ public class ScreenshotsMod extends Mod {
 		new Thread(() -> {
 			try {
 				if (!screenshot.exists()) {
-					mc.ingameGUI.getChatGUI()
-							.printChatMessage(new ChatComponentTranslation(getTranslationKey() + ".deleted")
-									.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+					mc.inGameHud.getChatHud().addMessage(new TranslatableText(getTranslationKey() + ".deleted")
+							.setStyle(new Style().setFormatting(Formatting.RED)));
 					return;
 				}
 
 				String base64 = new String(Base64.getEncoder().encode(FileUtils.readFileToByteArray(screenshot)),
 						StandardCharsets.US_ASCII);
-				String boundary = Utils.generateHttpBoundary();
+				String boundary = MinecraftUtils.generateHttpBoundary();
 
 				HttpURLConnection connection = (HttpURLConnection) IMGUR_URL.openConnection();
 				connection.setRequestMethod("POST");
@@ -157,19 +151,18 @@ public class ScreenshotsMod extends Mod {
 					JsonObject data = object.get("data").getAsJsonObject();
 					String link = data.get("link").getAsString();
 
-					IChatComponent linkComponent = new ChatComponentText(link);
-					linkComponent.setChatStyle(new ChatStyle().setUnderlined(true)
-							.setChatClickEvent(new ClickEvent(Action.OPEN_URL, link)));
+					Text linkComponent = new LiteralText(link);
+					linkComponent.setStyle(
+							new Style().setUnderline(true).setClickEvent(new ClickEvent(Action.OPEN_URL, link)));
 
-					mc.ingameGUI.getChatGUI().printChatMessage(
-							new ChatComponentTranslation(getTranslationKey() + ".link", linkComponent));
+					mc.inGameHud.getChatHud()
+							.addMessage(new TranslatableText(getTranslationKey() + ".link", linkComponent));
 				}
 
 			} catch (Throwable error) {
 				logger.error("Could not upload screenshot", error);
-				mc.ingameGUI.getChatGUI()
-						.printChatMessage(new ChatComponentTranslation(getTranslationKey() + ".upload_error", error)
-								.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				mc.inGameHud.getChatHud().addMessage(new TranslatableText(getTranslationKey() + ".upload_error", error)
+						.setStyle(new Style().setFormatting(Formatting.RED)));
 			}
 		}).start();
 	}

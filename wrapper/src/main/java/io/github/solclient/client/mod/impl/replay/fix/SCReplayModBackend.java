@@ -32,15 +32,15 @@ import com.replaymod.replay.events.RenderSpectatorCrosshairCallback;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
 
 public class SCReplayModBackend extends SCEventRegistrations {
 
 	private final ReplayMod mod = new ReplayMod(this);
 
 	public void init() {
-		new File(Minecraft.getMinecraft().mcDataDir, "config").mkdirs();
+		new File(MinecraftClient.getInstance().runDirectory, "config").mkdirs();
 		register();
 		try {
 			Method initModulesMethod = mod.getClass().getDeclaredMethod("initModules");
@@ -55,7 +55,7 @@ public class SCReplayModBackend extends SCEventRegistrations {
 				throw (RuntimeException) error.getCause();
 			}
 		}
-		KeyBinding.resetKeyBindingArrayAndHash();
+		KeyBinding.updateKeysByCode();
 	}
 
 	public String getVersion() {

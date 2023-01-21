@@ -130,7 +130,7 @@ public final class ModManager implements Iterable<Mod> {
 				}
 			}
 
-			registerAndConfigure(mod, storageNode);
+			register(mod, storageNode);
 		}
 	}
 
@@ -162,13 +162,14 @@ public final class ModManager implements Iterable<Mod> {
 	 *
 	 * @param mod the mod to register.
 	 */
-	public void register(Mod mod) {
+	public void register(Mod mod, JsonObject config) {
 		try {
 			// quite broken
 			if (Boolean.getBoolean("io.github.solclient.client.mod." + mod.getId() + ".disable"))
 				return;
 
 			mod.setIndex(mods.size());
+			configure(mod, config);
 			mod.onRegister();
 			mods.add(mod);
 			byId.put(mod.getId(), mod);
@@ -194,17 +195,6 @@ public final class ModManager implements Iterable<Mod> {
 		} catch (Throwable error) {
 			LOGGER.error("Could not configure mod " + mod.getId() + " on " + object, error);
 		}
-	}
-
-	/**
-	 * Combines {@link #register(Mod)} and {@link #configure(Mod, JsonObject)}
-	 *
-	 * @param mod    the mod.
-	 * @param object the configuration object.
-	 */
-	public void registerAndConfigure(Mod mod, JsonObject object) {
-		register(mod);
-		configure(mod, object);
 	}
 
 	/**

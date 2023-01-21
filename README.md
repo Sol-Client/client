@@ -143,16 +143,11 @@ The installer will be in a directory named "out".
 
 ### Wrapper
 
-Make sure to build it with Java 8 and not any newer versions.
+Make sure to build it with Java 17 or later.
 
 Move into folder:
 ```sh
 cd wrapper
-```
-
-Setup:
-```sh
-./gradlew setupDecompWorkspace
 ```
 
 Build JAR:

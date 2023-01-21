@@ -3,22 +3,25 @@ package io.github.solclient.client.mod.impl;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.BlockHighlightRenderEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.world.WorldSettings;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.BlockHitResult.Type;
+import net.minecraft.util.math.*;
+import net.minecraft.world.level.LevelInfo.GameMode;
 
 public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 
@@ -55,28 +58,26 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 		return ModCategory.VISUAL;
 	}
 
-	private boolean canRender(MovingObjectPosition movingObjectPositionIn) {
-		Entity entity = this.mc.getRenderViewEntity();
-		boolean result = entity instanceof EntityPlayer && !this.mc.gameSettings.hideGUI;
+	private boolean canRender(BlockHitResult hit) {
+		Entity entity = mc.getCameraEntity();
+		boolean result = entity instanceof PlayerEntity && !mc.options.hudHidden;
 
-		if (result && !((EntityPlayer) entity).capabilities.allowEdit && !persistent) {
-			ItemStack itemstack = ((EntityPlayer) entity).getCurrentEquippedItem();
+		if (result && !((PlayerEntity) entity).abilities.allowModifyWorld && !persistent) {
+			ItemStack itemstack = ((PlayerEntity) entity).getMainHandStack();
 
-			if (this.mc.objectMouseOver != null
-					&& this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-				BlockPos selectedBlock = this.mc.objectMouseOver.getBlockPos();
-				Block block = this.mc.theWorld.getBlockState(selectedBlock).getBlock();
+			if (mc.result != null && mc.result.type == Type.BLOCK) {
+				BlockPos selectedBlock = mc.result.getBlockPos();
+				Block block = mc.world.getBlockState(selectedBlock).getBlock();
 
-				if (this.mc.playerController.getCurrentGameType() == WorldSettings.GameType.SPECTATOR) {
-					result = block.hasTileEntity()
-							&& this.mc.theWorld.getTileEntity(selectedBlock) instanceof IInventory;
+				if (mc.interactionManager.getCurrentGameMode() == GameMode.SPECTATOR) {
+					result = block.hasBlockEntity() && mc.world.getBlockEntity(selectedBlock) instanceof Inventory;
 				} else {
 					result = itemstack != null && (itemstack.canDestroy(block) || itemstack.canPlaceOn(block));
 				}
 			}
 		}
 
-		result = result && movingObjectPositionIn.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK;
+		result = result && hit.type == Type.BLOCK;
 
 		return result;
 	}
@@ -85,61 +86,55 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 	public void onBlockHighlightRenderEvent(BlockHighlightRenderEvent event) {
 		event.cancelled = true;
 
-		if (!canRender(event.movingObjectPosition)) {
+		if (!canRender(event.hit))
 			return;
-		}
 
 		GlStateManager.enableBlend();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.blendFuncSeparate(770, 771, 1, 0);
 
-		if (!depth) {
-			GlStateManager.disableDepth();
-		}
+		if (!depth)
+			GlStateManager.disableDepthTest();
 
-		GlStateManager.disableTexture2D();
+		GlStateManager.disableTexture();
 
 		GlStateManager.depthMask(false);
-		BlockPos blockpos = event.movingObjectPosition.getBlockPos();
-		Block block = mc.theWorld.getBlockState(blockpos).getBlock();
+		BlockPos blockpos = event.hit.getBlockPos();
+		Block block = mc.world.getBlockState(blockpos).getBlock();
 
-		if (block.getMaterial() != Material.air && mc.theWorld.getWorldBorder().contains(blockpos)) {
-			block.setBlockBoundsBasedOnState(mc.theWorld, blockpos);
-			double x = mc.getRenderViewEntity().lastTickPosX
-					+ (mc.getRenderViewEntity().posX - mc.getRenderViewEntity().lastTickPosX)
-							* (double) event.partialTicks;
-			double y = mc.getRenderViewEntity().lastTickPosY
-					+ (mc.getRenderViewEntity().posY - mc.getRenderViewEntity().lastTickPosY)
-							* (double) event.partialTicks;
-			double z = mc.getRenderViewEntity().lastTickPosZ
-					+ (mc.getRenderViewEntity().posZ - mc.getRenderViewEntity().lastTickPosZ)
-							* (double) event.partialTicks;
+		if (block.getMaterial() != Material.AIR && mc.world.getWorldBorder().contains(blockpos)) {
+			block.setBoundingBox(mc.world, blockpos);
+			double x = mc.getCameraEntity().prevTickX
+					+ (mc.getCameraEntity().x - mc.getCameraEntity().prevTickX) * (double) event.partialTicks;
+			double y = mc.getCameraEntity().prevTickY
+					+ (mc.getCameraEntity().y - mc.getCameraEntity().prevTickY) * (double) event.partialTicks;
+			double z = mc.getCameraEntity().prevTickZ
+					+ (mc.getCameraEntity().z - mc.getCameraEntity().prevTickZ) * (double) event.partialTicks;
 
-			AxisAlignedBB selectedBox = block.getSelectedBoundingBox(mc.theWorld, blockpos);
+			Box selectedBox = block.getSelectionBox(mc.world, blockpos);
 			selectedBox = selectedBox.expand(0.0020000000949949026D, 0.0020000000949949026D, 0.0020000000949949026D)
 					.offset(-x, -y, -z);
 
 			if (fill) {
 				fillColour.bind();
-				Utils.fillBox(selectedBox);
+				MinecraftUtils.fillBox(selectedBox);
 			}
 
 			if (outline) {
 				outlineColour.bind();
 				GL11.glLineWidth(outlineWidth);
-				RenderGlobal.drawSelectionBoundingBox(selectedBox);
+				WorldRenderer.drawBox(selectedBox);
 			}
 		}
 
 		GlStateManager.depthMask(true);
-		GlStateManager.enableTexture2D();
+		GlStateManager.enableTexture();
 
 		GlStateManager.disableBlend();
 
-		if (!depth) {
-			GlStateManager.enableDepth();
-		}
+		if (!depth)
+			GlStateManager.enableDepthTest();
 
-		Utils.resetLineWidth();
+		MinecraftUtils.resetLineWidth();
 	}
 
 	@Override

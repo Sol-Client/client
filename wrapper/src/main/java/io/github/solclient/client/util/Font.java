@@ -12,7 +12,7 @@ public final class Font {
 	private final ByteBuffer buffer;
 
 	public Font(long ctx, InputStream in) throws IOException {
-		buffer = Utils.mallocAndRead(in);
+		buffer = MinecraftUtils.mallocAndRead(in);
 		handle = NanoVG.nvgCreateFontMem(ctx, "", buffer, 0);
 	}
 

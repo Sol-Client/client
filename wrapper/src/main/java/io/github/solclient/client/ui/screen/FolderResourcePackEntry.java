@@ -2,24 +2,27 @@ package io.github.solclient.client.ui.screen;
 
 import java.io.*;
 
-import io.github.solclient.client.util.extension.MinecraftExtension;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.*;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.platform.GlStateManager;
 
-public class FolderResourcePackEntry extends ResourcePackListEntry {
+import io.github.solclient.client.util.extension.MinecraftClientExtension;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.screen.ResourcePackScreen;
+import net.minecraft.client.gui.screen.resourcepack.ResourcePackWidget;
+import net.minecraft.client.resource.ResourcePackLoader;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.util.Identifier;
 
-	private static final ResourceLocation FOLDER_ICON = new ResourceLocation("textures/gui/folder.png");
+public class FolderResourcePackEntry extends ResourcePackWidget {
+
+	private static final Identifier FOLDER_ICON = new Identifier("textures/gui/folder.png");
 	private String name;
 	private int size;
 	private File folder;
 	private BetterResourcePackList list;
 	private BetterResourcePackList sublist;
 
-	public FolderResourcePackEntry(GuiScreenResourcePacks resourcePacksGUIIn, BetterResourcePackList list,
-			File folder) {
-		super(resourcePacksGUIIn);
+	public FolderResourcePackEntry(ResourcePackScreen screen, BetterResourcePackList list, File folder) {
+		super(screen);
 		this.folder = folder;
 		this.list = list;
 		this.name = folder.getName();
@@ -27,33 +30,30 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 	}
 
 	@Override
-	public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY,
-			boolean isSelected) {
-		super.drawEntry(slotIndex, x, y, listWidth, slotHeight, mouseX, mouseY, isSelected);
+	public void render(int index, int x, int y, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered) {
+		super.render(index, x, y, rowWidth, rowHeight, mouseX, mouseY, hovered);
 
-		if (mc.gameSettings.touchscreen || isSelected) {
-			Gui.drawRect(x, y, x + 32, y + 32, -1601138544);
-		}
+		if (client.options.touchscreen || hovered)
+			DrawableHelper.fill(x, y, x + 32, y + 32, -1601138544);
 	}
 
 	public BetterResourcePackList getSublist() throws IOException {
 		if (sublist == null) {
-			ResourcePackRepository repo = new ResourcePackRepository(folder,
-					new File(mc.mcDataDir, "server-resource-packs"),
-					MinecraftExtension.getInstance().getDefaultResourcePack(),
-					MinecraftExtension.getInstance().getMetadataSerialiser(), mc.gameSettings);
+			ResourcePackLoader repo = new ResourcePackLoader(folder,
+					new File(client.runDirectory, "server-resource-packs"),
+					MinecraftClientExtension.getInstance().getDefaultResourcePack(),
+					MinecraftClientExtension.getInstance().getMetadataSerialiser(), client.options);
 
-			repo.updateRepositoryEntriesAll();
+			repo.initResourcePacks();
 
-			sublist = new BetterResourcePackList(mc, resourcePacksGUI, 200, list.getHeight(), repo, list.getSupplier());
+			sublist = new BetterResourcePackList(client, screen, 200, list.getHeight(), repo, list.getSupplier());
 		}
 
 		return sublist;
 	}
 
 	@Override
-	public boolean mousePressed(int slotIndex, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_,
-			int p_148278_6_) {
+	public boolean mouseClicked(int index, int mouseX, int mouseY, int button, int x, int y) {
 		if (!folder.exists()) {
 			return false;
 		}
@@ -67,30 +67,30 @@ public class FolderResourcePackEntry extends ResourcePackListEntry {
 	}
 
 	@Override
-	protected int func_183019_a() {
+	protected int getFormat() {
 		return 1;
 	}
 
 	@Override
-	protected String func_148311_a() {
-		return I18n.format("sol_client.packs.folder", size);
+	protected String getDescription() {
+		return I18n.translate("sol_client.packs.folder", size);
 	}
 
 	@Override
-	protected String func_148312_b() {
+	protected String getName() {
 		return name;
 	}
 
 	@Override
-	protected boolean func_148310_d() {
+	protected boolean isVisible() {
 		return false;
 	}
 
 	@Override
-	protected void func_148313_c() {
+	protected void bindIcon() {
 		GlStateManager.enableBlend();
 
-		mc.getTextureManager().bindTexture(FOLDER_ICON);
+		client.getTextureManager().bindTexture(FOLDER_ICON);
 	}
 
 }

@@ -5,65 +5,67 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
 import io.github.solclient.client.mod.impl.V1_7VisualsMod;
-import io.github.solclient.client.util.extension.MinecraftExtension;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
+import io.github.solclient.client.util.extension.MinecraftClientExtension;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
+import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 public abstract class MixinV1_7VisualsMod {
 
-	@Mixin(ItemRenderer.class)
+	@Mixin(HeldItemRenderer.class)
 	public static abstract class MixinItemRenderer {
 
-		@Redirect(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;transformFirstPersonItem(FF)V"))
-		public void allowUseAndSwing(ItemRenderer itemRenderer, float equipProgress, float swingProgress) {
-			transformFirstPersonItem(equipProgress,
+		@Redirect(method = "renderArmHoldingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipAndSwingOffset(FF)V"))
+		public void allowUseAndSwing(HeldItemRenderer instance, float equipProgress, float swingProgress) {
+			applyEquipAndSwingOffset(equipProgress,
 					swingProgress == 0.0F && V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine
-							? mc.thePlayer
-									.getSwingProgress(MinecraftExtension.getInstance().getTimerSC().renderPartialTicks)
+							? client.player
+									.getHandSwingProgress(MinecraftClientExtension.getInstance().getTicker().tickDelta)
 							: swingProgress);
 		}
 
-		@Inject(method = "doBlockTransformations", at = @At("RETURN"))
+		@Inject(method = "applySwordBlockTransformation", at = @At("RETURN"))
 		public void oldBlocking(CallbackInfo callback) {
 			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.blocking) {
 				V1_7VisualsMod.oldBlocking();
 			}
 		}
 
-		@Inject(method = "performDrinking", at = @At("HEAD"), cancellable = true)
-		public void oldDrinking(AbstractClientPlayer clientPlayer, float partialTicks, CallbackInfo callback) {
+		@Inject(method = "applyEatOrDrinkTransformation", at = @At("HEAD"), cancellable = true)
+		public void oldDrinking(AbstractClientPlayerEntity clientPlayer, float partialTicks, CallbackInfo callback) {
 			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.eatingAndDrinking) {
 				callback.cancel();
-				V1_7VisualsMod.oldDrinking(itemToRender, clientPlayer, partialTicks);
+				V1_7VisualsMod.oldDrinking(mainHand, clientPlayer, partialTicks);
 			}
 		}
 
 		@Shadow
-		protected abstract void transformFirstPersonItem(float equipProgress, float swingProgress);
+		protected abstract void applyEquipAndSwingOffset(float equipProgress, float swingProgress);
 
 		@Shadow
-		private @Final Minecraft mc;
+		private @Final MinecraftClient client;
 
 		@Shadow
-		private ItemStack itemToRender;
+		private ItemStack mainHand;
 
 	}
 
-	@Mixin(EntityRenderer.class)
-	public static abstract class MixinEntityRenderer {
+	@Mixin(GameRenderer.class)
+	public static abstract class MixinGameRenderer {
 
 		private float eyeHeightSubtractor;
 		private long lastEyeHeightUpdate;
 
-		@Redirect(method = "orientCamera", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeHeight()F"))
+		// this code makes me long for spaghetti
+		@Redirect(method = "transformCamera", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeHeight()F"))
 		public float smoothSneaking(Entity entity) {
-			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking && entity instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) entity;
+			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking && entity instanceof PlayerEntity) {
+				PlayerEntity player = (PlayerEntity) entity;
 				float height = player.getEyeHeight();
 				if (player.isSneaking()) {
 					height += 0.08F;
@@ -88,18 +90,17 @@ public abstract class MixinV1_7VisualsMod {
 		}
 
 		@Shadow
-		private Minecraft mc;
+		private /* why you not final :( */ MinecraftClient client;
 
 	}
 
-	@Mixin(LayerArmorBase.class)
+	@Mixin(ArmorFeatureRenderer.class)
 	public static class MixinLayerArmorBase {
 
-		@Inject(method = "shouldCombineTextures", at = @At("HEAD"), cancellable = true)
+		@Inject(method = "combineTextures", at = @At("HEAD"), cancellable = true)
 		public void oldArmour(CallbackInfoReturnable<Boolean> callback) {
-			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.armourDamage) {
+			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.armourDamage)
 				callback.setReturnValue(true);
-			}
 		}
 
 	}

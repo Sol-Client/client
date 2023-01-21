@@ -15,7 +15,7 @@ public abstract class MixinEntity implements Cullable, EntityExtension {
 	@Setter
 	private boolean culled;
 
-	@Accessor("isInWeb")
+	@Accessor("inLava")
 	public abstract boolean getIsInWeb();
 
 }

@@ -14,9 +14,10 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.impl.quickplay.database.*;
 import io.github.solclient.client.mod.impl.quickplay.ui.*;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.KeyBinding;
+import io.github.solclient.util.GlobalConstants;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.resource.language.I18n;
 
 public class QuickPlayMod extends Mod {
 
@@ -35,7 +36,7 @@ public class QuickPlayMod extends Mod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.mod.screen.originally_by", "robere2");
+		return I18n.translate("sol_client.mod.screen.originally_by", "robere2");
 	}
 
 	@Override
@@ -58,8 +59,8 @@ public class QuickPlayMod extends Mod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (database != null && menuKey.isPressed() && DetectedServer.current() == DetectedServer.HYPIXEL)
-			mc.displayGuiScreen(new QuickPlayPalette(this));
+		if (database != null && menuKey.wasPressed() && DetectedServer.current() == DetectedServer.HYPIXEL)
+			mc.setScreen(new QuickPlayPalette(this));
 	}
 
 	@Override
@@ -79,10 +80,10 @@ public class QuickPlayMod extends Mod {
 	}
 
 	public void playGame(QuickPlayGameMode mode) {
-		mc.thePlayer.sendChatMessage(mode.getCommand());
+		mc.player.sendChatMessage(mode.getCommand());
 
-		if (!GuiScreen.isShiftKeyDown())
-			mc.displayGuiScreen(null);
+		if (!Screen.hasShiftDown())
+			mc.setScreen(null);
 
 		recentlyPlayed.removeIf(mode.getFullId()::equals);
 		recentlyPlayed.add(0, mode.getFullId());

@@ -1,25 +1,27 @@
 package io.github.solclient.client.mixin.mod;
 
-import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.mod.impl.TNTTimerMod;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.client.render.entity.*;
+import net.minecraft.entity.TntEntity;
 
 public class MixinTNTTimerMod {
 
-	@Mixin(RenderTNTPrimed.class)
-	public static abstract class MixinRenderTNTPrimed extends Render<EntityTNTPrimed> {
+	@Mixin(TntEntityRenderer.class)
+	public static abstract class MixinTntEntityRenderer extends EntityRenderer<TntEntity> {
 
-		protected MixinRenderTNTPrimed(RenderManager renderManager) {
-			super(renderManager);
+		protected MixinTntEntityRenderer(EntityRenderDispatcher dispatcher) {
+			super(dispatcher);
 		}
 
-		@Override
-		protected void renderName(EntityTNTPrimed tnt, double x, double y, double z) {
-			if (TNTTimerMod.enabled) {
-				renderLivingLabel(tnt, TNTTimerMod.getText(tnt), x, y, z, 64);
-			}
+		// i may have followed the axolotl for this one...
+		@Inject(method = "render(Lnet/minecraft/entity/TntEntity;DDDFF)V", at = @At("RETURN"))
+		protected void method_10208(TntEntity tnt, double x, double y, double z, float yaw, float tickDelta, CallbackInfo callback) {
+			if (TNTTimerMod.enabled)
+				renderLabelIfPresent(tnt, TNTTimerMod.getText(tnt), x, y, z, 64);
 		}
 
 	}

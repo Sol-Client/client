@@ -7,12 +7,11 @@ import org.lwjgl.input.Keyboard;
 import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.GlobalConstants;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.util.SemVer;
 import io.github.solclient.client.util.data.Colour;
-import net.minecraft.client.settings.KeyBinding;
+import io.github.solclient.util.*;
+import net.minecraft.client.option.KeyBinding;
 
 public class SolClientConfig extends ConfigOnlyMod {
 

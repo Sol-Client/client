@@ -1,24 +1,25 @@
 package io.github.solclient.client.ui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.platform.GlStateManager;
 
-public class ReplayButton extends GuiButton {
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.util.Identifier;
 
-	public static final ResourceLocation ICON = new ResourceLocation("replaymod", "logo_button.png");
+public class ReplayButton extends ButtonWidget {
+
+	public static final Identifier ICON = new Identifier("replaymod", "logo_button.png");
 
 	public ReplayButton(int buttonId, int x, int y) {
 		super(buttonId, x, y, 20, 20, "");
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-		super.drawButton(mc, mouseX, mouseY);
+	public void render(MinecraftClient mc, int mouseX, int mouseY) {
+		super.render(mc, mouseX, mouseY);
 		GlStateManager.color(1, 1, 1);
 		mc.getTextureManager().bindTexture(ICON);
-		drawModalRectWithCustomSizedTexture(xPosition, yPosition, 0, 0, width, height, width, height);
+		drawTexture(x, y, 0, 0, width, height, width, height);
 	}
 
 }

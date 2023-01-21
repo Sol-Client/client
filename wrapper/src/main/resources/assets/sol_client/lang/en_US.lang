@@ -479,3 +479,4 @@ sol_client.packs.open_folder=Pack Folder
 sol_client.packs.folder=Folder (%d items)
 
 sol_client.no_results=No results :(
+sol_client.more_options=More options...

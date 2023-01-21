@@ -10,7 +10,7 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.extension.MinecraftExtension;
+import io.github.solclient.client.util.extension.MinecraftClientExtension;
 
 public class TweaksMod extends Mod {
 
@@ -81,7 +81,7 @@ public class TweaksMod extends Mod {
 	protected void onEnable() {
 		super.onEnable();
 		enabled = true;
-		if (borderlessFullscreen && mc.isFullScreen()) {
+		if (borderlessFullscreen && mc.isFullscreen()) {
 			setBorderlessFullscreen(true);
 		}
 	}
@@ -90,7 +90,7 @@ public class TweaksMod extends Mod {
 	protected void onDisable() {
 		super.onDisable();
 		enabled = false;
-		if (borderlessFullscreen && mc.isFullScreen()) {
+		if (borderlessFullscreen && mc.isFullscreen()) {
 			setBorderlessFullscreen(false);
 			mc.toggleFullscreen();
 			mc.toggleFullscreen();
@@ -105,10 +105,10 @@ public class TweaksMod extends Mod {
 	@Override
 	public void postOptionChange(String key, Object value) {
 		if (isEnabled() && key.equals("borderlessFullscreen")) {
-			if (mc.isFullScreen()) {
-				if ((boolean) value) {
+			if (mc.isFullscreen()) {
+				if ((boolean) value)
 					setBorderlessFullscreen(true);
-				} else {
+				else {
 					setBorderlessFullscreen(false);
 					mc.toggleFullscreen();
 					mc.toggleFullscreen();
@@ -136,8 +136,8 @@ public class TweaksMod extends Mod {
 	public void onRender(PreRenderTickEvent event) {
 		if (fullscreenTime != -1 && System.currentTimeMillis() - fullscreenTime >= 100) {
 			fullscreenTime = -1;
-			if (mc.inGameHasFocus) {
-				mc.mouseHelper.grabMouseCursor();
+			if (mc.focused) {
+				mc.mouse.lockMouse();
 			}
 		}
 	}
@@ -153,20 +153,21 @@ public class TweaksMod extends Mod {
 			Display.setResizable(!state);
 
 			if (state) {
-				previousBounds = new Rectangle(Display.getX(), Display.getY(), mc.displayWidth, mc.displayHeight);
+				previousBounds = new Rectangle(Display.getX(), Display.getY(), mc.width, mc.height);
 
 				Display.setDisplayMode(new DisplayMode(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight()));
 				Display.setLocation(0, 0);
-				MinecraftExtension.getInstance().resizeWindow(Display.getDesktopDisplayMode().getWidth(),
+				MinecraftClientExtension.getInstance().resizeWindow(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight());
 			} else {
 				Display.setDisplayMode(new DisplayMode(previousBounds.getWidth(), previousBounds.getHeight()));
 				Display.setLocation(previousBounds.getX(), previousBounds.getY());
-				MinecraftExtension.getInstance().resizeWindow(previousBounds.getWidth(), previousBounds.getHeight());
+				MinecraftClientExtension.getInstance().resizeWindow(previousBounds.getWidth(),
+						previousBounds.getHeight());
 
-				if (mc.inGameHasFocus) {
-					mc.mouseHelper.ungrabMouseCursor();
+				if (mc.focused) {
+					mc.mouse.grabMouse();
 					fullscreenTime = System.currentTimeMillis();
 				}
 			}

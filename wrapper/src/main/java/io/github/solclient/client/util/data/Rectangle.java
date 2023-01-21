@@ -1,6 +1,6 @@
 package io.github.solclient.client.util.data;
 
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import lombok.*;
 
 @ToString
@@ -40,11 +40,11 @@ public class Rectangle {
 	}
 
 	public void fill(Colour colour) {
-		Utils.drawRectangle(this, colour);
+		MinecraftUtils.drawRectangle(this, colour);
 	}
 
 	public void stroke(Colour colour) {
-		Utils.drawOutline(this, colour);
+		MinecraftUtils.drawOutline(this, colour);
 	}
 
 	public Rectangle multiply(float scale) {

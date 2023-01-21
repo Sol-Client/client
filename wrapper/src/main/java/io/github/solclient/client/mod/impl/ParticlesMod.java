@@ -6,11 +6,11 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.EntityAttackEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
+import net.minecraft.client.particle.ParticleType;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 
@@ -53,45 +53,46 @@ public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void onAttack(EntityAttackEvent event) {
-		EntityPlayer player = mc.thePlayer;
+		PlayerEntity player = mc.player;
 
-		if (!(event.victim instanceof EntityLivingBase)) {
+		if (!(event.victim instanceof LivingEntity)) {
 			return;
 		}
 
-		boolean crit = player.fallDistance > 0.0F && !player.onGround && !player.isOnLadder() && !player.isInWater()
-				&& !player.isPotionActive(Potion.blindness) && player.ridingEntity == null;
+		boolean crit = player.fallDistance > 0.0F && !player.onGround && !player.isClimbing()
+				&& !player.isTouchingWater() && !player.hasStatusEffect(StatusEffect.BLINDNESS)
+				&& player.vehicle == null;
 
 		if (crit) {
 			for (int i = 0; i < multiplier - 1; i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.CRIT);
+				mc.particleManager.addEmitter(event.victim, ParticleType.CRIT);
 			}
 		}
 
-		boolean usuallySharpness = EnchantmentHelper.getModifierForCreature(player.getHeldItem(),
-				((EntityLivingBase) event.victim).getCreatureAttribute()) > 0;
+		boolean usuallySharpness = EnchantmentHelper.getAttackDamage(player.getMainHandStack(),
+				((LivingEntity) event.victim).getGroup()) > 0;
 
 		if (sharpness || usuallySharpness) {
 			for (int i = 0; i < (usuallySharpness ? multiplier - 1 : multiplier); i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.CRIT_MAGIC);
+				mc.particleManager.addEmitter(event.victim, ParticleType.CRIT_MAGIC);
 			}
 		}
 
 		if (snow) {
 			for (int i = 0; i < multiplier; i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.SNOWBALL);
+				mc.particleManager.addEmitter(event.victim, ParticleType.SNOWBALL);
 			}
 		}
 
 		if (slime) {
 			for (int i = 0; i < multiplier; i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.SLIME);
+				mc.particleManager.addEmitter(event.victim, ParticleType.SLIME);
 			}
 		}
 
 		if (flames) {
 			for (int i = 0; i < multiplier; i++) {
-				mc.effectRenderer.emitParticleAtEntity(event.victim, EnumParticleTypes.FLAME);
+				mc.particleManager.addEmitter(event.victim, ParticleType.FIRE);
 			}
 		}
 	}

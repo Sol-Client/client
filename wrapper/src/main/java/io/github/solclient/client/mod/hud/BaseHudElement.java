@@ -1,9 +1,9 @@
 package io.github.solclient.client.mod.hud;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.replaymod.replay.ReplayModReplay;
 
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.renderer.GlStateManager;
 
 public abstract class BaseHudElement implements HudElement {
 

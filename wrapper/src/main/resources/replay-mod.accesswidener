@@ -1,0 +1,6 @@
+accessWidener	 v1	named
+accessible	method	net/minecraft/client/MinecraftClient	onResolutionChanged	(II)V
+
+accessible	field	net/minecraft/client/gui/screen/Screen	client	Lnet/minecraft/client/MinecraftClient;
+accessible	field	net/minecraft/client/gui/widget/ButtonWidget	width	I
+accessible	field	net/minecraft/client/gui/widget/ButtonWidget	height	I

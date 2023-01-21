@@ -8,9 +8,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import lombok.*;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 @ToString
 @EqualsAndHashCode
@@ -135,7 +135,7 @@ public class Colour {
 	}
 
 	private int clamp(int channel) {
-		return MathHelper.clamp_int(channel, 0, 255);
+		return MathHelper.clamp(channel, 0, 255);
 	}
 
 	public Colour add(int amount) {
@@ -143,7 +143,7 @@ public class Colour {
 	}
 
 	public int getShadowValue() {
-		return Utils.getShadowColour(getValue());
+		return MinecraftUtils.getShadowColour(getValue());
 	}
 
 	public Colour getShadow() {
@@ -151,7 +151,7 @@ public class Colour {
 	}
 
 	public Colour lerp(Colour dest, float percent) {
-		return new Colour(Utils.lerpColour(value, dest.value, percent));
+		return new Colour(MinecraftUtils.lerpColour(value, dest.value, percent));
 	}
 
 	public double getLuminance() {

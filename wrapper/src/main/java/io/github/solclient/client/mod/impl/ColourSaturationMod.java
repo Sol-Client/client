@@ -12,27 +12,22 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.extension.ShaderGroupExtension;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.shader.*;
-import net.minecraft.util.ResourceLocation;
+import io.github.solclient.client.util.extension.ShaderEffectExtension;
+import net.minecraft.client.gl.*;
+import net.minecraft.client.resource.ResourceMetadataProvider;
+import net.minecraft.resource.Resource;
+import net.minecraft.util.Identifier;
 
 public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod {
 
-	private static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(
-			"minecraft:shaders/post/" + "color_convolve.json");
+	private static final Identifier ID = new Identifier("minecraft:shaders/post/" + "color_convolve.json");
 
 	@Expose
 	@Option
 	@Slider(min = 0, max = 2F, step = 0.1F)
 	private float saturation = 1f;
-	private ShaderGroup group;
+	private ShaderEffect effect;
 	private float groupSaturation;
-
-	public ShaderGroup getGroup() {
-		return group;
-	}
 
 	@Override
 	public String getId() {
@@ -47,27 +42,25 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 	@Override
 	public void onRegister() {
 		super.onRegister();
-		Client.INSTANCE.getPseudoResources().register(RESOURCE_LOCATION, new SaturationShader());
+		Client.INSTANCE.getPseudoResources().register(ID, new SaturationShader());
 	}
 
 	public void update() {
-		if (group == null) {
+		if (effect == null) {
 			groupSaturation = saturation;
 			try {
-				group = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(),
-						RESOURCE_LOCATION);
-				group.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), ID);
+				effect.setupDimensions(mc.width, mc.height);
 			} catch (JsonSyntaxException | IOException error) {
 				logger.error("Could not load saturation shader", error);
 			}
 		}
 
 		if (groupSaturation != saturation) {
-			((ShaderGroupExtension) group).getListShaders().forEach((shader) -> {
-				ShaderUniform saturationUniform = shader.getShaderManager().getShaderUniform("Saturation");
-				if (saturationUniform != null) {
+			((ShaderEffectExtension) effect).getPasses().forEach((shader) -> {
+				GlUniform saturationUniform = shader.getProgram().getUniformByName("Saturation");
+				if (saturationUniform != null)
 					saturationUniform.set(saturation);
-				}
 			});
 			groupSaturation = saturation;
 		}
@@ -76,13 +69,13 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 	@EventHandler
 	public void onPostProcessing(PostProcessingEvent event) {
 		update();
-		event.groups.add(getGroup());
+		event.effects.add(effect);
 	}
 
 	@Override
 	protected void onEnable() {
 		super.onEnable();
-		group = null;
+		effect = null;
 	}
 
 	@Override
@@ -95,10 +88,10 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 		saturation = Math.min(2, saturation + 0.1F);
 	}
 
-	public class SaturationShader implements IResource {
+	public class SaturationShader implements Resource {
 
 		@Override
-		public ResourceLocation getResourceLocation() {
+		public Identifier getId() {
 			return null;
 		}
 
@@ -125,7 +118,7 @@ public class ColourSaturationMod extends Mod implements PrimaryIntegerSettingMod
 		}
 
 		@Override
-		public <T extends IMetadataSection> T getMetadata(String p_110526_1_) {
+		public <T extends ResourceMetadataProvider> T getMetadata(String paramString) {
 			return null;
 		}
 

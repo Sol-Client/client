@@ -21,9 +21,9 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: temurin
-        java-version: 8
+        java-version: 17
     - name: Build Game Wrapper
-      run: cd wrapper && ./gradlew --no-daemon setupCIWorkspace && ./gradlew --no-daemon build && cd ..
+      run: cd wrapper && ./gradlew --no-daemon build && cd ..
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:

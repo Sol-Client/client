@@ -1,14 +1,14 @@
 package io.github.solclient.client.util.data;
 
 import io.github.solclient.client.lib.penner.easing.*;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 public enum EasingFunction {
 	LINEAR, QUAD, CUBIC, QUART, QUINT, EXPO, SINE, CIRC, BACK, BOUNCE, ELASTIC;
 
 	@Override
 	public String toString() {
-		return I18n.format("sol_client.easing." + name().toLowerCase());
+		return I18n.translate("sol_client.easing." + name().toLowerCase());
 	}
 
 	public float ease(float t, float b, float c, float d) {

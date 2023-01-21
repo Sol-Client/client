@@ -7,16 +7,18 @@ import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.screen.mods.*;
 import io.github.solclient.client.util.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.*;
-import net.minecraft.util.*;
+import io.github.solclient.util.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.*;
+import net.minecraft.text.*;
+import net.minecraft.util.Formatting;
 
 /**
  * Omnipresent listeners.
  */
 public final class DefaultEvents {
 
-	private final Minecraft mc = Minecraft.getMinecraft();
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 	private FilePollingTask pollingTask;
 	private boolean remindedUpdate;
 
@@ -34,7 +36,7 @@ public final class DefaultEvents {
 		Client.INSTANCE.getMods().forEach(Mod::postStart);
 
 		try {
-			Utils.unregisterKeyBinding((KeyBinding) GameSettings.class.getField("ofKeyBindZoom").get(mc.gameSettings));
+			MinecraftUtils.unregisterKeyBinding((KeyBinding) GameOptions.class.getField("ofKeyBindZoom").get(mc.options));
 		} catch (NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
 			// OptiFine is not enabled.
 		}
@@ -44,15 +46,15 @@ public final class DefaultEvents {
 
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
-		Utils.USER_DATA.cancel();
+		MinecraftUtils.USER_DATA.cancel();
 		if (!remindedUpdate && SolClientConfig.instance.remindMeToUpdate) {
 			remindedUpdate = true;
 			SemVer latest = SolClientConfig.instance.latestRelease;
 			if (latest != null && latest.isNewerThan(GlobalConstants.VERSION)) {
-				IChatComponent message = new ChatComponentText("A new version of Sol Client is available: " + latest
+				Text message = new LiteralText("A new version of Sol Client is available: " + latest
 						+ ".\nYou are currently on version " + GlobalConstants.VERSION_STRING + '.');
-				message.setChatStyle(message.getChatStyle().setColor(EnumChatFormatting.GREEN));
-				mc.ingameGUI.getChatGUI().printChatMessage(message);
+				message.setStyle(message.getStyle().setFormatting(Formatting.GREEN));
+				mc.inGameHud.getChatHud().addMessage(message);
 			}
 		}
 	}
@@ -62,11 +64,11 @@ public final class DefaultEvents {
 		if (pollingTask != null)
 			pollingTask.run();
 
-		if (SolClientConfig.instance.modsKey.isPressed())
-			mc.displayGuiScreen(new ModsScreen());
-		else if (SolClientConfig.instance.editHudKey.isPressed()) {
-			mc.displayGuiScreen(new ModsScreen());
-			mc.displayGuiScreen(new MoveHudsScreen());
+		if (SolClientConfig.instance.modsKey.wasPressed())
+			mc.setScreen(new ModsScreen());
+		else if (SolClientConfig.instance.editHudKey.wasPressed()) {
+			mc.setScreen(new ModsScreen());
+			mc.setScreen(new MoveHudsScreen());
 		}
 	}
 

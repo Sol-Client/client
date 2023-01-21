@@ -13,7 +13,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import com.google.gson.*;
 
 import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.util.*;
 
 /**
  * Socket connection to Discord client. Uses StreamKit.
@@ -227,7 +227,7 @@ public class DiscordSocket extends WebSocketClient {
 
 		HttpURLConnection connection = (HttpURLConnection) STREAMKIT_TOKEN.openConnection();
 		connection.setDoOutput(true);
-		connection.setRequestProperty("User-Agent", System.getProperty("http.agent"));
+		connection.setRequestProperty("User-Agent", GlobalConstants.USER_AGENT);
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty("Accept", "application/json");

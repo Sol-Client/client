@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.CpsMonitor;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SimpleHudMod;
-import io.github.solclient.client.util.Utils;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 
 public class CpsMod extends SimpleHudMod {
@@ -35,8 +35,7 @@ public class CpsMod extends SimpleHudMod {
 			int x = position.getX() + (53 / 2) - (width / 2);
 			int y = position.getY() + 4;
 
-			x = font.drawString(prefix + Integer.toString(CpsMonitor.LMB.getCps()), x, y, textColour.getValue(),
-					shadow);
+			x = font.draw(prefix + Integer.toString(CpsMonitor.LMB.getCps()), x, y, textColour.getValue(), shadow);
 
 			x--;
 			if (shadow)
@@ -44,17 +43,17 @@ public class CpsMod extends SimpleHudMod {
 
 			x += font.getCharWidth(' ');
 
-			Utils.drawVerticalLine(x, y - 1, y + 7, separatorColour.getValue());
+			MinecraftUtils.drawVerticalLine(x, y - 1, y + 7, separatorColour.getValue());
 
 			if (shadow) {
-				Utils.drawVerticalLine(x + 1, y, y + 8, separatorColour.getShadowValue());
+				MinecraftUtils.drawVerticalLine(x + 1, y, y + 8, separatorColour.getShadowValue());
 			}
 
 			x += 1;
 
 			x += font.getCharWidth(' ');
 
-			font.drawString(CpsMonitor.RMB.getCps() + " CPS" + suffix, x, y, textColour.getValue(), shadow);
+			font.draw(CpsMonitor.RMB.getCps() + " CPS" + suffix, x, y, textColour.getValue(), shadow);
 		}
 	}
 

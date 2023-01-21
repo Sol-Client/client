@@ -1,7 +1,8 @@
 package io.github.solclient.client.ui.screen;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.util.Window;
 
 public class SplashScreen {
 
@@ -9,30 +10,28 @@ public class SplashScreen {
 	private static final int BG = 0xFF000000;
 
 	public static final SplashScreen INSTANCE = new SplashScreen();
-	private Minecraft mc = Minecraft.getMinecraft();
+
+	private static final int STAGES = 18;
+
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 	private int stage;
-	private int stages = 18;
 
 	public void reset() {
 		stage = 0;
 	}
 
-	public void setStages(int stages) {
-		this.stages = stages;
-	}
-
 	public void draw() {
-		if (stage > stages) {
+		if (stage > STAGES) {
 			throw new IndexOutOfBoundsException(Integer.toString(stage));
 		}
 
-		ScaledResolution resolution = new ScaledResolution(mc);
-		int factor = resolution.getScaleFactor();
+		Window window = new Window(mc);
+		int factor = window.getScaleFactor();
 
-		Gui.drawRect(0, resolution.getScaledHeight() * factor - 30, resolution.getScaledWidth() * factor,
-				resolution.getScaledHeight() * factor, BG);
-		Gui.drawRect(0, resolution.getScaledHeight() * factor - 30,
-				resolution.getScaledWidth() * factor / stages * stage, resolution.getScaledHeight() * factor, FG);
+		DrawableHelper.fill(0, window.getHeight() * factor - 30, window.getWidth() * factor,
+				window.getHeight() * factor, BG);
+		DrawableHelper.fill(0, window.getHeight() * factor - 30, window.getWidth() * factor / STAGES * stage,
+				window.getHeight() * factor, FG);
 		stage++;
 	}
 

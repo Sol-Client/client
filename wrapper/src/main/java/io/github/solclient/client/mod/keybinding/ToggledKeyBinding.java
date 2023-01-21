@@ -3,14 +3,14 @@ package io.github.solclient.client.mod.keybinding;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostTickEvent;
 import io.github.solclient.client.mod.Mod;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.resource.language.I18n;
 
 public abstract class ToggledKeyBinding<ModType extends Mod> extends KeyBinding {
 
 	public final ModType mod;
-	private final Minecraft mc = Minecraft.getMinecraft();
+	private final MinecraftClient mc = MinecraftClient.getInstance();
 	private boolean wasDown;
 	private long startTime;
 
@@ -21,7 +21,7 @@ public abstract class ToggledKeyBinding<ModType extends Mod> extends KeyBinding 
 
 	@EventHandler
 	public void tickBinding(PostTickEvent event) {
-		boolean down = super.isKeyDown();
+		boolean down = super.isPressed();
 		if (mod.isEnabled()) {
 			if (down) {
 				if (!wasDown) {
@@ -43,22 +43,21 @@ public abstract class ToggledKeyBinding<ModType extends Mod> extends KeyBinding 
 	}
 
 	@Override
-	public boolean isKeyDown() {
-		if (mod.isEnabled()) {
+	public boolean isPressed() {
+		if (mod.isEnabled())
 			return mc.currentScreen == null && getState() != null;
-		}
-		return super.isKeyDown();
+
+		return super.isPressed();
 	}
 
 	public String getText(boolean editMode) {
 		String translationId;
-		if (editMode) {
+		if (editMode)
 			translationId = String.format("sol_client.mod.%s.%s", mod.getId(),
 					ToggleState.TOGGLED.name().toLowerCase());
-		} else {
+		else
 			translationId = String.format("sol_client.mod.%s.%s", mod.getId(), getState().name().toLowerCase());
-		}
-		return I18n.format(translationId);
+		return I18n.translate(translationId);
 	}
 
 	public abstract void postStateUpdate(ToggleState newState);

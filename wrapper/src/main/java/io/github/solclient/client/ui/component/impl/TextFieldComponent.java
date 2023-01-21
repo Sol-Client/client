@@ -10,9 +10,10 @@ import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.*;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.util.SharedConstants;
+import net.minecraft.util.math.MathHelper;
 
 public class TextFieldComponent extends Component {
 
@@ -67,7 +68,7 @@ public class TextFieldComponent extends Component {
 	}
 
 	private int clamp(int value) {
-		return MathHelper.clamp_int(value, 0, text.length());
+		return MathHelper.clamp(value, 0, text.length());
 	}
 
 	@Override
@@ -124,7 +125,7 @@ public class TextFieldComponent extends Component {
 		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
 		NanoVG.nvgFillColor(nvg, (hasPlaceholder ? new Colour(0xFF888888) : Colour.WHITE).nvg());
-		regularFont.renderString(nvg, hasPlaceholder ? I18n.format(placeholder) : text, textOffset, 0);
+		regularFont.renderString(nvg, hasPlaceholder ? I18n.translate(placeholder) : text, textOffset, 0);
 
 		if (focused && ticks / 12 % 2 == 0) {
 			NanoVG.nvgShapeAntiAlias(nvg, false);
@@ -153,45 +154,41 @@ public class TextFieldComponent extends Component {
 
 	@Override
 	public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
-		if (!focused) {
+		if (!focused)
 			return false;
-		}
 
-		if (GuiScreen.isKeyComboCtrlA(keyCode)) {
+		if (Screen.isSelectAll(keyCode)) {
 			setCursorPositionEnd();
 			setSelectionPosition(0);
 			return true;
 		}
 
-		if (GuiScreen.isKeyComboCtrlC(keyCode)) {
-			GuiScreen.setClipboardString(getSelectedText());
+		if (Screen.isCopy(keyCode)) {
+			Screen.setClipboard(getSelectedText());
 			return true;
 		}
 
-		if (GuiScreen.isKeyComboCtrlV(keyCode)) {
-			if (enabled) {
-				writeText(GuiScreen.getClipboardString());
-			}
+		if (Screen.isPaste(keyCode)) {
+			if (enabled)
+				writeText(Screen.getClipboard());
 
 			return true;
 		}
 
-		if (GuiScreen.isKeyComboCtrlX(keyCode)) {
-			GuiScreen.setClipboardString(getSelectedText());
+		if (Screen.isCut(keyCode)) {
+			Screen.setClipboard(getSelectedText());
 
-			if (enabled) {
+			if (enabled)
 				writeText("");
-			}
 
 			return true;
 		}
 
 		switch (keyCode) {
 			case 14:
-				if (GuiScreen.isCtrlKeyDown()) {
-					if (enabled) {
+				if (Screen.hasControlDown()) {
+					if (enabled)
 						deleteWords(-1);
-					}
 				} else if (enabled) {
 					deleteFromCursor(-1);
 				}
@@ -199,61 +196,53 @@ public class TextFieldComponent extends Component {
 				return true;
 
 			case 199:
-				if (GuiScreen.isShiftKeyDown()) {
+				if (Screen.hasShiftDown())
 					setSelectionPosition(0);
-				} else {
+				else
 					setCursorPosition(0);
-				}
 
 				return true;
 
 			case 203:
-				if (GuiScreen.isShiftKeyDown()) {
-					if (GuiScreen.isCtrlKeyDown()) {
+				if (Screen.hasShiftDown()) {
+					if (Screen.hasControlDown())
 						setSelectionPosition(getWordFromPosition(-1, selectionEnd));
-					} else {
+					else
 						setSelectionPosition(selectionEnd - 1);
-					}
-				} else if (GuiScreen.isCtrlKeyDown()) {
+				} else if (Screen.hasControlDown()) {
 					setCursorPosition(getWordFromCursor(-1));
-				} else {
+				} else
 					moveCursorBy(-1);
-				}
 
 				return true;
 
 			case 205:
-				if (GuiScreen.isShiftKeyDown()) {
-					if (GuiScreen.isCtrlKeyDown()) {
+				if (Screen.hasShiftDown()) {
+					if (Screen.hasControlDown())
 						this.setSelectionPosition(getWordFromPosition(1, selectionEnd));
-					} else {
+					else
 						this.setSelectionPosition(selectionEnd + 1);
-					}
-				} else if (GuiScreen.isCtrlKeyDown()) {
+				} else if (Screen.hasControlDown())
 					setCursorPosition(getWordFromCursor(1));
-				} else {
+				else
 					moveCursorBy(1);
-				}
 
 				return true;
 
 			case 207:
-				if (GuiScreen.isShiftKeyDown()) {
+				if (Screen.hasShiftDown())
 					setSelectionPosition(text.length());
-				} else {
+				else
 					setCursorPositionEnd();
-				}
 
 				return true;
 
 			case 211:
-				if (GuiScreen.isCtrlKeyDown()) {
-					if (enabled) {
+				if (Screen.hasControlDown()) {
+					if (enabled)
 						deleteWords(1);
-					}
-				} else if (enabled) {
+				} else if (enabled)
 					deleteFromCursor(1);
-				}
 
 				return true;
 
@@ -262,10 +251,9 @@ public class TextFieldComponent extends Component {
 				return true;
 
 			default:
-				if (ChatAllowedCharacters.isAllowedCharacter(character)) {
-					if (enabled) {
+				if (SharedConstants.isValidChar(character)) {
+					if (enabled)
 						writeText(Character.toString(character));
-					}
 
 					return true;
 				} else {
@@ -348,7 +336,7 @@ public class TextFieldComponent extends Component {
 
 	private void writeText(String text) {
 		String result = "";
-		String filtered = ChatAllowedCharacters.filterAllowedCharacters(text);
+		String filtered = SharedConstants.stripInvalidChars(text);
 		int start = cursor < selectionEnd ? cursor : selectionEnd;
 		int end = cursor < selectionEnd ? selectionEnd : cursor;
 		int k = 32 - text.length() - (start - end);

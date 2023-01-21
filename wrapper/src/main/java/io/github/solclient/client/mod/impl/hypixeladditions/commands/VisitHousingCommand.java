@@ -12,33 +12,33 @@ public class VisitHousingCommand extends HypixelAdditionsCommand {
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+	public void execute(CommandSource sender, String[] args) throws CommandException {
 		if (args.length == 1) {
 			if (mod.isHousing()) {
-				mc.thePlayer.sendChatMessage("/visit " + args[0]);
+				mc.player.sendChatMessage("/visit " + args[0]);
 			} else {
-				mc.thePlayer.sendChatMessage("/lobby housing");
+				mc.player.sendChatMessage("/lobby housing");
 				new Thread(() -> {
 					try {
 						Thread.sleep(300);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					mc.thePlayer.sendChatMessage("/visit " + args[0]);
+					mc.player.sendChatMessage("/visit " + args[0]);
 				}).start();
 			}
 			return;
 		}
-		throw new WrongUsageException("Usage: " + getCommandUsage(sender), new Object[0]);
+		throw new IncorrectUsageException("Usage: " + getUsageTranslationKey(sender), new Object[0]);
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
+	public String getUsageTranslationKey(CommandSource sender) {
 		return "/visithousing <player>";
 	}
 
 	@Override
-	public List<String> getCommandAliases() {
+	public List<String> getAliases() {
 		return Arrays.asList("housing");
 	}
 

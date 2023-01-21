@@ -3,36 +3,38 @@ package io.github.solclient.client.ui.screen;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-import com.google.common.collect.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.options.LanguageOptionsScreen;
+import net.minecraft.client.gui.widget.ListWidget;
+import net.minecraft.client.resource.language.LanguageDefinition;
+import net.minecraft.client.util.Window;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.resources.Language;
+public class BetterLanguageGui extends ListWidget {
 
-public class BetterLanguageGui extends GuiSlot {
+	private final List<String> langCodeList = new ArrayList<>();
+	private final Map<String, LanguageDefinition> languageMap = new HashMap<>();
 
-	private final List<String> langCodeList = Lists.<String>newArrayList();
-	private final Map<String, Language> languageMap = Maps.<String, Language>newHashMap();
+	public BetterLanguageGui(MinecraftClient mc, LanguageOptionsScreen parent) {
+		super(mc, parent.width, parent.height, 32, parent.height - 65 + 4, 18);
 
-	public BetterLanguageGui(Minecraft mcIn, GuiLanguage parent) {
-		super(mcIn, parent.width, parent.height, 32, parent.height - 65 + 4, 18);
-
-		for (Language language : Minecraft.getMinecraft().getLanguageManager().getLanguages()) {
-			this.languageMap.put(language.getLanguageCode(), language);
-			this.langCodeList.add(language.getLanguageCode());
+		for (LanguageDefinition language : MinecraftClient.getInstance().getLanguageManager().getAllLanguages()) {
+			this.languageMap.put(language.getCode(), language);
+			this.langCodeList.add(language.getCode());
 		}
 	}
 
-	protected int getSize() {
+	@Override
+	protected int getEntryCount() {
 		return this.langCodeList.size();
 	}
 
-	protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
-		Language language = this.languageMap.get(this.langCodeList.get(slotIndex));
-		mc.getLanguageManager().setCurrentLanguage(language);
-		mc.gameSettings.language = language.getLanguageCode();
+	@Override
+	protected void selectEntry(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
+		LanguageDefinition language = this.languageMap.get(this.langCodeList.get(slotIndex));
+		client.getLanguageManager().setLanguage(language);
+		client.options.language = language.getCode();
 
-		mc.getLanguageManager().onResourceManagerReload(mc.getResourceManager());
+		client.getLanguageManager().reload(client.getResourceManager());
 		try {
 			Class.forName("net.optifine.Lang").getMethod("resourcesReloaded").invoke(null);
 		} catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
@@ -40,36 +42,38 @@ public class BetterLanguageGui extends GuiSlot {
 			// OptiFine not installed
 		}
 
-		mc.fontRendererObj
-				.setUnicodeFlag(mc.getLanguageManager().isCurrentLocaleUnicode() || mc.gameSettings.forceUnicodeFont);
-		mc.fontRendererObj.setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
+		client.textRenderer
+				.setUnicode(client.getLanguageManager().forcesUnicodeFont() || client.options.forcesUnicodeFont);
+		client.textRenderer.setRightToLeft(client.getLanguageManager().isRightToLeft());
 
-		ScaledResolution resolution = new ScaledResolution(mc);
-		mc.currentScreen.setWorldAndResolution(mc, resolution.getScaledWidth(), resolution.getScaledHeight());
+		Window window = new Window(client);
+		client.currentScreen.init(client, window.getWidth(), window.getHeight());
 
-		mc.gameSettings.saveOptions();
+		client.options.save();
 	}
 
-	protected boolean isSelected(int slotIndex) {
-		return (this.langCodeList.get(slotIndex))
-				.equals(mc.getLanguageManager().getCurrentLanguage().getLanguageCode());
+	@Override
+	protected boolean isEntrySelected(int slotIndex) {
+		return (this.langCodeList.get(slotIndex)).equals(client.getLanguageManager().getLanguage().getCode());
 	}
 
-	protected int getContentHeight() {
-		return this.getSize() * 18;
+	@Override
+	protected int getMaxPosition() {
+		return getEntryCount() * 18;
 	}
 
-	protected void drawBackground() {
-		mc.currentScreen.drawDefaultBackground();
+	@Override
+	protected void renderBackground() {
+		client.currentScreen.renderBackground();
 	}
 
-	protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn,
+	@Override
+	protected void renderEntry(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn,
 			int mouseYIn) {
-		mc.fontRendererObj.setBidiFlag(true);
-		mc.currentScreen.drawCenteredString(mc.fontRendererObj,
-				((Language) this.languageMap.get(this.langCodeList.get(entryID))).toString(), this.width / 2,
-				p_180791_3_ + 1, 16777215);
-		mc.fontRendererObj.setBidiFlag(mc.getLanguageManager().getCurrentLanguage().isBidirectional());
+		client.textRenderer.setRightToLeft(true);
+		client.currentScreen.drawCenteredString(client.textRenderer,
+				languageMap.get(this.langCodeList.get(entryID)).toString(), this.width / 2, p_180791_3_ + 1, 16777215);
+		client.textRenderer.setRightToLeft(client.getLanguageManager().getLanguage().isRightToLeft());
 	}
 
 }

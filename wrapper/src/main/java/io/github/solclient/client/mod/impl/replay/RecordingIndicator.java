@@ -1,22 +1,20 @@
 package io.github.solclient.client.mod.impl.replay;
 
-import org.lwjgl.opengl.GL11;
-
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.replaymod.recording.gui.GuiRecordingControls;
 
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.util.Identifier;
 
 public class RecordingIndicator extends BaseHudElement {
 
-	private static final ResourceLocation RECORDING = new ResourceLocation("textures/gui/sol_client_recording.png");
-	private static final ResourceLocation PAUSED = new ResourceLocation("textures/gui/sol_client_paused.png");
+	private static final Identifier RECORDING = new Identifier("textures/gui/sol_client_recording.png");
+	private static final Identifier PAUSED = new Identifier("textures/gui/sol_client_paused.png");
 
 	public static GuiRecordingControls guiControls;
 	private final SCReplayMod mod;
@@ -36,24 +34,23 @@ public class RecordingIndicator extends BaseHudElement {
 			return;
 		}
 
-		Minecraft mc = Minecraft.getMinecraft();
+		MinecraftClient mc = MinecraftClient.getInstance();
 
 		boolean paused = !editMode && guiControls.isPaused();
 
-		String text = paused ? I18n.format("replaymod.gui.paused") : I18n.format("replaymod.gui.recording");
+		String text = paused ? I18n.translate("replaymod.gui.paused") : I18n.translate("replaymod.gui.recording");
 
-		mc.fontRendererObj.drawString(text, 20 + position.getX(),
-				position.getY() + 8 - (mc.fontRendererObj.FONT_HEIGHT / 2), mod.recordingIndicatorTextColour.getValue(),
-				mod.recordingIndicatorTextShadow);
+		mc.textRenderer.draw(text, 20 + position.getX(), position.getY() + 8 - (mc.textRenderer.fontHeight / 2),
+				mod.recordingIndicatorTextColour.getValue(), mod.recordingIndicatorTextShadow);
 
 		mc.getTextureManager().bindTexture(paused ? PAUSED : RECORDING);
 
 		GlStateManager.enableBlend();
 		SCReplayMod.instance.recordingIndicatorColour.bind();
 
-		Gui.drawModalRectWithCustomSizedTexture(position.getX(), position.getY(), 0, 0, 16, 16, 16, 16);
+		DrawableHelper.drawTexture(position.getX(), position.getY(), 0, 0, 16, 16, 16, 16);
 
-		GL11.glColor4f(1, 1, 1, 1);
+		GlStateManager.color(1, 1, 1, 1);
 	}
 
 	@Override

@@ -139,19 +139,6 @@ class Utils {
 		return new Promise((resolve) => resolve(true));
 	}
 
-	static getOptiFine(version) {
-		return new Promise((resolve) => {
-			axios.get("https://optifine.net/adloadx?f=OptiFine_" + version + ".jar")
-				.then((response) => {
-					let link = "https://optifine.net/downloadx?f=" +
-							response.data.substring(response.data
-									.indexOf("<a href='downloadx?f=")
-									 		+ "<a href='downloadx?f=".length, response.data.indexOf("' onclick='onDownload()'>"))
-					resolve(link);
-				});
-		});
-	}
-
 	static getOsName() {
 		switch(os.type()) {
 			case "Linux":

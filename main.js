@@ -120,7 +120,7 @@ async function run() {
 				});
 	});
 
-	ipcMain.on("crash", async(_event, report, file, optifine) => {
+	ipcMain.on("crash", async(_event, report, file) => {
 		let option = dialog.showMessageBoxSync(window, {
 			title: "Game Crashed",
 			message: `The game has crashed.
@@ -156,10 +156,6 @@ If you have private messages, try reproducing this issue again.`,
 		}
 
 		let running = `Running Sol Client v${Utils.version}`;
-
-		if(optifine) {
-			running += " with " + optifine;
-		}
 
 		running += " on " + Utils.getNiceOsName();
 		running += ".";

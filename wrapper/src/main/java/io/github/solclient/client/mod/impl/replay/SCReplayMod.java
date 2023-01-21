@@ -15,8 +15,8 @@ import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.replay.fix.SCReplayModBackend;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import io.github.solclient.client.util.data.Colour;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.world.ClientWorld;
 
 /**
  * Sol Client representation of Replay Mod. This allows it to appear in the mod
@@ -110,7 +110,7 @@ public class SCReplayMod extends Mod {
 
 	@Override
 	public String getCredit() {
-		return I18n.format("sol_client.mod.screen.modified_from", "CrushedPixel, johni0702");
+		return I18n.translate("sol_client.mod.screen.modified_from", "CrushedPixel, johni0702");
 	}
 
 	@Override
@@ -154,7 +154,7 @@ public class SCReplayMod extends Mod {
 		super.onEnable();
 		deferedState = Boolean.TRUE;
 
-		updateState(mc.theWorld);
+		updateState(mc.world);
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class SCReplayMod extends Mod {
 		super.onDisable();
 		deferedState = Boolean.FALSE;
 
-		updateState(mc.theWorld);
+		updateState(mc.world);
 	}
 
 	public class ConstantListener {
@@ -181,7 +181,7 @@ public class SCReplayMod extends Mod {
 
 	}
 
-	private void updateState(WorldClient world) {
+	private void updateState(ClientWorld world) {
 		updateSettings();
 
 		if (world == null && deferedState != null && deferedState != enabled) {

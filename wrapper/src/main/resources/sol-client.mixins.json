@@ -60,6 +60,7 @@
 		"client.MixinTextureUtil",
 		"client.MixinTitleScreen",
 		"client.MixinTranslationStorage",
+		"client.MixinVertexBuffer",
 		"lwjgl.MixinGLContext",
 		"lwjgl.MixinLinuxKeyboard",
 		"lwjgl.MixinLinuxKeycodes",

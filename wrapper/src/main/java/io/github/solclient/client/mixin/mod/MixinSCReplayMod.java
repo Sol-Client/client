@@ -188,12 +188,12 @@ public class MixinSCReplayMod {
 
 		private static final double SPEED_MODIFIER = 1;
 
-		@ModifyConstant(method = "decreaseSpeed", constant = @Constant(doubleValue = 0.5D), remap = false)
+		@ModifyConstant(method = "decreaseSpeed", constant = @Constant(doubleValue = 0.00999), remap = false)
 		public double getDecreaseSpeedModifier(double original) {
 			return SPEED_MODIFIER;
 		}
 
-		@ModifyConstant(method = "increaseSpeed", constant = @Constant(doubleValue = 0.5D), remap = false)
+		@ModifyConstant(method = "increaseSpeed", constant = @Constant(doubleValue = 0.00999), remap = false)
 		public double getIncreaseSpeedModifier(double original) {
 			return SPEED_MODIFIER;
 		}

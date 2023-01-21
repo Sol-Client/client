@@ -45,7 +45,7 @@ import net.md_5.specialsource.JarMapping;
 public final class ReplayModRemapper {
 
 	public static final Map<String, String> RELOCATIONS = new HashMap<>();
-	private static final String REMAPPER_VERSION = "4";
+	private static final String REMAPPER_VERSION = "5";
 	private static final String VERSION_ID = "thijJjIp";
 	private static final String VERSION_COMBINED;
 

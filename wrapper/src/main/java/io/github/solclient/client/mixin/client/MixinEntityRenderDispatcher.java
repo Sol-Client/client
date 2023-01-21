@@ -34,7 +34,7 @@ public abstract class MixinEntityRenderDispatcher {
 		}
 	}
 
-	@Inject(method = "renderDebugBoundingBox", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "renderHitbox", at = @At("HEAD"), cancellable = true)
 	public void hitboxEvent(Entity entityIn, double x, double y, double z, float entityYaw, float partialTicks,
 			CallbackInfo callback) {
 		if (Client.INSTANCE.getEvents()
@@ -43,7 +43,7 @@ public abstract class MixinEntityRenderDispatcher {
 		}
 	}
 
-	private static final String UPDATE_CAMERA = "updateCamera(Lnet/minecraft/world/World;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity;Lnet/minecraft/client/options/GameOptions;F)V";
+	private static final String UPDATE_CAMERA = "updateCamera(Lnet/minecraft/world/World;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity;Lnet/minecraft/client/option/GameOptions;F)V";
 	private static float sc$yaw, sc$prevYaw, sc$pitch, sc$prevPitch;
 
 	@Inject(method = UPDATE_CAMERA, at = @At("HEAD"))

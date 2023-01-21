@@ -4,6 +4,9 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "sol-client-wrapper-refmap.json",
 	"minVersion": "0.8.5",
+	"injectors": {
+		"defaultRequire": 1
+	},
 	"mixins": [
 		"MixinBlockEntity",
 		"MixinEntity",
@@ -33,6 +36,7 @@
 		"client.MixinHandledScreen",
 		"client.MixinHeldItemRenderer",
 		"client.MixinInGameHud",
+		"client.MixinItemRenderer",
 		"client.MixinItemEntityRenderer",
 		"client.MixinKeyBinding",
 		"client.MixinKeyBindingEntry",

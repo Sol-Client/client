@@ -87,6 +87,8 @@ public final class Prelaunch {
 
 		remap(optifineExtractedJar, optifineIntermediaryJarTemp, gameJar);
 		Files.move(optifineIntermediaryJarTemp, optifineIntermediaryJar);
+		Files.delete(optifineJar);
+		Files.delete(optifineExtractedJar);
 
 		return optifineIntermediaryJar;
 	}

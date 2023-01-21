@@ -19,7 +19,7 @@ public abstract class MixinAbstractClientPlayerEntity extends PlayerEntity {
 		super(world, profile);
 	}
 
-	@Inject(method = "getCapeId", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "getSkinId" /* TODO try to get legacy yarn to fix this! */, at = @At("HEAD"), cancellable = true)
 	public void overrideCapeLocation(CallbackInfoReturnable<Identifier> callback) {
 		if (!CosmeticaMod.enabled)
 			return;

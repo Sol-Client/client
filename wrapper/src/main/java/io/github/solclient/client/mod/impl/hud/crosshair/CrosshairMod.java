@@ -1,7 +1,5 @@
 package io.github.solclient.client.mod.impl.hud.crosshair;
 
-import org.spongepowered.asm.mixin.Shadow;
-
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
@@ -18,7 +16,7 @@ import net.minecraft.world.level.LevelInfo.GameMode;
 
 public class CrosshairMod extends HudMod {
 
-	@Shadow
+	@Expose
 	@Option
 	private boolean customCrosshair = false;
 	@Expose

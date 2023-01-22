@@ -458,7 +458,6 @@ sol_client.mod.screen.by=, by %s
 sol_client.mod.screen.about=About Sol Client
 sol_client.mod.screen.license=Licensed under the GPL v3 license.
 
-sol_client.mod.screen.pixel_matrix=Edit Graphic
 sol_client.mod.screen.default=(Default)
 
 sol_client.hud.edit=Edit HUD

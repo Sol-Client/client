@@ -74,8 +74,10 @@ public final class PixelMatrix {
 		// thanks AxolotlClient!
 		// I didn't know NativeImageBackedTexture existed
 		/// lazy load for those wishing to use this class just for pixel storage
-		if (texture == null)
+		if (texture == null) {
 			texture = new NativeImageBackedTexture(width, height);
+			nvgImage = NanoVGGL3.nvglCreateImageFromHandle(NanoVGManager.getNvg(), texture.getGlId(), width, height, 0);
+		}
 
 		// reupload
 		int hash = hashCode();
@@ -89,7 +91,6 @@ public final class PixelMatrix {
 				texture.getPixels()[i] = get(i) ? fg : bg;
 
 			texture.upload();
-			nvgImage = NanoVGGL3.nvglCreateImageFromHandle(NanoVGManager.getNvg(), texture.getGlId(), width, height, 0);
 		}
 
 		return texture.getGlId();

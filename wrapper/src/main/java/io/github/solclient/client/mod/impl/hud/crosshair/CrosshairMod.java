@@ -79,8 +79,6 @@ public class CrosshairMod extends HudMod {
 				return;
 			}
 
-			int scale = customCrosshair ? 15 : 16;
-
 			crosshairColour.bind();
 
 			GlStateManager.enableBlend();
@@ -97,12 +95,14 @@ public class CrosshairMod extends HudMod {
 
 			Window window = new Window(mc);
 
-			float half = customCrosshair ? 7.5F : 8;
+			float half = customCrosshair ? crosshairPixels.getWidth() / 2 : 8;
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(getScale(), getScale(), getScale());
 			GlStateManager.translate((int) (window.getScaledWidth() / getScale() / 2 - half), (int) (window.getScaledHeight() / getScale() / 2 - half), 0);
 
 			bind();
+
+			int scale = customCrosshair ? crosshairPixels.getWidth() : 16;
 
 			if (customCrosshair)
 				DrawableHelper.drawTexture(0, 0, 0, 0, scale, scale, scale, scale, scale, scale);

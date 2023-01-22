@@ -1,4 +1,4 @@
-package io.github.solclient.client.ui.component.impl;
+package io.github.solclient.client.ui.screen.mods;
 
 import java.util.function.Consumer;
 
@@ -7,6 +7,7 @@ import org.lwjgl.nanovg.*;
 import io.github.solclient.client.mod.ModOption;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;

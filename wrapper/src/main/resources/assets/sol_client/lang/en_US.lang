@@ -189,20 +189,8 @@ sol_client.mod.tab_list.option.textShadow=Text Shadow
 sol_client.mod.crosshair.name=Crosshair
 sol_client.mod.crosshair.description=Customize the crosshair.
 
-sol_client.mod.crosshair.option.style=Style
-sol_client.mod.crosshair.option.style.default=Default
-sol_client.mod.crosshair.option.style.none=None
-sol_client.mod.crosshair.option.style.dot=Dot
-sol_client.mod.crosshair.option.style.plus=Plus
-sol_client.mod.crosshair.option.style.plus_dot=Plus Dot
-sol_client.mod.crosshair.option.style.square=Square
-sol_client.mod.crosshair.option.style.square_dot=Square Dot
-sol_client.mod.crosshair.option.style.circle=Circle
-sol_client.mod.crosshair.option.style.circle_dot=Circle Dot
-sol_client.mod.crosshair.option.style.four_angled=4 Angled
-sol_client.mod.crosshair.option.style.four_angled_dot=4 Angled Dot
-sol_client.mod.crosshair.option.style.triangle=Triangle
-
+sol_client.mod.crosshair.option.customCrosshair=Custom Crosshair
+sol_client.mod.crosshair.option.crosshairPixels=Pixels
 sol_client.mod.crosshair.option.thirdPerson=Show in Third Person
 sol_client.mod.crosshair.option.spectatorAlways=Show in Spectator Mode
 sol_client.mod.crosshair.option.debug=Show in Debug Overlay
@@ -470,6 +458,7 @@ sol_client.mod.screen.by=, by %s
 sol_client.mod.screen.about=About Sol Client
 sol_client.mod.screen.license=Licensed under the GPL v3 license.
 
+sol_client.mod.screen.pixel_matrix=Edit Graphic
 sol_client.mod.screen.default=(Default)
 
 sol_client.hud.edit=Edit HUD

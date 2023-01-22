@@ -16,7 +16,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 
-public class ModOption {
+// TODO urghhhhhhhh subclasses use them please!!
+public final class ModOption {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -36,31 +37,29 @@ public class ModOption {
 		this.mod = mod;
 		this.field = field;
 
-		if (field != null) {
-			field.setAccessible(true);
+		field.setAccessible(true);
 
-			if (field.isAnnotationPresent(FileOption.class)) {
-				configFile = field.getAnnotation(FileOption.class);
+		if (field.isAnnotationPresent(FileOption.class)) {
+			configFile = field.getAnnotation(FileOption.class);
 
-				file = new File(MinecraftClient.getInstance().runDirectory, configFile.file());
-				readFile();
-			}
-
-			if (field.isAnnotationPresent(StringOption.class)) {
-				placeholder = field.getAnnotation(StringOption.class).value();
-			}
-
-			String name = field.getDeclaringClass() + "." + field.getName();
-
-			if (Modifier.isFinal(field.getModifiers()) && !(field.getType() == KeyBinding.class))
-				LOGGER.warn("Mod option {} is final", name);
-
-			if (getValue() == null)
-				LOGGER.warn("Mod option {} has no default value. This may cause a crash.", name);
-
-			if (field.getType() == KeyBinding.class)
-				MinecraftUtils.registerKeyBinding((KeyBinding) getValue());
+			file = new File(MinecraftClient.getInstance().runDirectory, configFile.file());
+			readFile();
 		}
+
+		if (field.isAnnotationPresent(StringOption.class)) {
+			placeholder = field.getAnnotation(StringOption.class).value();
+		}
+
+		String name = field.getDeclaringClass() + "." + field.getName();
+
+		if (Modifier.isFinal(field.getModifiers()) && !(field.getType() == KeyBinding.class))
+			LOGGER.warn("Mod option {} is final", name);
+
+		if (getValue() == null)
+			LOGGER.warn("Mod option {} has no default value. This may cause a crash.", name);
+
+		if (field.getType() == KeyBinding.class)
+			MinecraftUtils.registerKeyBinding((KeyBinding) getValue());
 
 		priority = option.priority();
 
@@ -78,9 +77,8 @@ public class ModOption {
 
 		applyToAllClass = option.applyToAllClass();
 
-		if (applyToAllClass.isEmpty()) {
+		if (applyToAllClass.isEmpty())
 			applyToAllClass = null;
-		}
 	}
 
 	public boolean isFile() {

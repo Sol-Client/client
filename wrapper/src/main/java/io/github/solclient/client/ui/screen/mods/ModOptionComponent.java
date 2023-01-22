@@ -3,6 +3,7 @@ package io.github.solclient.client.ui.screen.mods;
 import java.lang.reflect.*;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
+import java.util.BitSet;
 
 import org.lwjgl.input.Keyboard;
 
@@ -266,6 +267,17 @@ public class ModOptionComponent extends BlockComponent {
 			field.autoFlush();
 			field.setText((String) option.getValue());
 			add(field, defaultBoundController);
+		} else if (option.getType() == PixelMatrix.class) {
+			onClick((info, button) -> {
+				if (button != 0)
+					return false;
+
+				MinecraftUtils.playClickSound(true);
+				screen.getRoot().setDialog(new PixelMatrixDialog(option));
+				return true;
+			});
+
+			add(new PixelMatrixComponent((PixelMatrix) option.getValue()), defaultBoundController);
 		}
 	}
 

@@ -1,5 +1,7 @@
 package io.github.solclient.client.mod.impl.hud.crosshair;
 
+import org.spongepowered.asm.mixin.Shadow;
+
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
@@ -8,20 +10,20 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.util.MinecraftUtils;
-import io.github.solclient.client.util.data.Colour;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.Window;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult.Type;
 import net.minecraft.world.level.LevelInfo.GameMode;
 
 public class CrosshairMod extends HudMod {
 
-	private static final Identifier CLIENT_CROSSHAIRS = new Identifier("textures/gui" + "/sol_client_crosshairs.png");
-
+	@Shadow
+	@Option
+	private boolean customCrosshair = false;
 	@Expose
 	@Option
-	private CrosshairStyle style = CrosshairStyle.DEFAULT;
+	private final PixelMatrix crosshairPixels = new PixelMatrix(15, 15);
 	@Expose
 	@Option
 	private boolean thirdPerson = true;
@@ -44,9 +46,28 @@ public class CrosshairMod extends HudMod {
 	@Option
 	private Colour entityColour = Colour.PURE_RED;
 
+	{
+		// draw a cross
+		for (int i = 0; i < 9; i++)
+			crosshairPixels.set(52 + i * 15);
+		for (int i = 0; i < 4; i++)
+			crosshairPixels.set(108 + i);
+		for (int i = 0; i < 4; i++)
+			crosshairPixels.set(113 + i);
+	}
+
 	@Override
 	public String getId() {
 		return "crosshair";
+	}
+
+	private void bind() {
+		if (!customCrosshair) {
+			mc.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
+			return;
+		}
+
+		crosshairPixels.bind(-1, 0);
 	}
 
 	@EventHandler
@@ -59,12 +80,8 @@ public class CrosshairMod extends HudMod {
 					|| (!thirdPerson && mc.options.perspective != 0)) {
 				return;
 			}
-			Window window = new Window(mc);
 
-			GlStateManager.pushMatrix();
-			GlStateManager.scale(getScale(), getScale(), getScale());
-			GlStateManager.translate((int) (window.getScaledWidth() / getScale() / 2 - 7),
-					(int) (window.getScaledHeight() / getScale() / 2 - 7), 0);
+			int scale = customCrosshair ? 15 : 16;
 
 			crosshairColour.bind();
 
@@ -80,18 +97,21 @@ public class CrosshairMod extends HudMod {
 				GlStateManager.enableAlphaTest();
 			}
 
-			if (style == CrosshairStyle.DEFAULT) {
-				mc.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
+			Window window = new Window(mc);
+
+			float half = customCrosshair ? 7.5F : 8;
+			GlStateManager.pushMatrix();
+			GlStateManager.scale(getScale(), getScale(), getScale());
+			GlStateManager.translate((int) (window.getScaledWidth() / getScale() / 2 - half), (int) (window.getScaledHeight() / getScale() / 2 - half), 0);
+
+			bind();
+
+			if (customCrosshair)
+				DrawableHelper.drawTexture(0, 0, 0, 0, scale, scale, scale, scale, scale, scale);
+			else
 				MinecraftUtils.drawTexture(0, 0, 0, 0, 16, 16, 0);
-			} else {
-				mc.getTextureManager().bindTexture(CLIENT_CROSSHAIRS);
-				int v = (style.ordinal() - 2) * 16;
-				MinecraftUtils.drawTexture(0, 0, 0, v, 16, 16, 0);
-				mc.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
-			}
 
 			GlStateManager.color(1, 1, 1, 1);
-
 			GlStateManager.popMatrix();
 		}
 	}

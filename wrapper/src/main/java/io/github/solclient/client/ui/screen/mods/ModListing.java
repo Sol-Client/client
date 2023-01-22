@@ -48,7 +48,7 @@ public class ModListing extends ColouredComponent {
 		add(settingsButton = new ScaledIconComponent(
 				(component, defaultIcon) -> mod.isBlocked() ? "sol_client_lock" : "sol_client_settings", 16, 16,
 				new AnimatedColourController((component,
-						defaultColour) -> isHovered() ? (component.isHovered() || mod.isLocked() || mod.isBlocked()
+						defaultColour) -> isHovered() ? (component.isHovered() && !(mod.isLocked() || mod.isBlocked())
 								? Colour.LIGHT_BUTTON_HOVER
 								: Colour.LIGHT_BUTTON) : Colour.TRANSPARENT)),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,

@@ -15,7 +15,7 @@ public final class PixelMatrix {
 
 	@Getter
 	@Expose
-	private int width, height;
+	private final int width, height;
 	@Expose
 	private BitSet pixels;
 	private transient NativeImageBackedTexture texture;
@@ -73,7 +73,7 @@ public final class PixelMatrix {
 	public int getTexture(int fg, int bg) {
 		// thanks AxolotlClient!
 		// I didn't know NativeImageBackedTexture existed
-		/// lazy load for those wishing to use this class just for pixel storage
+		// lazy load for those wishing to use this class just for pixel storage
 		if (texture == null) {
 			texture = new NativeImageBackedTexture(width, height);
 			nvgImage = NanoVGGL3.nvglCreateImageFromHandle(NanoVGManager.getNvg(), texture.getGlId(), width, height, 0);
@@ -105,6 +105,28 @@ public final class PixelMatrix {
 		NanoVG.nvgFillPaint(nvg, MinecraftUtils.nvgTexturePaint(nvg, nvgImage, x, y, width, height));
 	}
 
+	public void set(BitSet pixels, int width, int height) {
+		if (width == this.width && height == this.height) {
+			this.pixels = pixels;
+			return;
+		}
+
+		int xOffset = (this.width - width) / 2;
+		int yOffset = (this.height - height) / 2;
+
+		this.pixels.clear();
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				int srcIndex = y * width + x;
+				if (x + xOffset < 0 || x + xOffset > this.width || y + yOffset < 0 || y + yOffset > this.height)
+					continue;
+
+				if (pixels.get(srcIndex))
+					set(x + xOffset, y + yOffset);
+			}
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		return pixels.hashCode();
@@ -112,6 +134,8 @@ public final class PixelMatrix {
 
 	@Override
 	public String toString() {
+		// convert to ascii
+
 		StringBuilder result = new StringBuilder();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++)

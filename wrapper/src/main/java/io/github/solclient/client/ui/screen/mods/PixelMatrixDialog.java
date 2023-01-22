@@ -10,6 +10,9 @@ import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.util.LCCH;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
 
 public final class PixelMatrixDialog extends BlockComponent {
@@ -124,6 +127,13 @@ public final class PixelMatrixDialog extends BlockComponent {
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
 			if (keyCode == Keyboard.KEY_DELETE) {
 				pixels.clear();
+				return true;
+			} else if (keyCode == Keyboard.KEY_V) {
+				try {
+					pixels.set(LCCH.parse(Screen.getClipboard()), LCCH.SIZE, LCCH.SIZE);
+				} catch (IllegalArgumentException error) {
+					error.printStackTrace(); // TODO
+				}
 				return true;
 			}
 

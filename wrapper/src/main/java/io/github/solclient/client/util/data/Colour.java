@@ -36,8 +36,8 @@ public class Colour {
 	public static final Colour DISABLED_MOD = new Colour(40, 40, 40);
 	public static final Colour DISABLED_MOD_HOVER = new Colour(50, 50, 50);
 	public static final Colour TRANSPARENT = new Colour(0);
-	public static final Colour LIGHT_BUTTON = new Colour(200, 200, 200);
-	public static final Colour LIGHT_BUTTON_HOVER = WHITE;
+	public static final Colour LIGHT_BUTTON = WHITE;
+	public static final Colour LIGHT_BUTTON_HOVER = new Colour(190, 190, 190);
 
 	public Colour(int value) {
 		this.value = value;

@@ -35,7 +35,7 @@ public final class LCCH {
 				int dstIndex = x + offset + ((y + offset) * SIZE);
 				int mask = 1 << pixelIndex % 8;
 
-				if (srcIndex < 0 || srcIndex >= bits || dstIndex < 0 || dstIndex >= bits)
+				if (srcIndex < 0 || srcIndex >= decoded.length || dstIndex < 0 || dstIndex >= bits)
 					continue;
 
 				result.set(dstIndex, (decoded[srcIndex] & mask) != 0);

@@ -6,8 +6,9 @@ import org.lwjgl.nanovg.*;
 
 import io.github.solclient.client.mod.ModOption;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
+import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.util.LCCH;
 import net.minecraft.client.gui.screen.Screen;
@@ -34,6 +35,56 @@ public final class PixelMatrixDialog extends BlockComponent {
 				(component, defaultBounds) -> defaultBounds.offset(0, -5)));
 		add(ButtonComponent.done(() -> parent.setDialog(null)), new AlignedBoundsController(Alignment.CENTRE,
 				Alignment.END, (component, defaultBounds) -> defaultBounds.offset(0, -8)));
+
+		add(new ScaledIconComponent("sol_client_share", 16, 16, new AnimatedColourController(
+				(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
+				.onClick((info, button) -> {
+					if (button != 0)
+						return false;
+
+					MinecraftUtils.playClickSound(true);
+					copy();
+					return true;
+				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+						(component, defaultBounds) -> defaultBounds.offset(13, -20)));
+		add(new ScaledIconComponent("sol_client_import", 16, 16, new AnimatedColourController(
+				(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
+				.onClick((info, button) -> {
+					if (button != 0)
+						return false;
+
+					MinecraftUtils.playClickSound(true);
+					paste();
+					return true;
+				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+						(component, defaultBounds) -> defaultBounds.offset(13, 0)));
+		add(new ScaledIconComponent("sol_client_delete", 16, 16, new AnimatedColourController(
+				(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
+				.onClick((info, button) -> {
+					if (button != 0)
+						return false;
+
+					MinecraftUtils.playClickSound(true);
+					pixels.clear();
+					return true;
+				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+						(component, defaultBounds) -> defaultBounds.offset(13, 20)));
+	}
+
+	private void copy() {
+		try {
+			Screen.setClipboard(LCCH.stringify(pixels));
+		} catch (IllegalArgumentException error) {
+			LOGGER.error("Failed to convert to LCCH", error);
+		}
+	}
+
+	private void paste() {
+		try {
+			LCCH.parse(Screen.getClipboard(), pixels);
+		} catch (IllegalArgumentException error) {
+			LOGGER.error("Failed to load from LCCH", error);
+		}
 	}
 
 	private final class PixelMatrixComponent extends Component {
@@ -84,7 +135,8 @@ public final class PixelMatrixDialog extends BlockComponent {
 						float strokeWidth = 1F / new Window(mc).getScaleFactor();
 						NanoVG.nvgStrokeColor(nvg, pixels.get(x, y) ? Colour.BLACK.nvg() : Colour.WHITE.nvg());
 						NanoVG.nvgStrokeWidth(nvg, strokeWidth);
-						NanoVG.nvgRect(nvg, x * SCALE + strokeWidth / 2, y * SCALE + strokeWidth / 2, SCALE - strokeWidth, SCALE - strokeWidth);
+						NanoVG.nvgRect(nvg, x * SCALE + strokeWidth / 2, y * SCALE + strokeWidth / 2,
+								SCALE - strokeWidth, SCALE - strokeWidth);
 						NanoVG.nvgStroke(nvg);
 
 						lastGridX = x;
@@ -130,18 +182,10 @@ public final class PixelMatrixDialog extends BlockComponent {
 				pixels.clear();
 				return true;
 			} else if (keyCode == Keyboard.KEY_C) {
-				try {
-					Screen.setClipboard(LCCH.stringify(pixels));
-				} catch (IllegalArgumentException error) {
-					LOGGER.error("Failed to convert to LCCH", error);
-				}
+				copy();
 				return true;
 			} else if (keyCode == Keyboard.KEY_V) {
-				try {
-					LCCH.parse(Screen.getClipboard(), pixels);
-				} catch (IllegalArgumentException error) {
-					LOGGER.error("Failed to load from LCCH", error);
-				}
+				paste();
 				return true;
 			}
 
@@ -157,7 +201,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return Rectangle.ofDimensions(250, 250);
+		return Rectangle.ofDimensions(260, 250);
 	}
 
 }

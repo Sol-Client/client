@@ -92,6 +92,7 @@ public class LCCH {
 		for (int i = 0; i < matrix.pixels(); i++) {
 			if (!matrix.get(i))
 				continue;
+
 			int x = i % srcSize;
 			int y = i / srcSize;
 

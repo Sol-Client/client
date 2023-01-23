@@ -9,12 +9,15 @@ import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.HudMod;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
+import io.github.solclient.util.LCCH;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.Window;
 import net.minecraft.util.hit.BlockHitResult.Type;
 import net.minecraft.world.level.LevelInfo.GameMode;
 
 public class CrosshairMod extends HudMod {
+
+	private static final String DEFAULT_CROSSHAIR = "LCCH-9-ECBAgPAfAgQIEAA";
 
 	@Expose
 	@Option
@@ -44,14 +47,8 @@ public class CrosshairMod extends HudMod {
 	@Option
 	private Colour entityColour = Colour.PURE_RED;
 
-	{
-		// draw a cross
-		for (int i = 0; i < 9; i++)
-			crosshairPixels.set(52 + i * 15);
-		for (int i = 0; i < 4; i++)
-			crosshairPixels.set(108 + i);
-		for (int i = 0; i < 4; i++)
-			crosshairPixels.set(113 + i);
+	public CrosshairMod() {
+		LCCH.parse(DEFAULT_CROSSHAIR, crosshairPixels);
 	}
 
 	@Override
@@ -98,7 +95,8 @@ public class CrosshairMod extends HudMod {
 			float half = customCrosshair ? crosshairPixels.getWidth() / 2 : 8;
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(getScale(), getScale(), getScale());
-			GlStateManager.translate((int) (window.getScaledWidth() / getScale() / 2 - half), (int) (window.getScaledHeight() / getScale() / 2 - half), 0);
+			GlStateManager.translate((int) (window.getScaledWidth() / getScale() / 2 - half),
+					(int) (window.getScaledHeight() / getScale() / 2 - half), 0);
 
 			bind();
 

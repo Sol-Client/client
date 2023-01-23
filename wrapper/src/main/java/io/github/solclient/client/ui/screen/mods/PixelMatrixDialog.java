@@ -1,22 +1,21 @@
 package io.github.solclient.client.ui.screen.mods;
 
-import java.util.BitSet;
-
-import org.lwjgl.input.*;
-import org.lwjgl.nanovg.NanoVG;
+import org.apache.logging.log4j.*;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.nanovg.*;
 
 import io.github.solclient.client.mod.ModOption;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.util.LCCH;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
 
 public final class PixelMatrixDialog extends BlockComponent {
 
+	private static final Logger LOGGER = LogManager.getLogger();
 	private static final int SCALE = 12;
 	private static final Colour COLOUR_1 = new Colour(30, 30, 30);
 	private static final Colour COLOUR_2 = new Colour(50, 50, 50);
@@ -81,9 +80,11 @@ public final class PixelMatrixDialog extends BlockComponent {
 						}
 
 						NanoVG.nvgBeginPath(nvg);
+						// single pixel
+						float strokeWidth = 1F / new Window(mc).getScaleFactor();
 						NanoVG.nvgStrokeColor(nvg, pixels.get(x, y) ? Colour.BLACK.nvg() : Colour.WHITE.nvg());
-						NanoVG.nvgStrokeWidth(nvg, 0.5F);
-						NanoVG.nvgRect(nvg, x * SCALE + 0.25F, y * SCALE + 0.25F, SCALE - 0.5F, SCALE - 0.5F);
+						NanoVG.nvgStrokeWidth(nvg, strokeWidth);
+						NanoVG.nvgRect(nvg, x * SCALE + strokeWidth / 2, y * SCALE + strokeWidth / 2, SCALE - strokeWidth, SCALE - strokeWidth);
 						NanoVG.nvgStroke(nvg);
 
 						lastGridX = x;
@@ -128,11 +129,18 @@ public final class PixelMatrixDialog extends BlockComponent {
 			if (keyCode == Keyboard.KEY_DELETE) {
 				pixels.clear();
 				return true;
+			} else if (keyCode == Keyboard.KEY_C) {
+				try {
+					Screen.setClipboard(LCCH.stringify(pixels));
+				} catch (IllegalArgumentException error) {
+					LOGGER.error("Failed to convert to LCCH", error);
+				}
+				return true;
 			} else if (keyCode == Keyboard.KEY_V) {
 				try {
-					pixels.set(LCCH.parse(Screen.getClipboard()), LCCH.SIZE, LCCH.SIZE);
+					LCCH.parse(Screen.getClipboard(), pixels);
 				} catch (IllegalArgumentException error) {
-					error.printStackTrace(); // TODO
+					LOGGER.error("Failed to load from LCCH", error);
 				}
 				return true;
 			}

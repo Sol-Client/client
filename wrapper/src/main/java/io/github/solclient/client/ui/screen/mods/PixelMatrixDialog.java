@@ -18,13 +18,13 @@ public final class PixelMatrixDialog extends BlockComponent {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final int SCALE = 12;
-	private static final Colour COLOUR_1 = new Colour(30, 30, 30);
-	private static final Colour COLOUR_2 = new Colour(50, 50, 50);
+	private static final Colour COLOUR_1 = new Colour(40, 40, 40);
+	private static final Colour COLOUR_2 = new Colour(60, 60, 60);
 
 	private final PixelMatrix pixels;
 
 	public PixelMatrixDialog(ModOption option) {
-		super(Colour.DISABLED_MOD, 12, 0);
+		super(theme.bg, 12, 0);
 
 		pixels = (PixelMatrix) option.getValue();
 

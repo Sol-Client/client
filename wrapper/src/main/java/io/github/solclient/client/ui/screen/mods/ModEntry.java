@@ -15,73 +15,54 @@ import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 
-public class ModListing extends ColouredComponent {
+public class ModEntry extends ColouredComponent {
 
 	@Getter
 	private final Mod mod;
+	private final Controller<Colour> stripeColour;
 	private final ModsScreenComponent screen;
-	private final Component settingsButton;
+	private final ModSettingsButton settingsButton;
 	private final ScaledIconComponent pinButton;
 	private final boolean pinnedCategory;
 	private Position dragStart;
 	private boolean dragging;
 
-	public ModListing(Mod mod, ModsScreenComponent screen, boolean pinnedCategory) {
-		super(new AnimatedColourController((component, defaultColour) -> {
-			if (mod.isEnabled()) {
-				return component.isHovered() ? SolClientConfig.instance.uiHover : SolClientConfig.instance.uiColour;
-			} else if (mod.isBlocked()) {
-				return component.isHovered() ? Colour.RED_HOVER : Colour.PURE_RED;
-			}
-
-			return component.isHovered() ? Colour.DISABLED_MOD_HOVER : Colour.DISABLED_MOD;
-		}));
+	public ModEntry(Mod mod, ModsScreenComponent screen, boolean pinnedCategory) {
+		super(new AnimatedColourController((component, defaultColour) -> ((ModEntry) component).isFullyHovered() ? theme.buttonHover : theme.button));
 
 		this.mod = mod;
 		this.screen = screen;
 
 		add(new ScaledIconComponent("sol_client_" + mod.getId(), 16, 16),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
-						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
+						(component, defaultBounds) -> new Rectangle(defaultBounds.getY() + 3, defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-		add(settingsButton = new ScaledIconComponent(
-				(component, defaultIcon) -> mod.isBlocked() ? "sol_client_lock" : "sol_client_settings", 16, 16,
-				new AnimatedColourController((component,
-						defaultColour) -> isHovered() ? (component.isHovered() && !(mod.isLocked() || mod.isBlocked())
-								? Colour.LIGHT_BUTTON_HOVER
-								: Colour.LIGHT_BUTTON) : Colour.TRANSPARENT)),
-				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
-						(component, defaultBounds) -> new Rectangle(
-								getBounds().getWidth() - defaultBounds.getWidth() - defaultBounds.getY(),
-								defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight())));
-
-		Component name;
-		add(name = new LabelComponent(
-				(component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : "")),
+		Component name = new LabelComponent(
+				(component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : ""));
+		add(name,
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
+						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 33,
 								(int) (defaultBounds.getY() - (regularFont.getLineHeight(nvg) / 2)) - 1,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
-				(component, defaultColour) -> new Colour(160, 160, 160)),
+				(component, defaultColour) -> new Colour(160, 160, 160)).scaled(0.8F),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
+						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 33,
 								(int) (defaultBounds.getY() + (regularFont.getLineHeight(nvg) / 2)) + 1,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-		Component credit;
-		add(credit = new LabelComponent((component, defaultText) -> mod.getCredit(),
-				(component, defaultColour) -> new Colour(120, 120, 120)),
-				new AlignedBoundsController(Alignment.START, Alignment.START, (component,
-						defaultBounds) -> defaultBounds.offset(name.getBounds().getEndX(), name.getBounds().getY())));
+		Component credit = new LabelComponent((component, defaultText) -> mod.getCredit(),
+				(component, defaultColour) -> new Colour(120, 120, 120)).scaled(0.8F);
+		add(credit, new AlignedBoundsController(Alignment.START, Alignment.START, (component,
+				defaultBounds) -> defaultBounds.offset(name.getBounds().getEndX() - 1, name.getBounds().getY() + 2)));
 
 		Controller<Rectangle> favouriteBounds = new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
 				(component, defaultBounds) -> new Rectangle(credit.getBounds().getEndX() + 2, defaultBounds.getY() + 5,
 						defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 		add(pinButton = new ScaledIconComponent((component, defaultIcon) -> "sol_client_favourite", 8, 8,
-				new AnimatedColourController((component, defaultColour) -> isHovered() || mod.isPinned()
+				new AnimatedColourController((component, defaultColour) -> isFullyHovered() || mod.isPinned()
 						? (component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)
 						: Colour.TRANSPARENT)),
 				favouriteBounds);
@@ -92,7 +73,23 @@ public class ModListing extends ColouredComponent {
 						: Colour.TRANSPARENT)),
 				favouriteBounds);
 
+		add(settingsButton = new ModSettingsButton(), new AlignedBoundsController(Alignment.END, null));
+
 		this.pinnedCategory = pinnedCategory;
+
+		stripeColour = new AnimatedColourController((component, defaultColour) -> {
+			if (mod.isEnabled()) {
+				return isFullyHovered() ? theme.accentHover : theme.accent;
+			} else if (mod.isBlocked()) {
+				return isFullyHovered() ? Colour.RED_HOVER : Colour.PURE_RED;
+			}
+
+			return isFullyHovered() ? theme.buttonSecondaryHover : theme.buttonSecondary;
+		});
+	}
+
+	public boolean isFullyHovered() {
+		return isHovered() && (mod.isLocked() || mod.isBlocked() || !settingsButton.isHovered());
 	}
 
 	@Override
@@ -100,18 +97,19 @@ public class ModListing extends ColouredComponent {
 		float radius = 0;
 
 		if (SolClientConfig.instance.roundedUI)
-			radius = 10;
+			radius = 4;
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgFillColor(nvg, Colour.BLACK_128.nvg());
-		NanoVG.nvgRoundedRect(nvg, 0, 0, 300, 30, radius + 1);
+		NanoVG.nvgFillColor(nvg, getColour().nvg());
+		NanoVG.nvgRoundedRect(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), radius);
 		NanoVG.nvgFill(nvg);
 
-		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgStrokeColor(nvg, getColour().nvg());
-		NanoVG.nvgStrokeWidth(nvg, 1);
-		NanoVG.nvgRoundedRect(nvg, .5F, .5F, 299, 29, radius);
-		NanoVG.nvgStroke(nvg);
+		// bar on left
+		NanoVG.nvgSave(nvg);
+		NanoVG.nvgIntersectScissor(nvg, 0, 0, 3, getBounds().getHeight());
+		NanoVG.nvgFillColor(nvg, stripeColour.get(this).nvg());
+		NanoVG.nvgFill(nvg);
+		NanoVG.nvgRestore(nvg);
 
 		if (dragStart != null && !dragging) {
 			dragging = Math.abs(info.getRelativeMouseX() - dragStart.getX()) > 2
@@ -126,7 +124,7 @@ public class ModListing extends ColouredComponent {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return Rectangle.ofDimensions(300, 30);
+		return Rectangle.ofDimensions(230, 30);
 	}
 
 	@Override
@@ -199,6 +197,33 @@ public class ModListing extends ColouredComponent {
 		} else {
 			mod.toggle();
 		}
+	}
+
+	private final class ModSettingsButton extends ColouredComponent {
+
+		public ModSettingsButton() {
+			super(theme.buttonSecondary());
+			add(new ScaledIconComponent(mod.isBlocked() ? "sol_client_lock" : "sol_client_settings", 16, 16),
+					new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
+		}
+
+		@Override
+		public void render(ComponentRenderInfo info) {
+			if (!mod.isLocked() && !mod.isBlocked()) {
+				NanoVG.nvgBeginPath(nvg);
+				NanoVG.nvgRoundedRectVarying(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), 0, 3, 3, 0);
+				NanoVG.nvgFillColor(nvg, getColour().nvg());
+				NanoVG.nvgFill(nvg);
+			}
+
+			super.render(info);
+		}
+
+		@Override
+		protected Rectangle getDefaultBounds() {
+			return Rectangle.ofDimensions(getParent().getBounds().getHeight(), getParent().getBounds().getHeight());
+		}
+
 	}
 
 }

@@ -26,7 +26,7 @@ public class ColourPickerDialog extends BlockComponent {
 	private final ButtonComponent done;
 
 	public ColourPickerDialog(ModOption colourOption, Colour colour, Consumer<Colour> callback) {
-		super(Colour.DISABLED_MOD, 12, 0);
+		super(theme.bg, 12, 0);
 
 		add(hex = new TextFieldComponent(60, true),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
@@ -49,7 +49,7 @@ public class ColourPickerDialog extends BlockComponent {
 		if (colourOption.canApplyToAll()) {
 			add(new ButtonComponent("sol_client.mod.screen.apply_to_all",
 					new AnimatedColourController(
-							(component, defaultColour) -> component.isHovered() ? Colour.BLUE_HOVER : Colour.BLUE))
+							(component, defaultColour) -> component.isHovered() ? Colour.BLUE_HOVER : Colour.BLUE), Controller.of(Colour.WHITE))
 					.withIcon("sol_client_new").onClick((info, button) -> {
 						if (button == 0) {
 							hex.flush();
@@ -66,7 +66,7 @@ public class ColourPickerDialog extends BlockComponent {
 									defaultBounds.getY() - 5, defaultBounds.getWidth(), defaultBounds.getHeight())));
 		}
 
-		add(new ColourBoxComponent((component, defaultColour) -> this.colour, null),
+		add(new ColourBoxComponent((component, defaultColour) -> this.colour),
 				(component, defaultBounds) -> new Rectangle(done.getBounds().getX() - 20, done.getBounds().getY() + 2,
 						defaultBounds.getWidth(), defaultBounds.getHeight()));
 

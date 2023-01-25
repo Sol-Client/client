@@ -21,33 +21,14 @@ public class SliderComponent extends Component {
 	private float value;
 	private final Consumer<Float> callback;
 	private boolean selected;
-	private final Controller<Colour> colour = new AnimatedColourController(
-			(component, defaultColour) -> component.isHovered() || selected ? SolClientConfig.instance.uiHover
-					: SolClientConfig.instance.uiColour);
-	private final Component hoverController;
+	private final Controller<Colour> colour = theme.button();
 
-	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback,
-			Component hoverController) {
+	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback) {
 		this.min = min;
 		this.max = max;
 		this.step = step;
 		this.value = value;
 		this.callback = callback;
-		this.hoverController = hoverController;
-
-		hoverController.onClick((info, button) -> {
-			if (super.isHovered()) {
-				return false;
-			}
-
-			mouseClicked(info, button);
-			return true;
-		});
-	}
-
-	@Override
-	public boolean isHovered() {
-		return hoverController.isHovered();
 	}
 
 	@Override
@@ -55,14 +36,14 @@ public class SliderComponent extends Component {
 		GlStateManager.enableAlphaTest();
 		GlStateManager.enableBlend();
 
-		int x = (int) (100 * (((value - min) / (max - min))));
+		int x = (int) (80 * (((value - min) / (max - min))));
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgFillColor(nvg, Colour.LIGHT_BUTTON.nvg());
-		NanoVG.nvgRoundedRect(nvg, 0, 4, 100, 2, SolClientConfig.instance.roundedUI ? 1 : 0);
+		NanoVG.nvgFillColor(nvg, colour.get(this).nvg());
+		NanoVG.nvgRoundedRect(nvg, 0, 3, 80, 4, SolClientConfig.instance.roundedUI ? 2 : 0);
 		NanoVG.nvgFill(nvg);
 
-		NanoVG.nvgFillColor(nvg, colour.get(this, null).nvg());
+		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
 
 		if (SolClientConfig.instance.roundedUI) {
 			NanoVG.nvgBeginPath(nvg);
@@ -76,7 +57,7 @@ public class SliderComponent extends Component {
 
 		if (selected) {
 			value = MathHelper.clamp(
-					(float) (min + Math.floor(((info.getRelativeMouseX() / 100F) * (max - min)) / step) * step), min,
+					(float) (min + Math.floor(((info.getRelativeMouseX() / 80F) * (max - min)) / step) * step), min,
 					max);
 			callback.accept(value);
 		}
@@ -107,7 +88,7 @@ public class SliderComponent extends Component {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return new Rectangle(0, 0, 100, 10);
+		return new Rectangle(0, 0, 80, 10);
 	}
 
 }

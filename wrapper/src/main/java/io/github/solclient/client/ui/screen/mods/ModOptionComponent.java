@@ -21,7 +21,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.*;
 import net.minecraft.client.resource.language.I18n;
 
-public class ModOptionComponent extends BlockComponent {
+public class ModOptionComponent extends Component {
 
 	@Getter
 	private ModOption option;
@@ -29,8 +29,6 @@ public class ModOptionComponent extends BlockComponent {
 	private int enumWidth;
 
 	public ModOptionComponent(ModOption option) {
-		super(Colour.BLACK_128, 8, 0);
-
 		this.option = option;
 
 		add(new LabelComponent(option.getName()),
@@ -43,19 +41,19 @@ public class ModOptionComponent extends BlockComponent {
 						defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 		if (option.getType() == boolean.class) {
-			add(new TickboxComponent((boolean) option.getValue(), option::setValue, this), defaultBoundController);
+			add(new ToggleComponent((boolean) option.getValue(), option::setValue), defaultBoundController);
 		} else if (option.getType() == Colour.class) {
-			add(new ColourBoxComponent((component, defaultColour) -> (Colour) option.getValue(), this),
-					defaultBoundController);
+			ColourBoxComponent colour = new ColourBoxComponent((component, defaultColour) -> (Colour) option.getValue());
+			add(colour, defaultBoundController);
 
-			onClick((info, button) -> {
+			colour.onClick((info, button) -> {
 				if (button != 0) {
 					return false;
 				}
 
 				MinecraftUtils.playClickSound(true);
 				screen.getRoot().setDialog(new ColourPickerDialog(option, (Colour) option.getValue(),
-						(colour) -> option.setValue(colour)));
+						option::setValue));
 				return true;
 			});
 		} else if (option.getType() == KeyBinding.class) {
@@ -223,17 +221,17 @@ public class ModOptionComponent extends BlockComponent {
 
 			if (sliderAnnotation.showValue()) {
 				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderAnnotation.format(),
-						new DecimalFormat("0.##").format(option.getValue()))), (component, defaultBounds) -> {
+						new DecimalFormat("0.##").format(option.getValue()))).scaled(0.8F), (component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(
 									(int) (getBounds().getWidth()
-											- regularFont.getWidth(nvg, ((LabelComponent) component).getText()) - 117),
+											- regularFont.getWidth(nvg, ((LabelComponent) component).getText()) - 97),
 									defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
 						});
 			}
 
 			add(new SliderComponent(sliderAnnotation.min(), sliderAnnotation.max(), sliderAnnotation.step(),
-					(float) option.getValue(), (value) -> option.setValue(value), this), (component, defaultBounds) -> {
+					(float) option.getValue(), (value) -> option.setValue(value)), (component, defaultBounds) -> {
 						defaultBounds = defaultBoundController.get(component, defaultBounds);
 						return new Rectangle(defaultBounds.getX() - 5, defaultBounds.getY(), defaultBounds.getWidth(),
 								defaultBounds.getHeight());
@@ -283,7 +281,7 @@ public class ModOptionComponent extends BlockComponent {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return Rectangle.ofDimensions(300, 20);
+		return Rectangle.ofDimensions(230, 20);
 	}
 
 }

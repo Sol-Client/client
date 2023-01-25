@@ -11,7 +11,7 @@ public class ColouredComponent extends Component {
 	private final Controller<Colour> colour;
 
 	public Colour getColour() {
-		return colour.get(this, Colour.WHITE);
+		return colour.get(this, theme.fg);
 	}
 
 	public int getColourValue() {

@@ -27,11 +27,11 @@ public abstract class ScrollListComponent extends Component {
 	public void setParent(Component parent) {
 		super.setParent(parent);
 
-		parent.add(scrollbar = new BlockComponent(Colour.LIGHT_BUTTON, 2.5F, 0) {
+		parent.add(scrollbar = new BlockComponent(theme.buttonSecondary, 1.5F, 0) {
 
 			@Override
 			public void render(ComponentRenderInfo info) {
-				scrollPercent = (double) ScrollListComponent.this.getBounds().getHeight() / (double) getContentHeight();
+				scrollPercent = (ScrollListComponent.this.getBounds().getHeight() - 6) / (double) getContentHeight();
 
 				NanoVG.nvgTranslate(nvg, 0, (float) (calculatedY * scrollPercent));
 
@@ -41,7 +41,7 @@ public abstract class ScrollListComponent extends Component {
 			}
 
 		}, (component, defaultBounds) -> {
-			return new Rectangle(getBounds().getX() + getBounds().getWidth() - 8, getBounds().getY(), 5,
+			return new Rectangle(getBounds().getX() + getBounds().getWidth() - 6, getBounds().getY(), 3,
 					(int) (getBounds().getHeight() * scrollPercent));
 		});
 	}
@@ -188,7 +188,7 @@ public abstract class ScrollListComponent extends Component {
 		if (subComponents.isEmpty())
 			return 0;
 
-		return getBounds(subComponents.get(subComponents.size() - 1)).getEndY();
+		return getBounds(subComponents.get(subComponents.size() - 1)).getEndY() + getSpacing();
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class ModsScroll extends ScrollListComponent {
 						add(new LabelComponent(category.toString()));
 
 					for (Mod mod : category.getMods())
-						add(new ModListing(mod, screen, category == ModCategory.PINNED));
+						add(new ModEntry(mod, screen, category == ModCategory.PINNED));
 				}
 			} else {
 				String filter = screen.getFilter();
@@ -55,7 +55,7 @@ public class ModsScroll extends ScrollListComponent {
 							new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
 
 				for (Mod mod : filtered)
-					add(new ModListing(mod, screen, false));
+					add(new ModEntry(mod, screen, false));
 			}
 		} else {
 			for (ModOption option : screen.getMod().getOptions()) {
@@ -77,7 +77,7 @@ public class ModsScroll extends ScrollListComponent {
 			scroll += regularFont.getLineHeight(nvg) + 2 + getSpacing();
 		}
 
-		add(Client.INSTANCE.getPins().getMods().size() + 1, new ModListing(mod, screen, true));
+		add(Client.INSTANCE.getPins().getMods().size() + 1, new ModEntry(mod, screen, true));
 
 		scroll += getScrollStep();
 

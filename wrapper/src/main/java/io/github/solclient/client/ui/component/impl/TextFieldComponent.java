@@ -141,7 +141,7 @@ public class TextFieldComponent extends Component {
 
 		if (underline) {
 			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgFillColor(nvg, colour.get(this, null).nvg());
+			NanoVG.nvgFillColor(nvg, colour.get(this).nvg());
 			NanoVG.nvgRect(nvg, 0, getBounds().getHeight() - 1, getBounds().getWidth(), 1);
 			NanoVG.nvgFill(nvg);
 		}

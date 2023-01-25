@@ -13,19 +13,27 @@ import net.minecraft.client.resource.language.I18n;
 
 public class ButtonComponent extends ColouredComponent {
 
+	private boolean icon;
+	private int width = 100;
 	@Getter
 	private final Controller<String> text;
-	private ButtonType type = ButtonType.NORMAL;
+	private final Controller<Colour> fg;
 
-	public ButtonComponent(String text, Controller<Colour> colour) {
-		this((component, defaultText) -> I18n.translate(text), colour);
+	public ButtonComponent(String text, Controller<Colour> colour, Controller<Colour> fg) {
+		this((component, defaultText) -> I18n.translate(text), colour, fg);
 	}
 
-	public ButtonComponent(Controller<String> text, Controller<Colour> colour) {
+	public ButtonComponent(Controller<String> text, Controller<Colour> colour, Controller<Colour> fg) {
 		super(colour);
 		this.text = text;
+		this.fg = fg;
 
-		add(new LabelComponent(text), new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
+		add(new LabelComponent(text, fg), new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE, (component, defaultBounds) -> {
+			if (!icon)
+				return defaultBounds;
+
+			return defaultBounds.offset(5, 0);
+		}));
 	}
 
 	@Override
@@ -33,25 +41,19 @@ public class ButtonComponent extends ColouredComponent {
 		float radius = 0;
 
 		if (SolClientConfig.instance.roundedUI)
-			radius = 5;
+			radius = getBounds().getHeight() / 2;
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgFillColor(nvg, getColour().withAlpha(140).nvg());
-		NanoVG.nvgRoundedRect(nvg, 0, 0, type.getWidth(), 20, radius);
+		NanoVG.nvgFillColor(nvg, getColour().nvg());
+		NanoVG.nvgRoundedRect(nvg, 0, 0, width, 20, radius);
 		NanoVG.nvgFill(nvg);
-
-		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgStrokeColor(nvg, getColour().nvg());
-		NanoVG.nvgStrokeWidth(nvg, 1);
-		NanoVG.nvgRoundedRect(nvg, .5F, .5F, type.getWidth() - 1, 19, radius);
-		NanoVG.nvgStroke(nvg);
 
 		super.render(info);
 	}
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return Rectangle.ofDimensions(type.getWidth(), 20);
+		return Rectangle.ofDimensions(width, 20);
 	}
 
 	@Override
@@ -61,21 +63,21 @@ public class ButtonComponent extends ColouredComponent {
 	}
 
 	public ButtonComponent withIcon(String name) {
-		add(new ScaledIconComponent(name, 16, 16),
+		icon = true;
+		add(new ScaledIconComponent(name, 16, 16, fg),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 		return this;
 	}
 
-	public ButtonComponent type(ButtonType type) {
-		this.type = type;
+	public ButtonComponent width(int width) {
+		this.width = width;
 		return this;
 	}
 
 	public static ButtonComponent done(Runnable onClick) {
-		return new ButtonComponent("gui.done", new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? new Colour(20, 120, 20) : new Colour(0, 100, 0)))
+		return new ButtonComponent("gui.done", theme.accent(), Controller.of(theme.accentFg))
 				.onClick((info, button) -> {
 					if (button == 0) {
 						MinecraftUtils.playClickSound(true);

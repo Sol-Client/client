@@ -168,14 +168,18 @@ public class MinecraftUtils {
 			endColour = startColour.withAlpha(0);
 		}
 
-		return new Colour(lerp(startColour.getRed(), endColour.getRed(), percent),
-				lerp(startColour.getGreen(), endColour.getGreen(), percent),
-				lerp(startColour.getBlue(), endColour.getBlue(), percent),
-				lerp(startColour.getAlpha(), endColour.getAlpha(), percent)).getValue();
+		return new Colour(lerpInt(startColour.getRed(), endColour.getRed(), percent),
+				lerpInt(startColour.getGreen(), endColour.getGreen(), percent),
+				lerpInt(startColour.getBlue(), endColour.getBlue(), percent),
+				lerpInt(startColour.getAlpha(), endColour.getAlpha(), percent)).getValue();
 	}
 
-	public int lerp(int start, int end, float percent) {
-		return Math.round(start + ((end - start) * percent));
+	public int lerpInt(int start, int end, float percent) {
+		return Math.round(lerp(start, end, percent));
+	}
+
+	public float lerp(float start, float end, float percent) {
+		return start + ((end - start) * percent);
 	}
 
 	public void scissor(Rectangle rectangle) {

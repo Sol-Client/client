@@ -17,6 +17,13 @@ public enum Alignment {
 	 */
 	END;
 
+	public static Alignment fromNullable(Alignment alignment) {
+		if (alignment == null)
+			return START;
+
+		return alignment;
+	}
+
 	public int getPosition(int areaSize, int objectSize) {
 		switch (this) {
 			case CENTRE:

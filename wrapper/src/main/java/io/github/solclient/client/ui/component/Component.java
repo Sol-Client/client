@@ -5,6 +5,7 @@ import java.util.function.BiPredicate;
 
 import org.lwjgl.nanovg.NanoVG;
 
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.*;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;
@@ -15,6 +16,9 @@ import net.minecraft.client.MinecraftClient;
 
 // 7 months later, I finally reintroduced the component API...
 public abstract class Component extends NanoVGManager {
+
+	@Setter
+	protected static Theme theme = Theme.DARK;
 
 	protected MinecraftClient mc = MinecraftClient.getInstance();
 	protected ComponentScreen screen;
@@ -54,9 +58,8 @@ public abstract class Component extends NanoVGManager {
 	private void register(Component component, Controller<Rectangle> position) {
 		subComponentControllers.put(component, position);
 
-		if (screen != null) {
+		if (screen != null)
 			component.setScreen(screen);
-		}
 
 		component.setParent(this);
 	}

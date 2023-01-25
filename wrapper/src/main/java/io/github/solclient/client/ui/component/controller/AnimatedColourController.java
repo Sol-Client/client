@@ -21,7 +21,6 @@ public class AnimatedColourController implements Controller<Colour> {
 	@Override
 	public Colour get(Component component, Colour defaultValue) {
 		Colour baseValue = base.get(component, defaultValue);
-
 		if (!baseValue.equals(current)) {
 			last = current;
 			current = baseValue;
@@ -34,7 +33,7 @@ public class AnimatedColourController implements Controller<Colour> {
 	}
 
 	private Colour animate(float progress) {
-		if (last == null)
+		if (last == null || progress == 1)
 			return current;
 
 		return last.lerp(current, progress);

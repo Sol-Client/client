@@ -125,7 +125,7 @@ sol_client.mod.potion_effects.option.duration=Duration
 sol_client.mod.potion_effects.option.durationColour=Duration Color
 sol_client.mod.potion_effects.option.spacing=Spacing
 
-sol_client.mod.armour.name=Armor and Equipment
+sol_client.mod.armour.name=Equipment
 sol_client.mod.armour.description=Display your armor and equipment with durability.
 
 sol_client.mod.armour.option.durability=Durability Text

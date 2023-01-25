@@ -53,7 +53,7 @@ public class QuickPlayPalette extends ComponentScreen {
 		private QuickPlayOptionComponent selected;
 
 		public QuickPlayPaletteComponent(QuickPlayMod mod) {
-			super(Colour.DISABLED_MOD.add(-15), 12, 0);
+			super(theme.bg, 12, 0);
 			this.mod = mod;
 			scroll = new QuickPlayScroll(this);
 			add(scroll, (component, defaultBounds) -> new Rectangle(0, 30, getBounds().getWidth(),

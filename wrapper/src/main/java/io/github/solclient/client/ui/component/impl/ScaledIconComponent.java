@@ -36,8 +36,8 @@ public class ScaledIconComponent extends ColouredComponent {
 
 		NanoVG.nvgBeginPath(nvg);
 
-		NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier(
-				"textures/gui/" + iconName.get(this, "sol_client_confusion") + "_" + MinecraftUtils.getTextureScale() + ".png"),
+		NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg,
+				new Identifier("textures/gui/" + iconName.get(this) + "_" + MinecraftUtils.getTextureScale() + ".png"),
 				0, 0, width, height);
 		paint.innerColor(getColour().nvg());
 

@@ -300,21 +300,10 @@ class Launcher {
 			}
 		});
 
-		version.libraries.push({
-			downloads: {
-				artifact: {
-					url: "https://libraries.minecraft.net/com/google/guava/guava/21.0/guava-21.0.jar",
-					path: "com/google/guava/guava/21.0/guava-21.0.jar",
-					size: 2521113
-				}
-			}
-		});
-
 		for(let library of version.libraries) {
 			if(library.name == "org.apache.logging.log4j:log4j-api:2.0-beta9"
 					|| library.name == "org.apache.logging.log4j:log4j-core:2.0-beta9"
-					|| library.name == "com.google.code.gson:gson:2.2.4"
-					|| library.name == "com.google.guava:guava:17.0") {
+					|| library.name == "com.google.code.gson:gson:2.2.4") {
 				continue;
 			}
 

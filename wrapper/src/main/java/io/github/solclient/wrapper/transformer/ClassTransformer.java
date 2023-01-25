@@ -9,7 +9,6 @@ import lombok.experimental.UtilityClass;
 public class ClassTransformer {
 
 	public byte[] transformClass(String name, byte[] input) {
-		input = GuavaTransformer.transform(name, input);
 		input = PackageAccessFixer.fix(name, input);
 		input = AccessWidenerTransformer.transform(name, input);
 		input = ReplayModMixinPluginCompat.transform(name, input);

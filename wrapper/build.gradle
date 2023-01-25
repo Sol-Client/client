@@ -27,7 +27,7 @@ dependencies {
 
 	def occlusionCulling = files('libs/occlusionculling.jar')
 
-	implementation libs.mixin
+	implementation(libs.mixin) { transitive = false }
 	implementation libs.gson
 	implementation occlusionCulling
 	ship occlusionCulling
@@ -41,6 +41,12 @@ dependencies {
 	implementation libs.log4j.api
 	implementation libs.log4j.core
 	implementation libs.tiny.remapper
+
+	implementation libs.asm
+	implementation libs.asm.analysis
+	implementation libs.asm.commons
+	implementation libs.asm.tree
+	implementation libs.asm.util
 
 	annotationProcessor libs.asm
 	annotationProcessor libs.asm.analysis

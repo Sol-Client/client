@@ -53,18 +53,17 @@ public abstract class ScrollListComponent extends Component {
 	public void add(int index, Component component) {
 		add(index, component,
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.START, (sizingComponent, defaultBounds) -> {
-					Component lastAdded = null;
+					Component previous = null;
 					Rectangle lastBounds = null;
 
 					int prevIndex = subComponents.indexOf(component) - 1;
-
 					if (prevIndex > -1) {
-						lastAdded = subComponents.get(prevIndex);
-						lastBounds = lastAdded.getBounds();
+						previous = subComponents.get(prevIndex);
+						lastBounds = previous.getCachedBounds();
 					}
 
 					return new Rectangle(defaultBounds.getX(),
-							lastAdded == null ? 0 : lastBounds.getY() + lastBounds.getHeight() + getSpacing(),
+							previous == null ? 0 : lastBounds.getY() + lastBounds.getHeight() + getSpacing(),
 							defaultBounds.getWidth(), defaultBounds.getHeight());
 				}));
 	}

@@ -39,6 +39,7 @@ public abstract class Component extends NanoVGManager {
 	private ClickHandler onClickAnywhere;
 	private ClickHandler onReleaseAnywhere;
 	private Controller<Boolean> visibilityController;
+	private Rectangle cachedBounds;
 
 	public void add(Component component, Controller<Rectangle> position) {
 		subComponents.add(component);
@@ -90,7 +91,14 @@ public abstract class Component extends NanoVGManager {
 		if (parent == null)
 			throw new IllegalArgumentException("Parent of " + this + " is null");
 
-		return parent.getBounds(this);
+		return cachedBounds = parent.getBounds(this);
+	}
+
+	public Rectangle getCachedBounds() {
+		if (cachedBounds == null)
+			return getBounds();
+
+		return cachedBounds;
 	}
 
 	public Rectangle getBounds(Component component) {

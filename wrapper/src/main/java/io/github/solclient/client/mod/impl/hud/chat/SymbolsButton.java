@@ -3,9 +3,9 @@ package io.github.solclient.client.mod.impl.hud.chat;
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.chatextensions.ChatButton;
+import io.github.solclient.client.extension.ChatScreenExtension;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.extension.ChatScreenExtension;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 

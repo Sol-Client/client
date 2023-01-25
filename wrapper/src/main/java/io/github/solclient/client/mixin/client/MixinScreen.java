@@ -12,9 +12,9 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.extension.*;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.util.MinecraftUtils;
-import io.github.solclient.client.util.extension.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;

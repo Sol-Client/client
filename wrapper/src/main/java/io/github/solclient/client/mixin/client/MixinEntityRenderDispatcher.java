@@ -9,7 +9,7 @@ import com.replaymod.replay.camera.CameraEntity;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.culling.Cullable;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.util.extension.EntityRendererExtension;
+import io.github.solclient.client.extension.EntityRendererExtension;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.render.entity.*;

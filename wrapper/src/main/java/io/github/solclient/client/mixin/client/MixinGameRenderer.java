@@ -8,8 +8,8 @@ import com.mojang.blaze3d.platform.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.util.MinecraftUtils;
-import io.github.solclient.client.util.extension.MinecraftClientExtension;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.*;

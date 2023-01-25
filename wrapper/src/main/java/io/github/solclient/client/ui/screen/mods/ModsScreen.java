@@ -3,6 +3,7 @@ package io.github.solclient.client.ui.screen.mods;
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
@@ -11,7 +12,6 @@ import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.Getter;
 import net.minecraft.client.resource.language.I18n;
 

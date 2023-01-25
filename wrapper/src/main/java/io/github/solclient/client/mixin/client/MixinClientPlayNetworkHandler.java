@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.util.extension.ScreenExtension;
+import io.github.solclient.client.extension.ScreenExtension;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.*;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;

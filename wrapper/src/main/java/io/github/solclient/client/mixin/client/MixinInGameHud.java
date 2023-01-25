@@ -9,7 +9,7 @@ import com.replaymod.render.hooks.EntityRendererHandler;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.util.extension.MinecraftClientExtension;
+import io.github.solclient.client.extension.MinecraftClientExtension;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;

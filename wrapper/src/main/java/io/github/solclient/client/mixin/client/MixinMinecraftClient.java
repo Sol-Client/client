@@ -15,12 +15,12 @@ import com.replaymod.replay.InputReplayTimer;
 
 import io.github.solclient.client.*;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.extension.*;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.ui.component.ComponentScreen;
 import io.github.solclient.client.ui.screen.*;
 import io.github.solclient.client.util.*;
-import io.github.solclient.client.util.extension.*;
 import io.github.solclient.util.GlobalConstants;
 import lombok.SneakyThrows;
 import net.minecraft.client.MinecraftClient;

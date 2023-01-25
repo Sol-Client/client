@@ -8,11 +8,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
+import io.github.solclient.client.extension.TitleScreenExtension;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.ui.ReplayButton;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.ActiveMainMenu;
-import io.github.solclient.client.util.extension.TitleScreenExtension;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.resource.language.I18n;

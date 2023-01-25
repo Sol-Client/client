@@ -7,6 +7,7 @@ import java.util.BitSet;
 
 import org.lwjgl.input.Keyboard;
 
+import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.ModOption;
 import io.github.solclient.client.mod.annotation.Slider;
 import io.github.solclient.client.ui.component.Component;
@@ -15,7 +16,6 @@ import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.client.util.data.Modifier;
-import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.Getter;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.*;

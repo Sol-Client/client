@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
-import io.github.solclient.client.util.extension.KeyBindingExtension;
+import io.github.solclient.client.extension.KeyBindingExtension;
 import net.minecraft.client.option.*;
 
 @Mixin(GameOptions.class)

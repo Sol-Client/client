@@ -22,9 +22,9 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.extension.KeyBindingExtension;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;

@@ -7,11 +7,11 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.extension.MinecraftClientExtension;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;

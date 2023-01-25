@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.ItemPickupEvent;
-import io.github.solclient.client.util.extension.LivingEntityExtension;
+import io.github.solclient.client.extension.LivingEntityExtension;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 

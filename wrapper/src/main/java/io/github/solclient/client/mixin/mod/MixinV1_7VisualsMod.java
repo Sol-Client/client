@@ -4,8 +4,8 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
+import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.mod.impl.V1_7VisualsMod;
-import io.github.solclient.client.util.extension.MinecraftClientExtension;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;

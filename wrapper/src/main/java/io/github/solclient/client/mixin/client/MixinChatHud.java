@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.ChatRenderEvent;
+import io.github.solclient.client.extension.*;
 import io.github.solclient.client.mod.impl.hud.chat.ChatMod;
-import io.github.solclient.client.util.extension.*;
 import net.minecraft.client.gui.hud.*;
 import net.minecraft.text.Text;
 

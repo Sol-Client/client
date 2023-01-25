@@ -1,4 +1,4 @@
-package io.github.solclient.client.mod.impl;
+package io.github.solclient.client.mod.impl.chunkanimator;
 
 import java.util.*;
 
@@ -7,16 +7,18 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mixin.client.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.data.EasingFunction;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.world.BuiltChunk;
+import net.minecraft.util.math.*;
 
 // Based on lumien231's chunk animator.
 public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
-	private final Map<BuiltChunk, Long> chunks = new WeakHashMap<>();
+	public static ChunkAnimatorMod instance;
+	public static boolean enabled;
 
 	@Expose
 	@Option
@@ -25,6 +27,24 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 	@Expose
 	@Option
 	private EasingFunction animation = EasingFunction.SINE;
+
+	@Override
+	public void onRegister() {
+		super.onRegister();
+		instance = this;
+	}
+
+	@Override
+	protected void onEnable() {
+		super.onEnable();
+		enabled = true;
+	}
+
+	@Override
+	protected void onDisable() {
+		super.onDisable();
+		enabled = false;
+	}
 
 	@Override
 	public String getId() {
@@ -47,29 +67,26 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
 	@EventHandler
 	public void preRenderChunk(PreRenderChunkEvent event) {
-		if (chunks.containsKey(event.chunk)) {
-			long time = chunks.get(event.chunk);
-			long now = System.currentTimeMillis();
+		BuiltChunkData chunk = (BuiltChunkData) event.chunk;
 
-			if (time == -1L) {
-				chunks.put(event.chunk, now);
-				time = now;
-			}
+		if (chunk.isAnimationComplete())
+			return;
 
-			long passedTime = now - time;
+		long time = chunk.getAnimationStart();
+		long now = System.currentTimeMillis();
 
-			if (passedTime < getDuration()) {
-				int chunkY = event.chunk.getPos().getY();
-				GlStateManager.translate(0, -chunkY + ease(passedTime, 0, chunkY, getDuration()), 0);
-			}
+		if (time == -1L) {
+			chunk.setAnimationStart(now);
+			time = now;
 		}
-	}
 
-	@EventHandler
-	public void setPosition(RenderChunkPositionEvent event) {
-		if (mc.player != null) {
-			chunks.put(event.chunk, -1L);
-		}
+		long passedTime = now - time;
+
+		if (passedTime < getDuration()) {
+			int chunkY = event.chunk.getPos().getY();
+			GlStateManager.translate(0, -chunkY + ease(passedTime, 0, chunkY, getDuration()), 0);
+		} else
+			chunk.skipAnimation();
 	}
 
 	@Override
@@ -84,6 +101,14 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 
 	public float ease(float t, float b, float c, float d) {
 		return animation.ease(t, b, c, d);
+	}
+
+	public void notifyPlace(BlockPos pos) {
+		// not rendered
+		MixinBuiltChunkStorage storage = (MixinBuiltChunkStorage) (((MixinWorldRenderer) mc.worldRenderer).getChunks());
+		BuiltChunkData data = (BuiltChunkData) storage.getChunk(pos);
+		if (data != null && data.getAnimationStart() == -1 && !data.isAnimationComplete())
+			data.skipAnimation();
 	}
 
 }

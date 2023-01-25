@@ -2,10 +2,10 @@ package io.github.solclient.client.ui.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import io.github.solclient.client.extension.TitleScreenExtension;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.util.ActiveMainMenu;
 import io.github.solclient.client.util.data.Colour;
-import io.github.solclient.client.util.extension.TitleScreenExtension;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.*;

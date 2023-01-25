@@ -7,10 +7,10 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.util.data.Rectangle;
-import io.github.solclient.client.util.extension.MinecraftClientExtension;
 
 public class TweaksMod extends Mod {
 

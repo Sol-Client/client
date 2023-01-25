@@ -1,4 +1,4 @@
-package io.github.solclient.client.util.extension;
+package io.github.solclient.client.extension;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.ClientTickTracker;

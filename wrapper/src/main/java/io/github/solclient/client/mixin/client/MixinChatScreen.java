@@ -9,9 +9,9 @@ import org.spongepowered.asm.mixin.injection.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.chatextensions.ChatButton;
+import io.github.solclient.client.extension.ChatScreenExtension;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.extension.ChatScreenExtension;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.*;
 

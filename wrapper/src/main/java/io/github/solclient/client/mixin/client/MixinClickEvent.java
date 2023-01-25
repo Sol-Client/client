@@ -2,7 +2,7 @@ package io.github.solclient.client.mixin.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import io.github.solclient.client.util.extension.ClickEventExtension;
+import io.github.solclient.client.extension.ClickEventExtension;
 import lombok.Getter;
 import net.minecraft.text.ClickEvent;
 

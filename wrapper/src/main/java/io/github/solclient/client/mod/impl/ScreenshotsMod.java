@@ -9,10 +9,10 @@ import org.apache.commons.io.FileUtils;
 
 import com.google.gson.*;
 
+import io.github.solclient.client.extension.ClickEventExtension;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;
-import io.github.solclient.client.util.extension.ClickEventExtension;
 import io.github.solclient.util.*;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.*;

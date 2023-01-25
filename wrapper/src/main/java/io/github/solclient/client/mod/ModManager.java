@@ -12,6 +12,7 @@ import com.google.gson.*;
 
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.impl.chunkanimator.ChunkAnimatorMod;
 import io.github.solclient.client.mod.impl.cosmetica.CosmeticaMod;
 import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
 import io.github.solclient.client.mod.impl.hud.*;

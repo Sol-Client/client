@@ -1,4 +1,4 @@
-package io.github.solclient.client.util.extension;
+package io.github.solclient.client.extension;
 
 import io.github.solclient.client.chatextensions.ChatButton;
 import io.github.solclient.client.util.MinecraftUtils;

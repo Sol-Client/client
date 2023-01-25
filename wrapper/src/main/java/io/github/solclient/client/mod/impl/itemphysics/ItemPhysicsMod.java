@@ -11,9 +11,9 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
+import io.github.solclient.client.extension.EntityExtension;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.util.extension.EntityExtension;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.*;

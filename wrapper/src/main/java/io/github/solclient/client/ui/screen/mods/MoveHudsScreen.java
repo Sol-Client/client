@@ -3,6 +3,7 @@ package io.github.solclient.client.ui.screen.mods;
 import org.lwjgl.input.Mouse;
 
 import io.github.solclient.client.Client;
+import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
@@ -11,7 +12,6 @@ import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.extension.KeyBindingExtension;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.*;
 

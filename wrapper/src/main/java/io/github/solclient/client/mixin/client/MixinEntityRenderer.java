@@ -3,7 +3,7 @@ package io.github.solclient.client.mixin.client;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-import io.github.solclient.client.util.extension.EntityRendererExtension;
+import io.github.solclient.client.extension.EntityRendererExtension;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.entity.Entity;
 

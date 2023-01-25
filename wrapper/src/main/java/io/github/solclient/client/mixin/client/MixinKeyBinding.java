@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.*;
 
-import io.github.solclient.client.util.extension.KeyBindingExtension;
+import io.github.solclient.client.extension.KeyBindingExtension;
 import lombok.*;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.util.collection.IntObjectStorage;

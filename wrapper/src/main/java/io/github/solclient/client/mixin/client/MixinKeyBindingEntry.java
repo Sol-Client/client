@@ -5,8 +5,8 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
+import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.util.MinecraftUtils;
-import io.github.solclient.client.util.extension.KeyBindingExtension;
 import net.minecraft.client.gui.screen.options.ControlsListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.KeyBinding;

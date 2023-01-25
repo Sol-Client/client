@@ -4,9 +4,9 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
+import io.github.solclient.client.extension.ScreenExtension;
 import io.github.solclient.client.mod.impl.hud.chat.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
-import io.github.solclient.client.util.extension.ScreenExtension;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.*;

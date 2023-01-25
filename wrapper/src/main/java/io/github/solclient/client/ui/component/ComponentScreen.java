@@ -5,10 +5,10 @@ import org.lwjgl.input.*;
 import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.opengl.GL11;
 
+import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.NanoVGManager;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.client.util.extension.MinecraftClientExtension;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;

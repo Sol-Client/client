@@ -5,8 +5,8 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.util.data.Modifier;
-import io.github.solclient.client.util.extension.KeyBindingExtension;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;

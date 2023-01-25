@@ -1,7 +1,3 @@
-/**
- * Credit for OrangeMarshall for original mod.
- * It helped a lot when making this.
- */
 
 package io.github.solclient.client.mod.impl;
 
@@ -10,14 +6,16 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.extension.LivingEntityExtension;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.util.extension.LivingEntityExtension;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.MathHelper;
 
+// credit to OrangeMarshall for original mod.
+// also credit to https://github.com/TAKfsg/oldblockhit-legacy-fabric.
 public class V1_7VisualsMod extends Mod {
 
 	@Expose
@@ -110,11 +108,9 @@ public class V1_7VisualsMod extends Mod {
 		if (mc.player.isUsingItem() && event.itemToRender.getItem() instanceof BowItem) {
 			if (bow)
 				GlStateManager.translate(-0.01f, 0.05f, -0.06f);
-		} else if (event.itemToRender.getItem() instanceof FishingRodItem) {
-			if (rod) {
-				GlStateManager.translate(0.08f, -0.027f, -0.33f);
-				GlStateManager.scale(0.93f, 1.0f, 1.0f);
-			}
+		} else if ((event.itemToRender.getItem() instanceof FishingRodItem) && rod) {
+			GlStateManager.translate(0.08f, -0.027f, -0.33f);
+			GlStateManager.scale(0.93f, 1.0f, 1.0f);
 		}
 	}
 
@@ -129,7 +125,7 @@ public class V1_7VisualsMod extends Mod {
 		var16 -= 0.05F;
 		float var17 = 1.0F - var16;
 		GlStateManager.translate(0.0F, MathHelper.abs(MathHelper.cos(var14 / 4F * (float) Math.PI) * 0.11F)
-				* (float) ((double) var15 > 0.2D ? 1 : 0), 0.0F);
+				* (var15 > 0.2D ? 1 : 0), 0.0F);
 		GlStateManager.translate(var17 * 0.6F, -var17 * 0.5F, 0.0F);
 		GlStateManager.rotate(var17 * 90.0F, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(var17 * 10.0F, 1.0F, 0.0F, 0.0F);

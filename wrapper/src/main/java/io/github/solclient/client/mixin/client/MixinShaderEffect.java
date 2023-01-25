@@ -5,7 +5,7 @@ import java.util.List;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import io.github.solclient.client.util.extension.ShaderEffectExtension;
+import io.github.solclient.client.extension.ShaderEffectExtension;
 import net.minecraft.client.gl.*;
 
 @Mixin(ShaderEffect.class)

@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import io.github.solclient.client.culling.Cullable;
-import io.github.solclient.client.util.extension.EntityExtension;
+import io.github.solclient.client.extension.EntityExtension;
 import lombok.*;
 import net.minecraft.entity.Entity;
 

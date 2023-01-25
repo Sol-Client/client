@@ -1,4 +1,4 @@
-package io.github.solclient.client.util.extension;
+package io.github.solclient.client.extension;
 
 public interface TitleScreenExtension {
 

@@ -4,7 +4,7 @@ import java.io.*;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.util.extension.MinecraftClientExtension;
+import io.github.solclient.client.extension.MinecraftClientExtension;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ResourcePackScreen;
 import net.minecraft.client.gui.screen.resourcepack.ResourcePackWidget;

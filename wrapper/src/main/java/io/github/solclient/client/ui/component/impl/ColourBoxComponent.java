@@ -10,7 +10,7 @@ import io.github.solclient.client.util.data.*;
 public class ColourBoxComponent extends ColouredComponent {
 
 	private final Controller<Colour> outlineController = new AnimatedColourController(
-			(component, defaultColour) -> isHovered() ? theme.activeHover : theme.active);
+			(component, defaultColour) -> isHovered() || getColour().getAlpha() <= 50 ? theme.fg : Colour.TRANSPARENT, 100);
 
 	public ColourBoxComponent(Controller<Colour> colour) {
 		super(colour);
@@ -36,7 +36,7 @@ public class ColourBoxComponent extends ColouredComponent {
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgStrokeColor(nvg, outlineController.get(this, null).nvg());
 		NanoVG.nvgStrokeWidth(nvg, 1);
-		NanoVG.nvgRoundedRect(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), radius);
+		NanoVG.nvgRoundedRect(nvg, -0.5F, -0.5F, getBounds().getWidth() + 1, getBounds().getHeight() + 1, radius);
 		NanoVG.nvgStroke(nvg);
 
 		super.render(info);

@@ -19,7 +19,7 @@ public class Theme implements Cloneable {
 		DARK.accentHover = new Colour(0xFFFFC35F);
 		DARK.accentFg = new Colour(0xFF000000);
 		DARK.active = new Colour(0xFFFFFFFF);
-		DARK.activeHover = new Colour(0xFFECECEC);
+		DARK.activeHover = new Colour(0xFFE0E0E0);
 	}
 
 	public Colour bg;

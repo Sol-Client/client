@@ -16,7 +16,7 @@ public class Theme implements Cloneable {
 		DARK.buttonSecondaryHover = new Colour(0xFF3C3C3C);
 		DARK.fg = new Colour(0xFFFFFFFF);
 		DARK.accent = new Colour(0xFFFFB400);
-		DARK.accentHover = new Colour(0xFFFFC35F);
+		DARK.accentHover = new Colour(0xFFFFE255);
 		DARK.accentFg = new Colour(0xFF000000);
 		DARK.active = new Colour(0xFFFFFFFF);
 		DARK.activeHover = new Colour(0xFFE0E0E0);

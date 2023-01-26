@@ -40,20 +40,14 @@ public class SliderComponent extends Component {
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillColor(nvg, colour.get(this).nvg());
-		NanoVG.nvgRoundedRect(nvg, 0, 3, 80, 4, SolClientConfig.instance.roundedUI ? 2 : 0);
+		NanoVG.nvgRoundedRect(nvg, 0, 3, 80, 4, 2);
 		NanoVG.nvgFill(nvg);
 
 		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
 
-		if (SolClientConfig.instance.roundedUI) {
-			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgCircle(nvg, x, 5, 4);
-			NanoVG.nvgFill(nvg);
-		} else {
-			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgRect(nvg, x - 2, 1, 4, 8);
-			NanoVG.nvgFill(nvg);
-		}
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgCircle(nvg, x, 5, 4);
+		NanoVG.nvgFill(nvg);
 
 		if (selected) {
 			value = MathHelper.clamp(

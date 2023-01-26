@@ -49,14 +49,12 @@ public class MoveHudsScreen extends ComponentScreen {
 		if (button == 1) {
 			HudElement hud = getSelectedHud(x, y);
 
-			if (hud != null) {
-				if (parentScreen instanceof ModsScreen) {
-					MinecraftUtils.playClickSound(true);
+			if ((hud != null) && (parentScreen instanceof ModsScreen)) {
+				MinecraftUtils.playClickSound(true);
 
-					((ModsScreen) parentScreen).switchMod(hud.getMod());
+				((ModsScreen) parentScreen).switchMod(hud.getMod());
 
-					MinecraftClient.getInstance().setScreen(parentScreen);
-				}
+				MinecraftClient.getInstance().setScreen(parentScreen);
 			}
 		}
 	}
@@ -92,7 +90,7 @@ public class MoveHudsScreen extends ComponentScreen {
 				hud.render(true);
 
 			if (bounds != null)
-				bounds.stroke(SolClientConfig.instance.uiColour);
+				bounds.stroke(Component.getTheme().accent);
 		}
 
 		HudElement selectedHud = getSelectedHud(mouseX, mouseY);

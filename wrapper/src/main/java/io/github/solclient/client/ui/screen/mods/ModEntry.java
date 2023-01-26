@@ -88,14 +88,9 @@ public class ModEntry extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		float radius = 0;
-
-		if (SolClientConfig.instance.roundedUI)
-			radius = 4;
-
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillColor(nvg, getColour().nvg());
-		NanoVG.nvgRoundedRect(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), radius);
+		NanoVG.nvgRoundedRect(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), 4);
 		NanoVG.nvgFill(nvg);
 
 		// bar on left

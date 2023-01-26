@@ -18,6 +18,7 @@ import net.minecraft.client.MinecraftClient;
 public abstract class Component extends NanoVGManager {
 
 	@Setter
+	@Getter
 	protected static Theme theme = Theme.DARK;
 
 	protected MinecraftClient mc = MinecraftClient.getInstance();

@@ -9,7 +9,6 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.util.*;
 import net.minecraft.client.option.KeyBinding;
 
@@ -38,19 +37,6 @@ public class SolClientConfig extends ConfigOnlyMod {
 
 	@Expose
 	@Option
-	public Colour uiColour = new Colour(255, 180, 0);
-	public Colour uiHover;
-
-	@Expose
-	@Option
-	public boolean smoothUIColours = true;
-
-	@Expose
-	@Option
-	public boolean roundedUI = true;
-
-	@Expose
-	@Option
 	public boolean buttonClicks = true;
 
 	@Expose
@@ -74,7 +60,6 @@ public class SolClientConfig extends ConfigOnlyMod {
 		super.onRegister();
 
 		instance = this;
-		uiHover = getUiHover();
 
 		// yuck...
 		if (GlobalConstants.AUTOUPDATE)
@@ -94,21 +79,8 @@ public class SolClientConfig extends ConfigOnlyMod {
 	}
 
 	@Override
-	public void postOptionChange(String key, Object value) {
-		super.postOptionChange(key, value);
-
-		if (key.equals("uiColour")) {
-			uiHover = getUiHover();
-		}
-	}
-
-	@Override
 	public String getDescription() {
 		return super.getDescription();
-	}
-
-	private Colour getUiHover() {
-		return uiColour.add(40);
 	}
 
 }

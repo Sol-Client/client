@@ -45,10 +45,8 @@ public class ButtonComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		float radius = 0;
-
-		if (SolClientConfig.instance.roundedUI)
-			radius = getBounds().getHeight() / 2;
+		// pill
+		float radius = getBounds().getHeight() / 2;
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillColor(nvg, getColour().nvg());

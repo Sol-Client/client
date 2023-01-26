@@ -27,9 +27,7 @@ public class AnimatedColourController implements Controller<Colour> {
 			currentTime = System.currentTimeMillis();
 		}
 
-		return animate(SolClientConfig.instance.smoothUIColours
-				? Math.max(0, (System.currentTimeMillis() - currentTime) / ((float) duration))
-				: 1);
+		return animate(Math.max(0, (System.currentTimeMillis() - currentTime) / ((float) duration)));
 	}
 
 	public Colour animate(float progress) {

@@ -47,6 +47,15 @@ public class ModOptionComponent extends Component {
 					(component, defaultColour) -> (Colour) option.getValue());
 			add(colour, defaultBoundController);
 
+			add(new LabelComponent((component, defaultText) -> ((Colour) option.getValue()).toHexString()).scaled(0.8F),
+					(component, defaultBounds) -> {
+						Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
+						return new Rectangle(
+								(int) (getBounds().getWidth()
+										- regularFont.getWidth(nvg, ((LabelComponent) component).getText()) - 12),
+								defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
+					});
+
 			colour.onClick((info, button) -> {
 				if (button != 0) {
 					return false;

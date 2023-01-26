@@ -47,10 +47,8 @@ public class ColourPickerDialog extends BlockComponent {
 						defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 		if (colourOption.canApplyToAll()) {
-			add(new ButtonComponent("sol_client.mod.screen.apply_to_all",
-					new AnimatedColourController(
-							(component, defaultColour) -> component.isHovered() ? Colour.BLUE_HOVER : Colour.BLUE), Controller.of(Colour.WHITE))
-					.withIcon("sol_client_new").onClick((info, button) -> {
+			add(new ButtonComponent("sol_client.mod.screen.apply_to_all", theme.button(), theme.fg())
+					.withIcon("apply_all").onClick((info, button) -> {
 						if (button == 0) {
 							hex.flush();
 							parent.setDialog(null);

@@ -69,7 +69,7 @@ public class ModOptionComponent extends Component {
 		} else if (option.getType() == KeyBinding.class) {
 			KeyBinding binding = (KeyBinding) option.getValue();
 
-			add(new LabelComponent(
+			LabelComponent label = new LabelComponent(
 					(component, defaultText) -> KeyBindingExtension.from(binding).getPrefix()
 							+ GameOptions.getFormattedNameForKeyCode(binding.getCode()),
 					new AnimatedColourController((component, defaultColour) -> {
@@ -78,10 +78,11 @@ public class ModOptionComponent extends Component {
 						else if (MinecraftUtils.isConflicting(binding))
 							return new Colour(255, 85, 85);
 
-						return isHovered() ? theme.activeHover : theme.active;
-					})), defaultBoundController);
+						return component.isHovered() ? theme.activeHover : theme.active;
+					}));
+			add(label, defaultBoundController);
 
-			onClick((info, button) -> {
+			label.onClick((info, button) -> {
 				if (button == 0) {
 					MinecraftUtils.playClickSound(true);
 
@@ -174,11 +175,11 @@ public class ModOptionComponent extends Component {
 
 				Component previous;
 
-				add(new IconComponent("sol_client_next", 8, 8, new AnimatedColourController(
+				add(new IconComponent("next", 8, 8, new AnimatedColourController(
 						(component, defaultColour) -> component.isHovered() ? theme.activeHover : theme.active)),
 						defaultBoundController);
 
-				add(previous = new IconComponent("sol_client_previous", 8, 8, new AnimatedColourController(
+				add(previous = new IconComponent("prev", 8, 8, new AnimatedColourController(
 						(component, defaultColour) -> component.isHovered() ? theme.activeHover : theme.active)),
 						(component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);

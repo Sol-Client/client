@@ -22,18 +22,19 @@ public class ModEntry extends ColouredComponent {
 	private final Controller<Colour> stripeColour;
 	private final ModsScreenComponent screen;
 	private final ModSettingsButton settingsButton;
-	private final ScaledIconComponent pinButton;
+	private final IconComponent pinButton;
 	private final boolean pinnedCategory;
 	private Position dragStart;
 	private boolean dragging;
 
 	public ModEntry(Mod mod, ModsScreenComponent screen, boolean pinnedCategory) {
-		super(new AnimatedColourController((component, defaultColour) -> ((ModEntry) component).isFullyHovered() ? theme.buttonHover : theme.button));
+		super(new AnimatedColourController((component,
+				defaultColour) -> ((ModEntry) component).isFullyHovered() ? theme.buttonHover : theme.button));
 
 		this.mod = mod;
 		this.screen = screen;
 
-		add(new ScaledIconComponent("sol_client_" + mod.getId(), 16, 16),
+		add(new IconComponent("mod/" + mod.getId(), 16, 16),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getY() + 3, defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -42,7 +43,7 @@ public class ModEntry extends ColouredComponent {
 				(component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : ""));
 		add(name,
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 33,
+						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 43,
 								(int) (defaultBounds.getY() - (regularFont.getLineHeight(nvg) / 2)) - 1,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
@@ -57,21 +58,15 @@ public class ModEntry extends ColouredComponent {
 		add(credit, new AlignedBoundsController(Alignment.START, Alignment.START, (component,
 				defaultBounds) -> defaultBounds.offset(name.getBounds().getEndX() - 1, name.getBounds().getY() + 2)));
 
-		Controller<Rectangle> favouriteBounds = new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
-				(component, defaultBounds) -> new Rectangle(credit.getBounds().getEndX() + 2, defaultBounds.getY() + 5,
+		Controller<Rectangle> pinBounds = new AlignedBoundsController(Alignment.START, Alignment.START,
+				(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 33, defaultBounds.getY() + 7,
 						defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-		add(pinButton = new ScaledIconComponent((component, defaultIcon) -> "sol_client_favourite", 8, 8,
-				new AnimatedColourController((component, defaultColour) -> isFullyHovered() || mod.isPinned()
-						? (component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)
-						: Colour.TRANSPARENT)),
-				favouriteBounds);
-
-		add(new ScaledIconComponent((component, defaultIcon) -> "sol_client_favourited", 8, 8,
-				new AnimatedColourController((component, defaultColour) -> mod.isPinned()
-						? (component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)
-						: Colour.TRANSPARENT)),
-				favouriteBounds);
+		add(pinButton = new IconComponent((component, defaultIcon) -> mod.isPinned() ? "pinned" : "pin", 8, 8,
+				new AnimatedColourController(
+						(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER
+								: mod.isPinned() ? Colour.LIGHT_BUTTON : new Colour(100, 100, 100))),
+				pinBounds);
 
 		add(settingsButton = new ModSettingsButton(), new AlignedBoundsController(Alignment.END, null));
 
@@ -203,7 +198,7 @@ public class ModEntry extends ColouredComponent {
 
 		public ModSettingsButton() {
 			super(theme.buttonSecondary());
-			add(new ScaledIconComponent(mod.isBlocked() ? "sol_client_lock" : "sol_client_settings", 16, 16),
+			add(new IconComponent(mod.isBlocked() ? "lock" : "settings", 16, 16),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
 		}
 

@@ -188,7 +188,7 @@ public abstract class ScrollListComponent extends Component {
 		if (subComponents.isEmpty())
 			return 0;
 
-		return getBounds(subComponents.get(subComponents.size() - 1)).getEndY() + getSpacing();
+		return getBounds(subComponents.get(subComponents.size() - 1)).getEndY() + getSpacing() * 2;
 	}
 
 	@Override

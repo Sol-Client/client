@@ -97,9 +97,15 @@ public class TextFieldComponent extends Component {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		super.render(info);
+		if (underline) {
+			NanoVG.nvgBeginPath(nvg);
+			NanoVG.nvgFillColor(nvg, theme.button.nvg());
+			NanoVG.nvgRoundedRect(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), getBounds().getHeight() / 2);
+			NanoVG.nvgFill(nvg);
+		}
 
-		int textOffset = 2;
+		int textOffset = 4;
+		float y = getBounds().getHeight() / 2 - regularFont.getLineHeight(nvg) / 2 - 0.5F;
 
 		if (centred) {
 			textOffset = (int) ((getBounds().getWidth() / 2) - (regularFont.getWidth(nvg, text) / 2));
@@ -116,16 +122,20 @@ public class TextFieldComponent extends Component {
 			float selectionWidth = regularFont.getWidth(nvg, text.substring(start, end));
 			float offset = regularFont.getWidth(nvg, text.substring(0, start));
 
+			NanoVG.nvgShapeAntiAlias(nvg, false);
+
 			NanoVG.nvgBeginPath(nvg);
 			NanoVG.nvgFillColor(nvg, Colour.BLUE.nvg());
-			NanoVG.nvgRect(nvg, textOffset + offset, 0, selectionWidth, 10);
+			NanoVG.nvgRect(nvg, textOffset + offset, y, selectionWidth, 10);
 			NanoVG.nvgFill(nvg);
+
+			NanoVG.nvgShapeAntiAlias(nvg, true);
 		}
 
 		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
 		NanoVG.nvgFillColor(nvg, (hasPlaceholder ? new Colour(0xFF888888) : Colour.WHITE).nvg());
-		regularFont.renderString(nvg, hasPlaceholder ? I18n.translate(placeholder) : text, textOffset, 0);
+		regularFont.renderString(nvg, hasPlaceholder ? I18n.translate(placeholder) : text, textOffset, y);
 
 		if (focused && ticks / 12 % 2 == 0) {
 			NanoVG.nvgShapeAntiAlias(nvg, false);
@@ -133,23 +143,18 @@ public class TextFieldComponent extends Component {
 			float relativeCursorPosition = regularFont.getWidth(nvg, text.substring(0, cursor));
 			NanoVG.nvgBeginPath(nvg);
 			NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
-			NanoVG.nvgRect(nvg, textOffset + relativeCursorPosition, 0, 0.5F, 10);
+			NanoVG.nvgRect(nvg, textOffset + relativeCursorPosition, y, 0.5F, 10);
 			NanoVG.nvgFill(nvg);
 
 			NanoVG.nvgShapeAntiAlias(nvg, true);
 		}
 
-		if (underline) {
-			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgFillColor(nvg, colour.get(this).nvg());
-			NanoVG.nvgRect(nvg, 0, getBounds().getHeight() - 1, getBounds().getWidth(), 1);
-			NanoVG.nvgFill(nvg);
-		}
+		super.render(info);
 	}
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return new Rectangle(0, 0, width, 12);
+		return new Rectangle(0, 0, width, 15);
 	}
 
 	@Override
@@ -435,9 +440,9 @@ public class TextFieldComponent extends Component {
 
 	public TextFieldComponent withIcon(String name) {
 		hasIcon = true;
-		add(new ScaledIconComponent(name, 16, 16),
+		add(new IconComponent(name, 12, 12),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
+						(component, defaultBounds) -> new Rectangle(defaultBounds.getY() + 1, defaultBounds.getY() + 1,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 		return this;
 	}

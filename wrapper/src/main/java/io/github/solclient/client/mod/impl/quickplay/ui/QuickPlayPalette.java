@@ -57,7 +57,7 @@ public class QuickPlayPalette extends ComponentScreen {
 			this.mod = mod;
 			scroll = new QuickPlayScroll(this);
 			add(scroll, (component, defaultBounds) -> new Rectangle(0, 30, getBounds().getWidth(),
-					getBounds().getHeight() - 40));
+					getBounds().getHeight() - 30));
 			search = new TextFieldComponent(200, false).withPlaceholder("sol_client.mod.screen.search").autoFlush()
 					.onUpdate((ignored) -> {
 						scroll.load();

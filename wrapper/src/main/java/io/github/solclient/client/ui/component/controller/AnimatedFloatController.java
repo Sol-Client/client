@@ -1,9 +1,7 @@
 package io.github.solclient.client.ui.component.controller;
 
-import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.lib.penner.easing.*;
 import io.github.solclient.client.ui.component.Component;
-import io.github.solclient.client.util.MinecraftUtils;
-import io.github.solclient.client.util.data.Colour;
 
 public class AnimatedFloatController implements Controller<Float> {
 
@@ -28,7 +26,10 @@ public class AnimatedFloatController implements Controller<Float> {
 			current = baseValue;
 		}
 
-		return MinecraftUtils.lerp(last, current, Math.min(Math.max(0, (System.currentTimeMillis() - currentTime) / ((float) duration)), 1));
+		if (last == null)
+			last = current;
+
+		return Sine.easeOut(Math.min(System.currentTimeMillis() - currentTime, duration), last, current - last, duration);
 	}
 
 }

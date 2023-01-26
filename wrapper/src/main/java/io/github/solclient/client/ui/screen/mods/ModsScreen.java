@@ -79,6 +79,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		@Getter
 		private Mod mod;
 		private TextFieldComponent search;
+		private ButtonComponent back;
 		@Getter
 		private ModsScroll scroll;
 		private int noModsScroll;
@@ -102,65 +103,52 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			}
 
 			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName()
-					: I18n.translate("sol_client.mod.screen.title")).scaled(1.5F),
-					new AlignedBoundsController(Alignment.START, Alignment.START,
-							(component, defaultBounds) -> new Rectangle(15, 12,
-									defaultBounds.getWidth(), defaultBounds.getHeight())));
+					: I18n.translate("sol_client.mod.screen.title")).scaled(1.45F),
+					new AlignedBoundsController(Alignment.START, Alignment.START, (component, defaultBounds) -> {
+						Rectangle result = new Rectangle(15, 13, defaultBounds.getWidth(), defaultBounds.getHeight());
+						if (!singleModMode && mod != null)
+							result = result.offset(17, 0);
 
-			add(scroll = new ModsScroll(this), (component, defaultBounds) -> new Rectangle(0, 40,
-					getBounds().getWidth(), getBounds().getHeight() - 40));
+						return result;
+					}));
 
-			add(ButtonComponent.done(() -> {
-				if (mod == null || singleModMode) {
-					if (!search.getText().isEmpty()) {
-						search.setText("");
-						search.setFocused(false);
-						scroll.load();
-					} else {
-						getScreen().close();
-					}
-				} else {
-					switchMod(null);
-				}
-			}).width(50), new AlignedBoundsController(Alignment.END, Alignment.START,
-					(component, defaultBounds) -> defaultBounds.offset(-8, 8)));
+			add(scroll = new ModsScroll(this), (component, defaultBounds) -> {
+				int y = 55;
+				if (mod != null)
+					y = 40;
+				return new Rectangle(0, y, getBounds().getWidth(), getBounds().getHeight() - y);
+			});
+
+			add(ButtonComponent.done(() -> getScreen().close()).width(50), new AlignedBoundsController(Alignment.END,
+					Alignment.START, (component, defaultBounds) -> defaultBounds.offset(-8, 8)));
 
 			if (!singleModMode) {
-				add(new ButtonComponent("sol_client.hud.edit", theme.button(), theme.fg())
-						.onClick((info, button) -> {
-							if (button == 0) {
-								MinecraftUtils.playClickSound(true);
-								mc.setScreen(new MoveHudsScreen());
-								return true;
-							}
+				add(new ButtonComponent("sol_client.hud.edit", theme.button(), theme.fg()).onClick((info, button) -> {
+					if (button == 0) {
+						MinecraftUtils.playClickSound(true);
+						mc.setScreen(new MoveHudsScreen());
+						return true;
+					}
 
-							return false;
-						}).withIcon("sol_client_hud").width(60), new AlignedBoundsController(Alignment.END,
-								Alignment.START, (component, defaultBounds) -> defaultBounds.offset(-63, 8)));
+					return false;
+				}).withIcon("edit").width(60), new AlignedBoundsController(Alignment.END, Alignment.START,
+						(component, defaultBounds) -> defaultBounds.offset(-63, 8)));
 			}
 
-			search = new TextFieldComponent(100, false).autoFlush().onUpdate((ignored) -> {
+			search = new TextFieldComponent(225, false).autoFlush().onUpdate((ignored) -> {
 				scroll.snapTo(0);
 				scroll.load();
 				return true;
-			}).withPlaceholder("sol_client.mod.screen.search").withIcon("sol_client_search");
+			}).withPlaceholder("sol_client.mod.screen.search").withIcon("search");
+			back = new ButtonComponent("", theme.button(), theme.fg()).width(16).height(16).withIcon("back")
+					.onClick((info, button) -> {
+						if (button != 0)
+							return false;
 
-			if ("".equals("noop"))
-				add(new ScaledIconComponent("sol_client_about", 16, 16,
-						new AnimatedColourController((component,
-								defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
-						.onClick((info, button) -> {
-							if (button != 0) {
-								return false;
-							}
-
-							MinecraftUtils.playClickSound(true);
-							setDialog(new AboutDialog());
-							return true;
-						}),
-						new AlignedBoundsController(Alignment.END, Alignment.START,
-								(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - 3,
-										defaultBounds.getY() + 3, defaultBounds.getWidth(), defaultBounds.getHeight())));
+						MinecraftUtils.playClickSound(true);
+						switchMod(null, false);
+						return true;
+					});
 
 			switchMod(startingMod, true);
 		}
@@ -179,15 +167,17 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 			if (mod == null) {
 				scroll.snapTo(noModsScroll);
-				if ("".equals("noop"))
-					add(0, search, (component, defaultBounds) -> new Rectangle(6, 6, defaultBounds.getWidth(),
-							defaultBounds.getHeight()));
+				add(0, search, (component, defaultBounds) -> new Rectangle(15, 34, defaultBounds.getWidth(),
+						defaultBounds.getHeight()));
+				if (!first)
+					remove(back);
 			} else {
 				noModsScroll = scroll.getScroll();
 				scroll.snapTo(0);
-				if (!first) {
+				if (!first)
 					remove(search);
-				}
+				if (!singleModMode)
+					add(back, (component, defaultBounds) -> defaultBounds.offset(12, 12));
 			}
 		}
 
@@ -253,6 +243,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					&& (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER))
 					&& !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
+				if (mod != null)
+					firstComponent = firstComponent.getSubComponents().get(1);
 				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModEntry ? 1 : 0, true,
 						false);
 			} else if (draggingMod == null && mod == null && keyCode == Keyboard.KEY_F && hasControlDown()

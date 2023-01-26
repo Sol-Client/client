@@ -164,11 +164,11 @@ public class ModOptionComponent extends Component {
 
 				Component previous;
 
-				add(new ScaledIconComponent("sol_client_next", 8, 8, new AnimatedColourController((component,
+				add(new IconComponent("sol_client_next", 8, 8, new AnimatedColourController((component,
 						defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)),
 						defaultBoundController);
 
-				add(previous = new ScaledIconComponent("sol_client_previous", 8, 8,
+				add(previous = new IconComponent("sol_client_previous", 8, 8,
 						new AnimatedColourController(
 								(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER
 										: Colour.LIGHT_BUTTON)),

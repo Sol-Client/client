@@ -9,10 +9,10 @@ import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 
-public class ToggleComponent extends BlockComponent {
+public final class ToggleComponent extends BlockComponent {
 
 	private boolean value;
-	private final AnimatedFloatController handleX;
+	private final AnimatedFloatController handleProgress;
 	private final Controller<Colour> handleColour;
 	private final Consumer<Boolean> booleanConsumer;
 
@@ -28,22 +28,33 @@ public class ToggleComponent extends BlockComponent {
 		this.value = value;
 		this.booleanConsumer = booleanConsumer;
 
-		handleX = new AnimatedFloatController((component, ignored) -> {
-			float x = getBounds().getHeight() / 2F;
-			if (this.value)
-				x = getBounds().getWidth() - x;
-			return x;
-		}, 200);
-		handleColour = new AnimatedColourController(
-				(component, defaultValue) -> this.value ? theme.accentFg : theme.fg, 300);
+		handleProgress = new AnimatedFloatController((component, ignored) -> this.value ? 1F : 0F, 300);
+		handleColour = (component, defaultValue) -> {
+			Colour start = theme.accentFg;
+			Colour end = theme.fg;
+			float progress = handleProgress.get(component);
+			if (this.value) {
+				start = theme.fg;
+				end = theme.accentFg;
+			} else
+				progress = 1 - progress;
+
+			return start.lerp(end, progress);
+		};
 	}
 
 	@Override
 	public void render(ComponentRenderInfo info) {
 		super.render(info);
 
+		float x = handleProgress.get(this);
+		float startX = getBounds().getHeight() / 2F;
+		float endX = getBounds().getWidth() - startX;
+		x *= endX - startX;
+		x += startX;
+
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgCircle(nvg, handleX.get(this), getBounds().getHeight() / 2F, 4);
+		NanoVG.nvgCircle(nvg, x, getBounds().getHeight() / 2F, 4);
 		NanoVG.nvgFillColor(nvg, handleColour.get(this).nvg());
 		NanoVG.nvgFill(nvg);
 	}

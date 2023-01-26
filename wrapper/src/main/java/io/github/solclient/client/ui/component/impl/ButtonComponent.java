@@ -13,8 +13,9 @@ import net.minecraft.client.resource.language.I18n;
 
 public class ButtonComponent extends ColouredComponent {
 
-	private boolean icon;
+	private IconComponent icon;
 	private int width = 100;
+	private int height = 20;
 	@Getter
 	private final Controller<String> text;
 	private final Controller<Colour> fg;
@@ -28,12 +29,18 @@ public class ButtonComponent extends ColouredComponent {
 		this.text = text;
 		this.fg = fg;
 
-		add(new LabelComponent(text, fg), new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE, (component, defaultBounds) -> {
-			if (!icon)
-				return defaultBounds;
+		add(new LabelComponent(text, fg), (component, bounds) -> {
+			int x = 0;
+			int width = getBounds().getWidth();
 
-			return defaultBounds.offset(5, 0);
-		}));
+			if (icon != null && getBounds().getWidth() < icon.getBounds().getEndX() + bounds.getWidth() + 16) {
+				x = icon.getBounds().getEndX();
+				width -= x + 7;
+			}
+
+			return bounds.offset(x + (width / 2 - bounds.getWidth() / 2),
+					getBounds().getHeight() / 2 - bounds.getHeight() / 2);
+		});
 	}
 
 	@Override
@@ -45,7 +52,7 @@ public class ButtonComponent extends ColouredComponent {
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillColor(nvg, getColour().nvg());
-		NanoVG.nvgRoundedRect(nvg, 0, 0, width, 20, radius);
+		NanoVG.nvgRoundedRect(nvg, 0, 0, width, height, radius);
 		NanoVG.nvgFill(nvg);
 
 		super.render(info);
@@ -53,7 +60,7 @@ public class ButtonComponent extends ColouredComponent {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return Rectangle.ofDimensions(width, 20);
+		return Rectangle.ofDimensions(width, height);
 	}
 
 	@Override
@@ -63,8 +70,8 @@ public class ButtonComponent extends ColouredComponent {
 	}
 
 	public ButtonComponent withIcon(String name) {
-		icon = true;
-		add(new ScaledIconComponent(name, 16, 16, fg),
+		icon = new IconComponent(name, 12, 12, fg);
+		add(icon,
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -73,6 +80,11 @@ public class ButtonComponent extends ColouredComponent {
 
 	public ButtonComponent width(int width) {
 		this.width = width;
+		return this;
+	}
+
+	public ButtonComponent height(int height) {
+		this.height = height;
 		return this;
 	}
 
@@ -86,7 +98,7 @@ public class ButtonComponent extends ColouredComponent {
 						return true;
 					}
 					return false;
-				}).withIcon("sol_client_tick");
+				}).withIcon("done");
 	}
 
 }

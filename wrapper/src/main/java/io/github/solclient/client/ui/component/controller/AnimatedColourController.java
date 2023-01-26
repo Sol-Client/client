@@ -32,7 +32,7 @@ public class AnimatedColourController implements Controller<Colour> {
 				: 1);
 	}
 
-	private Colour animate(float progress) {
+	public Colour animate(float progress) {
 		if (last == null || progress == 1)
 			return current;
 

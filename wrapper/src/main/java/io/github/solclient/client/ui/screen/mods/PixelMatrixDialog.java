@@ -36,7 +36,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 		add(ButtonComponent.done(() -> parent.setDialog(null)), new AlignedBoundsController(Alignment.CENTRE,
 				Alignment.END, (component, defaultBounds) -> defaultBounds.offset(0, -8)));
 
-		add(new ScaledIconComponent("sol_client_share", 16, 16, new AnimatedColourController(
+		add(new IconComponent("sol_client_share", 16, 16, new AnimatedColourController(
 				(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
 				.onClick((info, button) -> {
 					if (button != 0)
@@ -47,7 +47,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 					return true;
 				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> defaultBounds.offset(13, -20)));
-		add(new ScaledIconComponent("sol_client_import", 16, 16, new AnimatedColourController(
+		add(new IconComponent("sol_client_import", 16, 16, new AnimatedColourController(
 				(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
 				.onClick((info, button) -> {
 					if (button != 0)
@@ -58,7 +58,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 					return true;
 				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> defaultBounds.offset(13, 0)));
-		add(new ScaledIconComponent("sol_client_delete", 16, 16, new AnimatedColourController(
+		add(new IconComponent("sol_client_delete", 16, 16, new AnimatedColourController(
 				(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
 				.onClick((info, button) -> {
 					if (button != 0)

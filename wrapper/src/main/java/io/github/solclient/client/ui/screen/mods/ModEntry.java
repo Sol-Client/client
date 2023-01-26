@@ -63,9 +63,8 @@ public class ModEntry extends ColouredComponent {
 						defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 		add(pinButton = new IconComponent((component, defaultIcon) -> mod.isPinned() ? "pinned" : "pin", 8, 8,
-				new AnimatedColourController(
-						(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER
-								: mod.isPinned() ? Colour.LIGHT_BUTTON : new Colour(100, 100, 100))),
+				new AnimatedColourController((component, defaultColour) -> component.isHovered() ? theme.activeHover
+						: mod.isPinned() ? theme.active : new Colour(100, 100, 100))),
 				pinBounds);
 
 		add(settingsButton = new ModSettingsButton(), new AlignedBoundsController(Alignment.END, null));

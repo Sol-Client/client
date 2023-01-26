@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 public class AboutDialog extends BlockComponent {
 
 	public AboutDialog() {
-		super(Colour.DISABLED_MOD, 12, 0);
+		super(theme.bg, 12, 0);
 
 		add(new LabelComponent("sol_client.mod.screen.about"),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,

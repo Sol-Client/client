@@ -10,7 +10,7 @@ import io.github.solclient.client.util.data.*;
 public class ColourBoxComponent extends ColouredComponent {
 
 	private final Controller<Colour> outlineController = new AnimatedColourController(
-			(component, defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON);
+			(component, defaultColour) -> isHovered() ? theme.activeHover : theme.active);
 
 	public ColourBoxComponent(Controller<Colour> colour) {
 		super(colour);

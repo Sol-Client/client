@@ -18,6 +18,8 @@ public class Theme implements Cloneable {
 		DARK.accent = new Colour(0xFFFFB400);
 		DARK.accentHover = new Colour(0xFFFFC35F);
 		DARK.accentFg = new Colour(0xFF000000);
+		DARK.active = new Colour(0xFFFFFFFF);
+		DARK.activeHover = new Colour(0xFFECECEC);
 	}
 
 	public Colour bg;
@@ -29,6 +31,8 @@ public class Theme implements Cloneable {
 	public Colour accent;
 	public Colour accentHover;
 	public Colour accentFg;
+	public Colour active;
+	public Colour activeHover;
 
 	// @formatter:off
 	public final Controller<Colour> bg() { return Controller.of(bg); }

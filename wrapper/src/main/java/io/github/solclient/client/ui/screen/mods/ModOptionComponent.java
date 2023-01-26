@@ -43,7 +43,8 @@ public class ModOptionComponent extends Component {
 		if (option.getType() == boolean.class) {
 			add(new ToggleComponent((boolean) option.getValue(), option::setValue), defaultBoundController);
 		} else if (option.getType() == Colour.class) {
-			ColourBoxComponent colour = new ColourBoxComponent((component, defaultColour) -> (Colour) option.getValue());
+			ColourBoxComponent colour = new ColourBoxComponent(
+					(component, defaultColour) -> (Colour) option.getValue());
 			add(colour, defaultBoundController);
 
 			colour.onClick((info, button) -> {
@@ -52,8 +53,8 @@ public class ModOptionComponent extends Component {
 				}
 
 				MinecraftUtils.playClickSound(true);
-				screen.getRoot().setDialog(new ColourPickerDialog(option, (Colour) option.getValue(),
-						option::setValue));
+				screen.getRoot()
+						.setDialog(new ColourPickerDialog(option, (Colour) option.getValue(), option::setValue));
 				return true;
 			});
 		} else if (option.getType() == KeyBinding.class) {
@@ -68,7 +69,7 @@ public class ModOptionComponent extends Component {
 						else if (MinecraftUtils.isConflicting(binding))
 							return new Colour(255, 85, 85);
 
-						return isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON;
+						return isHovered() ? theme.activeHover : theme.active;
 					})), defaultBoundController);
 
 			onClick((info, button) -> {
@@ -140,8 +141,8 @@ public class ModOptionComponent extends Component {
 				Enum<?>[] fields = (Enum<?>[]) valuesField.invoke(null);
 
 				add(new LabelComponent((component, defaultText) -> option.getValue().toString(),
-						new AnimatedColourController((component,
-								defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)),
+						new AnimatedColourController(
+								(component, defaultColour) -> isHovered() ? theme.activeHover : theme.active)),
 						(component, defaultBounds) -> {
 							if (enumWidth == 0) {
 								for (Enum<?> field : fields) {
@@ -164,14 +165,12 @@ public class ModOptionComponent extends Component {
 
 				Component previous;
 
-				add(new IconComponent("sol_client_next", 8, 8, new AnimatedColourController((component,
-						defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)),
+				add(new IconComponent("sol_client_next", 8, 8, new AnimatedColourController(
+						(component, defaultColour) -> component.isHovered() ? theme.activeHover : theme.active)),
 						defaultBoundController);
 
-				add(previous = new IconComponent("sol_client_previous", 8, 8,
-						new AnimatedColourController(
-								(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER
-										: Colour.LIGHT_BUTTON)),
+				add(previous = new IconComponent("sol_client_previous", 8, 8, new AnimatedColourController(
+						(component, defaultColour) -> component.isHovered() ? theme.activeHover : theme.active)),
 						(component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(defaultComponentBounds.getX() - enumWidth - 12,
@@ -221,7 +220,8 @@ public class ModOptionComponent extends Component {
 
 			if (sliderAnnotation.showValue()) {
 				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderAnnotation.format(),
-						new DecimalFormat("0.##").format(option.getValue()))).scaled(0.8F), (component, defaultBounds) -> {
+						new DecimalFormat("0.##").format(option.getValue()))).scaled(0.8F),
+						(component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(
 									(int) (getBounds().getWidth()
@@ -239,8 +239,9 @@ public class ModOptionComponent extends Component {
 		} else if (option.isFile()) {
 			String text = option.getEditText();
 
-			add(new LabelComponent((component, defaultText) -> text, new AnimatedColourController(
-					(component, defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)),
+			add(new LabelComponent((component, defaultText) -> text,
+					new AnimatedColourController(
+							(component, defaultColour) -> isHovered() ? theme.activeHover : theme.active)),
 					defaultBoundController);
 
 			onClick((info, button) -> {

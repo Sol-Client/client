@@ -28,8 +28,6 @@ public class TextFieldComponent extends Component {
 	private boolean focused;
 	private int selectionEnd;
 	private boolean enabled = true;
-	private final Controller<Colour> colour = new AnimatedColourController(
-			(component, defaultColour) -> focused ? Colour.WHITE : Colour.LIGHT_BUTTON);
 	private boolean centred;
 	private Predicate<String> onUpdate;
 	private boolean flush;

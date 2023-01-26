@@ -24,13 +24,13 @@ public class ColourBoxComponent extends ColouredComponent {
 	public void render(ComponentRenderInfo info) {
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillColor(nvg, getColour().nvg());
-		NanoVG.nvgCircle(nvg, getBounds().getWidth() / 2, getBounds().getHeight() / 2, getBounds().getWidth());
+		NanoVG.nvgCircle(nvg, getBounds().getWidth() / 2, getBounds().getHeight() / 2, getBounds().getWidth() / 2);
 		NanoVG.nvgFill(nvg);
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgStrokeColor(nvg, outlineController.get(this, null).nvg());
 		NanoVG.nvgStrokeWidth(nvg, 1);
-		NanoVG.nvgCircle(nvg, getBounds().getWidth() / 2, getBounds().getHeight() / 2, getBounds().getWidth() + 1);
+		NanoVG.nvgCircle(nvg, getBounds().getWidth() / 2, getBounds().getHeight() / 2, getBounds().getWidth() / 2 + 0.5F);
 		NanoVG.nvgStroke(nvg);
 
 		super.render(info);

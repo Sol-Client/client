@@ -36,39 +36,33 @@ public final class PixelMatrixDialog extends BlockComponent {
 		add(ButtonComponent.done(() -> parent.setDialog(null)), new AlignedBoundsController(Alignment.CENTRE,
 				Alignment.END, (component, defaultBounds) -> defaultBounds.offset(0, -8)));
 
-		add(new IconComponent("sol_client_share", 16, 16, new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton))
-				.onClick((info, button) -> {
-					if (button != 0)
-						return false;
+		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("copy").width(20).onClick((info, button) -> {
+			if (button != 0)
+				return false;
 
-					MinecraftUtils.playClickSound(true);
-					copy();
-					return true;
-				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> defaultBounds.offset(13, -20)));
-		add(new IconComponent("sol_client_import", 16, 16, new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton))
-				.onClick((info, button) -> {
-					if (button != 0)
-						return false;
+			MinecraftUtils.playClickSound(true);
+			copy();
+			return true;
+		}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+				(component, defaultBounds) -> defaultBounds.offset(10, -25)));
+		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("paste").width(20).onClick((info, button) -> {
+			if (button != 0)
+				return false;
 
-					MinecraftUtils.playClickSound(true);
-					paste();
-					return true;
-				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> defaultBounds.offset(13, 0)));
-		add(new IconComponent("sol_client_delete", 16, 16, new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton))
-				.onClick((info, button) -> {
-					if (button != 0)
-						return false;
+			MinecraftUtils.playClickSound(true);
+			paste();
+			return true;
+		}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+				(component, defaultBounds) -> defaultBounds.offset(10, 0)));
+		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("clear").width(20).onClick((info, button) -> {
+			if (button != 0)
+				return false;
 
-					MinecraftUtils.playClickSound(true);
-					pixels.clear();
-					return true;
-				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> defaultBounds.offset(13, 20)));
+			MinecraftUtils.playClickSound(true);
+			pixels.clear();
+			return true;
+		}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+				(component, defaultBounds) -> defaultBounds.offset(10, 25)));
 	}
 
 	private void copy() {

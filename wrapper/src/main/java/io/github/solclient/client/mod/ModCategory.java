@@ -51,9 +51,8 @@ public enum ModCategory {
 	}
 
 	public List<Mod> getMods() {
-		if (this == PINNED) {
-			return Client.INSTANCE.getPins().getMods();
-		}
+		if (this == PINNED)
+			return Client.INSTANCE.getModUiState().getPins();
 
 		if (mods == null) {
 			mods = Client.INSTANCE.getMods().stream().filter((mod) -> mod.getCategory() == this)

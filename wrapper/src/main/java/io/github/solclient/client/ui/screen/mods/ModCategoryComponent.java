@@ -2,6 +2,7 @@ package io.github.solclient.client.ui.screen.mods;
 
 import org.lwjgl.nanovg.*;
 
+import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
@@ -20,14 +21,15 @@ public final class ModCategoryComponent extends ListComponent {
 	public ModCategoryComponent(ModCategory category, ModsScreenComponent screen) {
 		this.category = category;
 
-		expandProgress = new AnimatedFloatController((component, ignored) -> expand ? 0F : 1F, 200);
+		expandProgress = new AnimatedFloatController((component, ignored) -> expand ? 1F : 0F, 200);
 
 		Header header = new Header();
 		add(header, Controller.none());
 
-		for (Mod mod : category.getMods()) {
+		for (Mod mod : category.getMods())
 			add(new ModEntry(mod, screen, category == ModCategory.PINNED));
-		}
+
+		expand = Client.INSTANCE.getModUiState().isExpanded(category);
 	}
 
 	@Override
@@ -87,6 +89,8 @@ public final class ModCategoryComponent extends ListComponent {
 
 			MinecraftUtils.playClickSound(true);
 			expand = !expand;
+
+			Client.INSTANCE.getModUiState().setExpanded(category, expand);
 			return true;
 		}
 

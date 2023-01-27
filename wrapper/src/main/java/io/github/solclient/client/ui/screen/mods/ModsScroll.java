@@ -77,14 +77,16 @@ public final class ModsScroll extends ScrollListComponent {
 
 		int scroll = 0;
 
-		if (Client.INSTANCE.getPins().getMods().size() == 0) {
+		if (Client.INSTANCE.getModUiState().getPins().size() == 0) {
 			// this is the first one
 			add(0, pinned = new ModCategoryComponent(ModCategory.PINNED, screen));
 			scroll += 13;
 		}
 
-		pinned.add(Client.INSTANCE.getPins().getMods().size() + 1, new ModEntry(mod, screen, true));
-		scroll += getScrollStep();
+		pinned.add(Client.INSTANCE.getModUiState().getPins().size() + 1, new ModEntry(mod, screen, true));
+
+		if (Client.INSTANCE.getModUiState().isExpanded(ModCategory.PINNED))
+			scroll += getScrollStep();
 		snapTo(getScroll() + scroll);
 	}
 
@@ -94,18 +96,18 @@ public final class ModsScroll extends ScrollListComponent {
 		}
 
 		int scroll = 0;
-		int index = Client.INSTANCE.getPins().getMods().indexOf(mod);
+		int index = Client.INSTANCE.getModUiState().getPins().indexOf(mod);
 
-		if (Client.INSTANCE.getPins().getMods().size() == 1) {
+		if (Client.INSTANCE.getModUiState().getPins().size() == 1) {
 			// this is the last one
 			remove(0);
 			scroll += 13;
 		}
 
-
 		pinned.remove(index + 1);
 
-		scroll += getScrollStep();
+		if (Client.INSTANCE.getModUiState().isExpanded(ModCategory.PINNED))
+			scroll += getScrollStep();
 		scroll = getScroll() - scroll;
 
 		if (scroll < 0)

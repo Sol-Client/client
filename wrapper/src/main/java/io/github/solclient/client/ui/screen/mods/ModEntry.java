@@ -141,7 +141,7 @@ public class ModEntry extends ColouredComponent {
 				return true;
 			}
 
-			if (pinnedCategory && Client.INSTANCE.getPins().getMods().size() > 1) {
+			if (pinnedCategory && Client.INSTANCE.getModUiState().getPins().size() > 1) {
 				dragStart = new Position(info.getRelativeMouseX(), info.getRelativeMouseY());
 				return true;
 			}

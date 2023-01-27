@@ -202,7 +202,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					getScroll().getPinned().remove(ghost);
 					getScroll().getPinned().add(modIndex, draggingMod);
 
-					Client.INSTANCE.getPins().reorder(draggingMod.getMod(), modIndex - 1);
+					Client.INSTANCE.getModUiState().reorderPin(draggingMod.getMod(), modIndex - 1);
 
 					draggingMod = null;
 				} else {
@@ -217,7 +217,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						modIndex--;
 					}
 
-					int max = Client.INSTANCE.getPins().getMods().size();
+					int max = Client.INSTANCE.getModUiState().getPins().size();
 					if (modIndex < 1) {
 						modIndex = 1;
 					} else if (modIndex > max) {

@@ -162,13 +162,11 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		}
 
 		public void switchMod(Mod mod, boolean first) {
-			this.mod = mod;
-			scroll.load();
-
 			if (mod == null) {
 				scroll.snapTo(noModsScroll);
-				add(0, search, (component, defaultBounds) -> new Rectangle(15, 34, defaultBounds.getWidth(),
-						defaultBounds.getHeight()));
+				if (this.mod != null || first)
+					add(0, search, (component, defaultBounds) -> new Rectangle(15, 34, defaultBounds.getWidth(),
+							defaultBounds.getHeight()));
 				if (!first)
 					remove(back);
 			} else {
@@ -176,9 +174,12 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				scroll.snapTo(0);
 				if (!first)
 					remove(search);
-				if (!singleModMode)
+				if (!singleModMode && this.mod == null)
 					add(back, (component, defaultBounds) -> defaultBounds.offset(12, 12));
 			}
+
+			this.mod = mod;
+			scroll.load();
 		}
 
 		@Override

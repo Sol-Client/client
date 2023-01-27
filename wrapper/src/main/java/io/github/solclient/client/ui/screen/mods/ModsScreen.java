@@ -191,16 +191,16 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			if (targetDraggingMod != null) {
 				draggingMod = targetDraggingMod;
 				targetDraggingMod = null;
-				getScroll().remove(draggingMod);
+				getScroll().getPinned().remove(draggingMod);
 				ghost = new ModGhost();
-				getScroll().add(modIndex, ghost);
+				getScroll().getPinned().add(modIndex, ghost);
 				add(draggingMod, (component, defaultBounds) -> defaultBounds.offset(mouseX - dragX, mouseY - dragY));
 			} else if (draggingMod != null) {
 				if (drop) {
 					drop = false;
 					remove(draggingMod);
-					getScroll().remove(ghost);
-					getScroll().add(modIndex, draggingMod);
+					getScroll().getPinned().remove(ghost);
+					getScroll().getPinned().add(modIndex, draggingMod);
 
 					Client.INSTANCE.getPins().reorder(draggingMod.getMod(), modIndex - 1);
 
@@ -209,7 +209,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					int ghostY = ghost.getBounds().getY();
 					int mouse = draggingMod.getBounds().getY() - getScroll().getBounds().getY()
 							+ getScroll().getScroll();
-					getScroll().remove(ghost);
+					getScroll().getPinned().remove(ghost);
 
 					if (mouse > ghostY + 20) {
 						modIndex++;
@@ -224,7 +224,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						modIndex = max;
 					}
 
-					getScroll().add(modIndex, ghost);
+					getScroll().getPinned().add(modIndex, ghost);
 				}
 			}
 		}
@@ -282,7 +282,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 		void notifyDrag(ModEntry listing, int xOffset, int yOffset) {
 			targetDraggingMod = listing;
-			modIndex = getScroll().getSubComponents().indexOf(listing);
+			modIndex = getScroll().getPinned().getSubComponents().indexOf(listing);
 			this.dragX = xOffset;
 			this.dragY = yOffset;
 		}

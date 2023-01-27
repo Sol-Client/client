@@ -145,7 +145,7 @@ public abstract class Component extends NanoVGManager {
 				drawDialogOverlay();
 			}
 
-			if (component.shouldSkip() || (shouldScissor() && shouldCull(component))) {
+			if (component.isHidden() || (shouldScissor() && shouldCull(component))) {
 				continue;
 			}
 
@@ -155,7 +155,7 @@ public abstract class Component extends NanoVGManager {
 			NanoVG.nvgTranslate(nvg, bounds.getX(), bounds.getY());
 
 			if (component.shouldScissor()) {
-				NanoVG.nvgScissor(nvg, 0, 0, bounds.getWidth(), bounds.getHeight());
+				NanoVG.nvgIntersectScissor(nvg, 0, 0, bounds.getWidth(), bounds.getHeight());
 			}
 
 			component.render(transform(info, bounds));
@@ -168,7 +168,7 @@ public abstract class Component extends NanoVGManager {
 		}
 	}
 
-	private boolean shouldSkip() {
+	public boolean isHidden() {
 		return visibilityController != null && !visibilityController.get(this, true);
 	}
 
@@ -205,7 +205,7 @@ public abstract class Component extends NanoVGManager {
 			return true;
 
 		for (Component component : subComponents) {
-			if (component.shouldSkip())
+			if (component.isHidden())
 				continue;
 
 			if (component.keyPressed(transform(info, getBounds(component)), keyCode, character))
@@ -223,7 +223,7 @@ public abstract class Component extends NanoVGManager {
 			return true;
 
 		for (Component component : subComponents) {
-			if (component.shouldSkip())
+			if (component.isHidden())
 				continue;
 
 			if (component.keyReleased(transform(info, getBounds(component)), keyCode, character))
@@ -250,7 +250,7 @@ public abstract class Component extends NanoVGManager {
 
 		try {
 			for (Component component : subComponents) {
-				if (component.shouldSkip())
+				if (component.isHidden())
 					continue;
 
 				Rectangle bounds = getBounds(component);
@@ -290,7 +290,7 @@ public abstract class Component extends NanoVGManager {
 			return true;
 
 		for (Component component : subComponents) {
-			if (component.shouldSkip())
+			if (component.isHidden())
 				continue;
 
 			Rectangle bounds = getBounds(component);

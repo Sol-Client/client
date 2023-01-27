@@ -18,8 +18,8 @@ public class Theme implements Cloneable {
 		DARK.accent = new Colour(0xFFFFB400);
 		DARK.accentHover = new Colour(0xFFFFE255);
 		DARK.accentFg = new Colour(0xFF000000);
-		DARK.active = new Colour(0xFFFFFFFF);
-		DARK.activeHover = new Colour(0xFFE0E0E0);
+		DARK.fgButton = new Colour(0xFFFFFFFF);
+		DARK.fgButtonHover = new Colour(0xFFDDDDDD);
 	}
 
 	public Colour bg;
@@ -27,12 +27,12 @@ public class Theme implements Cloneable {
 	public Colour buttonHover;
 	public Colour buttonSecondary;
 	public Colour buttonSecondaryHover;
+	public Colour fgButton;
+	public Colour fgButtonHover;
 	public Colour fg;
 	public Colour accent;
 	public Colour accentHover;
 	public Colour accentFg;
-	public Colour active;
-	public Colour activeHover;
 
 	// @formatter:off
 	public final Controller<Colour> bg() { return Controller.of(bg); }
@@ -49,6 +49,11 @@ public class Theme implements Cloneable {
 
 	public final Controller<Colour> buttonSecondary() {
 		return hoverPair(buttonSecondary, buttonSecondaryHover);
+	}
+
+	public Controller<Colour> fgButton() {
+		return new AnimatedColourController(
+				(component, defaultColour) -> component.isHovered() ? fgButtonHover : fgButton);
 	}
 
 	public final Controller<Colour> accent() {

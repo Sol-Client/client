@@ -37,7 +37,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 				Alignment.END, (component, defaultBounds) -> defaultBounds.offset(0, -8)));
 
 		add(new IconComponent("sol_client_share", 16, 16, new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? theme.activeHover : theme.active))
+				(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton))
 				.onClick((info, button) -> {
 					if (button != 0)
 						return false;
@@ -48,7 +48,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> defaultBounds.offset(13, -20)));
 		add(new IconComponent("sol_client_import", 16, 16, new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? theme.activeHover : theme.active))
+				(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton))
 				.onClick((info, button) -> {
 					if (button != 0)
 						return false;
@@ -59,7 +59,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> defaultBounds.offset(13, 0)));
 		add(new IconComponent("sol_client_delete", 16, 16, new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? theme.activeHover : theme.active))
+				(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton))
 				.onClick((info, button) -> {
 					if (button != 0)
 						return false;

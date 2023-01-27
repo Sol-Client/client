@@ -37,7 +37,7 @@ public class IconComponent extends ColouredComponent {
 		NanoVG.nvgBeginPath(nvg);
 
 		NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg,
-				new Identifier("sol_client", "textures/gui/" + iconName.get(this) + ".png"), 0, 0, width, height);
+				new Identifier("sol_client", "textures/gui/" + iconName.get(this) + ".png"), 0, 0, width, height, 0);
 		paint.innerColor(getColour().nvg());
 
 		NanoVG.nvgFillPaint(nvg, paint);

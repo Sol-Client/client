@@ -195,7 +195,7 @@ public class MinecraftUtils {
 	}
 
 	public void nvgScissor(long ctx, Rectangle rectangle) {
-		NanoVG.nvgScissor(ctx, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+		NanoVG.nvgIntersectScissor(ctx, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
 	}
 
 	public void playClickSound(boolean ui) {
@@ -630,15 +630,15 @@ public class MinecraftUtils {
 		}
 	}
 
-	public NVGPaint nvgTexturePaint(long nvg, int image, int x, int y, int width, int height) {
+	public NVGPaint nvgTexturePaint(long nvg, int image, int x, int y, int width, int height, float angle) {
 		NVGPaint paint = NVGPaint.create();
-		NanoVG.nvgImagePattern(nvg, x, y, width, height, 0, image, 1, paint);
+		NanoVG.nvgImagePattern(nvg, x, y, width, height, angle, image, 1, paint);
 		return paint;
 	}
 
-	public NVGPaint nvgMinecraftTexturePaint(long nvg, Identifier id, int x, int y, int width, int height) {
+	public NVGPaint nvgMinecraftTexturePaint(long nvg, Identifier id, int x, int y, int width, int height, float angle) {
 		try {
-			return nvgTexturePaint(nvg, nvgMinecraftTexture(nvg, id), x, y, width, height);
+			return nvgTexturePaint(nvg, nvgMinecraftTexture(nvg, id), x, y, width, height, angle);
 		} catch (IOException error) {
 			return NVGPaint.create().innerColor(Colour.WHITE.nvg());
 		}

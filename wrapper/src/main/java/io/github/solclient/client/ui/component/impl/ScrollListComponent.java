@@ -5,11 +5,10 @@ import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 
-public abstract class ScrollListComponent extends Component {
+public abstract class ScrollListComponent extends ListComponent {
 
 	private double targetY;
 	private double animatedY;
@@ -44,28 +43,6 @@ public abstract class ScrollListComponent extends Component {
 			return new Rectangle(getBounds().getX() + getBounds().getWidth() - 6, getBounds().getY(), 3,
 					(int) (getBounds().getHeight() * scrollPercent));
 		});
-	}
-
-	public void add(Component component) {
-		add(getSubComponents().size(), component);
-	}
-
-	public void add(int index, Component component) {
-		add(index, component,
-				new AlignedBoundsController(Alignment.CENTRE, Alignment.START, (sizingComponent, defaultBounds) -> {
-					Component previous = null;
-					Rectangle lastBounds = null;
-
-					int prevIndex = subComponents.indexOf(component) - 1;
-					if (prevIndex > -1) {
-						previous = subComponents.get(prevIndex);
-						lastBounds = previous.getCachedBounds();
-					}
-
-					return new Rectangle(defaultBounds.getX(),
-							previous == null ? 0 : lastBounds.getY() + lastBounds.getHeight() + getSpacing(),
-							defaultBounds.getWidth(), defaultBounds.getHeight());
-				}));
 	}
 
 	private ComponentRenderInfo translate(ComponentRenderInfo info) {
@@ -184,11 +161,9 @@ public abstract class ScrollListComponent extends Component {
 		return (int) targetY;
 	}
 
-	private int getContentHeight() {
-		if (subComponents.isEmpty())
-			return 0;
-
-		return getBounds(subComponents.get(subComponents.size() - 1)).getEndY() + getSpacing() * 2;
+	@Override
+	protected int getContentHeight() {
+		return super.getContentHeight() + getSpacing() * 2;
 	}
 
 	@Override
@@ -256,7 +231,5 @@ public abstract class ScrollListComponent extends Component {
 	protected boolean shouldScissor() {
 		return true;
 	}
-
-	public abstract int getSpacing();
 
 }

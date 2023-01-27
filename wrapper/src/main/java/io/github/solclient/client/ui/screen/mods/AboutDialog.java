@@ -34,8 +34,8 @@ public class AboutDialog extends BlockComponent {
 		int logoX = getBounds().getWidth() / 2 - 32;
 		int logoY = getBounds().getHeight() / 2 - 60;
 
-		NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier("textures/gui/sol_client_icon.png"), logoX,
-				logoY, 64, 64);
+		NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg,
+				new Identifier("textures/gui/sol_client_icon.png"), logoX, logoY, 64, 64, 0);
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillPaint(nvg, paint);

@@ -6,7 +6,6 @@ import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.*;
 import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -63,8 +62,8 @@ public class ModEntry extends ColouredComponent {
 						defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 		add(pinButton = new IconComponent((component, defaultIcon) -> mod.isPinned() ? "pinned" : "pin", 8, 8,
-				new AnimatedColourController((component, defaultColour) -> component.isHovered() ? theme.activeHover
-						: mod.isPinned() ? theme.active : new Colour(100, 100, 100))),
+				new AnimatedColourController((component, defaultColour) -> component.isHovered() ? theme.fgButtonHover
+						: mod.isPinned() ? theme.fgButton : new Colour(100, 100, 100))),
 				pinBounds);
 
 		add(settingsButton = new ModSettingsButton(), new AlignedBoundsController(Alignment.END, null));
@@ -93,12 +92,14 @@ public class ModEntry extends ColouredComponent {
 		NanoVG.nvgRoundedRect(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), 4);
 		NanoVG.nvgFill(nvg);
 
-		// bar on left
-		NanoVG.nvgSave(nvg);
-		NanoVG.nvgIntersectScissor(nvg, 0, 0, 3, getBounds().getHeight());
-		NanoVG.nvgFillColor(nvg, stripeColour.get(this).nvg());
-		NanoVG.nvgFill(nvg);
-		NanoVG.nvgRestore(nvg);
+		if (!mod.isLocked()) {
+			// bar on left
+			NanoVG.nvgSave(nvg);
+			NanoVG.nvgIntersectScissor(nvg, 0, 0, 3, getBounds().getHeight());
+			NanoVG.nvgFillColor(nvg, stripeColour.get(this).nvg());
+			NanoVG.nvgFill(nvg);
+			NanoVG.nvgRestore(nvg);
+		}
 
 		if (dragStart != null && !dragging) {
 			dragging = Math.abs(info.getRelativeMouseX() - dragStart.getX()) > 2

@@ -78,7 +78,7 @@ public class ModOptionComponent extends Component {
 						else if (MinecraftUtils.isConflicting(binding))
 							return new Colour(255, 85, 85);
 
-						return component.isHovered() ? theme.activeHover : theme.active;
+						return component.isHovered() ? theme.fgButtonHover : theme.fgButton;
 					}));
 			add(label, defaultBoundController);
 
@@ -152,7 +152,7 @@ public class ModOptionComponent extends Component {
 
 				add(new LabelComponent((component, defaultText) -> option.getValue().toString(),
 						new AnimatedColourController(
-								(component, defaultColour) -> isHovered() ? theme.activeHover : theme.active)),
+								(component, defaultColour) -> isHovered() ? theme.fgButtonHover : theme.fgButton)),
 						(component, defaultBounds) -> {
 							if (enumWidth == 0) {
 								for (Enum<?> field : fields) {
@@ -176,11 +176,11 @@ public class ModOptionComponent extends Component {
 				Component previous;
 
 				add(new IconComponent("next", 8, 8, new AnimatedColourController(
-						(component, defaultColour) -> component.isHovered() ? theme.activeHover : theme.active)),
+						(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton)),
 						defaultBoundController);
 
 				add(previous = new IconComponent("prev", 8, 8, new AnimatedColourController(
-						(component, defaultColour) -> component.isHovered() ? theme.activeHover : theme.active)),
+						(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton)),
 						(component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(defaultComponentBounds.getX() - enumWidth - 12,
@@ -251,7 +251,7 @@ public class ModOptionComponent extends Component {
 
 			add(new LabelComponent((component, defaultText) -> text,
 					new AnimatedColourController(
-							(component, defaultColour) -> isHovered() ? theme.activeHover : theme.active)),
+							(component, defaultColour) -> isHovered() ? theme.fgButtonHover : theme.fgButton)),
 					defaultBoundController);
 
 			onClick((info, button) -> {

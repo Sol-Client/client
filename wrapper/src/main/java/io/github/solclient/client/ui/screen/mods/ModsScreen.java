@@ -249,6 +249,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
 			if ((screen.getRoot().getDialog() == null
 					&& (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER))
+					&& (mod != null || search.getText().isEmpty())
 					&& !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
 				if (mod != null)

@@ -56,8 +56,9 @@ public final class ModCategoryComponent extends ListComponent {
 
 		public Header() {
 			super(theme.fgButton());
-			add(new LabelComponent(category.toString()).scaled(0.8F), new AlignedBoundsController(Alignment.START,
-					Alignment.CENTRE, (component, bounds) -> bounds.offset(8, 0)));
+			add(new LabelComponent(Controller.of(category.toString()), colour).scaled(0.8F),
+					new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+							(component, bounds) -> bounds.offset(8, 0)));
 		}
 
 		@Override
@@ -73,6 +74,7 @@ public final class ModCategoryComponent extends ListComponent {
 
 			NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg,
 					new Identifier("sol_client", "textures/gui/collapsed.png"), 0, arrowOffset, 8, 8, 0);
+			paint.innerColor(getColour().nvg());
 
 			NanoVG.nvgRect(nvg, 0, arrowOffset, 8, 8);
 			NanoVG.nvgFillPaint(nvg, paint);

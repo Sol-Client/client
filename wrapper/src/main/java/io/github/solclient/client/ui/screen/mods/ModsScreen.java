@@ -105,24 +105,24 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName()
 					: I18n.translate("sol_client.mod.screen.title")).scaled(1.45F),
 					new AlignedBoundsController(Alignment.START, Alignment.START, (component, defaultBounds) -> {
-						Rectangle result = new Rectangle(getBaseX(), 13, defaultBounds.getWidth(),
+						Rectangle result = new Rectangle(getBaseX(), getBaseX() + 3, defaultBounds.getWidth(),
 								defaultBounds.getHeight());
 						if (!singleModMode && mod != null)
-							result = result.offset(17, 0);
+							result = result.offset(18, 0);
 
 						return result;
 					}));
 
 			add(scroll = new ModsScroll(this), (component, defaultBounds) -> {
-				int y = 55;
+				int y = 60;
 				if (mod != null)
-					y = 40;
+					y -= 15;
 				return new Rectangle(0, y, getBounds().getWidth(), getBounds().getHeight() - y);
 			});
 
 			ButtonComponent done = ButtonComponent.done(() -> getScreen().close()).width(50);
 			add(done, new AlignedBoundsController(Alignment.END, Alignment.START,
-					(component, defaultBounds) -> defaultBounds.offset(-getBaseX(), 8)));
+					(component, defaultBounds) -> defaultBounds.offset(-getBaseX(), getBaseX())));
 
 			if (!singleModMode) {
 				add(new ButtonComponent("sol_client.hud.edit", theme.button(), theme.fg()).onClick((info, button) -> {
@@ -133,8 +133,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					}
 
 					return false;
-				}).withIcon("edit").width(60),
-						(component, bounds) -> bounds.offset(done.getBounds().getX() - bounds.getWidth() - 4, 8));
+				}).withIcon("edit").width(60), (component, bounds) -> bounds
+						.offset(done.getBounds().getX() - bounds.getWidth() - 4, getBaseX()));
 			}
 
 			search = new TextFieldComponent(0, false).autoFlush().onUpdate((ignored) -> {
@@ -172,7 +172,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			if (mod == null) {
 				scroll.snapTo(noModsScroll);
 				if (this.mod != null || first)
-					add(0, search, (component, bounds) -> new Rectangle(getBaseX(), 34,
+					add(0, search, (component, bounds) -> new Rectangle(getBaseX(), 38,
 							getBounds().getWidth() - getBaseX() * 2, bounds.getHeight()));
 				if (!first)
 					remove(back);
@@ -182,7 +182,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				if (!first)
 					remove(search);
 				if (!singleModMode && this.mod == null)
-					add(back, (component, defaultBounds) -> defaultBounds.offset(12, 12));
+					add(back, (component, defaultBounds) -> defaultBounds.offset(getBaseX(), getBaseX() + 2));
 			}
 
 			this.mod = mod;

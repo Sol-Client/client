@@ -31,7 +31,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 		drawPanorama(mouseX, mouseY, partialTicks);
 
 		client.getTextureManager().bindTexture(
-				new Identifier("textures/gui/sol_client_logo_with_text_" + MinecraftUtils.getTextureScale() + ".png"));
+				new Identifier("sol_client", "textures/gui/sol_client_logo_with_text_" + MinecraftUtils.getTextureScale() + ".png"));
 		drawTexture(width / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
 
 		super.render(mouseX, mouseY, partialTicks);
@@ -111,7 +111,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 			add(new ButtonComponent((component, defaultText) -> "", theme.button(), Controller.of(Colour.WHITE))
-					.withIcon("sol_client_mods").width(20).onClick((info, button) -> {
+					.withIcon("mods").width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new ModsScreen());

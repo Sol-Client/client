@@ -31,14 +31,9 @@ public class ModOptionComponent extends Component {
 	public ModOptionComponent(ModOption option) {
 		this.option = option;
 
-		add(new LabelComponent(option.getName()),
-				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
-						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
-								defaultBounds.getWidth(), defaultBounds.getHeight())));
+		add(new LabelComponent(option.getName()), new AlignedBoundsController(Alignment.START, Alignment.CENTRE));
 
-		Controller<Rectangle> defaultBoundController = new AlignedBoundsController(Alignment.END, Alignment.CENTRE,
-				(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - defaultBounds.getY(),
-						defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight()));
+		Controller<Rectangle> defaultBoundController = new AlignedBoundsController(Alignment.END, Alignment.CENTRE);
 
 		if (option.getType() == boolean.class) {
 			add(new ToggleComponent((boolean) option.getValue(), option::setValue), defaultBoundController);
@@ -166,7 +161,7 @@ public class ModOptionComponent extends Component {
 
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(
-									getBounds().getWidth() - enumWidth - 16 + (enumWidth / 2)
+									getBounds().getWidth() - enumWidth - 11 + (enumWidth / 2)
 											- ((int) regularFont.getWidth(nvg, ((LabelComponent) component).getText())
 													/ 2),
 									defaultComponentBounds.getY(), defaultComponentBounds.getWidth(),

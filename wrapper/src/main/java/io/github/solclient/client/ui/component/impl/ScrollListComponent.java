@@ -140,13 +140,7 @@ public abstract class ScrollListComponent extends ListComponent {
 
 	@Override
 	protected boolean shouldCull(Component component) {
-		if ((component.getBounds().getEndY() - calculatedY) < 0) {
-			return true;
-		} else if (component.getBounds().getY() - calculatedY > getBounds().getHeight()) {
-			return true;
-		}
-
-		return false;
+		return (component.getBounds().getEndY() - calculatedY) < 0 || component.getBounds().getY() - calculatedY > getBounds().getHeight();
 	}
 
 	public void snapTo(int scroll) {

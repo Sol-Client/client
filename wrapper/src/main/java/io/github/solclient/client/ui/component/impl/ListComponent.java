@@ -35,6 +35,12 @@ public abstract class ListComponent extends Component {
 		return getBounds(subComponents.get(subComponents.size() - 1)).getEndY();
 	}
 
+
+	@Override
+	protected boolean shouldCull(Component component) {
+		return component.getBounds().getEndY() < 0 || component.getBounds().getY() > getBounds().getHeight();
+	}
+
 	public abstract int getSpacing();
 
 }

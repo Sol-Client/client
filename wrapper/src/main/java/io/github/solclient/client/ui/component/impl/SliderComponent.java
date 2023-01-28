@@ -35,7 +35,7 @@ public class SliderComponent extends Component {
 		GlStateManager.enableAlphaTest();
 		GlStateManager.enableBlend();
 
-		int x = (int) (80 * (((value - min) / (max - min))));
+		float x = 80 * (((value - min) / (max - min)));
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillColor(nvg, colour.get(this).nvg());

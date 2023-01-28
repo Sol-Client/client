@@ -8,7 +8,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.LivingEntityExtension;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.Option;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.hit.BlockHitResult;

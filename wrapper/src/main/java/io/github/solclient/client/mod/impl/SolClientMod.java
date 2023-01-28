@@ -1,7 +1,10 @@
 package io.github.solclient.client.mod.impl;
 
+import java.nio.file.Path;
+
 import org.apache.logging.log4j.Logger;
 
+import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
 import net.minecraft.client.MinecraftClient;
 
@@ -25,6 +28,11 @@ public abstract class SolClientMod extends Mod {
 	@Override
 	public boolean isEnabledByDefault() {
 		return false;
+	}
+
+	@Override
+	public Path getConfigFolder() {
+		return Client.INSTANCE.getConfigFolder();
 	}
 
 }

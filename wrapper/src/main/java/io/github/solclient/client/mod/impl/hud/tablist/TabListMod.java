@@ -3,8 +3,8 @@ package io.github.solclient.client.mod.impl.hud.tablist;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.data.Colour;
 
 public class TabListMod extends SolClientMod {

@@ -9,7 +9,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.Rectangle;
 
 public class TweaksMod extends SolClientMod {

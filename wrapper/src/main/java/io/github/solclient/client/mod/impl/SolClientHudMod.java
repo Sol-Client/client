@@ -5,8 +5,8 @@ import java.util.*;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.font.TextRenderer;
 

@@ -4,8 +4,8 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostTickEvent;
-import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
+import io.github.solclient.client.mod.option.annotation.*;
 
 @AbstractTranslationKey("sol_client.mod.smooth_counter_hud")
 public abstract class SmoothCounterHudMod extends SolClientSimpleHudMod {

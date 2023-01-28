@@ -7,8 +7,8 @@ import org.lwjgl.opengl.GL11;
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;

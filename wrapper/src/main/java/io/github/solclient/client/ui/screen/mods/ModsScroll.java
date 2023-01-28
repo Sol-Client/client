@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;

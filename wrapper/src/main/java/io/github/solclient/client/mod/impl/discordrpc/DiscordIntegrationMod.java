@@ -13,10 +13,10 @@ import de.jcm.discordgamesdk.activity.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.impl.discordrpc.socket.DiscordSocket;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
@@ -62,11 +62,11 @@ public class DiscordIntegrationMod extends SolClientMod {
 	protected boolean shadow = true;
 	@Expose
 	@Option
-	@StringOption("sol_client.mod.screen.default")
+	@TextField("sol_client.mod.screen.default")
 	private String applicationId = "";
 	@Expose
 	@Option
-	@StringOption("sol_client.mod.screen.default")
+	@TextField("sol_client.mod.screen.default")
 	private String icon = "";
 
 	private final DiscordVoiceChatHud discordVoiceChatHud = new DiscordVoiceChatHud(this);

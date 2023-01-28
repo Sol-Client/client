@@ -8,7 +8,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.BlockHighlightRenderEvent;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.block.Block;

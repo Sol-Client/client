@@ -7,7 +7,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;

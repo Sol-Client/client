@@ -3,14 +3,11 @@ package io.github.solclient.client.ui.screen.mods;
 import java.lang.reflect.*;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
-import java.util.BitSet;
 
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.extension.KeyBindingExtension;
-import io.github.solclient.client.mod.ModOption;
-import io.github.solclient.client.mod.annotation.Slider;
-import io.github.solclient.client.mod.impl.ModOptionImpl;
+import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -221,13 +218,11 @@ public class ModOptionComponent extends BlockComponent {
 					| InvocationTargetException error) {
 				throw new IllegalStateException(error);
 			}
-		} else if (option instanceof ModOptionImpl && option.getType() == float.class
-				&& ((ModOptionImpl) option).getField().isAnnotationPresent(Slider.class)) {
-			ModOptionImpl<Float> floatOption = (ModOptionImpl<Float>) option;
-			Slider sliderAnnotation = floatOption.getField().getAnnotation(Slider.class);
+		} else if (option instanceof SliderOption) {
+			SliderOption sliderOption = (SliderOption) option;
 
-			if (sliderAnnotation.showValue()) {
-				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderAnnotation.format(),
+			if (sliderOption.shouldShowValue()) {
+				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderOption.getFormat(),
 						new DecimalFormat("0.##").format(option.getValue()))), (component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(
@@ -237,26 +232,25 @@ public class ModOptionComponent extends BlockComponent {
 						});
 			}
 
-			add(new SliderComponent(sliderAnnotation.min(), sliderAnnotation.max(), sliderAnnotation.step(),
-					floatOption.getValue(), floatOption::setValue, this), (component, defaultBounds) -> {
+			add(new SliderComponent(sliderOption.getMin(), sliderOption.getMax(), sliderOption.getStep(),
+					sliderOption.getValue(), sliderOption::setValue, this), (component, defaultBounds) -> {
 						defaultBounds = defaultBoundController.get(component, defaultBounds);
 						return new Rectangle(defaultBounds.getX() - 5, defaultBounds.getY(), defaultBounds.getWidth(),
 								defaultBounds.getHeight());
 					});
-		} else if (option instanceof ModOptionImpl && ((ModOptionImpl<?>) option).isFile()) {
-			ModOptionImpl<?> impl = (ModOptionImpl<?>) option;
+		} else if (option instanceof FileOption) {
+			FileOption fileOption = (FileOption) option;
 
-			String text = impl.getEditText();
-
-			add(new LabelComponent((component, defaultText) -> text, new AnimatedColourController(
-					(component, defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)),
+			add(new LabelComponent((component, defaultText) -> I18n.translate(fileOption.getEditText()),
+					new AnimatedColourController((component, defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER
+							: Colour.LIGHT_BUTTON)),
 					defaultBoundController);
 
 			onClick((info, button) -> {
 				if (button == 0) {
 					MinecraftUtils.playClickSound(true);
 					try {
-						MinecraftUtils.openUrl(impl.getFile().toURI().toURL().toString());
+						MinecraftUtils.openUrl(fileOption.getPath().toUri().toURL().toString());
 					} catch (MalformedURLException error) {
 						throw new IllegalStateException(error);
 					}
@@ -265,16 +259,16 @@ public class ModOptionComponent extends BlockComponent {
 
 				return false;
 			});
-		} else if (option.getType().equals(String.class)) {
-			ModOptionImpl<String> stringOption = (ModOptionImpl<String>) option;
+		} else if (option instanceof TextOption) {
+			TextOption textOption = (TextOption) option;
 
-			TextFieldComponent field = new TextFieldComponent(100, false).withPlaceholder(stringOption.getPlaceholder())
+			TextFieldComponent field = new TextFieldComponent(100, false).withPlaceholder(textOption.getPlaceholder())
 					.onUpdate((string) -> {
-						stringOption.setValue(string);
+						textOption.setValue(string);
 						return true;
 					});
 			field.autoFlush();
-			field.setText(stringOption.getValue());
+			field.setText(textOption.getValue());
 			add(field, defaultBoundController);
 		} else if (option.getType() == PixelMatrix.class) {
 			onClick((info, button) -> {

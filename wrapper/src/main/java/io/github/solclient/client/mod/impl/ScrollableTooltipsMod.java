@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 

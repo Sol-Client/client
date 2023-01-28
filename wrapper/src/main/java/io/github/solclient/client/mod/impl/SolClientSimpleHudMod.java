@@ -2,7 +2,7 @@ package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.DirtyMapper;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.resource.language.I18n;

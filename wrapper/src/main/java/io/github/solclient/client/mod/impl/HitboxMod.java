@@ -10,7 +10,7 @@ import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.util.GlobalConstants;

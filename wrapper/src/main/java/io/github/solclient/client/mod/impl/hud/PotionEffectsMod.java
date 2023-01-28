@@ -5,9 +5,9 @@ import java.util.*;
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.resource.language.I18n;

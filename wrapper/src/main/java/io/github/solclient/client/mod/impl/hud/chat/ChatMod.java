@@ -9,9 +9,8 @@ import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.ChatHudExtension;
-import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.gui.DrawableHelper;
@@ -88,7 +87,7 @@ public class ChatMod extends SolClientHudMod {
 	@Option
 	private boolean chatFilter = true;
 	@Option
-	@FileOption(file = "Chat Filter.txt", header = "# List words on each line for them to be blocked.\n"
+	@TextFile(value = "chat-filter.txt", header = "# List words on each line for them to be blocked.\n"
 			+ "# The chat mod and chat filter must be enabled for this to work.\n"
 			+ "# This may not work well for all languages.\n" + "# Any lines starting with \"#\" will be ignored.")
 	private String filteredWordsContent;

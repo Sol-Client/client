@@ -68,12 +68,6 @@ public final class Client {
 		Keyboard.enableRepeatEvents(false);
 		new File(mc.runDirectory, "server-resource-packs").mkdirs();
 
-		// register events
-		events.register(this);
-		events.register(new DefaultEvents());
-		events.register(packets);
-		events.register(popups);
-
 		CpsMonitor.forceInit();
 
 		// load mods and data
@@ -84,6 +78,12 @@ public final class Client {
 		} catch (Throwable error) {
 			LOGGER.error("Could not load pins", error);
 		}
+
+		// register events
+		events.register(this);
+		events.register(new DefaultEvents());
+		events.register(packets);
+		events.register(popups);
 
 		// save it all!
 		save();

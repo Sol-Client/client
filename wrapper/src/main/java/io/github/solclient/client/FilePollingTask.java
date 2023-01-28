@@ -5,8 +5,7 @@ import java.nio.file.*;
 import java.util.*;
 
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.*;
-import net.minecraft.client.MinecraftClient;
+import io.github.solclient.client.mod.option.*;
 
 public class FilePollingTask implements Runnable, Closeable {
 
@@ -16,24 +15,23 @@ public class FilePollingTask implements Runnable, Closeable {
 	public FilePollingTask(ModManager mods) throws IOException {
 		WatchService service = FileSystems.getDefault().newWatchService();
 
-		key = MinecraftClient.getInstance().runDirectory.toPath().register(service,
-				StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
+		key = Client.INSTANCE.getConfigFolder().register(service, StandardWatchEventKinds.ENTRY_MODIFY,
+				StandardWatchEventKinds.ENTRY_CREATE);
 
 		for (Mod mod : mods)
 			for (ModOption<?> option : mod.getOptions())
-				if (option instanceof ModOptionImpl && ((ModOptionImpl) option).isFile())
-					files.put(((ModOptionImpl) option).getFile().getName(), option);
+				if (option instanceof FileOption)
+					files.put(((FileOption) option).getPath().getFileName().toString(), option);
 	}
 
 	@Override
 	public void run() {
 		for (WatchEvent<?> event : key.pollEvents()) {
-			File changedFile = ((Path) event.context()).toFile();
-			ModOption<?> option = files.get(changedFile.getName());
+			ModOption<?> option = files.get(((Path) event.context()).getFileName().toString());
 
 			if (option != null) {
 				try {
-					((ModOptionImpl) option).readFile();
+					((FileOption) option).readFile();
 				} catch (IOException error) {
 				}
 			}

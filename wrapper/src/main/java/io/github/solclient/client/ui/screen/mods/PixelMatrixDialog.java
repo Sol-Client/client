@@ -4,7 +4,7 @@ import org.apache.logging.log4j.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.*;
 
-import io.github.solclient.client.mod.ModOption;
+import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;

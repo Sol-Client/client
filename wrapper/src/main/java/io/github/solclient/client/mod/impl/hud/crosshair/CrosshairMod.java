@@ -5,8 +5,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.impl.SolClientHudMod;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.util.LCCH;

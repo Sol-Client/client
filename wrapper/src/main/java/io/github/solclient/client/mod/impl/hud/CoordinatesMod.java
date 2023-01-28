@@ -2,9 +2,8 @@ package io.github.solclient.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 

@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod;
 
-import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
 
 import org.apache.logging.log4j.*;
@@ -10,9 +10,10 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.option.ModOption;
+import io.github.solclient.client.mod.option.annotation.*;
+import io.github.solclient.client.mod.option.impl.FieldOption;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
@@ -43,11 +44,7 @@ public abstract class Mod {
 	 * Called when the mod is registered.
 	 */
 	public void init() {
-		try {
-			options = ModOptionImpl.get(this);
-		} catch (IOException error) {
-			throw new IllegalStateException(error);
-		}
+		options = FieldOption.getFieldOptionsFromClass(this);
 
 		if (this.enabled)
 			tryEnable();
@@ -78,6 +75,8 @@ public abstract class Mod {
 	 * @return a unique id.
 	 */
 	public abstract String getId();
+
+	public abstract Path getConfigFolder();
 
 	/**
 	 * Choose a string to display on the right side of the mod component.

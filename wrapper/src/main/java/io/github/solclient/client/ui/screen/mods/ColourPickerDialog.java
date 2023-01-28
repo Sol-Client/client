@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import org.lwjgl.nanovg.*;
 
-import io.github.solclient.client.mod.ModOption;
+import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;

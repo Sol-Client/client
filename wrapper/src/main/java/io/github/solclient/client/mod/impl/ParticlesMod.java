@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.EntityAttackEvent;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.particle.ParticleType;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;

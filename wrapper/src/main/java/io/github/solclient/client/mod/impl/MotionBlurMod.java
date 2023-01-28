@@ -12,7 +12,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
 import io.github.solclient.client.extension.ShaderEffectExtension;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gl.*;
 import net.minecraft.client.resource.ResourceMetadataProvider;
 import net.minecraft.resource.Resource;

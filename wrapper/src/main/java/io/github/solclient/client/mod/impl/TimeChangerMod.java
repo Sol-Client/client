@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.TimeEvent;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 
 public class TimeChangerMod extends SolClientMod implements PrimaryIntegerSettingMod {
 

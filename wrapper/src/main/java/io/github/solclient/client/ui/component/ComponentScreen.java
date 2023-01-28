@@ -1,5 +1,7 @@
 package io.github.solclient.client.ui.component;
 
+import static org.lwjgl.opengl.GL11.GL_ALPHA_SCALE;
+
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.*;
 import org.lwjgl.nanovg.NanoVG;
@@ -20,9 +22,8 @@ public class ComponentScreen extends Screen {
 	protected Screen parentScreen;
 	protected Component root;
 	private Component rootWrapper;
-	private int mouseX;
-	private int mouseY;
 	protected boolean background = true;
+	private float mouseX, mouseY;
 
 	public ComponentScreen(Component root) {
 		this.parentScreen = MinecraftClient.getInstance().currentScreen;
@@ -48,8 +49,10 @@ public class ComponentScreen extends Screen {
 	@Override
 	public void render(int mouseX, int mouseY, float tickDelta) {
 		try {
-			this.mouseX = mouseX;
-			this.mouseY = mouseY;
+			Window window = new Window(client);
+
+			this.mouseX = Mouse.getX() / (float) window.getScaleFactor();
+			this.mouseY = window.getHeight() - Mouse.getY() / (float) window.getScaleFactor();
 
 			if (background) {
 				if (client.world == null) {
@@ -68,10 +71,9 @@ public class ComponentScreen extends Screen {
 
 			NanoVG.nvgFontSize(nvg, 8);
 
-			Window window = new Window(client);
 			NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
 
-			rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, tickDelta));
+			rootWrapper.render(new ComponentRenderInfo(this.mouseX, this.mouseY, tickDelta));
 
 			NanoVG.nvgRestore(nvg);
 			NanoVG.nvgEndFrame(nvg);
@@ -129,16 +131,14 @@ public class ComponentScreen extends Screen {
 
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
-		if (!rootWrapper.mouseClickedAnywhere(getInfo(), button, true, false)) {
+		if (!rootWrapper.mouseClickedAnywhere(getInfo(), button, true, false))
 			super.mouseClicked(x, y, button);
-		}
 	}
 
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		if (!rootWrapper.mouseReleasedAnywhere(getInfo(), state, true)) {
+		if (!rootWrapper.mouseReleasedAnywhere(getInfo(), state, true))
 			super.mouseReleased(mouseX, mouseY, state);
-		}
 	}
 
 	@Override

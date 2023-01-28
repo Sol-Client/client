@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ComponentRenderInfo {
 
-	private final int relativeMouseX, relativeMouseY;
+	private final float relativeMouseX, relativeMouseY;
 	private final float partialTicks;
 
 }

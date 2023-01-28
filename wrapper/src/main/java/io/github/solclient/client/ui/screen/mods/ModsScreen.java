@@ -193,8 +193,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		public void render(ComponentRenderInfo info) {
 			super.render(info);
 
-			mouseX = info.getRelativeMouseX();
-			mouseY = info.getRelativeMouseY();
+			mouseX = (int) info.getRelativeMouseX();
+			mouseY = (int) info.getRelativeMouseY();
 
 			if (targetDraggingMod != null) {
 				draggingMod = targetDraggingMod;

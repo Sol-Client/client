@@ -6,7 +6,6 @@ import org.lwjgl.nanovg.NanoVG;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.MinecraftUtils;

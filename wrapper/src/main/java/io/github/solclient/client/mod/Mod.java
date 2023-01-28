@@ -12,6 +12,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.HudElement;
+import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
@@ -20,14 +21,16 @@ import net.minecraft.client.resource.language.I18n;
 @AbstractTranslationKey("sol_client.mod.generic")
 public abstract class Mod {
 
-	protected final MinecraftClient mc = MinecraftClient.getInstance();
 	@Getter
-	private List<ModOption> options;
+	private final Logger logger = LogManager.getLogger();
+
+	@Getter
+	private List<ModOption<?>> options;
 	private boolean blocked;
+
 	@Expose
 	@Option(priority = 2)
 	private boolean enabled = isEnabledByDefault();
-	protected final Logger logger = LogManager.getLogger();
 
 	@Getter
 	private boolean pinned;
@@ -37,17 +40,11 @@ public abstract class Mod {
 	private int index = -1;
 
 	/**
-	 * Called after the game has started.
-	 */
-	public void postStart() {
-	}
-
-	/**
 	 * Called when the mod is registered.
 	 */
-	public void onRegister() {
+	public void init() {
 		try {
-			options = ModOption.get(this);
+			options = ModOptionImpl.get(this);
 		} catch (IOException error) {
 			throw new IllegalStateException(error);
 		}
@@ -56,13 +53,26 @@ public abstract class Mod {
 			tryEnable();
 	}
 
-	public String getTranslationKey() {
-		return "sol_client.mod." + getId();
+	/**
+	 * Called after the game has started.
+	 */
+	public void lateInit() {
 	}
 
-	public String getName() {
-		return I18n.translate(getTranslationKey() + ".name");
-	}
+	/**
+	 * Gets a translation key from the mod. Usually will return prefix + key.
+	 *
+	 * @param key the key.
+	 * @return the full translation key.
+	 */
+	public abstract String getTranslationKey(String key);
+
+	/**
+	 * Gets the name of the mod.
+	 *
+	 * @return the name translation key.
+	 */
+	public abstract String getName();
 
 	/**
 	 * @return a unique id.
@@ -75,9 +85,14 @@ public abstract class Mod {
 	 * @return an additional credit string.
 	 */
 	public String getCredit() {
-		return "";
+		return null;
 	}
 
+	/**
+	 * Gets the description of the mod.
+	 *
+	 * @return the description translation key.
+	 */
 	public String getDescription() {
 		return I18n.translate("sol_client.mod." + getId() + ".description");
 	}
@@ -87,27 +102,46 @@ public abstract class Mod {
 	 */
 	public abstract ModCategory getCategory();
 
-	public boolean isEnabledByDefault() {
-		return false;
-	}
+	/**
+	 * Gets whether the mod should be enabled by default.
+	 *
+	 * @return <code>true</code> to keep the mod on by default.
+	 */
+	public abstract boolean isEnabledByDefault();
 
+	/**
+	 * Fired before an option is changed.
+	 *
+	 * @param key   the option key.
+	 * @param value the option value.
+	 * @return <code>true</code> to proceed.
+	 */
 	public boolean onOptionChange(String key, Object value) {
 		if (key.equals("enabled")) {
-			if (isLocked()) {
+			if (this instanceof ConfigOnlyMod)
 				return false;
-			}
+
 			setEnabled((boolean) value);
 		}
+
 		return true;
 	}
 
 	public void postOptionChange(String key, Object value) {
 	}
 
-	public void setEnabled(boolean enabled) {
+	/**
+	 * Fired when a file is edited.
+	 *
+	 * @param key the option key.
+	 */
+	public void onFileUpdate(String key) {
+	}
+
+	public final void setEnabled(boolean enabled) {
 		if (blocked)
 			return;
-		if (isLocked())
+		if (this instanceof ConfigOnlyMod)
 			return;
 
 		if (enabled != this.enabled) {
@@ -122,6 +156,13 @@ public abstract class Mod {
 			}
 		}
 		this.enabled = enabled;
+	}
+
+	public final boolean isEnabled() {
+		if (this instanceof ConfigOnlyMod)
+			return true;
+
+		return enabled && !blocked;
 	}
 
 	private void tryEnable() {
@@ -159,22 +200,6 @@ public abstract class Mod {
 		blocked = false;
 	}
 
-	public boolean isEnabled() {
-		return enabled && !blocked;
-	}
-
-	public void toggle() {
-		setEnabled(!isEnabled());
-	}
-
-	public void disable() {
-		setEnabled(false);
-	}
-
-	public void enable() {
-		setEnabled(true);
-	}
-
 	public void setPinned(boolean pinned) {
 		if (pinned == this.pinned) {
 			return;
@@ -197,43 +222,19 @@ public abstract class Mod {
 		pinned = true;
 	}
 
-	public void unpin() {
-		setPinned(false);
-	}
-
-	public void pin() {
-		setPinned(true);
-	}
-
-	public void togglePin() {
-		setPinned(!isPinned());
-	}
-
-	public boolean isLocked() {
-		return false;
-	}
-
-	public String getLockMessage() {
-		return "";
-	}
-
 	public List<HudElement> getHudElements() {
 		return Collections.emptyList();
 	}
 
-	public void onFileUpdate(String fieldName) {
-	}
-
 	public void render(boolean editMode) {
-		for (HudElement element : getHudElements()) {
+		for (HudElement element : getHudElements())
 			element.render(editMode);
-		}
 	}
 
 	@EventHandler
 	public void onRender(PostGameOverlayRenderEvent event) {
 		if (event.type == GameOverlayElement.ALL) {
-			render(mc.currentScreen instanceof MoveHudsScreen);
+			render(MinecraftClient.getInstance().currentScreen instanceof MoveHudsScreen);
 		}
 	}
 

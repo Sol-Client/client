@@ -4,11 +4,11 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.CpsMonitor;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 
-public class CpsMod extends SimpleHudMod {
+public class CpsMod extends SolClientSimpleHudMod {
 
 	@Expose
 	@Option

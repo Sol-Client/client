@@ -7,14 +7,14 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
-import io.github.solclient.client.mod.impl.TweaksMod;
+import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.effect.*;
 import net.minecraft.util.Identifier;
 
-public class PotionEffectsMod extends HudMod {
+public class PotionEffectsMod extends SolClientHudMod {
 
 	@Expose
 	@Option
@@ -23,10 +23,10 @@ public class PotionEffectsMod extends HudMod {
 	@Option
 	private boolean icon = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean background = false;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
 	@Option

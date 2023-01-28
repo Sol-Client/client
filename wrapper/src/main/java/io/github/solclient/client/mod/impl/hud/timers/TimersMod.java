@@ -11,6 +11,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.util.BukkitMaterial;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.block.Blocks;
@@ -20,7 +21,7 @@ import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 
 // Based around https://github.com/BadlionClient/BadlionClientTimerAPI.
 // Works with any server that supports Badlion timers.
-public class TimersMod extends HudMod {
+public class TimersMod extends SolClientHudMod {
 
 	private static final String CHANNEL_NAME = "badlion:timers";
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("mm:ss");
@@ -35,7 +36,7 @@ public class TimersMod extends HudMod {
 	@Option
 	private boolean icon = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
 	@Option(applyToAllClass = Option.TEXT_COLOUR_CLASS)

@@ -1,6 +1,3 @@
-/**
- * Many of these options are based on the ideas of Sk1er LLC's mods.
- */
 
 package io.github.solclient.client.mod.impl.hypixeladditions;
 
@@ -16,6 +13,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.impl.hypixeladditions.commands.*;
 import io.github.solclient.client.packet.Popup;
 import io.github.solclient.client.util.*;
@@ -26,7 +24,8 @@ import net.minecraft.text.*;
 import net.minecraft.text.ClickEvent.Action;
 import net.minecraft.util.Formatting;
 
-public class HypixelAdditionsMod extends Mod {
+// Many of these options are based on the ideas of Sk1er LLC's mods.
+public class HypixelAdditionsMod extends SolClientMod {
 
 	private static boolean enabled;
 	public static HypixelAdditionsMod instance;
@@ -223,8 +222,8 @@ public class HypixelAdditionsMod extends Mod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		setApiKey(apiKey);
 		instance = this;
 	}

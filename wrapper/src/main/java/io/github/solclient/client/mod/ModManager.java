@@ -171,7 +171,7 @@ public final class ModManager implements Iterable<Mod> {
 
 			mod.setIndex(mods.size());
 			configure(mod, config);
-			mod.onRegister();
+			mod.init();
 			mods.add(mod);
 			byId.put(mod.getId(), mod);
 			huds.addAll(mod.getHudElements());

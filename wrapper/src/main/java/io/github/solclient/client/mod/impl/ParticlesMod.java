@@ -12,7 +12,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
+public class ParticlesMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	@Expose
 	@Option

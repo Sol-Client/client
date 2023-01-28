@@ -1,4 +1,4 @@
-package io.github.solclient.client.mod.hud;
+package io.github.solclient.client.mod.impl;
 
 import java.util.*;
 
@@ -6,14 +6,15 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.font.TextRenderer;
 
 /**
  * Represents a mod with only a single HUD.
  */
-@AbstractTranslationKey(HudMod.TRANSLATION_KEY)
-public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
+@AbstractTranslationKey(SolClientHudMod.TRANSLATION_KEY)
+public abstract class SolClientHudMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	public static final String TRANSLATION_KEY = "sol_client.mod.hud";
 
@@ -30,7 +31,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	public float scale = 100;
 	protected TextRenderer font;
 
-	public HudMod() {
+	public SolClientHudMod() {
 		position = getDefaultPosition();
 	}
 
@@ -40,8 +41,8 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	@Override
-	public void postStart() {
-		super.postStart();
+	public void lateInit() {
+		super.lateInit();
 		this.font = mc.textRenderer;
 	}
 
@@ -96,7 +97,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 
 		@Override
 		public Mod getMod() {
-			return HudMod.this;
+			return SolClientHudMod.this;
 		}
 
 		@Override
@@ -106,7 +107,7 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 
 		@Override
 		public void setHudPosition(HudPosition position) {
-			HudMod.this.position = position;
+			SolClientHudMod.this.position = position;
 		}
 
 		@Override
@@ -116,22 +117,22 @@ public abstract class HudMod extends Mod implements PrimaryIntegerSettingMod {
 
 		@Override
 		public boolean isVisible() {
-			return isEnabled() && HudMod.this.isVisible();
+			return isEnabled() && SolClientHudMod.this.isVisible();
 		}
 
 		@Override
 		public void render(Position position, boolean editMode) {
-			HudMod.this.render(position, editMode);
+			SolClientHudMod.this.render(position, editMode);
 		}
 
 		@Override
 		public boolean isShownInReplay() {
-			return HudMod.this.isShownInReplay();
+			return SolClientHudMod.this.isShownInReplay();
 		}
 
 		@Override
 		public Rectangle getBounds(Position position) {
-			return HudMod.this.getBounds(position);
+			return SolClientHudMod.this.getBounds(position);
 		}
 
 	}

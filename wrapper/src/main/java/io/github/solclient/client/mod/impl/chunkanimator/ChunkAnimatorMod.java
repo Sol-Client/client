@@ -1,7 +1,5 @@
 package io.github.solclient.client.mod.impl.chunkanimator;
 
-import java.util.*;
-
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
@@ -10,12 +8,13 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mixin.client.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.data.EasingFunction;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.math.*;
 
 // Based on lumien231's chunk animator.
-public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
+public class ChunkAnimatorMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	public static ChunkAnimatorMod instance;
 	public static boolean enabled;
@@ -29,8 +28,8 @@ public class ChunkAnimatorMod extends Mod implements PrimaryIntegerSettingMod {
 	private EasingFunction animation = EasingFunction.SINE;
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		instance = this;
 	}
 

@@ -30,11 +30,11 @@ public class SolClientConfig extends ConfigOnlyMod {
 	public boolean logoInInventory;
 
 	@Option
-	public KeyBinding modsKey = new KeyBinding(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT,
+	public KeyBinding modsKey = new KeyBinding(getTranslationKey("mods"), Keyboard.KEY_RSHIFT,
 			GlobalConstants.KEY_CATEGORY);
 
 	@Option
-	public KeyBinding editHudKey = new KeyBinding(getTranslationKey() + ".edit_hud", 0, GlobalConstants.KEY_CATEGORY);
+	public KeyBinding editHudKey = new KeyBinding(getTranslationKey("edit_hud"), 0, GlobalConstants.KEY_CATEGORY);
 
 	@Expose
 	@Option
@@ -70,8 +70,8 @@ public class SolClientConfig extends ConfigOnlyMod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 
 		instance = this;
 		uiHover = getUiHover();

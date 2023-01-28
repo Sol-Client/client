@@ -8,12 +8,12 @@ import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 
-public class SpeedometerMod extends SimpleHudMod {
+public class SpeedometerMod extends SolClientSimpleHudMod {
 
 	private static final int SPEED_COUNT = 200;
 

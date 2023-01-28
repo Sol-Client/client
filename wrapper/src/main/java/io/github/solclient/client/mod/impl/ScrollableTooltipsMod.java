@@ -9,7 +9,7 @@ import io.github.solclient.client.mod.annotation.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 
-public class ScrollableTooltipsMod extends Mod {
+public class ScrollableTooltipsMod extends SolClientMod {
 
 	public static ScrollableTooltipsMod instance;
 	public static boolean enabled;
@@ -41,8 +41,8 @@ public class ScrollableTooltipsMod extends Mod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		instance = this;
 	}
 

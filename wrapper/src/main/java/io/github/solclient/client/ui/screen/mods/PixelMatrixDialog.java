@@ -23,10 +23,10 @@ public final class PixelMatrixDialog extends BlockComponent {
 
 	private final PixelMatrix pixels;
 
-	public PixelMatrixDialog(ModOption option) {
+	public PixelMatrixDialog(ModOption<PixelMatrix> option) {
 		super(Colour.DISABLED_MOD, 12, 0);
 
-		pixels = (PixelMatrix) option.getValue();
+		pixels = option.getValue();
 
 		LabelComponent title = new LabelComponent(option.getName());
 		add(title, new AlignedBoundsController(Alignment.CENTRE, Alignment.START,

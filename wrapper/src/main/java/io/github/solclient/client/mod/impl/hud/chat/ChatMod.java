@@ -11,6 +11,7 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.ChatHudExtension;
 import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.gui.DrawableHelper;
@@ -20,7 +21,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 
-public class ChatMod extends HudMod {
+public class ChatMod extends SolClientHudMod {
 
 	private static final float ANIMATION_MULTIPLIER = 0.5F;
 
@@ -42,7 +43,7 @@ public class ChatMod extends HudMod {
 	public boolean infiniteChat = true;
 
 	@Option
-	public KeyBinding peekKey = new KeyBinding(getTranslationKey() + ".peek", 0, GlobalConstants.KEY_CATEGORY);
+	public KeyBinding peekKey = new KeyBinding(getTranslationKey("peek"), 0, GlobalConstants.KEY_CATEGORY);
 	private boolean wasPeeking;
 	private boolean hasScrollbar;
 
@@ -50,16 +51,16 @@ public class ChatMod extends HudMod {
 	@Option
 	public ChatVisibility visibility = ChatVisibility.SHOWN;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean background = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
 	private Colour backgroundColour = new Colour(0, 0, 0, 127);
 	@Expose
 	@Option
 	private Colour defaultTextColour = Colour.WHITE;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
 	@Option
@@ -102,14 +103,14 @@ public class ChatMod extends HudMod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		instance = this;
 	}
 
 	@Override
-	public void postStart() {
-		super.postStart();
+	public void lateInit() {
+		super.lateInit();
 
 		symbolsButton = new SymbolsButton(this);
 

@@ -23,7 +23,7 @@ import net.minecraft.util.hit.BlockHitResult.Type;
 import net.minecraft.util.math.*;
 import net.minecraft.world.level.LevelInfo.GameMode;
 
-public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
+public class BlockSelectionMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	@Expose
 	@Option
@@ -104,11 +104,11 @@ public class BlockSelectionMod extends Mod implements PrimaryIntegerSettingMod {
 		if (block.getMaterial() != Material.AIR && mc.world.getWorldBorder().contains(blockpos)) {
 			block.setBoundingBox(mc.world, blockpos);
 			double x = mc.getCameraEntity().prevTickX
-					+ (mc.getCameraEntity().x - mc.getCameraEntity().prevTickX) * (double) event.partialTicks;
+					+ (mc.getCameraEntity().x - mc.getCameraEntity().prevTickX) * event.partialTicks;
 			double y = mc.getCameraEntity().prevTickY
-					+ (mc.getCameraEntity().y - mc.getCameraEntity().prevTickY) * (double) event.partialTicks;
+					+ (mc.getCameraEntity().y - mc.getCameraEntity().prevTickY) * event.partialTicks;
 			double z = mc.getCameraEntity().prevTickZ
-					+ (mc.getCameraEntity().z - mc.getCameraEntity().prevTickZ) * (double) event.partialTicks;
+					+ (mc.getCameraEntity().z - mc.getCameraEntity().prevTickZ) * event.partialTicks;
 
 			Box selectedBox = block.getSelectionBox(mc.world, blockpos);
 			selectedBox = selectedBox.expand(0.0020000000949949026D, 0.0020000000949949026D, 0.0020000000949949026D)

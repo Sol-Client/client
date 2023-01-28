@@ -7,7 +7,7 @@ import io.github.solclient.client.event.impl.TimeEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
 
-public class TimeChangerMod extends Mod implements PrimaryIntegerSettingMod {
+public class TimeChangerMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	@Expose
 	@Option

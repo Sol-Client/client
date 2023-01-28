@@ -16,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 
 // credit to OrangeMarshall for original mod.
 // also credit to https://github.com/TAKfsg/oldblockhit-legacy-fabric.
-public class V1_7VisualsMod extends Mod {
+public class V1_7VisualsMod extends SolClientMod {
 
 	@Expose
 	@Option
@@ -57,8 +57,8 @@ public class V1_7VisualsMod extends Mod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		instance = this;
 	}
 

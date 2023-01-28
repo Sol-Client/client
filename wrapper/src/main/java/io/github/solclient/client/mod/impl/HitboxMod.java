@@ -19,10 +19,10 @@ import net.minecraft.client.render.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.*;
 
-public class HitboxMod extends Mod {
+public class HitboxMod extends SolClientMod {
 
 	@Option
-	private final KeyBinding toggleHitboxes = new KeyBinding(getTranslationKey() + ".option.toggleHitboxes", 0,
+	private final KeyBinding toggleHitboxes = new KeyBinding(getTranslationKey("option.toggleHitboxes"), 0,
 			GlobalConstants.KEY_CATEGORY);
 	@Expose
 	@Option
@@ -50,8 +50,8 @@ public class HitboxMod extends Mod {
 	private boolean toggled;
 
 	@Override
-	public void postStart() {
-		super.postStart();
+	public void lateInit() {
+		super.lateInit();
 		if (isEnabled())
 			mc.getEntityRenderManager().setRenderHitboxes(toggled);
 	}

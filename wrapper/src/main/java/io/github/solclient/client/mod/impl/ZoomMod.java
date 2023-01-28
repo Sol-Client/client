@@ -13,16 +13,16 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.math.MathHelper;
 
-public class ZoomMod extends Mod implements PrimaryIntegerSettingMod {
+public class ZoomMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_C,
+	private final KeyBinding key = new KeyBinding(getTranslationKey("key"), Keyboard.KEY_C,
 			GlobalConstants.KEY_CATEGORY);
 	@Option
-	private final KeyBinding zoomOutKey = new KeyBinding(getTranslationKey() + ".zoom_out", Keyboard.KEY_MINUS,
+	private final KeyBinding zoomOutKey = new KeyBinding(getTranslationKey("zoom_out"), Keyboard.KEY_MINUS,
 			GlobalConstants.KEY_CATEGORY);
 	@Option
-	private final KeyBinding zoomInKey = new KeyBinding(getTranslationKey() + ".zoom_in", Keyboard.KEY_EQUALS,
+	private final KeyBinding zoomInKey = new KeyBinding(getTranslationKey("zoom_in"), Keyboard.KEY_EQUALS,
 			GlobalConstants.KEY_CATEGORY);
 
 	@Expose

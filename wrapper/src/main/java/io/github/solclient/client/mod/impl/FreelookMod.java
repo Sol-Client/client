@@ -14,10 +14,10 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class FreelookMod extends Mod {
+public class FreelookMod extends SolClientMod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_V,
+	private final KeyBinding key = new KeyBinding(getTranslationKey("key"), Keyboard.KEY_V,
 			GlobalConstants.KEY_CATEGORY);
 	private float yaw;
 	private float pitch;

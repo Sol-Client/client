@@ -29,7 +29,7 @@ import net.minecraft.client.util.Window;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
-public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
+public class MenuBlurMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	private static final Identifier ID = new Identifier("minecraft:shaders/post/menu_blur.json");
 
@@ -63,8 +63,8 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		Client.INSTANCE.getPseudoResources().register(ID, new MenuBlurShader());
 	}
 

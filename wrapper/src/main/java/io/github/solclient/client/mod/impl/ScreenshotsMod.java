@@ -19,7 +19,7 @@ import net.minecraft.text.*;
 import net.minecraft.text.ClickEvent.Action;
 import net.minecraft.util.Formatting;
 
-public class ScreenshotsMod extends Mod {
+public class ScreenshotsMod extends SolClientMod {
 
 	private static final URL IMGUR_URL = Utils.sneakyParse("https://api.imgur.com/3/image");
 
@@ -49,8 +49,8 @@ public class ScreenshotsMod extends Mod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		instance = this;
 	}
 
@@ -81,7 +81,7 @@ public class ScreenshotsMod extends Mod {
 			Text secondaryText = new LiteralText("");
 
 			if (view) {
-				Text viewText = new LiteralText('[' + I18n.translate(getTranslationKey() + ".view") + ']');
+				Text viewText = new LiteralText('[' + I18n.translate(getTranslationKey("view")) + ']');
 				viewText.setStyle(new Style().setClickEvent(ClickEventExtension.createStyleWithReceiver(viewReceiver))
 						.setFormatting(Formatting.BLUE));
 
@@ -90,7 +90,7 @@ public class ScreenshotsMod extends Mod {
 			}
 
 			if (folder) {
-				Text folderText = new LiteralText('[' + I18n.translate(getTranslationKey() + ".open_folder") + ']');
+				Text folderText = new LiteralText('[' + I18n.translate(getTranslationKey("open_folder")) + ']');
 				folderText.setStyle(new Style()
 						.setClickEvent(ClickEventExtension
 								.createStyleWithReceiver(() -> MinecraftUtils.revealUrl(screenshot.toURI().toString())))
@@ -100,7 +100,7 @@ public class ScreenshotsMod extends Mod {
 			}
 
 			if (upload) {
-				Text uploadText = new LiteralText('[' + I18n.translate(getTranslationKey() + ".upload") + ']');
+				Text uploadText = new LiteralText('[' + I18n.translate(getTranslationKey("upload")) + ']');
 				uploadText.setStyle(new Style()
 						.setClickEvent(ClickEventExtension.createStyleWithReceiver(() -> uploadToImgur(screenshot)))
 						.setFormatting(Formatting.GREEN));
@@ -116,7 +116,7 @@ public class ScreenshotsMod extends Mod {
 		new Thread(() -> {
 			try {
 				if (!screenshot.exists()) {
-					mc.inGameHud.getChatHud().addMessage(new TranslatableText(getTranslationKey() + ".deleted")
+					mc.inGameHud.getChatHud().addMessage(new TranslatableText(getTranslationKey("deleted"))
 							.setStyle(new Style().setFormatting(Formatting.RED)));
 					return;
 				}
@@ -156,12 +156,12 @@ public class ScreenshotsMod extends Mod {
 							new Style().setUnderline(true).setClickEvent(new ClickEvent(Action.OPEN_URL, link)));
 
 					mc.inGameHud.getChatHud()
-							.addMessage(new TranslatableText(getTranslationKey() + ".link", linkComponent));
+							.addMessage(new TranslatableText(getTranslationKey("link"), linkComponent));
 				}
 
 			} catch (Throwable error) {
 				logger.error("Could not upload screenshot", error);
-				mc.inGameHud.getChatHud().addMessage(new TranslatableText(getTranslationKey() + ".upload_error", error)
+				mc.inGameHud.getChatHud().addMessage(new TranslatableText(getTranslationKey("upload_error"), error)
 						.setStyle(new Style().setFormatting(Formatting.RED)));
 			}
 		}).start();

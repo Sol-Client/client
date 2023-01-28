@@ -6,7 +6,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.HudMod;
+import io.github.solclient.client.mod.impl.SolClientHudMod;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.util.LCCH;
@@ -15,7 +15,7 @@ import net.minecraft.client.util.Window;
 import net.minecraft.util.hit.BlockHitResult.Type;
 import net.minecraft.world.level.LevelInfo.GameMode;
 
-public class CrosshairMod extends HudMod {
+public class CrosshairMod extends SolClientHudMod {
 
 	private static final String DEFAULT_CROSSHAIR = "LCCH-9-ECBAgPAfAgQIEAA";
 

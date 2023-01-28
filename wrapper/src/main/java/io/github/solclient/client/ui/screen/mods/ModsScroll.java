@@ -11,6 +11,7 @@ import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 import io.github.solclient.client.util.data.Alignment;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.client.resource.language.I18n;
 
 @RequiredArgsConstructor
 public class ModsScroll extends ScrollListComponent {
@@ -41,12 +42,16 @@ public class ModsScroll extends ScrollListComponent {
 				}
 			} else {
 				String filter = screen.getFilter();
-				List<Mod> filtered = Client.INSTANCE.getMods().stream()
-						.filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
-								|| mod.getDescription().toLowerCase().contains(filter.toLowerCase())
-								|| mod.getCredit().toLowerCase().contains(filter.toLowerCase()))
-						.sorted(Comparator
-								.comparing((Mod mod) -> mod.getName().toLowerCase().startsWith(filter.toLowerCase()))
+				List<Mod> filtered = Client.INSTANCE.getMods().stream().filter((mod) -> {
+					String credit = mod.getCredit();
+					if (credit == null)
+						credit = "";
+
+					return mod.getName().toLowerCase().contains(filter.toLowerCase())
+							|| mod.getDescription().toLowerCase().contains(filter.toLowerCase())
+							|| I18n.translate(credit).toLowerCase().contains(filter.toLowerCase());
+				}).sorted(
+						Comparator.comparing((Mod mod) -> mod.getName().toLowerCase().startsWith(filter.toLowerCase()))
 								.reversed())
 						.collect(Collectors.toList());
 
@@ -58,9 +63,8 @@ public class ModsScroll extends ScrollListComponent {
 					add(new ModListing(mod, screen, false));
 			}
 		} else {
-			for (ModOption option : screen.getMod().getOptions()) {
+			for (ModOption<?> option : screen.getMod().getOptions())
 				add(new ModOptionComponent(option));
-			}
 		}
 	}
 

@@ -96,7 +96,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				singleModMode = true;
 			}
 
-			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName()
+			add(new LabelComponent((component, defaultText) -> mod != null ? I18n.translate(mod.getName())
 					: I18n.translate("sol_client.mod.screen.title")),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
 							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), 10,

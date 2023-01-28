@@ -10,45 +10,45 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ScoreboardRenderEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.annotation.*;
-import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.scoreboard.*;
 import net.minecraft.util.Formatting;
 
-public class ScoreboardMod extends Mod {
+public class ScoreboardMod extends SolClientMod {
 
 	public static ScoreboardMod instance;
 	public static boolean enabled;
 
 	@Expose
-	@Option(translationKey = HudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientHudMod.TRANSLATION_KEY)
 	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
 	public float scale = 100;
 	@Expose
 	@Option
 	public boolean hide;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	public boolean background = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
 	public Colour backgroundColour = new Colour(1342177280);
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	public boolean border = false;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
 	public Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option
 	public Colour backgroundColourTop = new Colour(1610612736);
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	public Colour textColour = Colour.WHITE;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	public boolean shadow = true;
 	@Expose
 	@Option
@@ -68,8 +68,8 @@ public class ScoreboardMod extends Mod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		instance = this;
 	}
 

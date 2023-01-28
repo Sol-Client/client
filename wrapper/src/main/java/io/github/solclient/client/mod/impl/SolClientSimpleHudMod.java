@@ -1,4 +1,4 @@
-package io.github.solclient.client.mod.hud;
+package io.github.solclient.client.mod.impl;
 
 import com.google.gson.annotations.Expose;
 
@@ -10,8 +10,8 @@ import net.minecraft.client.resource.language.I18n;
 /**
  * A simple HUD mod that rendered a simple string.
  */
-@AbstractTranslationKey(SimpleHudMod.TRANSLATION_KEY)
-public abstract class SimpleHudMod extends HudMod {
+@AbstractTranslationKey(SolClientSimpleHudMod.TRANSLATION_KEY)
+public abstract class SolClientSimpleHudMod extends SolClientHudMod {
 
 	public static final String TRANSLATION_KEY = "sol_client.mod.simple_hud";
 
@@ -35,7 +35,7 @@ public abstract class SimpleHudMod extends HudMod {
 	protected boolean shadow = true;
 	private DirtyMapper<String, Integer> langWidth = new DirtyMapper<>(
 			() -> mc.getLanguageManager().getLanguage().getCode(), (key) -> {
-				String translationKey = getTranslationKey() + ".default_width";
+				String translationKey = getTranslationKey("default_width");
 				String width = I18n.translate(translationKey);
 
 				if (width.equals(translationKey)) {

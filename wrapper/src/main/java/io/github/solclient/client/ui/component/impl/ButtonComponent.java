@@ -33,7 +33,7 @@ public class ButtonComponent extends ColouredComponent {
 			int width = getBounds().getWidth();
 
 			if (icon != null && getBounds().getWidth() < icon.getBounds().getEndX() + bounds.getWidth() + 16) {
-				x = icon.getBounds().getEndX();
+				x = icon.getBounds().getEndX() + 1;
 				width -= x + 7;
 			}
 

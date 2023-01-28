@@ -277,7 +277,8 @@ public class ModOptionComponent extends Component {
 			field.setText((String) option.getValue());
 			add(field, defaultBoundController);
 		} else if (option.getType() == PixelMatrix.class) {
-			onClick((info, button) -> {
+			PixelMatrixComponent matrix = new PixelMatrixComponent((PixelMatrix) option.getValue());
+			matrix.onClick((info, button) -> {
 				if (button != 0)
 					return false;
 
@@ -286,7 +287,7 @@ public class ModOptionComponent extends Component {
 				return true;
 			});
 
-			add(new PixelMatrixComponent((PixelMatrix) option.getValue()), defaultBoundController);
+			add(matrix, defaultBoundController);
 		}
 	}
 

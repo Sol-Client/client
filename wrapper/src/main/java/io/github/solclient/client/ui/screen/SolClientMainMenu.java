@@ -146,7 +146,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 						}
 
 						return false;
-					}).width(20).withIcon("sol_client_exit"),
+					}).width(20).withIcon("exit"),
 					(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - 25, 5,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 		}

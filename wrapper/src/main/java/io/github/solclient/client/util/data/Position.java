@@ -11,7 +11,7 @@ public class Position {
 	private final int y;
 
 	public Position offset(int x, int y) {
-		return new Position(this.x + x, this.y - y);
+		return new Position(this.x + x, this.y + y);
 	}
 
 	public Rectangle rectangle(int width, int height) {

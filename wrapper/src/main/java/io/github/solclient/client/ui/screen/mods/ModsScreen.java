@@ -105,7 +105,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName()
 					: I18n.translate("sol_client.mod.screen.title")).scaled(1.45F),
 					new AlignedBoundsController(Alignment.START, Alignment.START, (component, defaultBounds) -> {
-						Rectangle result = new Rectangle(15, 13, defaultBounds.getWidth(), defaultBounds.getHeight());
+						Rectangle result = new Rectangle(getBaseX(), 13, defaultBounds.getWidth(),
+								defaultBounds.getHeight());
 						if (!singleModMode && mod != null)
 							result = result.offset(17, 0);
 
@@ -119,8 +120,9 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				return new Rectangle(0, y, getBounds().getWidth(), getBounds().getHeight() - y);
 			});
 
-			add(ButtonComponent.done(() -> getScreen().close()).width(50), new AlignedBoundsController(Alignment.END,
-					Alignment.START, (component, defaultBounds) -> defaultBounds.offset(-8, 8)));
+			ButtonComponent done = ButtonComponent.done(() -> getScreen().close()).width(50);
+			add(done, new AlignedBoundsController(Alignment.END, Alignment.START,
+					(component, defaultBounds) -> defaultBounds.offset(-getBaseX(), 8)));
 
 			if (!singleModMode) {
 				add(new ButtonComponent("sol_client.hud.edit", theme.button(), theme.fg()).onClick((info, button) -> {
@@ -131,11 +133,11 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					}
 
 					return false;
-				}).withIcon("edit").width(60), new AlignedBoundsController(Alignment.END, Alignment.START,
-						(component, defaultBounds) -> defaultBounds.offset(-63, 8)));
+				}).withIcon("edit").width(60),
+						(component, bounds) -> bounds.offset(done.getBounds().getX() - bounds.getWidth() - 4, 8));
 			}
 
-			search = new TextFieldComponent(225, false).autoFlush().onUpdate((ignored) -> {
+			search = new TextFieldComponent(0, false).autoFlush().onUpdate((ignored) -> {
 				scroll.snapTo(0);
 				scroll.load();
 				return true;
@@ -153,6 +155,11 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			switchMod(startingMod, true);
 		}
 
+		// based on start x for mods
+		private int getBaseX() {
+			return getBounds().getWidth() / 2 - 230 / 2;
+		}
+
 		public void singleModMode() {
 			this.singleModMode = true;
 		}
@@ -165,8 +172,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			if (mod == null) {
 				scroll.snapTo(noModsScroll);
 				if (this.mod != null || first)
-					add(0, search, (component, defaultBounds) -> new Rectangle(15, 34, defaultBounds.getWidth(),
-							defaultBounds.getHeight()));
+					add(0, search, (component, bounds) -> new Rectangle(getBaseX(), 34,
+							getBounds().getWidth() - getBaseX() * 2, bounds.getHeight()));
 				if (!first)
 					remove(back);
 			} else {

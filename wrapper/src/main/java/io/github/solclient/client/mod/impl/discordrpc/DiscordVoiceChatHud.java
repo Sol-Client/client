@@ -43,7 +43,7 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 				break;
 		}
 
-		return position.offset(0, yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
+		return position.offset(0, -yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Stream;
 
+import io.github.solclient.client.mod.impl.quicktoggle.QuickToggleMod;
 import org.apache.logging.log4j.*;
 
 import com.google.gson.*;
@@ -93,6 +94,7 @@ public final class ModManager implements Iterable<Mod> {
 				new ParticlesMod(),
 				new TimeChangerMod(),
 				new BlockSelectionMod(),
+				new QuickToggleMod(),
 				new HitboxMod(),
 				new HitColourMod(),
 

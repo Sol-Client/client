@@ -218,6 +218,7 @@ public class BedwarsGame {
         try {
             matched(DIED, rawMessage).ifPresent(m -> System.out.println(m.group(1) + " died by themselves"));
             matched(KILLS_COMPILED, rawMessage).ifPresent(m -> System.out.println(m.group(1) + " was killed by " + m.group(2)));
+            matched(BED_DESTROY, rawMessage).ifPresent(m -> System.out.println(m.group(1) + " bed broke"));
         } catch (Exception e) {
             e.printStackTrace();
         }

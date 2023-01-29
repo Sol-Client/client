@@ -77,7 +77,7 @@ public final class AddonManager {
 			try {
 				queue(AddonInfo.parseFromClasspath());
 			} catch (InvalidAddonException | IOException error) {
-				throw new IllegalStateException("Could not load development addon");
+				throw new IllegalStateException("Could not load development addon", error);
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import java.nio.file.*;
 import org.apache.logging.log4j.*;
 import org.lwjgl.input.Keyboard;
 
+import io.github.solclient.client.addon.AddonManager;
 import io.github.solclient.client.chatextensions.ChatExtensionManager;
 import io.github.solclient.client.command.CommandManager;
 import io.github.solclient.client.event.EventBus;
@@ -13,6 +14,8 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.packet.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.*;
+import io.github.solclient.util.Utils;
+import io.github.solclient.wrapper.ClassWrapper;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 
@@ -43,6 +46,8 @@ public final class Client {
 	private final CommandManager commands = new CommandManager();
 	@Getter
 	private final PseudoResourceManager pseudoResources = new PseudoResourceManager();
+	@Getter
+	private final AddonManager addons = AddonManager.getInstance();
 
 	// for convenience with multimc
 	@Getter
@@ -91,7 +96,7 @@ public final class Client {
 
 	private void prepareLoad() {
 		try {
-			MinecraftUtils.ensureDirectory(configFolder);
+			Utils.ensureDirectory(configFolder);
 
 			if (Files.exists(legacyModsFile) && !Files.exists(modsFile))
 				Files.move(legacyModsFile, modsFile);
@@ -120,6 +125,15 @@ public final class Client {
 	public void optionChanged() {
 		if (!(mc.currentScreen instanceof ModsScreen))
 			save();
+	}
+
+	/**
+	 * Gets the core class loader.
+	 *
+	 * @return the loader.
+	 */
+	public ClassLoader getClassLoader() {
+		return ClassWrapper.getInstance();
 	}
 
 }

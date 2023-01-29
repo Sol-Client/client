@@ -21,11 +21,6 @@ public abstract class SolClientMod extends Mod {
 	}
 
 	@Override
-	public String getName() {
-		return getTranslationKey("name");
-	}
-
-	@Override
 	public boolean isEnabledByDefault() {
 		return false;
 	}

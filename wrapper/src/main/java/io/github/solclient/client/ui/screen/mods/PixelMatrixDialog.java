@@ -8,9 +8,8 @@ import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
-import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.util.LCCH;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
 

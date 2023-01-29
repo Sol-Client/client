@@ -17,7 +17,6 @@ import io.github.solclient.client.mod.option.impl.FieldOption;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.language.I18n;
 
 @AbstractTranslationKey("sol_client.mod.generic")
 public abstract class Mod {
@@ -69,7 +68,18 @@ public abstract class Mod {
 	 *
 	 * @return the name translation key.
 	 */
-	public abstract String getName();
+	public String getName() {
+		return getTranslationKey("name");
+	}
+
+	/**
+	 * Gets the description of the mod.
+	 *
+	 * @return the description translation key.
+	 */
+	public String getDescription() {
+		return getTranslationKey("description");
+	}
 
 	/**
 	 * @return a unique id.
@@ -85,15 +95,6 @@ public abstract class Mod {
 	 */
 	public String getCredit() {
 		return null;
-	}
-
-	/**
-	 * Gets the description of the mod.
-	 *
-	 * @return the description translation key.
-	 */
-	public String getDescription() {
-		return I18n.translate("sol_client.mod." + getId() + ".description");
 	}
 
 	/**

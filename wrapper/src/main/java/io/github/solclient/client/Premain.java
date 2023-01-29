@@ -1,9 +1,12 @@
 package io.github.solclient.client;
 
 import java.io.IOException;
+import java.nio.file.*;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.spongepowered.asm.mixin.Mixins;
 
+import io.github.solclient.client.addon.AddonManager;
 import io.github.solclient.util.GlobalConstants;
 import io.github.solclient.wrapper.transformer.AccessWidenerTransformer;
 import net.minecraft.client.main.Main;
@@ -30,6 +33,10 @@ public final class Premain {
 
 		AccessWidenerTransformer.addWideners("replay-mod.accesswidener");
 
+		// load addons
+		AddonManager.premain(args);
+
+		// run Minecraft main
 		Main.main(args);
 	}
 

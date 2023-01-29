@@ -71,6 +71,11 @@ public final class ClassWrapper extends URLClassLoader {
 	}
 
 	@Override
+	public void addURL(URL url) {
+		super.addURL(url);
+	}
+
+	@Override
 	public URL getResource(String name) {
 		if (shouldHideResource(name))
 			return null;

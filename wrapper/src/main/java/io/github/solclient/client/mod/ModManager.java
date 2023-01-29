@@ -6,6 +6,7 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Stream;
 
+import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.BedwarsMod;
 import org.apache.logging.log4j.*;
 
 import com.google.gson.*;
@@ -99,6 +100,7 @@ public final class ModManager implements Iterable<Mod> {
 				// integration
 				new CosmeticaMod(),
 				new HypixelAdditionsMod(),
+                new BedwarsMod(),
 				new QuickPlayMod(),
 				new DiscordIntegrationMod()
 		);

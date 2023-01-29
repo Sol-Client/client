@@ -100,14 +100,17 @@ public final class AddonManager {
 		// arraylist since it apparently has better sorting speeds
 		List<Addon> addons = new ArrayList<>();
 
-		for (AddonInfo addon : queuedAddons) {
+		for (AddonInfo info : queuedAddons) {
 			try {
 				ClassWrapper wrapper = ClassWrapper.getInstance();
-				wrapper.addURL(addon.getPath().toUri().toURL());
-				Class<?> mainClass = wrapper.loadClass(addon.getMain());
-				addons.add(construct(mainClass));
+				wrapper.addURL(info.getPath().toUri().toURL());
+				Class<?> mainClass = wrapper.loadClass(info.getMain());
+
+				Addon addon = construct(mainClass);
+				addon.setInfo(info);
+				addons.add(addon);
 			} catch (Throwable error) {
-				LOGGER.error("Could not load addon {} from {}", addon.getId(), directory.relativize(addon.getPath()),
+				LOGGER.error("Could not load addon {} from {}", info.getId(), directory.relativize(info.getPath()),
 						error);
 			}
 		}

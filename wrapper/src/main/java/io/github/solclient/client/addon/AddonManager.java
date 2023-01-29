@@ -1,7 +1,8 @@
 package io.github.solclient.client.addon;
 
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
@@ -9,7 +10,10 @@ import java.util.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.*;
 
-import io.github.solclient.client.mod.ModManager;
+import com.google.gson.*;
+
+import io.github.solclient.client.Client;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.util.Utils;
 import io.github.solclient.wrapper.ClassWrapper;
 import lombok.*;
@@ -81,6 +85,11 @@ public final class AddonManager {
 		queuedAddons.add(addon);
 	}
 
+	/**
+	 * Fully loads all of the addons.
+	 *
+	 * @param mods the mod manager.
+	 */
 	public void load(ModManager mods) {
 		if (queuedAddons == null)
 			return;
@@ -105,9 +114,51 @@ public final class AddonManager {
 
 		addons.sort(Comparator.comparing(Addon::getName));
 
+		for (Addon addon : addons) {
+			try {
+				Client.INSTANCE.getMods().register(addon, loadConfig(addon));
+			} catch (Throwable error) {
+				LOGGER.error("Could not register addon {}", addon.getId(), error);
+			}
+		}
+
 		// allow gc to do a thing
 		queuedAddons.clear();
 		queuedAddons = null;
+	}
+
+	/**
+	 * Saves all of the addons' config files.
+	 *
+	 * @param mods the mod manager.
+	 */
+	public void save(ModManager mods) {
+		for (Mod mod : mods) {
+			if (!(mod instanceof Addon))
+				continue;
+
+			Addon addon = (Addon) mod;
+			JsonObject config = mods.save(addon);
+			try (Writer writer = new OutputStreamWriter(Files.newOutputStream(addon.getConfigFile()),
+					StandardCharsets.UTF_8)) {
+				writer.write(config.toString());
+			} catch (Throwable error) {
+				LOGGER.error("Could not save config for {}", addon.getId(), error);
+			}
+		}
+	}
+
+	private JsonObject loadConfig(Addon addon) {
+		if (!Files.exists(addon.getConfigFile()))
+			return new JsonObject();
+
+		try (Reader reader = new InputStreamReader(Files.newInputStream(addon.getConfigFile()),
+				StandardCharsets.UTF_8)) {
+			return JsonParser.parseReader(reader).getAsJsonObject();
+		} catch (IOException error) {
+			LOGGER.error("Could not load addon config for {}", addon.getId(), error);
+			return new JsonObject();
+		}
 	}
 
 	private Addon construct(Class<?> clazz) throws NoSuchMethodException, SecurityException, InstantiationException,

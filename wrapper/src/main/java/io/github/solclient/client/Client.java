@@ -78,6 +78,7 @@ public final class Client {
 		// load mods and data
 		prepareLoad();
 		mods.loadStandard(modsFile);
+		addons.load(mods);
 		try {
 			pins.load(pinsFile);
 		} catch (Throwable error) {
@@ -117,6 +118,8 @@ public final class Client {
 		} catch (IOException error) {
 			LOGGER.error("Could not save mods", error);
 		}
+
+		addons.save(mods);
 	}
 
 	/**

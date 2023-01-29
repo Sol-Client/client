@@ -35,10 +35,6 @@ public abstract class Mod {
 	@Getter
 	private boolean pinned;
 
-	@Getter
-	@Setter
-	private int index = -1;
-
 	/**
 	 * Called when the mod is registered.
 	 */

@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.Mod;
+import lombok.*;
 import net.minecraft.client.MinecraftClient;
 
 /**
@@ -15,6 +16,9 @@ public abstract class SolClientMod extends Mod {
 
 	protected final Logger logger = getLogger();
 	protected final MinecraftClient mc = MinecraftClient.getInstance();
+	@Getter
+	@Setter
+	private int index = -1;
 
 	public String getTranslationKey(String key) {
 		return "sol_client.mod." + getId() + '.' + key;

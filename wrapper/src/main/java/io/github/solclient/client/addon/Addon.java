@@ -1,6 +1,10 @@
 package io.github.solclient.client.addon;
 
-import java.nio.file.Path;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+
+import com.google.gson.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
@@ -30,6 +34,10 @@ public class Addon extends Mod {
 	@Override
 	public Path getConfigFolder() {
 		return Client.INSTANCE.getConfigFolder().resolve("addon/" + getId());
+	}
+
+	public Path getConfigFile() {
+		return getConfigFolder().resolve("config.json");
 	}
 
 	@Override

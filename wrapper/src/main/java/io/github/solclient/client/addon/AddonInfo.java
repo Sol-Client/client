@@ -12,7 +12,7 @@ import lombok.Data;
 public final class AddonInfo {
 
 	private final Path path;
-	private final String name, id, main;
+	private final String id, main, name, description;
 
 	static AddonInfo parse(Path path) throws InvalidAddonException, IOException {
 		try (ZipFile zip = new ZipFile(path.toFile())) {
@@ -37,13 +37,15 @@ public final class AddonInfo {
 					throw new InvalidAddonException("Addon description must contain string 'main'");
 				String main = object.get("main").getAsString();
 
-				String name;
+				String name = null;
 				if (object.has("name") && object.get("name").isJsonPrimitive())
 					name = object.get("name").getAsString();
-				else
-					name = id;
 
-				return new AddonInfo(path, name, id, main);
+				String description = null;
+				if (object.has("description") && object.get("description").isJsonPrimitive())
+					description = object.get("description").getAsString();
+
+				return new AddonInfo(path, id, main, name, description);
 			}
 		}
 	}

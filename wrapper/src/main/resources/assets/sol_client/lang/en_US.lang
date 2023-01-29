@@ -211,7 +211,7 @@ sol_client.mod.tweaks.name=Tweaks
 sol_client.mod.tweaks.description=Various game tweaks including fullbright.
 
 sol_client.mod.tweaks.option.fullbright=Fullbright
-sol_client.mod.tweaks.option.showOwnTag=Show Own Nametag
+sol_client.mod.tweaks.option.showOwnTag=Show My Nametag
 sol_client.mod.tweaks.option.arabicNumerals=Arabic Numerals
 sol_client.mod.tweaks.option.betterTooltips=Better Tooltips
 sol_client.mod.tweaks.option.minimalViewBobbing=Minimal View Bobbing

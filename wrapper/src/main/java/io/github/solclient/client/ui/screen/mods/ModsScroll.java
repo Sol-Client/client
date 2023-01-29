@@ -44,7 +44,7 @@ public class ModsScroll extends ScrollListComponent {
 			} else {
 				String filter = screen.getFilter();
 				List<Mod> filtered = Client.INSTANCE.getMods().stream().filter((mod) -> {
-					String credit = mod.getCredit();
+					String credit = mod.getDetail();
 					if (credit == null)
 						credit = "";
 

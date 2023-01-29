@@ -53,7 +53,7 @@ public class MenuBlurMod extends SolClientMod implements PrimaryIntegerSettingMo
 	}
 
 	@Override
-	public String getCredit() {
+	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.originally_by", "tterrag1098");
 	}
 

@@ -2,7 +2,7 @@ package io.github.solclient.client.addon;
 
 import java.io.*;
 import java.lang.reflect.*;
-import java.net.URL;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -10,6 +10,7 @@ import java.util.*;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.*;
+import org.spongepowered.asm.mixin.Mixins;
 
 import com.google.gson.*;
 
@@ -64,7 +65,7 @@ public final class AddonManager {
 					return FileVisitResult.CONTINUE;
 
 				try {
-					queue(AddonInfo.parse(path));
+					add(AddonInfo.parse(path));
 				} catch (Throwable error) {
 					LOGGER.error("Could not load addon info from {}", directory.relativize(path), error);
 				}
@@ -75,23 +76,24 @@ public final class AddonManager {
 
 		if (Boolean.getBoolean("io.github.solclient.client.addon.dev")) {
 			try {
-				queue(AddonInfo.parseFromClasspath());
+				add(AddonInfo.parseFromClasspath());
 			} catch (InvalidAddonException | IOException error) {
-				throw new IllegalStateException("Could not load development addon", error);
+				throw new IllegalStateException("Could not load addon info from classpath", error);
 			}
 		}
 	}
 
-	/**
-	 * Queue an addon for loading on initialisation.
-	 *
-	 * @param addon the addon.
-	 */
-	public void queue(AddonInfo addon) {
+	public void add(AddonInfo addon) throws MalformedURLException {
 		if (queuedAddons == null)
 			queuedAddons = new LinkedList<>();
 
 		queuedAddons.add(addon);
+
+		if (addon.getPath().isPresent())
+			ClassWrapper.getInstance().addURL(addon.getPath().get().toUri().toURL());
+
+		for (String mixin : addon.getMixins())
+			Mixins.addConfiguration(mixin);
 	}
 
 	/**
@@ -115,14 +117,14 @@ public final class AddonManager {
 		for (AddonInfo info : queuedAddons) {
 			try {
 				ClassWrapper wrapper = ClassWrapper.getInstance();
-				wrapper.addURL(info.getPath().toUri().toURL());
 				Class<?> mainClass = wrapper.loadClass(info.getMain());
-
 				Addon addon = construct(mainClass);
 				addon.setInfo(info);
 				addons.add(addon);
 			} catch (Throwable error) {
-				LOGGER.error("Could not load addon {} from {}", info.getId(), directory.relativize(info.getPath()),
+				LOGGER.error(
+						"Could not load addon {} from {}", info.getId(), info.getPath()
+								.map((path) -> directory.relativize(path)).map(Path::toString).orElse("classpath"),
 						error);
 			}
 		}

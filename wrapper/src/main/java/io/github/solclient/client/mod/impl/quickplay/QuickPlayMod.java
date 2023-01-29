@@ -36,7 +36,7 @@ public class QuickPlayMod extends SolClientMod {
 	}
 
 	@Override
-	public String getCredit() {
+	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.originally_by", "robere2");
 	}
 

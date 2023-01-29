@@ -428,6 +428,7 @@ sol_client.mod.category.hud.name=HUD
 sol_client.mod.category.utility.name=Utility
 sol_client.mod.category.visual.name=Visual
 sol_client.mod.category.integration.name=Integration
+sol_client.mod.category.addons.name=Addons
 
 sol_client.mod.discord_integration.name=Discord Integration
 sol_client.mod.discord_integration.description=Integration features for Discord including activities and overlay.

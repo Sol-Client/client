@@ -91,11 +91,14 @@ public final class AddonManager {
 	 * @param mods the mod manager.
 	 */
 	public void load(ModManager mods) {
-		if (queuedAddons == null)
+		if (queuedAddons == null || queuedAddons.isEmpty())
 			return;
 		if (loaded)
 			throw new UnsupportedOperationException("Already loaded");
+
 		loaded = true;
+
+		LOGGER.info("Registering and loading addons...");
 
 		// arraylist since it apparently has better sorting speeds
 		List<Addon> addons = new ArrayList<>();

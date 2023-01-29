@@ -1,10 +1,6 @@
 package io.github.solclient.client.addon;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-
-import com.google.gson.*;
+import java.nio.file.Path;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;

@@ -116,6 +116,12 @@ public final class AddonManager {
 
 		for (Addon addon : addons) {
 			try {
+				Utils.ensureDirectory(addon.getConfigFolder());
+			} catch (IOException error) {
+				LOGGER.error("Could not create {}", addon.getConfigFolder(), error);
+			}
+
+			try {
 				Client.INSTANCE.getMods().register(addon, loadConfig(addon));
 			} catch (Throwable error) {
 				LOGGER.error("Could not register addon {}", addon.getId(), error);

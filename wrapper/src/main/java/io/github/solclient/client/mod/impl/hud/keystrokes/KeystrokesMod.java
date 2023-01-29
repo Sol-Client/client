@@ -8,15 +8,16 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.MinecraftClientExtension;
-import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-public class KeystrokesMod extends HudMod {
+public class KeystrokesMod extends SolClientHudMod {
 
 	@Expose
 	@Option
@@ -34,31 +35,31 @@ public class KeystrokesMod extends HudMod {
 	@Option
 	protected boolean cps;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected boolean background = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
 	protected Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
 	@Option
 	protected Colour backgroundColourPressed = new Colour(255, 255, 255, 100);
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected boolean border = false;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
 	protected Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option
 	protected Colour borderColourPressed = Colour.WHITE;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.TEXT_COLOUR_CLASS)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.TEXT_COLOUR_CLASS)
 	protected Colour textColour = Colour.WHITE;
 	@Expose
 	@Option
 	protected Colour textColourPressed = Colour.BLACK;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected boolean shadow = false;
 	@Expose
 	@Option
@@ -77,8 +78,8 @@ public class KeystrokesMod extends HudMod {
 	}
 
 	@Override
-	public void postStart() {
-		super.postStart();
+	public void lateInit() {
+		super.lateInit();
 		w = new Keystroke(this, mc.options.forwardKey, "W", 18, 17, 17);
 		a = new Keystroke(this, mc.options.leftKey, "A", 0, 17, 17);
 		s = new Keystroke(this, mc.options.backKey, "S", 18, 17, 17);

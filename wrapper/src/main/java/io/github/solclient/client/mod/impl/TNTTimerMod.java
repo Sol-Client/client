@@ -8,7 +8,7 @@ import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.util.Formatting;
 
-public class TNTTimerMod extends Mod {
+public class TNTTimerMod extends SolClientMod {
 
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.00");
 	public static boolean enabled;

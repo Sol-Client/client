@@ -102,7 +102,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				singleModMode = true;
 			}
 
-			add(new LabelComponent((component, defaultText) -> mod != null ? mod.getName()
+			add(new LabelComponent((component, defaultText) -> mod != null ? I18n.translate(mod.getName())
 					: I18n.translate("sol_client.mod.screen.title")).scaled(1.45F),
 					new AlignedBoundsController(Alignment.START, Alignment.START, (component, defaultBounds) -> {
 						Rectangle result = new Rectangle(getBaseX(), getBaseX() + 3, defaultBounds.getWidth(),
@@ -249,8 +249,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
 			if ((screen.getRoot().getDialog() == null
 					&& (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER))
-					&& (mod != null || search.getText().isEmpty())
-					&& !scroll.getSubComponents().isEmpty()) {
+					&& (mod != null || search.getText().isEmpty()) && !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
 				if (mod != null)
 					firstComponent = firstComponent.getSubComponents().get(1);

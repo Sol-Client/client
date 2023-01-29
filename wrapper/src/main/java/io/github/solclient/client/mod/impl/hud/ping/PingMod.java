@@ -6,8 +6,8 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.SmoothCounterHudMod;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.client.network.PlayerListEntry;
 

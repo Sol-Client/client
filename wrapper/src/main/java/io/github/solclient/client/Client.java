@@ -6,6 +6,7 @@ import java.nio.file.*;
 import org.apache.logging.log4j.*;
 import org.lwjgl.input.Keyboard;
 
+import io.github.solclient.client.addon.AddonManager;
 import io.github.solclient.client.chatextensions.ChatExtensionManager;
 import io.github.solclient.client.command.CommandManager;
 import io.github.solclient.client.event.EventBus;
@@ -13,6 +14,8 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.packet.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.*;
+import io.github.solclient.util.Utils;
+import io.github.solclient.wrapper.ClassWrapper;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 
@@ -43,6 +46,8 @@ public final class Client {
 	private final CommandManager commands = new CommandManager();
 	@Getter
 	private final PseudoResourceManager pseudoResources = new PseudoResourceManager();
+	@Getter
+	private final AddonManager addons = AddonManager.getInstance();
 
 	// for convenience with multimc
 	@Getter
@@ -68,22 +73,23 @@ public final class Client {
 		Keyboard.enableRepeatEvents(false);
 		new File(mc.runDirectory, "server-resource-packs").mkdirs();
 
-		// register events
-		events.register(this);
-		events.register(new DefaultEvents());
-		events.register(packets);
-		events.register(popups);
-
 		CpsMonitor.forceInit();
 
 		// load mods and data
 		prepareLoad();
 		mods.loadStandard(modsFile);
+		addons.load(mods);
 		try {
 			modUiState.load(modUiStateFile);
 		} catch (Throwable error) {
 			LOGGER.error("Could not load mod ui state", error);
 		}
+
+		// register events
+		events.register(this);
+		events.register(new DefaultEvents());
+		events.register(packets);
+		events.register(popups);
 
 		// save it all!
 		save();
@@ -91,7 +97,7 @@ public final class Client {
 
 	private void prepareLoad() {
 		try {
-			MinecraftUtils.ensureDirectory(configFolder);
+			Utils.ensureDirectory(configFolder);
 
 			if (Files.exists(legacyModsFile) && !Files.exists(modsFile))
 				Files.move(legacyModsFile, modsFile);
@@ -112,6 +118,8 @@ public final class Client {
 		} catch (IOException error) {
 			LOGGER.error("Could not save mods", error);
 		}
+
+		addons.save(mods);
 	}
 
 	/**
@@ -120,6 +128,15 @@ public final class Client {
 	public void optionChanged() {
 		if (!(mc.currentScreen instanceof ModsScreen))
 			save();
+	}
+
+	/**
+	 * Gets the core class loader.
+	 *
+	 * @return the loader.
+	 */
+	public ClassLoader getClassLoader() {
+		return ClassWrapper.getInstance();
 	}
 
 }

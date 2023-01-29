@@ -4,9 +4,9 @@ import java.text.DecimalFormat;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.EntityAttackEvent;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
 
-public class ReachDisplayMod extends SimpleHudMod {
+public class ReachDisplayMod extends SolClientSimpleHudMod {
 
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 

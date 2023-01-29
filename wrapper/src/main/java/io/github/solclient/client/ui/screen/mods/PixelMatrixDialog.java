@@ -4,13 +4,12 @@ import org.apache.logging.log4j.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.*;
 
-import io.github.solclient.client.mod.ModOption;
+import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
-import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
-import io.github.solclient.util.LCCH;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
 
@@ -23,10 +22,10 @@ public final class PixelMatrixDialog extends BlockComponent {
 
 	private final PixelMatrix pixels;
 
-	public PixelMatrixDialog(ModOption option) {
+	public PixelMatrixDialog(ModOption<PixelMatrix> option) {
 		super(theme.bg, 12, 0);
 
-		pixels = (PixelMatrix) option.getValue();
+		pixels = option.getValue();
 
 		LabelComponent title = new LabelComponent(option.getName());
 		add(title, new AlignedBoundsController(Alignment.CENTRE, Alignment.START,

@@ -2,24 +2,24 @@ package io.github.solclient.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 
-public class CoordinatesMod extends HudMod {
+public class CoordinatesMod extends SolClientHudMod {
 
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean background = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
 	private Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean border = false;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
 	private Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option
@@ -40,7 +40,7 @@ public class CoordinatesMod extends HudMod {
 	@Option
 	private Colour axisDirectionColour = new Colour(0, 150, 255);
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 
 	@Override

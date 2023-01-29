@@ -8,12 +8,13 @@ import cc.cosmetica.api.ShoulderBuddies;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.WorldLoadEvent;
 import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class CosmeticaMod extends Mod {
+public class CosmeticaMod extends SolClientMod {
 
 	public static CosmeticaMod instance;
 	public static boolean enabled;
@@ -24,8 +25,8 @@ public class CosmeticaMod extends Mod {
 	private boolean loginStarted;
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		instance = this;
 	}
 

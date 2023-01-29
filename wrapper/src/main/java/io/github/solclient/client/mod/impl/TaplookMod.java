@@ -5,15 +5,15 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.Perspective;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.option.KeyBinding;
 
-public class TaplookMod extends Mod {
+public class TaplookMod extends SolClientMod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", 0, GlobalConstants.KEY_CATEGORY);
+	private final KeyBinding key = new KeyBinding(getTranslationKey("key"), 0, GlobalConstants.KEY_CATEGORY);
 	private int previousPerspective;
 	private boolean active;
 	@Expose

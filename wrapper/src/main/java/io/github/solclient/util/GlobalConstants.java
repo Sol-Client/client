@@ -3,6 +3,7 @@ package io.github.solclient.util;
 import java.lang.invoke.MethodType;
 import java.net.URL;
 
+import io.github.solclient.client.addon.AddonManager;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

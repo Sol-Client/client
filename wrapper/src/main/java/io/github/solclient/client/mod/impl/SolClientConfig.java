@@ -8,7 +8,7 @@ import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.util.*;
 import net.minecraft.client.option.KeyBinding;
 
@@ -29,11 +29,11 @@ public class SolClientConfig extends ConfigOnlyMod {
 	public boolean logoInInventory;
 
 	@Option
-	public KeyBinding modsKey = new KeyBinding(getTranslationKey() + ".mods", Keyboard.KEY_RSHIFT,
+	public KeyBinding modsKey = new KeyBinding(getTranslationKey("mods"), Keyboard.KEY_RSHIFT,
 			GlobalConstants.KEY_CATEGORY);
 
 	@Option
-	public KeyBinding editHudKey = new KeyBinding(getTranslationKey() + ".edit_hud", 0, GlobalConstants.KEY_CATEGORY);
+	public KeyBinding editHudKey = new KeyBinding(getTranslationKey("edit_hud"), 0, GlobalConstants.KEY_CATEGORY);
 
 	@Expose
 	@Option
@@ -56,8 +56,8 @@ public class SolClientConfig extends ConfigOnlyMod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 
 		instance = this;
 
@@ -76,11 +76,6 @@ public class SolClientConfig extends ConfigOnlyMod {
 			thread.setDaemon(true);
 			thread.start();
 		}
-	}
-
-	@Override
-	public String getDescription() {
-		return super.getDescription();
 	}
 
 }

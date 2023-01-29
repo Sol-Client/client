@@ -5,12 +5,14 @@ import java.util.stream.Collectors;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 import io.github.solclient.client.util.data.Alignment;
 import lombok.*;
+import net.minecraft.client.resource.language.I18n;
 
 @RequiredArgsConstructor
 public final class ModsScroll extends ScrollListComponent {
@@ -47,14 +49,17 @@ public final class ModsScroll extends ScrollListComponent {
 				}
 			} else {
 				String filter = screen.getFilter();
-				List<Mod> filtered = Client.INSTANCE.getMods().stream()
-						.filter((mod) -> mod.getName().toLowerCase().contains(filter.toLowerCase())
-								|| mod.getDescription().toLowerCase().contains(filter.toLowerCase())
-								|| mod.getCredit().toLowerCase().contains(filter.toLowerCase()))
-						.sorted(Comparator
-								.comparing((Mod mod) -> mod.getName().toLowerCase().startsWith(filter.toLowerCase()))
-								.reversed())
-						.collect(Collectors.toList());
+				List<Mod> filtered = Client.INSTANCE.getMods().stream().filter((mod) -> {
+					String credit = mod.getDetail();
+					if (credit == null)
+						credit = "";
+
+					return I18n.translate(mod.getName()).toLowerCase().contains(filter.toLowerCase())
+							|| I18n.translate(mod.getDescription()).toLowerCase().contains(filter.toLowerCase())
+							|| I18n.translate(credit).toLowerCase().contains(filter.toLowerCase());
+				}).sorted(Comparator.comparing(
+						(Mod mod) -> I18n.translate(mod.getName()).toLowerCase().startsWith(filter.toLowerCase()))
+						.reversed()).collect(Collectors.toList());
 
 				if (filtered.isEmpty())
 					add(new LabelComponent("sol_client.no_results"),
@@ -64,9 +69,8 @@ public final class ModsScroll extends ScrollListComponent {
 					add(new ModEntry(mod, screen, false));
 			}
 		} else {
-			for (ModOption option : screen.getMod().getOptions()) {
+			for (ModOption<?> option : screen.getMod().getOptions())
 				add(new ModOptionComponent(option));
-			}
 		}
 	}
 

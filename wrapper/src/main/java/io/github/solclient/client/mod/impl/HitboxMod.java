@@ -10,7 +10,7 @@ import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.util.GlobalConstants;
@@ -19,10 +19,10 @@ import net.minecraft.client.render.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.*;
 
-public class HitboxMod extends Mod {
+public class HitboxMod extends SolClientMod {
 
 	@Option
-	private final KeyBinding toggleHitboxes = new KeyBinding(getTranslationKey() + ".option.toggleHitboxes", 0,
+	private final KeyBinding toggleHitboxes = new KeyBinding(getTranslationKey("option.toggleHitboxes"), 0,
 			GlobalConstants.KEY_CATEGORY);
 	@Expose
 	@Option
@@ -50,8 +50,8 @@ public class HitboxMod extends Mod {
 	private boolean toggled;
 
 	@Override
-	public void postStart() {
-		super.postStart();
+	public void lateInit() {
+		super.lateInit();
 		if (isEnabled())
 			mc.getEntityRenderManager().setRenderHitboxes(toggled);
 	}

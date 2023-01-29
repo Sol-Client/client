@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import org.lwjgl.nanovg.*;
 
-import io.github.solclient.client.mod.ModOption;
+import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -25,7 +25,7 @@ public class ColourPickerDialog extends BlockComponent {
 	private final TextFieldComponent hex;
 	private final ButtonComponent done;
 
-	public ColourPickerDialog(ModOption colourOption, Colour colour, Consumer<Colour> callback) {
+	public ColourPickerDialog(ModOption<Colour> colourOption, Colour colour, Consumer<Colour> callback) {
 		super(theme.bg, 12, 0);
 
 		add(hex = new TextFieldComponent(60, true),

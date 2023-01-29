@@ -9,10 +9,10 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.Rectangle;
 
-public class TweaksMod extends Mod {
+public class TweaksMod extends SolClientMod {
 
 	public static boolean enabled;
 	public static TweaksMod instance;
@@ -72,8 +72,8 @@ public class TweaksMod extends Mod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		instance = this;
 	}
 
@@ -104,15 +104,13 @@ public class TweaksMod extends Mod {
 
 	@Override
 	public void postOptionChange(String key, Object value) {
-		if (isEnabled() && key.equals("borderlessFullscreen")) {
-			if (mc.isFullscreen()) {
-				if ((boolean) value)
-					setBorderlessFullscreen(true);
-				else {
-					setBorderlessFullscreen(false);
-					mc.toggleFullscreen();
-					mc.toggleFullscreen();
-				}
+		if ((isEnabled() && key.equals("borderlessFullscreen")) && mc.isFullscreen()) {
+			if ((boolean) value)
+				setBorderlessFullscreen(true);
+			else {
+				setBorderlessFullscreen(false);
+				mc.toggleFullscreen();
+				mc.toggleFullscreen();
 			}
 		}
 	}

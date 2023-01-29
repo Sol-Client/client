@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod;
 
-import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
 
 import org.apache.logging.log4j.*;
@@ -10,58 +10,71 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.HudElement;
+import io.github.solclient.client.mod.option.ModOption;
+import io.github.solclient.client.mod.option.annotation.*;
+import io.github.solclient.client.mod.option.impl.FieldOption;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.language.I18n;
 
 @AbstractTranslationKey("sol_client.mod.generic")
 public abstract class Mod {
 
-	protected final MinecraftClient mc = MinecraftClient.getInstance();
 	@Getter
-	private List<ModOption> options;
+	private final Logger logger = LogManager.getLogger();
+
+	@Getter
+	private List<ModOption<?>> options;
 	private boolean blocked;
+
 	@Expose
 	@Option(priority = 2)
 	private boolean enabled = isEnabledByDefault();
-	protected final Logger logger = LogManager.getLogger();
 
 	@Getter
 	private boolean pinned;
 
-	@Getter
-	@Setter
-	private int index = -1;
-
-	/**
-	 * Called after the game has started.
-	 */
-	public void postStart() {
-	}
-
 	/**
 	 * Called when the mod is registered.
 	 */
-	public void onRegister() {
-		try {
-			options = ModOption.get(this);
-		} catch (IOException error) {
-			throw new IllegalStateException(error);
-		}
+	public void init() {
+		options = FieldOption.getFieldOptionsFromClass(this);
 
 		if (this.enabled)
 			tryEnable();
 	}
 
-	public String getTranslationKey() {
-		return "sol_client.mod." + getId();
+	/**
+	 * Called after the game has started.
+	 */
+	public void lateInit() {
 	}
 
+	/**
+	 * Gets a translation key from the mod. Usually will return prefix + key.
+	 *
+	 * @param key the key.
+	 * @return the full translation key.
+	 */
+	public abstract String getTranslationKey(String key);
+
+	/**
+	 * Gets the name of the mod.
+	 *
+	 * @return the name translation key.
+	 */
 	public String getName() {
-		return I18n.translate(getTranslationKey() + ".name");
+		return getTranslationKey("name");
+	}
+
+	/**
+	 * Gets the description of the mod.
+	 *
+	 * @return the description translation key.
+	 */
+	public String getDescription() {
+		return getTranslationKey("description");
 	}
 
 	/**
@@ -69,17 +82,15 @@ public abstract class Mod {
 	 */
 	public abstract String getId();
 
+	public abstract Path getConfigFolder();
+
 	/**
 	 * Choose a string to display on the right side of the mod component.
 	 *
-	 * @return an additional credit string.
+	 * @return an additional string.
 	 */
-	public String getCredit() {
-		return "";
-	}
-
-	public String getDescription() {
-		return I18n.translate("sol_client.mod." + getId() + ".description");
+	public String getDetail() {
+		return null;
 	}
 
 	/**
@@ -87,27 +98,46 @@ public abstract class Mod {
 	 */
 	public abstract ModCategory getCategory();
 
-	public boolean isEnabledByDefault() {
-		return false;
-	}
+	/**
+	 * Gets whether the mod should be enabled by default.
+	 *
+	 * @return <code>true</code> to keep the mod on by default.
+	 */
+	public abstract boolean isEnabledByDefault();
 
+	/**
+	 * Fired before an option is changed.
+	 *
+	 * @param key   the option key.
+	 * @param value the option value.
+	 * @return <code>true</code> to proceed.
+	 */
 	public boolean onOptionChange(String key, Object value) {
 		if (key.equals("enabled")) {
-			if (isLocked()) {
+			if (this instanceof ConfigOnlyMod)
 				return false;
-			}
+
 			setEnabled((boolean) value);
 		}
+
 		return true;
 	}
 
 	public void postOptionChange(String key, Object value) {
 	}
 
-	public void setEnabled(boolean enabled) {
+	/**
+	 * Fired when a file is edited.
+	 *
+	 * @param key the option key.
+	 */
+	public void onFileUpdate(String key) {
+	}
+
+	public final void setEnabled(boolean enabled) {
 		if (blocked)
 			return;
-		if (isLocked())
+		if (this instanceof ConfigOnlyMod)
 			return;
 
 		if (enabled != this.enabled) {
@@ -122,6 +152,13 @@ public abstract class Mod {
 			}
 		}
 		this.enabled = enabled;
+	}
+
+	public final boolean isEnabled() {
+		if (this instanceof ConfigOnlyMod)
+			return true;
+
+		return enabled && !blocked;
 	}
 
 	private void tryEnable() {
@@ -159,22 +196,6 @@ public abstract class Mod {
 		blocked = false;
 	}
 
-	public boolean isEnabled() {
-		return enabled && !blocked;
-	}
-
-	public void toggle() {
-		setEnabled(!isEnabled());
-	}
-
-	public void disable() {
-		setEnabled(false);
-	}
-
-	public void enable() {
-		setEnabled(true);
-	}
-
 	public void setPinned(boolean pinned) {
 		if (pinned == this.pinned) {
 			return;
@@ -197,43 +218,19 @@ public abstract class Mod {
 		pinned = true;
 	}
 
-	public void unpin() {
-		setPinned(false);
-	}
-
-	public void pin() {
-		setPinned(true);
-	}
-
-	public void togglePin() {
-		setPinned(!isPinned());
-	}
-
-	public boolean isLocked() {
-		return false;
-	}
-
-	public String getLockMessage() {
-		return "";
-	}
-
 	public List<HudElement> getHudElements() {
 		return Collections.emptyList();
 	}
 
-	public void onFileUpdate(String fieldName) {
-	}
-
 	public void render(boolean editMode) {
-		for (HudElement element : getHudElements()) {
+		for (HudElement element : getHudElements())
 			element.render(editMode);
-		}
 	}
 
 	@EventHandler
 	public void onRender(PostGameOverlayRenderEvent event) {
 		if (event.type == GameOverlayElement.ALL) {
-			render(mc.currentScreen instanceof MoveHudsScreen);
+			render(MinecraftClient.getInstance().currentScreen instanceof MoveHudsScreen);
 		}
 	}
 

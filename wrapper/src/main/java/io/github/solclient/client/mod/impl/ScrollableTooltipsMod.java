@@ -5,11 +5,11 @@ import org.lwjgl.input.Mouse;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 
-public class ScrollableTooltipsMod extends Mod {
+public class ScrollableTooltipsMod extends SolClientMod {
 
 	public static ScrollableTooltipsMod instance;
 	public static boolean enabled;
@@ -31,7 +31,7 @@ public class ScrollableTooltipsMod extends Mod {
 	}
 
 	@Override
-	public String getCredit() {
+	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.by", "moehreag"); // maybe also add original creator
 	}
 
@@ -41,8 +41,8 @@ public class ScrollableTooltipsMod extends Mod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		instance = this;
 	}
 

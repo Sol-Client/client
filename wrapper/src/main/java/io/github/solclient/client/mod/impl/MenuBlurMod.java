@@ -17,7 +17,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.ShaderEffectExtension;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.gl.*;
@@ -29,7 +29,7 @@ import net.minecraft.client.util.Window;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
-public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
+public class MenuBlurMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	private static final Identifier ID = new Identifier("minecraft:shaders/post/menu_blur.json");
 
@@ -53,7 +53,7 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	@Override
-	public String getCredit() {
+	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.originally_by", "tterrag1098");
 	}
 
@@ -63,8 +63,8 @@ public class MenuBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		Client.INSTANCE.getPseudoResources().register(ID, new MenuBlurShader());
 	}
 

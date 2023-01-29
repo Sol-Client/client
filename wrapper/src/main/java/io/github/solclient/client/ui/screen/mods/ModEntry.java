@@ -5,7 +5,7 @@ import java.net.URI;
 import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.*;
-import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -13,6 +13,7 @@ import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
+import net.minecraft.client.resource.language.I18n;
 
 public class ModEntry extends ColouredComponent {
 
@@ -39,21 +40,26 @@ public class ModEntry extends ColouredComponent {
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 		Component name = new LabelComponent(
-				(component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : ""));
+				(component, defaultText) -> I18n.translate(mod.getName()) + (mod.isBlocked() ? " (blocked)" : ""));
 		add(name,
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 43,
 								(int) (defaultBounds.getY() - (regularFont.getLineHeight(nvg) / 2)) - 1,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
-		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
+		add(new LabelComponent((component, defaultText) -> I18n.translate(mod.getDescription()),
 				(component, defaultColour) -> new Colour(160, 160, 160)).scaled(0.8F),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 33,
 								(int) (defaultBounds.getY() + (regularFont.getLineHeight(nvg) / 2)) + 1,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-		Component credit = new LabelComponent((component, defaultText) -> mod.getCredit(),
-				(component, defaultColour) -> new Colour(120, 120, 120)).scaled(0.8F);
+		Component credit = new LabelComponent((component, defaultText) -> {
+			String text = mod.getDetail();
+			if (text == null)
+				text = "";
+
+			return I18n.translate(text);
+		}, (component, defaultColour) -> new Colour(120, 120, 120)).scaled(0.8F);
 		add(credit, new AlignedBoundsController(Alignment.START, Alignment.START, (component,
 				defaultBounds) -> defaultBounds.offset(name.getBounds().getEndX() - 1, name.getBounds().getY() + 2)));
 
@@ -82,7 +88,7 @@ public class ModEntry extends ColouredComponent {
 	}
 
 	public boolean isFullyHovered() {
-		return isHovered() && (mod.isLocked() || mod.isBlocked() || !settingsButton.isHovered());
+		return isHovered() && (mod instanceof ConfigOnlyMod || mod.isBlocked() || !settingsButton.isHovered());
 	}
 
 	@Override
@@ -92,7 +98,7 @@ public class ModEntry extends ColouredComponent {
 		NanoVG.nvgRoundedRect(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), 4);
 		NanoVG.nvgFill(nvg);
 
-		if (!mod.isLocked()) {
+		if (!(mod instanceof ConfigOnlyMod)) {
 			// bar on left
 			NanoVG.nvgSave(nvg);
 			NanoVG.nvgIntersectScissor(nvg, 0, 0, 3, getBounds().getHeight());
@@ -137,7 +143,7 @@ public class ModEntry extends ColouredComponent {
 				} else {
 					screen.getScroll().notifyRemovePin(mod);
 				}
-				mod.togglePin();
+				mod.setPinned(!mod.isPinned());
 				return true;
 			}
 
@@ -182,10 +188,10 @@ public class ModEntry extends ColouredComponent {
 			if (blockedModPage != null) {
 				MinecraftUtils.openUrl(blockedModPage.toString());
 			}
-		} else if (mod.isLocked()) {
+		} else if (mod instanceof ConfigOnlyMod) {
 			screen.switchMod(mod);
 		} else {
-			mod.toggle();
+			mod.setEnabled(!mod.isEnabled());
 		}
 	}
 
@@ -199,7 +205,7 @@ public class ModEntry extends ColouredComponent {
 
 		@Override
 		public void render(ComponentRenderInfo info) {
-			if (!mod.isLocked() && !mod.isBlocked()) {
+			if (!(mod instanceof ConfigOnlyMod) && !mod.isBlocked()) {
 				NanoVG.nvgBeginPath(nvg);
 				NanoVG.nvgRoundedRectVarying(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), 0, 3, 3, 0);
 				NanoVG.nvgFillColor(nvg, getColour().nvg());

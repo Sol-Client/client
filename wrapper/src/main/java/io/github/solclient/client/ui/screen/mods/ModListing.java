@@ -65,7 +65,7 @@ public class ModListing extends ColouredComponent {
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
 								(int) (defaultBounds.getY() - (regularFont.getLineHeight(nvg) / 2)) - 1,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
-		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
+		add(new LabelComponent((component, defaultText) -> I18n.translate(mod.getDescription()),
 				(component, defaultColour) -> new Colour(160, 160, 160)),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
@@ -77,6 +77,7 @@ public class ModListing extends ColouredComponent {
 			String text = mod.getCredit();
 			if (text == null)
 				text = "";
+			
 			return I18n.translate(text);
 		}, (component, defaultColour) -> new Colour(120, 120, 120)),
 				new AlignedBoundsController(Alignment.START, Alignment.START, (component,

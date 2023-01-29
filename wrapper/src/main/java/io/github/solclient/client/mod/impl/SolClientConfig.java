@@ -102,11 +102,6 @@ public class SolClientConfig extends ConfigOnlyMod {
 		}
 	}
 
-	@Override
-	public String getDescription() {
-		return super.getDescription();
-	}
-
 	private Colour getUiHover() {
 		return uiColour.add(40);
 	}

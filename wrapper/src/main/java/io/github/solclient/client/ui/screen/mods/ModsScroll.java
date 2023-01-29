@@ -48,13 +48,12 @@ public class ModsScroll extends ScrollListComponent {
 					if (credit == null)
 						credit = "";
 
-					return mod.getName().toLowerCase().contains(filter.toLowerCase())
-							|| mod.getDescription().toLowerCase().contains(filter.toLowerCase())
+					return I18n.translate(mod.getName()).toLowerCase().contains(filter.toLowerCase())
+							|| I18n.translate(mod.getDescription()).toLowerCase().contains(filter.toLowerCase())
 							|| I18n.translate(credit).toLowerCase().contains(filter.toLowerCase());
-				}).sorted(
-						Comparator.comparing((Mod mod) -> mod.getName().toLowerCase().startsWith(filter.toLowerCase()))
-								.reversed())
-						.collect(Collectors.toList());
+				}).sorted(Comparator.comparing(
+						(Mod mod) -> I18n.translate(mod.getName()).toLowerCase().startsWith(filter.toLowerCase()))
+						.reversed()).collect(Collectors.toList());
 
 				if (filtered.isEmpty())
 					add(new LabelComponent("sol_client.no_results"),

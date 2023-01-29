@@ -5,7 +5,7 @@ import java.net.URI;
 import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.*;
-import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
@@ -14,6 +14,7 @@ import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
+import net.minecraft.client.resource.language.I18n;
 
 public class ModListing extends ColouredComponent {
 
@@ -47,10 +48,11 @@ public class ModListing extends ColouredComponent {
 
 		add(settingsButton = new ScaledIconComponent(
 				(component, defaultIcon) -> mod.isBlocked() ? "sol_client_lock" : "sol_client_settings", 16, 16,
-				new AnimatedColourController((component,
-						defaultColour) -> isHovered() ? (component.isHovered() && !(mod.isLocked() || mod.isBlocked())
+				new AnimatedColourController((component, defaultColour) -> isHovered()
+						? (component.isHovered() && !(mod instanceof ConfigOnlyMod || mod.isBlocked())
 								? Colour.LIGHT_BUTTON_HOVER
-								: Colour.LIGHT_BUTTON) : Colour.TRANSPARENT)),
+								: Colour.LIGHT_BUTTON)
+						: Colour.TRANSPARENT)),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(
 								getBounds().getWidth() - defaultBounds.getWidth() - defaultBounds.getY(),
@@ -58,12 +60,12 @@ public class ModListing extends ColouredComponent {
 
 		Component name;
 		add(name = new LabelComponent(
-				(component, defaultText) -> mod.getName() + (mod.isBlocked() ? " (blocked)" : "")),
+				(component, defaultText) -> I18n.translate(mod.getName()) + (mod.isBlocked() ? " (blocked)" : "")),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
 								(int) (defaultBounds.getY() - (regularFont.getLineHeight(nvg) / 2)) - 1,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
-		add(new LabelComponent((component, defaultText) -> mod.getDescription(),
+		add(new LabelComponent((component, defaultText) -> I18n.translate(mod.getDescription()),
 				(component, defaultColour) -> new Colour(160, 160, 160)),
 				new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 30,
@@ -71,8 +73,13 @@ public class ModListing extends ColouredComponent {
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 		Component credit;
-		add(credit = new LabelComponent((component, defaultText) -> mod.getCredit(),
-				(component, defaultColour) -> new Colour(120, 120, 120)),
+		add(credit = new LabelComponent((component, defaultText) -> {
+			String text = mod.getCredit();
+			if (text == null)
+				text = "";
+			
+			return I18n.translate(text);
+		}, (component, defaultColour) -> new Colour(120, 120, 120)),
 				new AlignedBoundsController(Alignment.START, Alignment.START, (component,
 						defaultBounds) -> defaultBounds.offset(name.getBounds().getEndX(), name.getBounds().getY())));
 
@@ -149,7 +156,7 @@ public class ModListing extends ColouredComponent {
 				} else {
 					screen.getScroll().notifyRemovePin(mod);
 				}
-				mod.togglePin();
+				mod.setPinned(!mod.isPinned());
 				return true;
 			}
 
@@ -194,10 +201,10 @@ public class ModListing extends ColouredComponent {
 			if (blockedModPage != null) {
 				MinecraftUtils.openUrl(blockedModPage.toString());
 			}
-		} else if (mod.isLocked()) {
+		} else if (mod instanceof ConfigOnlyMod) {
 			screen.switchMod(mod);
 		} else {
-			mod.toggle();
+			mod.setEnabled(!mod.isEnabled());
 		}
 	}
 

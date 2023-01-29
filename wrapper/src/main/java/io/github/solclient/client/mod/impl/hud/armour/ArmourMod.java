@@ -3,14 +3,15 @@ package io.github.solclient.client.mod.impl.hud.armour;
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.mod.annotation.Option;
 import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.util.Window;
 import net.minecraft.item.*;
 
-public class ArmourMod extends HudMod {
+public class ArmourMod extends SolClientHudMod {
 
 	private static final ItemStack HELMET = new ItemStack(Items.IRON_HELMET);
 	private static final ItemStack CHESTPLATE = new ItemStack(Items.IRON_CHESTPLATE);
@@ -31,10 +32,10 @@ public class ArmourMod extends HudMod {
 	@Option
 	private boolean horizontal;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.TEXT_COLOUR_CLASS)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.TEXT_COLOUR_CLASS)
 	private Colour textColour = Colour.WHITE;
 
 	@Override

@@ -11,18 +11,19 @@ import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.impl.quickplay.database.*;
 import io.github.solclient.client.mod.impl.quickplay.ui.*;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 
-public class QuickPlayMod extends Mod {
+public class QuickPlayMod extends SolClientMod {
 
 	@Option
-	private final KeyBinding menuKey = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_M,
+	private final KeyBinding menuKey = new KeyBinding(getTranslationKey("key"), Keyboard.KEY_M,
 			GlobalConstants.KEY_CATEGORY);
 	private boolean got;
 	private QuickPlayDatabase database;

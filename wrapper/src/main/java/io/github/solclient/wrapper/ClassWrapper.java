@@ -6,8 +6,9 @@ import java.util.Enumeration;
 
 import org.apache.commons.io.IOUtils;
 import org.spongepowered.asm.launch.MixinBootstrap;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 
+import io.github.solclient.util.GlobalConstants;
 import io.github.solclient.wrapper.transformer.ClassTransformer;
 import lombok.Getter;
 
@@ -64,8 +65,21 @@ public final class ClassWrapper extends URLClassLoader {
 		MixinBootstrap.init();
 	}
 
+	// HACK
+	private boolean shouldHideResource(String name) {
+		return GlobalConstants.DEV && name.equals("sol-client-wrapper-refmap.json");
+	}
+
+	@Override
+	public void addURL(URL url) {
+		super.addURL(url);
+	}
+
 	@Override
 	public URL getResource(String name) {
+		if (shouldHideResource(name))
+			return null;
+
 		URL superResource = super.findResource(name);
 		if (superResource != null)
 			return superResource;
@@ -75,6 +89,9 @@ public final class ClassWrapper extends URLClassLoader {
 
 	@Override
 	public URL findResource(String name) {
+		if (shouldHideResource(name))
+			return null;
+
 		URL superResource = super.findResource(name);
 		if (superResource != null)
 			return superResource;
@@ -84,6 +101,9 @@ public final class ClassWrapper extends URLClassLoader {
 
 	@Override
 	public InputStream getResourceAsStream(String name) {
+		if (shouldHideResource(name))
+			return null;
+
 		InputStream superIn = super.getResourceAsStream(name);
 		if (superIn != null)
 			return superIn;

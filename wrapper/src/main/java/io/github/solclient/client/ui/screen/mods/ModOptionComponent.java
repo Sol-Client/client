@@ -3,13 +3,11 @@ package io.github.solclient.client.ui.screen.mods;
 import java.lang.reflect.*;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
-import java.util.BitSet;
 
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.extension.KeyBindingExtension;
-import io.github.solclient.client.mod.ModOption;
-import io.github.solclient.client.mod.annotation.Slider;
+import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -24,11 +22,11 @@ import net.minecraft.client.resource.language.I18n;
 public class ModOptionComponent extends BlockComponent {
 
 	@Getter
-	private ModOption option;
+	private ModOption<?> option;
 	private boolean listening;
 	private int enumWidth;
 
-	public ModOptionComponent(ModOption option) {
+	public ModOptionComponent(ModOption<?> option) {
 		super(Colour.BLACK_128, 8, 0);
 
 		this.option = option;
@@ -43,19 +41,21 @@ public class ModOptionComponent extends BlockComponent {
 						defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 		if (option.getType() == boolean.class) {
-			add(new TickboxComponent((boolean) option.getValue(), option::setValue, this), defaultBoundController);
+			ModOption<Boolean> booleanOption = (ModOption<Boolean>) option;
+			add(new TickboxComponent(booleanOption.getValue(), booleanOption::setValue, this), defaultBoundController);
 		} else if (option.getType() == Colour.class) {
-			add(new ColourBoxComponent((component, defaultColour) -> (Colour) option.getValue(), this),
+			ModOption<Colour> colourOption = option.unsafeCast();
+
+			add(new ColourBoxComponent((component, defaultColour) -> colourOption.getValue(), this),
 					defaultBoundController);
 
 			onClick((info, button) -> {
-				if (button != 0) {
+				if (button != 0)
 					return false;
-				}
 
 				MinecraftUtils.playClickSound(true);
-				screen.getRoot().setDialog(new ColourPickerDialog(option, (Colour) option.getValue(),
-						(colour) -> option.setValue(colour)));
+				screen.getRoot().setDialog(new ColourPickerDialog(colourOption, (Colour) option.getValue(),
+						(colour) -> colourOption.setValue(colour)));
 				return true;
 			});
 		} else if (option.getType() == KeyBinding.class) {
@@ -207,7 +207,7 @@ public class ModOptionComponent extends BlockComponent {
 							}
 						}
 
-						option.setValue(fields[current]);
+						((ModOption<Object>) option).setValue(fields[current]);
 
 						return true;
 					}
@@ -218,11 +218,11 @@ public class ModOptionComponent extends BlockComponent {
 					| InvocationTargetException error) {
 				throw new IllegalStateException(error);
 			}
-		} else if (option.getType() == float.class && option.getField().isAnnotationPresent(Slider.class)) {
-			Slider sliderAnnotation = option.getField().getAnnotation(Slider.class);
+		} else if (option instanceof SliderOption) {
+			SliderOption sliderOption = (SliderOption) option;
 
-			if (sliderAnnotation.showValue()) {
-				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderAnnotation.format(),
+			if (sliderOption.shouldShowValue()) {
+				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderOption.getFormat(),
 						new DecimalFormat("0.##").format(option.getValue()))), (component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(
@@ -232,24 +232,25 @@ public class ModOptionComponent extends BlockComponent {
 						});
 			}
 
-			add(new SliderComponent(sliderAnnotation.min(), sliderAnnotation.max(), sliderAnnotation.step(),
-					(float) option.getValue(), (value) -> option.setValue(value), this), (component, defaultBounds) -> {
+			add(new SliderComponent(sliderOption.getMin(), sliderOption.getMax(), sliderOption.getStep(),
+					sliderOption.getValue(), sliderOption::setValue, this), (component, defaultBounds) -> {
 						defaultBounds = defaultBoundController.get(component, defaultBounds);
 						return new Rectangle(defaultBounds.getX() - 5, defaultBounds.getY(), defaultBounds.getWidth(),
 								defaultBounds.getHeight());
 					});
-		} else if (option.isFile()) {
-			String text = option.getEditText();
+		} else if (option instanceof FileOption) {
+			FileOption fileOption = (FileOption) option;
 
-			add(new LabelComponent((component, defaultText) -> text, new AnimatedColourController(
-					(component, defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)),
+			add(new LabelComponent((component, defaultText) -> I18n.translate(fileOption.getEditText()),
+					new AnimatedColourController((component, defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER
+							: Colour.LIGHT_BUTTON)),
 					defaultBoundController);
 
 			onClick((info, button) -> {
 				if (button == 0) {
 					MinecraftUtils.playClickSound(true);
 					try {
-						MinecraftUtils.openUrl(option.getFile().toURI().toURL().toString());
+						MinecraftUtils.openUrl(fileOption.getPath().toUri().toURL().toString());
 					} catch (MalformedURLException error) {
 						throw new IllegalStateException(error);
 					}
@@ -258,14 +259,16 @@ public class ModOptionComponent extends BlockComponent {
 
 				return false;
 			});
-		} else if (option.getType().equals(String.class)) {
-			TextFieldComponent field = new TextFieldComponent(100, false).withPlaceholder(option.getPlaceholder())
+		} else if (option instanceof TextOption) {
+			TextOption textOption = (TextOption) option;
+
+			TextFieldComponent field = new TextFieldComponent(100, false).withPlaceholder(textOption.getPlaceholder())
 					.onUpdate((string) -> {
-						option.setValue(string);
+						textOption.setValue(string);
 						return true;
 					});
 			field.autoFlush();
-			field.setText((String) option.getValue());
+			field.setText(textOption.getValue());
 			add(field, defaultBoundController);
 		} else if (option.getType() == PixelMatrix.class) {
 			onClick((info, button) -> {
@@ -273,7 +276,7 @@ public class ModOptionComponent extends BlockComponent {
 					return false;
 
 				MinecraftUtils.playClickSound(true);
-				screen.getRoot().setDialog(new PixelMatrixDialog(option));
+				screen.getRoot().setDialog(new PixelMatrixDialog(option.unsafeCast()));
 				return true;
 			});
 

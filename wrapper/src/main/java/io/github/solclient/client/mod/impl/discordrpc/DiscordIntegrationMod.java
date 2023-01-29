@@ -13,9 +13,10 @@ import de.jcm.discordgamesdk.activity.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
 import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.impl.discordrpc.socket.DiscordSocket;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
@@ -25,7 +26,7 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.world.ClientWorld;
 
-public class DiscordIntegrationMod extends Mod {
+public class DiscordIntegrationMod extends SolClientMod {
 
 	public static DiscordIntegrationMod instance;
 
@@ -57,15 +58,15 @@ public class DiscordIntegrationMod extends Mod {
 	@Option
 	protected Colour speakingColour = new Colour(20, 255, 20);
 	@Expose
-	@Option(translationKey = SimpleHudMod.TRANSLATION_KEY)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected boolean shadow = true;
 	@Expose
 	@Option
-	@StringOption("sol_client.mod.screen.default")
+	@TextField("sol_client.mod.screen.default")
 	private String applicationId = "";
 	@Expose
 	@Option
-	@StringOption("sol_client.mod.screen.default")
+	@TextField("sol_client.mod.screen.default")
 	private String icon = "";
 
 	private final DiscordVoiceChatHud discordVoiceChatHud = new DiscordVoiceChatHud(this);
@@ -86,7 +87,7 @@ public class DiscordIntegrationMod extends Mod {
 	}
 
 	@Override
-	public void onRegister() {
+	public void init() {
 		try {
 			Core.init(new File(System.getProperty("io.github.solclient.client.discord_lib",
 					"./discord." + MinecraftUtils.getNativeFileExtension())));
@@ -96,7 +97,7 @@ public class DiscordIntegrationMod extends Mod {
 
 		instance = this;
 
-		super.onRegister();
+		super.init();
 	}
 
 	@Override
@@ -110,8 +111,8 @@ public class DiscordIntegrationMod extends Mod {
 	}
 
 	@Override
-	public void postStart() {
-		super.postStart();
+	public void lateInit() {
+		super.lateInit();
 		discordVoiceChatHud.setFont(mc.textRenderer);
 	}
 

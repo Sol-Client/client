@@ -15,34 +15,36 @@ public enum ModCategory {
 	/**
 	 * User-pinned mods.
 	 */
-	PINNED(true),
+	PINNED,
 	/**
 	 * General uncategorisable mods.
 	 */
-	GENERAL(true),
+	GENERAL,
 	/**
 	 * HUD widgets.
 	 */
-	HUD(true),
+	HUD,
 	/**
 	 * Utility mods.
 	 */
-	UTILITY(true),
+	UTILITY,
 	/**
 	 * Aesthetic/graphical mods.
 	 */
-	VISUAL(true),
+	VISUAL,
 	/**
 	 * Integration mods.
 	 */
-	INTEGRATION(true);
+	INTEGRATION,
+	/**
+	 * User-installed mods.
+	 */
+	ADDONS;
 
-	@Getter
-	private final boolean showName;
 	private List<Mod> mods;
 
 	public boolean shouldShowName() {
-		return !getMods().isEmpty() && showName;
+		return !getMods().isEmpty();
 	}
 
 	@Override

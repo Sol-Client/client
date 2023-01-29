@@ -12,13 +12,13 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
 import io.github.solclient.client.extension.ShaderEffectExtension;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gl.*;
 import net.minecraft.client.resource.ResourceMetadataProvider;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
-public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
+public class MotionBlurMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	public static final Identifier ID = new Identifier("minecraft:shaders/post/motion_blur.json");
 
@@ -40,8 +40,8 @@ public class MotionBlurMod extends Mod implements PrimaryIntegerSettingMod {
 	}
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 		Client.INSTANCE.getPseudoResources().register(ID, new MotionBlurShader());
 	}
 

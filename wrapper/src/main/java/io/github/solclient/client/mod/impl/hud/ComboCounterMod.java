@@ -2,11 +2,11 @@ package io.github.solclient.client.mod.impl.hud;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
 import io.github.solclient.client.util.data.Position;
 import net.minecraft.client.resource.language.I18n;
 
-public class ComboCounterMod extends SimpleHudMod {
+public class ComboCounterMod extends SolClientSimpleHudMod {
 
 	private long hitTime = -1;
 	private int combo;

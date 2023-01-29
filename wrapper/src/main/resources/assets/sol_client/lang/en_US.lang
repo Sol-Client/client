@@ -211,7 +211,7 @@ sol_client.mod.tweaks.name=Tweaks
 sol_client.mod.tweaks.description=Various game tweaks including fullbright.
 
 sol_client.mod.tweaks.option.fullbright=Fullbright
-sol_client.mod.tweaks.option.showOwnTag=Show Own Nametag
+sol_client.mod.tweaks.option.showOwnTag=Show My Nametag
 sol_client.mod.tweaks.option.arabicNumerals=Arabic Numerals
 sol_client.mod.tweaks.option.betterTooltips=Better Tooltips
 sol_client.mod.tweaks.option.minimalViewBobbing=Minimal View Bobbing
@@ -428,6 +428,7 @@ sol_client.mod.category.hud.name=HUD
 sol_client.mod.category.utility.name=Utility
 sol_client.mod.category.visual.name=Visual
 sol_client.mod.category.integration.name=Integration
+sol_client.mod.category.addons.name=Addons
 
 sol_client.mod.discord_integration.name=Discord Integration
 sol_client.mod.discord_integration.description=Integration features for Discord including activities and overlay.

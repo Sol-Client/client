@@ -7,17 +7,17 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.Perspective;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class FreelookMod extends Mod {
+public class FreelookMod extends SolClientMod {
 
 	@Option
-	private final KeyBinding key = new KeyBinding(getTranslationKey() + ".key", Keyboard.KEY_V,
+	private final KeyBinding key = new KeyBinding(getTranslationKey("key"), Keyboard.KEY_V,
 			GlobalConstants.KEY_CATEGORY);
 	private float yaw;
 	private float pitch;

@@ -2,7 +2,7 @@ package io.github.solclient.util;
 
 import java.io.*;
 import java.net.*;
-import java.nio.file.Path;
+import java.nio.file.*;
 
 import org.apache.commons.io.*;
 
@@ -46,6 +46,21 @@ public class Utils {
 		} catch (MalformedURLException error) {
 			throw new AssertionError(error);
 		}
+	}
+
+	public void ensureDirectory(Path path) throws IOException {
+		if (Files.isDirectory(path))
+			return;
+
+		// if the file is just an empty one created by mistake - or a broken link -
+		// delete it
+		if (Files.isRegularFile(path) && Files.size(path) == 0)
+			Files.delete(path);
+
+		if (!Files.isDirectory(path.getParent()))
+			ensureDirectory(path.getParent());
+
+		Files.createDirectory(path);
 	}
 
 }

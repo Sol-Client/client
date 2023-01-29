@@ -5,14 +5,14 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.EntityAttackEvent;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.particle.ParticleType;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class ParticlesMod extends Mod implements PrimaryIntegerSettingMod {
+public class ParticlesMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	@Expose
 	@Option

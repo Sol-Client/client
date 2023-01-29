@@ -13,12 +13,13 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
 import io.github.solclient.client.extension.EntityExtension;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.annotation.*;
+import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.*;
 
-public class ItemPhysicsMod extends Mod implements PrimaryIntegerSettingMod {
+public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettingMod {
 
 	@Option
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")

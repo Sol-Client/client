@@ -33,7 +33,7 @@ public final class DefaultEvents {
 
 	@EventHandler
 	public void onPostStart(PostGameStartEvent event) {
-		Client.INSTANCE.getMods().forEach(Mod::postStart);
+		Client.INSTANCE.getMods().forEach(Mod::lateInit);
 
 		try {
 			MinecraftUtils.unregisterKeyBinding((KeyBinding) GameOptions.class.getField("ofKeyBindZoom").get(mc.options));

@@ -1,4 +1,4 @@
-package io.github.solclient.util;
+package io.github.solclient.client.util;
 
 import java.util.Base64;
 

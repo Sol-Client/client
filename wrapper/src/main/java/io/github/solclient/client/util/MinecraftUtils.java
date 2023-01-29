@@ -686,21 +686,6 @@ public class MinecraftUtils {
 		return new String(result, StandardCharsets.US_ASCII);
 	}
 
-	public void ensureDirectory(Path path) throws IOException {
-		if (Files.isDirectory(path))
-			return;
-
-		// if the file is just an empty one created by mistake - or a broken link -
-		// delete it
-		if (Files.isRegularFile(path) && Files.size(path) == 0)
-			Files.delete(path);
-
-		if (!Files.isDirectory(path.getParent()))
-			ensureDirectory(path.getParent());
-
-		Files.createDirectory(path);
-	}
-
 	public void registerKeyBinding(KeyBinding keyBinding) {
 		GameOptions options = MinecraftClient.getInstance().options;
 		options.allKeys = ArrayUtils.add(options.allKeys, keyBinding);

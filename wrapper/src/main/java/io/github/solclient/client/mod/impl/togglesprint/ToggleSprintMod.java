@@ -3,12 +3,12 @@ package io.github.solclient.client.mod.impl.togglesprint;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.annotation.Option;
-import io.github.solclient.client.mod.hud.SimpleHudMod;
+import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
 import io.github.solclient.client.mod.keybinding.ToggleState;
+import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;
 
-public class ToggleSprintMod extends SimpleHudMod {
+public class ToggleSprintMod extends SolClientSimpleHudMod {
 
 	private ToggleState sprint;
 	@Expose
@@ -18,8 +18,8 @@ public class ToggleSprintMod extends SimpleHudMod {
 	private ToggleSprintKeyBinding keybinding;
 
 	@Override
-	public void onRegister() {
-		super.onRegister();
+	public void init() {
+		super.init();
 
 		MinecraftUtils.unregisterKeyBinding(mc.options.sprintKey);
 		keybinding = new ToggleSprintKeyBinding(this, mc.options.sprintKey.getTranslationKey(), 29,

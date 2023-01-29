@@ -109,7 +109,7 @@ public final class ModManager implements Iterable<Mod> {
 		LOGGER.info("Loaded {} mods", mods.size());
 	}
 
-	private void loadStandard(Path storageFile, Mod... mods) {
+	private void loadStandard(Path storageFile, SolClientMod... mods) {
 		JsonObject storage = null;
 
 		if (Files.isRegularFile(storageFile)) {
@@ -145,13 +145,9 @@ public final class ModManager implements Iterable<Mod> {
 	public void saveStandard(Path storageFile) throws IOException {
 		JsonObject result = new JsonObject();
 
-		for (Mod mod : mods) {
-			// hacky, but let's just assume everything in this package is ours!
-			if (!mod.getClass().getName().startsWith("io.github.solclient.client."))
-				continue;
-
-			result.add(mod.getId(), save(mod));
-		}
+		for (Mod mod : mods)
+			if (mod instanceof SolClientMod)
+				result.add(mod.getId(), save(mod));
 
 		try (Writer out = new OutputStreamWriter(Files.newOutputStream(storageFile))) {
 			out.write(result.toString());
@@ -171,15 +167,19 @@ public final class ModManager implements Iterable<Mod> {
 			if (Boolean.getBoolean("io.github.solclient.client.mod." + mod.getId() + ".disable"))
 				return;
 
-			mod.setIndex(mods.size());
+			if (mod instanceof SolClientMod)
+				((SolClientMod) mod).setIndex(mods.size());
+
 			configure(mod, config);
-			mod.onRegister();
+			mod.init();
 			mods.add(mod);
 			byId.put(mod.getId(), mod);
 			huds.addAll(mod.getHudElements());
 		} catch (Throwable error) {
-			LOGGER.error("Could not register mod " + mod.getId(), error);
-			mod.setIndex(-1);
+			LOGGER.error("Could not register mod {}", mod.getId(), error);
+
+			if (mod instanceof SolClientMod)
+				((SolClientMod) mod).setIndex(-1);
 		}
 	}
 
@@ -187,16 +187,16 @@ public final class ModManager implements Iterable<Mod> {
 	 * Loads a JSON configuration into a mod.
 	 *
 	 * @param mod    the mod.
-	 * @param object the configuration object.
+	 * @param config the configuration object.
 	 */
-	public void configure(Mod mod, JsonObject object) {
-		if (object == null)
+	public void configure(Mod mod, JsonObject config) {
+		if (config == null)
 			return;
 
 		try {
-			getGson(mod).fromJson(object, mod.getClass());
+			getGson(mod).fromJson(config, mod.getClass());
 		} catch (Throwable error) {
-			LOGGER.error("Could not configure mod " + mod.getId() + " on " + object, error);
+			LOGGER.error("Could not configure mod {} on {}", mod.getId(), config, error);
 		}
 	}
 

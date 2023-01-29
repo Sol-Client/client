@@ -58,6 +58,9 @@ public class TweaksMod extends SolClientMod {
 	@Expose
 	@Option
 	public boolean centredInventory = true;
+	@Expose
+	@Option
+	public boolean reconnectButton = true;
 	private Rectangle previousBounds;
 	private long fullscreenTime = -1;
 

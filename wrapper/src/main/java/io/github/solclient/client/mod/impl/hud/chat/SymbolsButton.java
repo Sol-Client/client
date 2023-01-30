@@ -3,7 +3,7 @@ package io.github.solclient.client.mod.impl.hud.chat;
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.chatextensions.ChatButton;
-import io.github.solclient.client.extension.ChatScreenExtension;
+import io.github.solclient.client.mixin.client.ChatScreenAccessor;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.MinecraftClient;
@@ -84,7 +84,7 @@ public class SymbolsButton implements ChatButton {
 
 				if (selected && wasMouseClicked) {
 					MinecraftUtils.playClickSound(false);
-					((ChatScreenExtension) MinecraftUtils.getChatScreen()).type(character, Keyboard.KEY_0);
+					((ChatScreenAccessor) MinecraftUtils.getChatScreen()).type(character, Keyboard.KEY_0);
 				}
 				x += 13;
 			}

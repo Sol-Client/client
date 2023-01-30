@@ -35,7 +35,8 @@ import org.apache.logging.log4j.*;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 import com.logisticscraft.occlusionculling.util.Vec3d;
 
-import io.github.solclient.client.extension.MinecraftClientExtension;
+import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
+import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -64,13 +65,13 @@ public class CullTask implements Runnable {
 
 	@Override
 	public void run() {
-		while (((MinecraftClientExtension) mc).isRunning()) {
+		while (((MinecraftClientAccessor) mc).isRunning()) {
 			try {
 				Thread.sleep(10);
 
 				if (mc.player != null && mc.getCameraEntity() != null) {
 					net.minecraft.util.math.Vec3d cameraMC = Camera.getEntityPos(mc.getCameraEntity(),
-							((MinecraftClientExtension) mc).getTicker().tickDelta);
+							MinecraftUtils.getTickDelta());
 
 					if (requestCull
 							|| !(cameraMC.x == lastPos.x && cameraMC.y == lastPos.y && cameraMC.z == lastPos.z)) {

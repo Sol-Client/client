@@ -84,7 +84,7 @@ class Util {
 		model.getTransformation().apply(transformType);
 		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 
-		((MixinItemRenderer) MinecraftClient.getInstance().getItemRenderer()).renderBakedModel(model, -1);
+		((ItemRendererAccessor) MinecraftClient.getInstance().getItemRenderer()).renderBakedModel(model, -1);
 
 		// ItemRenderer#render end
 
@@ -120,8 +120,8 @@ class Util {
 //				System.out.println(Arrays.toString(value.blockFaceUV.uvs));
 //			});
 //		});
-		((MixinBlockModel) blockModel).getTextures().put("1", "missingno");
-		return ((MixinModelLoader) MinecraftUtils.modelLoader).bakeBlockModel(blockModel, ModelRotation.X0_Y0, false);
+		((BlockModelMixin) blockModel).getTextures().put("1", "missingno");
+		return ((ModelLoaderAccessor) MinecraftUtils.modelLoader).bakeBlockModel(blockModel, ModelRotation.X0_Y0, false);
 	}
 
 }

@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.*;
 
-import io.github.solclient.client.mixin.client.MixinTextureUtil;
+import io.github.solclient.client.mixin.client.TextureUtilAccessor;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.*;
@@ -118,9 +118,9 @@ final class Texture extends AbstractTexture implements TickableTexture {
 					int sampleHeight = Math.min(z, frameHeight - y);
 					int length = frameWidth * sampleHeight;
 					image.getRGB(0, i * frameHeight + y, frameWidth, sampleHeight, sample, 0, frameWidth);
-					MixinTextureUtil.copyToBuffer(sample, length);
+					TextureUtilAccessor.copyToBuffer(sample, length);
 					GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, y, frameWidth, sampleHeight, GL12.GL_BGRA,
-							GL12.GL_UNSIGNED_INT_8_8_8_8_REV, MixinTextureUtil.getBuffer());
+							GL12.GL_UNSIGNED_INT_8_8_8_8_REV, TextureUtilAccessor.getBuffer());
 				}
 			}
 		}

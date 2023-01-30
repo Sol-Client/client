@@ -5,9 +5,8 @@ import org.lwjgl.input.*;
 import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.opengl.GL11;
 
-import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
-import io.github.solclient.client.util.NanoVGManager;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
@@ -161,7 +160,7 @@ public class ComponentScreen extends Screen {
 	}
 
 	private ComponentRenderInfo getInfo() {
-		return new ComponentRenderInfo(mouseX, mouseY, MinecraftClientExtension.getInstance().getTicker().tickDelta);
+		return new ComponentRenderInfo(mouseX, mouseY, MinecraftUtils.getTickDelta());
 	}
 
 }

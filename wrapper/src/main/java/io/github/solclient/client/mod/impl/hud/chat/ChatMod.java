@@ -8,7 +8,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.extension.ChatHudExtension;
+import io.github.solclient.client.mixin.client.ChatHudAccessor;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.Colour;
@@ -200,7 +200,7 @@ public class ChatMod extends SolClientHudMod {
 
 			animatedOffset *= ANIMATION_MULTIPLIER;
 
-			for (ChatAnimationData line : (Iterable<ChatAnimationData>) (Object) (((ChatHudExtension) mc.inGameHud
+			for (ChatAnimationData line : (Iterable<ChatAnimationData>) (Object) (((ChatHudAccessor) mc.inGameHud
 					.getChatHud()).getVisibleMessages())) {
 				line.setLastTransparency(line.getTransparency());
 				line.setTransparency(line.getTransparency() * ANIMATION_MULTIPLIER);
@@ -236,7 +236,7 @@ public class ChatMod extends SolClientHudMod {
 	@EventHandler
 	public void onChatRender(ChatRenderEvent event) {
 		event.cancelled = true;
-		ChatHudExtension accessor = ((ChatHudExtension) event.chat);
+		ChatHudAccessor accessor = ((ChatHudAccessor) event.chat);
 
 		if (visibility != ChatVisibility.HIDDEN) {
 			int linesCount = event.chat.getVisibleLineCount();

@@ -127,7 +127,7 @@ public class KeystrokesMod extends SolClientHudMod {
 	public void render(Position position, boolean editMode) {
 		int x = position.getX();
 		int y = position.getY();
-		float partialTicks = MinecraftClientExtension.getInstance().getTicker().tickDelta;
+		float tickDelta = MinecraftUtils.getTickDelta();
 
 		if (movement) {
 			w.render(x, y);
@@ -149,12 +149,12 @@ public class KeystrokesMod extends SolClientHudMod {
 			GlStateManager.enableBlend();
 			GlStateManager.color(1, 1, 1);
 
-			mc.getTextureManager().bindTexture(new Identifier(
-					"textures/gui/sol_client_keystrokes_mouse_ring_centre_" + MinecraftUtils.getTextureScale() + ".png"));
+			mc.getTextureManager().bindTexture(new Identifier("textures/gui/sol_client_keystrokes_mouse_ring_centre_"
+					+ MinecraftUtils.getTextureScale() + ".png"));
 			DrawableHelper.drawTexture(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
 
-			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * partialTicks)) - 5;
-			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * partialTicks)) - 5;
+			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * tickDelta)) - 5;
+			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * tickDelta)) - 5;
 			GL11.glTranslatef(calculatedMouseX, calculatedMouseY, 0);
 
 			mc.getTextureManager().bindTexture(new Identifier(

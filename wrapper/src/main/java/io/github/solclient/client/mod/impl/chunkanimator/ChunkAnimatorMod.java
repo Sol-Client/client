@@ -104,7 +104,7 @@ public class ChunkAnimatorMod extends SolClientMod implements PrimaryIntegerSett
 
 	public void notifyPlace(BlockPos pos) {
 		// not rendered
-		MixinBuiltChunkStorage storage = (MixinBuiltChunkStorage) (((MixinWorldRenderer) mc.worldRenderer).getChunks());
+		BuiltChunkStorageMixin storage = (BuiltChunkStorageMixin) (((WorldRendererAccessor) mc.worldRenderer).getChunks());
 		BuiltChunkData data = (BuiltChunkData) storage.getChunk(pos);
 		if (data != null && data.getAnimationStart() == -1 && !data.isAnimationComplete())
 			data.skipAnimation();

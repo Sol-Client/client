@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.*;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.mod.impl.TweaksMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -16,6 +17,7 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.*;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.entity.*;
@@ -281,7 +283,11 @@ public class MixinTweaksMod {
 			if (button.id != 100)
 				return;
 
-			client.setScreen(new ConnectScreen(parent, client, client.getCurrentServerEntry()));
+			ServerInfo server = ((MinecraftClientExtension) client).getPreviousServer();
+			if (server == null)
+				return;
+
+			client.setScreen(new ConnectScreen(parent, client, server));
 		}
 
 		@Shadow

@@ -22,7 +22,7 @@ import io.github.solclient.client.ui.component.ComponentScreen;
 import io.github.solclient.client.ui.screen.*;
 import io.github.solclient.client.util.*;
 import io.github.solclient.util.GlobalConstants;
-import lombok.SneakyThrows;
+import lombok.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.*;
 import net.minecraft.client.gui.screen.*;
@@ -189,12 +189,16 @@ public abstract class MixinMinecraftClient implements MinecraftClientExtension, 
 		Display.setTitle(GlobalConstants.NAME + " on " + oldTitle);
 	}
 
+	@Getter
+	private ServerInfo previousServer;
 	private boolean hadWorld;
 
 	@Inject(method = "setCurrentServerEntry", at = @At("TAIL"))
 	public void onDisconnect(ServerInfo info, CallbackInfo callback) {
 		if (info == null)
 			onServerChange(null);
+		else
+			previousServer = info;
 	}
 
 	@Inject(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V", at = @At("RETURN"))

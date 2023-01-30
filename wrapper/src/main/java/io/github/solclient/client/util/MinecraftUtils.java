@@ -23,6 +23,7 @@ import com.replaymod.replay.camera.CameraEntity;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.extension.KeyBindingExtension;
+import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.util.data.*;
 import lombok.experimental.UtilityClass;
@@ -699,6 +700,10 @@ public class MinecraftUtils {
 		GameOptions options = MinecraftClient.getInstance().options;
 		options.allKeys = ArrayUtils.removeElement(options.allKeys, keyBinding);
 		keyBinding.setCode(0);
+	}
+
+	public static float getTickDelta() {
+		return ((MinecraftClientAccessor) MinecraftClient.getInstance()).getTicker().tickDelta;
 	}
 
 }

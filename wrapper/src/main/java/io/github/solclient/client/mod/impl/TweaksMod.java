@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.MinecraftClientExtension;
+import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.Rectangle;
@@ -58,6 +59,9 @@ public class TweaksMod extends SolClientMod {
 	@Expose
 	@Option
 	public boolean centredInventory = true;
+	@Expose
+	@Option
+	public boolean reconnectButton = true;
 	private Rectangle previousBounds;
 	private long fullscreenTime = -1;
 
@@ -156,13 +160,12 @@ public class TweaksMod extends SolClientMod {
 				Display.setDisplayMode(new DisplayMode(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight()));
 				Display.setLocation(0, 0);
-				MinecraftClientExtension.getInstance().resizeWindow(Display.getDesktopDisplayMode().getWidth(),
+				((MinecraftClientAccessor) mc).resizeWindow(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight());
 			} else {
 				Display.setDisplayMode(new DisplayMode(previousBounds.getWidth(), previousBounds.getHeight()));
 				Display.setLocation(previousBounds.getX(), previousBounds.getY());
-				MinecraftClientExtension.getInstance().resizeWindow(previousBounds.getWidth(),
-						previousBounds.getHeight());
+				((MinecraftClientAccessor) mc).resizeWindow(previousBounds.getWidth(), previousBounds.getHeight());
 
 				if (mc.focused) {
 					mc.mouse.grabMouse();

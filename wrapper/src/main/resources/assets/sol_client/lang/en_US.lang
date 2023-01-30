@@ -223,8 +223,10 @@ sol_client.mod.tweaks.option.borderlessFullscreen=Borderless Fullscreen
 sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
 sol_client.mod.tweaks.option.disableHotbarScrolling=Disable Hotbar Scrolling
 sol_client.mod.tweaks.option.centredInventory=Centered Inventory
+sol_client.mod.tweaks.option.reconnectButton=Multiplayer Reconnect Button
 
 sol_client.mod.tweaks.confirm_disconnect=Press Again to Confirm
+sol_client.mod.tweaks.reconnect=Reconnect
 
 sol_client.mod.freelook.name=Freelook
 sol_client.mod.freelook.description=Unlock camera rotation from the player's head.

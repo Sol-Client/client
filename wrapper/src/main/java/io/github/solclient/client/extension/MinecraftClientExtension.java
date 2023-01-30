@@ -1,9 +1,7 @@
 package io.github.solclient.client.extension;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.ClientTickTracker;
-import net.minecraft.resource.DefaultResourcePack;
-import net.minecraft.util.MetadataSerializer;
+import net.minecraft.client.network.ServerInfo;
 
 public interface MinecraftClientExtension {
 
@@ -11,14 +9,6 @@ public interface MinecraftClientExtension {
 		return (MinecraftClientExtension) MinecraftClient.getInstance();
 	}
 
-	boolean isRunning();
-
-	ClientTickTracker getTicker();
-
-	DefaultResourcePack getDefaultResourcePack();
-
-	MetadataSerializer getMetadataSerialiser();
-
-	void resizeWindow(int width, int height);
+	ServerInfo getPreviousServer();
 
 }

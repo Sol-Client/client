@@ -11,7 +11,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
-import io.github.solclient.client.extension.EntityExtension;
+import io.github.solclient.client.mixin.EntityAccessor;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.option.annotation.*;
@@ -61,7 +61,7 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 			if (!MinecraftClient.getInstance().isPaused()) {
 				if (!event.entity.onGround) {
 					int divisor = 2500000;
-					if (((EntityExtension) event.entity).getIsInWeb()) {
+					if (((EntityAccessor) event.entity).isInLava()) {
 						divisor *= 10;
 					}
 					data.setRotation(

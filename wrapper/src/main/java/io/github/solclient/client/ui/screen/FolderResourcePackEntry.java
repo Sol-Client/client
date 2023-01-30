@@ -4,7 +4,8 @@ import java.io.*;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.extension.MinecraftClientExtension;
+import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ResourcePackScreen;
 import net.minecraft.client.gui.screen.resourcepack.ResourcePackWidget;
@@ -41,8 +42,8 @@ public class FolderResourcePackEntry extends ResourcePackWidget {
 		if (sublist == null) {
 			ResourcePackLoader repo = new ResourcePackLoader(folder,
 					new File(client.runDirectory, "server-resource-packs"),
-					MinecraftClientExtension.getInstance().getDefaultResourcePack(),
-					MinecraftClientExtension.getInstance().getMetadataSerialiser(), client.options);
+					((MinecraftClientAccessor) MinecraftClient.getInstance()).getDefaultResourcePack(),
+					((MinecraftClientAccessor) MinecraftClient.getInstance()).getMetadataSerialiser(), client.options);
 
 			repo.initResourcePacks();
 

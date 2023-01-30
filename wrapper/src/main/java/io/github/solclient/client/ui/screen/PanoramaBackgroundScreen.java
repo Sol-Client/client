@@ -2,12 +2,12 @@ package io.github.solclient.client.ui.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.extension.TitleScreenExtension;
+import io.github.solclient.client.mixin.client.TitleScreenAccessor;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.util.ActiveMainMenu;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.render.*;
 
 public abstract class PanoramaBackgroundScreen extends ComponentScreen {
@@ -34,19 +34,19 @@ public abstract class PanoramaBackgroundScreen extends ComponentScreen {
 	}
 
 	protected void drawPanorama(int mouseX, int mouseY, float partialTicks) {
-		TitleScreenExtension access = (TitleScreenExtension) mainMenu;
+		TitleScreenAccessor accessor = (TitleScreenAccessor) mainMenu;
 
 		client.getFramebuffer().unbind();
 
 		GlStateManager.viewport(0, 0, 256, 256);
-		access.drawPanorama(mouseX, mouseY, partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
+		accessor.drawPanorama(mouseX, mouseY, partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
 		client.getFramebuffer().bind(true);
 
 		GlStateManager.viewport(0, 0, client.width, client.height);

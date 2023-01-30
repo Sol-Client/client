@@ -10,7 +10,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
-import io.github.solclient.client.extension.ShaderEffectExtension;
+import io.github.solclient.client.mixin.client.ShaderEffectAccessor;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gl.*;
@@ -56,7 +56,7 @@ public class MotionBlurMod extends SolClientMod implements PrimaryIntegerSetting
 			}
 		}
 		if (groupBlur != blur) {
-			((ShaderEffectExtension) effect).getPasses().forEach((pass) -> {
+			((ShaderEffectAccessor) effect).getPasses().forEach((pass) -> {
 				GlUniform blendFactor = pass.getProgram().getUniformByName("BlendFactor");
 				if (blendFactor != null) {
 					blendFactor.set(blur);

@@ -6,7 +6,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.extension.LivingEntityExtension;
+import io.github.solclient.client.mixin.client.LivingEntityAccessor;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.Option;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -85,7 +85,7 @@ public class V1_7VisualsMod extends SolClientMod {
 				&& mc.result.type == BlockHitResult.Type.BLOCK && mc.player != null && mc.options.attackKey.isPressed()
 				&& mc.options.useKey.isPressed() && mc.player.getItemUseTicks() > 0) {
 			if ((!mc.player.handSwinging
-					|| mc.player.handSwingTicks >= ((LivingEntityExtension) mc.player).privateGetArmSwingAnimationEnd()
+					|| mc.player.handSwingTicks >= ((LivingEntityAccessor) mc.player).getArmSwingAnimationEnd()
 							/ 2
 					|| mc.player.handSwingTicks < 0)) {
 				mc.player.handSwingTicks = -1;

@@ -14,6 +14,7 @@ repositories {
 	maven { url 'https://repo.legacyfabric.net/repository/legacyfabric' }
 	maven { url 'https://repo.hypixel.net/repository/Hypixel' }
 	maven { url 'https://jitpack.io' }
+	maven { url 'https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1' }
 }
 
 configurations {
@@ -41,6 +42,7 @@ dependencies {
 	implementation libs.log4j.api
 	implementation libs.log4j.core
 	implementation libs.tiny.remapper
+	implementation libs.devauth
 
 	implementation libs.asm
 	implementation libs.asm.analysis

@@ -19,27 +19,28 @@ import net.minecraft.util.Formatting;
 
 public class BetterResourcePackList extends AvailableResourcePackListWidget {
 
-	private ResourcePackScreen parent;
+	private final ResourcePackScreen parent;
 	public BetterResourcePackList delegate;
 	protected List<ResourcePackWidget> entries;
+	private List<ResourcePackWidget> filteredEntries;
 	private Supplier<String> supplier;
 	private File folder;
+	private int prevHash;
 
 	public int getHeight() {
 		return height;
 	}
 
 	public File getFolder() {
-		if (delegate != null) {
+		if (delegate != null)
 			return delegate.getFolder();
-		}
 
 		return folder;
 	}
 
-	public BetterResourcePackList(MinecraftClient mcIn, ResourcePackScreen parent, int p_i45054_2_, int p_i45054_3_,
+	public BetterResourcePackList(MinecraftClient client, ResourcePackScreen parent, int x, int y,
 			ResourcePackLoader loader, Supplier<String> supplier) throws IOException {
-		super(mcIn, p_i45054_2_, p_i45054_3_, null);
+		super(client, x, y, null);
 		this.supplier = supplier;
 		this.folder = loader.getResourcePackDir();
 
@@ -113,16 +114,23 @@ public class BetterResourcePackList extends AvailableResourcePackListWidget {
 		if (delegate != null)
 			return delegate.getWidgets();
 
+		String search = supplier.get();
+		int hash = Objects.hash(search, parent.getSelectedPacks());
+		if (hash == prevHash)
+			return filteredEntries;
+
+		prevHash = hash;
+
 		List<ResourcePackWidget> entries;
 
-		if (supplier.get().isEmpty())
+		if (search.isEmpty())
 			entries = this.entries;
 		else {
 			entries = new ArrayList<>();
 			populate(entries);
 		}
 
-		return entries.stream().filter((entry) -> {
+		filteredEntries = entries.stream().filter((entry) -> {
 			String name = "";
 			String description = "";
 
@@ -143,9 +151,11 @@ public class BetterResourcePackList extends AvailableResourcePackListWidget {
 				description = folder.getDescription();
 			}
 
-			return Formatting.strip(name + " " + description.replace("\n", " ")).toLowerCase()
+			return Formatting.strip(name + ' ' + description.replace("\n", " ")).toLowerCase()
 					.contains(supplier.get().toLowerCase());
 		}).collect(Collectors.toList());
+
+		return filteredEntries;
 	}
 
 	private void populate(List<ResourcePackWidget> entries) {

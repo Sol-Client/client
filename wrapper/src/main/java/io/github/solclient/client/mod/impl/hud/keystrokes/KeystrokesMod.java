@@ -111,8 +111,8 @@ public class KeystrokesMod extends SolClientHudMod {
 	public void setAngles(PlayerHeadRotateEvent event) {
 		mouseX += event.yaw / 40F;
 		mouseY -= event.pitch / 40F;
-		mouseX = MathHelper.clamp(mouseX, -(space.width / 2) + 4, space.width / 2 - 4);
-		mouseY = MathHelper.clamp(mouseY, -34 / 2 + 4, 34 / 2 - 4);
+		mouseX = MathHelper.clamp(mouseX, -(space.width / 2) + 5, space.width / 2 - 4);
+		mouseY = MathHelper.clamp(mouseY, -34 / 2 + 5, 34 / 2 - 5);
 	}
 
 	@EventHandler
@@ -147,7 +147,7 @@ public class KeystrokesMod extends SolClientHudMod {
 
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
-			GlStateManager.color(1, 1, 1);
+			textColour.bind();
 
 			mc.getTextureManager().bindTexture(new Identifier("textures/gui/sol_client_keystrokes_mouse_ring_centre_"
 					+ MinecraftUtils.getTextureScale() + ".png"));
@@ -161,6 +161,7 @@ public class KeystrokesMod extends SolClientHudMod {
 					"textures/gui/sol_client_keystrokes_mouse_ring_" + MinecraftUtils.getTextureScale() + ".png"));
 			DrawableHelper.drawTexture(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
 
+			GlStateManager.color(1, 1, 1);
 			GlStateManager.popMatrix();
 			y += 35;
 		}

@@ -113,6 +113,10 @@ sol_client.mod.combo_counter.no_hits=No combo
 sol_client.mod.combo_counter.one_hit=1 hit
 sol_client.mod.combo_counter.n_hits=%s hits
 
+sol_client.mod.clock.name=Clock
+sol_client.mod.clock.description=Display the current time.
+sol_client.mod.clock.option.twentyFourHour=24-hour Format
+
 sol_client.mod.potion_effects.name=Potion Effects
 sol_client.mod.potion_effects.description=Display your active potions with countdowns.
 

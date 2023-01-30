@@ -65,6 +65,7 @@ public final class ModManager implements Iterable<Mod> {
 				new SpeedometerMod(),
 				new ReachDisplayMod(),
 				new ComboCounterMod(),
+				new ClockMod(),
 				new PotionEffectsMod(),
 				new ArmourMod(),
 				new TimersMod(),

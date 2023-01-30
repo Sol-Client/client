@@ -17,7 +17,7 @@ public abstract class LivingEntityMixin {
 
 	@Inject(method = "sendPickup", at = @At("HEAD"))
 	public void sendPickup(Entity entity, int stackSize, CallbackInfo callback) {
-		if (entity instanceof ItemEntity && this instanceof PlayerEntity)
+		if (entity instanceof ItemEntity && (Object) this instanceof PlayerEntity)
 			Client.INSTANCE.getEvents().post(new ItemPickupEvent((PlayerEntity) (Object) this, (ItemEntity) entity));
 	}
 

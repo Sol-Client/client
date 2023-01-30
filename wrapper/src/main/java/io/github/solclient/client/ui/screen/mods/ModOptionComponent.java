@@ -63,20 +63,20 @@ public class ModOptionComponent extends Component {
 		} else if (option.getType() == KeyBinding.class) {
 			KeyBinding binding = (KeyBinding) option.getValue();
 
-			LabelComponent label = new LabelComponent(
+			ButtonComponent editButton = new ButtonComponent(
 					(component, defaultText) -> KeyBindingExtension.from(binding).getPrefix()
 							+ GameOptions.getFormattedNameForKeyCode(binding.getCode()),
-					new AnimatedColourController((component, defaultColour) -> {
+					theme.button(), (component, defaultColour) -> {
 						if (listening)
 							return new Colour(255, 255, 85);
 						else if (MinecraftUtils.isConflicting(binding))
 							return new Colour(255, 85, 85);
 
-						return component.isHovered() ? theme.fgButtonHover : theme.fgButton;
-					}));
-			add(label, defaultBoundController);
+						return theme.fg;
+					}).width(45).height(16);
+			add(editButton, defaultBoundController);
 
-			label.onClick((info, button) -> {
+			editButton.onClick((info, button) -> {
 				if (button == 0) {
 					MinecraftUtils.playClickSound(true);
 
@@ -244,7 +244,8 @@ public class ModOptionComponent extends Component {
 			FileOption fileOption = (FileOption) option;
 
 			ButtonComponent editFile = new ButtonComponent(
-					(component, defaultText) -> I18n.translate(fileOption.getEditText()), theme.button(), theme.fg()).width(50).height(15);
+					(component, defaultText) -> I18n.translate(fileOption.getEditText()), theme.button(), theme.fg())
+					.width(50).height(16);
 			add(editFile, defaultBoundController);
 
 			editFile.onClick((info, button) -> {

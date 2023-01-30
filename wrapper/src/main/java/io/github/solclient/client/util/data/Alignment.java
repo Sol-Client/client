@@ -1,5 +1,7 @@
 package io.github.solclient.client.util.data;
 
+import net.minecraft.util.math.MathHelper;
+
 /**
  * Alignment not aware of its axis.
  */

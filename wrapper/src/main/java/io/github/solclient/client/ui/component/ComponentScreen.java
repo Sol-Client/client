@@ -50,8 +50,11 @@ public class ComponentScreen extends Screen {
 		try {
 			Window window = new Window(client);
 
-			this.mouseX = Mouse.getX() / (float) window.getScaleFactor();
-			this.mouseY = window.getHeight() - Mouse.getY() / (float) window.getScaleFactor();
+			if (client.currentScreen == this) {
+				this.mouseX = Mouse.getX() / (float) window.getScaleFactor();
+				this.mouseY = window.getHeight() - Mouse.getY() / (float) window.getScaleFactor();
+			} else
+				this.mouseX = this.mouseY = 0;
 
 			if (background) {
 				if (client.world == null) {

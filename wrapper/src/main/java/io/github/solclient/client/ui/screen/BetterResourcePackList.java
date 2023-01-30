@@ -25,7 +25,7 @@ public class BetterResourcePackList extends AvailableResourcePackListWidget {
 	private List<ResourcePackWidget> filteredEntries;
 	private Supplier<String> supplier;
 	private File folder;
-	private String prevSearch;
+	private int prevHash;
 
 	public int getHeight() {
 		return height;
@@ -115,10 +115,11 @@ public class BetterResourcePackList extends AvailableResourcePackListWidget {
 			return delegate.getWidgets();
 
 		String search = supplier.get();
-		if (search.equals(prevSearch))
+		int hash = Objects.hash(search, parent.getSelectedPacks());
+		if (hash == prevHash)
 			return filteredEntries;
 
-		prevSearch = search;
+		prevHash = hash;
 
 		List<ResourcePackWidget> entries;
 

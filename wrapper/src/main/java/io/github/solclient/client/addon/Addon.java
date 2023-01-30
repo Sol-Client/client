@@ -19,18 +19,21 @@ public class Addon extends Mod {
 
 	@Override
 	public String getName() {
-		if (info.getName() == null)
-			return super.getName();
-
-		return info.getName();
+		return info.getName().orElseGet(super::getName);
 	}
 
 	@Override
 	public String getDescription() {
-		if (info.getDescription() == null)
-			return super.getDescription();
+		return info.getDescription().orElseGet(super::getDescription);
+	}
 
-		return info.getDescription();
+	public String getVersion() {
+		return info.getVersion();
+	}
+
+	@Override
+	public String getDetail() {
+		return ' ' + getVersion();
 	}
 
 	@Override

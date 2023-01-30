@@ -110,7 +110,7 @@ public class SCReplayMod extends SolClientMod {
 	}
 
 	@Override
-	public String getCredit() {
+	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.modified_from", "CrushedPixel, johni0702");
 	}
 

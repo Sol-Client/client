@@ -86,11 +86,14 @@ public class ChatMod extends SolClientHudMod {
 	@Expose
 	@Option
 	private boolean chatFilter = true;
+	// @formatter:off
 	@Option
-	@TextFile(value = "chat-filter.txt", header = "# List words on each line for them to be blocked.\n"
-			+ "# The chat mod and chat filter must be enabled for this to work.\n"
-			+ "# This may not work well for all languages.\n" + "# Any lines starting with \"#\" will be ignored.")
+	@TextFile(value = "chat-filter.txt", header =
+			"# List words on each line for them to be blocked.\n" +
+			"# The chat mod and chat filter must be enabled for this to work.\n" +
+			"# Any lines starting with \"#\" will be ignored.")
 	private String filteredWordsContent;
+	// @formatter:on
 	private List<String> filteredWords = new ArrayList<>();
 
 	private int previousChatSize;
@@ -211,7 +214,6 @@ public class ChatMod extends SolClientHudMod {
 			return;
 		}
 
-		// Primarily focused on English text, as all non-ascii characters are stripped.
 		String message = strip(event.message);
 
 		for (String word : filteredWords) {
@@ -226,7 +228,9 @@ public class ChatMod extends SolClientHudMod {
 	}
 
 	private static String strip(String message) {
-		return Formatting.strip(message).toLowerCase().replaceAll("[^a-z ]", "");
+		return message.toLowerCase().codePoints().filter(Character::isLetter)
+				.mapToObj((codePoint) -> (Character) (char) codePoint)
+				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}
 
 	@EventHandler

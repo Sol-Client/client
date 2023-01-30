@@ -74,7 +74,7 @@ public class ModListing extends ColouredComponent {
 
 		Component credit;
 		add(credit = new LabelComponent((component, defaultText) -> {
-			String text = mod.getCredit();
+			String text = mod.getDetail();
 			if (text == null)
 				text = "";
 			

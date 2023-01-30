@@ -87,9 +87,9 @@ public abstract class Mod {
 	/**
 	 * Choose a string to display on the right side of the mod component.
 	 *
-	 * @return an additional credit string.
+	 * @return an additional string.
 	 */
-	public String getCredit() {
+	public String getDetail() {
 		return null;
 	}
 

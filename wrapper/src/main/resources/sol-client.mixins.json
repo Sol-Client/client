@@ -108,6 +108,7 @@
 		"mod.MixinTweaksMod$MixinGameMenuScreen",
 		"mod.MixinTweaksMod$MixinMinecraftClient",
 		"mod.MixinTweaksMod$MixinItemRenderer",
+		"mod.MixinTweaksMod$MixinDisconnectedScreen",
 		"mod.MixinV1_7VisualsMod$MixinItemRenderer",
 		"mod.MixinV1_7VisualsMod$MixinGameRenderer",
 		"mod.MixinV1_7VisualsMod$MixinLayerArmorBase"

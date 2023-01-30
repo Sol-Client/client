@@ -56,7 +56,7 @@ public class ZoomMod extends SolClientMod implements PrimaryIntegerSettingMod {
 	}
 
 	@Override
-	public String getCredit() {
+	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.inspired_by", "EnnuiL");
 	}
 

@@ -243,12 +243,11 @@ public class ModOptionComponent extends Component {
 		} else if (option instanceof FileOption) {
 			FileOption fileOption = (FileOption) option;
 
-			add(new LabelComponent((component, defaultText) -> I18n.translate(fileOption.getEditText()),
-					new AnimatedColourController(
-							(component, defaultColour) -> isHovered() ? theme.fgButtonHover : theme.fgButton)),
-					defaultBoundController);
+			ButtonComponent editFile = new ButtonComponent(
+					(component, defaultText) -> I18n.translate(fileOption.getEditText()), theme.button(), theme.fg()).width(50).height(15);
+			add(editFile, defaultBoundController);
 
-			onClick((info, button) -> {
+			editFile.onClick((info, button) -> {
 				if (button == 0) {
 					MinecraftUtils.playClickSound(true);
 					try {

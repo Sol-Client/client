@@ -18,13 +18,13 @@ public class ScrollableTooltipsModMixins {
 
 		@ModifyArgs(method = "renderTooltip(Lnet/minecraft/item/ItemStack;II)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;renderTooltip(Ljava/util/List;II)V"))
 		public void modifyTooltipPosition(Args args) {
-			if (!(this instanceof HandledScreen))
+			if (!((Object) this instanceof HandledScreen))
 				return;
 
 			if (!ScrollableTooltipsMod.enabled)
 				return;
 
-			if ((this instanceof CreativeInventoryScreen)) {
+			if (((Object) this instanceof CreativeInventoryScreen)) {
 				CreativeInventoryScreen creative = (CreativeInventoryScreen) (Object) this;
 
 				if (creative.getSelectedTab() != ItemGroup.INVENTORY.getIndex())

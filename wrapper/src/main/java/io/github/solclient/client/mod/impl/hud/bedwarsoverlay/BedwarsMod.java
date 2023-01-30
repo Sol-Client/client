@@ -3,12 +3,12 @@ package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
-import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.impl.SolClientMod;
 
 import java.util.regex.Pattern;
 
-public class BedwarsMod extends Mod {
+public class BedwarsMod extends SolClientMod {
 
     private final static Pattern GAME_START = Pattern.compile("^\\s*?Protect your bed and destroy the enemy beds\\.\\s*?$");
 

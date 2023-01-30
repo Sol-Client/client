@@ -25,9 +25,22 @@ public enum BedwarsTeam {
     @Getter
     private final char prefix;
 
+    public String getColorSection() {
+        return "§" + code;
+    }
+
     public static Optional<BedwarsTeam> fromPrefix(char prefix) {
         for (BedwarsTeam t : values()) {
             if (t.getPrefix() == prefix) {
+                return Optional.of(t);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<BedwarsTeam> fromName(String name) {
+        for (BedwarsTeam t : values()) {
+            if (name.equalsIgnoreCase(t.name())) {
                 return Optional.of(t);
             }
         }

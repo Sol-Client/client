@@ -4,10 +4,13 @@ import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.text.LiteralText;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,12 +18,12 @@ public class BedwarsGame {
 
     private final static Pattern DISCONNECT = Pattern.compile("(\\b[A-Za-z0-9_§]{3,16}\\b) disconnected\\.$");
     private final static Pattern RECONNECT = Pattern.compile("(\\b[A-Za-z0-9_§]{3,16}\\b) reconnected\\.$");
-    private final static Pattern FINAL_KILL = Pattern.compile("FINAL KILL!$");
-    private final static Pattern BED_DESTROY = Pattern.compile("^BED DESTRUCTION > (\\w*?) Bed");
-    private final static Pattern TEAM_ELIMINATED = Pattern.compile("^TEAM ELIMINATED > (\\w*?) Team");
+    private final static Pattern FINAL_KILL = Pattern.compile("FINAL KILL!");
+    private final static Pattern BED_DESTROY = Pattern.compile("^\\s*?BED DESTRUCTION > (\\w+) Bed");
+    private final static Pattern TEAM_ELIMINATED = Pattern.compile("^\\s*?TEAM ELIMINATED > (\\w+) Team");
     private final static Pattern[] DIED = {
-            Pattern.compile(formatPlaceholder("{killed} fell into the void.")),
-            Pattern.compile(formatPlaceholder("{killed} died."))
+            Pattern.compile(formatPlaceholder("^{killed} fell into the void.(?: FINAL KILL!)?\\s*?")),
+            Pattern.compile(formatPlaceholder("^{killed} died.(?: FINAL KILL!)?\\s*?"))
     };
 
     private final static String[] KILLS = {
@@ -179,13 +182,16 @@ public class BedwarsGame {
     private final static Pattern[] KILLS_COMPILED = new Pattern[KILLS.length];
 
     private static String formatPlaceholder(String input) {
-        return input.replace("{killed}", "(\\b[A-Za-z0-9_§]{3,16}\\b)").replace("{player}", "(\\b[A-Za-z0-9_§]{3,16}\\b)");
+        return input
+                .replace("{killed}", "(\\b[A-Za-z0-9_§]{3,16}\\b)")
+                .replace("{player}", "(\\b[A-Za-z0-9_§]{3,16}\\b)")
+                .replace("{number}", "[0-9,]+");
     }
 
     static {
         for (int i = 0; i < KILLS.length; i++) {
             String kill = KILLS[i];
-            KILLS_COMPILED[i] = Pattern.compile(formatPlaceholder(kill.replace(".", "\\.")));
+            KILLS_COMPILED[i] = Pattern.compile(formatPlaceholder("^" + kill.replace(".", "\\.") + "(?: FINAL KILL!)?\\s*?"));
         }
     }
 
@@ -199,6 +205,7 @@ public class BedwarsGame {
     }
 
     public void onStart() {
+        debug("Game started");
         this.started = true;
         players.clear();
         for (PlayerListEntry player : mc.player.networkHandler.getPlayerList()) {
@@ -210,21 +217,93 @@ public class BedwarsGame {
             if (team == null) {
                 continue;
             }
-            System.out.println(player.getProfile().getName() + " is in team " + team);
+            players.add(new BedwarsPlayer(team, player));
+        }
+    }
+
+    public Optional<BedwarsPlayer> getPlayer(String name) {
+        return players.stream().filter(player -> player.getName().equals(name)).findFirst();
+    }
+
+    private void debug(String message) {
+        mc.inGameHud.getChatHud().addMessage(new LiteralText("§b§lINFO:§8 " + message));
+    }
+
+    private void died(BedwarsPlayer player, @Nullable BedwarsPlayer killer, boolean finalDeath) {
+        if (killer == null) {
+            if (finalDeath) {
+                debug(player.coloredName() + " §7was final killed.");
+            } else {
+                debug(player.coloredName() + " §7was killed.");
+            }
+        } else {
+            if (finalDeath) {
+                debug(player.coloredName() + " §7was final killed by " + killer.coloredName());
+            } else {
+                debug(player.coloredName() + " §7was killed by " + killer.coloredName());
+            }
         }
     }
 
     public void onChatMessage(String rawMessage, ReceiveChatMessageEvent event) {
         try {
-            matched(DIED, rawMessage).ifPresent(m -> System.out.println(m.group(1) + " died by themselves"));
-            matched(KILLS_COMPILED, rawMessage).ifPresent(m -> System.out.println(m.group(1) + " was killed by " + m.group(2)));
-            matched(BED_DESTROY, rawMessage).ifPresent(m -> System.out.println(m.group(1) + " bed broke"));
+            if (matched(DIED, rawMessage, m -> {
+                BedwarsPlayer killed = getPlayer(m.group(1)).orElse(null);
+                if (killed == null) {
+                    debug("Player " + m.group(1) + " was not found");
+                    return;
+                }
+                died(killed, null, matched(FINAL_KILL, rawMessage).isPresent());
+            })) {
+                return;
+            }
+            if (matched(KILLS_COMPILED, rawMessage, m -> {
+                BedwarsPlayer killed = getPlayer(m.group(1)).orElse(null);
+                BedwarsPlayer killer = getPlayer(m.group(2)).orElse(null);
+                if (killed == null) {
+                    debug("Player " + m.group(1) + " was not found");
+                    return;
+                }
+                died(killed, killer, matched(FINAL_KILL, rawMessage).isPresent());
+            })) {
+                return;
+            }
+            if (matched(BED_DESTROY, rawMessage, m -> debug(m.group(1) + " Team's bed was broken"))) {
+                return;
+            }
+            if (matched(TEAM_ELIMINATED, rawMessage, m -> debug(m.group(1) + " Team was eliminated"))) {
+                return;
+            }
+            if (matched(DISCONNECT, rawMessage, m -> debug(m.group(1) + " has disconnected"))) {
+                return;
+            }
+            if (matched(RECONNECT, rawMessage, m -> debug(m.group(1) + " has reconnected"))) {
+                return;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            debug("Error: " + e);
         }
     }
 
     public void tick() {}
+
+    private static boolean matched(Pattern pattern, String input, Consumer<Matcher> consumer) {
+        Optional<Matcher> matcher = matched(pattern, input);
+        if (!matcher.isPresent()) {
+            return false;
+        }
+        consumer.accept(matcher.get());
+        return true;
+    }
+
+    private static boolean matched(Pattern[] pattern, String input, Consumer<Matcher> consumer) {
+        Optional<Matcher> matcher = matched(pattern, input);
+        if (!matcher.isPresent()) {
+            return false;
+        }
+        consumer.accept(matcher.get());
+        return true;
+    }
 
     private static Optional<Matcher> matched(Pattern[] pattern, String input) {
         for (Pattern p : pattern) {
@@ -238,7 +317,7 @@ public class BedwarsGame {
 
     private static Optional<Matcher> matched(Pattern pattern, String input) {
         Matcher matcher = pattern.matcher(input);
-        if (matcher.matches()) {
+        if (matcher.find()) {
             return Optional.of(matcher);
         }
         return Optional.empty();

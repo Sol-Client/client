@@ -89,12 +89,21 @@ public final class ClockMod extends SolClientSimpleHudMod {
 
 		NanoVG.nvgScale(nvg, getScale(), getScale());
 
+		NanoVG.nvgStrokeWidth(nvg, 1);
+
 		// face
 		if (background) {
 			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgFillColor(nvg, backgroundColour.nvg());
 			NanoVG.nvgCircle(nvg, cx, cy, RADIUS);
+			NanoVG.nvgFillColor(nvg, backgroundColour.nvg());
 			NanoVG.nvgFill(nvg);
+		}
+
+		if (border) {
+			NanoVG.nvgBeginPath(nvg);
+			NanoVG.nvgCircle(nvg, cx, cy, RADIUS - 0.5F);
+			NanoVG.nvgStrokeColor(nvg, borderColour.nvg());
+			NanoVG.nvgStroke(nvg);
 		}
 
 		NanoVG.nvgStrokeWidth(nvg, 0.5F);

@@ -73,7 +73,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 	private void copy() {
 		try {
 			Screen.setClipboard(LCCH.stringify(pixels));
-		} catch (IllegalArgumentException error) {
+		} catch (Throwable error) {
 			LOGGER.error("Failed to convert to LCCH", error);
 		}
 	}
@@ -81,7 +81,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 	private void paste() {
 		try {
 			LCCH.parse(Screen.getClipboard(), pixels);
-		} catch (IllegalArgumentException error) {
+		} catch (Throwable error) {
 			LOGGER.error("Failed to load from LCCH", error);
 		}
 	}

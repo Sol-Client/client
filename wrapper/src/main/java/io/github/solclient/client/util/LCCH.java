@@ -52,7 +52,7 @@ public class LCCH {
 
 				if (srcHunk >= data.length)
 					continue;
-				if (dstIndex < 0 && dstIndex >= out.pixels())
+				if (dstIndex < 0 || dstIndex >= out.pixels())
 					continue;
 
 				if ((data[srcHunk] & srcMask) != 0)

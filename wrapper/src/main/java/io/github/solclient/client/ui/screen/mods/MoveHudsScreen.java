@@ -137,16 +137,16 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				NanoVG.nvgStroke(nvg);
 			}
 
-			Rectangle selectionArea = Rectangle.encompassing(selectedHuds.stream().map(HudElement::getMultipliedBounds)
-					.filter((rectangle) -> rectangle != null));
-
 			if (dragHudStart != null && selectedHuds.size() == 1) {
 				NanoVG.nvgStrokeColor(nvg, SolClientConfig.instance.uiColour.nvg());
 
 				HudElement hud = selectedHuds.get(0);
 				Position targetPosition = hud.getPosition();
 
-				if (Math.abs(selectionArea.getY() + selectionArea.getHeight() / 2 - screen.height / 2) <= 6) {
+				int midX = screen.width / 2 - hud.getMultipliedBounds().getWidth() / 2;
+				int midY = screen.height / 2 - hud.getMultipliedBounds().getHeight() / 2;
+
+				if (Math.abs(midY - screen.height / 2) <= 6) {
 					// horizontal
 
 					NanoVG.nvgBeginPath(nvg);
@@ -154,11 +154,10 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 					NanoVG.nvgLineTo(nvg, screen.width, screen.height / 2);
 					NanoVG.nvgStroke(nvg);
 
-					targetPosition = new Position(targetPosition.getX(),
-							screen.height / 2 - hud.getMultipliedBounds().getHeight() / 2);
+					targetPosition = new Position(targetPosition.getX(), midY);
 				}
 
-				if (Math.abs(selectionArea.getX() + selectionArea.getWidth() / 2 - screen.width / 2) <= 6) {
+				if (Math.abs(midX - screen.width / 2) <= 6) {
 					// vertical
 
 					NanoVG.nvgBeginPath(nvg);
@@ -166,8 +165,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 					NanoVG.nvgLineTo(nvg, screen.width / 2, screen.height);
 					NanoVG.nvgStroke(nvg);
 
-					targetPosition = new Position(screen.width / 2 - hud.getMultipliedBounds().getWidth() / 2,
-							targetPosition.getY());
+					targetPosition = new Position(midX, targetPosition.getY());
 				}
 
 				hud.setPosition(targetPosition);

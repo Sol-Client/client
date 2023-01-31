@@ -280,6 +280,7 @@ sol_client.mod.zoom.option.cinematic=Cinematic Camera
 sol_client.mod.zoom.option.reduceSensitivity=Reduce Sensitivity
 sol_client.mod.zoom.option.scrolling=Scroll to Zoom
 sol_client.mod.zoom.option.smooth=Zoom Animation
+sol_client.mod.zoom.option.animationSpeed=Animation Speed
 sol_client.mod.zoom.option.factor=Zoom Factor
 
 sol_client.mod.replay.name=Replay

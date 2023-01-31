@@ -18,7 +18,7 @@ public final class ClockMod extends SolClientSimpleHudMod {
 
 	private static final int RADIUS = 30;
 
-	private static final LocalTime PLACEHOLDER = LocalTime.of(1, 30);
+	private static final LocalTime PLACEHOLDER = LocalTime.of(1, 30, 50);
 
 	// 01:30 pm
 	private static final DateTimeFormatter TWELVE_HOUR = DateTimeFormatter.ofPattern("hh:mm a");

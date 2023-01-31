@@ -97,7 +97,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				if (!hud.isVisible())
 					continue;
 
-				float[] bounds = hud.getHighPrecisionMultipliedBounds();
+				Rectangle bounds = hud.getMultipliedBounds();
 				if (bounds == null)
 					continue;
 
@@ -106,19 +106,19 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 					// move it
 					if (info.mouseX() != dragMouseStart.getX() || info.mouseY() != dragMouseStart.getY())
 						hud.setPosition(hudStart.offset(info.mouseX() - dragMouseStart.getX(),
-								-(info.mouseY() - dragMouseStart.getY())));
+								info.mouseY() - dragMouseStart.getY()));
 				}
 
 				if (selectedHuds.contains(hud)) {
 					NanoVG.nvgBeginPath(nvg);
 					NanoVG.nvgFillColor(nvg, SolClientConfig.instance.uiColour.withAlpha(50).nvg());
-					NanoVG.nvgRect(nvg, bounds[0], bounds[1], bounds[2], bounds[3]);
+					NanoVG.nvgRect(nvg, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 					NanoVG.nvgFill(nvg);
 				}
 
 				NanoVG.nvgBeginPath(nvg);
-				NanoVG.nvgRect(nvg, bounds[0] + lineWidth / 2, bounds[1] + lineWidth / 2, bounds[2] - lineWidth,
-						bounds[3] - lineWidth);
+				NanoVG.nvgRect(nvg, bounds.getX() + lineWidth / 2, bounds.getY() + lineWidth / 2,
+						bounds.getWidth() - lineWidth, bounds.getHeight() - lineWidth);
 				NanoVG.nvgStrokeColor(nvg, SolClientConfig.instance.uiColour.nvg());
 				NanoVG.nvgStroke(nvg);
 			}
@@ -146,7 +146,8 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				int midX = screen.width / 2 - hud.getMultipliedBounds().getWidth() / 2;
 				int midY = screen.height / 2 - hud.getMultipliedBounds().getHeight() / 2;
 
-				if (Math.abs(midY - screen.height / 2) <= 6) {
+				if (Math.abs(hud.getMultipliedBounds().getY() + hud.getMultipliedBounds().getHeight() / 2
+						- screen.height / 2) <= 6) {
 					// horizontal
 
 					NanoVG.nvgBeginPath(nvg);
@@ -157,7 +158,8 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 					targetPosition = new Position(targetPosition.getX(), midY);
 				}
 
-				if (Math.abs(midX - screen.width / 2) <= 6) {
+				if (Math.abs(hud.getMultipliedBounds().getX() + hud.getMultipliedBounds().getWidth() / 2
+						- screen.width / 2) <= 6) {
 					// vertical
 
 					NanoVG.nvgBeginPath(nvg);
@@ -241,7 +243,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 		}
 
 		private void shift(int x, int y) {
-			selectedHuds.forEach((hud) -> hud.move(x, y));
+			selectedHuds.forEach((hud) -> hud.setPosition(hud.getPosition().offset(x, y)));
 		}
 
 		// yayy writing almost the same code that I did nearly two years ago!

@@ -1,49 +1,80 @@
 package io.github.solclient.client.mod.hud;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.replaymod.replay.ReplayModReplay;
+
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.util.data.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.Window;
 
 /**
  * Represents a HUD element. May be contained inside a mod.
  */
 public interface HudElement {
 
-	default void move(int x, int y) {
-		float[] position = getHighPrecisionPosition();
-		position[0] += x;
-		position[1] += y;
-		setHighPrecisionPosition(position);
+	float getScale();
+
+	Position getConfiguredPosition();
+
+	default Position getPosition() {
+		Position result = getConfiguredPosition();
+		if (result == null) {
+			Window window = new Window(MinecraftClient.getInstance());
+			Position defaultPosition = determineDefaultPosition(window.getWidth(), window.getHeight());
+			setPosition(defaultPosition);
+			result = defaultPosition;
+		}
+
+		return result;
 	}
 
-	Position getPosition();
+	default Position getDividedPosition() {
+		return new Position((int) (getPosition().getX() / getScale()),
+				(int) (getPosition().getY() / getScale()));
+	}
 
-	float[] getHighPrecisionPosition();
-
-	void setHighPrecisionPosition(float[] position);
-
-	Position getDividedPosition();
-
-	HudPosition getDefaultPosition();
+	default Position determineDefaultPosition(int width, int height) {
+		return new Position(0, 0);
+	}
 
 	void setPosition(Position position);
 
 	boolean isVisible();
 
-	Rectangle getBounds();
+	default Rectangle getBounds() {
+		return getBounds(getPosition());
+	}
 
 	Rectangle getBounds(Position position);
 
-	float[] getHighPrecisionMultipliedBounds();
+	default Rectangle getMultipliedBounds() {
+		Rectangle rectangle = getBounds();
+		if (rectangle == null)
+			return null;
 
-	Rectangle getMultipliedBounds();
+		return rectangle.multiply(getScale());
+	}
 
-	void render(boolean editMode);
+	default void render(boolean editMode) {
+		// Don't render HUD in replay or if marked as invisible.
+		if (!isVisible() || !(editMode || isShownInReplay() || ReplayModReplay.instance.getReplayHandler() == null))
+			return;
+
+		GlStateManager.pushMatrix();
+		GlStateManager.scale(getScale(), getScale(), getScale());
+		render(getDividedPosition(), editMode);
+		GlStateManager.popMatrix();
+	}
 
 	void render(Position position, boolean editMode);
 
 	Mod getMod();
 
-	boolean isHovered(int mouseX, int mouseY);
+	default boolean isHovered(int x, int y) {
+		Rectangle bounds = getMultipliedBounds();
+		return bounds != null && bounds.contains(x, y);
+	}
 
 	boolean isShownInReplay();
 

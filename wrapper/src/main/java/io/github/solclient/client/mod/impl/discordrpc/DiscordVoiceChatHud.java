@@ -11,7 +11,7 @@ import lombok.Setter;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 
-public class DiscordVoiceChatHud extends BaseHudElement {
+public class DiscordVoiceChatHud implements HudElement {
 
 	private static final int USER_HEIGHT = 20;
 
@@ -43,7 +43,7 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 				break;
 		}
 
-		return position.offset(0, yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
+		return position.offset(0, -yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
 	}
 
 	@Override
@@ -113,17 +113,17 @@ public class DiscordVoiceChatHud extends BaseHudElement {
 	}
 
 	@Override
-	public HudPosition getHudPosition() {
+	public Position getConfiguredPosition() {
 		return mod.voiceChatHudPosition;
 	}
 
 	@Override
-	public void setHudPosition(HudPosition position) {
+	public void setPosition(Position position) {
 		mod.voiceChatHudPosition = position;
 	}
 
 	@Override
-	public float getHudScale() {
+	public float getScale() {
 		return mod.voiceChatHudScale / 100F;
 	}
 

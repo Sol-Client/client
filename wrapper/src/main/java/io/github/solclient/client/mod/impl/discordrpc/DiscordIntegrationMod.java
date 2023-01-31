@@ -47,7 +47,7 @@ public class DiscordIntegrationMod extends SolClientMod {
 	@Option
 	protected VerticalAlignment voiceChatHudAlignment = VerticalAlignment.TOP;
 	@Expose
-	protected HudPosition voiceChatHudPosition = new HudPosition(0, 0);
+	protected Position voiceChatHudPosition;
 	@Expose
 	@Option
 	protected Colour usernameColour = Colour.WHITE;

@@ -58,23 +58,7 @@ public class ComponentScreen extends Screen {
 				}
 			}
 
-			long nvg = NanoVGManager.getNvg();
-
-			GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-
-			NanoVG.nvgBeginFrame(nvg, client.width, client.height, 1);
-			NanoVG.nvgSave(nvg);
-
-			NanoVG.nvgFontSize(nvg, 8);
-
-			Window window = new Window(client);
-			NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
-
-			rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, tickDelta));
-
-			NanoVG.nvgRestore(nvg);
-			NanoVG.nvgEndFrame(nvg);
-			GL11.glPopAttrib();
+			MinecraftUtils.withNvg(() -> rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, tickDelta)));
 
 			super.render(mouseX, mouseY, tickDelta);
 		} catch (Throwable error) {

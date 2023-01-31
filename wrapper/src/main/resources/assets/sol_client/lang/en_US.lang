@@ -115,7 +115,15 @@ sol_client.mod.combo_counter.n_hits=%s hits
 
 sol_client.mod.clock.name=Clock
 sol_client.mod.clock.description=Display the current time.
+
 sol_client.mod.clock.option.twentyFourHour=24-hour Format
+sol_client.mod.clock.option.analogue=Analog
+sol_client.mod.clock.option.hourHandColour=Hour Hand Color
+sol_client.mod.clock.option.hourMarks=Hour Marks
+sol_client.mod.clock.option.hourMarksColour=Hour Marks Color
+sol_client.mod.clock.option.minuteHandColour=Minute Hand Color
+sol_client.mod.clock.option.secondsHand=Seconds Hand
+sol_client.mod.clock.option.secondsHandColour=Seconds Hand Color
 
 sol_client.mod.potion_effects.name=Potion Effects
 sol_client.mod.potion_effects.description=Display your active potions with countdowns.
@@ -459,7 +467,7 @@ sol_client.mod.screen.apply_to_all=Apply to All
 
 sol_client.mod.screen.modified_from=, using code by %s
 sol_client.mod.screen.originally_by=, originally by %s
-sol_client.mod.screen.inspired_by=, partially inspired by %s
+sol_client.mod.screen.inspired_by=, inspired by %s
 sol_client.mod.screen.by=, by %s
 
 sol_client.mod.screen.about=About Sol Client

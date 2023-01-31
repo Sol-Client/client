@@ -167,24 +167,6 @@ public class KeystrokesMod extends SolClientHudMod {
 				NanoVG.nvgStroke(nvg);
 			});
 
-//			GlStateManager.pushMatrix();
-//			GlStateManager.enableBlend();
-//			textColour.bind();
-//
-//			mc.getTextureManager().bindTexture(new Identifier("textures/gui/sol_client_keystrokes_mouse_ring_centre_"
-//					+ MinecraftUtils.getTextureScale() + ".png"));
-//			DrawableHelper.drawTexture(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
-//
-//			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * tickDelta)) - 5;
-//			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * tickDelta)) - 5;
-//			GL11.glTranslatef(calculatedMouseX, calculatedMouseY, 0);
-//
-//			mc.getTextureManager().bindTexture(new Identifier(
-//					"textures/gui/sol_client_keystrokes_mouse_ring_" + MinecraftUtils.getTextureScale() + ".png"));
-//			DrawableHelper.drawTexture(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
-//
-//			GlStateManager.color(1, 1, 1);
-//			GlStateManager.popMatrix();
 			y += 35;
 		}
 

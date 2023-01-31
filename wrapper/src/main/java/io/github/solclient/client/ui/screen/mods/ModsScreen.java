@@ -27,7 +27,6 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		super(new ModsScreenComponent(mod));
 
 		component = (ModsScreenComponent) root;
-		background = false;
 	}
 
 	@Override
@@ -192,8 +191,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		public void render(ComponentRenderInfo info) {
 			super.render(info);
 
-			mouseX = info.getRelativeMouseX();
-			mouseY = info.getRelativeMouseY();
+			mouseX = info.mouseX();
+			mouseY = info.mouseY();
 
 			if (targetDraggingMod != null) {
 				draggingMod = targetDraggingMod;

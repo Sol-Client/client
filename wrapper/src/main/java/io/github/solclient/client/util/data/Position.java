@@ -2,7 +2,7 @@ package io.github.solclient.client.util.data;
 
 import lombok.*;
 
-@AllArgsConstructor
+@Data
 public class Position {
 
 	@Getter

@@ -8,7 +8,18 @@ import io.github.solclient.client.util.data.*;
  */
 public interface HudElement {
 
+	default void move(int x, int y) {
+		float[] position = getHighPrecisionPosition();
+		position[0] += x;
+		position[1] += y;
+		setHighPrecisionPosition(position);
+	}
+
 	Position getPosition();
+
+	float[] getHighPrecisionPosition();
+
+	void setHighPrecisionPosition(float[] position);
 
 	Position getDividedPosition();
 

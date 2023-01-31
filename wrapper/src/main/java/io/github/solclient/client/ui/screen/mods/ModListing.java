@@ -121,8 +121,8 @@ public class ModListing extends ColouredComponent {
 		NanoVG.nvgStroke(nvg);
 
 		if (dragStart != null && !dragging) {
-			dragging = Math.abs(info.getRelativeMouseX() - dragStart.getX()) > 2
-					|| Math.abs(info.getRelativeMouseY() - dragStart.getY()) > 2;
+			dragging = Math.abs(info.mouseX() - dragStart.getX()) > 2
+					|| Math.abs(info.mouseY() - dragStart.getY()) > 2;
 			if (dragging) {
 				screen.notifyDrag(this, dragStart.getX(), dragStart.getY());
 			}
@@ -161,7 +161,7 @@ public class ModListing extends ColouredComponent {
 			}
 
 			if (pinnedCategory && Client.INSTANCE.getPins().getMods().size() > 1) {
-				dragStart = new Position(info.getRelativeMouseX(), info.getRelativeMouseY());
+				dragStart = new Position(info.mouseX(), info.mouseY());
 				return true;
 			}
 

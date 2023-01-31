@@ -29,10 +29,21 @@ public class HudPosition {
 		return new Position((int) (window.getScaledWidth() * x), (int) (window.getScaledHeight() * y));
 	}
 
+	public float[] toHighPrecisionAbsolute() {
+		Window window = new Window(mc);
+		return new float[] { (float) (window.getScaledWidth() * x), (float) (window.getScaledHeight() * y) };
+	}
+
 	public static HudPosition fromAbsolute(Position absolute) {
 		Window window = new Window(mc);
 		return new HudPosition((float) (absolute.getX() / window.getScaledWidth()),
 				(float) (absolute.getY() / window.getScaledHeight()));
+	}
+
+	public static HudPosition fromHighPrecisionAbsolute(float[] absolute) {
+		Window window = new Window(mc);
+		return new HudPosition((float) (absolute[0] / window.getScaledWidth()),
+				(float) (absolute[1] / window.getScaledHeight()));
 	}
 
 }

@@ -76,7 +76,7 @@ public class SliderComponent extends Component {
 
 		if (selected) {
 			value = MathHelper.clamp(
-					(float) (min + Math.floor(((info.getRelativeMouseX() / 100F) * (max - min)) / step) * step), min,
+					(float) (min + Math.floor(((info.mouseX() / 100F) * (max - min)) / step) * step), min,
 					max);
 			callback.accept(value);
 		}

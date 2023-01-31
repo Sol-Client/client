@@ -120,8 +120,8 @@ public final class PixelMatrixDialog extends BlockComponent {
 					NanoVG.nvgRect(nvg, x * SCALE, y * SCALE, SCALE, SCALE);
 					NanoVG.nvgFill(nvg);
 
-					if (info.getRelativeMouseX() >= x * SCALE && info.getRelativeMouseX() < x * SCALE + SCALE
-							&& info.getRelativeMouseY() >= y * SCALE && info.getRelativeMouseY() < y * SCALE + SCALE) {
+					if (info.mouseX() >= x * SCALE && info.mouseX() < x * SCALE + SCALE
+							&& info.mouseY() >= y * SCALE && info.mouseY() < y * SCALE + SCALE) {
 						if (x != lastGridX || y != lastGridY) {
 							if (leftMouseDown)
 								pixels.set(x, y);

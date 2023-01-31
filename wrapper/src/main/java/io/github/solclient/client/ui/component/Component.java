@@ -113,8 +113,8 @@ public abstract class Component extends NanoVGManager {
 	}
 
 	private static ComponentRenderInfo transform(ComponentRenderInfo info, Rectangle bounds) {
-		return new ComponentRenderInfo(info.getRelativeMouseX() - bounds.getX(),
-				info.getRelativeMouseY() - bounds.getY(), info.getPartialTicks());
+		return new ComponentRenderInfo(info.mouseX() - bounds.getX(),
+				info.mouseY() - bounds.getY(), info.tickDelta());
 	}
 
 	public void render(ComponentRenderInfo info) {
@@ -124,9 +124,9 @@ public abstract class Component extends NanoVGManager {
 			actualInfo = ((ScrollListComponent) this).reverseTranslation(info);
 		}
 
-		hovered = actualInfo.getRelativeMouseX() > 0 && actualInfo.getRelativeMouseY() > 0
-				&& actualInfo.getRelativeMouseX() < getBounds().getWidth()
-				&& actualInfo.getRelativeMouseY() < getBounds().getHeight();
+		hovered = actualInfo.mouseX() > 0 && actualInfo.mouseY() > 0
+				&& actualInfo.mouseX() < getBounds().getWidth()
+				&& actualInfo.mouseY() < getBounds().getHeight();
 
 		if (parent != null) {
 			hovered = hovered && (parent.isHovered() || parent.dialog == this);
@@ -231,7 +231,7 @@ public abstract class Component extends NanoVGManager {
 
 	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside, boolean processed) {
 		if (dialog != null) {
-			boolean insideDialog = dialog.getBounds().contains(info.getRelativeMouseX(), info.getRelativeMouseY());
+			boolean insideDialog = dialog.getBounds().contains(info.mouseX(), info.mouseY());
 
 			if (dialog.mouseClickedAnywhere(transform(info, dialog.getBounds()), button, insideDialog, processed))
 				processed = true;
@@ -252,7 +252,7 @@ public abstract class Component extends NanoVGManager {
 				Rectangle bounds = getBounds(component);
 
 				if (component.mouseClickedAnywhere(transform(info, bounds), button,
-						inside && bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()), processed))
+						inside && bounds.contains(info.mouseX(), info.mouseY()), processed))
 					return true;
 			}
 		} catch (ConcurrentModificationException error) {
@@ -279,7 +279,7 @@ public abstract class Component extends NanoVGManager {
 
 	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
 		if (dialog != null && dialog.mouseReleasedAnywhere(transform(info, dialog.getBounds()), button,
-				dialog.getBounds().contains(info.getRelativeMouseX(), info.getRelativeMouseY())))
+				dialog.getBounds().contains(info.mouseX(), info.mouseY())))
 			return true;
 
 		if (onReleaseAnywhere != null && onReleaseAnywhere.onClick(info, button))
@@ -292,7 +292,7 @@ public abstract class Component extends NanoVGManager {
 			Rectangle bounds = getBounds(component);
 
 			if (component.mouseReleasedAnywhere(transform(info, bounds), button,
-					bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY())))
+					bounds.contains(info.mouseX(), info.mouseY())))
 				return true;
 		}
 
@@ -317,7 +317,7 @@ public abstract class Component extends NanoVGManager {
 		for (Component component : subComponents) {
 			Rectangle bounds = getBounds(component);
 
-			if (!bounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY()))
+			if (!bounds.contains(info.mouseX(), info.mouseY()))
 				continue;
 
 			if (action.test(component, transform(info, bounds)))

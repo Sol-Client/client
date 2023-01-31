@@ -97,7 +97,7 @@ public class ColourPickerDialog extends BlockComponent {
 
 		if (selectedSlider != -1) {
 			colour = colour.withComponent(selectedSlider,
-					MathHelper.clamp(info.getRelativeMouseX() - RGB_OFFSET_LEFT, 0, 255));
+					MathHelper.clamp(info.mouseX() - RGB_OFFSET_LEFT, 0, 255));
 			callback.accept(colour);
 			updateHex();
 		}
@@ -216,7 +216,7 @@ public class ColourPickerDialog extends BlockComponent {
 		for (int component = 0; component < 4; component++) {
 			Rectangle rectangle = new Rectangle(RGB_OFFSET_LEFT, RGB_OFFSET_TOP + component * RGB_SPACING, 256, 11);
 
-			if (rectangle.contains(info.getRelativeMouseX(), info.getRelativeMouseY()))
+			if (rectangle.contains(info.mouseX(), info.mouseY()))
 				return component;
 		}
 

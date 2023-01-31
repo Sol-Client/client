@@ -33,10 +33,9 @@ public class ComponentScreen extends Screen {
 			}
 
 		};
-
-		rootWrapper.add(root, new ParentBoundsController());
 		rootWrapper.setScreen(this);
 
+		rootWrapper.add(root, new ParentBoundsController());
 		this.root = root;
 	}
 

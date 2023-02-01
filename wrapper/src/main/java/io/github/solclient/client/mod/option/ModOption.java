@@ -69,7 +69,7 @@ public interface ModOption<T> {
 	 * @return <code>true</code> to show "apply to all".
 	 */
 	default boolean canApplyToAll() {
-		return getApplyToAllClass() != null || !getApplyToAllClass().isEmpty();
+		return getApplyToAllClass() != null && !getApplyToAllClass().isEmpty();
 	}
 
 	/**

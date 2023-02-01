@@ -1,13 +1,17 @@
 package io.github.solclient.client.util.data;
 
+import com.google.gson.annotations.Expose;
+
 import lombok.*;
 
-@AllArgsConstructor
+@Data
 public class Position {
 
 	@Getter
+	@Expose
 	private final int x;
 	@Getter
+	@Expose
 	private final int y;
 
 	public Position offset(int x, int y) {

@@ -34,10 +34,9 @@ public class ComponentScreen extends Screen {
 			}
 
 		};
-
-		rootWrapper.add(root, new ParentBoundsController());
 		rootWrapper.setScreen(this);
 
+		rootWrapper.add(root, new ParentBoundsController());
 		this.root = root;
 	}
 
@@ -64,22 +63,7 @@ public class ComponentScreen extends Screen {
 				}
 			}
 
-			long nvg = NanoVGManager.getNvg();
-
-			GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-
-			NanoVG.nvgBeginFrame(nvg, client.width, client.height, 1);
-			NanoVG.nvgSave(nvg);
-
-			NanoVG.nvgFontSize(nvg, 8);
-
-			NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
-
-			rootWrapper.render(new ComponentRenderInfo(this.mouseX, this.mouseY, tickDelta));
-
-			NanoVG.nvgRestore(nvg);
-			NanoVG.nvgEndFrame(nvg);
-			GL11.glPopAttrib();
+			MinecraftUtils.withNvg(() -> rootWrapper.render(new ComponentRenderInfo(this.mouseX, this.mouseY, tickDelta)));
 
 			super.render(mouseX, mouseY, tickDelta);
 		} catch (Throwable error) {

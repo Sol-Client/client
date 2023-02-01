@@ -35,6 +35,12 @@ sol_client.mod.chat.option.colours=Colours
 
 sol_client.mod.tab_list.description=Customise the tab/player list.
 
+sol_client.mod.clock.option.analogue=Analogue
+sol_client.mod.clock.option.hourHandColour=Hour Hand Colour
+sol_client.mod.clock.option.hourMarksColour=Hour Marks Colour
+sol_client.mod.clock.option.minuteHandColour=Minute Hand Colour
+sol_client.mod.clock.option.secondsHandColour=Seconds Hand Colour
+
 sol_client.mod.crosshair.description=Customise the crosshair.
 sol_client.mod.crosshair.option.crosshairColour=Colour
 sol_client.mod.crosshair.option.entityColour=Entity Colour

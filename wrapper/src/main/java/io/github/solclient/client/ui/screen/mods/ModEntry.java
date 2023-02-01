@@ -108,8 +108,8 @@ public class ModEntry extends ColouredComponent {
 		}
 
 		if (dragStart != null && !dragging) {
-			dragging = Math.abs(info.getRelativeMouseX() - dragStart.getX()) > 2
-					|| Math.abs(info.getRelativeMouseY() - dragStart.getY()) > 2;
+			dragging = Math.abs(info.relativeMouseX() - dragStart.getX()) > 2
+					|| Math.abs(info.relativeMouseY() - dragStart.getY()) > 2;
 			if (dragging) {
 				screen.notifyDrag(this, dragStart.getX(), dragStart.getY());
 			}
@@ -148,7 +148,7 @@ public class ModEntry extends ColouredComponent {
 			}
 
 			if (pinnedCategory && Client.INSTANCE.getModUiState().getPins().size() > 1) {
-				dragStart = new Position((int) info.getRelativeMouseX(), (int) info.getRelativeMouseY());
+				dragStart = new Position((int) info.relativeMouseX(), (int) info.relativeMouseY());
 				return true;
 			}
 

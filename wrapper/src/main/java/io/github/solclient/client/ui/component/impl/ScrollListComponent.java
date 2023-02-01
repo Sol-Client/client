@@ -46,13 +46,13 @@ public abstract class ScrollListComponent extends ListComponent {
 	}
 
 	private ComponentRenderInfo translate(ComponentRenderInfo info) {
-		return new ComponentRenderInfo(info.getRelativeMouseX(), (int) (info.getRelativeMouseY() + calculatedY),
-				info.getPartialTicks());
+		return new ComponentRenderInfo(info.relativeMouseX(), (int) (info.relativeMouseY() + calculatedY),
+				info.tickDelta());
 	}
 
 	public ComponentRenderInfo reverseTranslation(ComponentRenderInfo info) {
-		return new ComponentRenderInfo(info.getRelativeMouseX(), (int) (info.getRelativeMouseY() - calculatedY),
-				info.getPartialTicks());
+		return new ComponentRenderInfo(info.relativeMouseX(), (int) (info.relativeMouseY() - calculatedY),
+				info.tickDelta());
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public abstract class ScrollListComponent extends ListComponent {
 		if (!SolClientConfig.instance.smoothScrolling) {
 			calculatedY = targetY;
 		} else {
-			calculatedY = (lastAnimatedY + (animatedY - lastAnimatedY) * info.getPartialTicks());
+			calculatedY = (lastAnimatedY + (animatedY - lastAnimatedY) * info.tickDelta());
 		}
 
 		NanoVG.nvgTranslate(nvg, 0, (float) -calculatedY);
@@ -70,18 +70,18 @@ public abstract class ScrollListComponent extends ListComponent {
 			maxScrolling = 0;
 		}
 
-		if (lastMouseY != info.getRelativeMouseY()) {
+		if (lastMouseY != info.relativeMouseY()) {
 			if (scrolling > 0) {
-				int targetCompY = (int) (info.getRelativeMouseY() - scrolling);
+				int targetCompY = (int) (info.relativeMouseY() - scrolling);
 				jumpTo((int) (targetCompY / (getBounds().getHeight() / (double) getContentHeight())));
 				clamp();
 			} else if (grabStartY != -1) {
-				jumpTo(grabStartY - (info.getRelativeMouseY() - grabMouseY));
+				jumpTo(grabStartY - (info.relativeMouseY() - grabMouseY));
 				clamp();
 			}
 		}
 
-		lastMouseY = (int) info.getRelativeMouseY();
+		lastMouseY = (int) info.relativeMouseY();
 
 		super.render(translate(info));
 	}
@@ -91,12 +91,12 @@ public abstract class ScrollListComponent extends ListComponent {
 				-getBounds().getY() + (int) (calculatedY * scrollPercent));
 
 		if (new Rectangle(scrollBounds.getX(), 0, scrollBounds.getWidth(), getBounds().getHeight())
-				.contains((int) info.getRelativeMouseX(), (int) info.getRelativeMouseY())) {
-			if (!scrollBounds.contains((int) info.getRelativeMouseX(), (int) info.getRelativeMouseY())) {
+				.contains((int) info.relativeMouseX(), (int) info.relativeMouseY())) {
+			if (!scrollBounds.contains((int) info.relativeMouseX(), (int) info.relativeMouseY())) {
 				return scrollbar.getBounds().getHeight() / 2;
 			}
 
-			return (int) (info.getRelativeMouseY() - scrollBounds.getY());
+			return (int) (info.relativeMouseY() - scrollBounds.getY());
 		}
 
 		return -1;
@@ -116,7 +116,7 @@ public abstract class ScrollListComponent extends ListComponent {
 
 		if (button == 0 && !superResult && grabStartY == -1) {
 			grabStartY = targetY;
-			grabMouseY = (int) reverseTranslation(info).getRelativeMouseY();
+			grabMouseY = (int) reverseTranslation(info).relativeMouseY();
 		}
 
 		return true;

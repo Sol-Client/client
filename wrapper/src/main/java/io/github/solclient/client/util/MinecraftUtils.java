@@ -702,8 +702,29 @@ public class MinecraftUtils {
 		keyBinding.setCode(0);
 	}
 
-	public static float getTickDelta() {
+	public float getTickDelta() {
 		return ((MinecraftClientAccessor) MinecraftClient.getInstance()).getTicker().tickDelta;
+	}
+
+	public void withNvg(Runnable task) {
+		long nvg = NanoVGManager.getNvg();
+		MinecraftClient mc = MinecraftClient.getInstance();
+
+		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+		NanoVG.nvgBeginFrame(nvg, mc.width, mc.height, 1);
+		NanoVG.nvgSave(nvg);
+
+		NanoVG.nvgFontSize(nvg, 8);
+
+		Window window = new Window(mc);
+		NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
+
+		task.run();
+
+		NanoVG.nvgRestore(nvg);
+		NanoVG.nvgEndFrame(nvg);
+		GL11.glPopAttrib();
 	}
 
 }

@@ -7,7 +7,7 @@ import org.lwjgl.nanovg.NanoVG;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
@@ -50,8 +50,7 @@ public class SliderComponent extends Component {
 
 		if (selected) {
 			value = MathHelper.clamp(
-					(float) (min + Math.floor(((info.getRelativeMouseX() / 80F) * (max - min)) / step) * step), min,
-					max);
+					(float) (min + Math.floor(((info.relativeMouseX() / 80F) * (max - min)) / step) * step), min, max);
 			callback.accept(value);
 		}
 

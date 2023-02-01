@@ -67,7 +67,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 	private void copy() {
 		try {
 			Screen.setClipboard(LCCH.stringify(pixels));
-		} catch (IllegalArgumentException error) {
+		} catch (Throwable error) {
 			LOGGER.error("Failed to convert to LCCH", error);
 		}
 	}
@@ -75,7 +75,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 	private void paste() {
 		try {
 			LCCH.parse(Screen.getClipboard(), pixels);
-		} catch (IllegalArgumentException error) {
+		} catch (Throwable error) {
 			LOGGER.error("Failed to load from LCCH", error);
 		}
 	}
@@ -114,8 +114,8 @@ public final class PixelMatrixDialog extends BlockComponent {
 					NanoVG.nvgRect(nvg, x * SCALE, y * SCALE, SCALE, SCALE);
 					NanoVG.nvgFill(nvg);
 
-					if (info.getRelativeMouseX() >= x * SCALE && info.getRelativeMouseX() < x * SCALE + SCALE
-							&& info.getRelativeMouseY() >= y * SCALE && info.getRelativeMouseY() < y * SCALE + SCALE) {
+					if (info.relativeMouseX() >= x * SCALE && info.relativeMouseX() < x * SCALE + SCALE
+							&& info.relativeMouseY() >= y * SCALE && info.relativeMouseY() < y * SCALE + SCALE) {
 						if (x != lastGridX || y != lastGridY) {
 							if (leftMouseDown)
 								pixels.set(x, y);

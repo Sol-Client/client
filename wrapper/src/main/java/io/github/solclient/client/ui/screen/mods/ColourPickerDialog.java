@@ -10,6 +10,7 @@ import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -226,13 +227,12 @@ public class ColourPickerDialog extends BlockComponent {
 		NanoVG.nvgStroke(nvg);
 
 		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
-		regularFont.renderString(nvg, "Preview", PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 1);
-		regularFont.renderString(nvg, "Hex", PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 26);
-		regularFont.renderString(nvg, "Red", PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 51);
-		regularFont.renderString(nvg, "Green", PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 76);
-		regularFont.renderString(nvg, "Blue", PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 101);
-		regularFont.renderString(nvg, "Alpha", PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 126);
-
+		regularFont.renderString(nvg, I18n.translate("sol_client.preview"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 1);
+		regularFont.renderString(nvg, I18n.translate("sol_client.hex"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 26);
+		regularFont.renderString(nvg, I18n.translate("sol_client.red"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 51);
+		regularFont.renderString(nvg, I18n.translate("sol_client.green"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 76);
+		regularFont.renderString(nvg, I18n.translate("sol_client.blue"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 101);
+		regularFont.renderString(nvg, I18n.translate("sol_client.alpha"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 126);
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRect(nvg, PICKER_X + 200, PICKER_Y - 4, 50, 19);

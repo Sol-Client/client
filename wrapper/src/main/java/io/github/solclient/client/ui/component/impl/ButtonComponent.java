@@ -86,7 +86,7 @@ public class ButtonComponent extends ColouredComponent {
 	}
 
 	public static ButtonComponent done(Runnable onClick) {
-		return new ButtonComponent("gui.done", theme.accent(), Controller.of(theme.accentFg))
+		return new ButtonComponent("gui.done", theme.accent(), theme.accentFg())
 				.onClick((info, button) -> {
 					if (button == 0) {
 						MinecraftUtils.playClickSound(true);

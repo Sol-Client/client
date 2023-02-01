@@ -80,7 +80,7 @@ public class ModEntry extends ColouredComponent {
 			if (mod.isEnabled()) {
 				return isFullyHovered() ? theme.accentHover : theme.accent;
 			} else if (mod.isBlocked()) {
-				return isFullyHovered() ? Colour.RED_HOVER : Colour.PURE_RED;
+				return isFullyHovered() ? theme.dangerHover : theme.danger;
 			}
 
 			return isFullyHovered() ? theme.buttonSecondaryHover : theme.buttonSecondary;

@@ -30,8 +30,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		drawPanorama(mouseX, mouseY, partialTicks);
 
-		client.getTextureManager().bindTexture(
-				new Identifier("sol_client", "textures/gui/sol_client_logo_with_text_" + MinecraftUtils.getTextureScale() + ".png"));
+		client.getTextureManager().bindTexture(new Identifier("sol_client",
+				"textures/gui/sol_client_logo_with_text_" + MinecraftUtils.getTextureScale() + ".png"));
 		drawTexture(width / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
 
 		super.render(mouseX, mouseY, partialTicks);
@@ -53,7 +53,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 		public MainMenuComponent() {
 
 			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.singleplayer"), theme.accent(),
-					Controller.of(Colour.BLACK)).withIcon("person").width(200).onClick((info, button) -> {
+					theme.accentFg()).withIcon("person").width(200).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new SelectWorldScreen(screen));
@@ -65,7 +65,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.multiplayer"), theme.accent(),
-					Controller.of(Colour.BLACK)).withIcon("people").width(200).onClick((info, button) -> {
+					theme.accentFg()).withIcon("people").width(200).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new MultiplayerScreen(screen));
@@ -135,9 +135,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					(component, defaultBounds) -> new Rectangle(buttonsX + 78, screen.height / 4 + 48 + 70,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> "",
-					new AnimatedColourController(
-							(component, defaultColour) -> component.isHovered() ? Colour.RED_HOVER : Colour.PURE_RED),
+			add(new ButtonComponent((component, defaultText) -> "", theme.danger(),
 					Controller.of(Colour.WHITE)).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);

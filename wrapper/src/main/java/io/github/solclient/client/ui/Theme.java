@@ -16,12 +16,14 @@ public class Theme implements Cloneable {
 		DARK.buttonSecondaryHover = new Colour(0xFF3C3C3C);
 		DARK.fg = new Colour(0xFFFFFFFF);
 		DARK.accent = new Colour(0xFFFFB400);
-		DARK.accentHover = new Colour(0xFFFFE255);
-		DARK.accentFg = DARK.bg;
+		DARK.accentHover = new Colour(0xFFFFCD26);
+		DARK.accentFg = new Colour(0xFF000000);
 		DARK.fgButton = new Colour(0xFFFFFFFF);
 		DARK.fgButtonHover = new Colour(0xFFDDDDDD);
-		DARK.transparent1 = new Colour(40, 40, 40);
-		DARK.transparent2 = new Colour(60, 60, 60);
+		DARK.transparent1 = new Colour(0xFF282828);
+		DARK.transparent2 = new Colour(0xFF3c3c3c);
+		DARK.danger = new Colour(0xFFFF2929);
+		DARK.dangerHover = new Colour(0xFFFF4B4B);
 	}
 
 	public Colour bg;
@@ -37,10 +39,13 @@ public class Theme implements Cloneable {
 	public Colour accentFg;
 	public Colour transparent1;
 	public Colour transparent2;
+	public Colour danger;
+	public Colour dangerHover;
 
 	// @formatter:off
 	public final Controller<Colour> bg() { return Controller.of(bg); }
 	public final Controller<Colour> fg() { return Controller.of(fg); }
+	public final Controller<Colour> accentFg() { return Controller.of(accentFg); }
 	// @formatter:on
 
 	private Controller<Colour> hoverPair(Colour base, Colour hover) {
@@ -55,13 +60,17 @@ public class Theme implements Cloneable {
 		return hoverPair(buttonSecondary, buttonSecondaryHover);
 	}
 
-	public Controller<Colour> fgButton() {
+	public final Controller<Colour> fgButton() {
 		return new AnimatedColourController(
 				(component, defaultColour) -> component.isHovered() ? fgButtonHover : fgButton);
 	}
 
 	public final Controller<Colour> accent() {
 		return hoverPair(accent, accentHover);
+	}
+
+	public final Controller<Colour> danger() {
+		return hoverPair(danger, dangerHover);
 	}
 
 	@Override

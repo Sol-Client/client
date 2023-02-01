@@ -1,5 +1,6 @@
 package io.github.solclient.client.ui.screen.mods;
 
+import java.io.IOException;
 import java.net.URI;
 
 import org.lwjgl.nanovg.NanoVG;
@@ -14,6 +15,7 @@ import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.util.Identifier;
 
 public class ModEntry extends ColouredComponent {
 
@@ -26,6 +28,7 @@ public class ModEntry extends ColouredComponent {
 	private final boolean pinnedCategory;
 	private Position dragStart;
 	private boolean dragging;
+	private boolean generic;
 
 	public ModEntry(Mod mod, ModsScreenComponent screen, boolean pinnedCategory) {
 		super(new AnimatedColourController((component,
@@ -34,7 +37,20 @@ public class ModEntry extends ColouredComponent {
 		this.mod = mod;
 		this.screen = screen;
 
-		add(new IconComponent("mod/" + mod.getId(), 16, 16),
+		add(new IconComponent((component, ignored) -> {
+			String result = "mod/" + mod.getId();
+			if (!generic) {
+				try {
+					mc.getResourceManager()
+							.getResource(new Identifier("sol_client", "textures/gui/" + result + ".png"));
+				} catch (IOException error) {
+					generic = true;
+				}
+			}
+			if (generic)
+				return "mod/generic";
+			return result;
+		}, 16, 16, theme.fg()),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getY() + 3, defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));

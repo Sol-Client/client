@@ -58,11 +58,11 @@ public class QuickPlayPalette extends ComponentScreen {
 			scroll = new QuickPlayScroll(this);
 			add(scroll, (component, defaultBounds) -> new Rectangle(0, 30, getBounds().getWidth(),
 					getBounds().getHeight() - 30));
-			search = new TextFieldComponent(200, false).withPlaceholder("sol_client.mod.screen.search").autoFlush()
+			search = new TextFieldComponent(250, false).withPlaceholder("sol_client.mod.screen.search").autoFlush()
 					.onUpdate((ignored) -> {
 						scroll.load();
 						return true;
-					}).withIcon("sol_client_search").withoutUnderline();
+					}).withIcon("search").withoutUnderline();
 			add(search, (component, defaultBounds) -> defaultBounds.offset(10, 10).grow(-20, 0));
 			scroll.load();
 		}

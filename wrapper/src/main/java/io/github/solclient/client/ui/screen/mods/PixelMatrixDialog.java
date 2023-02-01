@@ -17,8 +17,6 @@ public final class PixelMatrixDialog extends BlockComponent {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final int SCALE = 12;
-	private static final Colour COLOUR_1 = new Colour(40, 40, 40);
-	private static final Colour COLOUR_2 = new Colour(60, 60, 60);
 
 	private final PixelMatrix pixels;
 
@@ -96,17 +94,12 @@ public final class PixelMatrixDialog extends BlockComponent {
 					if (pixels.get(x, y))
 						colour = Colour.WHITE;
 					else {
+						boolean square = false;
 						if (x % 2 == 0)
-							colour = COLOUR_1;
-						else
-							colour = COLOUR_2;
-
-						if (y % 2 == 0) {
-							if (colour == COLOUR_1)
-								colour = COLOUR_2;
-							else
-								colour = COLOUR_1;
-						}
+							square = true;
+						if (y % 2 == 0)
+							square = !square;
+						colour = square ? theme.transparent1 : theme.transparent2;
 					}
 
 					NanoVG.nvgBeginPath(nvg);

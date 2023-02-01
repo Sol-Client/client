@@ -1,14 +1,10 @@
 package io.github.solclient.client.ui.component;
 
-import static org.lwjgl.opengl.GL11.GL_ALPHA_SCALE;
-
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.*;
-import org.lwjgl.nanovg.NanoVG;
-import org.lwjgl.opengl.GL11;
 
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
-import io.github.solclient.client.util.*;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;

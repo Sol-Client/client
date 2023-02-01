@@ -81,8 +81,8 @@ public class Colour {
 		return (value >> 24) & 0xFF;
 	}
 
-	public static Colour fromHSV(float hue, float saturation, float brightness) {
-		return new Colour(Color.HSBtoRGB(hue, saturation, brightness));
+	public static Colour fromHSV(float hue, float saturation, float value) {
+		return new Colour(Color.HSBtoRGB(hue, saturation, value));
 	}
 
 	public float[] getHSVValues() {
@@ -212,9 +212,8 @@ public class Colour {
 	}
 
 	public static Colour fromHexString(String text) {
-		if (text.length() != 7 && text.length() != 9) {
+		if (text.length() != 7 && text.length() != 9)
 			return null;
-		}
 
 		try {
 			return new Colour(Integer.valueOf(text.substring(1, 3), 16), Integer.valueOf(text.substring(3, 5), 16),

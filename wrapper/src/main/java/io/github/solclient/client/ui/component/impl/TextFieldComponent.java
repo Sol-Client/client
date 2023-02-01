@@ -87,7 +87,6 @@ public class TextFieldComponent extends Component {
 		if (!focused) {
 			focused = true;
 			ticks = 0;
-			return true;
 		}
 
 		return false;
@@ -102,16 +101,14 @@ public class TextFieldComponent extends Component {
 			NanoVG.nvgFill(nvg);
 		}
 
-		int textOffset = 4;
+		float textOffset = 4;
 		float y = getBounds().getHeight() / 2 - regularFont.getLineHeight(nvg) / 2 - 0.5F;
 
-		if (centred) {
-			textOffset = (int) ((getBounds().getWidth() / 2) - (regularFont.getWidth(nvg, text) / 2));
-		}
+		if (centred)
+			textOffset = (getBounds().getWidth() / 2) - (regularFont.getWidth(nvg, text) / 2);
 
-		if (hasIcon) {
+		if (hasIcon)
 			textOffset += 10;
-		}
 
 		if (selectionEnd != cursor) {
 			int start = selectionEnd > cursor ? cursor : selectionEnd;

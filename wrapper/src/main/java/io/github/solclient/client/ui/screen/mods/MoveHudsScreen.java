@@ -146,6 +146,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				int midX = screen.width / 2 - hud.getMultipliedBounds().getWidth() / 2;
 				int midY = screen.height / 2 - hud.getMultipliedBounds().getHeight() / 2;
 
+				NanoVG.nvgShapeAntiAlias(nvg, false);
 				if (Math.abs(hud.getMultipliedBounds().getY() + hud.getMultipliedBounds().getHeight() / 2
 						- screen.height / 2) <= 6) {
 					// horizontal
@@ -169,6 +170,8 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 
 					targetPosition = new Position(midX, targetPosition.getY());
 				}
+
+				NanoVG.nvgShapeAntiAlias(nvg, true);
 
 				hud.setPosition(targetPosition);
 			}

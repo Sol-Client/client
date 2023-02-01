@@ -20,6 +20,8 @@ public class Theme implements Cloneable {
 		DARK.accentFg = DARK.bg;
 		DARK.fgButton = new Colour(0xFFFFFFFF);
 		DARK.fgButtonHover = new Colour(0xFFDDDDDD);
+		DARK.transparent1 = new Colour(40, 40, 40);
+		DARK.transparent2 = new Colour(60, 60, 60);
 	}
 
 	public Colour bg;
@@ -33,6 +35,8 @@ public class Theme implements Cloneable {
 	public Colour accent;
 	public Colour accentHover;
 	public Colour accentFg;
+	public Colour transparent1;
+	public Colour transparent2;
 
 	// @formatter:off
 	public final Controller<Colour> bg() { return Controller.of(bg); }

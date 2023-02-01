@@ -712,17 +712,16 @@ public class MinecraftUtils {
 
 		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
-		NanoVG.nvgBeginFrame(nvg, mc.width, mc.height, 1);
-		NanoVG.nvgSave(nvg);
-
-		NanoVG.nvgFontSize(nvg, 8);
-
 		Window window = new Window(mc);
+
+		NanoVG.nvgBeginFrame(nvg, mc.width, mc.height, 1);
 		NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
 
 		task.run();
 
-		NanoVG.nvgRestore(nvg);
+		// the alpha test seems to prevent some colours rendering
+		// do it here so nothing can stop it :o
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		NanoVG.nvgEndFrame(nvg);
 		GL11.glPopAttrib();
 	}

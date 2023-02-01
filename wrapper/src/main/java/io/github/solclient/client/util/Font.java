@@ -18,6 +18,7 @@ public final class Font {
 
 	public void bind(long ctx) {
 		NanoVG.nvgFontFaceId(ctx, handle);
+		NanoVG.nvgFontSize(ctx, 8);
 	}
 
 	public void close() {
@@ -36,13 +37,11 @@ public final class Font {
 		float[] ascender = new float[1];
 		float[] descender = new float[1];
 		float[] lineh = new float[1];
-		NanoVG.nvgFontSize(ctx, 8);
 		NanoVG.nvgTextMetrics(ctx, ascender, descender, lineh);
 		return lineh[0];
 	}
 
 	public float renderString(long ctx, String string, float x, float y) {
-		bind(ctx);
 		return NanoVG.nvgText(ctx, x, y + getLineHeight(ctx), string);
 	}
 

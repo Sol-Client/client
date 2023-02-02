@@ -38,7 +38,7 @@ public final class ClassWrapper extends URLClassLoader {
 			"io.netty",
 			"com.mojang.authlib",
 			"com.mojang.util",
-			"com.google.gson",
+			"com.google",
 			"com.logisticscraft.occlusionculling",
 			"cc.cosmetica",
 			"net.hypixel",

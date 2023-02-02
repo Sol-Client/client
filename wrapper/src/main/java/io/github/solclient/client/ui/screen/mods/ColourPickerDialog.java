@@ -108,7 +108,7 @@ public class ColourPickerDialog extends BlockComponent {
 
 		a = new TextFieldComponent(TEXT_WIDTH, true);
 		add(a, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 154));
-		a.setText(Integer.toString(colour.getBlue()));
+		a.setText(Integer.toString(colour.getAlpha()));
 		a.onUpdate((text) -> setRGBA(3, text));
 
 		this.colour = colour;

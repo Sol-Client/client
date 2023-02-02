@@ -64,7 +64,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 		private final List<HudElement> selectedHuds = new ArrayList<>();
 
 		public MoveHudsComponent() {
-			add(ButtonComponent.done(() -> screen.close()),
+			add(ButtonComponent.done(() -> screen.close()).width(50),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() - 30,
 									defaultBounds.getWidth(), defaultBounds.getHeight())));

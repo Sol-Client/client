@@ -196,7 +196,8 @@ public class MinecraftUtils {
 	}
 
 	public void nvgScissor(long ctx, Rectangle rectangle) {
-		NanoVG.nvgIntersectScissor(ctx, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+		NanoVG.nvgIntersectScissor(ctx, rectangle.getX(), rectangle.getY(), rectangle.getWidth(),
+				rectangle.getHeight());
 	}
 
 	public void playClickSound(boolean ui) {
@@ -637,7 +638,8 @@ public class MinecraftUtils {
 		return paint;
 	}
 
-	public NVGPaint nvgMinecraftTexturePaint(long nvg, Identifier id, int x, int y, int width, int height, float angle) {
+	public NVGPaint nvgMinecraftTexturePaint(long nvg, Identifier id, int x, int y, int width, int height,
+			float angle) {
 		try {
 			return nvgTexturePaint(nvg, nvgMinecraftTexture(nvg, id), x, y, width, height, angle);
 		} catch (IOException error) {
@@ -724,6 +726,21 @@ public class MinecraftUtils {
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		NanoVG.nvgEndFrame(nvg);
 		GL11.glPopAttrib();
+	}
+
+	public void renderCheckerboard(long nvg, Colour a, Colour b, int startX, int startY, int width, int height, int scale) {
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				boolean square = x % 2 == 0;
+				if (y % 2 == 0)
+					square = !square;
+
+				NanoVG.nvgBeginPath(nvg);
+				NanoVG.nvgRect(nvg, startX + x * scale, startY + y * scale, scale, scale);
+				NanoVG.nvgFillColor(nvg, (square ? a : b).nvg());
+				NanoVG.nvgFill(nvg);
+			}
+		}
 	}
 
 }

@@ -199,12 +199,12 @@ public class ColourPickerDialog extends BlockComponent {
 		float hueX = hue * PICKER_WIDTH;
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgRect(nvg, PICKER_X + hueX - 2, PICKER_Y + HUE_Y - 1, 4, SLIDER_HIGHT + 2);
-
-		NanoVG.nvgFillColor(nvg, Colour.fromHSV(hue, 1, 1).nvg());
+		NanoVG.nvgRoundedRect(nvg, PICKER_X + hueX - 2, PICKER_Y + HUE_Y - 1, 4, SLIDER_HIGHT + 2, 1);
+		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
 		NanoVG.nvgFill(nvg);
-		NanoVG.nvgStrokeColor(nvg, Colour.WHITE.nvg());
-		NanoVG.nvgStroke(nvg);
+
+		MinecraftUtils.renderCheckerboard(nvg, theme.transparent1, theme.transparent2, PICKER_X, PICKER_Y + OPACITY_Y,
+				37, 2, 4);
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRect(nvg, PICKER_X, PICKER_Y + OPACITY_Y, PICKER_WIDTH, SLIDER_HIGHT);
@@ -216,15 +216,9 @@ public class ColourPickerDialog extends BlockComponent {
 		float opacityX = colour.getAlpha() / 255F * PICKER_WIDTH;
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgRect(nvg, PICKER_X + opacityX - 2, PICKER_Y + OPACITY_Y - 1, 4, SLIDER_HIGHT + 2);
-
-		NanoVG.nvgFillColor(nvg, theme.bg.lerp(Colour.WHITE, colour.getAlphaFloat()).nvg());
+		NanoVG.nvgRoundedRect(nvg, PICKER_X + opacityX - 2, PICKER_Y + OPACITY_Y - 1, 4, SLIDER_HIGHT + 2, 1);
+		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
 		NanoVG.nvgFill(nvg);
-		if (colour.getAlpha() > 128)
-			NanoVG.nvgStrokeColor(nvg, Colour.BLACK.nvg());
-		else
-			NanoVG.nvgStrokeColor(nvg, Colour.WHITE.nvg());
-		NanoVG.nvgStroke(nvg);
 
 		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
 		regularFont.renderString(nvg, I18n.translate("sol_client.preview"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 1);
@@ -234,8 +228,11 @@ public class ColourPickerDialog extends BlockComponent {
 		regularFont.renderString(nvg, I18n.translate("sol_client.blue"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 101);
 		regularFont.renderString(nvg, I18n.translate("sol_client.alpha"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 126);
 
+		MinecraftUtils.renderCheckerboard(nvg, theme.transparent1, theme.transparent2, PICKER_X + 200, PICKER_Y - 5, 13,
+				5, 4);
+
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgRect(nvg, PICKER_X + 200, PICKER_Y - 4, 50, 19);
+		NanoVG.nvgRect(nvg, PICKER_X + 200, PICKER_Y - 5, 52, 20);
 		NanoVG.nvgFillColor(nvg, colour.nvg());
 		NanoVG.nvgFill(nvg);
 

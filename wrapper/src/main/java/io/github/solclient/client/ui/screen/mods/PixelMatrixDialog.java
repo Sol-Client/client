@@ -94,9 +94,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 					if (pixels.get(x, y))
 						colour = Colour.WHITE;
 					else {
-						boolean square = false;
-						if (x % 2 == 0)
-							square = true;
+						boolean square = x % 2 == 0;
 						if (y % 2 == 0)
 							square = !square;
 						colour = square ? theme.transparent1 : theme.transparent2;

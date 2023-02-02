@@ -7,6 +7,7 @@ import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.util.MinecraftUtils;
 import lombok.*;
@@ -198,7 +199,7 @@ public class Colour {
 	}
 
 	public void bind() {
-		GL11.glColor4f(getRedFloat(), getGreenFloat(), getBlueFloat(), getAlphaFloat());
+		GlStateManager.color(getRedFloat(), getGreenFloat(), getBlueFloat(), getAlphaFloat());
 	}
 
 	public NVGColor nvg() {

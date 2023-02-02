@@ -54,6 +54,7 @@ sol_client.mod.sol_client.option.editHudKey=Edit HUD Key
 sol_client.mod.sol_client.option.uiColour=Accent Color
 sol_client.mod.sol_client.option.smoothUIColours=Smooth UI Colors
 sol_client.mod.sol_client.option.roundedUI=Rounded UI
+sol_client.mod.sol_client.option.openAnimation=Opening Animation
 sol_client.mod.sol_client.option.buttonClicks=Button Clicks
 sol_client.mod.sol_client.option.smoothScrolling=Smooth Scrolling
 sol_client.mod.sol_client.option.fancyFont=HD Font

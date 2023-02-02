@@ -1,9 +1,11 @@
 package io.github.solclient.client.ui.screen.mods;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.extension.KeyBindingExtension;
+import io.github.solclient.client.lib.penner.easing.*;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
@@ -74,7 +76,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		super.closeAll();
 	}
 
-	public static class ModsScreenComponent extends BlockComponent {
+	public static class ModsScreenComponent extends WindowComponent {
 
 		@Getter
 		private Mod mod;
@@ -191,6 +193,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 		@Override
 		public void render(ComponentRenderInfo info) {
+			applyAnimation();
+
 			super.render(info);
 
 			mouseX = (int) info.relativeMouseX();

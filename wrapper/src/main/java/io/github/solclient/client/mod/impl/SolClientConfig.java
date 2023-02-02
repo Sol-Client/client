@@ -37,6 +37,10 @@ public class SolClientConfig extends ConfigOnlyMod {
 
 	@Expose
 	@Option
+	public boolean openAnimation;
+
+	@Expose
+	@Option
 	public boolean buttonClicks = true;
 
 	@Expose

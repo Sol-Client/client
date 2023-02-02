@@ -36,7 +36,7 @@ public class QuickPlayPalette extends ComponentScreen {
 		Keyboard.enableRepeatEvents(false);
 	}
 
-	public static class QuickPlayPaletteComponent extends BlockComponent {
+	public static class QuickPlayPaletteComponent extends WindowComponent {
 
 		@Getter
 		private final QuickPlayMod mod;
@@ -70,6 +70,12 @@ public class QuickPlayPalette extends ComponentScreen {
 		@Override
 		protected Rectangle getDefaultBounds() {
 			return Rectangle.ofDimensions(250, 250);
+		}
+
+		@Override
+		public void render(ComponentRenderInfo info) {
+			applyAnimation();
+			super.render(info);
 		}
 
 		@Override

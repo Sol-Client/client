@@ -68,7 +68,7 @@ public abstract class ScreenMixin implements ScreenExtension {
 			GlStateManager.enableBlend();
 
 			client.getTextureManager().bindTexture(
-					new Identifier("textures/gui/sol_client_logo_with_text_" + MinecraftUtils.getTextureScale() + ".png"));
+					new Identifier("sol_client", "textures/gui/sol_client_logo_with_text_" + MinecraftUtils.getTextureScale() + ".png"));
 
 			DrawableHelper.drawTexture(width - 140, height - 40, 0, 0, 128, 32, 128, 32);
 		}

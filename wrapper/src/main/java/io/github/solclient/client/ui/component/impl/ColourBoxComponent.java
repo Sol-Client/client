@@ -25,12 +25,9 @@ public class ColourBoxComponent extends ColouredComponent {
 		NanoVG.nvgFill(nvg);
 
 
-		if (getColour().getAlpha() <= 50 || Math.abs(getColour().getLuminance() - theme.bg.getLuminance()) <= 40) {
-			NanoVG.nvgBeginPath(nvg);
+		if (getColour().needsOutline(theme.bg)) {
 			NanoVG.nvgStrokeColor(nvg, Colour.WHITE.nvg());
 			NanoVG.nvgStrokeWidth(nvg, 1);
-			NanoVG.nvgCircle(nvg, getBounds().getWidth() / 2, getBounds().getHeight() / 2,
-					getBounds().getWidth() / 2 + 0.5F);
 			NanoVG.nvgStroke(nvg);
 		}
 

@@ -488,7 +488,6 @@ sol_client.more_options=More options...
 
 sol_client.preview=Preview
 sol_client.hex=Hex
-sol_client.red=Red
-sol_client.green=Green
-sol_client.blue=Blue
+sol_client.rgb=RGB
 sol_client.alpha=Alpha
+sol_client.previous_colours=Previously Used

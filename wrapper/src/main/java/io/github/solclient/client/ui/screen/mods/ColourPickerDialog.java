@@ -1,9 +1,11 @@
 package io.github.solclient.client.ui.screen.mods;
 
+import java.util.LinkedList;
 import java.util.function.Consumer;
 
 import org.lwjgl.nanovg.*;
 
+import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
@@ -16,15 +18,17 @@ import net.minecraft.util.math.MathHelper;
 
 public class ColourPickerDialog extends BlockComponent {
 
-	private static final int TEXT_WIDTH = 61;
+	private static final int TEXT_WIDTH = 76;
 	private static final int DIALOG_HEIGHT = 210;
-	private static final int SLIDER_HIGHT = 8;
+	private static final int SLIDER_HIGHT = 10;
 	private static final int BOX_HEIGHT = 100;
-	private static final int HUE_Y = BOX_HEIGHT + 10;
-	private static final int OPACITY_Y = HUE_Y + SLIDER_HIGHT + 10;
+	private static final int HUE_Y = BOX_HEIGHT + 8;
+	private static final int OPACITY_Y = HUE_Y + SLIDER_HIGHT + 6;
 	private static final int PICKER_WIDTH = 150;
 	private static final int PICKER_X = 22;
 	private static final int PICKER_Y = 30;
+	private static final int PREVIOUS_X = PICKER_X + PICKER_WIDTH + 31;
+	private static final int PREVIOUS_Y = PICKER_Y + 108;
 
 	private ModifyingState state;
 	private Colour colour;
@@ -53,6 +57,10 @@ public class ColourPickerDialog extends BlockComponent {
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 		ButtonComponent done = ButtonComponent.done(() -> {
+			LinkedList<Colour> previousColours = Client.INSTANCE.getModUiState().getPreviousColours();
+			if (previousColours.contains(this.colour))
+				previousColours.remove(this.colour);
+			previousColours.addFirst(this.colour);
 			parent.setDialog(null);
 		});
 
@@ -80,7 +88,7 @@ public class ColourPickerDialog extends BlockComponent {
 		}
 
 		hex = new TextFieldComponent(TEXT_WIDTH, true);
-		add(hex, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 54));
+		add(hex, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 59));
 		hex.setText(colour.toHexString());
 		hex.onUpdate((text) -> {
 			Colour newColour = Colour.fromHexString(text);
@@ -91,23 +99,23 @@ public class ColourPickerDialog extends BlockComponent {
 			return true;
 		});
 
-		r = new TextFieldComponent(TEXT_WIDTH, true);
-		add(r, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 79));
+		r = new TextFieldComponent(24, true);
+		add(r, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 78));
 		r.setText(Integer.toString(colour.getRed()));
 		r.onUpdate((text) -> setRGBA(0, text));
 
-		g = new TextFieldComponent(TEXT_WIDTH, true);
-		add(g, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 104));
+		g = new TextFieldComponent(24, true);
+		add(g, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 71, 78));
 		g.setText(Integer.toString(colour.getGreen()));
 		g.onUpdate((text) -> setRGBA(1, text));
 
-		b = new TextFieldComponent(TEXT_WIDTH, true);
-		add(b, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 129));
+		b = new TextFieldComponent(24, true);
+		add(b, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 97, 78));
 		b.setText(Integer.toString(colour.getBlue()));
 		b.onUpdate((text) -> setRGBA(2, text));
 
 		a = new TextFieldComponent(TEXT_WIDTH, true);
-		add(a, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 154));
+		add(a, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 97));
 		a.setText(Integer.toString(colour.getAlpha()));
 		a.onUpdate((text) -> setRGBA(3, text));
 
@@ -128,6 +136,8 @@ public class ColourPickerDialog extends BlockComponent {
 	@Override
 	public void render(ComponentRenderInfo info) {
 		super.render(info);
+
+		NanoVG.nvgStrokeWidth(nvg, 1);
 
 		if (state == ModifyingState.SV) {
 			saturation = info.relativeMouseX() - PICKER_X;
@@ -154,8 +164,6 @@ public class ColourPickerDialog extends BlockComponent {
 			colour = colour.withAlpha((int) opacity);
 			change();
 		}
-
-		NanoVG.nvgStrokeWidth(nvg, 1);
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRect(nvg, PICKER_X, PICKER_Y, PICKER_WIDTH, BOX_HEIGHT);
@@ -204,7 +212,7 @@ public class ColourPickerDialog extends BlockComponent {
 		NanoVG.nvgFill(nvg);
 
 		MinecraftUtils.renderCheckerboard(nvg, theme.transparent1, theme.transparent2, PICKER_X, PICKER_Y + OPACITY_Y,
-				37, 2, 4);
+				30, 2, 5);
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRect(nvg, PICKER_X, PICKER_Y + OPACITY_Y, PICKER_WIDTH, SLIDER_HIGHT);
@@ -221,22 +229,42 @@ public class ColourPickerDialog extends BlockComponent {
 		NanoVG.nvgFill(nvg);
 
 		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
-		regularFont.renderString(nvg, I18n.translate("sol_client.preview"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 1);
-		regularFont.renderString(nvg, I18n.translate("sol_client.hex"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 26);
-		regularFont.renderString(nvg, I18n.translate("sol_client.red"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 51);
-		regularFont.renderString(nvg, I18n.translate("sol_client.green"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 76);
-		regularFont.renderString(nvg, I18n.translate("sol_client.blue"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 101);
-		regularFont.renderString(nvg, I18n.translate("sol_client.alpha"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 126);
+		regularFont.renderString(nvg, I18n.translate("sol_client.hex"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 31.5F);
+		regularFont.renderString(nvg, I18n.translate("sol_client.rgb"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 50.5F);
+		regularFont.renderString(nvg, I18n.translate("sol_client.alpha"), PICKER_X + PICKER_WIDTH + 12,
+				PICKER_Y + 69.5F);
 
-		MinecraftUtils.renderCheckerboard(nvg, theme.transparent1, theme.transparent2, PICKER_X + 200, PICKER_Y - 5, 13,
-				5, 4);
+		MinecraftUtils.renderCheckerboard(nvg, theme.transparent1, theme.transparent2, PICKER_X + PICKER_WIDTH + 12,
+				PICKER_Y, 27, 5, 4);
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgRect(nvg, PICKER_X + 200, PICKER_Y - 5, 52, 20);
+		NanoVG.nvgRect(nvg, PICKER_X + PICKER_WIDTH + 12, PICKER_Y, 108, 20);
 		NanoVG.nvgFillColor(nvg, colour.nvg());
 		NanoVG.nvgFill(nvg);
 
 		NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
+		NanoVG.nvgStrokeColor(nvg, Colour.WHITE.nvg());
+
+		String previousText = I18n.translate("sol_client.previous_colours");
+		regularFont.renderString(nvg, previousText, PREVIOUS_X + 35 - regularFont.getWidth(nvg, previousText) / 2,
+				PREVIOUS_Y - 14);
+
+		int index = 0;
+		for (int y = 0; y < 2; y++) {
+			for (int x = 0; x < 5; x++) {
+				Colour colour = Client.INSTANCE.getModUiState().getPreviousColours().get(index);
+
+				NanoVG.nvgBeginPath(nvg);
+				NanoVG.nvgCircle(nvg, PREVIOUS_X + x * 15 + 5, PREVIOUS_Y + y * 15 + 5, 5);
+				NanoVG.nvgFillColor(nvg, colour.nvg());
+				NanoVG.nvgFill(nvg);
+
+				if (colour.needsOutline(theme.bg))
+					NanoVG.nvgStroke(nvg);
+
+				index++;
+			}
+		}
 	}
 
 	private void hsvChange() {
@@ -271,16 +299,29 @@ public class ColourPickerDialog extends BlockComponent {
 
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
-		if (button == 0 && state == null && info.relativeMouseX() > PICKER_X
-				&& info.relativeMouseX() <= PICKER_X + PICKER_WIDTH) {
-			if (info.relativeMouseY() > PICKER_Y && info.relativeMouseY() <= PICKER_Y + BOX_HEIGHT)
-				state = ModifyingState.SV;
-			else if (info.relativeMouseY() > PICKER_Y + HUE_Y
-					&& info.relativeMouseY() <= PICKER_Y + HUE_Y + SLIDER_HIGHT)
-				state = ModifyingState.HUE;
-			else if (info.relativeMouseY() > PICKER_Y + OPACITY_Y
-					&& info.relativeMouseY() < PICKER_Y + OPACITY_Y + SLIDER_HIGHT)
-				state = ModifyingState.OPACITY;
+		if ((button == 0)) {
+			if (state == null && info.relativeMouseX() >= PICKER_X
+					&& info.relativeMouseX() <= PICKER_X + PICKER_WIDTH) {
+				if (info.relativeMouseY() >= PICKER_Y && info.relativeMouseY() <= PICKER_Y + BOX_HEIGHT)
+					state = ModifyingState.SV;
+				else if (info.relativeMouseY() >= PICKER_Y + HUE_Y
+						&& info.relativeMouseY() <= PICKER_Y + HUE_Y + SLIDER_HIGHT)
+					state = ModifyingState.HUE;
+				else if (info.relativeMouseY() >= PICKER_Y + OPACITY_Y
+						&& info.relativeMouseY() <= PICKER_Y + OPACITY_Y + SLIDER_HIGHT)
+					state = ModifyingState.OPACITY;
+			} else if (info.relativeMouseX() >= PREVIOUS_X && info.relativeMouseX() <= PREVIOUS_X + 70
+					&& info.relativeMouseY() >= PREVIOUS_Y && info.relativeMouseY() <= PREVIOUS_Y + 25
+					&& (info.relativeMouseX() - PREVIOUS_X) % 15 <= 10
+					&& (info.relativeMouseY() - PREVIOUS_Y) % 15 <= 10) {
+				// huh who uses object oriented programming these days mouse coordinate
+				// manipulation is so much more fun
+				int x = (int) ((info.relativeMouseX() - PREVIOUS_X) / 15);
+				int y = (int) ((info.relativeMouseY() - PREVIOUS_Y) / 15);
+				int index = x + y * 5;
+				colour = Client.INSTANCE.getModUiState().getPreviousColours().get(index);
+				fieldChange();
+			}
 		}
 
 		return super.mouseClicked(info, button);

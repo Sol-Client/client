@@ -195,6 +195,9 @@ public class Colour {
 	}
 
 	public String toHexString() {
+		if (getAlpha() == 255)
+			return String.format("#%02X%02X%02X", getRed(), getGreen(), getBlue());
+
 		return String.format("#%02X%02X%02X%02X", getRed(), getGreen(), getBlue(), getAlpha());
 	}
 
@@ -223,6 +226,10 @@ public class Colour {
 		} catch (NumberFormatException error) {
 			return null;
 		}
+	}
+
+	public boolean needsOutline(Colour bg) {
+		return getAlpha() <= 50 || Math.abs(getLuminance() - bg.getLuminance()) <= 40;
 	}
 
 }

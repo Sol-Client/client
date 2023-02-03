@@ -24,8 +24,6 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 	@Option
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	private float rotationSpeed = 100;
-	private final Map<ItemEntity, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
-																			// usage is prioritised.
 
 	@Override
 	public String getId() {
@@ -51,7 +49,7 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 
 			long now = System.nanoTime();
 
-			ItemData data = dataMap.computeIfAbsent(event.entity, (itemStack) -> new ItemData(System.nanoTime()));
+			ItemData data = (ItemData) event.entity;
 
 			long since = now - data.getLastUpdate();
 

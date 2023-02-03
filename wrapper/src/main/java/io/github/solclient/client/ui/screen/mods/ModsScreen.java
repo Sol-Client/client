@@ -1,15 +1,14 @@
 package io.github.solclient.client.ui.screen.mods;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.extension.KeyBindingExtension;
-import io.github.solclient.client.lib.penner.easing.*;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.ui.ScreenAnimation;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
 import io.github.solclient.client.util.*;
@@ -20,6 +19,7 @@ import net.minecraft.client.resource.language.I18n;
 public class ModsScreen extends PanoramaBackgroundScreen {
 
 	private final ModsScreenComponent component;
+	private final ScreenAnimation animation = new ScreenAnimation();
 
 	public ModsScreen() {
 		this(null);
@@ -55,6 +55,11 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		super.render(mouseX, mouseY, tickDelta);
 	}
 
+	@Override
+	protected void wrap(Runnable task) {
+		animation.wrap(task);
+	}
+
 	public void switchMod(Mod mod) {
 		component.switchMod(mod);
 	}
@@ -62,6 +67,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	@Override
 	public void removed() {
 		super.removed();
+		animation.close();
 		Client.INSTANCE.save();
 		Keyboard.enableRepeatEvents(false);
 	}
@@ -76,7 +82,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		super.closeAll();
 	}
 
-	public static class ModsScreenComponent extends WindowComponent {
+	public static class ModsScreenComponent extends BlockComponent {
 
 		@Getter
 		private Mod mod;
@@ -193,8 +199,6 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 		@Override
 		public void render(ComponentRenderInfo info) {
-			applyAnimation();
-
 			super.render(info);
 
 			mouseX = (int) info.relativeMouseX();

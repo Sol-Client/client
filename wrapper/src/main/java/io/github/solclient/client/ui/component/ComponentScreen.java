@@ -61,13 +61,17 @@ public class ComponentScreen extends Screen {
 				}
 			}
 
-			MinecraftUtils.withNvg(() -> rootWrapper.render(new ComponentRenderInfo(this.mouseX, this.mouseY, tickDelta)));
+			wrap(() -> rootWrapper.render(new ComponentRenderInfo(this.mouseX, this.mouseY, tickDelta)));
 
 			super.render(mouseX, mouseY, tickDelta);
 		} catch (Throwable error) {
 			LogManager.getLogger().error("Error rendering " + this, error);
 			client.setScreen(null);
 		}
+	}
+
+	protected void wrap(Runnable task) {
+		MinecraftUtils.withNvg(task, true);
 	}
 
 	@Override

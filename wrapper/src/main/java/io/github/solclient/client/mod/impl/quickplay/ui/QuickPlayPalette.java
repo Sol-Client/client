@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
+import io.github.solclient.client.ui.ScreenAnimation;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
@@ -12,6 +13,8 @@ import lombok.*;
 import net.minecraft.util.math.MathHelper;
 
 public class QuickPlayPalette extends ComponentScreen {
+
+	private final ScreenAnimation animation = new ScreenAnimation();
 
 	public QuickPlayPalette(QuickPlayMod mod) {
 		super(new Component() {
@@ -36,7 +39,12 @@ public class QuickPlayPalette extends ComponentScreen {
 		Keyboard.enableRepeatEvents(false);
 	}
 
-	public static class QuickPlayPaletteComponent extends WindowComponent {
+	@Override
+	protected void wrap(Runnable task) {
+		animation.wrap(task);
+	}
+
+	public static class QuickPlayPaletteComponent extends BlockComponent {
 
 		@Getter
 		private final QuickPlayMod mod;
@@ -70,12 +78,6 @@ public class QuickPlayPalette extends ComponentScreen {
 		@Override
 		protected Rectangle getDefaultBounds() {
 			return Rectangle.ofDimensions(250, 250);
-		}
-
-		@Override
-		public void render(ComponentRenderInfo info) {
-			applyAnimation();
-			super.render(info);
 		}
 
 		@Override

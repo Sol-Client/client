@@ -708,7 +708,7 @@ public class MinecraftUtils {
 		return ((MinecraftClientAccessor) MinecraftClient.getInstance()).getTicker().tickDelta;
 	}
 
-	public void withNvg(Runnable task) {
+	public void withNvg(Runnable task, boolean scale) {
 		long nvg = NanoVGManager.getNvg();
 		MinecraftClient mc = MinecraftClient.getInstance();
 
@@ -717,7 +717,9 @@ public class MinecraftUtils {
 		Window window = new Window(mc);
 
 		NanoVG.nvgBeginFrame(nvg, mc.width, mc.height, 1);
-		NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
+
+		if (scale)
+			NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
 
 		task.run();
 
@@ -728,7 +730,8 @@ public class MinecraftUtils {
 		GL11.glPopAttrib();
 	}
 
-	public void renderCheckerboard(long nvg, Colour a, Colour b, int startX, int startY, int width, int height, int scale) {
+	public void renderCheckerboard(long nvg, Colour a, Colour b, int startX, int startY, int width, int height,
+			int scale) {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				boolean square = x % 2 == 0;

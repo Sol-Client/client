@@ -71,7 +71,7 @@ public final class ClockMod extends SolClientSimpleHudMod {
 		}
 
 		// render analogue clock
-		MinecraftUtils.withNvg(() -> renderAnalogue(position, editMode));
+		MinecraftUtils.withNvg(() -> renderAnalogue(position, editMode), true);
 	}
 
 	@Override

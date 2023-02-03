@@ -102,7 +102,7 @@ public final class PixelMatrix {
 
 	public void nvgBind(long nvg, int x, int y, int fg, int bg) {
 		getTexture(fg, bg);
-		NanoVG.nvgFillPaint(nvg, MinecraftUtils.nvgTexturePaint(nvg, nvgImage, x, y, width, height));
+		NanoVG.nvgFillPaint(nvg, MinecraftUtils.nvgTexturePaint(nvg, nvgImage, x, y, width, height, 0));
 	}
 
 	public void set(BitSet pixels, int width, int height) {

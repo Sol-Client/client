@@ -54,6 +54,7 @@ sol_client.mod.sol_client.option.editHudKey=Edit HUD Key
 sol_client.mod.sol_client.option.uiColour=Accent Color
 sol_client.mod.sol_client.option.smoothUIColours=Smooth UI Colors
 sol_client.mod.sol_client.option.roundedUI=Rounded UI
+sol_client.mod.sol_client.option.openAnimation=Opening Animation
 sol_client.mod.sol_client.option.buttonClicks=Button Clicks
 sol_client.mod.sol_client.option.smoothScrolling=Smooth Scrolling
 sol_client.mod.sol_client.option.fancyFont=HD Font
@@ -137,7 +138,7 @@ sol_client.mod.potion_effects.option.duration=Duration
 sol_client.mod.potion_effects.option.durationColour=Duration Color
 sol_client.mod.potion_effects.option.spacing=Spacing
 
-sol_client.mod.armour.name=Armor and Equipment
+sol_client.mod.armour.name=Equipment
 sol_client.mod.armour.description=Display your armor and equipment with durability.
 
 sol_client.mod.armour.option.durability=Durability Text
@@ -484,3 +485,9 @@ sol_client.packs.folder=Folder (%d items)
 
 sol_client.no_results=No results :(
 sol_client.more_options=More options...
+
+sol_client.preview=Preview
+sol_client.hex=Hex
+sol_client.rgb=RGB
+sol_client.alpha=Alpha
+sol_client.previous_colours=Previously Used

@@ -1,5 +1,7 @@
 package io.github.solclient.client.util.data;
 
+import net.minecraft.util.math.MathHelper;
+
 /**
  * Alignment not aware of its axis.
  */
@@ -16,6 +18,13 @@ public enum Alignment {
 	 * Aligned to right or bottom.
 	 */
 	END;
+
+	public static Alignment fromNullable(Alignment alignment) {
+		if (alignment == null)
+			return START;
+
+		return alignment;
+	}
 
 	public int getPosition(int areaSize, int objectSize) {
 		switch (this) {

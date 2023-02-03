@@ -29,7 +29,7 @@ public class BlockComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		float radius = SolClientConfig.instance.roundedUI ? this.radius.get(this, 0F) : 0;
+		float radius = this.radius.get(this);
 
 		float strokeWidth = this.strokeWidth.get(this, 0F);
 		boolean stroke = strokeWidth > 0;

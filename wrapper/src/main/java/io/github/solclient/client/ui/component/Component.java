@@ -5,6 +5,7 @@ import java.util.function.BiPredicate;
 
 import org.lwjgl.nanovg.NanoVG;
 
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.*;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;
@@ -15,6 +16,10 @@ import net.minecraft.client.MinecraftClient;
 
 // 7 months later, I finally reintroduced the component API...
 public abstract class Component extends NanoVGManager {
+
+	@Setter
+	@Getter
+	protected static Theme theme = Theme.DARK;
 
 	protected MinecraftClient mc = MinecraftClient.getInstance();
 	protected ComponentScreen screen;
@@ -54,9 +59,8 @@ public abstract class Component extends NanoVGManager {
 	private void register(Component component, Controller<Rectangle> position) {
 		subComponentControllers.put(component, position);
 
-		if (screen != null) {
+		if (screen != null)
 			component.setScreen(screen);
-		}
 
 		component.setParent(this);
 	}
@@ -113,8 +117,8 @@ public abstract class Component extends NanoVGManager {
 	}
 
 	private static ComponentRenderInfo transform(ComponentRenderInfo info, Rectangle bounds) {
-		return new ComponentRenderInfo(info.mouseX() - bounds.getX(),
-				info.mouseY() - bounds.getY(), info.tickDelta());
+		return new ComponentRenderInfo(info.relativeMouseX() - bounds.getX(),
+				info.relativeMouseY() - bounds.getY(), info.tickDelta());
 	}
 
 	public void render(ComponentRenderInfo info) {
@@ -124,9 +128,9 @@ public abstract class Component extends NanoVGManager {
 			actualInfo = ((ScrollListComponent) this).reverseTranslation(info);
 		}
 
-		hovered = actualInfo.mouseX() > 0 && actualInfo.mouseY() > 0
-				&& actualInfo.mouseX() < getBounds().getWidth()
-				&& actualInfo.mouseY() < getBounds().getHeight();
+		hovered = actualInfo.relativeMouseX() > 0 && actualInfo.relativeMouseY() > 0
+				&& actualInfo.relativeMouseX() < getBounds().getWidth()
+				&& actualInfo.relativeMouseY() < getBounds().getHeight();
 
 		if (parent != null) {
 			hovered = hovered && (parent.isHovered() || parent.dialog == this);
@@ -141,7 +145,7 @@ public abstract class Component extends NanoVGManager {
 				drawDialogOverlay();
 			}
 
-			if (component.shouldSkip() || (shouldScissor() && shouldCull(component))) {
+			if (component.isHidden() || (shouldScissor() && shouldCull(component))) {
 				continue;
 			}
 
@@ -151,7 +155,7 @@ public abstract class Component extends NanoVGManager {
 			NanoVG.nvgTranslate(nvg, bounds.getX(), bounds.getY());
 
 			if (component.shouldScissor()) {
-				NanoVG.nvgScissor(nvg, 0, 0, bounds.getWidth(), bounds.getHeight());
+				NanoVG.nvgIntersectScissor(nvg, 0, 0, bounds.getWidth(), bounds.getHeight());
 			}
 
 			component.render(transform(info, bounds));
@@ -164,7 +168,7 @@ public abstract class Component extends NanoVGManager {
 		}
 	}
 
-	private boolean shouldSkip() {
+	public boolean isHidden() {
 		return visibilityController != null && !visibilityController.get(this, true);
 	}
 
@@ -201,7 +205,7 @@ public abstract class Component extends NanoVGManager {
 			return true;
 
 		for (Component component : subComponents) {
-			if (component.shouldSkip())
+			if (component.isHidden())
 				continue;
 
 			if (component.keyPressed(transform(info, getBounds(component)), keyCode, character))
@@ -219,7 +223,7 @@ public abstract class Component extends NanoVGManager {
 			return true;
 
 		for (Component component : subComponents) {
-			if (component.shouldSkip())
+			if (component.isHidden())
 				continue;
 
 			if (component.keyReleased(transform(info, getBounds(component)), keyCode, character))
@@ -231,7 +235,8 @@ public abstract class Component extends NanoVGManager {
 
 	public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside, boolean processed) {
 		if (dialog != null) {
-			boolean insideDialog = dialog.getBounds().contains(info.mouseX(), info.mouseY());
+			boolean insideDialog = dialog.getBounds().contains((int) info.relativeMouseX(),
+					(int) info.relativeMouseY());
 
 			if (dialog.mouseClickedAnywhere(transform(info, dialog.getBounds()), button, insideDialog, processed))
 				processed = true;
@@ -246,13 +251,14 @@ public abstract class Component extends NanoVGManager {
 
 		try {
 			for (Component component : subComponents) {
-				if (component.shouldSkip())
+				if (component.isHidden())
 					continue;
 
 				Rectangle bounds = getBounds(component);
 
 				if (component.mouseClickedAnywhere(transform(info, bounds), button,
-						inside && bounds.contains(info.mouseX(), info.mouseY()), processed))
+						inside && bounds.contains((int) info.relativeMouseX(), (int) info.relativeMouseY()),
+						processed))
 					return true;
 			}
 		} catch (ConcurrentModificationException error) {
@@ -279,20 +285,20 @@ public abstract class Component extends NanoVGManager {
 
 	public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
 		if (dialog != null && dialog.mouseReleasedAnywhere(transform(info, dialog.getBounds()), button,
-				dialog.getBounds().contains(info.mouseX(), info.mouseY())))
+				dialog.getBounds().contains((int) info.relativeMouseX(), (int) info.relativeMouseY())))
 			return true;
 
 		if (onReleaseAnywhere != null && onReleaseAnywhere.onClick(info, button))
 			return true;
 
 		for (Component component : subComponents) {
-			if (component.shouldSkip())
+			if (component.isHidden())
 				continue;
 
 			Rectangle bounds = getBounds(component);
 
 			if (component.mouseReleasedAnywhere(transform(info, bounds), button,
-					bounds.contains(info.mouseX(), info.mouseY())))
+					bounds.contains((int) info.relativeMouseX(), (int) info.relativeMouseY())))
 				return true;
 		}
 
@@ -317,7 +323,7 @@ public abstract class Component extends NanoVGManager {
 		for (Component component : subComponents) {
 			Rectangle bounds = getBounds(component);
 
-			if (!bounds.contains(info.mouseX(), info.mouseY()))
+			if (!bounds.contains((int) info.relativeMouseX(), (int) info.relativeMouseY()))
 				continue;
 
 			if (action.test(component, transform(info, bounds)))

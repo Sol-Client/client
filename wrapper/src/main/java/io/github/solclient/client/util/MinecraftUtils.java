@@ -169,14 +169,18 @@ public class MinecraftUtils {
 			endColour = startColour.withAlpha(0);
 		}
 
-		return new Colour(lerp(startColour.getRed(), endColour.getRed(), percent),
-				lerp(startColour.getGreen(), endColour.getGreen(), percent),
-				lerp(startColour.getBlue(), endColour.getBlue(), percent),
-				lerp(startColour.getAlpha(), endColour.getAlpha(), percent)).getValue();
+		return new Colour(lerpInt(startColour.getRed(), endColour.getRed(), percent),
+				lerpInt(startColour.getGreen(), endColour.getGreen(), percent),
+				lerpInt(startColour.getBlue(), endColour.getBlue(), percent),
+				lerpInt(startColour.getAlpha(), endColour.getAlpha(), percent)).getValue();
 	}
 
-	public int lerp(int start, int end, float percent) {
-		return Math.round(start + ((end - start) * percent));
+	public int lerpInt(int start, int end, float percent) {
+		return Math.round(lerp(start, end, percent));
+	}
+
+	public float lerp(float start, float end, float percent) {
+		return start + ((end - start) * percent);
 	}
 
 	public void scissor(Rectangle rectangle) {
@@ -192,7 +196,8 @@ public class MinecraftUtils {
 	}
 
 	public void nvgScissor(long ctx, Rectangle rectangle) {
-		NanoVG.nvgScissor(ctx, rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+		NanoVG.nvgIntersectScissor(ctx, rectangle.getX(), rectangle.getY(), rectangle.getWidth(),
+				rectangle.getHeight());
 	}
 
 	public void playClickSound(boolean ui) {
@@ -627,15 +632,16 @@ public class MinecraftUtils {
 		}
 	}
 
-	public NVGPaint nvgTexturePaint(long nvg, int image, int x, int y, int width, int height) {
+	public NVGPaint nvgTexturePaint(long nvg, int image, int x, int y, int width, int height, float angle) {
 		NVGPaint paint = NVGPaint.create();
-		NanoVG.nvgImagePattern(nvg, x, y, width, height, 0, image, 1, paint);
+		NanoVG.nvgImagePattern(nvg, x, y, width, height, angle, image, 1, paint);
 		return paint;
 	}
 
-	public NVGPaint nvgMinecraftTexturePaint(long nvg, Identifier id, int x, int y, int width, int height) {
+	public NVGPaint nvgMinecraftTexturePaint(long nvg, Identifier id, int x, int y, int width, int height,
+			float angle) {
 		try {
-			return nvgTexturePaint(nvg, nvgMinecraftTexture(nvg, id), x, y, width, height);
+			return nvgTexturePaint(nvg, nvgMinecraftTexture(nvg, id), x, y, width, height, angle);
 		} catch (IOException error) {
 			return NVGPaint.create().innerColor(Colour.WHITE.nvg());
 		}
@@ -702,25 +708,42 @@ public class MinecraftUtils {
 		return ((MinecraftClientAccessor) MinecraftClient.getInstance()).getTicker().tickDelta;
 	}
 
-	public void withNvg(Runnable task) {
+	public void withNvg(Runnable task, boolean scale) {
 		long nvg = NanoVGManager.getNvg();
 		MinecraftClient mc = MinecraftClient.getInstance();
 
 		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
-		NanoVG.nvgBeginFrame(nvg, mc.width, mc.height, 1);
-		NanoVG.nvgSave(nvg);
-
-		NanoVG.nvgFontSize(nvg, 8);
-
 		Window window = new Window(mc);
-		NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
+
+		NanoVG.nvgBeginFrame(nvg, mc.width, mc.height, 1);
+
+		if (scale)
+			NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
 
 		task.run();
 
-		NanoVG.nvgRestore(nvg);
+		// the alpha test seems to prevent some colours rendering
+		// do it here so nothing can stop it :o
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		NanoVG.nvgEndFrame(nvg);
 		GL11.glPopAttrib();
+	}
+
+	public void renderCheckerboard(long nvg, Colour a, Colour b, int startX, int startY, int width, int height,
+			int scale) {
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				boolean square = x % 2 == 0;
+				if (y % 2 == 0)
+					square = !square;
+
+				NanoVG.nvgBeginPath(nvg);
+				NanoVG.nvgRect(nvg, startX + x * scale, startY + y * scale, scale, scale);
+				NanoVG.nvgFillColor(nvg, (square ? a : b).nvg());
+				NanoVG.nvgFill(nvg);
+			}
+		}
 	}
 
 }

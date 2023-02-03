@@ -60,7 +60,7 @@ public class QuickPlayMod extends SolClientMod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (database != null && menuKey.wasPressed() && DetectedServer.current() == DetectedServer.HYPIXEL)
+		if (database != null && menuKey.wasPressed())
 			mc.setScreen(new QuickPlayPalette(this));
 	}
 

@@ -165,7 +165,7 @@ public class KeystrokesMod extends SolClientHudMod {
 				NanoVG.nvgStrokeWidth(nvg, 1);
 				NanoVG.nvgStrokeColor(nvg, textColour.nvg());
 				NanoVG.nvgStroke(nvg);
-			});
+			}, true);
 
 			y += 35;
 		}

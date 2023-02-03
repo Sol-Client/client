@@ -1,5 +1,7 @@
 package io.github.solclient.client.mod.impl.hud.crosshair;
 
+import org.lwjgl.opengl.GL11;
+
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
@@ -106,8 +108,8 @@ public class CrosshairMod extends SolClientHudMod {
 			else
 				MinecraftUtils.drawTexture(0, 0, 0, 0, 16, 16, 0);
 
-			GlStateManager.color(1, 1, 1, 1);
 			GlStateManager.popMatrix();
+			GlStateManager.color(1, 1, 1);
 		}
 	}
 

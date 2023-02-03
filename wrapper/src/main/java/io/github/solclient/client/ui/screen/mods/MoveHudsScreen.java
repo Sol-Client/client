@@ -3,7 +3,7 @@ package io.github.solclient.client.ui.screen.mods;
 import java.util.*;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.nanovg.*;
+import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.extension.KeyBindingExtension;
@@ -14,7 +14,6 @@ import io.github.solclient.client.ui.component.controller.AlignedBoundsControlle
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
 import io.github.solclient.client.util.data.*;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.Window;
 
 public class MoveHudsScreen extends PanoramaBackgroundScreen {
@@ -24,11 +23,11 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float tickDelta) {
+	public void render(int relativeMouseX, int relativeMouseY, float tickDelta) {
 		if (client.world == null) {
 			if (SolClientConfig.instance.fancyMainMenu) {
 				background = false;
-				drawPanorama(mouseX, mouseY, tickDelta);
+				drawPanorama(relativeMouseX, relativeMouseY, tickDelta);
 			} else
 				background = true;
 
@@ -36,7 +35,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				hud.render(true);
 		}
 
-		super.render(mouseX, mouseY, tickDelta);
+		super.render(relativeMouseX, relativeMouseY, tickDelta);
 	}
 
 	@Override
@@ -65,7 +64,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 		private final List<HudElement> selectedHuds = new ArrayList<>();
 
 		public MoveHudsComponent() {
-			add(ButtonComponent.done(() -> screen.close()),
+			add(ButtonComponent.done(() -> screen.close()).width(50),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() - 30,
 									defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -80,8 +79,8 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 
 			if (selectStart != null) {
 				selectedHuds.clear();
-				selectRect = selectStart.rectangle(info.mouseX() - selectStart.getX(),
-						info.mouseY() - selectStart.getY());
+				selectRect = selectStart.rectangle((int) info.relativeMouseX() - selectStart.getX(),
+						(int) info.relativeMouseY() - selectStart.getY());
 
 				// update selection
 				for (HudElement hud : Client.INSTANCE.getMods().getHuds()) {
@@ -104,14 +103,15 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				if (dragHudStart != null && dragHudStart.containsKey(hud)) {
 					Position hudStart = dragHudStart.get(hud);
 					// move it
-					if (info.mouseX() != dragMouseStart.getX() || info.mouseY() != dragMouseStart.getY())
-						hud.setPosition(hudStart.offset(info.mouseX() - dragMouseStart.getX(),
-								info.mouseY() - dragMouseStart.getY()));
+					if (info.relativeMouseX() != dragMouseStart.getX()
+							|| info.relativeMouseY() != dragMouseStart.getY())
+						hud.setPosition(hudStart.offset((int) info.relativeMouseX() - dragMouseStart.getX(),
+								(int) info.relativeMouseY() - dragMouseStart.getY()));
 				}
 
 				if (selectedHuds.contains(hud)) {
 					NanoVG.nvgBeginPath(nvg);
-					NanoVG.nvgFillColor(nvg, SolClientConfig.instance.uiColour.withAlpha(50).nvg());
+					NanoVG.nvgFillColor(nvg, theme.accent.withAlpha(50).nvg());
 					NanoVG.nvgRect(nvg, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 					NanoVG.nvgFill(nvg);
 				}
@@ -119,26 +119,26 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				NanoVG.nvgBeginPath(nvg);
 				NanoVG.nvgRect(nvg, bounds.getX() + lineWidth / 2, bounds.getY() + lineWidth / 2,
 						bounds.getWidth() - lineWidth, bounds.getHeight() - lineWidth);
-				NanoVG.nvgStrokeColor(nvg, SolClientConfig.instance.uiColour.nvg());
+				NanoVG.nvgStrokeColor(nvg, theme.accent.nvg());
 				NanoVG.nvgStroke(nvg);
 			}
 
 			if (selectRect != null) {
 				NanoVG.nvgBeginPath(nvg);
-				NanoVG.nvgFillColor(nvg, SolClientConfig.instance.uiColour.withAlpha(100).nvg());
+				NanoVG.nvgFillColor(nvg, theme.accent.withAlpha(100).nvg());
 				NanoVG.nvgRect(nvg, selectRect.getX(), selectRect.getY(), selectRect.getWidth(),
 						selectRect.getHeight());
 				NanoVG.nvgFill(nvg);
 
 				NanoVG.nvgBeginPath(nvg);
-				NanoVG.nvgStrokeColor(nvg, SolClientConfig.instance.uiColour.nvg());
+				NanoVG.nvgStrokeColor(nvg, theme.accent.nvg());
 				NanoVG.nvgRect(nvg, selectRect.getX() - lineWidth / 2, selectRect.getY() - lineWidth / 2,
 						selectRect.getWidth(), selectRect.getHeight());
 				NanoVG.nvgStroke(nvg);
 			}
 
 			if (dragHudStart != null && selectedHuds.size() == 1) {
-				NanoVG.nvgStrokeColor(nvg, SolClientConfig.instance.uiColour.nvg());
+				NanoVG.nvgStrokeColor(nvg, theme.accent.nvg());
 
 				HudElement hud = selectedHuds.get(0);
 				Position targetPosition = hud.getPosition();
@@ -146,6 +146,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				int midX = screen.width / 2 - hud.getMultipliedBounds().getWidth() / 2;
 				int midY = screen.height / 2 - hud.getMultipliedBounds().getHeight() / 2;
 
+				NanoVG.nvgShapeAntiAlias(nvg, false);
 				if (Math.abs(hud.getMultipliedBounds().getY() + hud.getMultipliedBounds().getHeight() / 2
 						- screen.height / 2) <= 6) {
 					// horizontal
@@ -169,6 +170,8 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 
 					targetPosition = new Position(midX, targetPosition.getY());
 				}
+
+				NanoVG.nvgShapeAntiAlias(nvg, true);
 
 				hud.setPosition(targetPosition);
 			}
@@ -202,7 +205,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 
 		@Override
 		public boolean mouseClicked(ComponentRenderInfo info, int button) {
-			Optional<HudElement> hudOpt = getHud(info.mouseX(), info.mouseY());
+			Optional<HudElement> hudOpt = getHud((int) info.relativeMouseX(), (int) info.relativeMouseY());
 
 			if (button == 0) {
 				if (hudOpt.isPresent()) {
@@ -219,13 +222,13 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 					}
 
 					dragHudStart = new HashMap<>();
-					dragMouseStart = new Position(info.mouseX(), info.mouseY());
+					dragMouseStart = new Position((int) info.relativeMouseX(), (int) info.relativeMouseY());
 					for (HudElement element : selectedHuds)
 						dragHudStart.put(element, element.getPosition());
 				} else if (selectStart == null) {
 					selectedHuds.clear();
 					dragHudStart = null;
-					selectStart = new Position(info.mouseX(), info.mouseY());
+					selectStart = new Position((int) info.relativeMouseX(), (int) info.relativeMouseY());
 				}
 			} else if (button == 1 && hudOpt.isPresent()) {
 				((ModsScreen) screen.getParentScreen()).switchMod(hudOpt.get().getMod());

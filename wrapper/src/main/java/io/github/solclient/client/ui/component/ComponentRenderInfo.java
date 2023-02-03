@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class ComponentRenderInfo {
 
-	private final int mouseX, mouseY;
+	private final float relativeMouseX, relativeMouseY;
 	private final float tickDelta;
 
 }

@@ -12,7 +12,7 @@ public class AlignedBoundsController implements Controller<Rectangle> {
 	private final Controller<Rectangle> baseController;
 
 	public AlignedBoundsController(Alignment xAlignment, Alignment yAlignment) {
-		this(xAlignment, yAlignment, (component, defaultBounds) -> defaultBounds);
+		this(Alignment.fromNullable(xAlignment), Alignment.fromNullable(yAlignment), (component, defaultBounds) -> defaultBounds);
 	}
 
 	@Override

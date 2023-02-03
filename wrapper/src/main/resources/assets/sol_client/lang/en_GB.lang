@@ -23,7 +23,6 @@ sol_client.mod.cps.option.separatorColour=Separator Colour
 sol_client.mod.potion_effects.option.titleColour=Label Colour
 sol_client.mod.potion_effects.option.durationColour=Duration Colour
 
-sol_client.mod.armour.name=Armour and Equipment
 sol_client.mod.armour.description=Display your armour and equipment with durability.
 sol_client.mod.armour.option.armour=Show Armour
 

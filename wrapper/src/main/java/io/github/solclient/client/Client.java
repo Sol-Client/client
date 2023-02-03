@@ -35,7 +35,7 @@ public final class Client {
 	@Getter
 	private final ModManager mods = new ModManager();
 	@Getter
-	private final PinManager pins = new PinManager();
+	private final ModUiStateManager modUiState = new ModUiStateManager();
 	@Getter
 	private final PacketApi packets = new PacketApi();
 	@Getter
@@ -52,7 +52,7 @@ public final class Client {
 	// for convenience with multimc
 	@Getter
 	private final Path configFolder = mc.runDirectory.toPath().resolve("config/sol-client"),
-			modsFile = configFolder.resolve("mods.json"), pinsFile = configFolder.resolve("pins.json");
+			modsFile = configFolder.resolve("mods.json"), modUiStateFile = configFolder.resolve("mod_ui_state.json");
 
 	// used before 1.9.x
 	private final Path legacyModsFile = mc.runDirectory.toPath().resolve("sol_client_mods.json");
@@ -80,9 +80,9 @@ public final class Client {
 		mods.loadStandard(modsFile);
 		addons.load(mods);
 		try {
-			pins.load(pinsFile);
+			modUiState.load(modUiStateFile);
 		} catch (Throwable error) {
-			LOGGER.error("Could not load pins", error);
+			LOGGER.error("Could not load mod ui state", error);
 		}
 
 		// register events
@@ -108,7 +108,7 @@ public final class Client {
 
 	public void save() {
 		try {
-			pins.save(pinsFile);
+			modUiState.save(modUiStateFile);
 		} catch (IOException error) {
 			LOGGER.error("Could not save pins", error);
 		}

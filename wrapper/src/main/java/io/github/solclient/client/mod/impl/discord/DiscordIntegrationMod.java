@@ -1,4 +1,4 @@
-package io.github.solclient.client.mod.impl.discordrpc;
+package io.github.solclient.client.mod.impl.discord;
 
 import java.io.File;
 import java.time.Instant;
@@ -15,7 +15,7 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
-import io.github.solclient.client.mod.impl.discordrpc.socket.DiscordSocket;
+import io.github.solclient.client.mod.impl.discord.socket.DiscordSocket;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.MinecraftUtils;

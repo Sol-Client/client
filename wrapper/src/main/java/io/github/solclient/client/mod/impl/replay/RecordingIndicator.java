@@ -13,8 +13,8 @@ import net.minecraft.util.Identifier;
 
 public class RecordingIndicator implements HudElement {
 
-	private static final Identifier RECORDING = new Identifier("textures/gui/sol_client_recording.png");
-	private static final Identifier PAUSED = new Identifier("textures/gui/sol_client_paused.png");
+	private static final Identifier RECORDING = new Identifier("replay_mod", "recording.png");
+	private static final Identifier PAUSED = new Identifier("replay_mod", "paused.png");
 
 	public static GuiRecordingControls guiControls;
 	private final SCReplayMod mod;

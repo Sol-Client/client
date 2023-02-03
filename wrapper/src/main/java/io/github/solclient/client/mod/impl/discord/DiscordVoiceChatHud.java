@@ -1,10 +1,10 @@
-package io.github.solclient.client.mod.impl.discordrpc;
+package io.github.solclient.client.mod.impl.discord;
 
 import java.util.*;
 
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.*;
-import io.github.solclient.client.mod.impl.discordrpc.socket.User;
+import io.github.solclient.client.mod.impl.discord.socket.User;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import lombok.Setter;

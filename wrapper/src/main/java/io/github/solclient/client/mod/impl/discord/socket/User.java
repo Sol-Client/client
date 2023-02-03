@@ -1,4 +1,4 @@
-package io.github.solclient.client.mod.impl.discordrpc.socket;
+package io.github.solclient.client.mod.impl.discord.socket;
 
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -74,7 +74,7 @@ public class User {
 		GlStateManager.color(1, 1, 1);
 
 		if (avatar == null) {
-			textures.bindTexture(new Identifier("textures/gui/discord_avatar_generic.png"));
+			textures.bindTexture(new Identifier("sol_client", "textures/gui/discord_avatar_generic.png"));
 			return;
 		}
 
@@ -83,7 +83,7 @@ public class User {
 
 			location = new Identifier("discord_avatar/" + avatar);
 			textures.loadTexture(location, new PlayerSkinTexture(null,
-					String.format(AVATAR_FORMAT, id, avatar, (int) (16 * scale)), null, null));
+					String.format(AVATAR_FORMAT, id, avatar, 16 * scale), null, null));
 
 			boundAvatar = avatar;
 			boundScale = scale;

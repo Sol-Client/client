@@ -1,4 +1,4 @@
-package io.github.solclient.client.mod.impl.discordrpc.socket;
+package io.github.solclient.client.mod.impl.discord.socket;
 
 import java.io.*;
 import java.net.*;
@@ -12,7 +12,7 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import com.google.gson.*;
 
-import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
+import io.github.solclient.client.mod.impl.discord.DiscordIntegrationMod;
 import io.github.solclient.util.*;
 
 /**

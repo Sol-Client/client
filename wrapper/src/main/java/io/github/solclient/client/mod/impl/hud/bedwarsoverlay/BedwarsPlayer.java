@@ -40,9 +40,9 @@ public class BedwarsPlayer {
             return team.getColorSection() + "§l" + team.getPrefix() + number + team.getColorSection() + "§o "  + getName();
         }
         if (disconnected) {
-            return team.getColorSection() + "§l§m" + team.getPrefix() + number + " §7§o§n"  + getName();
+            return team.getColorSection() + "§l§m" + team.getPrefix() + number + "§7 §o§n"  + getName();
         }
-        return team.getColorSection() + "§l§m" + team.getPrefix() + number + " §7§m"  + getName();
+        return team.getColorSection() + "§l§m" + team.getPrefix() + number + "§7 §m"  + getName();
     }
 
     public void updateListEntry(PlayerListEntry entry) {

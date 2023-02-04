@@ -100,7 +100,7 @@ public final class ModManager implements Iterable<Mod> {
 				// integration
 				new CosmeticaMod(),
 				new HypixelAdditionsMod(),
-                new BedwarsMod(),
+                BedwarsMod.getInstance(),
 				new QuickPlayMod(),
 				new DiscordIntegrationMod()
 		);

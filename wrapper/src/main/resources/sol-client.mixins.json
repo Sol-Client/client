@@ -99,6 +99,7 @@
 		"mod.MixinScrollableTooltipsMod$MixinHandledScreen",
 		"mod.MixinTNTTimerMod$MixinTntEntityRenderer",
 		"mod.MixinTabListMod$MixinPlayerListHud",
+        "mod.MixinBedwars$MixinBedwarsPlayerListHud",
 		"mod.MixinTweaksMod$MixinInGameHud",
 		"mod.MixinTweaksMod$MixinEnchantment",
 		"mod.MixinTweaksMod$MixinInventoryScreen",

@@ -1,18 +1,22 @@
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
 
 import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
+import io.github.solclient.client.event.impl.ScoreboardRenderEvent;
+import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.scoreboard.ScoreboardPlayerScore;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class BedwarsGame {
 
@@ -21,6 +25,9 @@ public class BedwarsGame {
     private final static Pattern FINAL_KILL = Pattern.compile("FINAL KILL!");
     private final static Pattern BED_DESTROY = Pattern.compile("^\\s*?BED DESTRUCTION > (\\w+) Bed");
     private final static Pattern TEAM_ELIMINATED = Pattern.compile("^\\s*?TEAM ELIMINATED > (\\w+) Team");
+
+    private final static Pattern GAME_END = Pattern.compile("^ +1st Killer - ?\\[?\\w*\\+*\\]? \\w+ - \\d+(?: Kills?)?$");
+
     private final static Pattern[] DIED = {
             Pattern.compile(formatPlaceholder("^{killed} fell into the void.(?: FINAL KILL!)?\\s*?")),
             Pattern.compile(formatPlaceholder("^{killed} died.(?: FINAL KILL!)?\\s*?"))
@@ -181,6 +188,9 @@ public class BedwarsGame {
 
     private final static Pattern[] KILLS_COMPILED = new Pattern[KILLS.length];
 
+    private int seconds = 0;
+    private Text topBarText = new LiteralText("");
+
     private static String formatPlaceholder(String input) {
         return input
                 .replace("{killed}", "(\\b[A-Za-z0-9_§]{3,16}\\b)")
@@ -195,19 +205,23 @@ public class BedwarsGame {
         }
     }
 
-    private final List<BedwarsPlayer> players = new ArrayList<>();
+    // Use a treemap here for the O(log(n)) time
+    private final Map<String, BedwarsPlayer> players = new TreeMap<>();
     private final MinecraftClient mc;
+    @Getter
     private boolean started = false;
+    private final BedwarsMod mod;
 
 
-    public BedwarsGame() {
+    public BedwarsGame(BedwarsMod mod) {
         mc = MinecraftClient.getInstance();
+        this.mod = mod;
     }
 
     public void onStart() {
         debug("Game started");
-        this.started = true;
         players.clear();
+        Map<BedwarsTeam, List<PlayerListEntry>> teamPlayers = new HashMap<>();
         for (PlayerListEntry player : mc.player.networkHandler.getPlayerList()) {
             String name = mc.inGameHud.getPlayerListWidget().getPlayerName(player).replaceAll("§.", "");
             if (name.charAt(1) != ' ') {
@@ -217,12 +231,45 @@ public class BedwarsGame {
             if (team == null) {
                 continue;
             }
-            players.add(new BedwarsPlayer(team, player));
+            teamPlayers.compute(team, (t, entries) -> {
+                if (entries == null) {
+                    List<PlayerListEntry> players = new ArrayList<>();
+                    players.add(player);
+                    return players;
+                }
+                entries.add(player);
+                return entries;
+            });
         }
+        for (Map.Entry<BedwarsTeam, List<PlayerListEntry>> teamPlayerList : teamPlayers.entrySet()) {
+            teamPlayerList.getValue().sort(Comparator.comparing(p -> p.getProfile().getName()));
+            List<PlayerListEntry> value = teamPlayerList.getValue();
+            for (int i = 0; i < value.size(); i++) {
+                PlayerListEntry e = value.get(i);
+                players.put(e.getProfile().getName(), new BedwarsPlayer(teamPlayerList.getKey(), e, i + 1));
+            }
+        }
+        this.started = true;
+    }
+
+    public Text getTopBarText() {
+        return topBarText;
+    }
+
+    private String calculateTopBarText() {
+        int minute = seconds / 60;
+        int second = seconds % 60;
+        String time = minute + ":";
+        if (second < 10) {
+            time += "0" + second;
+        } else {
+            time += second;
+        }
+        return time;
     }
 
     public Optional<BedwarsPlayer> getPlayer(String name) {
-        return players.stream().filter(player -> player.getName().equals(name)).findFirst();
+        return Optional.ofNullable(players.getOrDefault(name, null));
     }
 
     private void debug(String message) {
@@ -230,19 +277,12 @@ public class BedwarsGame {
     }
 
     private void died(BedwarsPlayer player, @Nullable BedwarsPlayer killer, boolean finalDeath) {
-        if (killer == null) {
-            if (finalDeath) {
-                debug(player.coloredName() + " §7was final killed.");
-            } else {
-                debug(player.coloredName() + " §7was killed.");
-            }
-        } else {
-            if (finalDeath) {
-                debug(player.coloredName() + " §7was final killed by " + killer.coloredName());
-            } else {
-                debug(player.coloredName() + " §7was killed by " + killer.coloredName());
-            }
-        }
+        player.died();
+        mod.gameLog.died(player, killer, true);
+    }
+
+    public boolean isTeamEliminated(BedwarsTeam team) {
+        return players.values().stream().filter(b -> b.getTeam() == team).allMatch(BedwarsPlayer::isFinalKilled);
     }
 
     public void onChatMessage(String rawMessage, ReceiveChatMessageEvent event) {
@@ -268,16 +308,23 @@ public class BedwarsGame {
             })) {
                 return;
             }
-            if (matched(BED_DESTROY, rawMessage, m -> debug(m.group(1) + " Team's bed was broken"))) {
+            if (matched(BED_DESTROY, rawMessage, m -> BedwarsTeam.fromName(m.group(1)).ifPresent(this::bedDestroyed))) {
                 return;
             }
-            if (matched(TEAM_ELIMINATED, rawMessage, m -> debug(m.group(1) + " Team was eliminated"))) {
+            if (matched(DISCONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(this::disconnected))) {
                 return;
             }
-            if (matched(DISCONNECT, rawMessage, m -> debug(m.group(1) + " has disconnected"))) {
+            if (matched(RECONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(this::reconnected))) {
                 return;
             }
-            if (matched(RECONNECT, rawMessage, m -> debug(m.group(1) + " has reconnected"))) {
+            if (matched(GAME_END, rawMessage, m -> {
+                debug("END OF THE GAME!!!");
+                BedwarsMod.getInstance().gameEnd();
+            })) {
+
+                return;
+            }
+            if (matched(TEAM_ELIMINATED, rawMessage, m -> BedwarsTeam.fromName(m.group(1)).ifPresent(this::teamEliminated))) {
                 return;
             }
         } catch (Exception e) {
@@ -285,9 +332,64 @@ public class BedwarsGame {
         }
     }
 
-    public void tick() {}
+    private void teamEliminated(BedwarsTeam team) {
+        players.values().stream().filter(b -> b.getTeam() == team).forEach(b -> {
+            b.setBed(false);
+            b.died();
+        });
+    }
 
-    private static boolean matched(Pattern pattern, String input, Consumer<Matcher> consumer) {
+    private void bedDestroyed(BedwarsTeam team) {
+        players.values().stream().filter(b -> b.getTeam() == team).forEach(b -> b.setBed(false));
+    }
+
+    private void disconnected(BedwarsPlayer player) {
+        player.disconnected();
+    }
+
+    private void reconnected(BedwarsPlayer player) {
+        player.reconnected();
+    }
+
+    public void onScoreboardRender(ScoreboardRenderEvent event) {
+        Scoreboard scoreboard = event.objective.getScoreboard();
+        Collection<ScoreboardPlayerScore> scores = scoreboard.getAllPlayerScores(event.objective);
+        List<ScoreboardPlayerScore> filteredScores = scores.stream()
+                                                           .filter(p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#"))
+                                                           .collect(Collectors.toList());
+        Collections.reverse(filteredScores);
+        if (filteredScores.size() < 3) {
+            return;
+        }
+        ScoreboardPlayerScore score = filteredScores.get(2);
+        Team team = scoreboard.getPlayerTeam(score.getPlayerName());
+        String timer = Team.decorateName(team, score.getPlayerName());
+        if (!timer.contains(":")) {
+            return;
+        }
+        int seconds;
+        try {
+            seconds = Integer.parseInt(timer.split(":")[1].substring(0, 2));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        int target = (60 - seconds) % 60;
+        if (this.seconds % 60 != target) {
+            // Update seconds
+            while (this.seconds % 60 != target) {
+                this.seconds++;
+            }
+            topBarText = new LiteralText(calculateTopBarText());
+        }
+    }
+
+    public void tick() {
+        int currentTick = mc.inGameHud.getTicks();
+        players.values().forEach(p -> p.tick(currentTick));
+    }
+
+    protected static boolean matched(Pattern pattern, String input, Consumer<Matcher> consumer) {
         Optional<Matcher> matcher = matched(pattern, input);
         if (!matcher.isPresent()) {
             return false;
@@ -296,7 +398,7 @@ public class BedwarsGame {
         return true;
     }
 
-    private static boolean matched(Pattern[] pattern, String input, Consumer<Matcher> consumer) {
+    protected static boolean matched(Pattern[] pattern, String input, Consumer<Matcher> consumer) {
         Optional<Matcher> matcher = matched(pattern, input);
         if (!matcher.isPresent()) {
             return false;
@@ -305,7 +407,7 @@ public class BedwarsGame {
         return true;
     }
 
-    private static Optional<Matcher> matched(Pattern[] pattern, String input) {
+    protected static Optional<Matcher> matched(Pattern[] pattern, String input) {
         for (Pattern p : pattern) {
             Optional<Matcher> m = matched(p, input);
             if (m.isPresent()) {
@@ -315,12 +417,29 @@ public class BedwarsGame {
         return Optional.empty();
     }
 
-    private static Optional<Matcher> matched(Pattern pattern, String input) {
+    protected static Optional<Matcher> matched(Pattern pattern, String input) {
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             return Optional.of(matcher);
         }
         return Optional.empty();
+    }
+
+    public void updateEntries(List<PlayerListEntry> entries) {
+        // Update latencies and other information for entries
+        entries.forEach(entry ->
+                getPlayer(entry.getProfile().getName()).ifPresent(player -> player.updateListEntry(entry))
+        );
+    }
+
+    public List<PlayerListEntry> getTabPlayerList(List<PlayerListEntry> original) {
+        updateEntries(original);
+        return players.values().stream().filter(b -> !b.isFinalKilled()).sorted((b1, b2) -> {
+            if (b1.getTeam() == b2.getTeam()) {
+                return Integer.compare(b1.getNumber(), b2.getNumber());
+            }
+            return Integer.compare(b1.getTeam().ordinal(), b2.getTeam().ordinal());
+        }).map(BedwarsPlayer::getProfile).collect(Collectors.toList());
     }
 
 }

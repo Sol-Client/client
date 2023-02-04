@@ -204,9 +204,9 @@ public abstract class Mod {
 		this.pinned = pinned;
 
 		if (pinned) {
-			Client.INSTANCE.getPins().notifyPin(this);
+			Client.INSTANCE.getModUiState().notifyPin(this);
 		} else {
-			Client.INSTANCE.getPins().notifyUnpin(this);
+			Client.INSTANCE.getModUiState().notifyUnpin(this);
 		}
 	}
 

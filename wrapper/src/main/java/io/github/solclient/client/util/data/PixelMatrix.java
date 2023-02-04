@@ -76,7 +76,7 @@ public final class PixelMatrix {
 		// lazy load for those wishing to use this class just for pixel storage
 		if (texture == null) {
 			texture = new NativeImageBackedTexture(width, height);
-			nvgImage = NanoVGGL3.nvglCreateImageFromHandle(NanoVGManager.getNvg(), texture.getGlId(), width, height, 0);
+			nvgImage = NanoVGGL2.nvglCreateImageFromHandle(NanoVGManager.getNvg(), texture.getGlId(), width, height, 0);
 		}
 
 		// reupload
@@ -102,7 +102,7 @@ public final class PixelMatrix {
 
 	public void nvgBind(long nvg, int x, int y, int fg, int bg) {
 		getTexture(fg, bg);
-		NanoVG.nvgFillPaint(nvg, MinecraftUtils.nvgTexturePaint(nvg, nvgImage, x, y, width, height));
+		NanoVG.nvgFillPaint(nvg, MinecraftUtils.nvgTexturePaint(nvg, nvgImage, x, y, width, height, 0));
 	}
 
 	public void set(BitSet pixels, int width, int height) {

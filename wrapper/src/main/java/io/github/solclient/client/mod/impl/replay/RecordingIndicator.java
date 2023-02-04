@@ -11,10 +11,10 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 
-public class RecordingIndicator extends BaseHudElement {
+public class RecordingIndicator implements HudElement {
 
-	private static final Identifier RECORDING = new Identifier("textures/gui/sol_client_recording.png");
-	private static final Identifier PAUSED = new Identifier("textures/gui/sol_client_paused.png");
+	private static final Identifier RECORDING = new Identifier("replay_mod", "recording.png");
+	private static final Identifier PAUSED = new Identifier("replay_mod", "paused.png");
 
 	public static GuiRecordingControls guiControls;
 	private final SCReplayMod mod;
@@ -64,23 +64,28 @@ public class RecordingIndicator extends BaseHudElement {
 	}
 
 	@Override
-	public HudPosition getHudPosition() {
+	public Position getConfiguredPosition() {
 		return mod.recordingIndicatorPosition;
 	}
 
 	@Override
-	public void setHudPosition(HudPosition position) {
+	public void setPosition(Position position) {
 		mod.recordingIndicatorPosition = position;
 	}
 
 	@Override
-	public float getHudScale() {
+	public float getScale() {
 		return mod.recordingIndicatorScale / 100F;
 	}
 
 	@Override
 	public Rectangle getBounds(Position position) {
 		return new Rectangle(position.getX() - 2, position.getY() - 2, 75, 20);
+	}
+
+	@Override
+	public Position determineDefaultPosition(int width, int height) {
+		return new Position(width - 80, 5);
 	}
 
 }

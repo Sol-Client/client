@@ -3,11 +3,10 @@ package io.github.solclient.client.ui.component;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.*;
 import org.lwjgl.nanovg.NanoVG;
-import org.lwjgl.opengl.GL11;
 
-import io.github.solclient.client.extension.MinecraftClientExtension;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
-import io.github.solclient.client.util.NanoVGManager;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
@@ -20,9 +19,8 @@ public class ComponentScreen extends Screen {
 	protected Screen parentScreen;
 	protected Component root;
 	private Component rootWrapper;
-	private int mouseX;
-	private int mouseY;
 	protected boolean background = true;
+	private float mouseX, mouseY;
 
 	public ComponentScreen(Component root) {
 		this.parentScreen = MinecraftClient.getInstance().currentScreen;
@@ -34,10 +32,9 @@ public class ComponentScreen extends Screen {
 			}
 
 		};
-
-		rootWrapper.add(root, new ParentBoundsController());
 		rootWrapper.setScreen(this);
 
+		rootWrapper.add(root, new ParentBoundsController());
 		this.root = root;
 	}
 
@@ -48,8 +45,13 @@ public class ComponentScreen extends Screen {
 	@Override
 	public void render(int mouseX, int mouseY, float tickDelta) {
 		try {
-			this.mouseX = mouseX;
-			this.mouseY = mouseY;
+			Window window = new Window(client);
+
+			if (client.currentScreen == this) {
+				this.mouseX = Mouse.getX() / (float) window.getScaleFactor();
+				this.mouseY = window.getHeight() - Mouse.getY() / (float) window.getScaleFactor();
+			} else
+				this.mouseX = this.mouseY = 0;
 
 			if (background) {
 				if (client.world == null) {
@@ -59,29 +61,17 @@ public class ComponentScreen extends Screen {
 				}
 			}
 
-			long nvg = NanoVGManager.getNvg();
-
-			GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-
-			NanoVG.nvgBeginFrame(nvg, client.width, client.height, 1);
-			NanoVG.nvgSave(nvg);
-
-			NanoVG.nvgFontSize(nvg, 8);
-
-			Window window = new Window(client);
-			NanoVG.nvgScale(nvg, window.getScaleFactor(), window.getScaleFactor());
-
-			rootWrapper.render(new ComponentRenderInfo(mouseX, mouseY, tickDelta));
-
-			NanoVG.nvgRestore(nvg);
-			NanoVG.nvgEndFrame(nvg);
-			GL11.glPopAttrib();
+			wrap(() -> rootWrapper.render(new ComponentRenderInfo(this.mouseX, this.mouseY, tickDelta)));
 
 			super.render(mouseX, mouseY, tickDelta);
 		} catch (Throwable error) {
 			LogManager.getLogger().error("Error rendering " + this, error);
 			client.setScreen(null);
 		}
+	}
+
+	protected void wrap(Runnable task) {
+		MinecraftUtils.withNvg(task, true);
 	}
 
 	@Override
@@ -129,16 +119,14 @@ public class ComponentScreen extends Screen {
 
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
-		if (!rootWrapper.mouseClickedAnywhere(getInfo(), button, true, false)) {
+		if (!rootWrapper.mouseClickedAnywhere(getInfo(), button, true, false))
 			super.mouseClicked(x, y, button);
-		}
 	}
 
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		if (!rootWrapper.mouseReleasedAnywhere(getInfo(), state, true)) {
+		if (!rootWrapper.mouseReleasedAnywhere(getInfo(), state, true))
 			super.mouseReleased(mouseX, mouseY, state);
-		}
 	}
 
 	@Override
@@ -161,7 +149,7 @@ public class ComponentScreen extends Screen {
 	}
 
 	private ComponentRenderInfo getInfo() {
-		return new ComponentRenderInfo(mouseX, mouseY, MinecraftClientExtension.getInstance().getTicker().tickDelta);
+		return new ComponentRenderInfo(mouseX, mouseY, MinecraftUtils.getTickDelta());
 	}
 
 }

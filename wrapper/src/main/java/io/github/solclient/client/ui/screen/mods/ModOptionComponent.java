@@ -19,7 +19,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.*;
 import net.minecraft.client.resource.language.I18n;
 
-public class ModOptionComponent extends BlockComponent {
+public class ModOptionComponent extends Component {
 
 	@Getter
 	private ModOption<?> option;
@@ -27,53 +27,56 @@ public class ModOptionComponent extends BlockComponent {
 	private int enumWidth;
 
 	public ModOptionComponent(ModOption<?> option) {
-		super(Colour.BLACK_128, 8, 0);
-
 		this.option = option;
 
-		add(new LabelComponent(option.getName()),
-				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
-						(component, defaultBounds) -> new Rectangle(defaultBounds.getY(), defaultBounds.getY(),
-								defaultBounds.getWidth(), defaultBounds.getHeight())));
+		add(new LabelComponent(option.getName()), new AlignedBoundsController(Alignment.START, Alignment.CENTRE));
 
-		Controller<Rectangle> defaultBoundController = new AlignedBoundsController(Alignment.END, Alignment.CENTRE,
-				(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - defaultBounds.getY(),
-						defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight()));
+		Controller<Rectangle> defaultBoundController = new AlignedBoundsController(Alignment.END, Alignment.CENTRE);
 
 		if (option.getType() == boolean.class) {
-			ModOption<Boolean> booleanOption = (ModOption<Boolean>) option;
-			add(new TickboxComponent(booleanOption.getValue(), booleanOption::setValue, this), defaultBoundController);
+			ModOption<Boolean> booleanOption = option.unsafeCast();
+			add(new ToggleComponent(booleanOption.getValue(), booleanOption::setValue), defaultBoundController);
 		} else if (option.getType() == Colour.class) {
 			ModOption<Colour> colourOption = option.unsafeCast();
 
-			add(new ColourBoxComponent((component, defaultColour) -> colourOption.getValue(), this),
-					defaultBoundController);
+			ColourBoxComponent colour = new ColourBoxComponent((component, defaultColour) -> colourOption.getValue());
+			add(colour, defaultBoundController);
 
-			onClick((info, button) -> {
+			add(new LabelComponent((component, defaultText) -> ((Colour) option.getValue()).toHexString()).scaled(0.8F),
+					(component, defaultBounds) -> {
+						Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
+						return new Rectangle(
+								(int) (getBounds().getWidth()
+										- regularFont.getWidth(nvg, ((LabelComponent) component).getText()) - 12),
+								defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
+					});
+
+			colour.onClick((info, button) -> {
 				if (button != 0)
 					return false;
 
 				MinecraftUtils.playClickSound(true);
-				screen.getRoot().setDialog(new ColourPickerDialog(colourOption, (Colour) option.getValue(),
-						(colour) -> colourOption.setValue(colour)));
+				screen.getRoot().setDialog(
+						new ColourPickerDialog(colourOption, colourOption.getValue(), colourOption::setValue));
 				return true;
 			});
 		} else if (option.getType() == KeyBinding.class) {
 			KeyBinding binding = (KeyBinding) option.getValue();
 
-			add(new LabelComponent(
+			ButtonComponent editButton = new ButtonComponent(
 					(component, defaultText) -> KeyBindingExtension.from(binding).getPrefix()
 							+ GameOptions.getFormattedNameForKeyCode(binding.getCode()),
-					new AnimatedColourController((component, defaultColour) -> {
+					theme.button(), (component, defaultColour) -> {
 						if (listening)
 							return new Colour(255, 255, 85);
 						else if (MinecraftUtils.isConflicting(binding))
 							return new Colour(255, 85, 85);
 
-						return isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON;
-					})), defaultBoundController);
+						return theme.fg;
+					}).width(45).height(16);
+			add(editButton, defaultBoundController);
 
-			onClick((info, button) -> {
+			editButton.onClick((info, button) -> {
 				if (button == 0) {
 					MinecraftUtils.playClickSound(true);
 
@@ -142,8 +145,8 @@ public class ModOptionComponent extends BlockComponent {
 				Enum<?>[] fields = (Enum<?>[]) valuesField.invoke(null);
 
 				add(new LabelComponent((component, defaultText) -> option.getValue().toString(),
-						new AnimatedColourController((component,
-								defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)),
+						new AnimatedColourController(
+								(component, defaultColour) -> isHovered() ? theme.fgButtonHover : theme.fgButton)),
 						(component, defaultBounds) -> {
 							if (enumWidth == 0) {
 								for (Enum<?> field : fields) {
@@ -157,7 +160,7 @@ public class ModOptionComponent extends BlockComponent {
 
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(
-									getBounds().getWidth() - enumWidth - 16 + (enumWidth / 2)
+									getBounds().getWidth() - enumWidth - 11 + (enumWidth / 2)
 											- ((int) regularFont.getWidth(nvg, ((LabelComponent) component).getText())
 													/ 2),
 									defaultComponentBounds.getY(), defaultComponentBounds.getWidth(),
@@ -166,14 +169,12 @@ public class ModOptionComponent extends BlockComponent {
 
 				Component previous;
 
-				add(new ScaledIconComponent("sol_client_next", 8, 8, new AnimatedColourController((component,
-						defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON)),
+				add(new IconComponent("next", 8, 8, new AnimatedColourController(
+						(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton)),
 						defaultBoundController);
 
-				add(previous = new ScaledIconComponent("sol_client_previous", 8, 8,
-						new AnimatedColourController(
-								(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER
-										: Colour.LIGHT_BUTTON)),
+				add(previous = new IconComponent("prev", 8, 8, new AnimatedColourController(
+						(component, defaultColour) -> component.isHovered() ? theme.fgButtonHover : theme.fgButton)),
 						(component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(defaultComponentBounds.getX() - enumWidth - 12,
@@ -223,17 +224,18 @@ public class ModOptionComponent extends BlockComponent {
 
 			if (sliderOption.shouldShowValue()) {
 				add(new LabelComponent((component, defaultText) -> I18n.translate(sliderOption.getFormat(),
-						new DecimalFormat("0.##").format(option.getValue()))), (component, defaultBounds) -> {
+						new DecimalFormat("0.##").format(option.getValue()))).scaled(0.8F),
+						(component, defaultBounds) -> {
 							Rectangle defaultComponentBounds = defaultBoundController.get(component, defaultBounds);
 							return new Rectangle(
 									(int) (getBounds().getWidth()
-											- regularFont.getWidth(nvg, ((LabelComponent) component).getText()) - 117),
+											- regularFont.getWidth(nvg, ((LabelComponent) component).getText()) - 97),
 									defaultComponentBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
 						});
 			}
 
 			add(new SliderComponent(sliderOption.getMin(), sliderOption.getMax(), sliderOption.getStep(),
-					sliderOption.getValue(), sliderOption::setValue, this), (component, defaultBounds) -> {
+					(float) option.getValue(), (value) -> sliderOption.setValue(value)), (component, defaultBounds) -> {
 						defaultBounds = defaultBoundController.get(component, defaultBounds);
 						return new Rectangle(defaultBounds.getX() - 5, defaultBounds.getY(), defaultBounds.getWidth(),
 								defaultBounds.getHeight());
@@ -241,12 +243,12 @@ public class ModOptionComponent extends BlockComponent {
 		} else if (option instanceof FileOption) {
 			FileOption fileOption = (FileOption) option;
 
-			add(new LabelComponent((component, defaultText) -> I18n.translate(fileOption.getEditText()),
-					new AnimatedColourController((component, defaultColour) -> isHovered() ? Colour.LIGHT_BUTTON_HOVER
-							: Colour.LIGHT_BUTTON)),
-					defaultBoundController);
+			ButtonComponent editFile = new ButtonComponent(
+					(component, defaultText) -> I18n.translate(fileOption.getEditText()), theme.button(), theme.fg())
+					.width(50).height(16);
+			add(editFile, defaultBoundController);
 
-			onClick((info, button) -> {
+			editFile.onClick((info, button) -> {
 				if (button == 0) {
 					MinecraftUtils.playClickSound(true);
 					try {
@@ -271,7 +273,8 @@ public class ModOptionComponent extends BlockComponent {
 			field.setText(textOption.getValue());
 			add(field, defaultBoundController);
 		} else if (option.getType() == PixelMatrix.class) {
-			onClick((info, button) -> {
+			PixelMatrixComponent matrix = new PixelMatrixComponent((PixelMatrix) option.getValue());
+			matrix.onClick((info, button) -> {
 				if (button != 0)
 					return false;
 
@@ -280,13 +283,13 @@ public class ModOptionComponent extends BlockComponent {
 				return true;
 			});
 
-			add(new PixelMatrixComponent((PixelMatrix) option.getValue()), defaultBoundController);
+			add(matrix, defaultBoundController);
 		}
 	}
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return Rectangle.ofDimensions(300, 20);
+		return Rectangle.ofDimensions(230, 20);
 	}
 
 }

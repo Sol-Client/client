@@ -17,13 +17,11 @@ public final class PixelMatrixDialog extends BlockComponent {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final int SCALE = 12;
-	private static final Colour COLOUR_1 = new Colour(30, 30, 30);
-	private static final Colour COLOUR_2 = new Colour(50, 50, 50);
 
 	private final PixelMatrix pixels;
 
 	public PixelMatrixDialog(ModOption<PixelMatrix> option) {
-		super(Colour.DISABLED_MOD, 12, 0);
+		super(theme.bg, 12, 0);
 
 		pixels = option.getValue();
 
@@ -35,45 +33,39 @@ public final class PixelMatrixDialog extends BlockComponent {
 		add(ButtonComponent.done(() -> parent.setDialog(null)), new AlignedBoundsController(Alignment.CENTRE,
 				Alignment.END, (component, defaultBounds) -> defaultBounds.offset(0, -8)));
 
-		add(new ScaledIconComponent("sol_client_share", 16, 16, new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
-				.onClick((info, button) -> {
-					if (button != 0)
-						return false;
+		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("copy").width(20).onClick((info, button) -> {
+			if (button != 0)
+				return false;
 
-					MinecraftUtils.playClickSound(true);
-					copy();
-					return true;
-				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> defaultBounds.offset(13, -20)));
-		add(new ScaledIconComponent("sol_client_import", 16, 16, new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
-				.onClick((info, button) -> {
-					if (button != 0)
-						return false;
+			MinecraftUtils.playClickSound(true);
+			copy();
+			return true;
+		}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+				(component, defaultBounds) -> defaultBounds.offset(10, -25)));
+		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("paste").width(20).onClick((info, button) -> {
+			if (button != 0)
+				return false;
 
-					MinecraftUtils.playClickSound(true);
-					paste();
-					return true;
-				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> defaultBounds.offset(13, 0)));
-		add(new ScaledIconComponent("sol_client_delete", 16, 16, new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
-				.onClick((info, button) -> {
-					if (button != 0)
-						return false;
+			MinecraftUtils.playClickSound(true);
+			paste();
+			return true;
+		}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+				(component, defaultBounds) -> defaultBounds.offset(10, 0)));
+		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("clear").width(20).onClick((info, button) -> {
+			if (button != 0)
+				return false;
 
-					MinecraftUtils.playClickSound(true);
-					pixels.clear();
-					return true;
-				}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-						(component, defaultBounds) -> defaultBounds.offset(13, 20)));
+			MinecraftUtils.playClickSound(true);
+			pixels.clear();
+			return true;
+		}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
+				(component, defaultBounds) -> defaultBounds.offset(10, 25)));
 	}
 
 	private void copy() {
 		try {
 			Screen.setClipboard(LCCH.stringify(pixels));
-		} catch (IllegalArgumentException error) {
+		} catch (Throwable error) {
 			LOGGER.error("Failed to convert to LCCH", error);
 		}
 	}
@@ -81,7 +73,7 @@ public final class PixelMatrixDialog extends BlockComponent {
 	private void paste() {
 		try {
 			LCCH.parse(Screen.getClipboard(), pixels);
-		} catch (IllegalArgumentException error) {
+		} catch (Throwable error) {
 			LOGGER.error("Failed to load from LCCH", error);
 		}
 	}
@@ -102,17 +94,10 @@ public final class PixelMatrixDialog extends BlockComponent {
 					if (pixels.get(x, y))
 						colour = Colour.WHITE;
 					else {
-						if (x % 2 == 0)
-							colour = COLOUR_1;
-						else
-							colour = COLOUR_2;
-
-						if (y % 2 == 0) {
-							if (colour == COLOUR_1)
-								colour = COLOUR_2;
-							else
-								colour = COLOUR_1;
-						}
+						boolean square = x % 2 == 0;
+						if (y % 2 == 0)
+							square = !square;
+						colour = square ? theme.transparent1 : theme.transparent2;
 					}
 
 					NanoVG.nvgBeginPath(nvg);
@@ -120,8 +105,8 @@ public final class PixelMatrixDialog extends BlockComponent {
 					NanoVG.nvgRect(nvg, x * SCALE, y * SCALE, SCALE, SCALE);
 					NanoVG.nvgFill(nvg);
 
-					if (info.getRelativeMouseX() >= x * SCALE && info.getRelativeMouseX() < x * SCALE + SCALE
-							&& info.getRelativeMouseY() >= y * SCALE && info.getRelativeMouseY() < y * SCALE + SCALE) {
+					if (info.relativeMouseX() >= x * SCALE && info.relativeMouseX() < x * SCALE + SCALE
+							&& info.relativeMouseY() >= y * SCALE && info.relativeMouseY() < y * SCALE + SCALE) {
 						if (x != lastGridX || y != lastGridY) {
 							if (leftMouseDown)
 								pixels.set(x, y);

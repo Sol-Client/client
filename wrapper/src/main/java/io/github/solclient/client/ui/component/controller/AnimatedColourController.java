@@ -21,20 +21,17 @@ public class AnimatedColourController implements Controller<Colour> {
 	@Override
 	public Colour get(Component component, Colour defaultValue) {
 		Colour baseValue = base.get(component, defaultValue);
-
 		if (!baseValue.equals(current)) {
 			last = current;
 			current = baseValue;
 			currentTime = System.currentTimeMillis();
 		}
 
-		return animate(SolClientConfig.instance.smoothUIColours
-				? Math.max(0, (System.currentTimeMillis() - currentTime) / ((float) duration))
-				: 1);
+		return animate(Math.max(0, (System.currentTimeMillis() - currentTime) / ((float) duration)));
 	}
 
-	private Colour animate(float progress) {
-		if (last == null)
+	public Colour animate(float progress) {
+		if (last == null || progress == 1)
 			return current;
 
 		return last.lerp(current, progress);

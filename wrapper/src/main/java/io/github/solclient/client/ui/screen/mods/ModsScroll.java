@@ -11,13 +11,15 @@ import io.github.solclient.client.ui.component.controller.AlignedBoundsControlle
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 import io.github.solclient.client.util.data.Alignment;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import net.minecraft.client.resource.language.I18n;
 
 @RequiredArgsConstructor
-public class ModsScroll extends ScrollListComponent {
+public final class ModsScroll extends ScrollListComponent {
 
 	private final ModsScreenComponent screen;
+	@Getter
+	private ModCategoryComponent pinned;
 
 	@Override
 	protected int getScrollStep() {
@@ -31,15 +33,19 @@ public class ModsScroll extends ScrollListComponent {
 
 	public void load() {
 		clear();
+		pinned = null;
 
 		if (screen.getMod() == null) {
 			if (screen.getFilter().isEmpty()) {
 				for (ModCategory category : ModCategory.values()) {
-					if (category.shouldShowName())
-						add(new LabelComponent(category.toString()));
+					if (category.getMods().isEmpty())
+						continue;
 
-					for (Mod mod : category.getMods())
-						add(new ModListing(mod, screen, category == ModCategory.PINNED));
+					ModCategoryComponent component = new ModCategoryComponent(category, screen);
+					if (category == ModCategory.PINNED)
+						pinned = component;
+
+					add(component);
 				}
 			} else {
 				String filter = screen.getFilter();
@@ -60,7 +66,7 @@ public class ModsScroll extends ScrollListComponent {
 							new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
 
 				for (Mod mod : filtered)
-					add(new ModListing(mod, screen, false));
+					add(new ModEntry(mod, screen, false));
 			}
 		} else {
 			for (ModOption<?> option : screen.getMod().getOptions())
@@ -75,16 +81,16 @@ public class ModsScroll extends ScrollListComponent {
 
 		int scroll = 0;
 
-		if (Client.INSTANCE.getPins().getMods().size() == 0) {
+		if (Client.INSTANCE.getModUiState().getPins().size() == 0) {
 			// this is the first one
-			add(0, new LabelComponent(ModCategory.PINNED.toString()));
-			scroll += regularFont.getLineHeight(nvg) + 2 + getSpacing();
+			add(0, pinned = new ModCategoryComponent(ModCategory.PINNED, screen));
+			scroll += 13;
 		}
 
-		add(Client.INSTANCE.getPins().getMods().size() + 1, new ModListing(mod, screen, true));
+		pinned.add(Client.INSTANCE.getModUiState().getPins().size() + 1, new ModEntry(mod, screen, true));
 
-		scroll += getScrollStep();
-
+		if (Client.INSTANCE.getModUiState().isExpanded(ModCategory.PINNED))
+			scroll += getScrollStep();
 		snapTo(getScroll() + scroll);
 	}
 
@@ -94,24 +100,22 @@ public class ModsScroll extends ScrollListComponent {
 		}
 
 		int scroll = 0;
-		int index = Client.INSTANCE.getPins().getMods().indexOf(mod);
+		int index = Client.INSTANCE.getModUiState().getPins().indexOf(mod);
 
-		if (Client.INSTANCE.getPins().getMods().size() == 1) {
+		if (Client.INSTANCE.getModUiState().getPins().size() == 1) {
 			// this is the last one
 			remove(0);
-			scroll += regularFont.getLineHeight(nvg) + 2 + getSpacing();
-		} else {
-			index++;
+			scroll += 13;
 		}
 
-		remove(index);
+		pinned.remove(index + 1);
 
-		scroll += getScrollStep();
+		if (Client.INSTANCE.getModUiState().isExpanded(ModCategory.PINNED))
+			scroll += getScrollStep();
 		scroll = getScroll() - scroll;
 
-		if (scroll < 0) {
+		if (scroll < 0)
 			scroll = 0;
-		}
 
 		snapTo(scroll);
 	}

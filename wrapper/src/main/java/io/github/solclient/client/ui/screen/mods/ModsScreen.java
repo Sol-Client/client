@@ -6,8 +6,9 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.ui.ScreenAnimation;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
 import io.github.solclient.client.util.*;
@@ -17,16 +18,21 @@ import net.minecraft.client.resource.language.I18n;
 
 public class ModsScreen extends PanoramaBackgroundScreen {
 
-	private ModsScreenComponent component;
+	private final ModsScreenComponent component;
+	private final ScreenAnimation animation = new ScreenAnimation();
 
 	public ModsScreen() {
 		this(null);
 	}
 
 	public ModsScreen(Mod mod) {
-		super(new ModsScreenComponent(mod));
+		super(new Component() {
+			{
+				add(new ModsScreenComponent(mod), new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
+			}
+		});
 
-		component = (ModsScreenComponent) root;
+		component = (ModsScreenComponent) root.getSubComponents().get(0);
 		background = false;
 	}
 
@@ -44,10 +50,14 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				drawPanorama(mouseX, mouseY, tickDelta);
 			} else
 				background = true;
-		} else
-			renderBackground();
+		}
 
 		super.render(mouseX, mouseY, tickDelta);
+	}
+
+	@Override
+	protected void wrap(Runnable task) {
+		animation.wrap(task);
 	}
 
 	public void switchMod(Mod mod) {
@@ -57,6 +67,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	@Override
 	public void removed() {
 		super.removed();
+		animation.close();
 		Client.INSTANCE.save();
 		Keyboard.enableRepeatEvents(false);
 	}
@@ -71,18 +82,19 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		super.closeAll();
 	}
 
-	public static class ModsScreenComponent extends Component {
+	public static class ModsScreenComponent extends BlockComponent {
 
 		@Getter
 		private Mod mod;
 		private TextFieldComponent search;
+		private ButtonComponent back;
 		@Getter
 		private ModsScroll scroll;
 		private int noModsScroll;
 		private boolean singleModMode;
 
-		private ModListing targetDraggingMod;
-		private ModListing draggingMod;
+		private ModEntry targetDraggingMod;
+		private ModEntry draggingMod;
 		private boolean drop;
 		private ModGhost ghost;
 		private int modIndex;
@@ -92,75 +104,68 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		private int dragY;
 
 		public ModsScreenComponent(Mod startingMod) {
+			super(theme.bg, 12, 0);
+
 			if (startingMod != null) {
 				singleModMode = true;
 			}
 
 			add(new LabelComponent((component, defaultText) -> mod != null ? I18n.translate(mod.getName())
-					: I18n.translate("sol_client.mod.screen.title")),
-					new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
-							(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), 10,
-									defaultBounds.getWidth(), defaultBounds.getHeight())));
+					: I18n.translate("sol_client.mod.screen.title")).scaled(1.45F),
+					new AlignedBoundsController(Alignment.START, Alignment.START, (component, defaultBounds) -> {
+						Rectangle result = new Rectangle(getBaseX(), getBaseX() + 3, defaultBounds.getWidth(),
+								defaultBounds.getHeight());
+						if (!singleModMode && mod != null)
+							result = result.offset(18, 0);
 
-			add(scroll = new ModsScroll(this), (component, defaultBounds) -> new Rectangle(0, 25,
-					getBounds().getWidth(), getBounds().getHeight() - 62));
+						return result;
+					}));
 
-			add(ButtonComponent.done(() -> {
-				if (mod == null || singleModMode) {
-					if (!search.getText().isEmpty()) {
-						search.setText("");
-						search.setFocused(false);
-						scroll.load();
-					} else {
-						getScreen().close();
-					}
-				} else {
-					switchMod(null);
-				}
-			}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
-					(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - (singleModMode ? 0 : 53),
-							getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
+			add(scroll = new ModsScroll(this), (component, defaultBounds) -> {
+				int y = 60;
+				if (mod != null)
+					y -= 15;
+				return new Rectangle(0, y, getBounds().getWidth(), getBounds().getHeight() - y);
+			});
+
+			ButtonComponent done = ButtonComponent.done(() -> getScreen().close()).width(50);
+			add(done, new AlignedBoundsController(Alignment.END, Alignment.START,
+					(component, defaultBounds) -> defaultBounds.offset(-getBaseX(), getBaseX())));
 
 			if (!singleModMode) {
-				add(new ButtonComponent("sol_client.hud.edit", new AnimatedColourController((component,
-						defaultColour) -> component.isHovered() ? new Colour(255, 165, 65) : new Colour(255, 120, 20)))
-						.onClick((info, button) -> {
-							if (button == 0) {
-								MinecraftUtils.playClickSound(true);
-								mc.setScreen(new MoveHudsScreen());
-								return true;
-							}
+				add(new ButtonComponent("sol_client.hud.edit", theme.button(), theme.fg()).onClick((info, button) -> {
+					if (button == 0) {
+						MinecraftUtils.playClickSound(true);
+						mc.setScreen(new MoveHudsScreen());
+						return true;
+					}
 
-							return false;
-						}).withIcon("sol_client_hud"),
-						new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
-								(component, defaultBounds) -> new Rectangle(defaultBounds.getX() + 53,
-										getBounds().getHeight() - defaultBounds.getHeight() - 10, 100, 20)));
+					return false;
+				}).withIcon("edit").width(60), (component, bounds) -> bounds
+						.offset(done.getBounds().getX() - bounds.getWidth() - 4, getBaseX()));
 			}
 
-			search = new TextFieldComponent(100, false).autoFlush().onUpdate((ignored) -> {
+			search = new TextFieldComponent(0, false).autoFlush().onUpdate((ignored) -> {
 				scroll.snapTo(0);
 				scroll.load();
 				return true;
-			}).withPlaceholder("sol_client.mod.screen.search").withIcon("sol_client_search");
-
-			add(new ScaledIconComponent("sol_client_about", 16, 16,
-					new AnimatedColourController((component,
-							defaultColour) -> component.isHovered() ? Colour.LIGHT_BUTTON_HOVER : Colour.LIGHT_BUTTON))
+			}).withPlaceholder("sol_client.mod.screen.search").withIcon("search");
+			back = new ButtonComponent("", theme.button(), theme.fg()).width(16).height(16).withIcon("back")
 					.onClick((info, button) -> {
-						if (button != 0) {
+						if (button != 0)
 							return false;
-						}
 
 						MinecraftUtils.playClickSound(true);
-						setDialog(new AboutDialog());
+						switchMod(null, false);
 						return true;
-					}),
-					new AlignedBoundsController(Alignment.END, Alignment.START,
-							(component, defaultBounds) -> new Rectangle(defaultBounds.getX() - 3,
-									defaultBounds.getY() + 3, defaultBounds.getWidth(), defaultBounds.getHeight())));
+					});
 
 			switchMod(startingMod, true);
+		}
+
+		// based on start x for mods
+		private int getBaseX() {
+			return getBounds().getWidth() / 2 - 230 / 2;
 		}
 
 		public void singleModMode() {
@@ -172,51 +177,55 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		}
 
 		public void switchMod(Mod mod, boolean first) {
-			this.mod = mod;
-			scroll.load();
-
 			if (mod == null) {
 				scroll.snapTo(noModsScroll);
-				add(0, search, (component, defaultBounds) -> new Rectangle(6, 6, defaultBounds.getWidth(),
-						defaultBounds.getHeight()));
+				if (this.mod != null || first)
+					add(0, search, (component, bounds) -> new Rectangle(getBaseX(), 38,
+							getBounds().getWidth() - getBaseX() * 2, bounds.getHeight()));
+				if (!first)
+					remove(back);
 			} else {
 				noModsScroll = scroll.getScroll();
 				scroll.snapTo(0);
-				if (!first) {
+				if (!first)
 					remove(search);
-				}
+				if (!singleModMode && this.mod == null)
+					add(back, (component, defaultBounds) -> defaultBounds.offset(getBaseX(), getBaseX() + 2));
 			}
+
+			this.mod = mod;
+			scroll.load();
 		}
 
 		@Override
 		public void render(ComponentRenderInfo info) {
 			super.render(info);
 
-			mouseX = info.getRelativeMouseX();
-			mouseY = info.getRelativeMouseY();
+			mouseX = (int) info.relativeMouseX();
+			mouseY = (int) info.relativeMouseY();
 
 			if (targetDraggingMod != null) {
 				draggingMod = targetDraggingMod;
 				targetDraggingMod = null;
-				getScroll().remove(draggingMod);
+				getScroll().getPinned().remove(draggingMod);
 				ghost = new ModGhost();
-				getScroll().add(modIndex, ghost);
+				getScroll().getPinned().add(modIndex, ghost);
 				add(draggingMod, (component, defaultBounds) -> defaultBounds.offset(mouseX - dragX, mouseY - dragY));
 			} else if (draggingMod != null) {
 				if (drop) {
 					drop = false;
 					remove(draggingMod);
-					getScroll().remove(ghost);
-					getScroll().add(modIndex, draggingMod);
+					getScroll().getPinned().remove(ghost);
+					getScroll().getPinned().add(modIndex, draggingMod);
 
-					Client.INSTANCE.getPins().reorder(draggingMod.getMod(), modIndex - 1);
+					Client.INSTANCE.getModUiState().reorderPin(draggingMod.getMod(), modIndex - 1);
 
 					draggingMod = null;
 				} else {
 					int ghostY = ghost.getBounds().getY();
 					int mouse = draggingMod.getBounds().getY() - getScroll().getBounds().getY()
 							+ getScroll().getScroll();
-					getScroll().remove(ghost);
+					getScroll().getPinned().remove(ghost);
 
 					if (mouse > ghostY + 20) {
 						modIndex++;
@@ -224,23 +233,22 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						modIndex--;
 					}
 
-					int max = Client.INSTANCE.getPins().getMods().size();
+					int max = Client.INSTANCE.getModUiState().getPins().size();
 					if (modIndex < 1) {
 						modIndex = 1;
 					} else if (modIndex > max) {
 						modIndex = max;
 					}
 
-					getScroll().add(modIndex, ghost);
+					getScroll().getPinned().add(modIndex, ghost);
 				}
 			}
 		}
 
 		@Override
 		public boolean mouseClickedAnywhere(ComponentRenderInfo info, int button, boolean inside, boolean processed) {
-			if (draggingMod != null) {
+			if (draggingMod != null)
 				return false;
-			}
 
 			return super.mouseClickedAnywhere(info, button, inside, processed);
 		}
@@ -249,9 +257,11 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
 			if ((screen.getRoot().getDialog() == null
 					&& (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER))
-					&& !scroll.getSubComponents().isEmpty()) {
+					&& (mod != null || !search.getText().isEmpty()) && !scroll.getSubComponents().isEmpty()) {
 				Component firstComponent = scroll.getSubComponents().get(0);
-				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModListing ? 1 : 0, true,
+				if (mod != null)
+					firstComponent = firstComponent.getSubComponents().get(1);
+				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModEntry ? 1 : 0, true,
 						false);
 			} else if (draggingMod == null && mod == null && keyCode == Keyboard.KEY_F && hasControlDown()
 					&& !hasShiftDown() && !hasAltDown()) {
@@ -286,15 +296,20 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			return search.getText();
 		}
 
-		void notifyDrag(ModListing listing, int xOffset, int yOffset) {
+		void notifyDrag(ModEntry listing, int xOffset, int yOffset) {
 			targetDraggingMod = listing;
-			modIndex = getScroll().getSubComponents().indexOf(listing);
+			modIndex = getScroll().getPinned().getSubComponents().indexOf(listing);
 			this.dragX = xOffset;
 			this.dragY = yOffset;
 		}
 
-		void notifyDrop(ModListing listing) {
+		void notifyDrop(ModEntry listing) {
 			drop = true;
+		}
+
+		@Override
+		public Rectangle getDefaultBounds() {
+			return Rectangle.ofDimensions(256, 290);
 		}
 
 	}

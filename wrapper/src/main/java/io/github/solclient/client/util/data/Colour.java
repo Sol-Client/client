@@ -7,6 +7,7 @@ import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.util.MinecraftUtils;
 import lombok.*;
@@ -33,11 +34,7 @@ public class Colour {
 	public static final Colour WHITE_128 = WHITE.withAlpha(128);
 	public static final Colour BLACK_128 = BLACK.withAlpha(128);
 	public static final Colour BACKGROUND = new Colour(20, 20, 20);
-	public static final Colour DISABLED_MOD = new Colour(40, 40, 40);
-	public static final Colour DISABLED_MOD_HOVER = new Colour(50, 50, 50);
 	public static final Colour TRANSPARENT = new Colour(0);
-	public static final Colour LIGHT_BUTTON = WHITE;
-	public static final Colour LIGHT_BUTTON_HOVER = new Colour(190, 190, 190);
 
 	public Colour(int value) {
 		this.value = value;
@@ -85,8 +82,8 @@ public class Colour {
 		return (value >> 24) & 0xFF;
 	}
 
-	public static Colour fromHSV(float hue, float saturation, float brightness) {
-		return new Colour(Color.HSBtoRGB(hue, saturation, brightness));
+	public static Colour fromHSV(float hue, float saturation, float value) {
+		return new Colour(Color.HSBtoRGB(hue, saturation, value));
 	}
 
 	public float[] getHSVValues() {
@@ -198,11 +195,14 @@ public class Colour {
 	}
 
 	public String toHexString() {
+		if (getAlpha() == 255)
+			return String.format("#%02X%02X%02X", getRed(), getGreen(), getBlue());
+
 		return String.format("#%02X%02X%02X%02X", getRed(), getGreen(), getBlue(), getAlpha());
 	}
 
 	public void bind() {
-		GL11.glColor4f(getRedFloat(), getGreenFloat(), getBlueFloat(), getAlphaFloat());
+		GlStateManager.color(getRedFloat(), getGreenFloat(), getBlueFloat(), getAlphaFloat());
 	}
 
 	public NVGColor nvg() {
@@ -216,9 +216,8 @@ public class Colour {
 	}
 
 	public static Colour fromHexString(String text) {
-		if (text.length() != 7 && text.length() != 9) {
+		if (text.length() != 7 && text.length() != 9)
 			return null;
-		}
 
 		try {
 			return new Colour(Integer.valueOf(text.substring(1, 3), 16), Integer.valueOf(text.substring(3, 5), 16),
@@ -227,6 +226,10 @@ public class Colour {
 		} catch (NumberFormatException error) {
 			return null;
 		}
+	}
+
+	public boolean needsOutline(Colour bg) {
+		return getAlpha() <= 50 || Math.abs(getLuminance() - bg.getLuminance()) <= 40;
 	}
 
 }

@@ -5,8 +5,6 @@ import io.github.solclient.client.util.MinecraftUtils;
 
 public interface ChatScreenExtension {
 
-	void type(char typedChar, int keyCode);
-
 	ChatButton getSelectedChatButton();
 
 	void setSelectedChatButton(ChatButton button);

@@ -10,7 +10,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
-import io.github.solclient.client.extension.ShaderEffectExtension;
+import io.github.solclient.client.mixin.client.ShaderEffectAccessor;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gl.*;
@@ -57,7 +57,7 @@ public class ColourSaturationMod extends SolClientMod implements PrimaryIntegerS
 		}
 
 		if (groupSaturation != saturation) {
-			((ShaderEffectExtension) effect).getPasses().forEach((shader) -> {
+			((ShaderEffectAccessor) effect).getPasses().forEach((shader) -> {
 				GlUniform saturationUniform = shader.getProgram().getUniformByName("Saturation");
 				if (saturationUniform != null)
 					saturationUniform.set(saturation);

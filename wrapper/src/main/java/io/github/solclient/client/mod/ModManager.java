@@ -15,7 +15,7 @@ import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.impl.chunkanimator.ChunkAnimatorMod;
 import io.github.solclient.client.mod.impl.cosmetica.CosmeticaMod;
-import io.github.solclient.client.mod.impl.discordrpc.DiscordIntegrationMod;
+import io.github.solclient.client.mod.impl.discord.DiscordIntegrationMod;
 import io.github.solclient.client.mod.impl.hud.*;
 import io.github.solclient.client.mod.impl.hud.armour.ArmourMod;
 import io.github.solclient.client.mod.impl.hud.chat.ChatMod;
@@ -66,6 +66,7 @@ public final class ModManager implements Iterable<Mod> {
 				new SpeedometerMod(),
 				new ReachDisplayMod(),
 				new ComboCounterMod(),
+				new ClockMod(),
 				new PotionEffectsMod(),
 				new ArmourMod(),
 				new TimersMod(),

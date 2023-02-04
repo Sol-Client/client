@@ -1,34 +1,33 @@
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
 
 import io.github.solclient.client.mod.Mod;
-import io.github.solclient.client.mod.hud.BaseHudElement;
-import io.github.solclient.client.mod.hud.HudPosition;
+import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 import org.jetbrains.annotations.Nullable;
 
-public class GameLogDisplay extends BaseHudElement {
+public class GameLogDisplay implements HudElement {
 
     private final BedwarsMod mod;
-    private HudPosition position = new HudPosition(0, 0);
+    private Position position = new Position(0, 0);
 
     public GameLogDisplay(BedwarsMod mod) {
         this.mod = mod;
     }
 
     @Override
-    public HudPosition getHudPosition() {
-        return position;
-    }
-
-    @Override
-    public void setHudPosition(HudPosition position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
     @Override
-    public float getHudScale() {
+    public float getScale() {
         return 1f;
+    }
+
+    @Override
+    public Position getConfiguredPosition() {
+        return position;
     }
 
     @Override

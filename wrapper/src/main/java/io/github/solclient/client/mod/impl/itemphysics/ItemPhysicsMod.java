@@ -11,7 +11,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
-import io.github.solclient.client.extension.EntityExtension;
+import io.github.solclient.client.mixin.EntityAccessor;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.option.annotation.*;
@@ -24,8 +24,6 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 	@Option
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	private float rotationSpeed = 100;
-	private final Map<ItemEntity, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
-																			// usage is prioritised.
 
 	@Override
 	public String getId() {
@@ -51,7 +49,7 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 
 			long now = System.nanoTime();
 
-			ItemData data = dataMap.computeIfAbsent(event.entity, (itemStack) -> new ItemData(System.nanoTime()));
+			ItemData data = (ItemData) event.entity;
 
 			long since = now - data.getLastUpdate();
 
@@ -61,7 +59,7 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 			if (!MinecraftClient.getInstance().isPaused()) {
 				if (!event.entity.onGround) {
 					int divisor = 2500000;
-					if (((EntityExtension) event.entity).getIsInWeb()) {
+					if (((EntityAccessor) event.entity).isInLava()) {
 						divisor *= 10;
 					}
 					data.setRotation(

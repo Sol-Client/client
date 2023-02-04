@@ -1,5 +1,6 @@
 package io.github.solclient.client.mod.impl.hud.keystrokes;
 
+import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
@@ -11,7 +12,7 @@ import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.option.annotation.Option;
-import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.util.Identifier;
@@ -111,8 +112,8 @@ public class KeystrokesMod extends SolClientHudMod {
 	public void setAngles(PlayerHeadRotateEvent event) {
 		mouseX += event.yaw / 40F;
 		mouseY -= event.pitch / 40F;
-		mouseX = MathHelper.clamp(mouseX, -(space.width / 2) + 4, space.width / 2 - 4);
-		mouseY = MathHelper.clamp(mouseY, -34 / 2 + 4, 34 / 2 - 4);
+		mouseX = MathHelper.clamp(mouseX, -(space.width / 2) + 5, space.width / 2 - 4);
+		mouseY = MathHelper.clamp(mouseY, -34 / 2 + 5, 34 / 2 - 5);
 	}
 
 	@EventHandler
@@ -127,7 +128,7 @@ public class KeystrokesMod extends SolClientHudMod {
 	public void render(Position position, boolean editMode) {
 		int x = position.getX();
 		int y = position.getY();
-		float partialTicks = MinecraftClientExtension.getInstance().getTicker().tickDelta;
+		float tickDelta = MinecraftUtils.getTickDelta();
 
 		if (movement) {
 			w.render(x, y);
@@ -145,23 +146,27 @@ public class KeystrokesMod extends SolClientHudMod {
 			if (border)
 				MinecraftUtils.drawOutline(x, y, x + space.width, y + 34, borderColour.getValue());
 
-			GlStateManager.pushMatrix();
-			GlStateManager.enableBlend();
-			GlStateManager.color(1, 1, 1);
+			int movementY = y;
+			MinecraftUtils.withNvg(() -> {
+				long nvg = NanoVGManager.getNvg();
 
-			mc.getTextureManager().bindTexture(new Identifier(
-					"textures/gui/sol_client_keystrokes_mouse_ring_centre_" + MinecraftUtils.getTextureScale() + ".png"));
-			DrawableHelper.drawTexture(x + (space.width / 2) - 4, y + (34 / 2) - 4, 0, 0, 8, 8, 8, 8);
+				NanoVG.nvgScale(nvg, getScale(), getScale());
 
-			float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * partialTicks)) - 5;
-			float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * partialTicks)) - 5;
-			GL11.glTranslatef(calculatedMouseX, calculatedMouseY, 0);
+				float calculatedMouseX = (lastMouseX + ((mouseX - lastMouseX) * tickDelta));
+				float calculatedMouseY = (lastMouseY + ((mouseY - lastMouseY) * tickDelta));
 
-			mc.getTextureManager().bindTexture(new Identifier(
-					"textures/gui/sol_client_keystrokes_mouse_ring_" + MinecraftUtils.getTextureScale() + ".png"));
-			DrawableHelper.drawTexture(x + (space.width / 2), y + (34 / 2), 0, 0, 10, 10, 10, 10);
+				NanoVG.nvgBeginPath(nvg);
+				NanoVG.nvgCircle(nvg, x + space.width / 2, movementY + 34 / 2, 1);
+				NanoVG.nvgFillColor(nvg, textColour.nvg());
+				NanoVG.nvgFill(nvg);
 
-			GlStateManager.popMatrix();
+				NanoVG.nvgBeginPath(nvg);
+				NanoVG.nvgCircle(nvg, x + space.width / 2 + calculatedMouseX, movementY + 34 / 2 + calculatedMouseY, 5);
+				NanoVG.nvgStrokeWidth(nvg, 1);
+				NanoVG.nvgStrokeColor(nvg, textColour.nvg());
+				NanoVG.nvgStroke(nvg);
+			}, true);
+
 			y += 35;
 		}
 

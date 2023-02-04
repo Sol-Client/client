@@ -17,8 +17,9 @@ public class QuickPlayOptionComponent extends ColouredComponent {
 	private int previousMouseX, previousMouseY;
 
 	public QuickPlayOptionComponent(QuickPlayPaletteComponent screen, QuickPlayOption option) {
-		super(new AnimatedColourController((component,
-				defaultColour) -> screen.getSelected() == component ? Colour.DISABLED_MOD_HOVER : Colour.TRANSPARENT));
+		super(new AnimatedColourController((component, defaultColour) -> screen.getSelected() == component
+				? (component.isHovered() ? theme.buttonHover : theme.button)
+				: Colour.TRANSPARENT));
 		this.screen = screen;
 		this.option = option;
 		add(new LabelComponent((component, defaultText) -> option.getText()), new AlignedBoundsController(

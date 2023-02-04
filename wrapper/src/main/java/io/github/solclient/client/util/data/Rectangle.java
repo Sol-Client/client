@@ -1,11 +1,13 @@
 package io.github.solclient.client.util.data;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+
 import io.github.solclient.client.util.MinecraftUtils;
 import lombok.*;
 
 @ToString
 @EqualsAndHashCode
-@AllArgsConstructor
 public class Rectangle {
 
 	@Getter
@@ -18,6 +20,52 @@ public class Rectangle {
 	private final int height;
 
 	public static final Rectangle ZERO = ofDimensions(0, 0);
+
+	public static Rectangle encompassing(Iterable<Rectangle> rectangles) {
+		return encompassing(rectangles.iterator());
+	}
+
+	public static Rectangle encompassing(Stream<Rectangle> rectangles) {
+		return encompassing(rectangles.iterator());
+	}
+
+	public static Rectangle encompassing(Iterator<Rectangle> rectangles) {
+		int beginx = Integer.MAX_VALUE;
+		int endx = 0;
+		int beginy = Integer.MAX_VALUE;
+		int endy = 0;
+
+		while (rectangles.hasNext()) {
+			Rectangle rectangle = rectangles.next();
+			beginx = Math.min(rectangle.getX(), beginx);
+			beginy = Math.min(rectangle.getY(), beginy);
+			endx = Math.max(rectangle.getEndX(), endx);
+			endy = Math.max(rectangle.getEndY(), endy);
+		}
+
+		if (beginx == Integer.MAX_VALUE)
+			beginx = 0;
+		if (beginy == Integer.MAX_VALUE)
+			beginy = 0;
+
+		return new Rectangle(beginx, beginy, endx - beginx, endy - beginy);
+	}
+
+	public Rectangle(int x, int y, int width, int height) {
+		if (width < 0) {
+			x += width;
+			width *= -1;
+		}
+		if (height < 0) {
+			y += height;
+			height *= -1;
+		}
+
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
 
 	public static Rectangle ofDimensions(int width, int height) {
 		return new Rectangle(0, 0, width, height);
@@ -32,11 +80,16 @@ public class Rectangle {
 	}
 
 	public boolean contains(Position position) {
-		return contains(position.getX(), position.getY());
+		return position != null && contains(position.getX(), position.getY());
 	}
 
 	public boolean contains(int x, int y) {
-		return x > this.x && x < this.x + width && y > this.y && y < this.y + height;
+		return x >= this.x && x <= this.x + width && y >= this.y && y <= this.y + height;
+	}
+
+	public boolean intersects(Rectangle rectangle) {
+		// https://stackoverflow.com/a/306332
+		return rectangle != null && x < rectangle.getEndX() && getEndX() > rectangle.x && getEndY() > rectangle.y && y < rectangle.getEndY();
 	}
 
 	public void fill(Colour colour) {

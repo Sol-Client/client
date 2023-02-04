@@ -1,15 +1,13 @@
 package io.github.solclient.client.mod.impl.itemphysics;
 
-import lombok.Data;
+public interface ItemData {
 
-@Data
-public class ItemData {
+	long getLastUpdate();
 
-	private long lastUpdate;
-	private float rotation;
+	void setLastUpdate(long lastUpdate);
 
-	public ItemData(long lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+	float getRotation();
+
+	void setRotation(float rotation);
 
 }

@@ -6,6 +6,7 @@ plugins {
 	alias libs.plugins.quilt.loom
 	alias libs.plugins.lombok
 	alias libs.plugins.shadow
+	alias libs.plugins.licenser
 }
 
 repositories {
@@ -115,6 +116,13 @@ java {
 		enabled = false
 		dependsOn shadowJar
 	}
+}
+
+license {
+	rule file("../HEADER")
+	exclude '**/*.ttf'
+	exclude '**/*.xcf'
+	exclude '**/*.html'
 }
 
 shadowJar {

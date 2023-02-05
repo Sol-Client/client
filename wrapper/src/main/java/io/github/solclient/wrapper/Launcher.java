@@ -9,7 +9,7 @@ import io.github.solclient.util.GlobalConstants;
 /**
  * Loads and executes the main method of MAIN_CLASS, using ClassWrapper.
  */
-public final class Springboard {
+public final class Launcher {
 
 	private static final String MAIN_CLASS = "io.github.solclient.client.Premain";
 

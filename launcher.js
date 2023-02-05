@@ -534,7 +534,7 @@ class Launcher {
 
 		args.push(classpath);
 
-		args.push("io.github.solclient.wrapper.Springboard");
+		args.push("io.github.solclient.wrapper.Launcher");
 
 		args.push("--version");
 		args.push("Sol Client");

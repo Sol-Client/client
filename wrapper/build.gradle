@@ -97,7 +97,7 @@ loom {
 	accessWidenerPath = file("src/main/resources/replay-mod.accesswidener")
 
 	runConfigs.each {
-		it.defaultMainClass 'io.github.solclient.wrapper.Springboard'
+		it.defaultMainClass 'io.github.solclient.wrapper.Launcher'
 		it.programArgs.add '--accessToken'
 		it.programArgs.add '0'
 		it.programArgs.add '--username'
@@ -110,11 +110,11 @@ java {
 
 	sourceCompatibility = 8
 	targetCompatibility = 8
-}
 
-jar {
-	enabled = false
-	dependsOn shadowJar
+	jar {
+		enabled = false
+		dependsOn shadowJar
+	}
 }
 
 shadowJar {
@@ -123,7 +123,7 @@ shadowJar {
 		rename { "${it}_${name}" }
 	}
 	configurations = [project.configurations.ship]
-	classifier "dev"
+	classifier 'dev'
 	destinationDirectory.set file("$buildDir/devlibs")
 }
 

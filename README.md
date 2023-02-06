@@ -1,5 +1,7 @@
 # Sol Client
-A nice Minecraft (non-hacked) client for 1.8.9 (and possibly newer versions in future)! This readme is probably still bad because I'm bad at formal.
+A nice Minecraft (non-hacked) client for 1.8.9 (and possibly newer versions in future)!
+
+<a href="https://discord.gg/TSAkhgXNbK"><img alt="Join Discord" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg"/></a>
 
 ## Features
 - Customisable HUD

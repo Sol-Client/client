@@ -1,0 +1,111 @@
+package io.github.solclient.client.mod.option.impl;
+
+import org.lwjgl.input.Keyboard;
+
+import io.github.solclient.client.extension.KeyBindingExtension;
+import io.github.solclient.client.mod.option.*;
+import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
+import io.github.solclient.client.ui.component.impl.ButtonComponent;
+import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.data.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.*;
+
+public class KeyBindingOption extends ModOption<KeyBinding> {
+
+	public KeyBindingOption(String name, ModOptionStorage<KeyBinding> storage) {
+		super(name, storage);
+	}
+
+	@Override
+	public void setValue(KeyBinding value) {
+		throw new UnsupportedOperationException("Cannot reassign keybinding");
+	}
+
+	@Override
+	public Component createComponent() {
+		Component container = createDefaultComponent();
+
+		boolean[] listening = new boolean[1];
+		ButtonComponent editButton = new ButtonComponent(
+				(component, defaultText) -> KeyBindingExtension.from(getValue()).getPrefix()
+						+ GameOptions.getFormattedNameForKeyCode(getValue().getCode()),
+				Component.getTheme().button(), (component, defaultColour) -> {
+					if (listening[0])
+						return new Colour(255, 255, 85);
+					else if (MinecraftUtils.isConflicting(getValue()))
+						return new Colour(255, 85, 85);
+
+					return Component.getTheme().fg;
+				}).width(45).height(16);
+		container.add(editButton, new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
+
+		editButton.onClick((info, button) -> {
+			if (button == 0) {
+				MinecraftUtils.playClickSound(true);
+
+				Component root = container.getScreen().getRoot();
+				GameOptions options = MinecraftClient.getInstance().options;
+
+				Runnable postSet = () -> {
+					listening[0] = false;
+					MinecraftClient.getInstance().options.save();
+					KeyBinding.updateKeysByCode();
+					root.onKeyPressed(null);
+					root.onKeyReleased(null);
+					root.onClickAnwhere(null);
+				};
+
+				listening[0] = true;
+				root.onClickAnwhere((ignoredInfo, pressedButton) -> {
+					MinecraftClient.getInstance().options.setKeyBindingCode(getValue(), pressedButton - 100);
+					KeyBindingExtension.from(getValue()).setMods(0);
+					postSet.run();
+					return true;
+				});
+
+				root.onKeyPressed((ignored, key, character) -> {
+					if (Modifier.isModifier(key))
+						return false;
+					int mods = 0;
+
+					if (key == 1)
+						options.setKeyBindingCode(getValue(), 0);
+					else if (key != 0) {
+						if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+							mods |= Modifier.CTRL;
+						if (Keyboard.isKeyDown(Keyboard.KEY_LMENU))
+							mods |= Modifier.ALT;
+						if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+							mods |= Modifier.SHIFT;
+
+						options.setKeyBindingCode(getValue(), key);
+					} else if (character > 0)
+						options.setKeyBindingCode(getValue(), character + 256);
+
+					KeyBindingExtension.from(getValue()).setMods(mods);
+					postSet.run();
+					return true;
+				});
+
+				root.onKeyReleased((ignored, key, character) -> {
+					if (!Modifier.isModifier(key))
+						return false;
+
+					options.setKeyBindingCode(getValue(), key);
+					KeyBindingExtension.from(getValue()).setMods(0);
+
+					postSet.run();
+					return true;
+				});
+				return true;
+			}
+
+			return false;
+		});
+
+		return container;
+	}
+
+}

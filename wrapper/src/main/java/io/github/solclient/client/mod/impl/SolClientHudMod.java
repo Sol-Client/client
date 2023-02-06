@@ -44,7 +44,6 @@ public abstract class SolClientHudMod extends SolClientMod implements PrimaryInt
 	@Expose
 	private Position position;
 	@Expose
-	@Option(priority = 1)
 	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
 	public float scale = 100;
 	protected TextRenderer font;

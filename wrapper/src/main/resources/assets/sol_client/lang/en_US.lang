@@ -31,7 +31,7 @@ sol_client.key.category=Sol Client
 sol_client.key.accept_request=Accept Request
 sol_client.key.dismiss_request=Dismiss Request
 
-sol_client.mod.generic.option.enabled=Enabled
+sol_client.mod.generic.enabled=Enabled
 sol_client.mod.hud.option.scale=Scale
 sol_client.mod.simple_hud.option.background=Background
 sol_client.mod.simple_hud.option.backgroundColour=Background Color
@@ -203,7 +203,7 @@ sol_client.mod.crosshair.name=Crosshair
 sol_client.mod.crosshair.description=Customize the crosshair.
 
 sol_client.mod.crosshair.option.customCrosshair=Custom Crosshair
-sol_client.mod.crosshair.option.crosshairPixels=Pixels
+sol_client.mod.crosshair.option.pixels=Pixels
 sol_client.mod.crosshair.option.thirdPerson=Show in Third Person
 sol_client.mod.crosshair.option.spectatorAlways=Show in Spectator Mode
 sol_client.mod.crosshair.option.debug=Show in Debug Overlay

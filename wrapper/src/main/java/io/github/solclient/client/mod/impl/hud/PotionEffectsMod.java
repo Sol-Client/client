@@ -49,7 +49,7 @@ public class PotionEffectsMod extends SolClientHudMod {
 	@Option
 	private boolean title = true;
 	@Expose
-	@Option(applyToAllClass = Option.TEXT_COLOUR_CLASS)
+	@ColourKey(ColourKey.TEXT_COLOUR)
 	private Colour titleColour = Colour.WHITE;
 	@Expose
 	@Option

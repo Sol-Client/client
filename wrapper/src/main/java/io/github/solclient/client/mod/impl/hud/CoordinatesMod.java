@@ -21,7 +21,7 @@ package io.github.solclient.client.mod.impl.hud;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.impl.*;
-import io.github.solclient.client.mod.option.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 
@@ -31,13 +31,15 @@ public class CoordinatesMod extends SolClientHudMod {
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean background = true;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@ColourKey(ColourKey.BACKGROUND_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean border = false;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
+	@ColourKey(ColourKey.BORDER_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option

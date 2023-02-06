@@ -25,6 +25,7 @@ import org.lwjgl.nanovg.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.option.ModOption;
+import io.github.solclient.client.mod.option.impl.ColourOption;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -58,7 +59,7 @@ public class ColourPickerDialog extends BlockComponent {
 	private TextFieldComponent b;
 	private TextFieldComponent a;
 
-	public ColourPickerDialog(ModOption<Colour> colourOption, Colour colour, Consumer<Colour> callback) {
+	public ColourPickerDialog(ColourOption option, Colour colour, Consumer<Colour> callback) {
 		super(theme.bg, 12, 0);
 
 		this.colour = colour;
@@ -69,7 +70,7 @@ public class ColourPickerDialog extends BlockComponent {
 		saturation = hsv[1];
 		value = hsv[2];
 
-		add(new LabelComponent(colourOption.getName()),
+		add(new LabelComponent(option.getName()),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getX(), defaultBounds.getY() + 9,
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -85,16 +86,16 @@ public class ColourPickerDialog extends BlockComponent {
 		add(done,
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 						(component, defaultBounds) -> new Rectangle(
-								defaultBounds.getX() - (colourOption.canApplyToAll() ? 53 : 0),
+								defaultBounds.getX() - (option.canApplyToAll() ? 53 : 0),
 								defaultBounds.getY() - 8, defaultBounds.getWidth(), defaultBounds.getHeight())));
 
-		if (colourOption.canApplyToAll()) {
+		if (option.canApplyToAll()) {
 			add(new ButtonComponent("sol_client.mod.screen.apply_to_all", theme.button(), theme.fg())
 					.withIcon("apply_all").onClick((info, button) -> {
 						if (button == 0) {
 							parent.setDialog(null);
 							MinecraftUtils.playClickSound(true);
-							colourOption.applyToAll();
+							option.applyToAll();
 							return true;
 						}
 

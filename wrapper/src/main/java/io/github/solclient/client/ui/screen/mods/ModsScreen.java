@@ -26,7 +26,7 @@ import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.ScreenAnimation;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
+import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
 import io.github.solclient.client.util.*;
@@ -108,6 +108,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		private ButtonComponent back;
 		@Getter
 		private ModsScroll scroll;
+		private Component config;
 		private int noModsScroll;
 		private boolean singleModMode;
 
@@ -139,12 +140,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						return result;
 					}));
 
-			add(scroll = new ModsScroll(this), (component, defaultBounds) -> {
-				int y = 60;
-				if (mod != null)
-					y -= 15;
-				return new Rectangle(0, y, getBounds().getWidth(), getBounds().getHeight() - y);
-			});
+			scroll = new ModsScroll(this);
 
 			ButtonComponent done = ButtonComponent.done(() -> getScreen().close()).width(50);
 			add(done, new AlignedBoundsController(Alignment.END, Alignment.START,
@@ -197,16 +193,27 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		public void switchMod(Mod mod, boolean first) {
 			if (mod == null) {
 				scroll.snapTo(noModsScroll);
-				if (this.mod != null || first)
+				if (this.mod != null || first) {
 					add(0, search, (component, bounds) -> new Rectangle(getBaseX(), 38,
 							getBounds().getWidth() - getBaseX() * 2, bounds.getHeight()));
-				if (!first)
+					add(scroll, (component, defaultBounds) -> new Rectangle(0, 60, getBounds().getWidth(),
+							getBounds().getHeight() - 60));
+				}
+				if (!first) {
 					remove(back);
+					remove(config);
+					config = null;
+				}
 			} else {
 				noModsScroll = scroll.getScroll();
 				scroll.snapTo(0);
-				if (!first)
+				if (!first) {
 					remove(search);
+					remove(scroll);
+				}
+				config = mod.createConfigComponent();
+				add(config, Controller
+						.of(() -> new Rectangle(0, 45, getBounds().getWidth(), getBounds().getHeight() - 45)));
 				if (!singleModMode && this.mod == null)
 					add(back, (component, defaultBounds) -> defaultBounds.offset(getBaseX(), getBaseX() + 2));
 			}

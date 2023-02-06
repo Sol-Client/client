@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.ui.screen.mods;
+package io.github.solclient.client.mod.impl.hud.crosshair;
 
 import org.apache.logging.log4j.*;
 import org.lwjgl.input.Keyboard;
@@ -31,14 +31,14 @@ import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
 
-public final class PixelMatrixDialog extends BlockComponent {
+public final class CrosshairPaintDialog extends BlockComponent {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final int SCALE = 12;
 
 	private final PixelMatrix pixels;
 
-	public PixelMatrixDialog(ModOption<PixelMatrix> option) {
+	public CrosshairPaintDialog(ModOption<PixelMatrix> option) {
 		super(theme.bg, 12, 0);
 
 		pixels = option.getValue();

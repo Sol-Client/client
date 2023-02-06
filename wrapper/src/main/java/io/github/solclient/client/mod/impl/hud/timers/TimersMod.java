@@ -29,7 +29,7 @@ import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
-import io.github.solclient.client.mod.option.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.BukkitMaterial;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.block.Blocks;
@@ -57,7 +57,7 @@ public class TimersMod extends SolClientHudMod {
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
-	@Option(applyToAllClass = Option.TEXT_COLOUR_CLASS)
+	@ColourKey(ColourKey.TEXT_COLOUR)
 	private Colour nameColour = Colour.WHITE;
 	@Expose
 	@Option

@@ -37,16 +37,16 @@ public abstract class SolClientSimpleHudMod extends SolClientHudMod {
 	@Option
 	protected boolean background = true;
 	@Expose
-	@Option(applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@ColourKey(ColourKey.BACKGROUND_COLOUR)
 	protected Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
 	@Option
 	protected boolean border = false;
 	@Expose
-	@Option(applyToAllClass = Option.BORDER_COLOUR_CLASS)
+	@ColourKey(ColourKey.BORDER_COLOUR)
 	protected Colour borderColour = Colour.BLACK;
 	@Expose
-	@Option(applyToAllClass = Option.TEXT_COLOUR_CLASS)
+	@ColourKey(ColourKey.TEXT_COLOUR)
 	protected Colour textColour = Colour.WHITE;
 	@Expose
 	@Option

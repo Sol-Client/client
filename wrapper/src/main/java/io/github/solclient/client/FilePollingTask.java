@@ -24,6 +24,7 @@ import java.util.*;
 
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.*;
+import io.github.solclient.client.mod.option.impl.TextFileOption;
 
 public class FilePollingTask implements Runnable, Closeable {
 
@@ -38,8 +39,8 @@ public class FilePollingTask implements Runnable, Closeable {
 
 		for (Mod mod : mods)
 			for (ModOption<?> option : mod.getOptions())
-				if (option instanceof FileOption)
-					files.put(((FileOption) option).getPath().getFileName().toString(), option);
+				if (option instanceof TextFileOption)
+					files.put(((TextFileOption) option).getPath().getFileName().toString(), option);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class FilePollingTask implements Runnable, Closeable {
 
 			if (option != null) {
 				try {
-					((FileOption) option).readFile();
+					((TextFileOption) option).read();
 				} catch (IOException error) {
 				}
 			}

@@ -22,7 +22,7 @@ import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.util.data.*;
 
-public abstract class ListComponent extends Component {
+public class ListComponent extends Component {
 
 	public void add(Component component) {
 		add(getSubComponents().size(), component);
@@ -53,12 +53,13 @@ public abstract class ListComponent extends Component {
 		return getBounds(subComponents.get(subComponents.size() - 1)).getEndY();
 	}
 
-
 	@Override
 	protected boolean shouldCull(Component component) {
 		return component.getBounds().getEndY() < 0 || component.getBounds().getY() > getBounds().getHeight();
 	}
 
-	public abstract int getSpacing();
+	public int getSpacing() {
+		return 5;
+	}
 
 }

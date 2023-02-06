@@ -18,10 +18,16 @@
 
 package io.github.solclient.client.ui.component.controller;
 
+import com.google.common.base.Supplier;
+
 import io.github.solclient.client.ui.component.Component;
 
 @FunctionalInterface
 public interface Controller<T> {
+
+	static <T> Controller<T> of(Supplier<T> value) {
+		return (component, defaultValue) -> value.get();
+	}
 
 	static <T> Controller<T> of(T value) {
 		return (component, defaultValue) -> value;

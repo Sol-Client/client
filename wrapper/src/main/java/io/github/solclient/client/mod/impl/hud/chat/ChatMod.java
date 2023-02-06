@@ -71,7 +71,8 @@ public class ChatMod extends SolClientHudMod {
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean background = true;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@ColourKey(ColourKey.BACKGROUND_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private Colour backgroundColour = new Colour(0, 0, 0, 127);
 	@Expose
 	@Option

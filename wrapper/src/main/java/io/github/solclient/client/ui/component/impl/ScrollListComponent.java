@@ -26,7 +26,7 @@ import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 
-public abstract class ScrollListComponent extends ListComponent {
+public class ScrollListComponent extends ListComponent {
 
 	private double targetY;
 	private double animatedY;
@@ -42,7 +42,11 @@ public abstract class ScrollListComponent extends ListComponent {
 
 	@Override
 	public void setParent(Component parent) {
-		super.setParent(parent);
+		if (parent == null && this.parent != null) {
+			this.parent.remove(scrollbar);
+			super.setParent(parent);
+			return;
+		}
 
 		parent.add(scrollbar = new BlockComponent(theme.buttonSecondary, 1.5F, 0) {
 
@@ -61,6 +65,8 @@ public abstract class ScrollListComponent extends ListComponent {
 			return new Rectangle(getBounds().getX() + getBounds().getWidth() - 6, getBounds().getY(), 3,
 					(int) (getBounds().getHeight() * scrollPercent));
 		});
+
+		super.setParent(parent);
 	}
 
 	private ComponentRenderInfo translate(ComponentRenderInfo info) {

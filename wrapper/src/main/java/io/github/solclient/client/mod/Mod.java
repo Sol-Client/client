@@ -18,6 +18,7 @@
 
 package io.github.solclient.client.mod;
 
+import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -29,15 +30,17 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.option.ModOption;
+import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.annotation.*;
-import io.github.solclient.client.mod.option.impl.FieldOption;
+import io.github.solclient.client.mod.option.impl.*;
+import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
 
 @AbstractTranslationKey("sol_client.mod.generic")
-public abstract class Mod {
+public abstract class Mod extends Object {
 
 	@Getter
 	private final Logger logger = LogManager.getLogger();
@@ -47,7 +50,6 @@ public abstract class Mod {
 	private boolean blocked;
 
 	@Expose
-	@Option(priority = 2)
 	private boolean enabled = isEnabledByDefault();
 
 	@Getter
@@ -57,10 +59,106 @@ public abstract class Mod {
 	 * Called when the mod is registered.
 	 */
 	public void init() {
-		options = FieldOption.getFieldOptionsFromClass(this);
+		options = createOptions();
 
 		if (this.enabled)
 			tryEnable();
+	}
+
+	/**
+	 * This is called on initialisation to create and populate the option list. Do
+	 * not call this yourself - only as a super call!
+	 *
+	 * @return the list. will be mutable.
+	 */
+	protected List<ModOption<?>> createOptions() {
+		if (options != null)
+			logger.warn("Please use getOptions instead of recreating them", new Exception("options != null"));
+
+		List<ModOption<?>> options = new ArrayList<>();
+		options.add(new ToggleOption("sol_client.mod.generic.enabled",
+				ModOptionStorage.of(boolean.class, () -> enabled, (value) -> enabled = value)));
+		try {
+			FieldOptions.visit(this, options::add);
+		} catch (IllegalAccessException error) {
+			throw new AssertionError(error);
+		}
+		return options;
+	}
+
+	/**
+	 * Gets a field from the mod. Override this if you want to protect access.
+	 *
+	 * @param name the field name.
+	 * @return a storage object for the field.
+	 * @throws NoSuchFieldException   if the field doesn't exist.
+	 * @throws IllegalAccessException if the access failed.
+	 */
+	public FieldStorage<?> getField(String name) throws NoSuchFieldException, IllegalAccessException {
+		Field field;
+		try {
+			field = getClass().getDeclaredField(name);
+		} catch (NoSuchFieldException error) {
+			try {
+				field = getClass().getField(name);
+			} catch (NoSuchFieldException | SecurityException e) {
+				throw error;
+			}
+		} catch (SecurityException error) {
+			throw error;
+		}
+		field.setAccessible(true);
+		return new FieldStorage<>(this, field);
+	}
+
+	/**
+	 * Gets all options filtered to a type.
+	 *
+	 * @param <T>  the type.
+	 * @param type the type class.
+	 * @return the options.
+	 */
+	public <T> Iterable<ModOption<T>> getOptions(Class<T> type) {
+		return new Iterable<ModOption<T>>() {
+
+			@Override
+			public Iterator<ModOption<T>> iterator() {
+				return getOptions().stream().filter((option) -> option.getType() == type)
+						.map((option) -> (ModOption<T>) option).iterator();
+			}
+
+		};
+	};
+
+	/**
+	 * Gets all options filtered to a type.
+	 *
+	 * @param <T>  the type.
+	 * @param type the type class.
+	 * @return the options.
+	 */
+	public <T> Iterable<T> getFlatOptions(Class<T> type) {
+		return new Iterable<T>() {
+
+			@Override
+			public Iterator<T> iterator() {
+				return getOptions().stream().filter((option) -> option.getClass() == type).map((option) -> (T) option)
+						.iterator();
+			}
+
+		};
+	};
+
+	/**
+	 * Creates the configuration component.
+	 *
+	 * @return the component.
+	 */
+	public Component createConfigComponent() {
+		ListComponent container = new ScrollListComponent();
+		for (ModOption<?> option : options)
+			container.add(option.createComponent());
+		return container;
 	}
 
 	/**

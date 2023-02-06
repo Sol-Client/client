@@ -23,7 +23,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
-import io.github.solclient.client.mod.option.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.util.Window;
@@ -53,7 +53,8 @@ public class ArmourMod extends SolClientHudMod {
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean shadow = true;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.TEXT_COLOUR_CLASS)
+	@ColourKey(ColourKey.TEXT_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private Colour textColour = Colour.WHITE;
 
 	@Override

@@ -51,13 +51,15 @@ public class ScoreboardMod extends SolClientMod {
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	public boolean background = true;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@ColourKey(ColourKey.BACKGROUND_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	public Colour backgroundColour = new Colour(1342177280);
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	public boolean border = false;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
+	@ColourKey(ColourKey.BORDER_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	public Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option

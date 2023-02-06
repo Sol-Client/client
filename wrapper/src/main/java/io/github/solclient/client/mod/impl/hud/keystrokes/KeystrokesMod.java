@@ -19,21 +19,16 @@
 package io.github.solclient.client.mod.impl.hud.keystrokes;
 
 import org.lwjgl.nanovg.NanoVG;
-import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
-import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.extension.MinecraftClientExtension;
-import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
-import io.github.solclient.client.mod.option.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 public class KeystrokesMod extends SolClientHudMod {
@@ -57,7 +52,8 @@ public class KeystrokesMod extends SolClientHudMod {
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected boolean background = true;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@ColourKey(ColourKey.BACKGROUND_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
 	@Option
@@ -66,13 +62,15 @@ public class KeystrokesMod extends SolClientHudMod {
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected boolean border = false;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BORDER_COLOUR_CLASS)
+	@ColourKey(ColourKey.BORDER_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option
 	protected Colour borderColourPressed = Colour.WHITE;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.TEXT_COLOUR_CLASS)
+	@ColourKey(ColourKey.TEXT_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected Colour textColour = Colour.WHITE;
 	@Expose
 	@Option

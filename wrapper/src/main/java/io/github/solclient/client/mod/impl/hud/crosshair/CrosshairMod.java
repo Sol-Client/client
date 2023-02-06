@@ -18,6 +18,8 @@
 
 package io.github.solclient.client.mod.impl.hud.crosshair;
 
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
@@ -26,6 +28,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.impl.SolClientHudMod;
+import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
@@ -42,8 +45,7 @@ public class CrosshairMod extends SolClientHudMod {
 	@Option
 	private boolean customCrosshair = false;
 	@Expose
-	@Option
-	private final PixelMatrix crosshairPixels = new PixelMatrix(15, 15);
+	final PixelMatrix pixels = new PixelMatrix(15, 15);
 	@Expose
 	@Option
 	private boolean thirdPerson = true;
@@ -67,7 +69,14 @@ public class CrosshairMod extends SolClientHudMod {
 	private Colour entityColour = Colour.PURE_RED;
 
 	public CrosshairMod() {
-		LCCH.parse(DEFAULT_CROSSHAIR, crosshairPixels);
+		LCCH.parse(DEFAULT_CROSSHAIR, pixels);
+	}
+
+	@Override
+	public List<ModOption<?>> createOptions() {
+		List<ModOption<?>> options = super.createOptions();
+		options.add(2, new CrosshairOption(this));
+		return options;
 	}
 
 	@Override
@@ -81,7 +90,7 @@ public class CrosshairMod extends SolClientHudMod {
 			return;
 		}
 
-		crosshairPixels.bind(-1, 0);
+		pixels.bind(-1, 0);
 	}
 
 	@EventHandler
@@ -111,7 +120,7 @@ public class CrosshairMod extends SolClientHudMod {
 
 			Window window = new Window(mc);
 
-			float half = customCrosshair ? crosshairPixels.getWidth() / 2 : 8;
+			float half = customCrosshair ? pixels.getWidth() / 2 : 8;
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(getScale(), getScale(), getScale());
 			GlStateManager.translate((int) (window.getScaledWidth() / getScale() / 2 - half),
@@ -119,7 +128,7 @@ public class CrosshairMod extends SolClientHudMod {
 
 			bind();
 
-			int scale = customCrosshair ? crosshairPixels.getWidth() : 16;
+			int scale = customCrosshair ? pixels.getWidth() : 16;
 
 			if (customCrosshair)
 				DrawableHelper.drawTexture(0, 0, 0, 0, scale, scale, scale, scale, scale, scale);

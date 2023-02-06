@@ -22,6 +22,7 @@ import org.apache.logging.log4j.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.NanoVG;
 
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;

@@ -23,7 +23,7 @@ import io.github.solclient.client.util.data.Colour;
 
 public class Theme implements Cloneable {
 
-	public static final Theme DARK;
+	public static final Theme DARK, LIGHT;
 
 	static {
 		DARK = new Theme();
@@ -35,13 +35,24 @@ public class Theme implements Cloneable {
 		DARK.fg = new Colour(0xFFFFFFFF);
 		DARK.accent = new Colour(0xFFFFB400);
 		DARK.accentHover = new Colour(0xFFFFCD26);
-		DARK.accentFg = new Colour(0xFF000000);
+		DARK.accentFg = new Colour(0xFF2A2A2A);
 		DARK.fgButton = new Colour(0xFFFFFFFF);
-		DARK.fgButtonHover = new Colour(0xFFDDDDDD);
-		DARK.transparent1 = new Colour(0xFF282828);
-		DARK.transparent2 = new Colour(0xFF3c3c3c);
+		DARK.fgButtonHover = new Colour(0xFFD4D4D4);
+		DARK.transparent1 = new Colour(0xFF333333);
+		DARK.transparent2 = new Colour(0xFF666666);
 		DARK.danger = new Colour(0xFFFF2929);
 		DARK.dangerHover = new Colour(0xFFFF4B4B);
+
+		LIGHT = DARK.clone();
+		LIGHT.bg = new Colour(0xFFEBEBEB);
+		LIGHT.button = new Colour(0xFFDFDFDF);
+		LIGHT.buttonHover = new Colour(0xFFD9D9D9);
+		LIGHT.buttonSecondary = new Colour(0xFFCCCCCC);
+		LIGHT.buttonSecondaryHover = new Colour(0xFFC7C7C7);
+		LIGHT.fg = new Colour(0xFF2A2A2A);
+		LIGHT.accentHover = new Colour(0xFFFAA000);
+		LIGHT.fgButton = new Colour(0xFF2A2A2A);
+		LIGHT.fgButtonHover = new Colour(0xFF454545);
 	}
 
 	public Colour bg;

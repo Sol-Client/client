@@ -147,7 +147,7 @@ public class TextFieldComponent extends Component {
 
 		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
-		NanoVG.nvgFillColor(nvg, (hasPlaceholder ? new Colour(0xFF888888) : Colour.WHITE).nvg());
+		NanoVG.nvgFillColor(nvg, (hasPlaceholder ? new Colour(0xFF888888) : theme.fg).nvg());
 		regularFont.renderString(nvg, hasPlaceholder ? I18n.translate(placeholder) : text, textOffset, y);
 
 		if (focused && ticks / 12 % 2 == 0) {
@@ -155,7 +155,7 @@ public class TextFieldComponent extends Component {
 
 			float relativeCursorPosition = regularFont.getWidth(nvg, text.substring(0, cursor));
 			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
+			NanoVG.nvgFillColor(nvg, theme.fg.nvg());
 			NanoVG.nvgRect(nvg, textOffset + relativeCursorPosition, y, 0.5F, 10);
 			NanoVG.nvgFill(nvg);
 

@@ -44,7 +44,7 @@ public class ColourBoxComponent extends ColouredComponent {
 
 
 		if (getColour().needsOutline(theme.bg)) {
-			NanoVG.nvgStrokeColor(nvg, Colour.WHITE.nvg());
+			NanoVG.nvgStrokeColor(nvg, theme.fg.nvg());
 			NanoVG.nvgStrokeWidth(nvg, 1);
 			NanoVG.nvgStroke(nvg);
 		}

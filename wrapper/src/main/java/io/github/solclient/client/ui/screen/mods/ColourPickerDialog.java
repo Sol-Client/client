@@ -261,8 +261,8 @@ public class ColourPickerDialog extends BlockComponent {
 		NanoVG.nvgFillColor(nvg, colour.nvg());
 		NanoVG.nvgFill(nvg);
 
-		NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
-		NanoVG.nvgStrokeColor(nvg, Colour.WHITE.nvg());
+		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
+		NanoVG.nvgStrokeColor(nvg, theme.fg.nvg());
 
 		String previousText = I18n.translate("sol_client.previous_colours");
 		regularFont.renderString(nvg, previousText, PREVIOUS_X + 35 - regularFont.getWidth(nvg, previousText) / 2,

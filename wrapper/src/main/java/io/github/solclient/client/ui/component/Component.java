@@ -140,8 +140,6 @@ public abstract class Component extends NanoVGManager {
 	}
 
 	public void render(ComponentRenderInfo info) {
-		theme = Theme.LIGHT;
-
 		ComponentRenderInfo actualInfo = info;
 
 		if (this instanceof ScrollListComponent) {

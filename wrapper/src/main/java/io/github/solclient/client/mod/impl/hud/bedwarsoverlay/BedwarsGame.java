@@ -2,6 +2,7 @@ package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
 
 import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
 import io.github.solclient.client.event.impl.ScoreboardRenderEvent;
+import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.BedwarsTeamUpgrades;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
@@ -211,6 +212,8 @@ public class BedwarsGame {
     @Getter
     private boolean started = false;
     private final BedwarsMod mod;
+    @Getter
+    private final BedwarsTeamUpgrades upgrades = new BedwarsTeamUpgrades();
 
 
     public BedwarsGame(BedwarsMod mod) {
@@ -265,7 +268,7 @@ public class BedwarsGame {
         } else {
             time += second;
         }
-        return time;
+        return "Time: " + time;
     }
 
     public Optional<BedwarsPlayer> getPlayer(String name) {
@@ -321,12 +324,12 @@ public class BedwarsGame {
                 debug("END OF THE GAME!!!");
                 BedwarsMod.getInstance().gameEnd();
             })) {
-
                 return;
             }
             if (matched(TEAM_ELIMINATED, rawMessage, m -> BedwarsTeam.fromName(m.group(1)).ifPresent(this::teamEliminated))) {
                 return;
             }
+            upgrades.onMessage(rawMessage);
         } catch (Exception e) {
             debug("Error: " + e);
         }
@@ -389,7 +392,7 @@ public class BedwarsGame {
         players.values().forEach(p -> p.tick(currentTick));
     }
 
-    protected static boolean matched(Pattern pattern, String input, Consumer<Matcher> consumer) {
+    public static boolean matched(Pattern pattern, String input, Consumer<Matcher> consumer) {
         Optional<Matcher> matcher = matched(pattern, input);
         if (!matcher.isPresent()) {
             return false;
@@ -398,7 +401,7 @@ public class BedwarsGame {
         return true;
     }
 
-    protected static boolean matched(Pattern[] pattern, String input, Consumer<Matcher> consumer) {
+    public static boolean matched(Pattern[] pattern, String input, Consumer<Matcher> consumer) {
         Optional<Matcher> matcher = matched(pattern, input);
         if (!matcher.isPresent()) {
             return false;
@@ -407,7 +410,7 @@ public class BedwarsGame {
         return true;
     }
 
-    protected static Optional<Matcher> matched(Pattern[] pattern, String input) {
+    public static Optional<Matcher> matched(Pattern[] pattern, String input) {
         for (Pattern p : pattern) {
             Optional<Matcher> m = matched(p, input);
             if (m.isPresent()) {
@@ -417,7 +420,7 @@ public class BedwarsGame {
         return Optional.empty();
     }
 
-    protected static Optional<Matcher> matched(Pattern pattern, String input) {
+    public static Optional<Matcher> matched(Pattern pattern, String input) {
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             return Optional.of(matcher);

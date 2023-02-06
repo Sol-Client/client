@@ -57,6 +57,7 @@ public class BedwarsMixins {
                 return;
             }
             this.header = BedwarsMod.getInstance().getGame().get().getTopBarText();
+            ci.cancel();
         }
 
     }

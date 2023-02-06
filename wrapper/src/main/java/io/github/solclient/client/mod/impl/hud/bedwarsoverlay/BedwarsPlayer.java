@@ -24,6 +24,14 @@ public class BedwarsPlayer {
         this.number = number;
     }
 
+    public String getColoredTeamNumber(String format) {
+        return getTeam().getColorSection() + format + getTeam().getPrefix() + getNumber();
+    }
+
+    public String getColoredTeamNumber() {
+        return getTeam().getColorSection() + getTeam().getPrefix() + getNumber();
+    }
+
     public String getName() {
         return profile.getProfile().getName();
     }

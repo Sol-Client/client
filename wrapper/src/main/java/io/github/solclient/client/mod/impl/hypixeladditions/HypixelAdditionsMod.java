@@ -18,6 +18,7 @@ import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.packet.Popup;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
+import lombok.Getter;
 import net.hypixel.api.HypixelAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.*;
@@ -88,10 +89,8 @@ public class HypixelAdditionsMod extends SolClientMod {
 	@Expose
 	@Option
 	public boolean levelhead;
-	private final Map<UUID, String> levelCache = new HashMap<>();
 	@Expose
 	private String apiKey;
-	private HypixelAPI api;
 	private HypixelLocationData locationData;
 	private final Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
 
@@ -111,36 +110,7 @@ public class HypixelAdditionsMod extends SolClientMod {
 			return null;
 		}
 
-		if (levelCache.containsKey(id)) {
-			String result = levelCache.get(id);
-			if (result.isEmpty()) {
-				return null;
-			}
-			return result;
-		}
-
-		else if (api != null) {
-			levelCache.put(id, "");
-			api.getPlayerByUuid(id).whenCompleteAsync((response, error) -> {
-				if (!response.isSuccess() || error != null) {
-					return;
-				}
-
-				if (response.getPlayer().exists()) {
-					levelCache.put(id, Integer.toString((int) response.getPlayer().getNetworkLevel()));
-				} else {
-					// At this stage, the player is either nicked, or an NPC, but all NPCs and fake
-					// players I've tested do not get to this stage.
-					levelCache.put(id, Integer.toString(MinecraftUtils.randomInt(180, 280))); // Based on looking at YouTubers'
-																						// Hypixel levels. It won't
-																						// actually be the true level,
-																						// and may not look quite right,
-																						// but it's more plausible than
-																						// a Level 1 god bridger.
-				}
-			});
-		}
-		return null;
+		return HypixelAPICache.getInstance().getLevelHead(id);
 	}
 
 	public boolean isLobby() {
@@ -217,7 +187,7 @@ public class HypixelAdditionsMod extends SolClientMod {
 	public void setApiKey(String apiKey) {
 		this.apiKey = apiKey;
 		if (apiKey != null) {
-			api = new HypixelAPI(new ApacheHttpClient(UUID.fromString(apiKey)));
+            HypixelAPICache.getInstance().setAPIKey(apiKey);
 		}
 	}
 
@@ -250,7 +220,7 @@ public class HypixelAdditionsMod extends SolClientMod {
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
 		donegg = donegl = false;
-		levelCache.clear();
+		HypixelAPICache.getInstance().clear();
 
 		if (!isHypixel()) {
 			return;

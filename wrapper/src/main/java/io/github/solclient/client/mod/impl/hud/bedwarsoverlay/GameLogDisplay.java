@@ -56,18 +56,30 @@ public class GameLogDisplay implements HudElement {
         return position.rectangle(100, 200);
     }
 
+    public int getSecondsBeforeFade() {
+        return 10;
+    }
+
+    public int getFadeSeconds() {
+        return 3;
+    }
+
     @Override
     public void render(Position position, boolean editMode) {
         int tick = mc.inGameHud.getTicks();
-        int y = 0;
+        int y = -200;
         for (Message message : (editMode ? EDIT_MESSAGES : messages)) {
             y += 9;
             int color = -1;
-            if (!editMode && message.tickCreated > 20 * 5 + tick) {
-                if (message.tickCreated > 20 * 8 + tick) {
+            int tickAlive = (tick - message.tickCreated);
+            if (!editMode && tickAlive > 20 * getSecondsBeforeFade()) {
+                if (tickAlive > 20 * getSecondsBeforeFade() + getFadeSeconds()) {
+                    // Stop rendering
                     break;
                 }
-                color = new Colour(255, 255, 255, (int) ((1 - ((float) 20 * 5 - tick) / (20 * 3)) * 255)).getValue();
+                int tickFade = tickAlive - 20 * getSecondsBeforeFade();
+                float alpha = 1 - (tickFade / (20f * getFadeSeconds()));
+                color = new Colour(255, 255, 255, (int) (alpha * 255)).getValue();
             }
             mc.textRenderer.draw(message.content, position.getX(), position.getY() - y, color);
         }

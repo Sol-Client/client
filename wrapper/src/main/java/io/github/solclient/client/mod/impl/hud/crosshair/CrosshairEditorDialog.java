@@ -20,36 +20,27 @@ package io.github.solclient.client.mod.impl.hud.crosshair;
 
 import org.apache.logging.log4j.*;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.nanovg.*;
+import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
 
-public final class CrosshairPaintDialog extends BlockComponent {
+public final class CrosshairEditorDialog extends Component {
 
 	private static final Logger LOGGER = LogManager.getLogger();
-	private static final int SCALE = 12;
+	private static final int SCALE = 11;
 
 	private final PixelMatrix pixels;
 
-	public CrosshairPaintDialog(ModOption<PixelMatrix> option) {
-		super(theme.bg, 12, 0);
-
+	public CrosshairEditorDialog(CrosshairOption option) {
 		pixels = option.getValue();
 
-		LabelComponent title = new LabelComponent(option.getName());
-		add(title, new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
-				(component, defaultBounds) -> defaultBounds.offset(0, 10)));
-		add(new PixelMatrixComponent(), new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
-				(component, defaultBounds) -> defaultBounds.offset(0, -5)));
-		add(ButtonComponent.done(() -> parent.setDialog(null)), new AlignedBoundsController(Alignment.CENTRE,
-				Alignment.END, (component, defaultBounds) -> defaultBounds.offset(0, -8)));
+		add(new PixelMatrixComponent(), new AlignedBoundsController(Alignment.CENTRE, Alignment.START));
 
 		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("copy").width(20).onClick((info, button) -> {
 			if (button != 0)
@@ -58,8 +49,8 @@ public final class CrosshairPaintDialog extends BlockComponent {
 			MinecraftUtils.playClickSound(true);
 			copy();
 			return true;
-		}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-				(component, defaultBounds) -> defaultBounds.offset(10, -25)));
+		}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
+				(component, defaultBounds) -> defaultBounds.offset(-25, 0)));
 		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("paste").width(20).onClick((info, button) -> {
 			if (button != 0)
 				return false;
@@ -67,8 +58,8 @@ public final class CrosshairPaintDialog extends BlockComponent {
 			MinecraftUtils.playClickSound(true);
 			paste();
 			return true;
-		}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-				(component, defaultBounds) -> defaultBounds.offset(10, 0)));
+		}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
+				(component, defaultBounds) -> defaultBounds.offset(0, 0)));
 		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("clear").width(20).onClick((info, button) -> {
 			if (button != 0)
 				return false;
@@ -76,8 +67,8 @@ public final class CrosshairPaintDialog extends BlockComponent {
 			MinecraftUtils.playClickSound(true);
 			pixels.clear();
 			return true;
-		}), new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
-				(component, defaultBounds) -> defaultBounds.offset(10, 25)));
+		}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
+				(component, defaultBounds) -> defaultBounds.offset(25, 0)));
 	}
 
 	private void copy() {
@@ -149,7 +140,7 @@ public final class CrosshairPaintDialog extends BlockComponent {
 					if (x == pixels.getWidth() / 2 && y == pixels.getHeight() / 2) {
 						NanoVG.nvgBeginPath(nvg);
 						NanoVG.nvgFillColor(nvg, pixels.get(x, y) ? Colour.BLACK.nvg() : Colour.WHITE.nvg());
-						NanoVG.nvgCircle(nvg, x * SCALE + SCALE / 2, y * SCALE + SCALE / 2, 2);
+						NanoVG.nvgCircle(nvg, x * SCALE + SCALE / 2F, y * SCALE + SCALE / 2F, 2);
 						NanoVG.nvgFill(nvg);
 					}
 				}
@@ -166,7 +157,7 @@ public final class CrosshairPaintDialog extends BlockComponent {
 				rightMouseDown = true;
 			lastGridX = -1;
 			lastGridY = -1;
-			return super.mouseClicked(info, button);
+			return true;
 		}
 
 		@Override
@@ -203,7 +194,7 @@ public final class CrosshairPaintDialog extends BlockComponent {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return Rectangle.ofDimensions(260, 250);
+		return Rectangle.ofDimensions(230, 190);
 	}
 
 }

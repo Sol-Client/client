@@ -20,8 +20,6 @@ package io.github.solclient.client.mod.impl.hud.crosshair;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
@@ -42,10 +40,10 @@ public class CrosshairMod extends SolClientHudMod {
 	private static final String DEFAULT_CROSSHAIR = "LCCH-9-ECBAgPAfAgQIEAA";
 
 	@Expose
+	final PixelMatrix pixels = new PixelMatrix(15, 15);
+	@Expose
 	@Option
 	private boolean customCrosshair = false;
-	@Expose
-	final PixelMatrix pixels = new PixelMatrix(15, 15);
 	@Expose
 	@Option
 	private boolean thirdPerson = true;

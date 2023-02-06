@@ -109,6 +109,10 @@ public abstract class ModOption<T> {
 	}
 
 	protected Component createDefaultComponent(int height) {
+		return createDefaultComponent(height, true);
+	}
+
+	protected Component createDefaultComponent(int height, boolean label) {
 		Component component = new Component() {
 
 			@Override
@@ -117,8 +121,9 @@ public abstract class ModOption<T> {
 			}
 
 		};
-		component.add(new LabelComponent(Controller.of(() -> I18n.translate(name))),
-				new AlignedBoundsController(Alignment.START, Alignment.CENTRE));
+		if (label)
+			component.add(new LabelComponent(Controller.of(() -> I18n.translate(name))),
+					new AlignedBoundsController(Alignment.START, Alignment.CENTRE));
 		return component;
 	}
 

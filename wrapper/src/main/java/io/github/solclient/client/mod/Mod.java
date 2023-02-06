@@ -77,7 +77,10 @@ public abstract class Mod extends Object {
 
 		List<ModOption<?>> options = new ArrayList<>();
 		options.add(new ToggleOption("sol_client.mod.generic.enabled",
-				ModOptionStorage.of(boolean.class, () -> enabled, (value) -> enabled = value)));
+				ModOptionStorage.of(boolean.class, () -> enabled, (value) -> {
+					if (enabled != value)
+						setEnabled(value);
+				})));
 		try {
 			FieldOptions.visit(this, options::add);
 		} catch (IllegalAccessException error) {
@@ -229,13 +232,6 @@ public abstract class Mod extends Object {
 	 * @return <code>true</code> to proceed.
 	 */
 	public boolean onOptionChange(String key, Object value) {
-		if (key.equals("enabled")) {
-			if (this instanceof ConfigOnlyMod)
-				return false;
-
-			setEnabled((boolean) value);
-		}
-
 		return true;
 	}
 

@@ -135,7 +135,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						Rectangle result = new Rectangle(getBaseX(), getBaseX() + 3, defaultBounds.getWidth(),
 								defaultBounds.getHeight());
 						if (!singleModMode && mod != null)
-							result = result.offset(18, 0);
+							result = result.offset(24, 0);
 
 						return result;
 					}));

@@ -76,11 +76,15 @@ public abstract class Mod extends Object {
 			logger.warn("Please use getOptions instead of recreating them", new Exception("options != null"));
 
 		List<ModOption<?>> options = new ArrayList<>();
-		options.add(new ToggleOption("sol_client.mod.generic.enabled",
-				ModOptionStorage.of(boolean.class, () -> enabled, (value) -> {
-					if (enabled != value)
-						setEnabled(value);
-				})));
+
+		if (!(this instanceof ConfigOnlyMod)) {
+			options.add(new ToggleOption("sol_client.mod.generic.enabled",
+					ModOptionStorage.of(boolean.class, () -> enabled, (value) -> {
+						if (enabled != value)
+							setEnabled(value);
+					})));
+		}
+
 		try {
 			FieldOptions.visit(this, options::add);
 		} catch (IllegalAccessException error) {

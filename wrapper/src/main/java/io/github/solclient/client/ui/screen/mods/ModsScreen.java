@@ -22,7 +22,7 @@ import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.extension.KeyBindingExtension;
-import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.ScreenAnimation;
 import io.github.solclient.client.ui.component.*;
@@ -281,13 +281,15 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
 			if ((screen.getRoot().getDialog() == null
-					&& (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER))
-					&& (mod != null || !search.getText().isEmpty()) && !scroll.getSubComponents().isEmpty()) {
-				Component firstComponent = scroll.getSubComponents().get(0);
-				if (mod != null)
-					firstComponent = firstComponent.getSubComponents().get(1);
-				return firstComponent.mouseClickedAnywhere(info, firstComponent instanceof ModEntry ? 1 : 0, true,
-						false);
+					&& (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER))) {
+				if (mod == null) {
+					if (!search.getText().isEmpty())
+						return scroll.getSubComponents().get(0).mouseClickedAnywhere(info, 1, true, false);
+				} else if (!(mod instanceof ConfigOnlyMod)) {
+					MinecraftUtils.playClickSound(true);
+					mod.setEnabled(!mod.isEnabled());
+					return true;
+				}
 			} else if (draggingMod == null && mod == null && keyCode == Keyboard.KEY_F && hasControlDown()
 					&& !hasShiftDown() && !hasAltDown()) {
 				search.setFocused(true);

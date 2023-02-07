@@ -18,7 +18,7 @@
 
 package io.github.solclient.client.ui.component.impl;
 
-import java.util.function.Consumer;
+import java.util.function.*;
 
 import org.lwjgl.nanovg.NanoVG;
 
@@ -29,29 +29,29 @@ import io.github.solclient.client.util.data.*;
 
 public final class ToggleComponent extends BlockComponent {
 
-	private boolean value;
+	private BooleanSupplier getter;
+	private final Consumer<Boolean> setter;
 	private final AnimatedFloatController handleProgress;
 	private final Controller<Colour> handleColour;
-	private final Consumer<Boolean> booleanConsumer;
 
-	public ToggleComponent(boolean value, Consumer<Boolean> booleanConsumer) {
+	public ToggleComponent(BooleanSupplier getter, Consumer<Boolean> setter) {
 		super(new AnimatedColourController((component, defaultColour) -> {
-			if (((ToggleComponent) component).value)
+			if (getter.getAsBoolean())
 				return component.isHovered() ? theme.accentHover : theme.accent;
 
 			return component.isHovered() ? theme.buttonHover : theme.button;
 		}), (component, defaultRadius) -> component.getBounds().getHeight() / 2F,
 				(component, defaultStrokeWidth) -> 0F);
 
-		this.value = value;
-		this.booleanConsumer = booleanConsumer;
+		this.getter = getter;
+		this.setter = setter;
 
-		handleProgress = new AnimatedFloatController((component, ignored) -> this.value ? 1F : 0F, 300);
+		handleProgress = new AnimatedFloatController((component, ignored) -> getter.getAsBoolean() ? 1F : 0F, 300);
 		handleColour = (component, defaultValue) -> {
 			Colour start = theme.accentFg;
 			Colour end = theme.fg;
 			float progress = handleProgress.get(component);
-			if (this.value) {
+			if (getter.getAsBoolean()) {
 				start = theme.fg;
 				end = theme.accentFg;
 			} else
@@ -83,8 +83,7 @@ public final class ToggleComponent extends BlockComponent {
 			return false;
 
 		MinecraftUtils.playClickSound(true);
-		value = !value;
-		booleanConsumer.accept(value);
+		setter.accept(!getter.getAsBoolean());
 
 		return true;
 	}

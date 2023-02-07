@@ -47,8 +47,8 @@ sol_client.mod.sol_client.description=General settings for Sol Client.
 sol_client.mod.sol_client.option.remindMeToUpdate=Update Notifications
 sol_client.mod.sol_client.option.fancyMainMenu=Replace Main Menu
 sol_client.mod.sol_client.option.logoInInventory=Show Logo in Inventory
-sol_client.mod.sol_client.mods=Mods
-sol_client.mod.sol_client.option.modsKey=Mods Key
+sol_client.mod.sol_client.mods=Modules
+sol_client.mod.sol_client.option.modsKey=Modules Key
 sol_client.mod.sol_client.edit_hud=Edit HUD
 sol_client.mod.sol_client.option.editHudKey=Edit HUD Key
 sol_client.mod.sol_client.option.uiColour=Accent Color
@@ -463,7 +463,7 @@ sol_client.mod.discord_integration.multiplayer=Multiplayer: %s
 sol_client.mod.cosmetica.name=Cosmetica
 sol_client.mod.cosmetica.description=Support for cosmetics with Cosmetica's API.
 
-sol_client.mod.screen.title=Mods
+sol_client.mod.screen.title=Modules
 sol_client.mod.screen.search=Type to search
 sol_client.mod.screen.apply_to_all=Apply to All
 

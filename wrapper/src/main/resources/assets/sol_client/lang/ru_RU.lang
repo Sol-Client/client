@@ -45,8 +45,8 @@ sol_client.mod.sol_client.description=Общие настройки Sol Client.
 
 sol_client.mod.sol_client.option.fancyMainMenu=Красивое главное меню
 sol_client.mod.sol_client.option.logoInInventory=Показывать логотип в инвентаре
-sol_client.mod.sol_client.mods=Модификации
-sol_client.mod.sol_client.option.modsKey=Кнопка модификаций
+sol_client.mod.sol_client.mods=Модули
+sol_client.mod.sol_client.option.modsKey=Ключ модулей
 sol_client.mod.sol_client.edit_hud=Редактировать интерфейс
 sol_client.mod.sol_client.option.editHudKey=Кнопка интерфейса
 sol_client.mod.sol_client.option.uiColour=Второй цвет
@@ -415,7 +415,7 @@ sol_client.mod.discord_integration.option.usernameColour=Цвет имени п�
 sol_client.mod.discord_integration.option.mutedColour=Цвет имени заглушенного пользователя
 sol_client.mod.discord_integration.option.speakingColour=Цвет имени говорящего пользователя
 
-sol_client.mod.screen.title=Модификации
+sol_client.mod.screen.title=Модули
 sol_client.mod.screen.search=Начните печатать...
 sol_client.mod.screen.apply_to_all=Применить конфигурацию
 

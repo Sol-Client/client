@@ -56,8 +56,8 @@ sol_client.mod.sol_client.description=Escenarios generales para Sol Client.
 
 sol_client.mod.sol_client.option.fancyMainMenu=Menú Principal
 sol_client.mod.sol_client.option.logoInInventory=Enseñar Logotipo En El Inventario
-sol_client.mod.sol_client.mods=Modificaciónes
-sol_client.mod.sol_client.option.modsKey=Tecla De Modificaciónes
+sol_client.mod.sol_client.mods=Módulos
+sol_client.mod.sol_client.option.modsKey=Clave De Módulos
 sol_client.mod.sol_client.edit_hud=Editar Monitor
 sol_client.mod.sol_client.option.editHudKey=Tecla De Editar Monitor
 sol_client.mod.sol_client.option.uiColour=Color Acento
@@ -510,7 +510,7 @@ sol_client.mod.discord_integration.option.mutedColour=Color de personas silencia
 sol_client.mod.discord_integration.option.speakingColour=Color cuando hablando
 
 
-sol_client.mod.screen.title=Mods
+sol_client.mod.screen.title=Módulos
 sol_client.mod.screen.search=Escribe para buscar
 sol_client.mod.screen.apply_to_all=Aplicar a todos
 

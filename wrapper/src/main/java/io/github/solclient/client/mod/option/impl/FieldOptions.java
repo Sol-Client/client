@@ -29,8 +29,10 @@ import org.objectweb.asm.Opcodes;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.annotation.*;
+import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import lombok.experimental.UtilityClass;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 
 /**
@@ -94,9 +96,11 @@ public class FieldOptions {
 			if (field.isAnnotationPresent(TextFile.class))
 				return createTextFile(storage, field, name);
 			return createTextField(storage, field, name);
-		} else if (field.getType() == KeyBinding.class)
-			return new KeyBindingOption(name, storage.unsafeCast());
-		else if (field.isAnnotationPresent(Slider.class))
+		} else if (field.getType() == KeyBinding.class) {
+			ModOptionStorage<KeyBinding> keyOption = storage.unsafeCast();
+			MinecraftUtils.registerKeyBinding(keyOption.get());
+			return new KeyBindingOption(name, keyOption);
+		} else if (field.isAnnotationPresent(Slider.class))
 			return createSlider(storage, field, name);
 		else if (field.getType().isEnum())
 			return new EnumOption<>(name, storage.unsafeCast());

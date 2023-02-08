@@ -1,6 +1,8 @@
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades;
 
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.BedwarsMode;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.LiteralText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +28,12 @@ public class TrapUpgrade extends TeamUpgrade {
     @Override
     protected void onMatch(TeamUpgrade upgrade, Matcher matcher) {
         if (matcher.group(1).equals("off")) {
+            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText("Trap went off"));
             // Trap went off
             traps.remove(0);
             return;
         }
+        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText("Trap died"));
         traps.add(TrapType.getFuzzy(matcher.group(1)));
     }
 

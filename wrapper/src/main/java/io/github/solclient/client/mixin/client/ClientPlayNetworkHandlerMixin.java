@@ -1,5 +1,6 @@
 package io.github.solclient.client.mixin.client;
 
+import net.minecraft.text.LiteralText;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -38,9 +39,13 @@ public class ClientPlayNetworkHandlerMixin {
 
 	@Redirect(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V"))
 	public void handleChat(ChatHud instance, Text message) {
-		if (!Client.INSTANCE.getEvents().post(
-				new ReceiveChatMessageEvent(false, Formatting.strip(message.asUnformattedString()), false)).cancelled) {
-			instance.addMessage(message);
+        ReceiveChatMessageEvent event = new ReceiveChatMessageEvent(false, Formatting.strip(message.asUnformattedString()), false);
+		if (!Client.INSTANCE.getEvents().post(event).cancelled) {
+            if (event.newMessage != null) {
+                instance.addMessage(new LiteralText(event.newMessage));
+            } else {
+                instance.addMessage(message);
+            }
 		}
 	}
 

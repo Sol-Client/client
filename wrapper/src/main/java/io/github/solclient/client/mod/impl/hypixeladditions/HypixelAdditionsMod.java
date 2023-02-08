@@ -18,8 +18,6 @@ import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.packet.Popup;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
-import lombok.Getter;
-import net.hypixel.api.HypixelAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.*;
 import net.minecraft.text.ClickEvent.Action;
@@ -236,10 +234,10 @@ public class HypixelAdditionsMod extends SolClientMod {
 			return;
 		}
 
-		if (locrawTrigger.matcher(event.message).matches()) {
+		if (locrawTrigger.matcher(event.originalMessage).matches()) {
 			try {
 				event.cancelled = true;
-				locationData = new Gson().fromJson(event.message, HypixelLocationData.class);
+				locationData = new Gson().fromJson(event.originalMessage, HypixelLocationData.class);
 				return;
 			} catch (Throwable error) {
 				logger.warn("Could not detect location", error);
@@ -248,19 +246,19 @@ public class HypixelAdditionsMod extends SolClientMod {
 
 		if (hidegg) {
 			for (Pattern pattern : hideggTriggers) {
-				if (pattern.matcher(event.message).matches()) {
+				if (pattern.matcher(event.originalMessage).matches()) {
 					event.cancelled = true;
 					return;
 				}
 			}
 		}
 
-		if (hidegl && hideglTrigger.matcher(event.message).matches()) {
+		if (hidegl && hideglTrigger.matcher(event.originalMessage).matches()) {
 			event.cancelled = true;
 			return;
 		}
 
-		if (hideChannelMessageTrigger.matcher(event.message).matches()) {
+		if (hideChannelMessageTrigger.matcher(event.originalMessage).matches()) {
 			event.cancelled = true;
 			return;
 		}
@@ -269,13 +267,13 @@ public class HypixelAdditionsMod extends SolClientMod {
 			return;
 		}
 
-		if (event.actionBar && isHousing() && event.message.startsWith("Now playing:")) {
+		if (event.actionBar && isHousing() && event.originalMessage.startsWith("Now playing:")) {
 			event.cancelled = true;
 			return;
 		}
 
 		if (popupEvents) {
-			for (String line : event.message.split("\\n")) {
+			for (String line : event.originalMessage.split("\\n")) {
 				Popup popup = HypixelPopupType.popupFromMessage(line);
 				if (popup != null) {
 					Client.INSTANCE.getPopups().add(popup);
@@ -286,7 +284,7 @@ public class HypixelAdditionsMod extends SolClientMod {
 
 		if (autogg && !donegg) {
 			for (Pattern pattern : autoggTriggers) {
-				if (pattern.matcher(event.message).matches()) {
+				if (pattern.matcher(event.originalMessage).matches()) {
 					donegg = true;
 					mc.player.sendChatMessage("/achat " + autoggMessage);
 					return;
@@ -294,12 +292,12 @@ public class HypixelAdditionsMod extends SolClientMod {
 			}
 		}
 
-		if (autogl && !donegl && event.message.equals(autoglTrigger)) {
+		if (autogl && !donegl && event.originalMessage.equals(autoglTrigger)) {
 			ticksUntilAutogl = 20;
 			return;
 		}
 
-		Matcher apiKeyMatcher = apiKeyMessageTrigger.matcher(event.message);
+		Matcher apiKeyMatcher = apiKeyMessageTrigger.matcher(event.originalMessage);
 		if (apiKeyMatcher.matches()) {
 			setApiKey(apiKeyMatcher.group(1));
 		}

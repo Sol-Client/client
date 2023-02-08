@@ -1,5 +1,6 @@
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.util.data.Colour;
@@ -25,10 +26,16 @@ public class GameLogDisplay implements HudElement {
         new Message(-1, "☠ §bA1")
     );
     private Position position = new Position(100, 100);
+    private int maxNameLength = 1;
 
     public GameLogDisplay(BedwarsMod mod) {
         this.mod = mod;
         this.mc = MinecraftClient.getInstance();
+    }
+
+    public void gameStart(int maxNameLength) {
+        this.messages.clear();
+        this.maxNameLength = maxNameLength;
     }
 
     @Override
@@ -66,13 +73,16 @@ public class GameLogDisplay implements HudElement {
 
     @Override
     public void render(Position position, boolean editMode) {
+        GlStateManager.enableBlend();
+        GlStateManager.blendFuncSeparate(770, 771, 1, 0);
         int tick = mc.inGameHud.getTicks();
         int y = -200;
+        boolean chatFocused = mc.inGameHud.getChatHud().isChatFocused();
         for (Message message : (editMode ? EDIT_MESSAGES : messages)) {
             y += 9;
             int color = -1;
             int tickAlive = (tick - message.tickCreated);
-            if (!editMode && tickAlive > 20 * getSecondsBeforeFade()) {
+            if (!chatFocused && !editMode && tickAlive > 20 * getSecondsBeforeFade()) {
                 if (tickAlive > 20 * getSecondsBeforeFade() + getFadeSeconds()) {
                     // Stop rendering
                     break;
@@ -83,6 +93,7 @@ public class GameLogDisplay implements HudElement {
             }
             mc.textRenderer.draw(message.content, position.getX(), position.getY() - y, color);
         }
+        GlStateManager.disableBlend();
     }
 
     @Override
@@ -107,12 +118,33 @@ public class GameLogDisplay implements HudElement {
         }
     }
 
-    public void died(BedwarsPlayer player, @Nullable BedwarsPlayer killer, boolean finaled) {
+    public String died(BedwarsPlayer player, @Nullable BedwarsPlayer killer, boolean finaled) {
+        String time = "§7" + mod.getGame().get().getFormattedTime() + " ";
         if (killer == null) {
-            push(new LiteralText("☠ " + player.getColoredTeamNumber()));
+            return time + getPlayerFormatted(player) + " §7/death/";
         } else {
-            push(new LiteralText("☠ " + player.getColoredTeamNumber() + "§7 // " + killer.getColoredTeamNumber()));
+            if (finaled && killer.getStats() != null) {
+                return time + getPlayerFormatted(player) + " §6§n/FINAL/§r " + getPlayerFormatted(killer) + " §b#" + killer.getStats().getFinalKills();
+            } else {
+                return time + getPlayerFormatted(player) + " §7/death/ " + getPlayerFormatted(killer);
+            }
         }
+    }
+
+    private String getPlayerFormatted(BedwarsPlayer player) {
+        return player.getColoredTeamNumber() + " " + player.getProfile().getProfile().getName();
+    }
+
+    private String format(String name) {
+        if (name.length() >= maxNameLength) {
+            return name;
+        }
+        int dif = maxNameLength - name.length();
+        StringBuilder nameBuilder = new StringBuilder(name);
+        for (int i = 0; i < dif; i++) {
+            nameBuilder.append(" ");
+        }
+        return nameBuilder.toString();
     }
 
     @Value

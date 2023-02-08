@@ -1,4 +1,4 @@
-package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
+package io.github.solclient.client.mod.impl.hud.bedwarsoverlay.stats;
 
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.HudElement;

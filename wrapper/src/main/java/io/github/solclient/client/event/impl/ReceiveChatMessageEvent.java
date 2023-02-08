@@ -6,11 +6,12 @@ import lombok.RequiredArgsConstructor;
 public class ReceiveChatMessageEvent {
 
 	public final boolean actionBar;
-	public final String message;
+	public final String originalMessage;
 	/**
 	 * Whether the event is fired from the replay mod.
 	 */
 	public final boolean replay;
 	public boolean cancelled;
+    public String newMessage = null;
 
 }

@@ -8,7 +8,6 @@ import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.text.Text;
 
 
 import java.util.*;
@@ -39,7 +38,7 @@ public class BedwarsMod extends SolClientMod {
     @EventHandler
     public void onMessage(ReceiveChatMessageEvent event) {
         // Remove formatting
-        String rawMessage = event.message.replaceAll("§.", "");
+        String rawMessage = event.originalMessage.replaceAll("§.", "");
         if (currentGame != null) {
             currentGame.onChatMessage(rawMessage, event);
         } else if (targetTick < 0 && BedwarsGame.matched(GAME_START, rawMessage).isPresent()) {
@@ -109,4 +108,5 @@ public class BedwarsMod extends SolClientMod {
     public void gameEnd() {
         currentGame = null;
     }
+
 }

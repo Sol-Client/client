@@ -1,10 +1,15 @@
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
 
 
+import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAPICache;
 import lombok.Data;
 import lombok.Getter;
+import net.hypixel.api.reply.PlayerReply;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
+
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Data
 public class BedwarsPlayer {
@@ -16,6 +21,8 @@ public class BedwarsPlayer {
     private boolean disconnected = false;
     private boolean bed = true;
     private final int number;
+    private BedwarsPlayerStats stats = null;
+    private boolean triedStats = false;
     private int tickAlive = -1;
 
     public BedwarsPlayer(BedwarsTeam team, PlayerListEntry profile, int number) {
@@ -62,6 +69,21 @@ public class BedwarsPlayer {
     }
 
     public void tick(int currentTick) {
+        if (stats == null && !triedStats) {
+            triedStats = true;
+            Optional<CompletableFuture<PlayerReply.Player>> future = HypixelAPICache.getInstance().getPlayerOrRequest(profile.getProfile().getId());
+            if (!future.isPresent()) {
+                stats = BedwarsPlayerStats.generateFake();
+            } else {
+                future.get().whenCompleteAsync((player, error) -> {
+                    if (error != null) {
+                        stats = BedwarsPlayerStats.generateFake();
+                        return;
+                    }
+                    stats = BedwarsPlayerStats.fromAPI(player);
+                });
+            }
+        }
         if (alive || tickAlive < 0) {
             return;
         }
@@ -72,6 +94,19 @@ public class BedwarsPlayer {
     }
 
     public void died() {
+        if (!alive) {
+            if (!bed) {
+                tickAlive = -1;
+            }
+            return;
+        }
+        if (stats != null) {
+            if (!bed) {
+                stats.addFinalDeath();
+            } else {
+                stats.addDeath();
+            }
+        }
         alive = false;
         if (!bed) {
             tickAlive = -1;
@@ -82,6 +117,13 @@ public class BedwarsPlayer {
     }
 
     public void disconnected() {
+        if (stats != null) {
+            if (!bed) {
+                stats.addFinalDeath();
+            } else {
+                stats.addDeath();
+            }
+        }
         disconnected = true;
         tickAlive = -1;
         alive = false;
@@ -91,5 +133,15 @@ public class BedwarsPlayer {
         disconnected = false;
         int currentTick = MinecraftClient.getInstance().inGameHud.getTicks();
         tickAlive = currentTick + 20 * 10; // 10 second respawn
+    }
+
+    public void killed(boolean finalKill) {
+        if (stats != null) {
+            if (finalKill) {
+                stats.addFinalKill();
+            } else {
+                stats.addKill();
+            }
+        }
     }
 }

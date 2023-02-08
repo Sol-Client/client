@@ -214,7 +214,7 @@ public class ChatMod extends SolClientHudMod {
 			return;
 		}
 
-		String message = strip(event.message);
+		String message = strip(event.originalMessage);
 
 		for (String word : filteredWords) {
 			word = strip(word);

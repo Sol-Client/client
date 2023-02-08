@@ -39,10 +39,10 @@ public class ColourPickerDialog extends BlockComponent {
 
 	private static final int TEXT_WIDTH = 76;
 	private static final int DIALOG_HEIGHT = 210;
-	private static final int SLIDER_HIGHT = 10;
+	private static final int SLIDER_HEIGHT = 10;
 	private static final int BOX_HEIGHT = 100;
 	private static final int HUE_Y = BOX_HEIGHT + 8;
-	private static final int OPACITY_Y = HUE_Y + SLIDER_HIGHT + 6;
+	private static final int OPACITY_Y = HUE_Y + SLIDER_HEIGHT + 6;
 	private static final int PICKER_WIDTH = 150;
 	private static final int PICKER_X = 22;
 	private static final int PICKER_Y = 30;
@@ -217,16 +217,16 @@ public class ColourPickerDialog extends BlockComponent {
 		NanoVG.nvgStroke(nvg);
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgRect(nvg, PICKER_X, PICKER_Y + HUE_Y, PICKER_WIDTH, SLIDER_HIGHT);
+		NanoVG.nvgRect(nvg, PICKER_X, PICKER_Y + HUE_Y, PICKER_WIDTH, SLIDER_HEIGHT);
 		NanoVG.nvgFillPaint(nvg,
 				MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier("sol_client", "textures/gui/hues.png"),
-						PICKER_X, PICKER_Y + HUE_Y, PICKER_WIDTH, SLIDER_HIGHT, 0));
+						PICKER_X, PICKER_Y + HUE_Y, PICKER_WIDTH, SLIDER_HEIGHT, 0));
 		NanoVG.nvgFill(nvg);
 
 		float hueX = hue * PICKER_WIDTH;
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgRoundedRect(nvg, PICKER_X + hueX - 2, PICKER_Y + HUE_Y - 1, 4, SLIDER_HIGHT + 2, 1);
+		NanoVG.nvgRoundedRect(nvg, PICKER_X + hueX - 2, PICKER_Y + HUE_Y - 1, 4, SLIDER_HEIGHT + 2, 1);
 		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
 		NanoVG.nvgFill(nvg);
 
@@ -234,7 +234,7 @@ public class ColourPickerDialog extends BlockComponent {
 				30, 2, 5);
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgRect(nvg, PICKER_X, PICKER_Y + OPACITY_Y, PICKER_WIDTH, SLIDER_HIGHT);
+		NanoVG.nvgRect(nvg, PICKER_X, PICKER_Y + OPACITY_Y, PICKER_WIDTH, SLIDER_HEIGHT);
 		NanoVG.nvgLinearGradient(nvg, PICKER_X, 0, PICKER_X + PICKER_WIDTH, 0, Colour.TRANSPARENT.nvg(),
 				Colour.WHITE.nvg(), paint);
 		NanoVG.nvgFillPaint(nvg, paint);
@@ -243,7 +243,7 @@ public class ColourPickerDialog extends BlockComponent {
 		float opacityX = colour.getAlpha() / 255F * PICKER_WIDTH;
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgRoundedRect(nvg, PICKER_X + opacityX - 2, PICKER_Y + OPACITY_Y - 1, 4, SLIDER_HIGHT + 2, 1);
+		NanoVG.nvgRoundedRect(nvg, PICKER_X + opacityX - 2, PICKER_Y + OPACITY_Y - 1, 4, SLIDER_HEIGHT + 2, 1);
 		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
 		NanoVG.nvgFill(nvg);
 
@@ -324,10 +324,10 @@ public class ColourPickerDialog extends BlockComponent {
 				if (info.relativeMouseY() >= PICKER_Y && info.relativeMouseY() <= PICKER_Y + BOX_HEIGHT)
 					state = ModifyingState.SV;
 				else if (info.relativeMouseY() >= PICKER_Y + HUE_Y
-						&& info.relativeMouseY() <= PICKER_Y + HUE_Y + SLIDER_HIGHT)
+						&& info.relativeMouseY() <= PICKER_Y + HUE_Y + SLIDER_HEIGHT)
 					state = ModifyingState.HUE;
 				else if (info.relativeMouseY() >= PICKER_Y + OPACITY_Y
-						&& info.relativeMouseY() <= PICKER_Y + OPACITY_Y + SLIDER_HIGHT)
+						&& info.relativeMouseY() <= PICKER_Y + OPACITY_Y + SLIDER_HEIGHT)
 					state = ModifyingState.OPACITY;
 			} else if (info.relativeMouseX() >= PREVIOUS_X && info.relativeMouseX() <= PREVIOUS_X + 70
 					&& info.relativeMouseY() >= PREVIOUS_Y && info.relativeMouseY() <= PREVIOUS_Y + 25

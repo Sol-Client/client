@@ -1,6 +1,6 @@
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades;
 
-import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.BedwarsGame;
+import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.BedwarsMessages;
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.BedwarsMode;
 
 import java.util.regex.Matcher;
@@ -20,7 +20,7 @@ public abstract class TeamUpgrade {
     }
 
     public boolean match(String unformatedMessage) {
-        return BedwarsGame.matched(regex, unformatedMessage, matcher -> onMatch(this, matcher));
+        return BedwarsMessages.matched(regex, unformatedMessage, matcher -> onMatch(this, matcher));
     }
 
     protected abstract void onMatch(TeamUpgrade upgrade, Matcher matcher);

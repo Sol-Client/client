@@ -14,246 +14,16 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class BedwarsGame {
 
-    private final static Pattern DISCONNECT = Pattern.compile("(\\b[A-Za-z0-9_§]{3,16}\\b) disconnected\\.$");
-    private final static Pattern RECONNECT = Pattern.compile("(\\b[A-Za-z0-9_§]{3,16}\\b) reconnected\\.$");
-    private final static Pattern FINAL_KILL = Pattern.compile("FINAL KILL!");
-    private final static Pattern BED_DESTROY = Pattern.compile("^\\s*?BED DESTRUCTION > (\\w+) Bed");
-    private final static Pattern TEAM_ELIMINATED = Pattern.compile("^\\s*?TEAM ELIMINATED > (\\w+) Team");
-
-    private final static Pattern GAME_END = Pattern.compile("^ +1st Killer - ?\\[?\\w*\\+*\\]? \\w+ - \\d+(?: Kills?)?$");
-
-    private final static Pattern[] DIED = {
-            Pattern.compile(formatPlaceholder("^{killed} fell into the void.(?: FINAL KILL!)?\\s*?")),
-            Pattern.compile(formatPlaceholder("^{killed} died.(?: FINAL KILL!)?\\s*?"))
-    };
-
-    private final static Pattern[] ANNOYING_MESSAGES = {
-            Pattern.compile("^You will respawn in \\d* seconds!$"),
-            Pattern.compile("^You purchased Wool$"),
-            Pattern.compile("^Cross-teaming is not allowed"),
-            Pattern.compile("^\\+\\d+ Coins!"),
-            Pattern.compile("^\\+\\d+ coins!"),
-            Pattern.compile("^Coins just earned DOUBLE"),
-            Pattern.compile("^\\+\\d+ Bed Wars Experience"),
-            Pattern.compile("^You have respawned"),
-    };
-
-    private final static Pattern[] BED_BREAK = {
-            Pattern.compile(formatPlaceholder("Bed was broken by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was incinerated by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was iced by {player}")),
-            Pattern.compile(formatPlaceholder("Bed had to raise the white flag to {player}")),
-            Pattern.compile(formatPlaceholder("Bed was dismantled by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was deep fried by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was ripped apart by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was traded in for milk and cookies by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was sacrificed by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was gulped by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was gulped by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was squeaked apart by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was stung by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was impaled by {player}")),
-            Pattern.compile(formatPlaceholder("Bed be shot with cannon by {player}")),
-            Pattern.compile(formatPlaceholder("Bed got memed by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was made into a snowman by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was scrambled by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was stuffed with tissue paper by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was scrambled by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was bed #{number} destroyed by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was spooked by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was dreadfully corrupted by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was bed #{number} destroyed by {player}")),
-            Pattern.compile(formatPlaceholder("Bed exploded from a firework by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was blasted to dust by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was melted by {player}'s holiday spirit")),
-            Pattern.compile(formatPlaceholder("Bed was ripped to shreds by {player}")),
-            Pattern.compile(formatPlaceholder("Bed has left the game after seeing {player}")),
-            Pattern.compile(formatPlaceholder("Bed was spooked by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was contaminated by {player}")),
-            Pattern.compile(formatPlaceholder("Bed was sold in a garage sale by {player}")),
-    };
-
-    private final static String[] KILLS = {
-            "{killed} was struck down by {player}.",
-            "{killed} was turned to dust by {player}.",
-            "{killed} was melted by {player}.",
-            "{killed} was turned to ash by {player}.",
-            "{killed} was fried by {player}'s Golem.",
-            "{killed} was filled full of lead by {player}.",
-            "{killed} met their end by {player}.",
-            "{killed} was killed with dynamite by {player}.",
-            "{killed} lost a drinking contest with {player}.",
-            "{killed} lost the draw to {player}'s Golem.",
-            "{killed} died in close combat to {player}.",
-            "{killed} fought to the edge with {player}.",
-            "{killed} fell to the great marksmanship of {player}.",
-            "{killed} stumbled off a ledge with help by {player}.",
-            "{killed} tangoed with {player}'s Golem.",
-            "{killed} was given the cold shoulder by {player}.",
-            "{killed} was hit off by a love bomb from {player}.",
-            "{killed} was struck with Cupid's arrow by {player}.",
-            "{killed} was out of the league of {player}.",
-            "{killed} was no match for {player}'s Golem.",
-            "{killed} was glazed in BBQ sauce by {player}.",
-            "{killed} slipped in BBQ sauce off the edge spilled by {player}.",
-            "{killed} was thrown chili powder at by {player}.",
-            "{killed} was not spicy enough for {player}.",
-            "{killed} was sliced up by {player}'s Golem.",
-            "{killed} was bitten by {player}.",
-            "{killed} howled into the void for {player}.",
-            "{killed} caught the ball thrown by {player}.",
-            "{killed} was distracted by a puppy placed by {player}.",
-            "{killed} played too rough with {player}'s Golem.",
-            "{killed} was wrapped into a gift by {player}.",
-            "{killed} hit the hard-wood floor because of {player}.",
-            "{killed} was put on the naughty list by {player}.",
-            "{killed} was pushed down a slope by {player}.",
-            "{killed} was turned to gingerbread by {player}'s Golem.",
-            "{killed} was hunted down by {player}.",
-            "{killed} stumbled on a trap set by {player}.",
-            "{killed} got skewered by {player}.",
-            "{killed} was thrown into a volcano by {player}.",
-            "{killed} was mauled by {player}'s Golem.",
-            "{killed} was oinked by {player}.",
-            "{killed} slipped into void for {player}.",
-            "{killed} got attacked by a carrot from {player}.",
-            "{killed} was distracted by a piglet from {player}.",
-            "{killed} was oinked by {player}'s Golem.",
-            "{killed} was chewed up by {player}.",
-            "{killed} was scared into the void by {player}.",
-            "{killed} stepped in a mouse trap placed by {player}.",
-            "{killed} was distracted by a rat dragging pizza from {player}.",
-            "{killed} squeaked around with {player}'s Golem.",
-            "{killed} was buzzed to death by {player}.",
-            "{killed} was bzzz'd into the void by {player}.",
-            "{killed} was startled by {player}.",
-            "{killed} was stung off the edge by {player}.",
-            "{killed} was bee'd by {player}'s Golem.",
-            "{killed} was trampled by {player}.",
-            "{killed} was back kicked into the void by {player}.",
-            "{killed} was impaled from a distance by {player}.",
-            "{killed} was headbutted off a cliff by {player}.",
-            "{killed} was trampled by {player}'s Golem.",
-            "{killed} be sent to Davy Jones' locker by {player}.",
-            "{killed} be cannonballed to death by {player}.",
-            "{killed} be shot and killed by {player}.",
-            "{killed} be killed with magic by {player}.",
-            "{killed} be killed with metal by {player}'s Golem.",
-            "{killed} got rekt by {player}.",
-            "{killed} took the L to {player}.",
-            "{killed} got smacked by {player}.",
-            "{killed} got roasted by {player}.",
-            "{killed} got bamboozled by {player}'s Golem.",
-            "{killed} was locked outside during a snow storm by {player}.",
-            "{killed} was pushed into a snowbank by {player}.",
-            "{killed} was hit with a snowball from {player}.",
-            "{killed} was shoved down an icy slope by {player}.",
-            "{killed} got snowed in by {player}'s Golem.",
-            "{killed} was painted pretty by {player}.",
-            "{killed} was deviled into the void by {player}.",
-            "{killed} slipped into a pan placed by {player}.",
-            "{killed} was flipped off the edge by {player}.",
-            "{killed} was made sunny side up by {player}'s Golem.",
-            "{killed} was wrapped up by {player}.",
-            "{killed} was tied into a bow by {player}.",
-            "{killed} was glued up by {player}.",
-            "{killed} tripped over a present placed by {player}.",
-            "{killed} was taped together by {player}'s Golem.",
-            "{killed} was stomped by {player}.",
-            "{killed} was {player}'s final #{number}.",
-            "{killed} was thrown down a pit by {player}.",
-            "{killed} was shot by {player}.",
-            "{killed} was thrown to the ground by {player}.",
-            "{killed} was outclassed by {player}'s Golem.",
-            "{killed} was spooked by {player}.",
-            "{killed} was spooked off the map by {player}.",
-            "{killed} was remotely spooked by {player}.",
-            "{killed} was totally spooked by {player}.",
-            "{killed} was spooked by {player}'s Golem.",
-            "{killed} was tragically backstabbed by {player}.",
-            "{killed} was heartlessly let go by {player}.",
-            "{killed}'s heart was pierced by {player}.",
-            "{killed} was delivered into nothingness by {player}.",
-            "{killed} was dismembered by {player}'s Golem.",
-            "{killed} was crushed by {player}.",
-            "{killed} was {player}'s final #5,794.",
-            "{killed} was dominated by {player}.",
-            "{killed} was assassinated by {player}.",
-            "{killed} was thrown off their high horse by {player}.",
-            "{killed} was degraded by {player}'s Golem.",
-            "{killed} was whacked with a party balloon by {player}.",
-            "{killed} was popped into the void by {player}.",
-            "{killed} was shot with a roman candle by {player}.",
-            "{killed} was launched like a firework by {player}.",
-            "{killed} was lit up by {player}'s Golem.",
-            "{killed} was crushed into moon dust by {player}.",
-            "{killed} was sent the wrong way by {player}.",
-            "{killed} was hit by an asteroid from {player}.",
-            "{killed} was blasted to the moon by {player}.",
-            "{killed} was blown up by {player}'s Golem.",
-            "{killed} was smothered in holiday cheer by {player}.",
-            "{killed} was banished into the ether by {player}'s holiday spirit.",
-            "{killed} was sniped by a missile of festivity by {player}.",
-            "{killed} was pushed by {player}'s holiday spirit.",
-            "{killed} was sung holiday tunes to by {player}'s Golem.",
-            "{killed} was ripped to shreds by {player}.",
-            "{killed} was charged by {player}.",
-            "{killed} was pounced on by {player}.",
-            "{killed} was ripped and thrown by {player}.",
-            "{killed} was ripped to shreds by {player}'s Golem.",
-            "{killed} was bested by {player}.",
-            "{killed} was {player}'s final #5,794.",
-            "{killed} was knocked into the void by {player}.",
-            "{killed} was shot by {player}.",
-            "{killed} was knocked off an edge by {player}.",
-            "{killed} was bested by {player}'s Golem.",
-            "{killed} had a small brain moment while fighting {player}.",
-            "{killed} was not able to block clutch against {player}.",
-            "{killed} got 360 no-scoped by {player}.",
-            "{killed} forgot how many blocks they had left while fighting {player}.",
-            "{killed} got absolutely destroyed by {player}'s Golem.",
-            "{killed} was too shy to meet {player}.",
-            "{killed} didn't distance themselves properly from {player}.",
-            "{killed} was coughed at by {player}.",
-            "{killed} tripped while trying to run away from {player}.",
-            "{killed} got too close to {player}'s Golem.",
-            "{killed} was yelled at by {player}.",
-            "{killed} was thrown off the lawn by {player}.",
-            "{killed} was accidentally spit on by {player}.",
-            "{killed} slipped on the fake teeth of {player}.",
-            "{killed} was chased away by {player}'s Golem.",
-            "{killed} was killed by {player}.",
-            "{killed} was knocked into the void by {player}."
-    };
-
-    private final static Pattern[] KILLS_COMPILED = new Pattern[KILLS.length];
-
     private BedwarsTeam won = null;
     private int wonTick = -1;
-
     private int seconds = 0;
     private Text topBarText = new LiteralText("");
 
-    private static String formatPlaceholder(String input) {
-        return input
-                .replace("{killed}", "(\\b[A-Za-z0-9_§]{3,16}\\b)")
-                .replace("{player}", "(\\b[A-Za-z0-9_§]{3,16}\\b)")
-                .replace("{number}", "[0-9,]+");
-    }
-
-    static {
-        for (int i = 0; i < KILLS.length; i++) {
-            String kill = KILLS[i];
-            KILLS_COMPILED[i] = Pattern.compile(formatPlaceholder("^" + kill.replace(".", "\\.") + "(?: FINAL KILL!)?\\s*?"));
-        }
-    }
 
     private BedwarsPlayer me = null;
 
@@ -341,12 +111,32 @@ public class BedwarsGame {
         mc.inGameHud.getChatHud().addMessage(new LiteralText("§b§lINFO:§8 " + message));
     }
 
-    private void died(ReceiveChatMessageEvent event, BedwarsPlayer player, @Nullable BedwarsPlayer killer, boolean finalDeath) {
+    private void died(ReceiveChatMessageEvent event, BedwarsPlayer player, @Nullable BedwarsPlayer killer, BedwarsDeathType type, boolean finalDeath) {
         player.died();
         if (killer != null) {
             killer.killed(finalDeath);
         }
-        event.newMessage = mod.gameLog.died(player, killer, finalDeath);
+        event.newMessage = formatDeath(player, killer, type, finalDeath);
+    }
+
+    private String formatDeath(BedwarsPlayer player, @Nullable BedwarsPlayer killer, BedwarsDeathType type, boolean finalDeath) {
+        String time = "§7" + mod.getGame().get().getFormattedTime() + " ";
+        String inner = type.getInner();
+        if (finalDeath) {
+            inner = "§6§b/" + inner.toUpperCase(Locale.ROOT) + "/";
+        } else {
+            inner = "§7/" + inner + "/";
+        }
+        String playerFormatted = getPlayerFormatted(player);
+        if (killer == null) {
+            return time + playerFormatted + " " + inner;
+        }
+        String killerFormatted = getPlayerFormatted(killer);
+        return time + playerFormatted + " " + inner + " " + killerFormatted;
+    }
+
+    private String getPlayerFormatted(BedwarsPlayer player) {
+        return player.getColoredTeamNumber() + " " + player.getProfile().getProfile().getName();
     }
 
     public boolean isTeamEliminated(BedwarsTeam team) {
@@ -355,58 +145,85 @@ public class BedwarsGame {
 
     public void onChatMessage(String rawMessage, ReceiveChatMessageEvent event) {
         try {
-            if (matched(ANNOYING_MESSAGES, rawMessage).isPresent()) {
+            if (BedwarsMessages.matched(BedwarsMessages.ANNOYING_MESSAGES, rawMessage).isPresent()) {
                 event.cancelled = true;
                 return;
             }
-            if (matched(DIED, rawMessage, m -> {
-                BedwarsPlayer killed = getPlayer(m.group(1)).orElse(null);
-                if (killed == null) {
-                    debug("Player " + m.group(1) + " was not found");
-                    return;
-                }
-                died(event, killed, null, matched(FINAL_KILL, rawMessage).isPresent());
+            if (BedwarsMessages.matched(BedwarsMessages.SELF_VOID, rawMessage, m -> {
+                died(m, rawMessage, event, BedwarsDeathType.SELF_VOID);
             })) {
                 return;
             }
-            if (matched(KILLS_COMPILED, rawMessage, m -> {
-                BedwarsPlayer killed = getPlayer(m.group(1)).orElse(null);
-                BedwarsPlayer killer = getPlayer(m.group(2)).orElse(null);
-                if (killed == null) {
-                    debug("Player " + m.group(1) + " was not found");
-                    return;
-                }
-                died(event, killed, killer, matched(FINAL_KILL, rawMessage).isPresent());
+            if (BedwarsMessages.matched(BedwarsMessages.SELF_UNKNOWN, rawMessage, m -> {
+                died(m, rawMessage, event, BedwarsDeathType.SELF_UNKNOWN);
             })) {
                 return;
             }
-            if (matched(BED_DESTROY, rawMessage, m -> {
-                BedwarsPlayer player = matched(BED_BREAK, rawMessage).flatMap(m1 -> getPlayer(m1.group(1))).orElse(null);
+            if (BedwarsMessages.matched(BedwarsMessages.COMBAT_KILL, rawMessage, m -> {
+                died(m, rawMessage, event, BedwarsDeathType.COMBAT);
+            })) {
+                return;
+            }
+            if (BedwarsMessages.matched(BedwarsMessages.VOID_KILL, rawMessage, m -> {
+                died(m, rawMessage, event, BedwarsDeathType.VOID);
+            })) {
+                return;
+            }
+            if (BedwarsMessages.matched(BedwarsMessages.PROJECTILE_KILL, rawMessage, m -> {
+                died(m, rawMessage, event, BedwarsDeathType.PROJECTILE);
+            })) {
+                return;
+            }
+            if (BedwarsMessages.matched(BedwarsMessages.FALL_KILL, rawMessage, m -> {
+                died(m, rawMessage, event, BedwarsDeathType.FALL);
+            })) {
+                return;
+            }
+            if (BedwarsMessages.matched(BedwarsMessages.GOLEM_KILL, rawMessage, m -> {
+                died(m, rawMessage, event, BedwarsDeathType.GOLEM);
+            })) {
+                return;
+            }
+            if (BedwarsMessages.matched(BedwarsMessages.BED_DESTROY, rawMessage, m -> {
+                BedwarsPlayer player = BedwarsMessages.matched(BedwarsMessages.BED_BREAK, rawMessage).flatMap(m1 -> getPlayer(m1.group(1))).orElse(null);
                 BedwarsTeam.fromName(m.group(1)).ifPresent(t -> bedDestroyed(t, player));
 
             })) {
                 return;
             }
-            if (matched(DISCONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(this::disconnected))) {
+            if (BedwarsMessages.matched(BedwarsMessages.DISCONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(this::disconnected))) {
                 return;
             }
-            if (matched(RECONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(this::reconnected))) {
+            if (BedwarsMessages.matched(BedwarsMessages.RECONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(this::reconnected))) {
                 return;
             }
-            if (matched(GAME_END, rawMessage, m -> {
+            if (BedwarsMessages.matched(BedwarsMessages.GAME_END, rawMessage, m -> {
                 BedwarsTeam win = players.values().stream().filter(p -> !p.isFinalKilled()).findFirst().map(BedwarsPlayer::getTeam).orElse(null);
                 this.won = win;
                 this.wonTick = mc.inGameHud.getTicks() + 10;
             })) {
                 return;
             }
-            if (matched(TEAM_ELIMINATED, rawMessage, m -> BedwarsTeam.fromName(m.group(1)).ifPresent(this::teamEliminated))) {
+            if (BedwarsMessages.matched(BedwarsMessages.TEAM_ELIMINATED, rawMessage, m -> BedwarsTeam.fromName(m.group(1)).ifPresent(this::teamEliminated))) {
                 return;
             }
             upgrades.onMessage(rawMessage);
         } catch (Exception e) {
             debug("Error: " + e);
         }
+    }
+
+    private void died(Matcher m, String rawMessage, ReceiveChatMessageEvent event, BedwarsDeathType type) {
+        BedwarsPlayer killed = getPlayer(m.group(1)).orElse(null);
+        BedwarsPlayer killer = null;
+        if (type != BedwarsDeathType.SELF_UNKNOWN && type != BedwarsDeathType.SELF_VOID) {
+            killer = getPlayer(m.group(2)).orElse(null);
+        }
+        if (killed == null) {
+            debug("Player " + m.group(1) + " was not found");
+            return;
+        }
+        died(event, killed, killer, type, BedwarsMessages.matched(BedwarsMessages.FINAL_KILL, rawMessage).isPresent());
     }
 
     private void gameEnd(BedwarsTeam win) {
@@ -483,42 +300,6 @@ public class BedwarsGame {
             gameEnd(won);
         }
         players.values().forEach(p -> p.tick(currentTick));
-    }
-
-    public static boolean matched(Pattern pattern, String input, Consumer<Matcher> consumer) {
-        Optional<Matcher> matcher = matched(pattern, input);
-        if (!matcher.isPresent()) {
-            return false;
-        }
-        consumer.accept(matcher.get());
-        return true;
-    }
-
-    public static boolean matched(Pattern[] pattern, String input, Consumer<Matcher> consumer) {
-        Optional<Matcher> matcher = matched(pattern, input);
-        if (!matcher.isPresent()) {
-            return false;
-        }
-        consumer.accept(matcher.get());
-        return true;
-    }
-
-    public static Optional<Matcher> matched(Pattern[] pattern, String input) {
-        for (Pattern p : pattern) {
-            Optional<Matcher> m = matched(p, input);
-            if (m.isPresent()) {
-                return m;
-            }
-        }
-        return Optional.empty();
-    }
-
-    public static Optional<Matcher> matched(Pattern pattern, String input) {
-        Matcher matcher = pattern.matcher(input);
-        if (matcher.find()) {
-            return Optional.of(matcher);
-        }
-        return Optional.empty();
     }
 
     public void updateEntries(List<PlayerListEntry> entries) {

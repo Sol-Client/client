@@ -41,7 +41,7 @@ public class BedwarsMod extends SolClientMod {
         String rawMessage = event.originalMessage.replaceAll("§.", "");
         if (currentGame != null) {
             currentGame.onChatMessage(rawMessage, event);
-        } else if (targetTick < 0 && BedwarsGame.matched(GAME_START, rawMessage).isPresent()) {
+        } else if (targetTick < 0 && BedwarsMessages.matched(GAME_START, rawMessage).isPresent()) {
             // Give time for Hypixel to sync
             targetTick = mc.inGameHud.getTicks() + 10;
         }

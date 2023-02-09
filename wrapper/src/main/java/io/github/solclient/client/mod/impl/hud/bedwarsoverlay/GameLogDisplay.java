@@ -118,23 +118,6 @@ public class GameLogDisplay implements HudElement {
         }
     }
 
-    public String died(BedwarsPlayer player, @Nullable BedwarsPlayer killer, boolean finaled) {
-        String time = "§7" + mod.getGame().get().getFormattedTime() + " ";
-        if (killer == null) {
-            return time + getPlayerFormatted(player) + " §7/death/";
-        } else {
-            if (finaled && killer.getStats() != null) {
-                return time + getPlayerFormatted(player) + " §6§n/FINAL/§r " + getPlayerFormatted(killer) + " §b#" + killer.getStats().getFinalKills();
-            } else {
-                return time + getPlayerFormatted(player) + " §7/death/ " + getPlayerFormatted(killer);
-            }
-        }
-    }
-
-    private String getPlayerFormatted(BedwarsPlayer player) {
-        return player.getColoredTeamNumber() + " " + player.getProfile().getProfile().getName();
-    }
-
     private String format(String name) {
         if (name.length() >= maxNameLength) {
             return name;

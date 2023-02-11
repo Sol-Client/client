@@ -44,9 +44,9 @@ public class BedwarsGame {
 
     public void onStart() {
         debug("Game started");
+        mod.upgradesOverlay.onStart(upgrades);
         players.clear();
         Map<BedwarsTeam, List<PlayerListEntry>> teamPlayers = new HashMap<>();
-        int maxLength = 1;
         for (PlayerListEntry player : mc.player.networkHandler.getPlayerList()) {
             String name = mc.inGameHud.getPlayerListWidget().getPlayerName(player).replaceAll("§.", "");
             if (name.charAt(1) != ' ') {
@@ -72,14 +72,12 @@ public class BedwarsGame {
             for (int i = 0; i < value.size(); i++) {
                 PlayerListEntry e = value.get(i);
                 BedwarsPlayer p = new BedwarsPlayer(teamPlayerList.getKey(), e, i + 1);
-                maxLength = Math.max(e.getProfile().getName().length(), maxLength);
                 if (mc.player.getGameProfile().getName().equals(e.getProfile().getName())) {
                     me = p;
                 }
                 players.put(e.getProfile().getName(), p);
             }
         }
-        mod.gameLog.gameStart(maxLength);
         this.started = true;
     }
 
@@ -116,23 +114,44 @@ public class BedwarsGame {
         if (killer != null) {
             killer.killed(finalDeath);
         }
-        event.newMessage = formatDeath(player, killer, type, finalDeath);
+        event.newMessage = new LiteralText(formatDeath(player, killer, type, finalDeath));
+    }
+
+    private String formatDisconnect(BedwarsPlayer disconnected) {
+        String playerFormatted = getPlayerFormatted(disconnected);
+        return playerFormatted + " §7§o/disconnected/";
+    }
+
+    private String formatReconnect(BedwarsPlayer reconnected) {
+        String playerFormatted = getPlayerFormatted(reconnected);
+        return playerFormatted + " §7§o/reconnected/";
+    }
+
+    private String formatEliminated(BedwarsTeam team) {
+        return "§6§l§oTEAM ELMINATED §8§l> " + team.getColorSection() + team.getName() + " Team §7/eliminated/ ";
+    }
+
+    private String formatBed(BedwarsTeam team, BedwarsPlayer breaker) {
+        String playerFormatted = getPlayerFormatted(breaker);
+        return "§6§l§oBED BROKEN §8§l> " + team.getColorSection() + team.getName() + " Bed §7/broken/ " + playerFormatted;
     }
 
     private String formatDeath(BedwarsPlayer player, @Nullable BedwarsPlayer killer, BedwarsDeathType type, boolean finalDeath) {
-        String time = "§7" + mod.getGame().get().getFormattedTime() + " ";
         String inner = type.getInner();
         if (finalDeath) {
-            inner = "§6§b/" + inner.toUpperCase(Locale.ROOT) + "/";
+            inner = "§6§l/" + inner.toUpperCase(Locale.ROOT) + "/";
         } else {
             inner = "§7/" + inner + "/";
         }
         String playerFormatted = getPlayerFormatted(player);
         if (killer == null) {
-            return time + playerFormatted + " " + inner;
+            return playerFormatted + " " + inner;
         }
         String killerFormatted = getPlayerFormatted(killer);
-        return time + playerFormatted + " " + inner + " " + killerFormatted;
+        if (finalDeath && killer.getStats() != null) {
+            killerFormatted += " §6" + killer.getStats().getFinalKills();
+        }
+        return playerFormatted + " " + inner + " " + killerFormatted;
     }
 
     private String getPlayerFormatted(BedwarsPlayer player) {
@@ -149,52 +168,22 @@ public class BedwarsGame {
                 event.cancelled = true;
                 return;
             }
-            if (BedwarsMessages.matched(BedwarsMessages.SELF_VOID, rawMessage, m -> {
-                died(m, rawMessage, event, BedwarsDeathType.SELF_VOID);
-            })) {
-                return;
-            }
-            if (BedwarsMessages.matched(BedwarsMessages.SELF_UNKNOWN, rawMessage, m -> {
-                died(m, rawMessage, event, BedwarsDeathType.SELF_UNKNOWN);
-            })) {
-                return;
-            }
-            if (BedwarsMessages.matched(BedwarsMessages.COMBAT_KILL, rawMessage, m -> {
-                died(m, rawMessage, event, BedwarsDeathType.COMBAT);
-            })) {
-                return;
-            }
-            if (BedwarsMessages.matched(BedwarsMessages.VOID_KILL, rawMessage, m -> {
-                died(m, rawMessage, event, BedwarsDeathType.VOID);
-            })) {
-                return;
-            }
-            if (BedwarsMessages.matched(BedwarsMessages.PROJECTILE_KILL, rawMessage, m -> {
-                died(m, rawMessage, event, BedwarsDeathType.PROJECTILE);
-            })) {
-                return;
-            }
-            if (BedwarsMessages.matched(BedwarsMessages.FALL_KILL, rawMessage, m -> {
-                died(m, rawMessage, event, BedwarsDeathType.FALL);
-            })) {
-                return;
-            }
-            if (BedwarsMessages.matched(BedwarsMessages.GOLEM_KILL, rawMessage, m -> {
-                died(m, rawMessage, event, BedwarsDeathType.GOLEM);
+            if (BedwarsDeathType.getDeath(rawMessage, (type, m) -> {
+                died(m, rawMessage, event, type);
             })) {
                 return;
             }
             if (BedwarsMessages.matched(BedwarsMessages.BED_DESTROY, rawMessage, m -> {
                 BedwarsPlayer player = BedwarsMessages.matched(BedwarsMessages.BED_BREAK, rawMessage).flatMap(m1 -> getPlayer(m1.group(1))).orElse(null);
-                BedwarsTeam.fromName(m.group(1)).ifPresent(t -> bedDestroyed(t, player));
-
+                BedwarsTeam team = BedwarsTeam.fromName(m.group(1)).orElse(me.getTeam());
+                bedDestroyed(event, team, player);
             })) {
                 return;
             }
-            if (BedwarsMessages.matched(BedwarsMessages.DISCONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(this::disconnected))) {
+            if (BedwarsMessages.matched(BedwarsMessages.DISCONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(p -> disconnected(event, p)))) {
                 return;
             }
-            if (BedwarsMessages.matched(BedwarsMessages.RECONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(this::reconnected))) {
+            if (BedwarsMessages.matched(BedwarsMessages.RECONNECT, rawMessage, m -> getPlayer(m.group(1)).ifPresent(p -> reconnected(event, p)))) {
                 return;
             }
             if (BedwarsMessages.matched(BedwarsMessages.GAME_END, rawMessage, m -> {
@@ -204,7 +193,7 @@ public class BedwarsGame {
             })) {
                 return;
             }
-            if (BedwarsMessages.matched(BedwarsMessages.TEAM_ELIMINATED, rawMessage, m -> BedwarsTeam.fromName(m.group(1)).ifPresent(this::teamEliminated))) {
+            if (BedwarsMessages.matched(BedwarsMessages.TEAM_ELIMINATED, rawMessage, m -> BedwarsTeam.fromName(m.group(1)).ifPresent(t -> teamEliminated(event, t)))) {
                 return;
             }
             upgrades.onMessage(rawMessage);
@@ -233,32 +222,37 @@ public class BedwarsGame {
         }
 
         for (BedwarsPlayer p : players.values()) {
-            if (p.getStats() != null) {
-                mc.inGameHud.getChatHud().addMessage(new LiteralText(p.getProfile().getProfile().getName() + " - " + p.getStats().getWinstreak()));
+            if (p.getStats() != null && p.getStats().getWinstreak() > 0) {
+                mc.inGameHud.getChatHud().addMessage(new LiteralText(getPlayerFormatted(p) + " - " + p.getStats().getWinstreak()));
             }
         }
 
         BedwarsMod.getInstance().gameEnd();
     }
 
-    private void teamEliminated(BedwarsTeam team) {
+    private void teamEliminated(ReceiveChatMessageEvent event, BedwarsTeam team) {
         // Make sure everyone is dead, just in case
         players.values().stream().filter(b -> b.getTeam() == team).forEach(b -> {
             b.setBed(false);
             b.died();
         });
+        event.newMessage = new LiteralText(formatEliminated(team));
     }
 
-    private void bedDestroyed(BedwarsTeam team, @Nullable BedwarsPlayer breaker) {
+    private void bedDestroyed(ReceiveChatMessageEvent event, BedwarsTeam team, @Nullable BedwarsPlayer breaker) {
         players.values().stream().filter(b -> b.getTeam() == team).forEach(b -> b.setBed(false));
+        event.newMessage = new LiteralText(formatBed(team, breaker));
     }
 
-    private void disconnected(BedwarsPlayer player) {
+    private void disconnected(ReceiveChatMessageEvent event, BedwarsPlayer player) {
         player.disconnected();
+        event.newMessage = new LiteralText(formatDisconnect(player));
     }
 
-    private void reconnected(BedwarsPlayer player) {
+
+    private void reconnected(ReceiveChatMessageEvent event, BedwarsPlayer player) {
         player.reconnected();
+        event.newMessage = new LiteralText(formatDisconnect(player));
     }
 
     public void onScoreboardRender(ScoreboardRenderEvent event) {

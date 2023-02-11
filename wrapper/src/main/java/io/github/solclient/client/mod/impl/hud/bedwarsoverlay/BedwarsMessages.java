@@ -136,6 +136,7 @@ public class BedwarsMessages {
             "{killed} was pushed by {player}'s holiday spirit.",
             "{killed} was ripped and thrown by {player}.",
             "{killed} was knocked off an edge by {player}.",
+            "{killed} was knocked off a cliff by {player}.",
             "{killed} forgot how many blocks they had left while fighting {player}.",
             "{killed} tripped while trying to run away from {player}.",
             "{killed} slipped on the fake teeth of {player}.",
@@ -207,6 +208,7 @@ public class BedwarsMessages {
             Pattern.compile(formatPlaceholder("Bed was spooked by {player}")),
             Pattern.compile(formatPlaceholder("Bed was contaminated by {player}")),
             Pattern.compile(formatPlaceholder("Bed was sold in a garage sale by {player}")),
+            Pattern.compile(formatPlaceholder("Bed was destroyed by {player}")),
     };
 
     public final static Pattern DISCONNECT = Pattern.compile("(\\b[A-Za-z0-9_§]{3,16}\\b) disconnected\\.$");
@@ -222,6 +224,7 @@ public class BedwarsMessages {
 
     public final static Pattern[] ANNOYING_MESSAGES = {
             Pattern.compile("^You will respawn in \\d* seconds!$"),
+            Pattern.compile("^You will respawn in \\d* second!$"),
             Pattern.compile("^You purchased Wool$"),
             Pattern.compile("^Cross-teaming is not allowed"),
             Pattern.compile("^\\+\\d+ Coins!"),

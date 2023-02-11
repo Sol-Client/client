@@ -39,10 +39,10 @@ public class ClientPlayNetworkHandlerMixin {
 
 	@Redirect(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V"))
 	public void handleChat(ChatHud instance, Text message) {
-        ReceiveChatMessageEvent event = new ReceiveChatMessageEvent(false, Formatting.strip(message.asUnformattedString()), false);
+        ReceiveChatMessageEvent event = new ReceiveChatMessageEvent(false, Formatting.strip(message.asUnformattedString()), message, false);
 		if (!Client.INSTANCE.getEvents().post(event).cancelled) {
             if (event.newMessage != null) {
-                instance.addMessage(new LiteralText(event.newMessage));
+                instance.addMessage(event.newMessage);
             } else {
                 instance.addMessage(message);
             }
@@ -52,7 +52,7 @@ public class ClientPlayNetworkHandlerMixin {
 	@Redirect(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;setOverlayMessage(Lnet/minecraft/text/Text;Z)V"))
 	public void handleActionBar(InGameHud instance, Text text, boolean tinted) {
 		if (!Client.INSTANCE.getEvents().post(
-				new ReceiveChatMessageEvent(true, Formatting.strip(text.asUnformattedString()), false)).cancelled) {
+				new ReceiveChatMessageEvent(true, Formatting.strip(text.asUnformattedString()), text, false)).cancelled) {
 			instance.setOverlayMessage(text, tinted);
 		}
 	}

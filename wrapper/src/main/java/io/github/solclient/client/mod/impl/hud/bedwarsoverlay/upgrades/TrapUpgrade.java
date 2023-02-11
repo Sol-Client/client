@@ -1,8 +1,8 @@
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades;
 
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.BedwarsMode;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.LiteralText;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +28,10 @@ public class TrapUpgrade extends TeamUpgrade {
     @Override
     protected void onMatch(TeamUpgrade upgrade, Matcher matcher) {
         if (matcher.group(1).equals("off")) {
-            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText("Trap went off"));
             // Trap went off
             traps.remove(0);
             return;
         }
-        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText("Trap died"));
         traps.add(TrapType.getFuzzy(matcher.group(1)));
     }
 
@@ -54,13 +52,34 @@ public class TrapUpgrade extends TeamUpgrade {
         return 0;
     }
 
+    @Override
+    public String[] getTexture() {
+        if (traps.size() == 0) {
+            return new String[]{"trap/empty"};
+        }
+        String[] trapTextures = new String[traps.size()];
+        for (int i = 0; i < traps.size(); i++) {
+            TrapType type = traps.get(i);
+            trapTextures[i] = "trap/" + type.getTextureName();
+        }
+        return trapTextures;
+    }
 
+    @Override
+    public boolean isMultiUpgrade() {
+        return true;
+    }
+
+    @AllArgsConstructor
     public enum TrapType {
-        ITS_A_TRAP,
-        COUNTER_OFFENSIVE,
-        ALARM,
-        MINER_FATIGUE
+        ITS_A_TRAP("itsatrap"),
+        COUNTER_OFFENSIVE("counteroffensive"),
+        ALARM("alarm"),
+        MINER_FATIGUE("minerfatigue")
         ;
+
+        @Getter
+        private final String textureName;
 
         public static TrapType getFuzzy(String s) {
             s = s.toLowerCase(Locale.ROOT);

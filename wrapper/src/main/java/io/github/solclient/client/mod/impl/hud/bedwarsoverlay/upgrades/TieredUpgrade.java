@@ -2,8 +2,6 @@ package io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades;
 
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.BedwarsMode;
 import lombok.Getter;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.LiteralText;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,8 +20,12 @@ public class TieredUpgrade extends TeamUpgrade {
     }
 
     @Override
+    public String[] getTexture() {
+        return new String[]{name + "_" + level};
+    }
+
+    @Override
     protected void onMatch(TeamUpgrade upgrade, Matcher matcher) {
-        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText("Got an upgrade"));
         level += 1;
     }
 

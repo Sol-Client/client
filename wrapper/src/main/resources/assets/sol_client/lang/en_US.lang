@@ -471,6 +471,7 @@ sol_client.mod.screen.modified_from=, using code by %s
 sol_client.mod.screen.originally_by=, originally by %s
 sol_client.mod.screen.inspired_by=, inspired by %s
 sol_client.mod.screen.by=, by %s
+sol_client.mod.screen.textures_by=, textures by %s
 
 sol_client.mod.screen.about=About Sol Client
 sol_client.mod.screen.license=Licensed under the GPL v3 license.

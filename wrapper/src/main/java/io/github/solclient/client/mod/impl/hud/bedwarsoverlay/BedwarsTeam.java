@@ -4,6 +4,7 @@ package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Locale;
 import java.util.Optional;
 
 
@@ -45,6 +46,10 @@ public enum BedwarsTeam {
             }
         }
         return Optional.empty();
+    }
+
+    public String getName() {
+        return name().substring(0, 1).toUpperCase(Locale.ROOT) + name().substring(1).toLowerCase(Locale.ROOT);
     }
 
 }

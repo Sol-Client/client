@@ -23,8 +23,12 @@ public class BinaryUpgrade extends TeamUpgrade {
     }
     @Override
     protected void onMatch(TeamUpgrade upgrade, Matcher matcher) {
-        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText("Got an upgrade"));
         purchased = true;
+    }
+
+    @Override
+    public String[] getTexture() {
+        return new String[]{name + "_" + (purchased ? "1" : "0")};
     }
 
     @Override

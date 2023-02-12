@@ -56,28 +56,31 @@ public class DiscordIntegrationMod extends SolClientMod {
 
 	@Expose
 	@Option
-	protected boolean voiceChatHud;
+	private boolean ip;
+	@Expose
+	@Option
+	boolean voiceChatHud;
 	@Expose
 	@Option
 	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
-	protected float voiceChatHudScale = 100;
+	float voiceChatHudScale = 100;
 	@Expose
 	@Option
-	protected VerticalAlignment voiceChatHudAlignment = VerticalAlignment.TOP;
+	VerticalAlignment voiceChatHudAlignment = VerticalAlignment.TOP;
 	@Expose
-	protected Position voiceChatHudPosition;
-	@Expose
-	@Option
-	protected Colour usernameColour = Colour.WHITE;
+	Position voiceChatHudPosition;
 	@Expose
 	@Option
-	protected Colour mutedColour = new Colour(255, 80, 80);
+	Colour usernameColour = Colour.WHITE;
 	@Expose
 	@Option
-	protected Colour speakingColour = new Colour(20, 255, 20);
+	Colour mutedColour = new Colour(255, 80, 80);
+	@Expose
+	@Option
+	Colour speakingColour = new Colour(20, 255, 20);
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
-	protected boolean shadow = true;
+	boolean shadow = true;
 	@Expose
 	@Option
 	@TextField("sol_client.mod.screen.default")
@@ -239,8 +242,11 @@ public class DiscordIntegrationMod extends SolClientMod {
 				if (ReplayModReplay.instance.getReplayHandler() != null) {
 					setActivity(I18n.translate("replaymod.gui.replayviewer"));
 				} else {
-					setActivity(I18n.translate("sol_client.mod.discord_integration.multiplayer",
-							mc.getCurrentServerEntry().name));
+					String server = mc.getCurrentServerEntry().name;
+					if (ip)
+						server += " (" + mc.getCurrentServerEntry().address + ')';
+
+					setActivity(I18n.translate("sol_client.mod.discord_integration.multiplayer", server));
 				}
 			}
 		} else {

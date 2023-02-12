@@ -449,6 +449,7 @@ sol_client.mod.category.addons.name=Addons
 sol_client.mod.discord_integration.name=Discord Integration
 sol_client.mod.discord_integration.description=Integration features for Discord including activities and overlay.
 
+sol_client.mod.discord_integration.option.ip=Show Server IP
 sol_client.mod.discord_integration.option.applicationId=Application ID
 sol_client.mod.discord_integration.option.icon=Icon
 sol_client.mod.discord_integration.option.voiceChatHud=Voice Chat HUD

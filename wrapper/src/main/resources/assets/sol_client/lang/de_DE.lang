@@ -45,8 +45,8 @@ sol_client.mod.sol_client.description=Generelle Einstellungen für Sol Client.
 
 sol_client.mod.sol_client.option.fancyMainMenu=Hauptmenü
 sol_client.mod.sol_client.option.logoInInventory=Symbol im Inventar anzeigen
-sol_client.mod.sol_client.mods=Mods
-sol_client.mod.sol_client.option.modsKey=Mods Taste
+sol_client.mod.sol_client.mods=Module
+sol_client.mod.sol_client.option.modsKey=Modulschlüssel
 sol_client.mod.sol_client.edit_hud=HUD bearbeiten
 sol_client.mod.sol_client.option.editHudKey=HUD Taste bearbeiten
 sol_client.mod.sol_client.option.uiColour=Akzent Farben
@@ -417,7 +417,7 @@ sol_client.mod.discord_integration.option.usernameColour=Benutzername Farbe
 sol_client.mod.discord_integration.option.mutedColour=Stummgeschaltete Farbe
 sol_client.mod.discord_integration.option.speakingColour=Sprechende Farbe
 
-sol_client.mod.screen.title=Mods
+sol_client.mod.screen.title=Module
 sol_client.mod.screen.search=Gebe etwas ein, um zu suchen
 
 sol_client.hud.edit=HUD bearbeiten

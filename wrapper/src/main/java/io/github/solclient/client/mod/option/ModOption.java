@@ -1,28 +1,56 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod.option;
 
-import java.util.Objects;
-
-import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.impl.LabelComponent;
+import io.github.solclient.client.util.data.*;
+import lombok.RequiredArgsConstructor;
+import net.minecraft.client.resource.language.I18n;
 
 /**
  * Represents a mod option.
  */
-public interface ModOption<T> {
+@RequiredArgsConstructor
+public abstract class ModOption<T> {
+
+	private final String name;
+	private final ModOptionStorage<T> storage;
 
 	/**
 	 * Gets the option name.
 	 *
 	 * @return the name key.
 	 */
-	String getName();
+	public String getName() {
+		return name;
+	}
 
 	/**
 	 * Gets the option type.
 	 *
 	 * @return the type class.
 	 */
-	Class<T> getType();
+	public Class<T> getType() {
+		return storage.getType();
+	}
 
 	/**
 	 * Casts the option.
@@ -31,7 +59,7 @@ public interface ModOption<T> {
 	 * @param type the type class.
 	 * @return the (safely) casted option.
 	 */
-	default <N> ModOption<N> cast(Class<N> type) {
+	public <N> ModOption<N> cast(Class<N> type) {
 		if (!getType().equals(type))
 			throw new ClassCastException();
 
@@ -45,7 +73,7 @@ public interface ModOption<T> {
 	 * @param <N> the new type.
 	 * @return the casted option.
 	 */
-	default <N> ModOption<N> unsafeCast() {
+	public <N> ModOption<N> unsafeCast() {
 		return (ModOption<N>) this;
 	}
 
@@ -54,54 +82,17 @@ public interface ModOption<T> {
 	 *
 	 * @return the value.
 	 */
-	T getValue();
+	public T getValue() {
+		return storage.get();
+	}
 
 	/**
 	 * Sets the option value.
 	 *
 	 * @param value the value.
 	 */
-	void setValue(T value);
-
-	/**
-	 * Gets whether the option can have an apply to all button.
-	 *
-	 * @return <code>true</code> to show "apply to all".
-	 */
-	default boolean canApplyToAll() {
-		return getApplyToAllClass() != null || !getApplyToAllClass().isEmpty();
-	}
-
-	/**
-	 * Copies the options value to all equivalent options.
-	 */
-	default void applyToAll() {
-		for (Mod mod : Client.INSTANCE.getMods()) {
-			for (ModOption<?> option : mod.getOptions()) {
-				if (!(option != null && option.canApplyToAll() && option.isEquivalent(this)))
-					continue;
-				ModOption<T> typedOption = option.unsafeCast();
-				typedOption.setFrom(this);
-			}
-		}
-	}
-
-	/**
-	 * Gets the apply to all class. This is used to determine equivalents.
-	 *
-	 * @return the class.
-	 */
-	String getApplyToAllClass();
-
-	/**
-	 * Gets whether the option should be set from another option when clicking
-	 * "apply to all".
-	 *
-	 * @param option the option.
-	 * @return <code>true</code> if the options are deemed equivalent.
-	 */
-	default boolean isEquivalent(ModOption<?> option) {
-		return option.getType() == getType() && Objects.equals(option.getApplyToAllClass(), getApplyToAllClass());
+	public void setValue(T value) {
+		storage.set(value);
 	}
 
 	/**
@@ -109,15 +100,43 @@ public interface ModOption<T> {
 	 *
 	 * @param option the option.
 	 */
-	default void setFrom(ModOption<T> option) {
-		setValue(option.getValue());
+	public void setFrom(ModOption<T> option) {
+		storage.setFrom(option);
+	}
+
+	protected Component createDefaultComponent() {
+		return createDefaultComponent(20);
+	}
+
+	protected Component createDefaultComponent(int height) {
+		return createDefaultComponent(height, true);
+	}
+
+	protected Component createDefaultComponent(int height, boolean label) {
+		Component component = new Component() {
+
+			@Override
+			public Rectangle getDefaultBounds() {
+				return Rectangle.ofDimensions(230, height);
+			}
+
+		};
+		if (label)
+			component.add(new LabelComponent(Controller.of(() -> I18n.translate(name))),
+					new AlignedBoundsController(Alignment.START, Alignment.CENTRE));
+		return component;
 	}
 
 	/**
-	 * Gets the option priority. This will change its order.
+	 * Creates a component for the option.
 	 *
-	 * @return the priority.
+	 * @return the component.
 	 */
-	int getPriority();
+	public abstract Component createComponent();
+
+	@Override
+	public String toString() {
+		return "ModOption#" + getName() + '(' + storage + ')';
+	}
 
 }

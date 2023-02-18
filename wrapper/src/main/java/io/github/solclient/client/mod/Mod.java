@@ -1,5 +1,24 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod;
 
+import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -11,15 +30,17 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.option.ModOption;
+import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.annotation.*;
-import io.github.solclient.client.mod.option.impl.FieldOption;
+import io.github.solclient.client.mod.option.impl.*;
+import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
 
 @AbstractTranslationKey("sol_client.mod.generic")
-public abstract class Mod {
+public abstract class Mod extends Object {
 
 	@Getter
 	private final Logger logger = LogManager.getLogger();
@@ -29,7 +50,6 @@ public abstract class Mod {
 	private boolean blocked;
 
 	@Expose
-	@Option(priority = 2)
 	private boolean enabled = isEnabledByDefault();
 
 	@Getter
@@ -39,10 +59,113 @@ public abstract class Mod {
 	 * Called when the mod is registered.
 	 */
 	public void init() {
-		options = FieldOption.getFieldOptionsFromClass(this);
+		options = createOptions();
 
 		if (this.enabled)
 			tryEnable();
+	}
+
+	/**
+	 * This is called on initialisation to create and populate the option list. Do
+	 * not call this yourself - only as a super call!
+	 *
+	 * @return the list. will be mutable.
+	 */
+	protected List<ModOption<?>> createOptions() {
+		if (options != null)
+			logger.warn("Please use getOptions instead of recreating them", new Exception("options != null"));
+
+		List<ModOption<?>> options = new ArrayList<>();
+
+		if (!(this instanceof ConfigOnlyMod)) {
+			options.add(new ToggleOption("sol_client.mod.generic.enabled",
+					ModOptionStorage.of(boolean.class, () -> enabled, (value) -> {
+						if (enabled != value)
+							setEnabled(value);
+					})));
+		}
+
+		try {
+			FieldOptions.visit(this, options::add);
+		} catch (IllegalAccessException error) {
+			throw new AssertionError(error);
+		}
+		return options;
+	}
+
+	/**
+	 * Gets a field from the mod. Override this if you want to protect access.
+	 *
+	 * @param name the field name.
+	 * @return a storage object for the field.
+	 * @throws NoSuchFieldException   if the field doesn't exist.
+	 * @throws IllegalAccessException if the access failed.
+	 */
+	public FieldStorage<?> getField(String name) throws NoSuchFieldException, IllegalAccessException {
+		Field field;
+		try {
+			field = getClass().getDeclaredField(name);
+		} catch (NoSuchFieldException error) {
+			try {
+				field = getClass().getField(name);
+			} catch (NoSuchFieldException | SecurityException e) {
+				throw error;
+			}
+		} catch (SecurityException error) {
+			throw error;
+		}
+		field.setAccessible(true);
+		return new FieldStorage<>(this, field);
+	}
+
+	/**
+	 * Gets all options filtered to a type.
+	 *
+	 * @param <T>  the type.
+	 * @param type the type class.
+	 * @return the options.
+	 */
+	public <T> Iterable<ModOption<T>> getOptions(Class<T> type) {
+		return new Iterable<ModOption<T>>() {
+
+			@Override
+			public Iterator<ModOption<T>> iterator() {
+				return getOptions().stream().filter((option) -> option.getType() == type)
+						.map((option) -> (ModOption<T>) option).iterator();
+			}
+
+		};
+	};
+
+	/**
+	 * Gets all options filtered to a type.
+	 *
+	 * @param <T>  the type.
+	 * @param type the type class.
+	 * @return the options.
+	 */
+	public <T> Iterable<T> getFlatOptions(Class<T> type) {
+		return new Iterable<T>() {
+
+			@Override
+			public Iterator<T> iterator() {
+				return getOptions().stream().filter((option) -> option.getClass() == type).map((option) -> (T) option)
+						.iterator();
+			}
+
+		};
+	};
+
+	/**
+	 * Creates the configuration component.
+	 *
+	 * @return the component.
+	 */
+	public Component createConfigComponent() {
+		ListComponent container = new ScrollListComponent();
+		for (ModOption<?> option : options)
+			container.add(option.createComponent());
+		return container;
 	}
 
 	/**
@@ -113,13 +236,6 @@ public abstract class Mod {
 	 * @return <code>true</code> to proceed.
 	 */
 	public boolean onOptionChange(String key, Object value) {
-		if (key.equals("enabled")) {
-			if (this instanceof ConfigOnlyMod)
-				return false;
-
-			setEnabled((boolean) value);
-		}
-
 		return true;
 	}
 
@@ -204,9 +320,9 @@ public abstract class Mod {
 		this.pinned = pinned;
 
 		if (pinned) {
-			Client.INSTANCE.getPins().notifyPin(this);
+			Client.INSTANCE.getModUiState().notifyPin(this);
 		} else {
-			Client.INSTANCE.getPins().notifyUnpin(this);
+			Client.INSTANCE.getModUiState().notifyUnpin(this);
 		}
 	}
 

@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod.impl.replay;
 
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -11,10 +29,10 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 
-public class RecordingIndicator extends BaseHudElement {
+public class RecordingIndicator implements HudElement {
 
-	private static final Identifier RECORDING = new Identifier("textures/gui/sol_client_recording.png");
-	private static final Identifier PAUSED = new Identifier("textures/gui/sol_client_paused.png");
+	private static final Identifier RECORDING = new Identifier("replay_mod", "recording.png");
+	private static final Identifier PAUSED = new Identifier("replay_mod", "paused.png");
 
 	public static GuiRecordingControls guiControls;
 	private final SCReplayMod mod;
@@ -64,23 +82,28 @@ public class RecordingIndicator extends BaseHudElement {
 	}
 
 	@Override
-	public HudPosition getHudPosition() {
+	public Position getConfiguredPosition() {
 		return mod.recordingIndicatorPosition;
 	}
 
 	@Override
-	public void setHudPosition(HudPosition position) {
+	public void setPosition(Position position) {
 		mod.recordingIndicatorPosition = position;
 	}
 
 	@Override
-	public float getHudScale() {
+	public float getScale() {
 		return mod.recordingIndicatorScale / 100F;
 	}
 
 	@Override
 	public Rectangle getBounds(Position position) {
 		return new Rectangle(position.getX() - 2, position.getY() - 2, 75, 20);
+	}
+
+	@Override
+	public Position determineDefaultPosition(int width, int height) {
+		return new Position(width - 80, 5);
 	}
 
 }

@@ -46,8 +46,8 @@ sol_client.mod.sol_client.description=Các thiết lập chung của Sol Client.
 
 sol_client.mod.sol_client.option.fancyMainMenu=Sử dụng Màn hình chính của Sol
 sol_client.mod.sol_client.option.logoInInventory=Hiện Logo ở giao diện Túi đồ
-sol_client.mod.sol_client.mods=Mods
-sol_client.mod.sol_client.option.modsKey=Phím tắt mở Danh sách Mod
+sol_client.mod.sol_client.mods=Các mô-đun
+sol_client.mod.sol_client.option.modsKey=Phím mô-đun
 sol_client.mod.sol_client.edit_hud=Chỉnh sửa HUD
 sol_client.mod.sol_client.option.editHudKey=Chỉnh sửa phím tắt HUD
 sol_client.mod.sol_client.option.uiColour=Màu sắc chủ đạo
@@ -425,7 +425,7 @@ sol_client.mod.discord_integration.option.usernameColour=Màu tên tài khoản 
 sol_client.mod.discord_integration.option.mutedColour=Màu tên tài khoản đã tắt Mic
 sol_client.mod.discord_integration.option.speakingColour=Màu tên tài khoản đang nói
 
-sol_client.mod.screen.title=Danh sách Mod
+sol_client.mod.screen.title=Các mô-đun
 sol_client.mod.screen.search=Gõ để tìm kiếm
 sol_client.mod.screen.apply_to_all=Áp dụng cho toàn bộ Mod khác
 

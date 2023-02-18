@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod.impl.replay;
 
 import java.util.*;
@@ -15,7 +33,7 @@ import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.impl.replay.fix.SCReplayModBackend;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
-import io.github.solclient.client.util.data.Colour;
+import io.github.solclient.client.util.data.*;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.world.ClientWorld;
 
@@ -59,7 +77,7 @@ public class SCReplayMod extends SolClientMod {
 	@Option
 	protected boolean recordingIndicatorTextShadow = true;
 	@Expose
-	protected HudPosition recordingIndicatorPosition = new HudPosition(0.1F, 0.1F);
+	protected Position recordingIndicatorPosition;
 	private RecordingIndicator recordingIndicatorHud = new RecordingIndicator(this);
 
 	@Expose

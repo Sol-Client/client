@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod.impl.hud.chat;
 
 import java.util.*;
@@ -8,7 +26,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.extension.ChatHudExtension;
+import io.github.solclient.client.mixin.client.ChatHudAccessor;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.Colour;
@@ -53,7 +71,8 @@ public class ChatMod extends SolClientHudMod {
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private boolean background = true;
 	@Expose
-	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY, applyToAllClass = Option.BACKGROUND_COLOUR_CLASS)
+	@ColourKey(ColourKey.BACKGROUND_COLOUR)
+	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private Colour backgroundColour = new Colour(0, 0, 0, 127);
 	@Expose
 	@Option
@@ -86,11 +105,14 @@ public class ChatMod extends SolClientHudMod {
 	@Expose
 	@Option
 	private boolean chatFilter = true;
+	// @formatter:off
 	@Option
-	@TextFile(value = "chat-filter.txt", header = "# List words on each line for them to be blocked.\n"
-			+ "# The chat mod and chat filter must be enabled for this to work.\n"
-			+ "# This may not work well for all languages.\n" + "# Any lines starting with \"#\" will be ignored.")
+	@TextFile(value = "chat-filter.txt", header =
+			"# List words on each line for them to be blocked.\n" +
+			"# The chat mod and chat filter must be enabled for this to work.\n" +
+			"# Any lines starting with \"#\" will be ignored.")
 	private String filteredWordsContent;
+	// @formatter:on
 	private List<String> filteredWords = new ArrayList<>();
 
 	private int previousChatSize;
@@ -197,7 +219,7 @@ public class ChatMod extends SolClientHudMod {
 
 			animatedOffset *= ANIMATION_MULTIPLIER;
 
-			for (ChatAnimationData line : (Iterable<ChatAnimationData>) (Object) (((ChatHudExtension) mc.inGameHud
+			for (ChatAnimationData line : (Iterable<ChatAnimationData>) (Object) (((ChatHudAccessor) mc.inGameHud
 					.getChatHud()).getVisibleMessages())) {
 				line.setLastTransparency(line.getTransparency());
 				line.setTransparency(line.getTransparency() * ANIMATION_MULTIPLIER);
@@ -211,7 +233,6 @@ public class ChatMod extends SolClientHudMod {
 			return;
 		}
 
-		// Primarily focused on English text, as all non-ascii characters are stripped.
 		String message = strip(event.message);
 
 		for (String word : filteredWords) {
@@ -226,13 +247,15 @@ public class ChatMod extends SolClientHudMod {
 	}
 
 	private static String strip(String message) {
-		return Formatting.strip(message).toLowerCase().replaceAll("[^a-z ]", "");
+		return message.toLowerCase().codePoints().filter(Character::isLetter)
+				.mapToObj((codePoint) -> (Character) (char) codePoint)
+				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}
 
 	@EventHandler
 	public void onChatRender(ChatRenderEvent event) {
 		event.cancelled = true;
-		ChatHudExtension accessor = ((ChatHudExtension) event.chat);
+		ChatHudAccessor accessor = ((ChatHudAccessor) event.chat);
 
 		if (visibility != ChatVisibility.HIDDEN) {
 			int linesCount = event.chat.getVisibleLineCount();

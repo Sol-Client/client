@@ -1,4 +1,24 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod.impl.hud.crosshair;
+
+import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -6,6 +26,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.impl.SolClientHudMod;
+import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
@@ -19,11 +40,10 @@ public class CrosshairMod extends SolClientHudMod {
 	private static final String DEFAULT_CROSSHAIR = "LCCH-9-ECBAgPAfAgQIEAA";
 
 	@Expose
-	@Option
-	private boolean customCrosshair = false;
+	final PixelMatrix pixels = new PixelMatrix(15, 15);
 	@Expose
 	@Option
-	private final PixelMatrix crosshairPixels = new PixelMatrix(15, 15);
+	private boolean customCrosshair = false;
 	@Expose
 	@Option
 	private boolean thirdPerson = true;
@@ -47,7 +67,14 @@ public class CrosshairMod extends SolClientHudMod {
 	private Colour entityColour = Colour.PURE_RED;
 
 	public CrosshairMod() {
-		LCCH.parse(DEFAULT_CROSSHAIR, crosshairPixels);
+		LCCH.parse(DEFAULT_CROSSHAIR, pixels);
+	}
+
+	@Override
+	public List<ModOption<?>> createOptions() {
+		List<ModOption<?>> options = super.createOptions();
+		options.add(2, new CrosshairOption(this));
+		return options;
 	}
 
 	@Override
@@ -61,7 +88,7 @@ public class CrosshairMod extends SolClientHudMod {
 			return;
 		}
 
-		crosshairPixels.bind(-1, 0);
+		pixels.bind(-1, 0);
 	}
 
 	@EventHandler
@@ -91,7 +118,7 @@ public class CrosshairMod extends SolClientHudMod {
 
 			Window window = new Window(mc);
 
-			float half = customCrosshair ? crosshairPixels.getWidth() / 2 : 8;
+			float half = customCrosshair ? pixels.getWidth() / 2 : 8;
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(getScale(), getScale(), getScale());
 			GlStateManager.translate((int) (window.getScaledWidth() / getScale() / 2 - half),
@@ -99,15 +126,15 @@ public class CrosshairMod extends SolClientHudMod {
 
 			bind();
 
-			int scale = customCrosshair ? crosshairPixels.getWidth() : 16;
+			int scale = customCrosshair ? pixels.getWidth() : 16;
 
 			if (customCrosshair)
 				DrawableHelper.drawTexture(0, 0, 0, 0, scale, scale, scale, scale, scale, scale);
 			else
 				MinecraftUtils.drawTexture(0, 0, 0, 0, 16, 16, 0);
 
-			GlStateManager.color(1, 1, 1, 1);
 			GlStateManager.popMatrix();
+			GlStateManager.color(1, 1, 1);
 		}
 	}
 

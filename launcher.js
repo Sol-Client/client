@@ -56,7 +56,7 @@ class Launcher {
 						size: 110704,
 						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-linux.jar"
 					},
-					"natives-macos": {
+					"natives-mac": {
 						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-macos.jar",
 						size: 55706,
 						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-macos.jar"
@@ -73,9 +73,7 @@ class Launcher {
 				osx: "natives-mac",
 				windows: "natives-windows"
 			},
-			extract: {
-				exclude: ["META-INF/"]
-			}
+			noExtract: true
 		});
 
 		version.libraries.push({
@@ -86,7 +84,7 @@ class Launcher {
 						size: 110704,
 						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-linux.jar"
 					},
-					"natives-macos": {
+					"natives-mac": {
 						path: "org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-macos.jar",
 						size: 55706,
 						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-macos.jar"
@@ -103,39 +101,7 @@ class Launcher {
 				osx: "natives-mac",
 				windows: "natives-windows"
 			},
-			extract: {
-				exclude: ["META-INF/"]
-			}
-		});
-
-		version.libraries.push({
-			downloads: {
-				classifiers: {
-					"natives-linux": {
-						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-linux.jar",
-						size: 110704,
-						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-linux.jar"
-					},
-					"natives-macos": {
-						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-macos.jar",
-						size: 55706,
-						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-macos.jar"
-					},
-					"natives-windows": {
-						path: "org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-windows.jar",
-						size: 159361,
-						url: "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-windows.jar"
-					}
-				}
-			},
-			natives: {
-				linux: "natives-linux",
-				osx: "natives-mac",
-				windows: "natives-windows"
-			},
-			extract: {
-				exclude: ["META-INF/"]
-			}
+			noExtract: true
 		});
 
 		// culling lib removed due to repo issues
@@ -322,6 +288,10 @@ class Launcher {
 					let download = library.downloads.classifiers[nativeName];
 					if(download != null) {
 						await Library.download(download);
+						jars.push(Library.getPath(download));
+						if(library?.noExtract) {
+							continue;
+						}
 						let zip = fs.createReadStream(Library.getPath(download))
 							.pipe(unzipper.Parse({ forceStream: true }));
 
@@ -341,6 +311,7 @@ class Launcher {
 							}
 							else {
 								let destination = nativesFolder + "/" + fileName;
+								
 								if(!fs.existsSync(path.dirname(destination))) {
 									fs.mkdirSync(path.dirname(destination), { recursive: true });
 								}
@@ -563,7 +534,7 @@ class Launcher {
 
 		args.push(classpath);
 
-		args.push("io.github.solclient.wrapper.Springboard");
+		args.push("io.github.solclient.wrapper.Launcher");
 
 		args.push("--version");
 		args.push("Sol Client");

@@ -1,9 +1,28 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod.impl.quickplay.ui;
 
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
+import io.github.solclient.client.ui.ScreenAnimation;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
@@ -12,6 +31,8 @@ import lombok.*;
 import net.minecraft.util.math.MathHelper;
 
 public class QuickPlayPalette extends ComponentScreen {
+
+	private final ScreenAnimation animation = new ScreenAnimation();
 
 	public QuickPlayPalette(QuickPlayMod mod) {
 		super(new Component() {
@@ -36,6 +57,11 @@ public class QuickPlayPalette extends ComponentScreen {
 		Keyboard.enableRepeatEvents(false);
 	}
 
+	@Override
+	protected void wrap(Runnable task) {
+		animation.wrap(task);
+	}
+
 	public static class QuickPlayPaletteComponent extends BlockComponent {
 
 		@Getter
@@ -53,16 +79,16 @@ public class QuickPlayPalette extends ComponentScreen {
 		private QuickPlayOptionComponent selected;
 
 		public QuickPlayPaletteComponent(QuickPlayMod mod) {
-			super(Colour.DISABLED_MOD.add(-15), 12, 0);
+			super(theme.bg, 12, 0);
 			this.mod = mod;
 			scroll = new QuickPlayScroll(this);
 			add(scroll, (component, defaultBounds) -> new Rectangle(0, 30, getBounds().getWidth(),
-					getBounds().getHeight() - 40));
-			search = new TextFieldComponent(200, false).withPlaceholder("sol_client.mod.screen.search").autoFlush()
+					getBounds().getHeight() - 30));
+			search = new TextFieldComponent(250, false).withPlaceholder("sol_client.mod.screen.search").autoFlush()
 					.onUpdate((ignored) -> {
 						scroll.load();
 						return true;
-					}).withIcon("sol_client_search").withoutUnderline();
+					}).withIcon("search").withoutUnderline();
 			add(search, (component, defaultBounds) -> defaultBounds.offset(10, 10).grow(-20, 0));
 			scroll.load();
 		}

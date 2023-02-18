@@ -14,6 +14,7 @@ log4j = "2.18.0"
 asm = "9.3"
 access_widener = "2.0.1"
 tiny_remapper = "0.8.2"
+devauth = "1.1.0"
 
 [libraries]
 # bloat
@@ -38,8 +39,10 @@ asm_commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
 asm_tree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
 asm_util = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
 tiny_remapper = { module = "net.fabricmc:tiny-remapper", version.ref = "tiny-remapper" }
+devauth = { module = "me.djtheredstoner:DevAuth-common", version.ref = "devauth" }
 
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version = "1.0.+" }
 lombok = { id = "io.freefair.lombok", version = "6.6.1" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "7.1.2" }
+licenser = { id = "org.quiltmc.gradle.licenser", version = "1.1.+" }

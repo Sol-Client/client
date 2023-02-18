@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod.impl;
 
 import org.lwjgl.LWJGLException;
@@ -8,6 +26,7 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.MinecraftClientExtension;
+import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.Rectangle;
@@ -58,6 +77,9 @@ public class TweaksMod extends SolClientMod {
 	@Expose
 	@Option
 	public boolean centredInventory = true;
+	@Expose
+	@Option
+	public boolean reconnectButton = true;
 	private Rectangle previousBounds;
 	private long fullscreenTime = -1;
 
@@ -156,13 +178,12 @@ public class TweaksMod extends SolClientMod {
 				Display.setDisplayMode(new DisplayMode(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight()));
 				Display.setLocation(0, 0);
-				MinecraftClientExtension.getInstance().resizeWindow(Display.getDesktopDisplayMode().getWidth(),
+				((MinecraftClientAccessor) mc).resizeWindow(Display.getDesktopDisplayMode().getWidth(),
 						Display.getDesktopDisplayMode().getHeight());
 			} else {
 				Display.setDisplayMode(new DisplayMode(previousBounds.getWidth(), previousBounds.getHeight()));
 				Display.setLocation(previousBounds.getX(), previousBounds.getY());
-				MinecraftClientExtension.getInstance().resizeWindow(previousBounds.getWidth(),
-						previousBounds.getHeight());
+				((MinecraftClientAccessor) mc).resizeWindow(previousBounds.getWidth(), previousBounds.getHeight());
 
 				if (mc.focused) {
 					mc.mouse.grabMouse();

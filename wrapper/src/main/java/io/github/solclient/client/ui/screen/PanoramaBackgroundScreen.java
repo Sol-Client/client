@@ -1,13 +1,31 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.ui.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.extension.TitleScreenExtension;
+import io.github.solclient.client.mixin.client.TitleScreenAccessor;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.util.ActiveMainMenu;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.render.*;
 
 public abstract class PanoramaBackgroundScreen extends ComponentScreen {
@@ -34,19 +52,19 @@ public abstract class PanoramaBackgroundScreen extends ComponentScreen {
 	}
 
 	protected void drawPanorama(int mouseX, int mouseY, float partialTicks) {
-		TitleScreenExtension access = (TitleScreenExtension) mainMenu;
+		TitleScreenAccessor accessor = (TitleScreenAccessor) mainMenu;
 
 		client.getFramebuffer().unbind();
 
 		GlStateManager.viewport(0, 0, 256, 256);
-		access.drawPanorama(mouseX, mouseY, partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
-		access.rotateAndBlurPanorama(partialTicks);
+		accessor.drawPanorama(mouseX, mouseY, partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
+		accessor.rotateAndBlurPanorama(partialTicks);
 		client.getFramebuffer().bind(true);
 
 		GlStateManager.viewport(0, 0, client.width, client.height);

@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.ui.component.impl;
 
 import org.lwjgl.input.Keyboard;
@@ -5,11 +23,10 @@ import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 
-public abstract class ScrollListComponent extends Component {
+public class ScrollListComponent extends ListComponent {
 
 	private double targetY;
 	private double animatedY;
@@ -25,13 +42,17 @@ public abstract class ScrollListComponent extends Component {
 
 	@Override
 	public void setParent(Component parent) {
-		super.setParent(parent);
+		if (parent == null && this.parent != null) {
+			this.parent.remove(scrollbar);
+			super.setParent(parent);
+			return;
+		}
 
-		parent.add(scrollbar = new BlockComponent(Colour.LIGHT_BUTTON, 2.5F, 0) {
+		parent.add(scrollbar = new BlockComponent(theme.buttonSecondary, 1.5F, 0) {
 
 			@Override
 			public void render(ComponentRenderInfo info) {
-				scrollPercent = (double) ScrollListComponent.this.getBounds().getHeight() / (double) getContentHeight();
+				scrollPercent = (ScrollListComponent.this.getBounds().getHeight() - 6) / (double) getContentHeight();
 
 				NanoVG.nvgTranslate(nvg, 0, (float) (calculatedY * scrollPercent));
 
@@ -41,41 +62,21 @@ public abstract class ScrollListComponent extends Component {
 			}
 
 		}, (component, defaultBounds) -> {
-			return new Rectangle(getBounds().getX() + getBounds().getWidth() - 8, getBounds().getY(), 5,
+			return new Rectangle(getBounds().getX() + getBounds().getWidth() - 5, getBounds().getY(), 3,
 					(int) (getBounds().getHeight() * scrollPercent));
 		});
-	}
 
-	public void add(Component component) {
-		add(getSubComponents().size(), component);
-	}
-
-	public void add(int index, Component component) {
-		add(index, component,
-				new AlignedBoundsController(Alignment.CENTRE, Alignment.START, (sizingComponent, defaultBounds) -> {
-					Component previous = null;
-					Rectangle lastBounds = null;
-
-					int prevIndex = subComponents.indexOf(component) - 1;
-					if (prevIndex > -1) {
-						previous = subComponents.get(prevIndex);
-						lastBounds = previous.getCachedBounds();
-					}
-
-					return new Rectangle(defaultBounds.getX(),
-							previous == null ? 0 : lastBounds.getY() + lastBounds.getHeight() + getSpacing(),
-							defaultBounds.getWidth(), defaultBounds.getHeight());
-				}));
+		super.setParent(parent);
 	}
 
 	private ComponentRenderInfo translate(ComponentRenderInfo info) {
-		return new ComponentRenderInfo(info.getRelativeMouseX(), (int) (info.getRelativeMouseY() + calculatedY),
-				info.getPartialTicks());
+		return new ComponentRenderInfo(info.relativeMouseX(), (int) (info.relativeMouseY() + calculatedY),
+				info.tickDelta());
 	}
 
 	public ComponentRenderInfo reverseTranslation(ComponentRenderInfo info) {
-		return new ComponentRenderInfo(info.getRelativeMouseX(), (int) (info.getRelativeMouseY() - calculatedY),
-				info.getPartialTicks());
+		return new ComponentRenderInfo(info.relativeMouseX(), (int) (info.relativeMouseY() - calculatedY),
+				info.tickDelta());
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public abstract class ScrollListComponent extends Component {
 		if (!SolClientConfig.instance.smoothScrolling) {
 			calculatedY = targetY;
 		} else {
-			calculatedY = (lastAnimatedY + (animatedY - lastAnimatedY) * info.getPartialTicks());
+			calculatedY = (lastAnimatedY + (animatedY - lastAnimatedY) * info.tickDelta());
 		}
 
 		NanoVG.nvgTranslate(nvg, 0, (float) -calculatedY);
@@ -93,18 +94,18 @@ public abstract class ScrollListComponent extends Component {
 			maxScrolling = 0;
 		}
 
-		if (lastMouseY != info.getRelativeMouseY()) {
+		if (lastMouseY != info.relativeMouseY()) {
 			if (scrolling > 0) {
-				int targetCompY = info.getRelativeMouseY() - scrolling;
+				int targetCompY = (int) (info.relativeMouseY() - scrolling);
 				jumpTo((int) (targetCompY / (getBounds().getHeight() / (double) getContentHeight())));
 				clamp();
 			} else if (grabStartY != -1) {
-				jumpTo(grabStartY - (info.getRelativeMouseY() - grabMouseY));
+				jumpTo(grabStartY - (info.relativeMouseY() - grabMouseY));
 				clamp();
 			}
 		}
 
-		lastMouseY = info.getRelativeMouseY();
+		lastMouseY = (int) info.relativeMouseY();
 
 		super.render(translate(info));
 	}
@@ -114,12 +115,12 @@ public abstract class ScrollListComponent extends Component {
 				-getBounds().getY() + (int) (calculatedY * scrollPercent));
 
 		if (new Rectangle(scrollBounds.getX(), 0, scrollBounds.getWidth(), getBounds().getHeight())
-				.contains(info.getRelativeMouseX(), info.getRelativeMouseY())) {
-			if (!scrollBounds.contains(info.getRelativeMouseX(), info.getRelativeMouseY())) {
+				.contains((int) info.relativeMouseX(), (int) info.relativeMouseY())) {
+			if (!scrollBounds.contains((int) info.relativeMouseX(), (int) info.relativeMouseY())) {
 				return scrollbar.getBounds().getHeight() / 2;
 			}
 
-			return info.getRelativeMouseY() - scrollBounds.getY();
+			return (int) (info.relativeMouseY() - scrollBounds.getY());
 		}
 
 		return -1;
@@ -139,7 +140,7 @@ public abstract class ScrollListComponent extends Component {
 
 		if (button == 0 && !superResult && grabStartY == -1) {
 			grabStartY = targetY;
-			grabMouseY = reverseTranslation(info).getRelativeMouseY();
+			grabMouseY = (int) reverseTranslation(info).relativeMouseY();
 		}
 
 		return true;
@@ -163,13 +164,7 @@ public abstract class ScrollListComponent extends Component {
 
 	@Override
 	protected boolean shouldCull(Component component) {
-		if ((component.getBounds().getEndY() - calculatedY) < 0) {
-			return true;
-		} else if (component.getBounds().getY() - calculatedY > getBounds().getHeight()) {
-			return true;
-		}
-
-		return false;
+		return (component.getBounds().getEndY() - calculatedY) < 0 || component.getBounds().getY() - calculatedY > getBounds().getHeight();
 	}
 
 	public void snapTo(int scroll) {
@@ -184,11 +179,9 @@ public abstract class ScrollListComponent extends Component {
 		return (int) targetY;
 	}
 
-	private int getContentHeight() {
-		if (subComponents.isEmpty())
-			return 0;
-
-		return getBounds(subComponents.get(subComponents.size() - 1)).getEndY();
+	@Override
+	protected int getContentHeight() {
+		return super.getContentHeight() + getSpacing() * 2;
 	}
 
 	@Override
@@ -256,7 +249,5 @@ public abstract class ScrollListComponent extends Component {
 	protected boolean shouldScissor() {
 		return true;
 	}
-
-	public abstract int getSpacing();
 
 }

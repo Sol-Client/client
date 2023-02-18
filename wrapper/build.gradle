@@ -6,6 +6,7 @@ plugins {
 	alias libs.plugins.quilt.loom
 	alias libs.plugins.lombok
 	alias libs.plugins.shadow
+	alias libs.plugins.licenser
 }
 
 repositories {
@@ -14,6 +15,7 @@ repositories {
 	maven { url 'https://repo.legacyfabric.net/repository/legacyfabric' }
 	maven { url 'https://repo.hypixel.net/repository/Hypixel' }
 	maven { url 'https://jitpack.io' }
+	maven { url 'https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1' }
 }
 
 configurations {
@@ -41,6 +43,7 @@ dependencies {
 	implementation libs.log4j.api
 	implementation libs.log4j.core
 	implementation libs.tiny.remapper
+	implementation libs.devauth
 
 	implementation libs.asm
 	implementation libs.asm.analysis
@@ -95,7 +98,7 @@ loom {
 	accessWidenerPath = file("src/main/resources/replay-mod.accesswidener")
 
 	runConfigs.each {
-		it.defaultMainClass 'io.github.solclient.wrapper.Springboard'
+		it.defaultMainClass 'io.github.solclient.wrapper.Launcher'
 		it.programArgs.add '--accessToken'
 		it.programArgs.add '0'
 		it.programArgs.add '--username'
@@ -108,11 +111,18 @@ java {
 
 	sourceCompatibility = 8
 	targetCompatibility = 8
+
+	jar {
+		enabled = false
+		dependsOn shadowJar
+	}
 }
 
-jar {
-	enabled = false
-	dependsOn shadowJar
+license {
+	rule file("../HEADER")
+	exclude '**/*.ttf'
+	exclude '**/*.xcf'
+	exclude '**/*.html'
 }
 
 shadowJar {
@@ -121,7 +131,7 @@ shadowJar {
 		rename { "${it}_${name}" }
 	}
 	configurations = [project.configurations.ship]
-	classifier "dev"
+	classifier 'dev'
 	destinationDirectory.set file("$buildDir/devlibs")
 }
 

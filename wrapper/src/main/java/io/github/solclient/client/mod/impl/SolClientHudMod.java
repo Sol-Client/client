@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod.impl;
 
 import java.util.*;
@@ -24,16 +42,11 @@ public abstract class SolClientHudMod extends SolClientMod implements PrimaryInt
 	protected final HudElement element = new HudModElement();
 
 	@Expose
-	private HudPosition position;
+	private Position position;
 	@Expose
-	@Option(priority = 1)
 	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
 	public float scale = 100;
 	protected TextRenderer font;
-
-	public SolClientHudMod() {
-		position = getDefaultPosition();
-	}
 
 	@Override
 	public ModCategory getCategory() {
@@ -79,8 +92,8 @@ public abstract class SolClientHudMod extends SolClientMod implements PrimaryInt
 		return false;
 	}
 
-	public HudPosition getDefaultPosition() {
-		return new HudPosition(0, 0);
+	public Position determineDefaultPosition(int width, int height) {
+		return new Position(0, 0);
 	}
 
 	@Override
@@ -93,7 +106,7 @@ public abstract class SolClientHudMod extends SolClientMod implements PrimaryInt
 		scale = Math.min(150, scale + 10);
 	}
 
-	class HudModElement extends BaseHudElement {
+	class HudModElement implements HudElement {
 
 		@Override
 		public Mod getMod() {
@@ -101,17 +114,22 @@ public abstract class SolClientHudMod extends SolClientMod implements PrimaryInt
 		}
 
 		@Override
-		public HudPosition getHudPosition() {
+		public Position getConfiguredPosition() {
 			return position;
 		}
 
 		@Override
-		public void setHudPosition(HudPosition position) {
+		public void setPosition(Position position) {
 			SolClientHudMod.this.position = position;
 		}
 
 		@Override
-		public float getHudScale() {
+		public Position determineDefaultPosition(int width, int height) {
+			return SolClientHudMod.this.determineDefaultPosition(width, height);
+		}
+
+		@Override
+		public float getScale() {
 			return scale / 100F;
 		}
 

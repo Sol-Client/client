@@ -46,8 +46,8 @@ sol_client.mod.sol_client.description=Yleiset asetukset.
 
 sol_client.mod.sol_client.option.fancyMainMenu=Päävalikko
 sol_client.mod.sol_client.option.logoInInventory=Näytä Logo Tavaraluettelossa
-sol_client.mod.sol_client.mods=Mods
-sol_client.mod.sol_client.option.modsKey=Mods valikon näppäin
+sol_client.mod.sol_client.mods=Moduulit
+sol_client.mod.sol_client.option.modsKey=Moduulien näppäin
 sol_client.mod.sol_client.edit_hud=Mukauta HUD
 sol_client.mod.sol_client.option.editHudKey=Vaihda HUD näppäin
 sol_client.mod.sol_client.option.uiColour=Aksentin Väri
@@ -428,7 +428,7 @@ sol_client.mod.discord_integration.option.usernameColour=Käyttäjätunnuksen v�
 sol_client.mod.discord_integration.option.mutedColour=Mykistetyn väri
 sol_client.mod.discord_integration.option.speakingColour=Puhuvan väri
 
-sol_client.mod.screen.title=Mods
+sol_client.mod.screen.title=Moduulit
 sol_client.mod.screen.search=Kirjoita hakeaksesi
 sol_client.mod.screen.apply_to_all=Aseta Kaikkiin
 

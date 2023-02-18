@@ -45,8 +45,8 @@ sol_client.mod.sol_client.description=Paramètres généraux pour Sol Client.
 
 sol_client.mod.sol_client.option.fancyMainMenu=Menu principal
 sol_client.mod.sol_client.option.logoInInventory=Afficher le logo dans l'inventaire
-sol_client.mod.sol_client.mods=Mods
-sol_client.mod.sol_client.option.modsKey=Clé de mods
+sol_client.mod.sol_client.mods=Modules
+sol_client.mod.sol_client.option.modsKey=Clé de modules
 sol_client.mod.sol_client.edit_hud=Modifier l'HUD
 sol_client.mod.sol_client.option.editHudKey=Modifier la clé HUD
 sol_client.mod.sol_client.option.uiColour=Couleur d'accentuation
@@ -419,7 +419,7 @@ sol_client.mod.discord_integration.option.usernameColour=Couleur du nom d'utilis
 sol_client.mod.discord_integration.option.mutedColour=Couleur en sourdine
 sol_client.mod.discord_integration.option.speakingColour=Couleur parlante
 
-sol_client.mod.screen.title=Mods
+sol_client.mod.screen.title=Modules
 sol_client.mod.screen.search=Tapez pour rechercher
 sol_client.mod.screen.apply_to_all=S'applique à tous
 

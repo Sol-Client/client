@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.mod.impl;
 
 import java.io.*;
@@ -9,7 +27,6 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.Option;
-import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.util.*;
 import net.minecraft.client.option.KeyBinding;
 
@@ -38,16 +55,7 @@ public class SolClientConfig extends ConfigOnlyMod {
 
 	@Expose
 	@Option
-	public Colour uiColour = new Colour(255, 180, 0);
-	public Colour uiHover;
-
-	@Expose
-	@Option
-	public boolean smoothUIColours = true;
-
-	@Expose
-	@Option
-	public boolean roundedUI = true;
+	public boolean openAnimation;
 
 	@Expose
 	@Option
@@ -74,7 +82,6 @@ public class SolClientConfig extends ConfigOnlyMod {
 		super.init();
 
 		instance = this;
-		uiHover = getUiHover();
 
 		// yuck...
 		if (GlobalConstants.AUTOUPDATE)
@@ -91,19 +98,6 @@ public class SolClientConfig extends ConfigOnlyMod {
 			thread.setDaemon(true);
 			thread.start();
 		}
-	}
-
-	@Override
-	public void postOptionChange(String key, Object value) {
-		super.postOptionChange(key, value);
-
-		if (key.equals("uiColour")) {
-			uiHover = getUiHover();
-		}
-	}
-
-	private Colour getUiHover() {
-		return uiColour.add(40);
 	}
 
 }

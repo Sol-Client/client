@@ -31,7 +31,7 @@ sol_client.key.category=Sol Client
 sol_client.key.accept_request=Accept Request
 sol_client.key.dismiss_request=Dismiss Request
 
-sol_client.mod.generic.option.enabled=Enabled
+sol_client.mod.generic.enabled=Enabled
 sol_client.mod.hud.option.scale=Scale
 sol_client.mod.simple_hud.option.background=Background
 sol_client.mod.simple_hud.option.backgroundColour=Background Color
@@ -47,13 +47,14 @@ sol_client.mod.sol_client.description=General settings for Sol Client.
 sol_client.mod.sol_client.option.remindMeToUpdate=Update Notifications
 sol_client.mod.sol_client.option.fancyMainMenu=Replace Main Menu
 sol_client.mod.sol_client.option.logoInInventory=Show Logo in Inventory
-sol_client.mod.sol_client.mods=Mods
-sol_client.mod.sol_client.option.modsKey=Mods Key
+sol_client.mod.sol_client.mods=Modules
+sol_client.mod.sol_client.option.modsKey=Modules Key
 sol_client.mod.sol_client.edit_hud=Edit HUD
 sol_client.mod.sol_client.option.editHudKey=Edit HUD Key
 sol_client.mod.sol_client.option.uiColour=Accent Color
 sol_client.mod.sol_client.option.smoothUIColours=Smooth UI Colors
 sol_client.mod.sol_client.option.roundedUI=Rounded UI
+sol_client.mod.sol_client.option.openAnimation=Opening Animation
 sol_client.mod.sol_client.option.buttonClicks=Button Clicks
 sol_client.mod.sol_client.option.smoothScrolling=Smooth Scrolling
 sol_client.mod.sol_client.option.fancyFont=HD Font
@@ -113,6 +114,18 @@ sol_client.mod.combo_counter.no_hits=No combo
 sol_client.mod.combo_counter.one_hit=1 hit
 sol_client.mod.combo_counter.n_hits=%s hits
 
+sol_client.mod.clock.name=Clock
+sol_client.mod.clock.description=Display the current time.
+
+sol_client.mod.clock.option.twentyFourHour=24-hour Format
+sol_client.mod.clock.option.analogue=Analog
+sol_client.mod.clock.option.hourHandColour=Hour Hand Color
+sol_client.mod.clock.option.hourMarks=Hour Marks
+sol_client.mod.clock.option.hourMarksColour=Hour Marks Color
+sol_client.mod.clock.option.minuteHandColour=Minute Hand Color
+sol_client.mod.clock.option.secondsHand=Seconds Hand
+sol_client.mod.clock.option.secondsHandColour=Seconds Hand Color
+
 sol_client.mod.potion_effects.name=Potion Effects
 sol_client.mod.potion_effects.description=Display your active potions with countdowns.
 
@@ -125,7 +138,7 @@ sol_client.mod.potion_effects.option.duration=Duration
 sol_client.mod.potion_effects.option.durationColour=Duration Color
 sol_client.mod.potion_effects.option.spacing=Spacing
 
-sol_client.mod.armour.name=Armor and Equipment
+sol_client.mod.armour.name=Equipment
 sol_client.mod.armour.description=Display your armor and equipment with durability.
 
 sol_client.mod.armour.option.durability=Durability Text
@@ -190,7 +203,7 @@ sol_client.mod.crosshair.name=Crosshair
 sol_client.mod.crosshair.description=Customize the crosshair.
 
 sol_client.mod.crosshair.option.customCrosshair=Custom Crosshair
-sol_client.mod.crosshair.option.crosshairPixels=Pixels
+sol_client.mod.crosshair.option.pixels=Pixels
 sol_client.mod.crosshair.option.thirdPerson=Show in Third Person
 sol_client.mod.crosshair.option.spectatorAlways=Show in Spectator Mode
 sol_client.mod.crosshair.option.debug=Show in Debug Overlay
@@ -223,8 +236,10 @@ sol_client.mod.tweaks.option.borderlessFullscreen=Borderless Fullscreen
 sol_client.mod.tweaks.option.betterKeyBindings=Better Key Bindings
 sol_client.mod.tweaks.option.disableHotbarScrolling=Disable Hotbar Scrolling
 sol_client.mod.tweaks.option.centredInventory=Centered Inventory
+sol_client.mod.tweaks.option.reconnectButton=Multiplayer Reconnect Button
 
 sol_client.mod.tweaks.confirm_disconnect=Press Again to Confirm
+sol_client.mod.tweaks.reconnect=Reconnect
 
 sol_client.mod.freelook.name=Freelook
 sol_client.mod.freelook.description=Unlock camera rotation from the player's head.
@@ -266,6 +281,7 @@ sol_client.mod.zoom.option.cinematic=Cinematic Camera
 sol_client.mod.zoom.option.reduceSensitivity=Reduce Sensitivity
 sol_client.mod.zoom.option.scrolling=Scroll to Zoom
 sol_client.mod.zoom.option.smooth=Zoom Animation
+sol_client.mod.zoom.option.animationSpeed=Animation Speed
 sol_client.mod.zoom.option.factor=Zoom Factor
 
 sol_client.mod.replay.name=Replay
@@ -439,6 +455,7 @@ sol_client.mod.category.addons.name=Addons
 sol_client.mod.discord_integration.name=Discord Integration
 sol_client.mod.discord_integration.description=Integration features for Discord including activities and overlay.
 
+sol_client.mod.discord_integration.option.ip=Show Server IP
 sol_client.mod.discord_integration.option.applicationId=Application ID
 sol_client.mod.discord_integration.option.icon=Icon
 sol_client.mod.discord_integration.option.voiceChatHud=Voice Chat HUD
@@ -453,13 +470,13 @@ sol_client.mod.discord_integration.multiplayer=Multiplayer: %s
 sol_client.mod.cosmetica.name=Cosmetica
 sol_client.mod.cosmetica.description=Support for cosmetics with Cosmetica's API.
 
-sol_client.mod.screen.title=Mods
+sol_client.mod.screen.title=Modules
 sol_client.mod.screen.search=Type to search
 sol_client.mod.screen.apply_to_all=Apply to All
 
 sol_client.mod.screen.modified_from=, using code by %s
 sol_client.mod.screen.originally_by=, originally by %s
-sol_client.mod.screen.inspired_by=, partially inspired by %s
+sol_client.mod.screen.inspired_by=, inspired by %s
 sol_client.mod.screen.by=, by %s
 
 sol_client.mod.screen.about=About Sol Client
@@ -475,3 +492,9 @@ sol_client.packs.folder=Folder (%d items)
 
 sol_client.no_results=No results :(
 sol_client.more_options=More options...
+
+sol_client.preview=Preview
+sol_client.hex=Hex
+sol_client.rgb=RGB
+sol_client.alpha=Alpha
+sol_client.previous_colours=Previously Used

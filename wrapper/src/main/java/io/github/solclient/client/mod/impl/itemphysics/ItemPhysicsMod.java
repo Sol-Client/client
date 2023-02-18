@@ -1,6 +1,19 @@
 /*
- * Original code by TheKodeToad,
- * but was modified to be more similar to CreativeMD's original mod.
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package io.github.solclient.client.mod.impl.itemphysics;
@@ -11,7 +24,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
-import io.github.solclient.client.extension.EntityExtension;
+import io.github.solclient.client.mixin.EntityAccessor;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.option.annotation.*;
@@ -24,8 +37,6 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 	@Option
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	private float rotationSpeed = 100;
-	private final Map<ItemEntity, ItemData> dataMap = new WeakHashMap<>(); // May cause a few small bugs, but memory
-																			// usage is prioritised.
 
 	@Override
 	public String getId() {
@@ -51,7 +62,7 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 
 			long now = System.nanoTime();
 
-			ItemData data = dataMap.computeIfAbsent(event.entity, (itemStack) -> new ItemData(System.nanoTime()));
+			ItemData data = (ItemData) event.entity;
 
 			long since = now - data.getLastUpdate();
 
@@ -61,7 +72,7 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 			if (!MinecraftClient.getInstance().isPaused()) {
 				if (!event.entity.onGround) {
 					int divisor = 2500000;
-					if (((EntityExtension) event.entity).getIsInWeb()) {
+					if (((EntityAccessor) event.entity).isInLava()) {
 						divisor *= 10;
 					}
 					data.setRotation(

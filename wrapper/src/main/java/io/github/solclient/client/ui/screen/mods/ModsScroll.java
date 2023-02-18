@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.ui.screen.mods;
 
 import java.util.*;
@@ -5,19 +23,20 @@ import java.util.stream.Collectors;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen.ModsScreenComponent;
 import io.github.solclient.client.util.data.Alignment;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import net.minecraft.client.resource.language.I18n;
 
 @RequiredArgsConstructor
-public class ModsScroll extends ScrollListComponent {
+public final class ModsScroll extends ScrollListComponent {
 
 	private final ModsScreenComponent screen;
+	@Getter
+	private ModCategoryComponent pinned;
 
 	@Override
 	protected int getScrollStep() {
@@ -31,40 +50,40 @@ public class ModsScroll extends ScrollListComponent {
 
 	public void load() {
 		clear();
+		pinned = null;
 
-		if (screen.getMod() == null) {
-			if (screen.getFilter().isEmpty()) {
-				for (ModCategory category : ModCategory.values()) {
-					if (category.shouldShowName())
-						add(new LabelComponent(category.toString()));
+		if (screen.getFilter().isEmpty()) {
+			for (ModCategory category : ModCategory.values()) {
+				if (category.getMods().isEmpty())
+					continue;
 
-					for (Mod mod : category.getMods())
-						add(new ModListing(mod, screen, category == ModCategory.PINNED));
-				}
-			} else {
-				String filter = screen.getFilter();
-				List<Mod> filtered = Client.INSTANCE.getMods().stream().filter((mod) -> {
-					String credit = mod.getDetail();
-					if (credit == null)
-						credit = "";
+				ModCategoryComponent component = new ModCategoryComponent(category, screen);
+				if (category == ModCategory.PINNED)
+					pinned = component;
 
-					return I18n.translate(mod.getName()).toLowerCase().contains(filter.toLowerCase())
-							|| I18n.translate(mod.getDescription()).toLowerCase().contains(filter.toLowerCase())
-							|| I18n.translate(credit).toLowerCase().contains(filter.toLowerCase());
-				}).sorted(Comparator.comparing(
-						(Mod mod) -> I18n.translate(mod.getName()).toLowerCase().startsWith(filter.toLowerCase()))
-						.reversed()).collect(Collectors.toList());
-
-				if (filtered.isEmpty())
-					add(new LabelComponent("sol_client.no_results"),
-							new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
-
-				for (Mod mod : filtered)
-					add(new ModListing(mod, screen, false));
+				add(component);
 			}
 		} else {
-			for (ModOption<?> option : screen.getMod().getOptions())
-				add(new ModOptionComponent(option));
+			String filter = screen.getFilter();
+			List<Mod> filtered = Client.INSTANCE.getMods().stream().filter((mod) -> {
+				String credit = mod.getDetail();
+				if (credit == null)
+					credit = "";
+
+				return I18n.translate(mod.getName()).toLowerCase().contains(filter.toLowerCase())
+						|| I18n.translate(mod.getDescription()).toLowerCase().contains(filter.toLowerCase())
+						|| I18n.translate(credit).toLowerCase().contains(filter.toLowerCase());
+			}).sorted(Comparator
+					.comparing(
+							(Mod mod) -> I18n.translate(mod.getName()).toLowerCase().startsWith(filter.toLowerCase()))
+					.reversed()).collect(Collectors.toList());
+
+			if (filtered.isEmpty())
+				add(new LabelComponent("sol_client.no_results"),
+						new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
+
+			for (Mod mod : filtered)
+				add(new ModEntry(mod, screen, false));
 		}
 	}
 
@@ -75,16 +94,16 @@ public class ModsScroll extends ScrollListComponent {
 
 		int scroll = 0;
 
-		if (Client.INSTANCE.getPins().getMods().size() == 0) {
+		if (Client.INSTANCE.getModUiState().getPins().size() == 0) {
 			// this is the first one
-			add(0, new LabelComponent(ModCategory.PINNED.toString()));
-			scroll += regularFont.getLineHeight(nvg) + 2 + getSpacing();
+			add(0, pinned = new ModCategoryComponent(ModCategory.PINNED, screen));
+			scroll += 13;
 		}
 
-		add(Client.INSTANCE.getPins().getMods().size() + 1, new ModListing(mod, screen, true));
+		pinned.add(Client.INSTANCE.getModUiState().getPins().size() + 1, new ModEntry(mod, screen, true));
 
-		scroll += getScrollStep();
-
+		if (Client.INSTANCE.getModUiState().isExpanded(ModCategory.PINNED))
+			scroll += getScrollStep();
 		snapTo(getScroll() + scroll);
 	}
 
@@ -94,24 +113,22 @@ public class ModsScroll extends ScrollListComponent {
 		}
 
 		int scroll = 0;
-		int index = Client.INSTANCE.getPins().getMods().indexOf(mod);
+		int index = Client.INSTANCE.getModUiState().getPins().indexOf(mod);
 
-		if (Client.INSTANCE.getPins().getMods().size() == 1) {
+		if (Client.INSTANCE.getModUiState().getPins().size() == 1) {
 			// this is the last one
 			remove(0);
-			scroll += regularFont.getLineHeight(nvg) + 2 + getSpacing();
-		} else {
-			index++;
+			scroll += 13;
 		}
 
-		remove(index);
+		pinned.remove(index + 1);
 
-		scroll += getScrollStep();
+		if (Client.INSTANCE.getModUiState().isExpanded(ModCategory.PINNED))
+			scroll += getScrollStep();
 		scroll = getScroll() - scroll;
 
-		if (scroll < 0) {
+		if (scroll < 0)
 			scroll = 0;
-		}
 
 		snapTo(scroll);
 	}

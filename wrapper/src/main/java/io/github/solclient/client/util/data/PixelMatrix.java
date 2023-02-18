@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.util.data;
 
 import java.util.BitSet;
@@ -76,7 +94,7 @@ public final class PixelMatrix {
 		// lazy load for those wishing to use this class just for pixel storage
 		if (texture == null) {
 			texture = new NativeImageBackedTexture(width, height);
-			nvgImage = NanoVGGL3.nvglCreateImageFromHandle(NanoVGManager.getNvg(), texture.getGlId(), width, height, 0);
+			nvgImage = NanoVGGL2.nvglCreateImageFromHandle(NanoVGManager.getNvg(), texture.getGlId(), width, height, 0);
 		}
 
 		// reupload
@@ -102,7 +120,7 @@ public final class PixelMatrix {
 
 	public void nvgBind(long nvg, int x, int y, int fg, int bg) {
 		getTexture(fg, bg);
-		NanoVG.nvgFillPaint(nvg, MinecraftUtils.nvgTexturePaint(nvg, nvgImage, x, y, width, height));
+		NanoVG.nvgFillPaint(nvg, MinecraftUtils.nvgTexturePaint(nvg, nvgImage, x, y, width, height, 0));
 	}
 
 	public void set(BitSet pixels, int width, int height) {

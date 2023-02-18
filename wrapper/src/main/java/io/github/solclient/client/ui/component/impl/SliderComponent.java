@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.ui.component.impl;
 
 import java.util.function.Consumer;
@@ -6,9 +24,8 @@ import org.lwjgl.nanovg.NanoVG;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
@@ -21,33 +38,14 @@ public class SliderComponent extends Component {
 	private float value;
 	private final Consumer<Float> callback;
 	private boolean selected;
-	private final Controller<Colour> colour = new AnimatedColourController(
-			(component, defaultColour) -> component.isHovered() || selected ? SolClientConfig.instance.uiHover
-					: SolClientConfig.instance.uiColour);
-	private final Component hoverController;
+	private final Controller<Colour> colour = theme.button();
 
-	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback,
-			Component hoverController) {
+	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback) {
 		this.min = min;
 		this.max = max;
 		this.step = step;
 		this.value = value;
 		this.callback = callback;
-		this.hoverController = hoverController;
-
-		hoverController.onClick((info, button) -> {
-			if (super.isHovered()) {
-				return false;
-			}
-
-			mouseClicked(info, button);
-			return true;
-		});
-	}
-
-	@Override
-	public boolean isHovered() {
-		return hoverController.isHovered();
 	}
 
 	@Override
@@ -55,29 +53,22 @@ public class SliderComponent extends Component {
 		GlStateManager.enableAlphaTest();
 		GlStateManager.enableBlend();
 
-		int x = (int) (100 * (((value - min) / (max - min))));
+		float x = 80 * (((value - min) / (max - min)));
 
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgFillColor(nvg, Colour.LIGHT_BUTTON.nvg());
-		NanoVG.nvgRoundedRect(nvg, 0, 4, 100, 2, SolClientConfig.instance.roundedUI ? 1 : 0);
+		NanoVG.nvgFillColor(nvg, colour.get(this).nvg());
+		NanoVG.nvgRoundedRect(nvg, 0, 3, 80, 4, 2);
 		NanoVG.nvgFill(nvg);
 
-		NanoVG.nvgFillColor(nvg, colour.get(this, null).nvg());
+		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
 
-		if (SolClientConfig.instance.roundedUI) {
-			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgCircle(nvg, x, 5, 4);
-			NanoVG.nvgFill(nvg);
-		} else {
-			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgRect(nvg, x - 2, 1, 4, 8);
-			NanoVG.nvgFill(nvg);
-		}
+		NanoVG.nvgBeginPath(nvg);
+		NanoVG.nvgCircle(nvg, x, 5, 4);
+		NanoVG.nvgFill(nvg);
 
 		if (selected) {
 			value = MathHelper.clamp(
-					(float) (min + Math.floor(((info.getRelativeMouseX() / 100F) * (max - min)) / step) * step), min,
-					max);
+					(float) (min + Math.floor(((info.relativeMouseX() / 80F) * (max - min)) / step) * step), min, max);
 			callback.accept(value);
 		}
 
@@ -107,7 +98,7 @@ public class SliderComponent extends Component {
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return new Rectangle(0, 0, 100, 10);
+		return new Rectangle(0, 0, 80, 10);
 	}
 
 }

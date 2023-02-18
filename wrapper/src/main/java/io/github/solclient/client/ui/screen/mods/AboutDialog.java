@@ -1,3 +1,21 @@
+/*
+ * Sol Client - an open source Minecraft client
+ * Copyright (C) 2021-2023  TheKodeToad and Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package io.github.solclient.client.ui.screen.mods;
 
 import org.lwjgl.nanovg.*;
@@ -14,7 +32,7 @@ import net.minecraft.util.Identifier;
 public class AboutDialog extends BlockComponent {
 
 	public AboutDialog() {
-		super(Colour.DISABLED_MOD, 12, 0);
+		super(theme.bg, 12, 0);
 
 		add(new LabelComponent("sol_client.mod.screen.about"),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,
@@ -34,8 +52,8 @@ public class AboutDialog extends BlockComponent {
 		int logoX = getBounds().getWidth() / 2 - 32;
 		int logoY = getBounds().getHeight() / 2 - 60;
 
-		NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier("textures/gui/sol_client_icon.png"), logoX,
-				logoY, 64, 64);
+		NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg,
+				new Identifier("textures/gui/sol_client_icon.png"), logoX, logoY, 64, 64, 0);
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillPaint(nvg, paint);

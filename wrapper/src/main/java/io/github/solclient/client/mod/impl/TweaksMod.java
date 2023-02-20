@@ -64,6 +64,9 @@ public class TweaksMod extends SolClientMod {
 	public float lowerFireBy;
 	@Expose
 	@Option
+	public boolean disableBlockParticles;
+	@Expose
+	@Option
 	public boolean confirmDisconnect;
 	@Expose
 	@Option

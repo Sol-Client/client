@@ -29,6 +29,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.mod.impl.TweaksMod;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -37,6 +38,7 @@ import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.*;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.entity.*;
 import net.minecraft.client.render.item.HeldItemRenderer;
@@ -47,6 +49,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.*;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.*;
 
 public class TweaksModMixins {
 
@@ -292,8 +295,7 @@ public class TweaksModMixins {
 			ButtonWidget last = buttons.get(buttons.size() - 1);
 			int y = last.y;
 			last.y += 24;
-			buttons.add(new ButtonWidget(100, last.x, y,
-					I18n.translate("sol_client.mod.tweaks.reconnect")));
+			buttons.add(new ButtonWidget(100, last.x, y, I18n.translate("sol_client.mod.tweaks.reconnect")));
 		}
 
 		@Inject(method = "buttonClicked", at = @At("HEAD"))
@@ -310,6 +312,23 @@ public class TweaksModMixins {
 
 		@Shadow
 		private @Final Screen parent;
+
+	}
+
+	@Mixin(ParticleManager.class)
+	public static class ParticleManagerMixin {
+
+		@Inject(method = "addBlockBreakingParticles", at = @At("HEAD"), cancellable = true)
+		public void cancelBlockBreakingParticles(BlockPos pos, Direction direction, CallbackInfo callback) {
+			if (TweaksMod.enabled && TweaksMod.instance.disableBlockParticles)
+				callback.cancel();
+		}
+
+		@Inject(method = "addBlockBreakParticles", at = @At("HEAD"), cancellable = true)
+		public void cancelBlockBreakParticles(BlockPos pos, BlockState state, CallbackInfo callback) {
+			if (TweaksMod.enabled && TweaksMod.instance.disableBlockParticles)
+				callback.cancel();
+		}
 
 	}
 

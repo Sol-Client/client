@@ -114,6 +114,7 @@
 		"mod.TweaksModMixins$MinecraftClientMixin",
 		"mod.TweaksModMixins$ItemRendererMixin",
 		"mod.TweaksModMixins$DisconnectedScreenMixin",
+		"mod.TweaksModMixins$ParticleManagerMixin",
 		"mod.V1_7VisualsModMixins$ItemRendererMixin",
 		"mod.V1_7VisualsModMixins$GameRendererMixin",
 		"mod.V1_7VisualsModMixins$LayerArmorBaseMixin",

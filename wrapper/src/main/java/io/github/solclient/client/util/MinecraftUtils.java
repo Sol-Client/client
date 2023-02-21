@@ -764,4 +764,8 @@ public class MinecraftUtils {
 		}
 	}
 
+	public UUID getPlayerUuid() {
+		return MinecraftClient.getInstance().getSession().getProfile().getId();
+	}
+
 }

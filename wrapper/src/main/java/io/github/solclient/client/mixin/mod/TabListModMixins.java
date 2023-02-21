@@ -41,14 +41,14 @@ public class TabListModMixins {
 	@Mixin(PlayerListHud.class)
 	public static class PlayerListHudMixin {
 
-		@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;drawWithShadow(Ljava/lang/String;FFI)I"))
-		public int overrideShadow(TextRenderer instance, String text, float x, float y, int color) {
-			if (TabListMod.enabled && !TabListMod.instance.textShadow) {
-				return instance.draw(text, x, y, color, false);
-			}
-
-			return instance.drawWithShadow(text, x, y, color);
-		}
+//		@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;drawWithShadow(Ljava/lang/String;FFI)I"))
+//		public int overrideShadow(TextRenderer instance, String text, float x, float y, int color) {
+//			if (TabListMod.enabled && !TabListMod.instance.textShadow) {
+//				return instance.draw(text, x, y, color, false);
+//			}
+//
+//			return instance.drawWithShadow(text, x, y, color);
+//		}
 
 		@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;getPlayerByUuid(Ljava/util/UUID;)Lnet/minecraft/entity/player/PlayerEntity;"))
 		public PlayerEntity overridePlayerHeads(ClientWorld instance, UUID uuid) {

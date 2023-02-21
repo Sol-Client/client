@@ -49,6 +49,7 @@ public class GlobalConstants {
 	// please don't remove :(
 	public final String COPYRIGHT = "© 2023 TheKodeToad and contributors";
 	public final String OPTIFINE_JAR = "OptiFine_1.8.9_HD_U_M5";
+	public final String API = "https://thekodetoad.duckdns.org:8080/v1";
 
 	// utils
 	public final MethodType MAIN_METHOD = MethodType.methodType(void.class, String[].class);

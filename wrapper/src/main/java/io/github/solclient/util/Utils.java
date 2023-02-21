@@ -23,14 +23,8 @@ import java.net.*;
 import java.nio.file.*;
 
 import org.apache.commons.io.*;
-import org.lwjgl.nanovg.NanoVG;
-import org.lwjgl.opengl.GL11;
 
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
-import io.github.solclient.client.util.NanoVGManager;
 import lombok.experimental.UtilityClass;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.Window;
 
 /**
  * General utils.
@@ -38,7 +32,7 @@ import net.minecraft.client.util.Window;
 @UtilityClass
 public class Utils {
 
-	private URLConnection getConnection(String agent, URL url) throws IOException {
+	public URLConnection getConnection(String agent, URL url) throws IOException {
 		URLConnection connection = url.openConnection();
 		connection.addRequestProperty("User-Agent", agent); // Force consistent behaviour
 		return connection;

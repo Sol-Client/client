@@ -29,6 +29,7 @@ import io.github.solclient.client.chatextensions.ChatExtensionManager;
 import io.github.solclient.client.command.CommandManager;
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.mod.*;
+import io.github.solclient.client.online.*;
 import io.github.solclient.client.packet.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.*;
@@ -108,6 +109,7 @@ public final class Client {
 		events.register(new DefaultEvents());
 		events.register(packets);
 		events.register(popups);
+		events.register(new OnlineApiJob());
 
 		// save it all!
 		save();

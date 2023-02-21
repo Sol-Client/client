@@ -68,6 +68,7 @@
 		"client.TranslationStorageMixin",
 		"client.VertexBufferMixin",
 		"client.WorldRendererAccessor",
+		"client.PlayerListHudMixin",
 		"lwjgl.GLContextAccessor",
 		"lwjgl.LinuxKeyboardMixin",
 		"lwjgl.LinuxKeycodesAccessor",

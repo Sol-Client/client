@@ -41,13 +41,13 @@ public class KeystrokesMod extends SolClientHudMod {
 	private boolean mouse = true;
 	@Expose
 	@Option
+	protected boolean cps;
+	@Expose
+	@Option
 	private boolean mouseMovement;
 	@Expose
 	@Option
 	private boolean showSpace;
-	@Expose
-	@Option
-	protected boolean cps;
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	protected boolean background = true;

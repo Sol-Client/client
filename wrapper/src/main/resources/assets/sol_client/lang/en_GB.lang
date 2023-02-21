@@ -1,68 +1,66 @@
 sol_client.vertical_alignment.middle=Centre
 
-sol_client.mod.simple_hud.option.backgroundColour=Background Colour
-sol_client.mod.simple_hud.option.borderColour=Border Colour
+sol_client.mod.simple_hud.option.backgroundColour=Background colour
+sol_client.mod.simple_hud.option.borderColour=Border colour
 sol_client.mod.simple_hud.option.textColour=Text Colour
 
-sol_client.mod.sol_client.option.uiColour=Accent Colour
+sol_client.mod.sol_client.option.uiColour=Accent colour
 
-sol_client.mod.sol_client.option.smoothUIColours=Smooth UI Colours
+sol_client.mod.coordinates.option.axisLabelColour=Axis label colour
+sol_client.mod.coordinates.option.axisValueColour=Axis value colour
+sol_client.mod.coordinates.option.cardinalDirectionColour=Cardinal direction colour
+sol_client.mod.coordinates.option.axisDirectionColour=Axis direction colour
 
-sol_client.mod.coordinates.option.axisLabelColour=Axis Label Colour
-sol_client.mod.coordinates.option.axisValueColour=Axis Value Colour
-sol_client.mod.coordinates.option.cardinalDirectionColour=Cardinal Direction Colour
-sol_client.mod.coordinates.option.axisDirectionColour=Axis Direction Colour
+sol_client.mod.keystrokes.option.backgroundColourPressed=Background colour (when held)
+sol_client.mod.keystrokes.option.borderColourPressed=Border colour (when held)
+sol_client.mod.keystrokes.option.textColourPressed=Text colour (when held)
+sol_client.mod.keystrokes.option.smoothColours=Animated colours
 
-sol_client.mod.keystrokes.option.backgroundColourPressed=Background Colour (Held)
-sol_client.mod.keystrokes.option.borderColourPressed=Border Colour (Held)
-sol_client.mod.keystrokes.option.textColourPressed=Text Colour (Held)
-sol_client.mod.keystrokes.option.smoothColours=Smooth Colours
+sol_client.mod.cps.option.separatorColour=Separator colour
 
-sol_client.mod.cps.option.separatorColour=Separator Colour
-
-sol_client.mod.potion_effects.option.titleColour=Label Colour
-sol_client.mod.potion_effects.option.durationColour=Duration Colour
+sol_client.mod.potion_effects.option.titleColour=Label colour
+sol_client.mod.potion_effects.option.durationColour=Duration colour
 
 sol_client.mod.armour.description=Display your armour and equipment with durability.
-sol_client.mod.armour.option.armour=Show Armour
+sol_client.mod.armour.option.armour=Show armour
 
-sol_client.mod.timers.option.nameColour=Label Colour
-sol_client.mod.timers.option.timeColour=Time Colour
+sol_client.mod.timers.option.nameColour=Label colour
+sol_client.mod.timers.option.timeColour=Time colour
 
 sol_client.mod.chat.description=Customise ingame chat.
-sol_client.mod.chat.option.defaultTextColour=Default Text Colour
+sol_client.mod.chat.option.defaultTextColour=Default text colour
 sol_client.mod.chat.option.colours=Colours
 
 sol_client.mod.tab_list.description=Customise the tab/player list.
 
 sol_client.mod.clock.option.analogue=Analogue
-sol_client.mod.clock.option.hourHandColour=Hour Hand Colour
-sol_client.mod.clock.option.hourMarksColour=Hour Marks Colour
-sol_client.mod.clock.option.minuteHandColour=Minute Hand Colour
-sol_client.mod.clock.option.secondsHandColour=Seconds Hand Colour
+sol_client.mod.clock.option.hourHandColour=Hour hand colour
+sol_client.mod.clock.option.hourMarksColour=Hour mark colour
+sol_client.mod.clock.option.minuteHandColour=Minute hand colour
+sol_client.mod.clock.option.secondsHandColour=Second hand colour
 
 sol_client.mod.crosshair.description=Customise the crosshair.
 sol_client.mod.crosshair.option.crosshairColour=Colour
-sol_client.mod.crosshair.option.entityColour=Entity Colour
+sol_client.mod.crosshair.option.entityColour=Entity colour
 
 sol_client.mod.scoreboard.description=Customise the scoreboard.
-sol_client.mod.scoreboard.option.numbersColour=Numbers Colour
+sol_client.mod.scoreboard.option.numbersColour=Number colour
 
-sol_client.mod.tweaks.option.centredInventory=Centred Inventory
+sol_client.mod.tweaks.option.centredInventory=Centre the inventory with potions
 
-sol_client.mod.replay.option.recordingIndicatorColour=Recording Indicator Colour
-sol_client.mod.replay.option.recordingIndicatorTextColour=Recording Indicator Text Colour
+sol_client.mod.replay.option.recordingIndicatorColour=Recording indicator colour
+sol_client.mod.replay.option.recordingIndicatorTextColour=Recording indicator text colour
 
-sol_client.mod.menu_blur.option.backgroundColour=Background Colour
+sol_client.mod.menu_blur.option.backgroundColour=Background colour
 
 sol_client.mod.colour_saturation.name=Colour Saturation
 sol_client.mod.colour_saturation.description=Adjust the colour saturation of the world.
 
-sol_client.mod.1.7_visuals.option.armourDamage=Damage Effect on Armour
+sol_client.mod.1.7_visuals.option.armourDamage=Damage effect on armour
 
 sol_client.mod.block_selection.description=Customise the block selection.
-sol_client.mod.block_selection.option.outlineColour=Outline Colour
-sol_client.mod.block_selection.option.fillColour=Fill Colour
+sol_client.mod.block_selection.option.outlineColour=Outline colour
+sol_client.mod.block_selection.option.fillColour=Fill colour
 
 sol_client.mod.hit_colour.name=Hit Colour
 sol_client.mod.hit_colour.description=Change the hit colour.
@@ -70,6 +68,6 @@ sol_client.mod.hit_colour.option.colour=Colour
 
 sol_client.mod.hitbox.description=Customise and easily toggle entity hitbox displays.
 
-sol_client.mod.hitbox.option.boundingBoxColour=Bounding Box Colour
-sol_client.mod.hitbox.option.eyeHeightColour=Eye Height Colour
-sol_client.mod.hitbox.option.lookVectorColour=Look Vector Colour
+sol_client.mod.hitbox.option.boundingBoxColour=Bounding box colour
+sol_client.mod.hitbox.option.eyeHeightColour=Eye height colour
+sol_client.mod.hitbox.option.lookVectorColour=Look vector colour

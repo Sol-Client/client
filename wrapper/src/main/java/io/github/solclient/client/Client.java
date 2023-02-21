@@ -29,8 +29,7 @@ import io.github.solclient.client.chatextensions.ChatExtensionManager;
 import io.github.solclient.client.command.CommandManager;
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.online.*;
-import io.github.solclient.client.packet.*;
+import io.github.solclient.client.network.*;
 import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.*;
 import io.github.solclient.util.Utils;
@@ -67,6 +66,8 @@ public final class Client {
 	private final PseudoResourceManager pseudoResources = new PseudoResourceManager();
 	@Getter
 	private final AddonManager addons = AddonManager.getInstance();
+	@Getter
+	private final OnlineApi onlinePlayers = new OnlineApi();
 
 	// for convenience with multimc
 	@Getter
@@ -109,7 +110,7 @@ public final class Client {
 		events.register(new DefaultEvents());
 		events.register(packets);
 		events.register(popups);
-		events.register(new OnlineApiJob());
+		events.register(onlinePlayers);
 
 		// save it all!
 		save();

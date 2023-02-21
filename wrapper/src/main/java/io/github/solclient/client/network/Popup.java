@@ -16,24 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.packet.action;
+package io.github.solclient.client.network;
 
-import java.util.UUID;
+import lombok.*;
 
-import com.google.gson.annotations.Expose;
+@RequiredArgsConstructor
+public class Popup {
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.packet.PacketApi;
+	@Getter
+	private final String text;
+	@Getter
+	private final String command;
+	@Getter
+	private final int time;
+	@Getter
+	private long startTime;
 
-public final class HidePopupAction implements ApiAction {
-
-	@Expose
-	private UUID uuid;
-
-	@Override
-	public void exec(PacketApi api) {
-		if (!Client.INSTANCE.getPopups().remove(uuid) && api.isDevMode())
-			PacketApi.LOGGER.warn("Tried to remove popup which wasn't present: {}", uuid);
+	public void setTime() {
+		this.startTime = System.currentTimeMillis();
 	}
 
 }

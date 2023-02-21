@@ -16,15 +16,42 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.packet.action;
+package io.github.solclient.client.network.action;
 
-import io.github.solclient.client.packet.PacketApi;
+import java.util.*;
 
-public class EnableDevModeAction implements ApiAction {
+import com.google.gson.annotations.Expose;
+
+import io.github.solclient.client.Client;
+import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.network.*;
+
+public final class BlockModsAction implements ApiAction {
+
+	@Expose
+	private Map<String, Boolean> mods;
 
 	@Override
 	public void exec(PacketApi api) {
-		api.enableDevMode();
+		if (mods == null)
+			throw new ApiUsageError("No mods provided to block");
+
+		mods.forEach((key, value) -> {
+			Optional<Mod> modOpt = Client.INSTANCE.getMods().getById(key);
+			if (!modOpt.isPresent()) {
+				if (api.isDevMode())
+					PacketApi.LOGGER.warn("Server tried to block mod with id " + key);
+
+				return;
+			}
+
+			Mod mod = modOpt.get();
+
+			if (value)
+				mod.block();
+			else
+				mod.unblock();
+		});
 	}
 
 }

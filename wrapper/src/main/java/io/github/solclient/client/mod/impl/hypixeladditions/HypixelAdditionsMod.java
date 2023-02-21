@@ -32,7 +32,7 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.impl.hypixeladditions.commands.*;
 import io.github.solclient.client.mod.option.annotation.*;
-import io.github.solclient.client.packet.Popup;
+import io.github.solclient.client.network.Popup;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import net.hypixel.api.HypixelAPI;

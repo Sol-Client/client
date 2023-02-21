@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.packet;
+package io.github.solclient.client.network;
 
 import java.nio.charset.StandardCharsets;
 
@@ -26,7 +26,7 @@ import com.google.gson.*;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ServerConnectEvent;
-import io.github.solclient.client.packet.action.ApiAction;
+import io.github.solclient.client.network.action.ApiAction;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;

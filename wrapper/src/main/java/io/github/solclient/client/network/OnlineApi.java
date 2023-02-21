@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.online;
+package io.github.solclient.client.network;
 
 import java.io.*;
-import java.net.*;
+import java.net.URL;
 import java.time.*;
 import java.util.*;
 import java.util.function.Predicate;
@@ -30,17 +30,21 @@ import org.apache.logging.log4j.*;
 import com.google.common.base.Objects;
 import com.google.gson.*;
 
+import io.github.solclient.client.Client;
+import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.impl.SolClientConfig;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.util.*;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
-public class OnlineApi {
+public final class OnlineApi {
+
+	private ZonedDateTime lastUpdate;
 
 	private Map<UUID, Boolean> cache;
 	private final Logger LOGGER = LogManager.getLogger();
 
-	static {
+	{
 		clearCache();
 	}
 
@@ -119,17 +123,54 @@ public class OnlineApi {
 		return result.toString();
 	}
 
-	public void logIn(UUID uuid) throws IOException {
-		new URL(GlobalConstants.API + "/online/log_in/" + uuid.toString()).openConnection().getInputStream();
+	public void logIn() throws IOException {
+		lastUpdate = ZonedDateTime.now();
+		new URL(GlobalConstants.API + "/online/log_in/" + MinecraftUtils.getPlayerUuid().toString()).openConnection()
+				.getInputStream();
 	}
 
-	public void logOut(UUID uuid) throws IOException {
-		new URL(GlobalConstants.API + "/online/log_out/" + uuid.toString()).openConnection().getInputStream();
+	public void logOut() throws IOException {
+		lastUpdate = null;
+		new URL(GlobalConstants.API + "/online/log_out/" + MinecraftUtils.getPlayerUuid().toString()).openConnection()
+				.getInputStream();
 	}
 
 	public void clearCache() {
 		cache = new HashMap<>();
 		cache.put(MinecraftUtils.getPlayerUuid(), true);
+	}
+
+	@EventHandler
+	public void onWorldLoad(WorldLoadEvent event) {
+		clearCache();
+	}
+
+	@EventHandler
+	public void onTick(PreTickEvent event) throws IOException {
+		if (lastUpdate == null)
+			return;
+
+		System.out.println(Duration.between(lastUpdate, ZonedDateTime.now()));
+
+		if (Duration.between(lastUpdate, ZonedDateTime.now()).toMinutes() >= 29)
+			logIn();
+	}
+
+	@EventHandler
+	public void onPostStart(PostGameStartEvent event) throws IOException {
+		try {
+			if (SolClientConfig.instance.broadcastOnline)
+				logIn();
+		} catch (IOException error) {
+			Client.INSTANCE.getEvents().unregister(this);
+			throw error;
+		}
+	}
+
+	@EventHandler
+	public void onQuit(GameQuitEvent event) throws IOException {
+		if (lastUpdate != null)
+			logOut();
 	}
 
 }

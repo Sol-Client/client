@@ -25,6 +25,7 @@ import org.lwjgl.input.Keyboard;
 import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.util.*;
@@ -33,6 +34,14 @@ import net.minecraft.client.option.KeyBinding;
 public class SolClientConfig extends ConfigOnlyMod {
 
 	public static SolClientConfig instance;
+
+	@Expose
+	@Option
+	public boolean broadcastOnline = false;
+
+	@Expose
+	@Option
+	public boolean onlineIndicator = true;
 
 	@Expose
 	@Option
@@ -98,6 +107,27 @@ public class SolClientConfig extends ConfigOnlyMod {
 			thread.setDaemon(true);
 			thread.start();
 		}
+	}
+
+	@Override
+	public boolean onOptionChange(String key, Object value) {
+		if (key.equals("broadcastOnline")) {
+			if ((Boolean) value) {
+				try {
+					Client.INSTANCE.getOnlinePlayers().logIn();
+				} catch (IOException error) {
+					logger.error("Could not log in", error);
+				}
+			} else {
+				try {
+					Client.INSTANCE.getOnlinePlayers().logOut();
+				} catch (IOException error) {
+					logger.error("Could not log out", error);
+				}
+			}
+		}
+
+		return true;
 	}
 
 }

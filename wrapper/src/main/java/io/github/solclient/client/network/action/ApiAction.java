@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.packet.action;
+package io.github.solclient.client.network.action;
 
 import com.google.gson.*;
 
-import io.github.solclient.client.packet.*;
+import io.github.solclient.client.network.*;
 
 public interface ApiAction {
 

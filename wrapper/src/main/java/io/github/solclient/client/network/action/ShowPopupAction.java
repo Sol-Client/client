@@ -16,24 +16,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.packet;
+package io.github.solclient.client.network.action;
 
-import lombok.*;
+import java.util.UUID;
 
-@RequiredArgsConstructor
-public class Popup {
+import com.google.gson.annotations.Expose;
 
-	@Getter
-	private final String text;
-	@Getter
-	private final String command;
-	@Getter
-	private final int time;
-	@Getter
-	private long startTime;
+import io.github.solclient.client.Client;
+import io.github.solclient.client.network.*;
 
-	public void setTime() {
-		this.startTime = System.currentTimeMillis();
+public final class ShowPopupAction implements ApiAction {
+
+	@Expose
+	private UUID handle;
+	@Expose
+	private String text, command;
+	@Expose
+	private int time = 10000;
+
+	@Override
+	public void exec(PacketApi api) {
+		if (text == null)
+			throw new ApiUsageError("No text provided");
+		if (command == null)
+			throw new ApiUsageError("No command provided");
+
+		Client.INSTANCE.getPopups().add(new Popup(text, command, time), handle);
 	}
 
 }

@@ -16,32 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.packet.action;
+package io.github.solclient.client.network.action;
 
 import java.util.UUID;
 
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
-import io.github.solclient.client.packet.*;
+import io.github.solclient.client.network.PacketApi;
 
-public final class ShowPopupAction implements ApiAction {
+public final class HidePopupAction implements ApiAction {
 
 	@Expose
-	private UUID handle;
-	@Expose
-	private String text, command;
-	@Expose
-	private int time = 10000;
+	private UUID uuid;
 
 	@Override
 	public void exec(PacketApi api) {
-		if (text == null)
-			throw new ApiUsageError("No text provided");
-		if (command == null)
-			throw new ApiUsageError("No command provided");
-
-		Client.INSTANCE.getPopups().add(new Popup(text, command, time), handle);
+		if (!Client.INSTANCE.getPopups().remove(uuid) && api.isDevMode())
+			PacketApi.LOGGER.warn("Tried to remove popup which wasn't present: {}", uuid);
 	}
 
 }

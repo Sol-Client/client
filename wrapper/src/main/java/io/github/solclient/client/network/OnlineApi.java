@@ -150,8 +150,6 @@ public final class OnlineApi {
 		if (lastUpdate == null)
 			return;
 
-		System.out.println(Duration.between(lastUpdate, ZonedDateTime.now()));
-
 		if (Duration.between(lastUpdate, ZonedDateTime.now()).toMinutes() >= 29)
 			logIn();
 	}

@@ -120,9 +120,7 @@ java {
 
 license {
 	rule file("../HEADER")
-	exclude '**/*.ttf'
-	exclude '**/*.xcf'
-	exclude '**/*.html'
+	include '**/*.java'
 }
 
 shadowJar {

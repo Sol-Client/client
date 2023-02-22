@@ -22,13 +22,13 @@ jobs:
       with:
         distribution: temurin
         java-version: 17
-    - name: Build Game Wrapper
-      run: cd wrapper && ./gradlew --no-daemon build && cd ..
+    - name: Build
+      run: ./gradlew --no-daemon build
     - name: Upload Artifact
       uses: actions/upload-artifact@v2-preview
       with:
         name: Wrapper
-        path: wrapper/build/libs/sol-client-wrapper.jar
+        path: build/libs/sol-client-wrapper.jar
     
   upload:
     if: "github.ref == 'refs/heads/stable' && startsWith(github.event.head_commit.message, '[create release] ')"
@@ -58,9 +58,4 @@ jobs:
         automatic_release_tag: ${{ fromJson(steps.version.outputs.packageJson).version }}
         prerelease: false
         title: ${{ fromJson(steps.version.outputs.packageJson).version }}
-        files: |
-          Sol-Client-Launcher-Linux/deb/x64/*.deb
-          Sol-Client-Launcher-Linux/*.AppImage
-          Sol-Client-Launcher-Windows/*.exe
-          Sol-Client-Launcher-MacOS/*.dmg
-          Wrapper/sol-client-wrapper.jar
+        files: Wrapper/sol-client-wrapper.jar

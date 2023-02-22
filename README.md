@@ -31,6 +31,7 @@ and even more!!
 ## Screenshots
 
 ### Launcher
+To be removed!
 ![Launcher](./assets/screenshots/Launcher.png)
 
 ### Mods

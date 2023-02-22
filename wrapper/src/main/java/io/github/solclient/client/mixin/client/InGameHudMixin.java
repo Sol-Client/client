@@ -27,12 +27,12 @@ import com.replaymod.render.hooks.EntityRendererHandler;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.extension.MinecraftClientExtension;
 import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.Window;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.scoreboard.ScoreboardObjective;
 
 @Mixin(InGameHud.class)
@@ -80,16 +80,33 @@ public abstract class InGameHudMixin {
 	@Inject(method = "renderHorseHealth", at = @At("HEAD"), cancellable = true)
 	public void preJumpBar(Window window, int x, CallbackInfo callback) {
 		if (Client.INSTANCE.getEvents().post(
-				new PreGameOverlayRenderEvent(MinecraftUtils.getTickDelta(), GameOverlayElement.JUMPBAR)).cancelled) {
-			client.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
+				new PreGameOverlayRenderEvent(MinecraftUtils.getTickDelta(), GameOverlayElement.JUMPBAR)).cancelled)
 			callback.cancel();
-		}
+
+		client.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
 	}
 
 	@Inject(method = "renderHorseHealth", at = @At("RETURN"))
 	public void postJumpBar(Window window, int x, CallbackInfo callback) {
 		Client.INSTANCE.getEvents()
 				.post(new PostGameOverlayRenderEvent(MinecraftUtils.getTickDelta(), GameOverlayElement.JUMPBAR));
+	}
+
+	@Inject(method = "renderBossBar", at = @At("HEAD"), cancellable = true)
+	public void preBossBar(CallbackInfo callback) {
+		if (Client.INSTANCE.getEvents().post(
+				new PreGameOverlayRenderEvent(MinecraftUtils.getTickDelta(), GameOverlayElement.BOSSHEALTH)).cancelled) {
+			BossBar.framesToLive--;
+			callback.cancel();
+		}
+
+		client.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);
+	}
+
+	@Inject(method = "renderBossBar", at = @At("RETURN"))
+	public void postBossBar(CallbackInfo callback) {
+		Client.INSTANCE.getEvents()
+				.post(new PostGameOverlayRenderEvent(MinecraftUtils.getTickDelta(), GameOverlayElement.BOSSHEALTH));
 	}
 
 	@Shadow

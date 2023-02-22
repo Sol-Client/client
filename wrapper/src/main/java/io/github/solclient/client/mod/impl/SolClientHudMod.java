@@ -23,10 +23,10 @@ import java.util.*;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.hud.*;
+import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.option.*;
-import io.github.solclient.client.mod.option.annotation.*;
-import io.github.solclient.client.mod.option.impl.*;
+import io.github.solclient.client.mod.option.annotation.AbstractTranslationKey;
+import io.github.solclient.client.mod.option.impl.SliderOption;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.font.TextRenderer;
 
@@ -59,7 +59,7 @@ public abstract class SolClientHudMod extends SolClientMod implements PrimaryInt
 		List<ModOption<?>> options = super.createOptions();
 		options.add(1,
 				new SliderOption(TRANSLATION_KEY + ".option.scale",
-						ModOptionStorage.of(float.class, () -> scale, (value) -> scale = value),
+						ModOptionStorage.of(Number.class, () -> scale, (value) -> scale = value.floatValue()),
 						Optional.of("sol_client.slider.percent"), 50, 150, 1));
 		return options;
 	}

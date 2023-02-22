@@ -43,39 +43,39 @@ public class ScoreboardMod extends SolClientMod {
 	@Expose
 	@Option(translationKey = SolClientHudMod.TRANSLATION_KEY)
 	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
-	public float scale = 100;
+	private float scale = 100;
 	@Expose
 	@Option
-	public boolean hide;
+	private boolean hide;
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
-	public boolean background = true;
+	private boolean background = true;
 	@Expose
 	@ColourKey(ColourKey.BACKGROUND_COLOUR)
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
-	public Colour backgroundColour = new Colour(1342177280);
+	private Colour backgroundColour = new Colour(1342177280);
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
-	public boolean border = false;
+	private boolean border = false;
 	@Expose
 	@ColourKey(ColourKey.BORDER_COLOUR)
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
-	public Colour borderColour = Colour.BLACK;
+	private Colour borderColour = Colour.BLACK;
 	@Expose
 	@Option
-	public Colour backgroundColourTop = new Colour(1610612736);
+	private Colour backgroundColourTop = new Colour(1610612736);
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
-	public Colour textColour = Colour.WHITE;
+	private Colour textColour = Colour.WHITE;
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
-	public boolean shadow = true;
+	private boolean shadow = true;
 	@Expose
 	@Option
-	public boolean numbers = true;
+	private boolean numbers = true;
 	@Expose
 	@Option
-	public Colour numbersColour = new Colour(-43691);
+	private Colour numbersColour = new Colour(-43691);
 
 	@Override
 	public String getId() {

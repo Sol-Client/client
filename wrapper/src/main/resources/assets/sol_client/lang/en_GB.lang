@@ -2,7 +2,7 @@ sol_client.vertical_alignment.middle=Centre
 
 sol_client.mod.simple_hud.option.backgroundColour=Background colour
 sol_client.mod.simple_hud.option.borderColour=Border colour
-sol_client.mod.simple_hud.option.textColour=Text Colour
+sol_client.mod.simple_hud.option.textColour=Text colour
 
 sol_client.mod.sol_client.option.uiColour=Accent colour
 
@@ -45,6 +45,8 @@ sol_client.mod.crosshair.option.entityColour=Entity colour
 
 sol_client.mod.scoreboard.description=Customise the scoreboard.
 sol_client.mod.scoreboard.option.numbersColour=Number colour
+
+sol_client.mod.boss_bar.description=Customise the boss bar.
 
 sol_client.mod.tweaks.option.centredInventory=Centre the inventory with potions
 

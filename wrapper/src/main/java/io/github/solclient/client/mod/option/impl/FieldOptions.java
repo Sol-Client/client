@@ -132,8 +132,8 @@ public class FieldOptions {
 	}
 
 	private ModOption<?> createSlider(ModOptionStorage<?> storage, Field field, String name) {
-		if (!(field.getType() == float.class))
-			throw new IllegalArgumentException("Slider " + field + " is not a float");
+		if (field.getType() != float.class && field.getType() != int.class)
+			throw new IllegalArgumentException("Slider " + field + " is not a float or int");
 
 		Slider slider = field.getAnnotation(Slider.class);
 		return new SliderOption(name, storage.unsafeCast(), Optional.of(slider.format()), slider.min(), slider.max(),

@@ -91,6 +91,7 @@ public final class ModManager implements Iterable<Mod> {
 				new TabListMod(),
 				new CrosshairMod(),
 				new ScoreboardMod(),
+				new BossBarMod(),
 
 				// utility
 				new SCReplayMod(),

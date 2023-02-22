@@ -30,10 +30,10 @@ import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.resource.language.I18n;
 
-public class SliderOption extends ModOption<Float> {
+public class SliderOption<N extends Number> extends ModOption<N> {
 
-	public SliderOption(String name, ModOptionStorage<Float> storage,
-			Optional<String> valueFormat, float min, float max, float step) {
+	public SliderOption(String name, ModOptionStorage<N> storage, Optional<String> valueFormat, float min, float max,
+			float step) {
 		super(name, storage);
 		this.valueFormat = valueFormat;
 		this.min = min;
@@ -49,8 +49,12 @@ public class SliderOption extends ModOption<Float> {
 	@Override
 	public Component createComponent() {
 		Component container = createDefaultComponent();
-		container.add(new SliderComponent(min, max, step, getValue(), this::setValue),
-				new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
+		container.add(new SliderComponent(min, max, step, getValue().floatValue(), (value) -> {
+			if (getType() == int.class)
+				setValue((N) (Integer) value.intValue());
+			else
+				setValue((N) value);
+		}), new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
 		valueFormat.ifPresent((format) -> {
 			container.add(
 					new LabelComponent((component, defaultText) -> I18n.translate(format,

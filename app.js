@@ -294,7 +294,7 @@ window.addEventListener("DOMContentLoaded", async() => {
 				updateServers();
 				break;
 			case "jre":
-				if(!fs.existsSync(path.join(file, "bin/java"))) {
+				if(!fs.existsSync(path.join(file, "bin"))) {
 					ipcRenderer.send("jreError");
 					return;
 				}

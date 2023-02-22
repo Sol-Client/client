@@ -119,7 +119,7 @@ java {
 }
 
 license {
-	rule file("../HEADER")
+	rule file('HEADER')
 	include '**/*.java'
 }
 

@@ -31,6 +31,7 @@ and even more!!
 ## Screenshots
 
 ### Launcher
+To be removed!
 ![Launcher](./assets/screenshots/Launcher.png)
 
 ### Mods
@@ -38,34 +39,5 @@ This is the stable ui. There is another ui in the development version.
 
 ![Mods](./assets/screenshots/Mods.png)
 
-## Building from source
-Currently the launcher is in the same repo.
-
-### Wrapper
-The actual mod. You'll need Java 17 or later.
-
-Run
-```
-./gradlew runClient
-```
-
-Build
-```
-./gradlew build
-```
-
-### Launcher
-Configure
-```
-npm i
-```
-
-Run
-```
-npm run start
-```
-
-Build
-```
-npm run make
-```
+### Contributing
+[See this](CONTRIBUTING.md).

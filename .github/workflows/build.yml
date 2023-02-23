@@ -3,12 +3,12 @@ name: build
 on: [ push, pull_request ]
 
 jobs:
-  wrapper:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: Git Checkout
+    - name: Git checkout
       uses: actions/checkout@v2
-    - name: Gradle Cache
+    - name: Gradle cache
       uses: actions/cache@v2
       with:
         path: |
@@ -24,12 +24,12 @@ jobs:
         java-version: 17
     - name: Build
       run: ./gradlew --no-daemon build
-    - name: Upload Artifact
+    - name: Upload artifact
       uses: actions/upload-artifact@v2-preview
       with:
-        name: Wrapper
-        path: build/libs/sol-client-wrapper.jar
-    
+        name: wrapper
+        path: build/libs/sol-client-wrapper-*.jar
+
   upload:
     if: "github.ref == 'refs/heads/stable' && startsWith(github.event.head_commit.message, '[create release] ')"
 
@@ -38,24 +38,24 @@ jobs:
     needs: wrapper
     
     steps:
-    - name: Git Checkout
+    - name: Git checkout
       uses: actions/checkout@v2
 
-    - name: Download Artifacts
+    - name: Download artifacts
       uses: actions/download-artifact@v2
 
     # https://stackoverflow.com/a/61919791
-    - name: Retrieve Version
-      run: cat version.txt
+    - name: Retrieve version
+      run: echo "::set-output name=version::$(cat version.txt)"
       id: version
 
-    - name: Create a Release
+    - name: Create a release
       uses: marvinpinto/action-automatic-releases@latest
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: ${{ fromJson(steps.version.outputs.packageJson).version }}
+        automatic_release_tag: ${{ steps.version.outputs.version }}
         prerelease: false
-        title: ${{ fromJson(steps.version.outputs.packageJson).version }}
-        files: Wrapper/sol-client-wrapper.jar
+        title: ${{ steps.version.outputs.version }}
+        files: wrapper/sol-client-wrapper.jar

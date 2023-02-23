@@ -21,7 +21,6 @@ package io.github.solclient.util;
 import java.lang.invoke.MethodType;
 import java.net.URL;
 
-import io.github.solclient.client.addon.AddonManager;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -31,7 +30,7 @@ public class GlobalConstants {
 	public final boolean DEV = Boolean.getBoolean("loader.development");
 	// shhh... fake constant
 	public static boolean optifine = Boolean.getBoolean("io.github.solclient.wrapper.optifine");
-	public final String VERSION_STRING = System.getProperty("io.github.solclient.client.version", "unknown");
+	public final String VERSION_STRING = "%VERSION%";
 	public final String USER_AGENT = "Sol Client/" + GlobalConstants.VERSION;
 	public final SemVer VERSION = SemVer.parseOrNull(VERSION_STRING);
 	public final String LAUNCHER = System.getProperty("io.github.solclient.client.launcher", "unknown");

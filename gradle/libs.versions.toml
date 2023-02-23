@@ -46,3 +46,4 @@ quilt_loom = { id = "org.quiltmc.loom", version = "1.0.+" }
 lombok = { id = "io.freefair.lombok", version = "6.6.1" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "7.1.2" }
 licenser = { id = "org.quiltmc.gradle.licenser", version = "1.1.+" }
+blossom = { id = "net.kyori.blossom", version = "1.2.0" }

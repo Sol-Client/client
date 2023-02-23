@@ -7,6 +7,7 @@ plugins {
 	alias libs.plugins.lombok
 	alias libs.plugins.shadow
 	alias libs.plugins.licenser
+	alias libs.plugins.blossom
 }
 
 repositories {
@@ -107,7 +108,8 @@ loom {
 }
 
 java {
-	group = 'io.github.solclient'
+	group 'io.github.solclient'
+	version file('version.txt').getText('UTF-8')
 
 	sourceCompatibility = 8
 	targetCompatibility = 8
@@ -121,6 +123,11 @@ java {
 license {
 	rule file('HEADER')
 	include '**/*.java'
+}
+
+blossom {
+	def constants = 'src/main/java/io/github/solclient/util/GlobalConstants.java'
+	replaceToken('%VERSION%', version, constants)
 }
 
 shadowJar {

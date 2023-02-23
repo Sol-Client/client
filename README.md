@@ -1,5 +1,5 @@
 # Sol Client
-A nice Minecraft (non-hacked) client for 1.8.9 (and possibly newer versions in future)!
+A nice Minecraft (non-hacked) client for 1.8.9 (and possibly newer versions in future - for an alternative [AxolotlClient](https://axolotlclient.github.io) is available)!
 
 <a href="https://discord.gg/TSAkhgXNbK"><img alt="Join Discord" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg"/></a>
 

@@ -58,4 +58,4 @@ jobs:
         automatic_release_tag: ${{ steps.version.outputs.version }}
         prerelease: false
         title: ${{ steps.version.outputs.version }}
-        files: wrapper/sol-client-wrapper.jar
+        files: wrapper/sol-client-wrapper-*.jar

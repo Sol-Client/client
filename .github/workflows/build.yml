@@ -35,7 +35,7 @@ jobs:
 
     runs-on: ubuntu-latest
   
-    needs: wrapper
+    needs: build
     
     steps:
     - name: Git checkout

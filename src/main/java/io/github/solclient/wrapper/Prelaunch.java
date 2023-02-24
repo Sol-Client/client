@@ -23,6 +23,7 @@ import java.lang.invoke.*;
 import java.net.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.zip.ZipFile;
 
 import org.apache.logging.log4j.*;
 
@@ -34,8 +35,36 @@ import net.fabricmc.tinyremapper.*;
  */
 public final class Prelaunch {
 
+	private static Path gameJar;
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final String OPTIFINE_USER_AGENT = "Mozilla/5.0";
+
+	private static Path getGameJar() {
+		if (gameJar != null)
+			return gameJar;
+
+		String jar = System.getProperty("io.github.solclient.wrapper.jar");
+
+		if (jar == null)
+			for (String file : System.getProperty("java.class.path").split(File.pathSeparator)) {
+				try {
+					try (ZipFile zip = new ZipFile(file)) {
+						if (zip.getEntry("net/minecraft/client/main/Main.class") != null) {
+							jar = file;
+							break;
+						}
+					}
+				} catch (Throwable ignored) {
+				}
+			}
+
+		if (jar == null)
+			throw new UnsupportedOperationException("-Dio.github.solclient.wrapper.jar is required");
+
+		gameJar = Paths.get(jar);
+
+		return gameJar;
+	}
 
 	public static URL[] prepareClasspath() throws IOException {
 		List<URL> result = new ArrayList<>(2);
@@ -43,27 +72,25 @@ public final class Prelaunch {
 		if (!Files.isDirectory(cache))
 			Files.createDirectories(cache);
 
-		String jar = System.getProperty("io.github.solclient.wrapper.jar");
-		if (jar != null) {
-			Path jarPath = Paths.get(jar);
-			result.add(remapGameJar(cache, jarPath).toUri().toURL());
+		if (!GlobalConstants.DEV) {
+			result.add(remapGameJar(cache).toUri().toURL());
 
 			if (GlobalConstants.optifine) {
 				try {
-					result.add(0, fetchAndRemapOptiFineJar(cache, jarPath).toUri().toURL());
+					result.add(0, fetchAndRemapOptiFineJar(cache).toUri().toURL());
 				} catch (Throwable error) {
 					GlobalConstants.optifine = false;
 					LOGGER.error("Could not fetch and remap OptiFine jar", error);
 				}
-			}
-		} else if (!GlobalConstants.DEV || GlobalConstants.optifine)
-			throw new UnsupportedOperationException("-Dio.github.solclient.wrapper.jar is required");
+			} else
+				throw new UnsupportedOperationException("-Dio.github.solclient.wrapper.jar is required");
+		}
 
 		return result.toArray(new URL[0]);
 	}
 
-	private static Path remapGameJar(Path cache, Path gameJar) throws IOException {
-		String gameJarName = gameJar.getFileName().toString();
+	private static Path remapGameJar(Path cache) throws IOException {
+		String gameJarName = getGameJar().getFileName().toString();
 		if (gameJarName.indexOf('.') != -1)
 			gameJarName = gameJarName.substring(0, gameJarName.lastIndexOf('.'));
 		gameJarName += "-intermediary.jar";
@@ -75,13 +102,13 @@ public final class Prelaunch {
 			return intermediaryGameJar;
 
 		LOGGER.info("Remapping game jar...");
-		remap(gameJar, intermediaryGameJarTemp);
+		remap(getGameJar(), intermediaryGameJarTemp);
 		Files.move(intermediaryGameJarTemp, intermediaryGameJar);
 
 		return intermediaryGameJar;
 	}
 
-	private static Path fetchAndRemapOptiFineJar(Path cache, Path gameJar) throws Throwable {
+	private static Path fetchAndRemapOptiFineJar(Path cache) throws Throwable {
 		LOGGER.info("Fetching and remapping OptiFine jar...");
 
 		Path optifineJar = cache.resolve(GlobalConstants.OPTIFINE_JAR + ".jar");
@@ -100,10 +127,10 @@ public final class Prelaunch {
 			Class<?> patcher = loader.loadClass("optifine.Patcher");
 			MethodHandle main = MethodHandles.lookup().findStatic(patcher, "main", GlobalConstants.MAIN_METHOD);
 			main.invokeExact(
-					new String[] { gameJar.toString(), optifineJar.toString(), optifineExtractedJar.toString() });
+					new String[] { getGameJar().toString(), optifineJar.toString(), optifineExtractedJar.toString() });
 		}
 
-		remap(optifineExtractedJar, optifineIntermediaryJarTemp, gameJar);
+		remap(optifineExtractedJar, optifineIntermediaryJarTemp, getGameJar());
 		Files.move(optifineIntermediaryJarTemp, optifineIntermediaryJar);
 		Files.delete(optifineJar);
 		Files.delete(optifineExtractedJar);

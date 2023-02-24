@@ -142,6 +142,7 @@ shadowJar {
 }
 
 tasks.register('dist', DistTask) {
+	dependsOn build
 	input = tasks.remapJar.outputs.files.getAt 0
 	destination = file "$buildDir/dist"
 }

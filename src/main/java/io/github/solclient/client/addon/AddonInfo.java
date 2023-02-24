@@ -69,7 +69,7 @@ public final class AddonInfo {
 	}
 
 	static AddonInfo parse(Path path, Reader reader) throws InvalidAddonException {
-		JsonElement element = JsonParser.parseReader(reader);
+		JsonElement element = new JsonParser().parse(reader);
 		if (!element.isJsonObject())
 			throw new InvalidAddonException("Addon description must be an object");
 
@@ -98,9 +98,11 @@ public final class AddonInfo {
 		List<String> mixins = Collections.emptyList();
 		if (object.has("mixins")) {
 			JsonElement mixinsElement = object.get("mixins");
-			if (mixinsElement.isJsonArray())
-				mixins = mixinsElement.getAsJsonArray().asList().stream().map(JsonElement::getAsString).collect(Collectors.toList());
-			else if (mixinsElement.isJsonPrimitive())
+			if (mixinsElement.isJsonArray()) {
+				mixins = new ArrayList<>();
+				for (JsonElement mixin : mixinsElement.getAsJsonArray())
+					mixins.add(mixin.getAsString());
+			} else if (mixinsElement.isJsonPrimitive())
 				mixins = Arrays.asList(mixinsElement.getAsString());
 		}
 

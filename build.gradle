@@ -32,10 +32,9 @@ dependencies {
 	def occlusionCulling = files('libs/occlusionculling.jar')
 
 	implementation(libs.mixin) { transitive = false }
-	implementation libs.gson
 	implementation occlusionCulling
 	ship occlusionCulling
-	implementation libs.hypixel.api
+	implementation(libs.hypixel.api) { transitive = false }
 	implementation libs.discord.game.sdk4j
 	implementation libs.java.websocket
 	implementation libs.cosmetica.dot.java

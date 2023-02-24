@@ -132,7 +132,7 @@ public final class ModManager implements Iterable<Mod> {
 
 		if (Files.isRegularFile(storageFile)) {
 			try (Reader reader = new InputStreamReader(Files.newInputStream(storageFile), StandardCharsets.UTF_8)) {
-				storage = JsonParser.parseReader(reader).getAsJsonObject();
+				storage = new JsonParser().parse(reader).getAsJsonObject();
 			} catch (Throwable error) {
 				LOGGER.error("Could not load Sol Client mods storage", error);
 			}

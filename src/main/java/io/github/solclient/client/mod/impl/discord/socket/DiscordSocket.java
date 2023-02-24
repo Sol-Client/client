@@ -67,7 +67,7 @@ public class DiscordSocket extends WebSocketClient {
 	@Override
 	public void onMessage(String message) {
 		try {
-			JsonObject obj = JsonParser.parseString(message).getAsJsonObject();
+			JsonObject obj = new JsonParser().parse(message).getAsJsonObject();
 
 			if (obj.has("cmd")) {
 				String cmd = obj.get("cmd").getAsString();
@@ -257,7 +257,7 @@ public class DiscordSocket extends WebSocketClient {
 
 		in = connection.getInputStream();
 
-		JsonObject result = JsonParser.parseString(IOUtils.toString(in, StandardCharsets.UTF_8)).getAsJsonObject();
+		JsonObject result = new JsonParser().parse(IOUtils.toString(in, StandardCharsets.UTF_8)).getAsJsonObject();
 
 		out.close();
 		in.close();

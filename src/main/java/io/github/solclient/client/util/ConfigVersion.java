@@ -39,7 +39,7 @@ public enum ConfigVersion {
 
 		@Override
 		protected JsonObject transformToNext(JsonObject object) {
-			JsonObject newObject = object.deepCopy();
+			JsonObject newObject = JsonUtils.clone(object);
 
 			// Shuffle the names around.
 			newObject.add("coordinates", newObject.remove("position"));
@@ -64,7 +64,7 @@ public enum ConfigVersion {
 
 		@Override
 		protected JsonObject transformToNext(JsonObject object) {
-			JsonObject newObject = object.deepCopy();
+			JsonObject newObject = JsonUtils.clone(object);
 
 			JsonObject tweaksMod = new JsonObject();
 			tweaksMod.addProperty("enabled", true);
@@ -101,7 +101,7 @@ public enum ConfigVersion {
 
 		@Override
 		protected JsonObject transformToNext(JsonObject object) {
-			JsonObject newObject = object.deepCopy();
+			JsonObject newObject = JsonUtils.clone(object);
 
 			JsonObject chat = newObject.get("chat").getAsJsonObject();
 			chat.add("defaultTextColour", chat.remove("textColour").getAsJsonObject());

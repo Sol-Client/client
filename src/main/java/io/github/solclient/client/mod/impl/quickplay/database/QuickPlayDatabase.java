@@ -42,8 +42,8 @@ public class QuickPlayDatabase {
 
 	private void initDatabase() {
 		try {
-			JsonArray array = JsonParser
-					.parseString(Utils.urlToString(Utils.sneakyParse("https://bugg.co/quickplay/mod/gamelist")))
+			JsonArray array = new JsonParser()
+					.parse(Utils.urlToString(Utils.sneakyParse("https://bugg.co/quickplay/mod/gamelist")))
 					.getAsJsonObject().get("content").getAsJsonObject().get("games").getAsJsonArray();
 
 			for (JsonElement gameElement : array) {

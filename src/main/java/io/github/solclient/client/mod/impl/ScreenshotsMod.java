@@ -161,7 +161,7 @@ public class ScreenshotsMod extends SolClientMod {
 				}
 
 				try (Reader in = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)) {
-					JsonObject object = JsonParser.parseReader(in).getAsJsonObject();
+					JsonObject object = new JsonParser().parse(in).getAsJsonObject();
 					if (!object.get("success").isJsonPrimitive() || !object.get("success").getAsBoolean()) {
 						throw new IllegalStateException("success is false");
 					}

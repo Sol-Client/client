@@ -138,7 +138,7 @@ public class TimersMod extends SolClientHudMod {
 		String message = new String(payload.getPayload().array(), StandardCharsets.UTF_8);
 
 		String type = message.substring(0, message.indexOf('|'));
-		JsonObject data = JsonParser.parseString(message.substring(message.indexOf('|') + 1)).getAsJsonObject();
+		JsonObject data = new JsonParser().parse(message.substring(message.indexOf('|') + 1)).getAsJsonObject();
 
 		long id = -1;
 		if (data.has("id")) {

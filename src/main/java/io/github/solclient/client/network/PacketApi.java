@@ -85,7 +85,7 @@ public final class PacketApi {
 	}
 
 	private void receive(String data) {
-		receive(JsonParser.parseString(data).getAsJsonObject());
+		receive(new JsonParser().parse(data).getAsJsonObject());
 	}
 
 	private void receive(JsonObject object) {

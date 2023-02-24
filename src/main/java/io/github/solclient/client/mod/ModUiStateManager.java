@@ -46,7 +46,7 @@ public final class ModUiStateManager {
 		Client.INSTANCE.getMods().forEach(Mod::notifyUnpin);
 
 		try (Reader reader = new InputStreamReader(Files.newInputStream(file), StandardCharsets.UTF_8)) {
-			JsonObject object = JsonParser.parseReader(reader).getAsJsonObject();
+			JsonObject object = new JsonParser().parse(reader).getAsJsonObject();
 
 			if (object.has("pins"))
 				object.get("pins").getAsJsonArray().forEach((mod) -> addPinById(mod.getAsString()));

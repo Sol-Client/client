@@ -195,7 +195,7 @@ public final class AddonManager {
 
 		try (Reader reader = new InputStreamReader(Files.newInputStream(addon.getConfigFile()),
 				StandardCharsets.UTF_8)) {
-			return JsonParser.parseReader(reader).getAsJsonObject();
+			return new JsonParser().parse(reader).getAsJsonObject();
 		} catch (IOException error) {
 			LOGGER.error("Could not load addon config for {}", addon.getId(), error);
 			return new JsonObject();

@@ -70,7 +70,7 @@ public final class OnlineApi {
 				try (Reader reader = new InputStreamReader(Utils.getConnection(GlobalConstants.USER_AGENT,
 						new URL(GlobalConstants.API + "/online/get/" + param)).getInputStream())) {
 					int index = 0;
-					for (JsonElement element : JsonParser.parseReader(reader).getAsJsonArray()) {
+					for (JsonElement element : new JsonParser().parse(reader).getAsJsonArray()) {
 						if (index >= filtered.size())
 							break;
 

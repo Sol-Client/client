@@ -98,7 +98,7 @@ public class SolClientConfig extends ConfigOnlyMod {
 		else if (remindMeToUpdate) {
 			Thread thread = new Thread(() -> {
 				try (InputStream in = GlobalConstants.RELEASE_API.openStream()) {
-					JsonObject object = JsonParser.parseReader(new InputStreamReader(in)).getAsJsonObject();
+					JsonObject object = new JsonParser().parse(new InputStreamReader(in)).getAsJsonObject();
 					latestRelease = SemVer.parseOrNull(object.get("name").getAsString());
 				} catch (Throwable error) {
 					logger.warn("Could not check for updates", error);

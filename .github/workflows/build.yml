@@ -23,7 +23,7 @@ jobs:
         distribution: temurin
         java-version: 17
     - name: Build
-      run: ./gradlew --no-daemon build
+      run: ./gradlew --no-daemon dist
     - name: Upload artifact
       uses: actions/upload-artifact@v2-preview
       with:

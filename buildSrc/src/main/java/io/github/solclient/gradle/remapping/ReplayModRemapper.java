@@ -1,4 +1,4 @@
-package io.github.solclient.gradle;
+package io.github.solclient.gradle.remapping;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

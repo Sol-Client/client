@@ -1,9 +1,9 @@
 .gradle/
 build/
 run/
-.idea/
-.classpath
-.project
-.settings/
-bin/
+**/.idea/
+**/.classpath
+**/.project
+**/.settings/
+**/bin/
 *.launch

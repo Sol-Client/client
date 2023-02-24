@@ -1,5 +1,6 @@
 import org.gradle.internal.os.OperatingSystem
-import io.github.solclient.gradle.ReplayModRemapper
+import io.github.solclient.gradle.remapping.ReplayModRemapper
+import io.github.solclient.gradle.dist.DistTask
 
 plugins {
 	id 'maven-publish'
@@ -138,6 +139,11 @@ shadowJar {
 	configurations = [project.configurations.ship]
 	classifier 'dev'
 	destinationDirectory.set file("$buildDir/devlibs")
+}
+
+tasks.register('dist', DistTask) {
+	input = tasks.remapJar.outputs.files.getAt 0
+	destination = file "$buildDir/dist"
 }
 
 tasks.withType(JavaCompile).configureEach {

@@ -26,4 +26,5 @@ dependencies {
 	implementation 'com.google.guava:guava:31.1-jre'
 	runtimeOnly 'net.legacyfabric:yarn:1.8.9+build.456:mergedv2'
 	runtimeOnly 'de.oceanlabs.mcp:mcp:1.8.9:srg@zip'
+	implementation 'com.github.TheKodeToad:jfgjds:bb5096bbc0'
 }

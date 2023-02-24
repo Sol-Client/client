@@ -22,7 +22,8 @@ public abstract class DistTask extends DefaultTask {
 	public void dist() throws IOException {
 		Path folder = getDestination().getAsFile().get().toPath();
 		Files.createDirectories(folder);
-		PrismDist.export(getInput().getAsFile().get().toPath(), folder.resolve("prism.zip"),
+		PrismDist.export(getInput().getAsFile().get().toPath(),
+				folder.resolve("sol-client-prism-launcher-" + getProject().getVersion() + ".zip"),
 				getProject().getVersion().toString());
 	}
 

@@ -28,7 +28,9 @@ jobs:
       uses: actions/upload-artifact@v2-preview
       with:
         name: wrapper
-        path: build/libs/sol-client-wrapper-*.jar
+        path: |
+          build/libs/*
+          build/dist/*
 
   upload:
     if: "github.ref == 'refs/heads/stable' && startsWith(github.event.head_commit.message, '[create release] ')"
@@ -58,4 +60,5 @@ jobs:
         automatic_release_tag: ${{ steps.version.outputs.version }}
         prerelease: false
         title: ${{ steps.version.outputs.version }}
-        files: wrapper/sol-client-wrapper-*.jar
+        files: |
+          wrapper/*

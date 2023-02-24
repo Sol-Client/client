@@ -29,8 +29,8 @@ jobs:
       with:
         name: wrapper
         path: |
-          build/libs/*
-          build/dist/*
+          build/libs/*.jar
+          build/dist/*.zip
 
   upload:
     if: "github.ref == 'refs/heads/stable' && startsWith(github.event.head_commit.message, '[create release] ')"

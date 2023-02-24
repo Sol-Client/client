@@ -28,9 +28,12 @@ jobs:
       uses: actions/upload-artifact@v2-preview
       with:
         name: wrapper
-        path: |
-          build/libs/*.jar
-          build/dist/*.zip
+        path: build/libs/*.jar
+    - name: Upload dist
+      uses: actions/upload-artifact@v2-preview
+      with:
+        name: dist
+        path: build/dist/*
 
   upload:
     if: "github.ref == 'refs/heads/stable' && startsWith(github.event.head_commit.message, '[create release] ')"
@@ -62,3 +65,4 @@ jobs:
         title: ${{ steps.version.outputs.version }}
         files: |
           wrapper/*
+          dist/*

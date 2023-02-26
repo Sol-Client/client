@@ -34,6 +34,7 @@ import org.objectweb.asm.commons.ClassRemapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import io.github.solclient.gradle.Utils;
 import masecla.modrinth4j.main.ModrinthAPI;
 import masecla.modrinth4j.model.version.ProjectVersion;
 import masecla.modrinth4j.model.version.ProjectVersion.ProjectFile;

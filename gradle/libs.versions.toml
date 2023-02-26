@@ -29,8 +29,6 @@ access_widener = { module = "net.fabricmc:access-widener", version.ref = "access
 lwjgl_patched = { module = "com.github.Sol-Client:lwjgl-patched", version.ref = "lwjgl_patched" }
 lwjgl = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
 lwjgl_nanovg = { module = "org.lwjgl:lwjgl-nanovg", version.ref = "lwjgl" }
-log4j_api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
-log4j_core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 asm_analysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asm" }
 asm_commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }

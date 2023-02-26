@@ -21,36 +21,36 @@ repositories {
 }
 
 configurations {
-	ship
+	shade
+	export
+	implementation.extendsFrom export
 }
 
 dependencies {
 	minecraft(libs.minecraft) { exclude group: 'org.apache.logging.log4j' }
 	mappings variantOf(libs.yarn) { classifier 'v2' }
-	ship variantOf(libs.intermediary) { classifier 'v2' }
+	shade variantOf(libs.intermediary) { classifier 'v2' }
 
 	def occlusionCulling = files('libs/occlusionculling.jar')
 
-	implementation(libs.mixin) { transitive = false }
+	export(libs.mixin) { transitive = false }
 	implementation occlusionCulling
-	ship occlusionCulling
-	implementation(libs.hypixel.api) { transitive = false }
-	implementation libs.discord.game.sdk4j
-	implementation libs.java.websocket
-	implementation libs.cosmetica.dot.java
-	implementation libs.access.widener
-	implementation libs.lwjgl.patched
-	ship libs.lwjgl.patched
-	implementation libs.log4j.api
-	implementation libs.log4j.core
-	implementation libs.tiny.remapper
+	shade occlusionCulling
+	export(libs.hypixel.api) { transitive = false }
+	export libs.discord.game.sdk4j
+	export libs.java.websocket
+	export libs.cosmetica.dot.java
+	export libs.access.widener
+	export libs.lwjgl.patched
+	shade libs.lwjgl.patched
+	export libs.tiny.remapper
 	implementation libs.devauth
 
-	implementation libs.asm
-	implementation libs.asm.analysis
-	implementation libs.asm.commons
-	implementation libs.asm.tree
-	implementation libs.asm.util
+	export libs.asm
+	export libs.asm.analysis
+	export libs.asm.commons
+	export libs.asm.tree
+	export libs.asm.util
 
 	annotationProcessor libs.asm
 	annotationProcessor libs.asm.analysis
@@ -61,7 +61,7 @@ dependencies {
 	def remapper = new ReplayModRemapper(project)
 	remapper.prepare()
 	implementation files(remapper.createNamedMapped())
-	ship files(remapper.createIntermediaryMapped())
+	shade files(remapper.createIntermediaryMapped())
 
 	switch (OperatingSystem.current()) {
 		case OperatingSystem.LINUX:
@@ -135,7 +135,7 @@ shadowJar {
 	from('../LICENSE') {
 		rename { "${it}_${name}" }
 	}
-	configurations = [project.configurations.ship]
+	configurations = [project.configurations.shade]
 	classifier 'dev'
 	destinationDirectory.set file("$buildDir/devlibs")
 }
@@ -144,6 +144,7 @@ tasks.register('dist', DistTask) {
 	dependsOn build
 	input = tasks.remapJar.outputs.files.getAt 0
 	destination = file "$buildDir/dist"
+	libs = configurations.export
 }
 
 tasks.withType(JavaCompile).configureEach {

@@ -45,7 +45,7 @@ public final class Prelaunch {
 
 		String jar = System.getProperty("io.github.solclient.wrapper.jar");
 
-		if (jar == null)
+		if (jar == null) {
 			for (String file : System.getProperty("java.class.path").split(File.pathSeparator)) {
 				try {
 					try (ZipFile zip = new ZipFile(file)) {
@@ -57,6 +57,7 @@ public final class Prelaunch {
 				} catch (Throwable ignored) {
 				}
 			}
+		}
 
 		if (jar == null)
 			throw new UnsupportedOperationException("-Dio.github.solclient.wrapper.jar is required");
@@ -82,8 +83,7 @@ public final class Prelaunch {
 					GlobalConstants.optifine = false;
 					LOGGER.error("Could not fetch and remap OptiFine jar", error);
 				}
-			} else
-				throw new UnsupportedOperationException("-Dio.github.solclient.wrapper.jar is required");
+			}
 		}
 
 		return result.toArray(new URL[0]);

@@ -138,8 +138,6 @@ public final class Prelaunch {
 	}
 
 	private static Path fetchAndRemapOptiFineJar(Path cache) throws Throwable {
-		LOGGER.info("Fetching and remapping OptiFine jar...");
-
 		Path optifineJar = cache.resolve(GlobalConstants.OPTIFINE_JAR + ".jar");
 		Path optifineExtractedJar = cache.resolve(GlobalConstants.OPTIFINE_JAR + "-extracted.jar");
 		Path optifineIntermediaryJar = cache.resolve(GlobalConstants.OPTIFINE_JAR + "-intermediary.jar");
@@ -148,6 +146,8 @@ public final class Prelaunch {
 
 		if (Files.exists(optifineIntermediaryJar))
 			return optifineIntermediaryJar;
+
+		LOGGER.info("Fetching and remapping OptiFine jar...");
 
 		URL source = extractOptiFineUrl(GlobalConstants.OPTIFINE_JAR);
 		Utils.urlToFile(OPTIFINE_USER_AGENT, source, optifineJar);

@@ -428,7 +428,7 @@ sol_client.mod.block_selection.option.outlineColour=Outline color
 sol_client.mod.block_selection.option.fill=Display fill
 sol_client.mod.block_selection.option.fillColour=Fill color
 sol_client.mod.block_selection.option.depth=Depth
-sol_client.mod.block_selection.option.persistent=Persistent
+sol_client.mod.block_selection.option.persistent=Show in all game modes
 
 sol_client.mod.hit_colour.name=Hit Color
 sol_client.mod.hit_colour.description=Change the hit color.

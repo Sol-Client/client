@@ -1,16 +1,11 @@
 package io.github.solclient.gradle.dist;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.artifacts.Dependency;
-import org.gradle.api.artifacts.ModuleDependency;
-import org.gradle.api.artifacts.repositories.ArtifactRepository;
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;

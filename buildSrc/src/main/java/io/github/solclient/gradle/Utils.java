@@ -43,23 +43,18 @@ public final class Utils {
 	}
 
 	public static String format(Dependency dependency) {
-		StringBuilder result = new StringBuilder();
-		result.append(dependency.getGroup());
-		result.append(':');
-		result.append(dependency.getName());
-		result.append(':');
-		result.append(dependency.getVersion());
-		if (dependency instanceof ModuleDependency mo) {
-			Iterator<DependencyArtifact> iterator = mo.getArtifacts().iterator();
+		String result = dependency.toString();
+		if (dependency instanceof ModuleDependency module) {
+			Iterator<DependencyArtifact> iterator = module.getArtifacts().iterator();
 			if (iterator.hasNext()) {
 				DependencyArtifact artifact = iterator.next();
 				if (!iterator.hasNext() && artifact.getClassifier() != null) {
-					result.append(':');
-					result.append(artifact.getClassifier());
+					result += ':';
+					result += artifact.getClassifier();
 				}
 			}
 		}
-		return result.toString();
+		return result;
 	}
 
 	public static URL concat(URL base, String relative) throws MalformedURLException {
@@ -83,7 +78,8 @@ public final class Utils {
 			}
 		}
 
-		System.out.println(dependency + " was not found :(");
+		// TODO don't do
+		System.err.println(dependency + " was not found :(");
 		return null;
 	}
 

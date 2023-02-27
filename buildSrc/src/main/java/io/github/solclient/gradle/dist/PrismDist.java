@@ -10,7 +10,6 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -65,7 +64,7 @@ public final class PrismDist {
 					)
 			);
 
-			for (Dependency lib : libs.getDependencies()) {
+			for (Dependency lib : libs.getAllDependencies()) {
 				libsArray.add(
 						obj(
 							"name", Utils.format(lib),

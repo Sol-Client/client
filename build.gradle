@@ -22,8 +22,10 @@ repositories {
 
 configurations {
 	shade
+	exportOnly
 	export
 	implementation.extendsFrom export
+	exportOnly.extendsFrom export
 }
 
 dependencies {
@@ -91,6 +93,15 @@ dependencies {
 	}) {
 		transitive = false
 	}
+
+	exportOnly variantOf(libs.lwjgl) { classifier 'natives-windows' }
+	exportOnly variantOf(libs.lwjgl) { classifier 'natives-linux' }
+	exportOnly variantOf(libs.lwjgl) { classifier 'natives-macos' }
+	exportOnly variantOf(libs.lwjgl) { classifier 'natives-macos-arm64' }
+	exportOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-windows' }
+	exportOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-linux' }
+	exportOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos' }
+	exportOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos-arm64' }
 }
 
 loom {
@@ -144,7 +155,7 @@ tasks.register('dist', DistTask) {
 	dependsOn build
 	input = tasks.remapJar.outputs.files.getAt 0
 	destination = file "$buildDir/dist"
-	libs = configurations.export
+	libs = configurations.exportOnly
 }
 
 tasks.withType(JavaCompile).configureEach {

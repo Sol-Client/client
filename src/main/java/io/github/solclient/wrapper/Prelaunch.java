@@ -67,6 +67,35 @@ public final class Prelaunch {
 		return gameJar;
 	}
 
+	public static void prepare() {
+		if (System.getProperty("mixin.service") == null)
+			System.setProperty("mixin.service", "io.github.solclient.wrapper.WrapperMixinService");
+
+		if (GlobalConstants.NO_LAUNCHER_WARNINGS)
+			return;
+
+		try {
+
+			StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+			String top = trace[trace.length - 1].getClassName();
+
+			if (top.startsWith("org.multimc.")) {
+				LOGGER.warn(
+						"This instance was intended for Prism Launcher, and will not work with MultiMC until a specific issue is fixed.");
+				LOGGER.warn("If you do find a workaround, we are happy to accept it!");
+			} else if (top.startsWith("org.polymc.")) {
+				LOGGER.warn(
+						"We no longer support your launcher! Please use Prism Launcher instead (https://prismlauncher.org).");
+				LOGGER.warn("Since it is outdated, do not be surprised if it breaks or is already broken.");
+			} else
+				return;
+
+			LOGGER.warn(
+					"(you can disable these warnings with -Dio.github.solclient.wrapper.no_launcher_warnings=true)");
+		} catch (Throwable ignored) {
+		}
+	}
+
 	public static URL[] prepareClasspath() throws IOException {
 		List<URL> result = new ArrayList<>(2);
 		Path cache = Paths.get(".sol-client-wrapper");

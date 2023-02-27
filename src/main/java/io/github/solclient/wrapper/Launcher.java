@@ -32,8 +32,7 @@ public final class Launcher {
 	private static final String MAIN_CLASS = "io.github.solclient.client.Premain";
 
 	public static void main(String[] args) throws Throwable {
-		if (System.getProperty("mixin.service") == null)
-			System.setProperty("mixin.service", "io.github.solclient.wrapper.WrapperMixinService");
+		Prelaunch.prepare();
 
 		try (ClassWrapper wrapper = new ClassWrapper(Prelaunch.prepareClasspath())) {
 			// @formatter:off

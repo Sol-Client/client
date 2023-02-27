@@ -30,6 +30,7 @@ public class GlobalConstants {
 	public final boolean DEV = Boolean.getBoolean("loader.development");
 	// shhh... fake constant
 	public static boolean optifine = Boolean.getBoolean("io.github.solclient.wrapper.optifine");
+	public final boolean NO_LAUNCHER_WARNINGS = Boolean.getBoolean("io.github.solclient.wrapper.no_launcher_warnings");
 	public final String VERSION_STRING = "%VERSION%";
 	public final String USER_AGENT = "Sol Client/" + GlobalConstants.VERSION;
 	public final SemVer VERSION = SemVer.parseOrNull(VERSION_STRING);

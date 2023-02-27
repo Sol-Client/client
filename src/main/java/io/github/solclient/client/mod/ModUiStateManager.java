@@ -73,11 +73,11 @@ public final class ModUiStateManager {
 		result.add("pins", pins);
 
 		JsonArray collapsedCategories = new JsonArray();
-		this.collapsedCategories.forEach((category) -> collapsedCategories.add(category.name()));
+		this.collapsedCategories.forEach((category) -> collapsedCategories.add(new JsonPrimitive(category.name())));
 		result.add("collapsedCategories", collapsedCategories);
 
 		JsonArray previousColours = new JsonArray();
-		this.previousColours.forEach((colour) -> previousColours.add(colour.getValue()));
+		this.previousColours.forEach((colour) -> previousColours.add(new JsonPrimitive(colour.getValue())));
 		result.add("previousColours", previousColours);
 
 		try (Writer writer = new OutputStreamWriter(Files.newOutputStream(file), StandardCharsets.UTF_8)) {

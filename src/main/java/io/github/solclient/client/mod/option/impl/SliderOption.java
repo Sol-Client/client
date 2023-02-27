@@ -62,7 +62,7 @@ public class SliderOption<N extends Number> extends ModOption<N> {
 					new AlignedBoundsController(Alignment.END, Alignment.CENTRE, (component, defaultBounds) -> {
 						return new Rectangle(
 								(int) (container.getBounds().getWidth() - NanoVGManager.getRegularFont()
-										.getWidth(NanoVGManager.getNvg(), ((LabelComponent) component).getText()) - 97),
+										.getWidth(NanoVGManager.getNvg(), ((LabelComponent) component).getText()) - 84),
 								defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
 					}));
 		});

@@ -93,8 +93,12 @@ public final class ReplayModClassRemapper extends Remapper {
 	@Override
 	public String mapFieldName(String owner, String name, String desc) {
 		// HACK
-		if (name.equals("GOLD") && namespace == 0)
-			return "field_5489";
+		if (namespace == 0) {
+			if (name.equals("GOLD"))
+				return "field_5489";
+			else if (name.equals("RESET"))
+				return "field_5504";
+		}
 
 		String result = map(owner, name, desc, true);
 		if (result != null)

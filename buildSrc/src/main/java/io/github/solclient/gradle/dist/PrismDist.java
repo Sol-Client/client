@@ -25,8 +25,10 @@ import io.toadlabs.jfgjds.data.JsonArray;
 public final class PrismDist {
 
 	private static final String UID = "io.github.solclient.wrapper";
+	private static final String OPTIFINE_UID = "io.github.solclient.wrapper.optiflag";
 
-	public static void export(DistTask task, Path input, Path output, Project project, Configuration libs, String version) throws IOException {
+	public static void export(DistTask task, Path input, Path output, Project project, Configuration libs,
+			String version) throws IOException {
 		try (ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(output))) {
 			Writer writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
 
@@ -44,10 +46,8 @@ public final class PrismDist {
 								"uid", "net.minecraft",
 								"version", "1.8.9"
 							),
-							obj(
-								"important", true,
-								"uid", UID
-							)
+							obj( "uid", UID ),
+							obj( "uid", OPTIFINE_UID )
 						),
 						"formatVersion", 1
 					),
@@ -84,6 +84,19 @@ public final class PrismDist {
 						"version", version,
 						"+libraries", libsArray,
 						"mainClass", "io.github.solclient.wrapper.Launcher"
+					),
+			writer);
+			// @formatter:on
+
+			out.putNextEntry(new ZipEntry("patches/" + OPTIFINE_UID + ".json"));
+			// @formatter:off
+			JsonSerializer.write(
+					obj(
+						"formatVersion", 1,
+						"name", "OptiFine",
+						"uid", OPTIFINE_UID,
+						"version", "(default)",
+						"+jvmArgs", arr( "-Dio.github.solclient.wrapper.optifine=true" )
 					),
 			writer);
 			// @formatter:on

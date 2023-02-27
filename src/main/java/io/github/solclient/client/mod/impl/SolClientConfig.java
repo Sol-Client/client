@@ -37,7 +37,7 @@ public class SolClientConfig extends ConfigOnlyMod {
 
 	@Expose
 	@Option
-	public boolean broadcastOnline = false;
+	public boolean broadcastOnline = true;
 
 	@Expose
 	@Option
@@ -92,10 +92,7 @@ public class SolClientConfig extends ConfigOnlyMod {
 
 		instance = this;
 
-		// yuck...
-		if (GlobalConstants.AUTOUPDATE)
-			getOptions().remove(0);
-		else if (remindMeToUpdate) {
+		if (remindMeToUpdate) {
 			Thread thread = new Thread(() -> {
 				try (InputStream in = GlobalConstants.RELEASE_API.openStream()) {
 					JsonObject object = new JsonParser().parse(new InputStreamReader(in)).getAsJsonObject();

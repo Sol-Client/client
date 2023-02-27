@@ -31,6 +31,7 @@ import io.github.solclient.client.ui.screen.mods.ModsScreen;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import io.github.solclient.util.GlobalConstants;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.SettingsScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.options.LanguageOptionsScreen;
@@ -50,7 +51,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 		client.getTextureManager().bindTexture(new Identifier("sol_client",
 				"textures/gui/sol_client_logo_with_text_" + MinecraftUtils.getTextureScale() + ".png"));
-		drawTexture(width / 2 - 64, 50, 0, 0, 128, 32, 128, 32);
+		drawTexture(width / 2 - 64, getStartY(this), 0, 0, 128, 32, 128, 32);
 
 		super.render(mouseX, mouseY, partialTicks);
 	}
@@ -64,9 +65,14 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 		super.keyPressed(character, code);
 	}
 
+	private static int getStartY(Screen screen) {
+		return screen.height / 2 - 123 / 2;
+	}
+
 	private static class MainMenuComponent extends Component {
 
-		private int buttonsX;
+		private int bubblesX;
+		private int bubblesY;
 
 		public MainMenuComponent() {
 
@@ -79,7 +85,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 						}
 
 						return false;
-					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, screen.height / 4 + 48,
+					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, getStartY(screen) + 44,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.multiplayer"), theme.accent(),
@@ -91,11 +97,13 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 						}
 
 						return false;
-					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, screen.height / 4 + 73,
+					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, getStartY(screen) + 69,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg())
-					.withIcon("language").width(20).onClick((info, button) -> {
+			// 🫧
+
+			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg()).withIcon("language")
+					.width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new LanguageOptionsScreen(screen, mc.options, mc.getLanguageManager()));
@@ -110,14 +118,13 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 							buttonsCount++;
 						}
 
-						buttonsX = screen.width / 2 - (12 * buttonsCount);
-
-						return new Rectangle(buttonsX, screen.height / 4 + 48 + 70, defaultBounds.getWidth(),
-								defaultBounds.getHeight());
+						bubblesX = screen.width / 2 - (12 * buttonsCount);
+						bubblesY = getStartY(screen) + 103;
+						return new Rectangle(bubblesX, bubblesY, defaultBounds.getWidth(), defaultBounds.getHeight());
 					});
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg())
-					.withIcon("options").width(20).onClick((info, button) -> {
+			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg()).withIcon("options")
+					.width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new SettingsScreen(screen, mc.options));
@@ -125,11 +132,11 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 						}
 
 						return false;
-					}), (component, defaultBounds) -> new Rectangle(buttonsX + 26, screen.height / 4 + 48 + 70,
-							defaultBounds.getWidth(), defaultBounds.getHeight()));
+					}), (component, defaultBounds) -> new Rectangle(bubblesX + 26, bubblesY, defaultBounds.getWidth(),
+							defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg())
-					.withIcon("mods").width(20).onClick((info, button) -> {
+			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg()).withIcon("mods")
+					.width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new ModsScreen());
@@ -137,7 +144,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 						}
 
 						return false;
-					}), (component, defaultBounds) -> new Rectangle(buttonsX + 52, screen.height / 4 + 48 + 70,
+					}), (component, defaultBounds) -> new Rectangle(bubblesX + 52, bubblesY,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 			add(new ButtonComponent((component, defaultText) -> "", theme.button(), Controller.of(Colour.WHITE))
@@ -150,11 +157,11 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 						return false;
 					}).visibilityController((component, defaultVisibility) -> SCReplayMod.enabled),
-					(component, defaultBounds) -> new Rectangle(buttonsX + 78, screen.height / 4 + 48 + 70,
-							defaultBounds.getWidth(), defaultBounds.getHeight()));
+					(component, defaultBounds) -> new Rectangle(bubblesX + 78, bubblesY, defaultBounds.getWidth(),
+							defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.danger(),
-					Controller.of(Colour.WHITE)).onClick((info, button) -> {
+			add(new ButtonComponent((component, defaultText) -> "", theme.danger(), Controller.of(Colour.WHITE))
+					.onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.stop();

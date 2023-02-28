@@ -32,19 +32,24 @@ public class ToggleKeyBinding extends KeyBinding {
 	@Getter
 	private ToggleState state;
 	private final Supplier<Boolean> controller;
-	private final MinecraftClient mc = MinecraftClient.getInstance();
+	protected final MinecraftClient mc = MinecraftClient.getInstance();
 	private boolean wasDown;
 	private long startTime;
 
 	public ToggleKeyBinding(Supplier<Boolean> controller, String description, int keyCode, String category) {
 		super(description, keyCode, category);
 		this.controller = controller;
+
 		Client.INSTANCE.getEvents().register(this);
 	}
 
 	@EventHandler
-	public void tickBinding(PostTickEvent event) {
-		boolean down = super.isPressed();
+	public void onTickBinding(PostTickEvent event) {
+		tickBinding();
+	}
+
+	protected void tickBinding() {
+		boolean down = isPhysicallyPressed();
 		if (!controller.get())
 			return;
 
@@ -64,12 +69,16 @@ public class ToggleKeyBinding extends KeyBinding {
 		wasDown = down;
 	}
 
+	protected boolean isPhysicallyPressed() {
+		return super.isPressed();
+	}
+
 	@Override
 	public boolean isPressed() {
 		if (controller.get())
 			return mc.currentScreen == null && state != null;
 
-		return super.isPressed();
+		return isPhysicallyPressed();
 	}
 
 }

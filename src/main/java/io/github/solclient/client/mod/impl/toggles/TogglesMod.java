@@ -28,7 +28,7 @@ import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.client.resource.language.I18n;
 
-public class TogglesMod extends SolClientSimpleHudMod {
+public final class TogglesMod extends SolClientSimpleHudMod {
 
 	@Expose
 	@Option
@@ -54,7 +54,7 @@ public class TogglesMod extends SolClientSimpleHudMod {
 		MinecraftUtils.registerKeyBinding(sprint);
 
 		MinecraftUtils.unregisterKeyBinding(mc.options.sneakKey);
-		sneak = new ToggleKeyBinding(() -> isEnabled() && toggleSneak, mc.options.sneakKey.getTranslationKey(),
+		sneak = new ToggleSneakKeyBinding(() -> isEnabled() && toggleSneak, mc.options.sneakKey.getTranslationKey(),
 				Keyboard.KEY_LSHIFT, mc.options.sneakKey.getCategory());
 		mc.options.sneakKey = sneak;
 		MinecraftUtils.registerKeyBinding(sneak);
@@ -82,12 +82,10 @@ public class TogglesMod extends SolClientSimpleHudMod {
 		if (editMode)
 			return I18n.translate(getTranslationKey("sprint_toggled"));
 
-		// sneak takes precedence as it should be impossible to take both actions at
-		// once!
+		if (sprint.getState() != null && (!mc.player.isSneaking() || mc.player.abilities.flying))
+			return I18n.translate(getTranslationKey("sprint_" + sprint.getState().name().toLowerCase()));
 		if (sneak.getState() != null)
 			return I18n.translate(getTranslationKey("sneak_" + sneak.getState().name().toLowerCase()));
-		if (sprint.getState() != null)
-			return I18n.translate(getTranslationKey("sprint_" + sprint.getState().name().toLowerCase()));
 
 		return null;
 	}

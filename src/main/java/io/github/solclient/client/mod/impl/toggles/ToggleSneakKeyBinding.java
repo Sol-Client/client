@@ -18,6 +18,26 @@
 
 package io.github.solclient.client.mod.impl.toggles;
 
-public enum ToggleState {
-	HELD, TOGGLED
+import com.google.common.base.Supplier;
+
+public final class ToggleSneakKeyBinding extends ToggleKeyBinding {
+
+	public ToggleSneakKeyBinding(Supplier<Boolean> controller, String description, int keyCode, String category) {
+		super(controller, description, keyCode, category);
+	}
+
+	@Override
+	protected void tickBinding() {
+		if (!mc.player.abilities.flying)
+			super.tickBinding();
+	}
+
+	@Override
+	public boolean isPressed() {
+		if (mc.player.abilities.flying)
+			return isPhysicallyPressed();
+
+		return super.isPressed();
+	}
+
 }

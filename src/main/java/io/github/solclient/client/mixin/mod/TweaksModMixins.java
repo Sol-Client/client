@@ -21,6 +21,7 @@ package io.github.solclient.client.mixin.mod;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
@@ -28,9 +29,11 @@ import org.spongepowered.asm.mixin.injection.callback.*;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.extension.MinecraftClientExtension;
-import io.github.solclient.client.mod.impl.TweaksMod;
+import io.github.solclient.client.mod.impl.tweaks.RawInput;
+import io.github.solclient.client.mod.impl.tweaks.TweaksMod;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.MouseInput;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.*;
@@ -329,6 +332,32 @@ public class TweaksModMixins {
 			if (TweaksMod.enabled && TweaksMod.instance.disableBlockParticles)
 				callback.cancel();
 		}
+
+	}
+
+	@Mixin(MouseInput.class)
+	public static class MouseInputMixin {
+
+		@Inject(method = "updateMouse", at = @At("HEAD"), cancellable = true)
+		public void applyRawInput(CallbackInfo callback) {
+			if (!(TweaksMod.enabled && TweaksMod.instance.rawInput))
+				return;
+			if (!Mouse.isGrabbed())
+				return;
+			if (!TweaksMod.instance.getRawInputManager().isAvailable())
+				return;
+
+			callback.cancel();
+			RawInput input = TweaksMod.instance.getRawInputManager();
+			x = (int) input.getDx();
+			y = (int) -input.getDy();
+			input.reset();
+		}
+
+		@Shadow
+		public int x;
+		@Shadow
+		public int y;
 
 	}
 

@@ -47,6 +47,7 @@ import io.github.solclient.client.mod.impl.itemphysics.ItemPhysicsMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.mod.impl.togglesprint.ToggleSprintMod;
+import io.github.solclient.client.mod.impl.tweaks.TweaksMod;
 
 public final class ModManager implements Iterable<Mod> {
 

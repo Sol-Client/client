@@ -16,20 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.mod.impl;
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.*;
+package io.github.solclient.client.mod.impl.tweaks;
 
 import com.google.gson.annotations.Expose;
 
+import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.extension.MinecraftClientExtension;
-import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
-import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.option.annotation.*;
-import io.github.solclient.client.util.data.Rectangle;
+import io.github.solclient.client.event.impl.GammaEvent;
+import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.option.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.Slider;
+import lombok.Getter;
 
 public class TweaksMod extends SolClientMod {
 
@@ -76,15 +74,20 @@ public class TweaksMod extends SolClientMod {
 	public boolean disableHotbarScrolling;
 	@Expose
 	@Option
-	private boolean borderlessFullscreen;
-	@Expose
-	@Option
 	public boolean centredInventory = true;
 	@Expose
 	@Option
 	public boolean reconnectButton = true;
-	private Rectangle previousBounds;
-	private long fullscreenTime = -1;
+	@Expose
+	@Option
+	boolean borderlessFullscreen;
+	@Expose
+	@Option
+	public boolean rawInput;
+
+	private final BorderlessFullscreen borderlessFullscreenManager = new BorderlessFullscreen(this);
+	@Getter
+	private final RawInput rawInputManager = new RawInput(this);
 
 	@Override
 	public String getId() {
@@ -106,20 +109,31 @@ public class TweaksMod extends SolClientMod {
 	protected void onEnable() {
 		super.onEnable();
 		enabled = true;
-		if (borderlessFullscreen && mc.isFullscreen()) {
-			setBorderlessFullscreen(true);
+		if (borderlessFullscreen) {
+			Client.INSTANCE.getEvents().register(borderlessFullscreenManager);
+
+			if (mc.isFullscreen())
+				borderlessFullscreenManager.update(true);
 		}
+		if (rawInput)
+			rawInputManager.start();
 	}
 
 	@Override
 	protected void onDisable() {
 		super.onDisable();
 		enabled = false;
-		if (borderlessFullscreen && mc.isFullscreen()) {
-			setBorderlessFullscreen(false);
-			mc.toggleFullscreen();
-			mc.toggleFullscreen();
+		if (borderlessFullscreen) {
+			Client.INSTANCE.getEvents().unregister(borderlessFullscreenManager);
+
+			if (mc.isFullscreen()) {
+				borderlessFullscreenManager.update(false);
+				mc.toggleFullscreen();
+				mc.toggleFullscreen();
+			}
 		}
+		if (rawInput)
+			rawInputManager.stop();
 	}
 
 	@Override
@@ -129,14 +143,25 @@ public class TweaksMod extends SolClientMod {
 
 	@Override
 	public void postOptionChange(String key, Object value) {
-		if ((isEnabled() && key.equals("borderlessFullscreen")) && mc.isFullscreen()) {
-			if ((boolean) value)
-				setBorderlessFullscreen(true);
-			else {
-				setBorderlessFullscreen(false);
+		if (!isEnabled())
+			return;
+
+		if (key.equals("borderlessFullscreen") && mc.isFullscreen()) {
+			if ((boolean) value) {
+				Client.INSTANCE.getEvents().register(borderlessFullscreenManager);
+				borderlessFullscreenManager.update(true);
+			} else {
+				Client.INSTANCE.getEvents().unregister(borderlessFullscreenManager);
+				borderlessFullscreenManager.update(false);
 				mc.toggleFullscreen();
 				mc.toggleFullscreen();
 			}
+		}
+		if (key.equals("rawInput")) {
+			if ((boolean) value)
+				rawInputManager.start();
+			else
+				rawInputManager.stop();
 		}
 	}
 
@@ -147,55 +172,8 @@ public class TweaksMod extends SolClientMod {
 		}
 	}
 
-	@EventHandler
-	public void onFullscreenToggle(FullscreenToggleEvent event) {
-		if (borderlessFullscreen) {
-			event.applyState = false;
-			setBorderlessFullscreen(event.state);
-		}
-	}
-
-	@EventHandler
-	public void onRender(PreRenderTickEvent event) {
-		if (fullscreenTime != -1 && System.currentTimeMillis() - fullscreenTime >= 100) {
-			fullscreenTime = -1;
-			if (mc.focused) {
-				mc.mouse.lockMouse();
-			}
-		}
-	}
-
 	public float getDamageShakeIntensity() {
 		return damageShakeIntensity / 100;
-	}
-
-	private void setBorderlessFullscreen(boolean state) {
-		try {
-			System.setProperty("org.lwjgl.opengl.Window.undecorated", Boolean.toString(state));
-			Display.setFullscreen(false);
-			Display.setResizable(!state);
-
-			if (state) {
-				previousBounds = new Rectangle(Display.getX(), Display.getY(), mc.width, mc.height);
-
-				Display.setDisplayMode(new DisplayMode(Display.getDesktopDisplayMode().getWidth(),
-						Display.getDesktopDisplayMode().getHeight()));
-				Display.setLocation(0, 0);
-				((MinecraftClientAccessor) mc).resizeWindow(Display.getDesktopDisplayMode().getWidth(),
-						Display.getDesktopDisplayMode().getHeight());
-			} else {
-				Display.setDisplayMode(new DisplayMode(previousBounds.getWidth(), previousBounds.getHeight()));
-				Display.setLocation(previousBounds.getX(), previousBounds.getY());
-				((MinecraftClientAccessor) mc).resizeWindow(previousBounds.getWidth(), previousBounds.getHeight());
-
-				if (mc.focused) {
-					mc.mouse.grabMouse();
-					fullscreenTime = System.currentTimeMillis();
-				}
-			}
-		} catch (LWJGLException error) {
-			logger.error("Could not totggle borderless fullscreen", error);
-		}
 	}
 
 }

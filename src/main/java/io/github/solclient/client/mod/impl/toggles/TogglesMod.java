@@ -16,34 +16,49 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.mod.impl.togglesprint;
+package io.github.solclient.client.mod.impl.toggles;
+
+import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
-import io.github.solclient.client.mod.keybinding.ToggleState;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;
+import net.minecraft.client.resource.language.I18n;
 
-public class ToggleSprintMod extends SolClientSimpleHudMod {
+public class TogglesMod extends SolClientSimpleHudMod {
 
-	private ToggleState sprint;
+	ToggleState state;
 	@Expose
 	@Option
 	private boolean hud;
+	@Expose
+	@Option
+	private boolean toggleSprint = true;
+	@Expose
+	@Option
+	private boolean toggleSneak;
 
-	private ToggleSprintKeyBinding keybinding;
+	private ToggleKeyBinding sprint;
+	private ToggleKeyBinding sneak;
 
 	@Override
 	public void init() {
 		super.init();
 
 		MinecraftUtils.unregisterKeyBinding(mc.options.sprintKey);
-		keybinding = new ToggleSprintKeyBinding(this, mc.options.sprintKey.getTranslationKey(), 29,
-				mc.options.sprintKey.getCategory());
-		mc.options.sprintKey = keybinding;
-		MinecraftUtils.registerKeyBinding(keybinding);
+		sprint = new ToggleKeyBinding(() -> isEnabled() && toggleSprint, mc.options.sprintKey.getTranslationKey(),
+				Keyboard.KEY_LCONTROL, mc.options.sprintKey.getCategory());
+		mc.options.sprintKey = sprint;
+		MinecraftUtils.registerKeyBinding(sprint);
+
+		MinecraftUtils.unregisterKeyBinding(mc.options.sneakKey);
+		sneak = new ToggleKeyBinding(() -> isEnabled() && toggleSneak, mc.options.sneakKey.getTranslationKey(),
+				Keyboard.KEY_LSHIFT, mc.options.sneakKey.getCategory());
+		mc.options.sneakKey = sneak;
+		MinecraftUtils.registerKeyBinding(sneak);
 	}
 
 	@Override
@@ -63,21 +78,19 @@ public class ToggleSprintMod extends SolClientSimpleHudMod {
 
 	@Override
 	public String getText(boolean editMode) {
-		if (!hud) {
+		if (!hud)
 			return null;
-		}
-		if (editMode) {
-			return keybinding.getText(true);
-		}
-		return getSprint() == null ? null : keybinding.getText(false);
-	}
+		if (editMode)
+			return I18n.translate(getTranslationKey("sprint_toggled"));
 
-	public ToggleState getSprint() {
-		return sprint;
-	}
+		// sneak takes precedence as it should be impossible to take both actions at
+		// once!
+		if (sneak.getState() != null)
+			return I18n.translate(getTranslationKey("sneak_" + sneak.getState().name().toLowerCase()));
+		if (sprint.getState() != null)
+			return I18n.translate(getTranslationKey("sprint_" + sprint.getState().name().toLowerCase()));
 
-	public void setSprint(ToggleState sprint) {
-		this.sprint = sprint;
+		return null;
 	}
 
 }

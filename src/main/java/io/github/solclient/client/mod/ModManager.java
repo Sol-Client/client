@@ -46,7 +46,7 @@ import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import io.github.solclient.client.mod.impl.itemphysics.ItemPhysicsMod;
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
-import io.github.solclient.client.mod.impl.togglesprint.ToggleSprintMod;
+import io.github.solclient.client.mod.impl.toggles.TogglesMod;
 import io.github.solclient.client.mod.impl.tweaks.TweaksMod;
 
 public final class ModManager implements Iterable<Mod> {
@@ -98,7 +98,7 @@ public final class ModManager implements Iterable<Mod> {
 				new SCReplayMod(),
 				new FreelookMod(),
 				new TaplookMod(),
-				new ToggleSprintMod(),
+				new TogglesMod(),
 				new TNTTimerMod(),
 				new ZoomMod(),
 				new ScrollableTooltipsMod(),

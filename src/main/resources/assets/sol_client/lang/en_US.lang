@@ -268,15 +268,19 @@ sol_client.mod.taplook.key=Taplook
 sol_client.mod.taplook.option.key=Key
 sol_client.mod.taplook.option.perspective=Perspective
 
-sol_client.mod.toggle_sprint.name=Toggle Sprint
-sol_client.mod.toggle_sprint.description=Toggle the sprint action.
+sol_client.mod.toggle_sprint.name=Toggle Sprint/Sneak
+sol_client.mod.toggle_sprint.description=Toggle the sprint and sneak action.
 
 sol_client.mod.toggle_sprint.default_width=113
 
 sol_client.mod.toggle_sprint.option.hud=HUD
+sol_client.mod.toggle_sprint.option.toggleSprint=Toggle sprint
+sol_client.mod.toggle_sprint.option.toggleSneak=Toggle sneak
 
-sol_client.mod.toggle_sprint.held=Sprinting (held)
-sol_client.mod.toggle_sprint.toggled=Sprinting (toggled)
+sol_client.mod.toggle_sprint.sprint_held=Sprinting (held)
+sol_client.mod.toggle_sprint.sprint_toggled=Sprinting (toggled)
+sol_client.mod.toggle_sprint.sneak_held=Sneaking (held)
+sol_client.mod.toggle_sprint.sneak_toggled=Sneaking (toggled)
 
 sol_client.mod.zoom.name=Zoom
 sol_client.mod.zoom.description=Zoom in when pressing a button.

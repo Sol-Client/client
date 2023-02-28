@@ -411,9 +411,11 @@ sol_client.mod.screenshots.option.upload=Display button for imgur upload
 sol_client.mod.screenshots.view=View
 sol_client.mod.screenshots.open_folder=Show in Folder
 sol_client.mod.screenshots.upload=Upload
-sol_client.mod.screenshots.deleted=The screenshot was deleted
 sol_client.mod.screenshots.upload_error=An error occurred during upload: %s
 sol_client.mod.screenshots.link=The screenshot has been uploaded to %s
+sol_client.mod.screenshots.delete=Delete
+sol_client.mod.screenshots.delete_error=An error occurred during deletion: %s. You can try opening %s instead.
+sol_client.mod.screenshots.deleted=The screenshot was deleted
 
 sol_client.mod.time_changer.name=Time Changer
 sol_client.mod.time_changer.description=Change the visual time without affecting gameplay.

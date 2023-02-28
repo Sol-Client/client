@@ -22,7 +22,7 @@ import net.minecraft.text.ClickEvent;
 
 public interface ClickEventExtension {
 
-	static ClickEvent createStyleWithReceiver(Runnable receiver) {
+	static ClickEvent createEventWithReceiver(Runnable receiver) {
 		return from(new ClickEvent(null, null)).setReceiver(receiver).vanilla();
 	}
 

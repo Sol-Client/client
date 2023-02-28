@@ -85,12 +85,11 @@ public class ScreenshotsMod extends SolClientMod {
 	}
 
 	public void postShot(File screenshot) {
-
 		Runnable viewReceiver = () -> MinecraftUtils.openUrl(screenshot.toURI().toString());
 		Text screenshotName = new LiteralText(screenshot.getName());
 
 		if (!view)
-			screenshotName.setStyle(new Style().setClickEvent(ClickEventExtension.createStyleWithReceiver(viewReceiver))
+			screenshotName.setStyle(new Style().setClickEvent(ClickEventExtension.createEventWithReceiver(viewReceiver))
 					.setUnderline(true));
 
 		mc.inGameHud.getChatHud().addMessage(new TranslatableText("screenshot.success", screenshotName));
@@ -100,7 +99,7 @@ public class ScreenshotsMod extends SolClientMod {
 
 			if (view) {
 				Text viewText = new LiteralText('[' + I18n.translate(getTranslationKey("view")) + ']');
-				viewText.setStyle(new Style().setClickEvent(ClickEventExtension.createStyleWithReceiver(viewReceiver))
+				viewText.setStyle(new Style().setClickEvent(ClickEventExtension.createEventWithReceiver(viewReceiver))
 						.setFormatting(Formatting.BLUE));
 
 				secondaryText.append(viewText);
@@ -111,7 +110,7 @@ public class ScreenshotsMod extends SolClientMod {
 				Text folderText = new LiteralText('[' + I18n.translate(getTranslationKey("open_folder")) + ']');
 				folderText.setStyle(new Style()
 						.setClickEvent(ClickEventExtension
-								.createStyleWithReceiver(() -> MinecraftUtils.revealUrl(screenshot.toURI().toString())))
+								.createEventWithReceiver(() -> MinecraftUtils.revealUrl(screenshot.toURI().toString())))
 						.setFormatting(Formatting.YELLOW));
 				secondaryText.append(folderText);
 				secondaryText.append(" ");
@@ -120,7 +119,7 @@ public class ScreenshotsMod extends SolClientMod {
 			if (upload) {
 				Text uploadText = new LiteralText('[' + I18n.translate(getTranslationKey("upload")) + ']');
 				uploadText.setStyle(new Style()
-						.setClickEvent(ClickEventExtension.createStyleWithReceiver(() -> uploadToImgur(screenshot)))
+						.setClickEvent(ClickEventExtension.createEventWithReceiver(() -> uploadToImgur(screenshot)))
 						.setFormatting(Formatting.GREEN));
 				secondaryText.append(uploadText);
 				secondaryText.append(" ");
@@ -143,7 +142,8 @@ public class ScreenshotsMod extends SolClientMod {
 						StandardCharsets.US_ASCII);
 				String boundary = MinecraftUtils.generateHttpBoundary();
 
-				HttpURLConnection connection = (HttpURLConnection) IMGUR_URL.openConnection();
+				HttpURLConnection connection = (HttpURLConnection) Utils.getConnection(GlobalConstants.USER_AGENT,
+						IMGUR_URL);
 				connection.setRequestMethod("POST");
 				connection.setRequestProperty("Authorization", "Client-ID " + GlobalConstants.IMGUR_APPLICATION);
 				connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=\"" + boundary + "\"");
@@ -168,6 +168,7 @@ public class ScreenshotsMod extends SolClientMod {
 
 					JsonObject data = object.get("data").getAsJsonObject();
 					String link = data.get("link").getAsString();
+					String hash = data.get("deletehash").getAsString();
 
 					Text linkComponent = new LiteralText(link);
 					linkComponent.setStyle(
@@ -175,12 +176,40 @@ public class ScreenshotsMod extends SolClientMod {
 
 					mc.inGameHud.getChatHud()
 							.addMessage(new TranslatableText(getTranslationKey("link"), linkComponent));
+					mc.inGameHud.getChatHud()
+							.addMessage(new LiteralText('[' + I18n.translate(getTranslationKey("delete")) + ']')
+									.setStyle(new Style().setFormatting(Formatting.RED).setClickEvent(
+											ClickEventExtension.createEventWithReceiver(() -> deleteFromImgur(hash)))));
 				}
 
 			} catch (Throwable error) {
 				logger.error("Could not upload screenshot", error);
 				mc.inGameHud.getChatHud().addMessage(new TranslatableText(getTranslationKey("upload_error"), error)
 						.setStyle(new Style().setFormatting(Formatting.RED)));
+			}
+		}).start();
+	}
+
+	private void deleteFromImgur(String hash) {
+		new Thread(() -> {
+			try {
+				HttpURLConnection connection = (HttpURLConnection) Utils.getConnection(GlobalConstants.USER_AGENT,
+						new URL(IMGUR_URL + "/" + hash));
+				connection.setRequestMethod("DELETE");
+				connection.setRequestProperty("Authorization", "Client-ID " + GlobalConstants.IMGUR_APPLICATION);
+				connection.getInputStream();
+				mc.inGameHud.getChatHud().addMessage(new TranslatableText(getTranslationKey("deleted"))
+						.setStyle(new Style().setFormatting(Formatting.RED)));
+			} catch (Throwable error) {
+				logger.error("Could not delete screenshot", error);
+
+				String url = "https://imgur.com/delete/" + hash;
+				Text linkComponent = new LiteralText(url);
+				linkComponent
+						.setStyle(new Style().setUnderline(true).setClickEvent(new ClickEvent(Action.OPEN_URL, url)));
+				mc.inGameHud.getChatHud()
+						.addMessage(new TranslatableText(getTranslationKey("delete_error"), error, linkComponent)
+								.setStyle(new Style().setFormatting(Formatting.RED)));
 			}
 		}).start();
 	}

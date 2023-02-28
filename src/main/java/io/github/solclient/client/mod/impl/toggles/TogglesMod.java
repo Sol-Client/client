@@ -30,7 +30,6 @@ import net.minecraft.client.resource.language.I18n;
 
 public class TogglesMod extends SolClientSimpleHudMod {
 
-	ToggleState state;
 	@Expose
 	@Option
 	private boolean hud;

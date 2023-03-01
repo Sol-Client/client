@@ -28,13 +28,13 @@ public final class ToggleSneakKeyBinding extends ToggleKeyBinding {
 
 	@Override
 	protected void tickBinding() {
-		if (!mc.player.abilities.flying)
+		if (mc.player == null || !mc.player.abilities.flying)
 			super.tickBinding();
 	}
 
 	@Override
 	public boolean isPressed() {
-		if (mc.player.abilities.flying)
+		if (mc.player != null && mc.player.abilities.flying)
 			return isPhysicallyPressed();
 
 		return super.isPressed();

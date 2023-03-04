@@ -56,15 +56,15 @@ To run it, execute the following command: `./gradlew runClient`.
 
 ## Testing
 
-Before a new release is created, the following must be tested:
+Before a new release is created, there must be tested if Sol:
 
-- If Sol compiles
-- If it runs in development
-- If it runs the first or second time the client is game is launched on any machine
-- If it works in normal gameplay, with the new features enabled. This may mean releases take longer, but it is probably worth it
-- If the old features still work correctly
-- If it plays nicely with Watchdog (and other anticheats)
+- Compiles
+- Runs in development
+- Runs the first or second time the client is game is launched on any machine
+- Works in normal gameplay, with the new features enabled. This may mean releases take longer, but it is probably worth it
+- The old features still work correctly
+- Plays nicely with Watchdog (and other anticheats)
 
 ## License
 
-Sol Client is Free and Open Source Software (FOSS), licensed under the [GNU General Public License](LICENSE), version 3.0
+Sol Client is Free and Open Source Software (FOSS), licensed under the [GNU General Public License](LICENSE),<br />version 3.0

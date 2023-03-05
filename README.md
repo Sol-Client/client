@@ -14,10 +14,10 @@ An **open source**, non-hacked client for Minecraft 1.8.9 (newer versions coming
 
 ## 🤔 Why does this exist? I mean, Lunar seems to be good enough..
 
-Sol Client is one of the _ver very_ few Minecraft 1.8 clients that is open source and privacy friendly. This means that the code written for client to be made is available to the public, thus it's safe. So, anyone could make sure that Sol is not a virus or it doesn't spy on you. Lunar on the hand is the exact opposite. It is propriety software and **it spies on you** and they even say it on their website:
+Sol Client is one of the _very very_ few Minecraft 1.8 clients that is open source and privacy friendly. This means that the code written for client to be made is available to the public, thus it's safe. So, anyone could make sure that Sol is not a virus or it doesn't spy on you. Lunar on the hand is the exact opposite. It is propriety software and **it spies on you** and they even say it on their website:
 
 **From: https://www.lunarclient.com/privacy**
-> We may also **create or collect device-identifiable information** (DII), such as cookies, statistical identifiers, **unique device and advertising identifiers**, **usernames**, and similar identifiers that are linkable to a browser or device. From these platforms, we may also receive other information, such as **your IP address**, user agent, timestamps, **precise and imprecise geolocation**, **sensor data**, **apps**, **fonts**, battery **life information**, and **screen size**.
+> We may also **create or collect device-identifiable information** (DII), such as cookies, statistical identifiers, **unique device and advertising identifiers**, **usernames**, and similar identifiers that are linkable to a browser or device. From these platforms, we may also receive other information, such as **your IP address**, user agent, timestamps, **precise and imprecise geolocation**, **sensor data**, **apps**, fonts, battery life information and **screen size**.
 
 Not to mention the active developmenrt and that **every** suggested feature is considered and most likely added or planned to be added.
 

@@ -43,15 +43,13 @@ Not to mention the active developmenrt and that **every** suggested feature is c
 - Timers
 - Resource pack folders
 - Replay Mod (using the actual [Replay Mod](https://github.com/ReplayMod/ReplayMod))
-- Entity Culling (using an **outdated version** of tr7zw's [Enity Culling](https://github.com/tr7zw/EntityCulling) mod, since the owner adopted a more restrictive license)
+- Entity Culling (using an outdated version of tr7zw's [Entity Culling](https://github.com/tr7zw/EntityCulling) mod**!!**, since the owner adopted a more restrictive license)
 
 **..and even more!**
 
 ## Alternatives
 
-Although Sol is not super popular by itself, here are some alternatives if you seek them:
-
-- [<img src="https://axolotlclient.github.io/images/icon.png" alt="AC icon" width="18"> AxolotlClient](https://axolotlclient.github.io/)
+- [<img src="https://axolotlclient.github.io/images/icon.png" alt="AC icon" width="18"> AxolotlClient](https://axolotlclient.github.io/) - useful if you want to play in newer versions of Minecraft
 
 ## 💼 License
 

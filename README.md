@@ -10,7 +10,7 @@ An **open source**, non-hacked client for Minecraft 1.8.9 (newer versions coming
 <a href="https://discord.gg/TSAkhgXNbK"><img alt="Join Discord" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg"></a>
 <a href="https://sol-client.github.io"><img alt="Website" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/documentation/website_vector.svg"></a>
 
-<details><summary><h2>Contributing</h2></summary>
+<details><summary><h2>🧪 Contributing</h2></summary>
 
 If you want to contribute features, use the [`development`](https://github.com/Sol-Client/client) branch. If you want to contribute bug fixes, use the [`stable`](https://github.com/Sol-Client/client/tree/stable) branch.
 
@@ -79,7 +79,6 @@ Although Sol is not super popular by itself, here are some alternatives if you s
 
 - [<img src="https://axolotlclient.github.io/images/icon.png" alt="AC icon" width="18"> AxolotlClient](https://axolotlclient.github.io/)
 
-
-## License
+## 💼 License
 
 Sol Client is Free and Open Source Software (FOSS), licensed under the [GNU General Public License](LICENSE),<br />version 3.0

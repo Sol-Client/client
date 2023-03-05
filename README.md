@@ -43,13 +43,13 @@ Not to mention the active developmenrt and that **every** suggested feature is c
 - Timers
 - Resource pack folders
 - Replay Mod (using the actual [Replay Mod](https://github.com/ReplayMod/ReplayMod))
-- Entity Culling (using an outdated version of tr7zw's [Entity Culling](https://github.com/tr7zw/EntityCulling) mod**!!**, since the owner adopted a more restrictive license)
+- Entity Culling (using an outdated version of tr7zw's [Entity Culling](https://github.com/tr7zw/EntityCulling) mod!!, since the owner adopted a more restrictive license)
 
 **..and even more!**
 
 ## Alternatives
 
-- [<img src="https://axolotlclient.github.io/images/icon.png" alt="AC icon" width="18"> AxolotlClient](https://axolotlclient.github.io/) - useful if you want to play in newer versions of Minecraft
+- [<img src="https://axolotlclient.github.io/images/icon.png" alt="AC icon" width="18"> AxolotlClient](https://axolotlclient.github.io/) - useful if you want to play on newer versions of Minecraft
 
 ## 💼 License
 
@@ -64,8 +64,6 @@ If you want to contribute features, use the [`development`](https://github.com/S
 Please use standard Java formatting conventions (the default Eclipse formatting profile, but with indented switch cases).
 Using statements instead of blocks is fine.
 Use tabs for indentation, and asterisks if more than one class is imported from a package.
-
-You may notice this is not followed on the main branch (as of 2023-01-03 - once [`dev/1.9.0`]() is merged this will not be the case).
 
 ### Building
 

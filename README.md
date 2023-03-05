@@ -6,8 +6,44 @@
 
 An **open source**, non-hacked client for Minecraft 1.8.9 (newer versions coming in the future)
 
-<a href="https://discord.gg/TSAkhgXNbK"><img alt="Join Discord" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg"></a>
 <a href="https://www.java.com"><img alt="Java" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/built-with/java_vector.svg"></a>
+<a href="https://discord.gg/TSAkhgXNbK"><img alt="Join Discord" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg"></a>
+<a href="https://sol-client.github.io"><img alt="Website" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/documentation/website_vector.svg"></a>
+
+<details><summary><h2>Contributing</h2></summary>
+
+If you want to contribute features, use the [`development`](https://github.com/Sol-Client/client) branch. If you want to contribute bug fixes, use the [`stable`](https://github.com/Sol-Client/client/tree/stable) branch.
+
+<div align="left">
+
+### Code Formatting
+
+Please use standard Java formatting conventions (the default Eclipse formatting profile, but with indented switch cases).
+Using statements instead of blocks is fine.
+Use tabs for indentation, and asterisks if more than one class is imported from a package.
+
+You may notice this is not followed on the main branch (as of 2023-01-03 - once [`dev/1.9.0`]() is merged this will not be the case).
+
+### Building
+
+To compile the client, run: `./gradlew build`
+
+To run it, execute the following command: `./gradlew runClient`.
+
+### Testing
+
+Before a new release is created, there must be tested if Sol:
+
+- Compiles
+- Runs in development
+- Runs the first or second time the client is game is launched on any machine
+- Works in normal gameplay, with the new features enabled. This may mean releases take longer, but it is probably worth it
+- The old features still work correctly
+- Plays nicely with Watchdog (and other anticheats)
+
+</div>
+
+</details>
 
 </div>
 
@@ -37,33 +73,12 @@ An **open source**, non-hacked client for Minecraft 1.8.9 (newer versions coming
 
 **..and even more!**
 
-## Contributing
-If you want to contribute features, use the [`development`](https://github.com/Sol-Client/client) branch. If you want to contribute bug fixes, use the [`stable`](https://github.com/Sol-Client/client/tree/stable) branch.
+## Alternatives
 
-### Code Formatting
+Although Sol is not super popular by itself, here are some alternatives if you seek them:
 
-Please use standard Java formatting conventions (the default Eclipse formatting profile, but with indented switch cases).
-Using statements instead of blocks is fine.
-Use tabs for indentation, and asterisks if more than one class is imported from a package.
+- [<img src="https://axolotlclient.github.io/images/icon.png" alt="AC icon" width="18"> AxolotlClient](https://axolotlclient.github.io/)
 
-You may notice this is not followed on the main branch (as of 2023-01-03 - once [`dev/1.9.0`]() is merged this will not be the case).
-
-### Building
-
-To compile the client, run: `./gradlew build`
-
-To run it, execute the following command: `./gradlew runClient`.
-
-## Testing
-
-Before a new release is created, there must be tested if Sol:
-
-- Compiles
-- Runs in development
-- Runs the first or second time the client is game is launched on any machine
-- Works in normal gameplay, with the new features enabled. This may mean releases take longer, but it is probably worth it
-- The old features still work correctly
-- Plays nicely with Watchdog (and other anticheats)
 
 ## License
 

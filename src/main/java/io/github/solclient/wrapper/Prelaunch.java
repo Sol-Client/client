@@ -44,12 +44,11 @@ public final class Prelaunch {
 			return gameJar;
 
 		String jar = System.getProperty("io.github.solclient.wrapper.jar");
-
 		if (jar == null) {
 			for (String file : System.getProperty("java.class.path").split(File.pathSeparator)) {
 				try {
 					try (ZipFile zip = new ZipFile(file)) {
-						if (zip.getEntry("net/minecraft/client/main/Main.class") != null) {
+						if (zip.getEntry("a.class") != null) {
 							jar = file;
 							break;
 						}
@@ -102,16 +101,15 @@ public final class Prelaunch {
 		if (!Files.isDirectory(cache))
 			Files.createDirectories(cache);
 
-		if (!GlobalConstants.DEV) {
+		if (!GlobalConstants.DEV)
 			result.add(remapGameJar(cache).toUri().toURL());
 
-			if (GlobalConstants.optifine) {
-				try {
-					result.add(0, fetchAndRemapOptiFineJar(cache).toUri().toURL());
-				} catch (Throwable error) {
-					GlobalConstants.optifine = false;
-					LOGGER.error("Could not fetch and remap OptiFine jar", error);
-				}
+		if (GlobalConstants.optifine) {
+			try {
+				result.add(0, fetchAndRemapOptiFineJar(cache).toUri().toURL());
+			} catch (Throwable error) {
+				GlobalConstants.optifine = false;
+				LOGGER.error("Could not fetch and remap OptiFine jar", error);
 			}
 		}
 
@@ -152,7 +150,8 @@ public final class Prelaunch {
 		URL source = extractOptiFineUrl(GlobalConstants.OPTIFINE_JAR);
 		Utils.urlToFile(OPTIFINE_USER_AGENT, source, optifineJar);
 
-		try (URLClassLoader loader = new URLClassLoader(new URL[] { optifineJar.toUri().toURL() })) {
+		try (URLClassLoader loader = new URLClassLoader(
+				new URL[] { optifineJar.toUri().toURL(), GlobalConstants.DEV ? getGameJar().toUri().toURL() : null })) {
 			Class<?> patcher = loader.loadClass("optifine.Patcher");
 			MethodHandle main = MethodHandles.lookup().findStatic(patcher, "main", GlobalConstants.MAIN_METHOD);
 			main.invokeExact(
@@ -186,7 +185,7 @@ public final class Prelaunch {
 				new InputStreamReader(Prelaunch.class.getResourceAsStream("/mappings/mappings.tiny")))) {
 			// @formatter:off
 			TinyRemapper remapper = TinyRemapper.newRemapper()
-					.withMappings(TinyUtils.createTinyMappingProvider(reader, "official", "intermediary"))
+					.withMappings(TinyUtils.createTinyMappingProvider(reader, "official", GlobalConstants.MAPPINGS))
 					.build();
 			// @formatter:on
 			remapper.readClassPathAsync(classpath);

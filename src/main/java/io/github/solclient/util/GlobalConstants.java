@@ -28,8 +28,9 @@ public class GlobalConstants {
 
 	// properties
 	public final boolean DEV = Boolean.getBoolean("loader.development");
+	public final String MAPPINGS = DEV ? "named" : "intermediary";
 	// shhh... fake constant
-	public static boolean optifine = Boolean.getBoolean("io.github.solclient.wrapper.optifine");
+	public boolean optifine = Boolean.getBoolean("io.github.solclient.wrapper.optifine");
 	public final boolean NO_LAUNCHER_WARNINGS = Boolean.getBoolean("io.github.solclient.wrapper.no_launcher_warnings");
 	public final String VERSION_STRING = "%VERSION%";
 	public final String USER_AGENT = "Sol Client/" + GlobalConstants.VERSION;

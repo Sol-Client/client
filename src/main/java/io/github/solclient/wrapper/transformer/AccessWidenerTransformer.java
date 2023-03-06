@@ -41,7 +41,7 @@ public class AccessWidenerTransformer {
 		for (String resource : resources) {
 			try (BufferedReader resourceReader = new BufferedReader(
 					new InputStreamReader(ClassWrapper.getInstance().getResourceAsStream(resource)))) {
-				reader.read(resourceReader, GlobalConstants.DEV ? "named" : "intermediary");
+				reader.read(resourceReader, GlobalConstants.MAPPINGS);
 			}
 		}
 	}

@@ -97,7 +97,7 @@ public final class Prelaunch {
 
 	public static URL[] prepareClasspath() throws IOException {
 		List<URL> result = new ArrayList<>(2);
-		Path cache = Paths.get(".sol-client-wrapper");
+		Path cache = Paths.get(".sol-client-launch");
 		if (!Files.isDirectory(cache))
 			Files.createDirectories(cache);
 

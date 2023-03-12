@@ -18,8 +18,7 @@
 
 package io.github.solclient.wrapper;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
+import java.lang.invoke.*;
 
 import org.apache.logging.log4j.LogManager;
 

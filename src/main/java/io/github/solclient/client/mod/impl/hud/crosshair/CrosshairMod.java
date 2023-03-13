@@ -37,6 +37,9 @@ import net.minecraft.world.level.LevelInfo.GameMode;
 
 public class CrosshairMod extends SolClientHudMod {
 
+	public static boolean enabled;
+	public static CrosshairMod instance;
+
 	private static final String DEFAULT_CROSSHAIR = "LCCH-9-ECBAgPAfAgQIEAA";
 
 	@Expose
@@ -52,7 +55,7 @@ public class CrosshairMod extends SolClientHudMod {
 	private boolean spectatorAlways = false;
 	@Expose
 	@Option
-	private boolean debug = false;
+	public boolean debug = true;
 	@Expose
 	@Option
 	private boolean blending = true;
@@ -68,6 +71,24 @@ public class CrosshairMod extends SolClientHudMod {
 
 	public CrosshairMod() {
 		LCCH.parse(DEFAULT_CROSSHAIR, pixels);
+	}
+
+	@Override
+	public void init() {
+		super.init();
+		instance = this;
+	}
+
+	@Override
+	protected void onEnable() {
+		super.onEnable();
+		enabled = true;
+	}
+
+	@Override
+	protected void onDisable() {
+		super.onDisable();
+		enabled = false;
 	}
 
 	@Override

@@ -155,7 +155,7 @@ public class HitboxMod extends SolClientMod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		while (toggleHitboxes.isPressed()) {
+		while (toggleHitboxes.wasPressed()) {
 			// If debug shortcut is used, don't conflict.
 			if (toggleHitboxes.getCode() == Keyboard.KEY_B && Keyboard.isKeyDown(Keyboard.KEY_F3)) {
 				continue;

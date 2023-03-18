@@ -120,7 +120,12 @@
 		"mod.V1_7VisualsModMixins$ItemRendererMixin",
 		"mod.V1_7VisualsModMixins$GameRendererMixin",
 		"mod.V1_7VisualsModMixins$LayerArmorBaseMixin",
+<<<<<<< Updated upstream
 		"mod.ItemPhysicsModMixins$ItemEntityMixin",
 		"mod.CrosshairModMixins$GameRendererMixin"
+=======
+		"mod.V1_7VisualsModMixins$DebugHudMixin",
+		"mod.ItemPhysicsMixins$ItemEntityMixin"
+>>>>>>> Stashed changes
 	]
 }

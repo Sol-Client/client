@@ -24,7 +24,6 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.IntConsumer;
@@ -64,6 +63,8 @@ import net.minecraft.text.*;
 import net.minecraft.util.*;
 import net.minecraft.util.Util.OperatingSystem;
 import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 /**
  * Utils involving Minecraft classes.
@@ -382,66 +383,65 @@ public class MinecraftUtils {
 		}
 
 		switch (Util.getOperatingSystem()) {
-			case LINUX:
-				if (reveal) {
-					if (new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
-						try {
-							Process process = new ProcessBuilder("xdg-mime", "query", "default", "inode/directory")
-									.start();
-							int code = process.waitFor();
+		case LINUX:
+			if (reveal) {
+				if (new File("/usr/bin/xdg-mime").exists() && new File("/usr/bin/gio").exists()) {
+					try {
+						Process process = new ProcessBuilder("xdg-mime", "query", "default", "inode/directory").start();
+						int code = process.waitFor();
 
-							if (code > 0) {
-								throw new IllegalStateException("xdg-mime exited with code " + code);
-							}
-
-							String file;
-							try (BufferedReader reader = new BufferedReader(
-									new InputStreamReader(process.getInputStream()))) {
-								file = reader.readLine();
-							}
-
-							if (file != null) {
-								url = decodeUrl(url);
-								url = url.substring(7);
-
-								if (!file.startsWith("/")) {
-									file = "/usr/share/applications/" + file;
-								}
-
-								command = new String[] { "gio", "launch", file, url };
-								break;
-							}
-						} catch (IOException | InterruptedException | IllegalStateException error) {
-							Client.LOGGER.error("Could not determine directory handler:", error);
+						if (code > 0) {
+							throw new IllegalStateException("xdg-mime exited with code " + code);
 						}
+
+						String file;
+						try (BufferedReader reader = new BufferedReader(
+								new InputStreamReader(process.getInputStream()))) {
+							file = reader.readLine();
+						}
+
+						if (file != null) {
+							url = decodeUrl(url);
+							url = url.substring(7);
+
+							if (!file.startsWith("/")) {
+								file = "/usr/share/applications/" + file;
+							}
+
+							command = new String[] { "gio", "launch", file, url };
+							break;
+						}
+					} catch (IOException | InterruptedException | IllegalStateException error) {
+						Client.LOGGER.error("Could not determine directory handler:", error);
 					}
-					url = urlDirname(url);
 				}
+				url = urlDirname(url);
+			}
 
-				if (new File("/usr/bin/xdg-open").exists()) {
-					command = new String[] { "xdg-open", url };
-					break;
-				}
-				// fall through to default
-			default:
-				// fall back to AWT, but without a message
-				command = null;
+			if (new File("/usr/bin/xdg-open").exists()) {
+				command = new String[] { "xdg-open", url };
 				break;
-			case MACOS:
-				if (reveal) {
-					command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
-				} else {
-					command = new String[] { "open", url };
-				}
-				break;
-			case WINDOWS:
-				if (reveal) {
-					command = new String[] { "Explorer", "/select," + decodeUrl(url).substring(8).replace('/', '\\') };
-				} else {
-					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
-				}
+			}
+			// fall through to default
+		default:
+			// fall back to AWT, but without a message
+			command = null;
+			break;
+		case MACOS:
+			if (reveal) {
+				command = new String[] { "open", "-R", decodeUrl(url).substring(7) };
+			} else {
+				command = new String[] { "open", url };
+			}
+			break;
+		case WINDOWS:
+			if (reveal) {
+				command = new String[] { "Explorer", "/select," + decodeUrl(url).substring(8).replace('/', '\\') };
+			} else {
+				command = new String[] { "rundll32", "url.dll,FileProtocolHandler", url };
+			}
 
-				break;
+			break;
 		}
 
 		if (command != null) {
@@ -545,12 +545,12 @@ public class MinecraftUtils {
 
 	public String getNativeFileExtension() {
 		switch (Util.getOperatingSystem()) {
-			case WINDOWS:
-				return "dll";
-			case MACOS:
-				return "dylib";
-			default:
-				return "so";
+		case WINDOWS:
+			return "dll";
+		case MACOS:
+			return "dylib";
+		default:
+			return "so";
 		}
 	}
 
@@ -766,6 +766,18 @@ public class MinecraftUtils {
 
 	public UUID getPlayerUuid() {
 		return MinecraftClient.getInstance().getSession().getProfile().getId();
+	}
+
+	public int getHeightValue(World world, int x, int y) {
+		if (x >= -30000000 && y >= -30000000 && x < 30000000 && y < 30000000) {
+			if (!world.getChunkProvider().chunkExists(x >> 4, y >> 4)) {
+				return 0;
+			} else {
+				Chunk chunk = world.getChunk(x >> 4, y >> 4);
+				return chunk.getHighestBlockY(x & 15, y & 15);
+			}
+		} else
+			return 64;
 	}
 
 }

@@ -18,7 +18,7 @@ An **open source**, non-hacked client for Minecraft 1.8.9 (newer versions coming
 Designed to be easy for less advanced players! Mod loaders have advantages, but Sol Client is designed to work with good compatibility out of the box.
 
 ### Consistent
-All modules use a consistent style unlike what is often found in modpacks. *I would like this to change, but it's still unfortunately an issue.*
+All modules use a consistent style unlike what is often found in modpacks. I would like to see this change - it's a hard problem - but I hope the community can figure something out!
 
 ### Free and open source
 Anyone can view, modify and redistribute the source code. If you have privacy concerns or curiosity, you can ensure yourself that the code is not doing anything malicious.
@@ -35,9 +35,9 @@ Suggested features are always being considered and often added.
 - Menu blur
 - 1.7 animations
 - Item physics
-- Hypixel additions
+- Hypixel addons
 - OptiFine (optional, from [its website](https://optifine.net/downloads))
-- Custom crosshairs
+- Custom crosshairs (Lunar format support soon™)
 - Quick Play (inspired from robere2's [QuickPlay](https://github.com/QuickplayMod/quickplay))
 - Better item tooltips (like the ones in Bedrock Edition)
 - Chat symbol picker
@@ -45,7 +45,7 @@ Suggested features are always being considered and often added.
 - Popup events (based on Sk1er's [PopupEvents](https://github.com/Sk1erLLC/PopupEvents))
 - Speedometer
 - Animated chunks (based on Lumien's [Chunk Animator](https://github.com/lumien231/Chunk-Animator))
-- Timers
+- Badlion-compatible timers
 - Resource pack folders
 - Replay Mod (using the actual [Replay Mod](https://github.com/ReplayMod/ReplayMod))
 - Entity Culling (using an outdated version of tr7zw's [Entity Culling](https://github.com/tr7zw/EntityCulling) mod!!, since the owner adopted a more restrictive license) (to be rewritten)
@@ -54,8 +54,9 @@ Suggested features are always being considered and often added.
 
 ## Alternatives
 
-- [<img src="https://axolotlclient.github.io/images/icon.png" alt="AC icon" width="18"> AxolotlClient](https://axolotlclient.github.io/) - has a more vanilla style, and useful if you want to play on newer versions of Minecraft. It is used with a mod loader unlike Sol Client which makes it more flexible.
-- Mod loaders, such as Quilt, Fabric and Forge.
+- [AxolotlClient](https://axolotlclient.github.io/) - has a more vanilla style, and useful if you want to play on newer versions of Minecraft. It is used with a mod loader unlike Sol Client which makes it more flexible.
+- Mod loaders - the most popular are [Quilt](https://github.com/QuiltMC), [Fabric](https://github.com/FabricMC) and [Forge](https://github.com/MinecraftForge).
+- Worth mentioning: [OneConfig](https://github.com/Polyfrost/OneConfig). It doesn't entirely fix the inconsistency of mod loaders, but it's a good start and still in development.
 
 ## 💼 License
 

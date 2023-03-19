@@ -12,19 +12,19 @@ An **open source**, non-hacked client for Minecraft 1.8.9 (newer versions coming
 
 </div>
 
-## 🤔 Why Sol over others?
+## 🤔 Why?
 
-**→ Easy to use** <br />
-Everything you want to have is where want it to be. No confusing options, insatllation etc. It _just works_
+### Easy to use
+Designed to be easy for less advanced players! Mod loaders have advantages, but Sol Client is designed to work with good compatibility out of the box.
 
-**→ Consistent** <br />
-One menu, one UI. Everything's listed the same way.
+### Consistent
+All modules use a consistent style unlike what is often found in modpacks. *I want this to change somewhat, but it's still unfortunately an issue.*
 
-**→ Open source and non-profit** <br />
-Anyone can modify, redistribute or see the source code of Sol. If you have privacy concerns or curiosity, you can also see for yourself that you are _not_ being spied on.
+### Free and open source
+Anyone can view, modify and redistribute the source code. If you have privacy concerns or curiosity, you can ensure yourself that the code is not doing anything malicious.
 
-**→ Active development** <br />
-Suggested features are always being considered and usually added.
+### Active development
+Suggested features are always being considered and often added.
 
 ## 📖 Features
 
@@ -48,13 +48,14 @@ Suggested features are always being considered and usually added.
 - Timers
 - Resource pack folders
 - Replay Mod (using the actual [Replay Mod](https://github.com/ReplayMod/ReplayMod))
-- Entity Culling (using an outdated version of tr7zw's [Entity Culling](https://github.com/tr7zw/EntityCulling) mod!!, since the owner adopted a more restrictive license)
+- Entity Culling (using an outdated version of tr7zw's [Entity Culling](https://github.com/tr7zw/EntityCulling) mod!!, since the owner adopted a more restrictive license) (to be rewritten)
 
 **..and even more!**
 
 ## Alternatives
 
-- [<img src="https://axolotlclient.github.io/images/icon.png" alt="AC icon" width="18"> AxolotlClient](https://axolotlclient.github.io/) - useful if you want to play on newer versions of Minecraft
+- [<img src="https://axolotlclient.github.io/images/icon.png" alt="AC icon" width="18"> AxolotlClient](https://axolotlclient.github.io/) - has a more vanilla style, and useful if you want to play on newer versions of Minecraft. It is used with a mod loader unlike Sol Client which makes it more flexible.
+- Mod loaders, such as Quilt, Fabric and Forge.
 
 ## 💼 License
 
@@ -80,11 +81,11 @@ To run it, execute the following command: `./gradlew runClient`.
 
 ## 📝 Testing
 
-Before a new release is created, it must be tested if Sol:
+Before a new release is created, these things should ideally be tested:
 
 - Compiles
 - Runs in development
 - Runs the first or second time the client is game is launched on any machine
-- Works in normal gameplay, with the new features enabled. This may mean releases take longer, but it is probably worth it
+- Works in normal gameplay, with the new features enabled.
 - The old features still work correctly
 - Plays nicely with Watchdog (and other anticheats)

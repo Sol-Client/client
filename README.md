@@ -7,19 +7,24 @@
 An **open source**, non-hacked client for Minecraft 1.8.9 (newer versions coming in the future)
 
 <a href="https://www.java.com"><img alt="Java" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/built-with/java_vector.svg"></a>
-<a href="https://discord.gg/TSAkhgXNbK"><img alt="Join Discord" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg"></a>
+<a href="https://discord.gg/TSAkhgXNbK"><img alt="Discord Server" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg"></a>
 <a href="https://sol-client.github.io"><img alt="Website" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/documentation/website_vector.svg"></a>
 
 </div>
 
-## 🤔 Why does this exist? I mean, Lunar seems to be good enough..
+## 🤔 Why Sol over others?
 
-Sol Client is one of the _very very_ few Minecraft 1.8 clients that is open source and privacy friendly. This means that the code written for client to be made is available to the public, thus it's safe. So, anyone could make sure that Sol is not a virus or it doesn't spy on you. Lunar on the hand is the exact opposite. It is propriety software and **it spies on you** and they even say it on their website:
+**→ Easy to use** <br />
+Everything you want to have is where want it to be. No confusing options, insatllation etc. It _just works_
 
-**From: https://www.lunarclient.com/privacy**
-> We may also **create or collect device-identifiable information** (DII), such as cookies, statistical identifiers, **unique device and advertising identifiers**, **usernames**, and similar identifiers that are linkable to a browser or device. From these platforms, we may also receive other information, such as **your IP address**, user agent, timestamps, **precise and imprecise geolocation**, **sensor data**, **apps**, fonts, battery life information and **screen size**.
+**→ Consistent** <br />
+One menu, one UI. Everything's listed the same way.
 
-Not to mention the active developmenrt and that **every** suggested feature is considered and most likely added or planned to be added.
+**→ Open source and non-profit** <br />
+Anyone can modify, redistribute or see the source code of Sol. If you have privacy concerns or curiosity, you can also see for yourself that you are _not_ being spied on.
+
+**→ Active development** <br />
+_Every single_ suggested feature is considered and most likely added or planned to be added.
 
 ## 📖 Features
 
@@ -33,7 +38,7 @@ Not to mention the active developmenrt and that **every** suggested feature is c
 - Hypixel additions
 - OptiFine (optional, from [its website](https://optifine.net/downloads))
 - Custom crosshairs
-- Quick Play (uses games from robere2's mod)
+- Quick Play (inspired from robere2's [QuickPlay](https://github.com/QuickplayMod/quickplay))
 - Better item tooltips (like the ones in Bedrock Edition)
 - Chat symbol picker
 - Chat channel picker and status
@@ -55,7 +60,9 @@ Not to mention the active developmenrt and that **every** suggested feature is c
 
 Sol Client is Free and Open Source Software (FOSS), licensed under the [GNU General Public License](LICENSE),<br />version 3.0
 
-<details><summary><h2>🧪 Contributing</h2></summary>
+---
+
+## 🧪 Contributing
 
 If you want to contribute features, use the [`development`](https://github.com/Sol-Client/client) branch. If you want to contribute bug fixes, use the [`stable`](https://github.com/Sol-Client/client/tree/stable) branch.
 
@@ -71,9 +78,9 @@ To compile the client, run: `./gradlew build`
 
 To run it, execute the following command: `./gradlew runClient`.
 
-### Testing
+## 📝 Testing
 
-Before a new release is created, there must be tested if Sol:
+Before a new release is created, it must be tested if Sol:
 
 - Compiles
 - Runs in development
@@ -81,5 +88,3 @@ Before a new release is created, there must be tested if Sol:
 - Works in normal gameplay, with the new features enabled. This may mean releases take longer, but it is probably worth it
 - The old features still work correctly
 - Plays nicely with Watchdog (and other anticheats)
-
-</details>

@@ -18,7 +18,7 @@ An **open source**, non-hacked client for Minecraft 1.8.9 (newer versions coming
 Designed to be easy for less advanced players! Mod loaders have advantages, but Sol Client is designed to work with good compatibility out of the box.
 
 ### Consistent
-All modules use a consistent style unlike what is often found in modpacks. *I want this to change somewhat, but it's still unfortunately an issue.*
+All modules use a consistent style unlike what is often found in modpacks. *I would like this to change, but it's still unfortunately an issue.*
 
 ### Free and open source
 Anyone can view, modify and redistribute the source code. If you have privacy concerns or curiosity, you can ensure yourself that the code is not doing anything malicious.

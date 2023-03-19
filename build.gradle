@@ -21,7 +21,10 @@ repositories {
 }
 
 configurations {
+	shadeOnly
 	shade
+	implementation.extendsFrom shade
+	shadeOnly.extendsFrom shade
 	exportOnly
 	export
 	implementation.extendsFrom export
@@ -35,24 +38,22 @@ dependencies {
 
 	def occlusionCulling = files('libs/occlusionculling.jar')
 
-	export(libs.mixin) { transitive = false }
-	implementation occlusionCulling
+	shade(libs.mixin) { transitive = false }
 	shade occlusionCulling
-	export(libs.hypixel.api) { transitive = false }
-	export libs.discord.game.sdk4j
-	export libs.java.websocket
-	export libs.cosmetica.dot.java
-	export libs.access.widener
-	export libs.lwjgl.patched
+	shade(libs.hypixel.api) { transitive = false }
+	shade libs.discord.game.sdk4j
+	shade libs.java.websocket
+	shade libs.cosmetica.dot.java
+	shade libs.access.widener
 	shade libs.lwjgl.patched
-	export libs.tiny.remapper
+	shade libs.tiny.remapper
 	implementation libs.devauth
 
-	export libs.asm
-	export libs.asm.analysis
-	export libs.asm.commons
-	export libs.asm.tree
-	export libs.asm.util
+	implementation libs.asm
+	implementation libs.asm.analysis
+	implementation libs.asm.commons
+	implementation libs.asm.tree
+	implementation libs.asm.util
 
 	annotationProcessor libs.asm
 	annotationProcessor libs.asm.analysis
@@ -63,7 +64,7 @@ dependencies {
 	def remapper = new ReplayModRemapper(project)
 	remapper.prepare()
 	implementation files(remapper.createNamedMapped())
-	shade files(remapper.createIntermediaryMapped())
+	shadeOnly files(remapper.createIntermediaryMapped())
 
 	switch (OperatingSystem.current()) {
 		case OperatingSystem.LINUX:
@@ -94,14 +95,14 @@ dependencies {
 		transitive = false
 	}
 
-	exportOnly variantOf(libs.lwjgl) { classifier 'natives-windows' }
-	exportOnly variantOf(libs.lwjgl) { classifier 'natives-linux' }
-	exportOnly variantOf(libs.lwjgl) { classifier 'natives-macos' }
-	exportOnly variantOf(libs.lwjgl) { classifier 'natives-macos-arm64' }
-	exportOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-windows' }
-	exportOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-linux' }
-	exportOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos' }
-	exportOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos-arm64' }
+	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-windows' }
+	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-linux' }
+	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-macos' }
+	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-macos-arm64' }
+	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-windows' }
+	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-linux' }
+	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos' }
+	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos-arm64' }
 }
 
 loom {
@@ -146,7 +147,7 @@ shadowJar {
 	from('../LICENSE') {
 		rename { "${it}_${name}" }
 	}
-	configurations = [project.configurations.shade]
+	configurations = [project.configurations.shadeOnly]
 	classifier 'dev'
 	destinationDirectory.set file("$buildDir/devlibs")
 }

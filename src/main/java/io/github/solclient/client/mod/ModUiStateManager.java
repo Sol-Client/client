@@ -69,7 +69,7 @@ public final class ModUiStateManager {
 		JsonObject result = new JsonObject();
 
 		JsonArray pins = new JsonArray();
-		this.pins.forEach((mod) -> pins.add(mod.getId()));
+		this.pins.forEach((mod) -> pins.add(new JsonPrimitive(mod.getId())));
 		result.add("pins", pins);
 
 		JsonArray collapsedCategories = new JsonArray();

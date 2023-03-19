@@ -24,7 +24,7 @@ import io.github.solclient.client.mod.impl.itemphysics.ItemData;
 import lombok.*;
 import net.minecraft.entity.ItemEntity;
 
-public class ItemPhysicsMixins {
+public class ItemPhysicsModMixins {
 
 	@Getter
 	@Setter

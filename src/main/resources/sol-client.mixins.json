@@ -120,6 +120,7 @@
 		"mod.V1_7VisualsModMixins$ItemRendererMixin",
 		"mod.V1_7VisualsModMixins$GameRendererMixin",
 		"mod.V1_7VisualsModMixins$LayerArmorBaseMixin",
-		"mod.ItemPhysicsMixins$ItemEntityMixin"
+		"mod.ItemPhysicsModMixins$ItemEntityMixin",
+		"mod.CrosshairModMixins$GameRendererMixin"
 	]
 }

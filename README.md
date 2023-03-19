@@ -24,7 +24,7 @@ One menu, one UI. Everything's listed the same way.
 Anyone can modify, redistribute or see the source code of Sol. If you have privacy concerns or curiosity, you can also see for yourself that you are _not_ being spied on.
 
 **→ Active development** <br />
-_Every single_ suggested feature is considered and most likely added or planned to be added.
+Suggested features are always being considered and usually added.
 
 ## 📖 Features
 

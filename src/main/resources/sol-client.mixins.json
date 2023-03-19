@@ -118,10 +118,12 @@
 		"mod.TweaksModMixins$ParticleManagerMixin",
 		"mod.TweaksModMixins$MouseInputMixin",
 		"mod.V1_7VisualsModMixins$ItemRendererMixin",
+		"mod.V1_7VisualsModMixins$HeldItemRendererMixin",
 		"mod.V1_7VisualsModMixins$GameRendererMixin",
 		"mod.V1_7VisualsModMixins$LayerArmorBaseMixin",
-		"mod.CrosshairModMixins$GameRendererMixin",
+		"mod.V1_7VisualsModMixins$BiPedModelMixin",
 		"mod.V1_7VisualsModMixins$DebugHudMixin",
-		"mod.ItemPhysicsMixins$ItemEntityMixin"
+		"mod.CrosshairModMixins$GameRendererMixin",
+		"mod.ItemPhysicsModMixins$ItemEntityMixin"
 	]
 }

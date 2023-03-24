@@ -57,7 +57,7 @@ sol_client.mod.sol_client.option.smoothScrolling=Sanftes Scrollen
 sol_client.mod.sol_client.option.fancyFont=HD Schriftart
 
 sol_client.mod.fps.name=FPS
-sol_client.mod.fps.description=FPS (Frames pro Sekunde).
+sol_client.mod.fps.description=FPS (Bilder pro Sekunde).
 
 sol_client.mod.coordinates.name=Koordinaten
 sol_client.mod.coordinates.description=Deine Koordinaten anzeigen.

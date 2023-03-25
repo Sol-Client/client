@@ -31,7 +31,7 @@ sol_client.key.category=Sol Client
 sol_client.key.accept_request=Anfrage annehmen
 sol_client.key.dismiss_request=Anfrage 
 
-sol_client.mod.generic.option.enabled=Ermöglicht
+sol_client.mod.generic.option.enabled=Aktivieren
 sol_client.mod.hud.option.scale=Größe
 sol_client.mod.simple_hud.option.background=Hintergrund
 sol_client.mod.simple_hud.option.backgroundColour=Hintergrundfarbe
@@ -156,7 +156,7 @@ sol_client.mod.chat.option.closedHeight=Geschlossene Höhe
 sol_client.mod.chat.option.openHeight=Offene Höhe
 sol_client.mod.chat.option.links=Links
 sol_client.mod.chat.option.promptLinks=Prompt Links
-sol_client.mod.chat.option.chatFilter=Chatfilter ermöglichen
+sol_client.mod.chat.option.chatFilter=Chatfilter aktivieren
 sol_client.mod.chat.option.filteredWordsContent=Gefilterte Wörter
 
 sol_client.mod.tab_list.name=Tabliste
@@ -267,7 +267,7 @@ sol_client.mod.zoom.option.factor=Zoom Faktor
 sol_client.mod.replay.name=Wiedergabe
 sol_client.mod.replay.description=Nehme und wiedergebe deinen Gameplay auf.
 
-sol_client.mod.replay.option.enableNotifications=Benachrichtigungen ermöglichen
+sol_client.mod.replay.option.enableNotifications=Benachrichtigungen aktivieren
 sol_client.mod.replay.option.recordSingleplayer=Singleplayer aufnehmen
 sol_client.mod.replay.option.recordServer=Server aufnehmen
 sol_client.mod.replay.option.recordingIndicator=Aufnahmeanzeige

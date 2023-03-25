@@ -28,6 +28,7 @@ import org.apache.logging.log4j.LogManager;
 
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.option.*;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
@@ -74,7 +75,7 @@ public class TextFileOption extends ModOption<String> {
 		Component container = createDefaultComponent();
 
 		ButtonComponent editFile = new ButtonComponent((component, defaultText) -> I18n.translate(editText),
-				Component.getTheme().button(), Component.getTheme().fg()).width(50).height(16);
+				Theme.button(), Theme.fg()).width(50).height(16);
 		container.add(editFile, new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
 
 		editFile.onClick((info, button) -> {

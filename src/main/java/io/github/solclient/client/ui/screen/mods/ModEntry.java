@@ -25,6 +25,7 @@ import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.*;
 import io.github.solclient.client.mod.*;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -49,8 +50,9 @@ public class ModEntry extends ColouredComponent {
 	private boolean generic;
 
 	public ModEntry(Mod mod, ModsScreenComponent screen, boolean pinnedCategory) {
-		super(new AnimatedColourController((component,
-				defaultColour) -> ((ModEntry) component).isFullyHovered() ? theme.buttonHover : theme.button));
+		super(new AnimatedColourController(
+				(component, defaultColour) -> ((ModEntry) component).isFullyHovered() ? Theme.getCurrent().buttonHover
+						: Theme.getCurrent().button));
 
 		this.mod = mod;
 		this.screen = screen;
@@ -68,7 +70,7 @@ public class ModEntry extends ColouredComponent {
 			if (generic)
 				return "mod/generic";
 			return result;
-		}, 16, 16, theme.fg()),
+		}, 16, 16, Theme.fg()),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE,
 						(component, defaultBounds) -> new Rectangle(defaultBounds.getY() + 3, defaultBounds.getY(),
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
@@ -102,8 +104,9 @@ public class ModEntry extends ColouredComponent {
 						defaultBounds.getWidth(), defaultBounds.getHeight()));
 
 		add(pinButton = new IconComponent((component, defaultIcon) -> mod.isPinned() ? "pinned" : "pin", 8, 8,
-				new AnimatedColourController((component, defaultColour) -> component.isHovered() ? theme.fgButtonHover
-						: mod.isPinned() ? theme.fgButton : new Colour(100, 100, 100))),
+				new AnimatedColourController(
+						(component, defaultColour) -> component.isHovered() ? Theme.getCurrent().fgButtonHover
+								: mod.isPinned() ? Theme.getCurrent().fgButton : new Colour(100, 100, 100))),
 				pinBounds);
 
 		add(settingsButton = new ModSettingsButton(), new AlignedBoundsController(Alignment.END, null));
@@ -112,12 +115,12 @@ public class ModEntry extends ColouredComponent {
 
 		stripeColour = new AnimatedColourController((component, defaultColour) -> {
 			if (mod.isEnabled()) {
-				return isFullyHovered() ? theme.accentHover : theme.accent;
+				return isFullyHovered() ? Theme.getCurrent().accentHover : Theme.getCurrent().accent;
 			} else if (mod.isBlocked()) {
-				return isFullyHovered() ? theme.dangerHover : theme.danger;
+				return isFullyHovered() ? Theme.getCurrent().dangerHover : Theme.getCurrent().danger;
 			}
 
-			return isFullyHovered() ? theme.buttonSecondaryHover : theme.buttonSecondary;
+			return isFullyHovered() ? Theme.getCurrent().buttonSecondaryHover : Theme.getCurrent().buttonSecondary;
 		});
 	}
 
@@ -232,7 +235,7 @@ public class ModEntry extends ColouredComponent {
 	private final class ModSettingsButton extends ColouredComponent {
 
 		public ModSettingsButton() {
-			super(theme.buttonSecondary());
+			super(Theme.buttonSecondary());
 			add(new IconComponent(mod.isBlocked() ? "lock" : "settings", 16, 16),
 					new AlignedBoundsController(Alignment.CENTRE, Alignment.CENTRE));
 		}

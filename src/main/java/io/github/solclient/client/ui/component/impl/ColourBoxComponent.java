@@ -20,6 +20,7 @@ package io.github.solclient.client.ui.component.impl;
 
 import org.lwjgl.nanovg.NanoVG;
 
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.data.*;
@@ -43,8 +44,8 @@ public class ColourBoxComponent extends ColouredComponent {
 		NanoVG.nvgFill(nvg);
 
 
-		if (getColour().needsOutline(theme.bg)) {
-			NanoVG.nvgStrokeColor(nvg, theme.fg.nvg());
+		if (getColour().needsOutline(Theme.getCurrent().bg)) {
+			NanoVG.nvgStrokeColor(nvg, Theme.getCurrent().fg.nvg());
 			NanoVG.nvgStrokeWidth(nvg, 1);
 			NanoVG.nvgStroke(nvg);
 		}

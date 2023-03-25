@@ -22,8 +22,10 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.ui.component.controller.Controller;
+import io.github.solclient.client.util.data.Rectangle;
 import net.minecraft.util.math.MathHelper;
 
 public class ScrollListComponent extends ListComponent {
@@ -48,7 +50,7 @@ public class ScrollListComponent extends ListComponent {
 			return;
 		}
 
-		parent.add(scrollbar = new BlockComponent(theme.buttonSecondary, 1.5F, 0) {
+		parent.add(scrollbar = new BlockComponent(Theme.buttonSecondary(), Controller.of(1.5F), Controller.of(0F)) {
 
 			@Override
 			public void render(ComponentRenderInfo info) {

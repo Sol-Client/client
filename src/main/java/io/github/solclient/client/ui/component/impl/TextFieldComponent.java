@@ -24,6 +24,7 @@ import org.lwjgl.nanovg.NanoVG;
 
 import com.google.common.base.Predicate;
 
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.data.*;
@@ -114,7 +115,7 @@ public class TextFieldComponent extends Component {
 	public void render(ComponentRenderInfo info) {
 		if (underline) {
 			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgFillColor(nvg, theme.button.nvg());
+			NanoVG.nvgFillColor(nvg, Theme.getCurrent().button.nvg());
 			NanoVG.nvgRoundedRect(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), getBounds().getHeight() / 2);
 			NanoVG.nvgFill(nvg);
 		}
@@ -147,7 +148,7 @@ public class TextFieldComponent extends Component {
 
 		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
 
-		NanoVG.nvgFillColor(nvg, (hasPlaceholder ? new Colour(0xFF888888) : theme.fg).nvg());
+		NanoVG.nvgFillColor(nvg, (hasPlaceholder ? new Colour(0xFF888888) : Theme.getCurrent().fg).nvg());
 		regularFont.renderString(nvg, hasPlaceholder ? I18n.translate(placeholder) : text, textOffset, y);
 
 		if (focused && ticks / 12 % 2 == 0) {
@@ -155,7 +156,7 @@ public class TextFieldComponent extends Component {
 
 			float relativeCursorPosition = regularFont.getWidth(nvg, text.substring(0, cursor));
 			NanoVG.nvgBeginPath(nvg);
-			NanoVG.nvgFillColor(nvg, theme.fg.nvg());
+			NanoVG.nvgFillColor(nvg, Theme.getCurrent().fg.nvg());
 			NanoVG.nvgRect(nvg, textOffset + relativeCursorPosition, y, 0.5F, 10);
 			NanoVG.nvgFill(nvg);
 

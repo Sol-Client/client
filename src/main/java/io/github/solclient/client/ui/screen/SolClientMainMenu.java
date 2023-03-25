@@ -24,6 +24,7 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -76,8 +77,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 		public MainMenuComponent() {
 
-			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.singleplayer"), theme.accent(),
-					theme.accentFg()).withIcon("person").width(200).onClick((info, button) -> {
+			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.singleplayer"), Theme.accent(),
+					Theme.accentFg()).withIcon("person").width(200).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new SelectWorldScreen(screen));
@@ -88,8 +89,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, getStartY(screen) + 44,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.multiplayer"), theme.accent(),
-					theme.accentFg()).withIcon("people").width(200).onClick((info, button) -> {
+			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.multiplayer"), Theme.accent(),
+					Theme.accentFg()).withIcon("people").width(200).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new MultiplayerScreen(screen));
@@ -102,7 +103,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 			// 🫧
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg()).withIcon("language")
+			add(new ButtonComponent((component, defaultText) -> "", Theme.button(), Theme.fg()).withIcon("language")
 					.width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
@@ -123,7 +124,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 						return new Rectangle(bubblesX, bubblesY, defaultBounds.getWidth(), defaultBounds.getHeight());
 					});
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg()).withIcon("options")
+			add(new ButtonComponent((component, defaultText) -> "", Theme.button(), Theme.fg()).withIcon("options")
 					.width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
@@ -135,7 +136,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					}), (component, defaultBounds) -> new Rectangle(bubblesX + 26, bubblesY, defaultBounds.getWidth(),
 							defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg()).withIcon("mods")
+			add(new ButtonComponent((component, defaultText) -> "", Theme.button(), Theme.fg()).withIcon("mods")
 					.width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
@@ -147,7 +148,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					}), (component, defaultBounds) -> new Rectangle(bubblesX + 52, bubblesY,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), Controller.of(Colour.WHITE))
+			add(new ButtonComponent((component, defaultText) -> "", Theme.button(), Controller.of(Colour.WHITE))
 					.withIcon("replay_menu").width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
@@ -160,7 +161,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					(component, defaultBounds) -> new Rectangle(bubblesX + 78, bubblesY, defaultBounds.getWidth(),
 							defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.danger(), Controller.of(Colour.WHITE))
+			add(new ButtonComponent((component, defaultText) -> "", Theme.danger(), Controller.of(Colour.WHITE))
 					.onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);

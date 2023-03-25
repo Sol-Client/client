@@ -19,6 +19,7 @@
 package io.github.solclient.client.mod.option.impl;
 
 import io.github.solclient.client.mod.option.*;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -46,16 +47,16 @@ public class EnumOption<E extends Enum<?>> extends ModOption<E> {
 
 		Component label = new LabelComponent((component, defaultText) -> getValue().toString(),
 				new AnimatedColourController(
-						(component, defaultColour) -> component.isHovered() ? Component.getTheme().fgButtonHover
-								: Component.getTheme().fgButton));
+						(component, defaultColour) -> component.isHovered() ? Theme.getCurrent().fgButtonHover
+								: Theme.getCurrent().fgButton));
 		Component previous = new IconComponent("prev", 8, 8,
 				new AnimatedColourController(
-						(component, defaultColour) -> component.isHovered() ? Component.getTheme().fgButtonHover
-								: Component.getTheme().fgButton));
+						(component, defaultColour) -> component.isHovered() ? Theme.getCurrent().fgButtonHover
+								: Theme.getCurrent().fgButton));
 		Component next = new IconComponent("next", 8, 8,
 				new AnimatedColourController(
-						(component, defaultColour) -> component.isHovered() ? Component.getTheme().fgButtonHover
-								: Component.getTheme().fgButton));
+						(component, defaultColour) -> component.isHovered() ? Theme.getCurrent().fgButtonHover
+								: Theme.getCurrent().fgButton));
 
 		container.add(label,
 				new AlignedBoundsController(Alignment.END, Alignment.CENTRE,

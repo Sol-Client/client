@@ -22,9 +22,9 @@ import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.quickplay.database.QuickPlayGame;
-import io.github.solclient.client.ui.ScreenAnimation;
+import io.github.solclient.client.ui.*;
 import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
+import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
@@ -79,7 +79,7 @@ public class QuickPlayPalette extends ComponentScreen {
 		private QuickPlayOptionComponent selected;
 
 		public QuickPlayPaletteComponent(QuickPlayMod mod) {
-			super(theme.bg, 12, 0);
+			super(Theme.bg(), Controller.of(12F), Controller.of(0F));
 			this.mod = mod;
 			scroll = new QuickPlayScroll(this);
 			add(scroll, (component, defaultBounds) -> new Rectangle(0, 30, getBounds().getWidth(),

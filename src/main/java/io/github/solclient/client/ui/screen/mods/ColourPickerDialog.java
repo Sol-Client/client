@@ -26,6 +26,7 @@ import org.lwjgl.nanovg.*;
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.mod.option.impl.ColourOption;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -60,7 +61,7 @@ public class ColourPickerDialog extends BlockComponent {
 	private TextFieldComponent a;
 
 	public ColourPickerDialog(ColourOption option, Colour colour, Consumer<Colour> callback) {
-		super(theme.bg, 12, 0);
+		super(Theme.bg(), Controller.of(12F), Controller.of(0F));
 
 		this.colour = colour;
 		this.callback = callback;
@@ -86,11 +87,11 @@ public class ColourPickerDialog extends BlockComponent {
 		add(done,
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 						(component, defaultBounds) -> new Rectangle(
-								defaultBounds.getX() - (option.canApplyToAll() ? 53 : 0),
-								defaultBounds.getY() - 8, defaultBounds.getWidth(), defaultBounds.getHeight())));
+								defaultBounds.getX() - (option.canApplyToAll() ? 53 : 0), defaultBounds.getY() - 8,
+								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 		if (option.canApplyToAll()) {
-			add(new ButtonComponent("sol_client.mod.screen.apply_to_all", theme.button(), theme.fg())
+			add(new ButtonComponent("sol_client.mod.screen.apply_to_all", Theme.button(), Theme.fg())
 					.withIcon("apply_all").onClick((info, button) -> {
 						if (button == 0) {
 							parent.setDialog(null);
@@ -227,11 +228,11 @@ public class ColourPickerDialog extends BlockComponent {
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRoundedRect(nvg, PICKER_X + hueX - 2, PICKER_Y + HUE_Y - 1, 4, SLIDER_HEIGHT + 2, 1);
-		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
+		NanoVG.nvgFillColor(nvg, Theme.getCurrent().fg.nvg());
 		NanoVG.nvgFill(nvg);
 
-		MinecraftUtils.renderCheckerboard(nvg, theme.transparent1, theme.transparent2, PICKER_X, PICKER_Y + OPACITY_Y,
-				30, 2, 5);
+		MinecraftUtils.renderCheckerboard(nvg, Theme.getCurrent().transparent1, Theme.getCurrent().transparent2,
+				PICKER_X, PICKER_Y + OPACITY_Y, 30, 2, 5);
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRect(nvg, PICKER_X, PICKER_Y + OPACITY_Y, PICKER_WIDTH, SLIDER_HEIGHT);
@@ -244,25 +245,25 @@ public class ColourPickerDialog extends BlockComponent {
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRoundedRect(nvg, PICKER_X + opacityX - 2, PICKER_Y + OPACITY_Y - 1, 4, SLIDER_HEIGHT + 2, 1);
-		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
+		NanoVG.nvgFillColor(nvg, Theme.getCurrent().fg.nvg());
 		NanoVG.nvgFill(nvg);
 
-		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
+		NanoVG.nvgFillColor(nvg, Theme.getCurrent().fg.nvg());
 		regularFont.renderString(nvg, I18n.translate("sol_client.hex"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 31.5F);
 		regularFont.renderString(nvg, I18n.translate("sol_client.rgb"), PICKER_X + PICKER_WIDTH + 12, PICKER_Y + 50.5F);
 		regularFont.renderString(nvg, I18n.translate("sol_client.alpha"), PICKER_X + PICKER_WIDTH + 12,
 				PICKER_Y + 69.5F);
 
-		MinecraftUtils.renderCheckerboard(nvg, theme.transparent1, theme.transparent2, PICKER_X + PICKER_WIDTH + 12,
-				PICKER_Y, 27, 5, 4);
+		MinecraftUtils.renderCheckerboard(nvg, Theme.getCurrent().transparent1, Theme.getCurrent().transparent2,
+				PICKER_X + PICKER_WIDTH + 12, PICKER_Y, 27, 5, 4);
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgRect(nvg, PICKER_X + PICKER_WIDTH + 12, PICKER_Y, 108, 20);
 		NanoVG.nvgFillColor(nvg, colour.nvg());
 		NanoVG.nvgFill(nvg);
 
-		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
-		NanoVG.nvgStrokeColor(nvg, theme.fg.nvg());
+		NanoVG.nvgFillColor(nvg, Theme.getCurrent().fg.nvg());
+		NanoVG.nvgStrokeColor(nvg, Theme.getCurrent().fg.nvg());
 
 		String previousText = I18n.translate("sol_client.previous_colours");
 		regularFont.renderString(nvg, previousText, PREVIOUS_X + 35 - regularFont.getWidth(nvg, previousText) / 2,
@@ -278,7 +279,7 @@ public class ColourPickerDialog extends BlockComponent {
 				NanoVG.nvgFillColor(nvg, colour.nvg());
 				NanoVG.nvgFill(nvg);
 
-				if (colour.needsOutline(theme.bg))
+				if (colour.needsOutline(Theme.getCurrent().bg))
 					NanoVG.nvgStroke(nvg);
 
 				index++;

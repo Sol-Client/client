@@ -22,6 +22,7 @@ import org.lwjgl.nanovg.*;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -73,7 +74,7 @@ public final class ModCategoryComponent extends ListComponent {
 	private final class Header extends ColouredComponent {
 
 		public Header() {
-			super(theme.fgButton());
+			super(Theme.fgButton());
 			add(new LabelComponent(Controller.of(category.toString()), colour).scaled(0.8F),
 					new AlignedBoundsController(Alignment.START, Alignment.CENTRE,
 							(component, bounds) -> bounds.offset(8, 0)));

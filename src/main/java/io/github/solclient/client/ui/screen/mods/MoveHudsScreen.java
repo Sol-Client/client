@@ -27,6 +27,7 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
@@ -129,7 +130,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 
 				if (selectedHuds.contains(hud)) {
 					NanoVG.nvgBeginPath(nvg);
-					NanoVG.nvgFillColor(nvg, theme.accent.withAlpha(50).nvg());
+					NanoVG.nvgFillColor(nvg, Theme.getCurrent().accent.withAlpha(50).nvg());
 					NanoVG.nvgRect(nvg, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 					NanoVG.nvgFill(nvg);
 				}
@@ -137,26 +138,26 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				NanoVG.nvgBeginPath(nvg);
 				NanoVG.nvgRect(nvg, bounds.getX() + lineWidth / 2, bounds.getY() + lineWidth / 2,
 						bounds.getWidth() - lineWidth, bounds.getHeight() - lineWidth);
-				NanoVG.nvgStrokeColor(nvg, theme.accent.nvg());
+				NanoVG.nvgStrokeColor(nvg, Theme.getCurrent().accent.nvg());
 				NanoVG.nvgStroke(nvg);
 			}
 
 			if (selectRect != null) {
 				NanoVG.nvgBeginPath(nvg);
-				NanoVG.nvgFillColor(nvg, theme.accent.withAlpha(100).nvg());
+				NanoVG.nvgFillColor(nvg, Theme.getCurrent().accent.withAlpha(100).nvg());
 				NanoVG.nvgRect(nvg, selectRect.getX(), selectRect.getY(), selectRect.getWidth(),
 						selectRect.getHeight());
 				NanoVG.nvgFill(nvg);
 
 				NanoVG.nvgBeginPath(nvg);
-				NanoVG.nvgStrokeColor(nvg, theme.accent.nvg());
+				NanoVG.nvgStrokeColor(nvg, Theme.getCurrent().accent.nvg());
 				NanoVG.nvgRect(nvg, selectRect.getX() - lineWidth / 2, selectRect.getY() - lineWidth / 2,
 						selectRect.getWidth(), selectRect.getHeight());
 				NanoVG.nvgStroke(nvg);
 			}
 
 			if (dragHudStart != null && selectedHuds.size() == 1) {
-				NanoVG.nvgStrokeColor(nvg, theme.accent.nvg());
+				NanoVG.nvgStrokeColor(nvg, Theme.getCurrent().accent.nvg());
 
 				HudElement hud = selectedHuds.get(0);
 				Position targetPosition = hud.getPosition();

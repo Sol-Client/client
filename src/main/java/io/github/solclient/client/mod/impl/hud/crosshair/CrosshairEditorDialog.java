@@ -43,7 +43,7 @@ public final class CrosshairEditorDialog extends Component {
 
 		add(new PixelMatrixComponent(), new AlignedBoundsController(Alignment.CENTRE, Alignment.START));
 
-		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("copy").width(20).onClick((info, button) -> {
+		add(new ButtonComponent("", Theme.button(), Theme.fg()).withIcon("copy").width(20).onClick((info, button) -> {
 			if (button != 0)
 				return false;
 
@@ -52,7 +52,7 @@ public final class CrosshairEditorDialog extends Component {
 			return true;
 		}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 				(component, defaultBounds) -> defaultBounds.offset(-25, 0)));
-		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("paste").width(20).onClick((info, button) -> {
+		add(new ButtonComponent("", Theme.button(), Theme.fg()).withIcon("paste").width(20).onClick((info, button) -> {
 			if (button != 0)
 				return false;
 
@@ -61,7 +61,7 @@ public final class CrosshairEditorDialog extends Component {
 			return true;
 		}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 				(component, defaultBounds) -> defaultBounds.offset(0, 0)));
-		add(new ButtonComponent("", theme.button(), theme.fg()).withIcon("clear").width(20).onClick((info, button) -> {
+		add(new ButtonComponent("", Theme.button(), Theme.fg()).withIcon("clear").width(20).onClick((info, button) -> {
 			if (button != 0)
 				return false;
 
@@ -107,7 +107,7 @@ public final class CrosshairEditorDialog extends Component {
 						boolean square = x % 2 == 0;
 						if (y % 2 == 0)
 							square = !square;
-						colour = square ? theme.transparent1 : theme.transparent2;
+						colour = square ? Theme.getCurrent().transparent1 : Theme.getCurrent().transparent2;
 					}
 
 					NanoVG.nvgBeginPath(nvg);

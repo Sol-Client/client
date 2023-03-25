@@ -22,6 +22,7 @@ import java.util.function.*;
 
 import org.lwjgl.nanovg.NanoVG;
 
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.MinecraftUtils;
@@ -37,9 +38,9 @@ public final class ToggleComponent extends BlockComponent {
 	public ToggleComponent(BooleanSupplier getter, Consumer<Boolean> setter) {
 		super(new AnimatedColourController((component, defaultColour) -> {
 			if (getter.getAsBoolean())
-				return component.isHovered() ? theme.accentHover : theme.accent;
+				return component.isHovered() ? Theme.getCurrent().accentHover : Theme.getCurrent().accent;
 
-			return component.isHovered() ? theme.buttonHover : theme.button;
+			return component.isHovered() ? Theme.getCurrent().buttonHover : Theme.getCurrent().button;
 		}), (component, defaultRadius) -> component.getBounds().getHeight() / 2F,
 				(component, defaultStrokeWidth) -> 0F);
 
@@ -48,12 +49,12 @@ public final class ToggleComponent extends BlockComponent {
 
 		handleProgress = new AnimatedFloatController((component, ignored) -> getter.getAsBoolean() ? 1F : 0F, 300);
 		handleColour = (component, defaultValue) -> {
-			Colour start = theme.accentFg;
-			Colour end = theme.fg;
+			Colour start = Theme.getCurrent().accentFg;
+			Colour end = Theme.getCurrent().fg;
 			float progress = handleProgress.get(component);
 			if (getter.getAsBoolean()) {
-				start = theme.fg;
-				end = theme.accentFg;
+				start = Theme.getCurrent().fg;
+				end = Theme.getCurrent().accentFg;
 			} else
 				progress = 1 - progress;
 

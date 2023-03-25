@@ -31,7 +31,7 @@ sol_client.key.category=Sol Client
 sol_client.key.accept_request=Anfrage annehmen
 sol_client.key.dismiss_request=Anfrage 
 
-sol_client.mod.generic.option.enabled=Aktivieren
+sol_client.mod.generic.option.enabled=Aktiviert
 sol_client.mod.hud.option.scale=Größe
 sol_client.mod.simple_hud.option.background=Hintergrund
 sol_client.mod.simple_hud.option.backgroundColour=Hintergrundfarbe

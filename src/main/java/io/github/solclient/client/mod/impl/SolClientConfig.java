@@ -41,7 +41,7 @@ public class SolClientConfig extends ConfigOnlyMod {
 	public static SolClientConfig instance;
 
 	@Expose
-	private boolean dark;
+	private boolean dark = true;
 	private int darkMut;
 	@Expose
 	@Option

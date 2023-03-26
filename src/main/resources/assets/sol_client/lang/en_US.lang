@@ -384,6 +384,7 @@ sol_client.mod.1.7_visuals.option.rod=Fishing rod
 sol_client.mod.1.7_visuals.option.bow=Bow
 sol_client.mod.1.7_visuals.option.armourDamage=Damage effect on armor
 sol_client.mod.1.7_visuals.option.sneaking=Animated sneaking
+sol_client.mod.1.7_visuals.option.debug=Debug overlay
 
 sol_client.mod.item_physics.name=Item Physics
 sol_client.mod.item_physics.description=Add a spinning animation to items.

@@ -62,6 +62,9 @@ public class V1_7VisualsMod extends SolClientMod {
 	@Expose
 	@Option
 	public boolean sneaking = true;
+	@Expose
+	@Option
+	public boolean debug = true;
 
 	public static V1_7VisualsMod instance;
 	public static boolean enabled;

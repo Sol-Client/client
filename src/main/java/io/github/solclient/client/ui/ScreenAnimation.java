@@ -71,7 +71,6 @@ public class ScreenAnimation extends NanoVGManager implements Closeable {
 
 		NanoVGGL2.nvgluBindFramebuffer(nvg, fb);
 		GL11.glViewport(0, 0, mc.width, mc.height);
-		GL11.glClearColor(0, 0, 0, 0);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		MinecraftUtils.withNvg(task, true);
 		mc.getFramebuffer().bind(true);

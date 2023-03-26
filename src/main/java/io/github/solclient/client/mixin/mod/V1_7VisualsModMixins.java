@@ -119,8 +119,7 @@ public abstract class V1_7VisualsModMixins {
 		}
 
 		@Inject(method = "applyEatOrDrinkTransformation", at = @At("HEAD"), cancellable = true)
-		public void oldDrinking(AbstractClientPlayerEntity clientPlayer, float partialTicks,
-				CallbackInfo callback) {
+		public void oldDrinking(AbstractClientPlayerEntity clientPlayer, float partialTicks, CallbackInfo callback) {
 			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.eatingAndDrinking) {
 				callback.cancel();
 				V1_7VisualsMod.oldDrinking(mainHand, clientPlayer, partialTicks);
@@ -131,39 +130,25 @@ public abstract class V1_7VisualsModMixins {
 	@Mixin(GameRenderer.class)
 	public static abstract class GameRendererMixin {
 
-		private float eyeHeightSubtractor;
-		private long lastEyeHeightUpdate;
-
+		private float lastEyeHeight;
 		@Shadow
 		private /* why you not final :( */ MinecraftClient client;
 
 		// this code makes me long for spaghetti
+		// edit: i've eaten it up, yum
 		@Redirect(method = "transformCamera", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeHeight()F"))
-		public float smoothSneaking(Entity entity) {
-			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking && entity instanceof PlayerEntity) {
-				PlayerEntity player = (PlayerEntity) entity;
-				float height = player.getEyeHeight();
-				if (player.isSneaking()) {
-					height += 0.08F;
-				}
-				float actualEyeHeightSubtractor = player.isSneaking() ? 0.08F : 0;
-				long sinceLastUpdate = System.currentTimeMillis() - lastEyeHeightUpdate;
-				lastEyeHeightUpdate = System.currentTimeMillis();
-				if (actualEyeHeightSubtractor > eyeHeightSubtractor) {
-					eyeHeightSubtractor += sinceLastUpdate / 500f;
-					if (actualEyeHeightSubtractor < eyeHeightSubtractor) {
-						eyeHeightSubtractor = actualEyeHeightSubtractor;
-					}
-				} else if (actualEyeHeightSubtractor < eyeHeightSubtractor) {
-					eyeHeightSubtractor -= sinceLastUpdate / 500f;
-					if (actualEyeHeightSubtractor > eyeHeightSubtractor) {
-						eyeHeightSubtractor = actualEyeHeightSubtractor;
-					}
-				}
-				return height - eyeHeightSubtractor;
-			}
-			return entity.getEyeHeight();
+		public float smoothSneaking(Entity entity, float tickDelta) {
+			if (!V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking)
+				return entity.getEyeHeight();
+
+			return lastEyeHeight + (entity.getEyeHeight() - lastEyeHeight) * tickDelta;
 		}
+
+		@Inject(method = "tick", at = @At("HEAD"))
+		public void swap(CallbackInfo callback) {
+			lastEyeHeight = client.getCameraEntity().getEyeHeight();
+		}
+
 	}
 
 	@Mixin(ArmorFeatureRenderer.class)
@@ -193,28 +178,31 @@ public abstract class V1_7VisualsModMixins {
 
 		@Inject(method = "doUse", at = @At("HEAD"))
 		public void rightClickMousePre(CallbackInfo ci) {
-			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine &&
-					MinecraftClient.getInstance().player.abilities.allowModifyWorld &&
-					MinecraftClient.getInstance().player.getStackInHand() != null &&
-					(MinecraftClient.getInstance().player.getStackInHand().getUseAction() != UseAction.NONE ||
-							MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BucketItem ||
-							MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
+			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine
+					&& MinecraftClient.getInstance().player.abilities.allowModifyWorld
+					&& MinecraftClient.getInstance().player.getStackInHand() != null
+					&& (MinecraftClient.getInstance().player.getStackInHand().getUseAction() != UseAction.NONE
+							|| MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BucketItem
+							|| MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
 				isHittingBlock = MinecraftClient.getInstance().interactionManager.isBreakingBlock();
 				MinecraftClient.getInstance().interactionManager.cancelBlockBreaking();
-				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager).setHitting(false);
+				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager)
+						.setHitting(false);
 			}
 		}
 
 		@Inject(method = "doUse", at = @At("RETURN"))
 		public void rightClickMousePost(CallbackInfo ci) {
 			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine
-					&& !MinecraftClient.getInstance().interactionManager.isBreakingBlock() && MinecraftClient.getInstance().player.abilities.allowModifyWorld &&
-					MinecraftClient.getInstance().player.getStackInHand() != null &&
-					(MinecraftClient.getInstance().player.getStackInHand().getUseAction() != UseAction.NONE ||
-							MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BucketItem ||
-							MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
+					&& !MinecraftClient.getInstance().interactionManager.isBreakingBlock()
+					&& MinecraftClient.getInstance().player.abilities.allowModifyWorld
+					&& MinecraftClient.getInstance().player.getStackInHand() != null
+					&& (MinecraftClient.getInstance().player.getStackInHand().getUseAction() != UseAction.NONE
+							|| MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BucketItem
+							|| MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
 				MinecraftClient.getInstance().interactionManager.cancelBlockBreaking();
-				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager).setHitting(isHittingBlock);
+				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager)
+						.setHitting(isHittingBlock);
 			}
 		}
 	}

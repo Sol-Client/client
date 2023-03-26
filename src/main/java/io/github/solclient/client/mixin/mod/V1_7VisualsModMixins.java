@@ -18,34 +18,41 @@
 
 package io.github.solclient.client.mixin.mod;
 
-import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.At.Shift;
-import org.spongepowered.asm.mixin.injection.callback.*;
-
 import com.mojang.blaze3d.platform.GlStateManager;
-
+import io.github.solclient.client.mixin.client.ClientPlayerInteractionManagerAccessor;
 import io.github.solclient.client.mod.impl.V1_7VisualsMod;
 import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.DebugHud;
-import net.minecraft.client.gui.widget.*;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.model.BiPedModel;
-import net.minecraft.client.render.item.*;
+import net.minecraft.client.render.item.HeldItemRenderer;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.Window;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.UseAction;
-import net.minecraft.util.math.*;
-import net.minecraft.world.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.LightType;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public abstract class V1_7VisualsModMixins {
 
@@ -175,6 +182,40 @@ public abstract class V1_7VisualsModMixins {
 		@ModifyConstant(method = "setAngles", constant = @Constant(floatValue = -0.5235988F))
 		private float cancelRotation(float value) {
 			return (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.blocking) ? 0.0F : value;
+		}
+	}
+
+	@Mixin(MinecraftClient.class)
+	public static class MinecraftClientMixin {
+
+		@Unique
+		private boolean isHittingBlock = false;
+
+		@Inject(method = "doUse", at = @At("HEAD"))
+		public void rightClickMousePre(CallbackInfo ci) {
+			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine &&
+					MinecraftClient.getInstance().player.abilities.allowModifyWorld &&
+					MinecraftClient.getInstance().player.getStackInHand() != null &&
+					(MinecraftClient.getInstance().player.getStackInHand().getUseAction() != UseAction.NONE ||
+							MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BucketItem ||
+							MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
+				isHittingBlock = MinecraftClient.getInstance().interactionManager.isBreakingBlock();
+				MinecraftClient.getInstance().interactionManager.cancelBlockBreaking();
+				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager).setHitting(false);
+			}
+		}
+
+		@Inject(method = "doUse", at = @At("RETURN"))
+		public void rightClickMousePost(CallbackInfo ci) {
+			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine
+					&& !MinecraftClient.getInstance().interactionManager.isBreakingBlock() && MinecraftClient.getInstance().player.abilities.allowModifyWorld &&
+					MinecraftClient.getInstance().player.getStackInHand() != null &&
+					(MinecraftClient.getInstance().player.getStackInHand().getUseAction() != UseAction.NONE ||
+							MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BucketItem ||
+							MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
+				MinecraftClient.getInstance().interactionManager.cancelBlockBreaking();
+				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager).setHitting(isHittingBlock);
+			}
 		}
 	}
 

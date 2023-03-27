@@ -144,6 +144,11 @@ public abstract class V1_7VisualsModMixins {
 			return lastEyeHeight + (((Sneaky) entity).get1_7InternalEyeHeight() - lastEyeHeight) * tickDelta;
 		}
 
+		@Redirect(method = "renderDebugCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeHeight()F"))
+		public float smoothDebugSneaking(Entity entity, float tickDelta) {
+			return smoothSneaking(entity, tickDelta);
+		}
+
 		@Inject(method = "tick", at = @At("HEAD"))
 		public void swap(CallbackInfo callback) {
 			lastEyeHeight = ((Sneaky) client.getCameraEntity()).get1_7InternalEyeHeight();

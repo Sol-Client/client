@@ -320,7 +320,7 @@ public abstract class V1_7VisualsModMixins {
 		private float internalEyeHeight = Float.NaN;
 
 		private boolean active() {
-			return !world.isClient && V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking && (Object) this == MinecraftClient.getInstance().getCameraEntity();
+			return world.isClient && V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking && (Object) this == MinecraftClient.getInstance().getCameraEntity();
 		}
 
 		@Override

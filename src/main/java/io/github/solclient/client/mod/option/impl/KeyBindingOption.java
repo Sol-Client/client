@@ -22,6 +22,7 @@ import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.option.*;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
@@ -49,13 +50,13 @@ public class KeyBindingOption extends ModOption<KeyBinding> {
 		ButtonComponent editButton = new ButtonComponent(
 				(component, defaultText) -> KeyBindingExtension.from(getValue()).getPrefix()
 						+ GameOptions.getFormattedNameForKeyCode(getValue().getCode()),
-				Component.getTheme().button(), (component, defaultColour) -> {
+				Theme.button(), (component, defaultColour) -> {
 					if (listening[0])
 						return new Colour(255, 255, 85);
 					else if (MinecraftUtils.isConflicting(getValue()))
 						return new Colour(255, 85, 85);
 
-					return Component.getTheme().fg;
+					return Theme.getCurrent().fg;
 				}).width(45).height(16);
 		container.add(editButton, new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
 

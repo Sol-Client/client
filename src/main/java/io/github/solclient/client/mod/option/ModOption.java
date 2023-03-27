@@ -122,7 +122,7 @@ public abstract class ModOption<T> {
 
 		};
 		if (label)
-			component.add(new LabelComponent(Controller.of(() -> I18n.translate(name))),
+			component.add(new LabelComponent(Controller.of(() -> I18n.translate(getName()))),
 					new AlignedBoundsController(Alignment.START, Alignment.CENTRE));
 		return component;
 	}

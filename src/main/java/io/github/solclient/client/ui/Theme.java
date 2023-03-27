@@ -18,12 +18,18 @@
 
 package io.github.solclient.client.ui;
 
+import java.util.function.Supplier;
+
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.util.data.Colour;
+import lombok.*;
 
 public class Theme implements Cloneable {
 
 	public static final Theme DARK, LIGHT;
+	@Setter
+	@Getter
+	private static Theme current;
 
 	static {
 		DARK = new Theme();
@@ -53,6 +59,8 @@ public class Theme implements Cloneable {
 		LIGHT.accentHover = new Colour(0xFFFAA000);
 		LIGHT.fgButton = new Colour(0xFF2A2A2A);
 		LIGHT.fgButtonHover = new Colour(0xFF454545);
+
+		current = DARK;
 	}
 
 	public Colour bg;
@@ -71,35 +79,40 @@ public class Theme implements Cloneable {
 	public Colour danger;
 	public Colour dangerHover;
 
-	// @formatter:off
-	public final Controller<Colour> bg() { return Controller.of(bg); }
-	public final Controller<Colour> fg() { return Controller.of(fg); }
-	public final Controller<Colour> accentFg() { return Controller.of(accentFg); }
-	// @formatter:on
-
-	private Controller<Colour> hoverPair(Colour base, Colour hover) {
-		return new AnimatedColourController((component, defaultColour) -> component.isHovered() ? hover : base);
+	public static Controller<Colour> bg() {
+		return new AnimatedColourController(Controller.of(() -> current.bg));
 	}
 
-	public final Controller<Colour> button() {
-		return hoverPair(button, buttonHover);
+	public static Controller<Colour> fg() {
+		return new AnimatedColourController(Controller.of(() -> current.fg));
 	}
 
-	public final Controller<Colour> buttonSecondary() {
-		return hoverPair(buttonSecondary, buttonSecondaryHover);
+	public static Controller<Colour> accentFg() {
+		return new AnimatedColourController(Controller.of(() -> current.accentFg));
 	}
 
-	public final Controller<Colour> fgButton() {
-		return new AnimatedColourController(
-				(component, defaultColour) -> component.isHovered() ? fgButtonHover : fgButton);
+	private static Controller<Colour> hoverPair(Supplier<Colour> base, Supplier<Colour> hover) {
+		return new AnimatedColourController((component, defaultColour) -> component.isHovered() ? hover.get() : base.get());
 	}
 
-	public final Controller<Colour> accent() {
-		return hoverPair(accent, accentHover);
+	public static Controller<Colour> button() {
+		return hoverPair(() -> current.button, () -> current.buttonHover);
 	}
 
-	public final Controller<Colour> danger() {
-		return hoverPair(danger, dangerHover);
+	public static Controller<Colour> buttonSecondary() {
+		return hoverPair(() -> current.buttonSecondary, () -> current.buttonSecondaryHover);
+	}
+
+	public static Controller<Colour> fgButton() {
+		return hoverPair(() -> current.fgButton, () -> current.fgButtonHover);
+	}
+
+	public static Controller<Colour> accent() {
+		return hoverPair(() -> current.accent, () -> current.accentHover);
+	}
+
+	public static Controller<Colour> danger() {
+		return hoverPair(() -> current.danger, () -> current.dangerHover);
 	}
 
 	@Override

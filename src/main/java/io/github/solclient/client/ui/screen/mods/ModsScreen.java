@@ -24,7 +24,7 @@ import io.github.solclient.client.Client;
 import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.SolClientConfig;
-import io.github.solclient.client.ui.ScreenAnimation;
+import io.github.solclient.client.ui.*;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -123,7 +123,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		private int dragY;
 
 		public ModsScreenComponent(Mod startingMod) {
-			super(theme.bg, 12, 0);
+			super(Theme.bg(), Controller.of(12F), Controller.of(0F));
 
 			if (startingMod != null) {
 				singleModMode = true;
@@ -147,7 +147,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					(component, defaultBounds) -> defaultBounds.offset(-getBaseX(), getBaseX())));
 
 			if (!singleModMode) {
-				add(new ButtonComponent("sol_client.hud.edit", theme.button(), theme.fg()).onClick((info, button) -> {
+				add(new ButtonComponent("sol_client.hud.edit", Theme.button(), Theme.fg()).onClick((info, button) -> {
 					if (button == 0) {
 						MinecraftUtils.playClickSound(true);
 						mc.setScreen(new MoveHudsScreen());
@@ -164,7 +164,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				scroll.load();
 				return true;
 			}).withPlaceholder("sol_client.mod.screen.search").withIcon("search");
-			back = new ButtonComponent("", theme.button(), theme.fg()).width(16).height(16).withIcon("back")
+			back = new ButtonComponent("", Theme.button(), Theme.fg()).width(16).height(16).withIcon("back")
 					.onClick((info, button) -> {
 						if (button != 0)
 							return false;

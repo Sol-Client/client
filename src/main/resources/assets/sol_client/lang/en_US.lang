@@ -45,6 +45,8 @@ sol_client.mod.smooth_counter_hud.option.smoothNumbers=Smooth numbers
 sol_client.mod.sol_client.name=Sol Client
 sol_client.mod.sol_client.description=General settings for Sol Client.
 
+sol_client.mod.sol_client.option.dark=Use dark mode
+sol_client.mod.sol_client.option.dark_easter_egg=Use dark mode :sunglasses:
 sol_client.mod.sol_client.option.broadcastOnline=Show when I'm using the client
 sol_client.mod.sol_client.option.onlineIndicator=Show online client users
 sol_client.mod.sol_client.option.remindMeToUpdate=Display update notifications

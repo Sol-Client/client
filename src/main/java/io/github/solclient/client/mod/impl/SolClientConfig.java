@@ -19,6 +19,7 @@
 package io.github.solclient.client.mod.impl;
 
 import java.io.*;
+import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
@@ -27,7 +28,11 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.annotation.Option;
+import io.github.solclient.client.mod.option.impl.ToggleOption;
+import io.github.solclient.client.ui.Theme;
+import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.util.*;
 import net.minecraft.client.option.KeyBinding;
 
@@ -35,6 +40,9 @@ public class SolClientConfig extends ConfigOnlyMod {
 
 	public static SolClientConfig instance;
 
+	@Expose
+	private boolean dark = true;
+	private int darkMut;
 	@Expose
 	@Option
 	public boolean broadcastOnline = true;
@@ -87,6 +95,25 @@ public class SolClientConfig extends ConfigOnlyMod {
 	}
 
 	@Override
+	protected List<ModOption<?>> createOptions() {
+		List<ModOption<?>> options = super.createOptions();
+		options.add(0, new ToggleOption(getTranslationKey("option.dark"),
+				ModOptionStorage.of(boolean.class, () -> dark, value -> {
+					dark = value;
+					darkMut++;
+					setTheme();
+				})) {
+
+			@Override
+			public String getName() {
+				return darkMut >= 10 ? getTranslationKey("option.dark_easter_egg") : super.getName();
+			}
+
+		});
+		return options;
+	}
+
+	@Override
 	public void init() {
 		super.init();
 
@@ -104,6 +131,8 @@ public class SolClientConfig extends ConfigOnlyMod {
 			thread.setDaemon(true);
 			thread.start();
 		}
+
+		setTheme();
 	}
 
 	@Override
@@ -125,6 +154,10 @@ public class SolClientConfig extends ConfigOnlyMod {
 		}
 
 		return true;
+	}
+
+	private void setTheme() {
+		Theme.setCurrent(dark ? Theme.DARK : Theme.LIGHT);
 	}
 
 }

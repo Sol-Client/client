@@ -20,6 +20,7 @@ package io.github.solclient.client.ui.component.impl;
 
 import org.lwjgl.nanovg.NanoVG;
 
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.ClickHandler;
@@ -104,7 +105,7 @@ public class ButtonComponent extends ColouredComponent {
 	}
 
 	public static ButtonComponent done(Runnable onClick) {
-		return new ButtonComponent("gui.done", theme.accent(), theme.accentFg())
+		return new ButtonComponent("gui.done", Theme.accent(), Theme.accentFg())
 				.onClick((info, button) -> {
 					if (button == 0) {
 						MinecraftUtils.playClickSound(true);

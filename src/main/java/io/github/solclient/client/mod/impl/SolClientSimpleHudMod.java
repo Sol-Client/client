@@ -26,7 +26,7 @@ import io.github.solclient.client.util.data.*;
 import net.minecraft.client.resource.language.I18n;
 
 /**
- * A simple HUD mod that rendered a simple string.
+ * A simple HUD mod that renders a simple string.
  */
 @AbstractTranslationKey(SolClientSimpleHudMod.TRANSLATION_KEY)
 public abstract class SolClientSimpleHudMod extends SolClientHudMod {
@@ -37,15 +37,18 @@ public abstract class SolClientSimpleHudMod extends SolClientHudMod {
 	@Option
 	protected boolean background = true;
 	@Expose
+	@Option
 	@ColourKey(ColourKey.BACKGROUND_COLOUR)
 	protected Colour backgroundColour = new Colour(0, 0, 0, 100);
 	@Expose
 	@Option
 	protected boolean border = false;
 	@Expose
+	@Option
 	@ColourKey(ColourKey.BORDER_COLOUR)
 	protected Colour borderColour = Colour.BLACK;
 	@Expose
+	@Option
 	@ColourKey(ColourKey.TEXT_COLOUR)
 	protected Colour textColour = Colour.WHITE;
 	@Expose

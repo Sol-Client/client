@@ -18,13 +18,15 @@
 
 package io.github.solclient.client.ui.screen.mods;
 
+import io.github.solclient.client.ui.Theme;
+import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.ui.component.impl.BlockComponent;
 import io.github.solclient.client.util.data.Rectangle;
 
 public class ModGhost extends BlockComponent {
 
 	public ModGhost() {
-		super(theme.buttonSecondary.add(10), 4, 0);
+		super(Controller.of(() -> Theme.getCurrent().buttonSecondary.add(10)), Controller.of(4F), Controller.of(0F));
 	}
 
 	@Override

@@ -24,6 +24,7 @@ import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.gui.screen.GuiReplayViewer;
 
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -66,18 +67,14 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 	}
 
 	private static int getStartY(Screen screen) {
-		return screen.height / 2 - 123 / 2;
+		return screen.height / 2 - 146 / 2;
 	}
 
 	private static class MainMenuComponent extends Component {
 
-		private int bubblesX;
-		private int bubblesY;
-
 		public MainMenuComponent() {
-
-			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.singleplayer"), theme.accent(),
-					theme.accentFg()).withIcon("person").width(200).onClick((info, button) -> {
+			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.singleplayer"), Theme.accent(),
+					Theme.accentFg()).withIcon("person").width(200).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new SelectWorldScreen(screen));
@@ -88,8 +85,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, getStartY(screen) + 44,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.multiplayer"), theme.accent(),
-					theme.accentFg()).withIcon("people").width(200).onClick((info, button) -> {
+			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.multiplayer"), Theme.accent(),
+					Theme.accentFg()).withIcon("people").width(200).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new MultiplayerScreen(screen));
@@ -97,12 +94,34 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 						}
 
 						return false;
-					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, getStartY(screen) + 69,
+					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, getStartY(screen) + 68,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-			// 🫧
+			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.options"), Theme.button(),
+					Theme.fg()).withIcon("options").width(98).onClick((info, button) -> {
+						if (button == 0) {
+							MinecraftUtils.playClickSound(true);
+							mc.setScreen(new SettingsScreen(screen, mc.options));
+							return true;
+						}
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg()).withIcon("language")
+						return false;
+					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, getStartY(screen) + 126,
+							defaultBounds.getWidth(), defaultBounds.getHeight()));
+
+			add(new ButtonComponent((component, defaultText) -> I18n.translate("menu.quit"), Theme.danger(),
+					Controller.of(Colour.WHITE)).width(98).onClick((info, button) -> {
+						if (button == 0) {
+							MinecraftUtils.playClickSound(true);
+							mc.stop();
+							return true;
+						}
+
+						return false;
+					}).withIcon("exit"), (component, defaultBounds) -> new Rectangle(screen.width / 2 + 2,
+							getStartY(screen) + 126, defaultBounds.getWidth(), defaultBounds.getHeight()));
+
+			add(new ButtonComponent((component, defaultText) -> "", Theme.button(), Theme.fg()).withIcon("language")
 					.width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
@@ -111,32 +130,11 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 						}
 
 						return false;
-					}), (component, defaultBounds) -> {
-						int buttonsCount = 3;
+					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 124, getStartY(screen) + 126,
+							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-						if (SCReplayMod.enabled) {
-							buttonsCount++;
-						}
-
-						bubblesX = screen.width / 2 - (12 * buttonsCount);
-						bubblesY = getStartY(screen) + 103;
-						return new Rectangle(bubblesX, bubblesY, defaultBounds.getWidth(), defaultBounds.getHeight());
-					});
-
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg()).withIcon("options")
-					.width(20).onClick((info, button) -> {
-						if (button == 0) {
-							MinecraftUtils.playClickSound(true);
-							mc.setScreen(new SettingsScreen(screen, mc.options));
-							return true;
-						}
-
-						return false;
-					}), (component, defaultBounds) -> new Rectangle(bubblesX + 26, bubblesY, defaultBounds.getWidth(),
-							defaultBounds.getHeight()));
-
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), theme.fg()).withIcon("mods")
-					.width(20).onClick((info, button) -> {
+			add(new ButtonComponent((component, defaultText) -> I18n.translate("sol_client.mod.screen.title"),
+					Theme.button(), Theme.fg()).withIcon("mods").width(200).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
 							mc.setScreen(new ModsScreen());
@@ -144,10 +142,10 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 						}
 
 						return false;
-					}), (component, defaultBounds) -> new Rectangle(bubblesX + 52, bubblesY,
+					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, getStartY(screen) + 92,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> "", theme.button(), Controller.of(Colour.WHITE))
+			add(new ButtonComponent((component, defaultText) -> "", Theme.button(), Controller.of(Colour.WHITE))
 					.withIcon("replay_menu").width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);
@@ -157,21 +155,8 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 
 						return false;
 					}).visibilityController((component, defaultVisibility) -> SCReplayMod.enabled),
-					(component, defaultBounds) -> new Rectangle(bubblesX + 78, bubblesY, defaultBounds.getWidth(),
+					(component, defaultBounds) -> new Rectangle(screen.width / 2 + 104, getStartY(screen) + 92, defaultBounds.getWidth(),
 							defaultBounds.getHeight()));
-
-			add(new ButtonComponent((component, defaultText) -> "", theme.danger(), Controller.of(Colour.WHITE))
-					.onClick((info, button) -> {
-						if (button == 0) {
-							MinecraftUtils.playClickSound(true);
-							mc.stop();
-							return true;
-						}
-
-						return false;
-					}).width(20).withIcon("exit"),
-					(component, defaultBounds) -> new Rectangle(getBounds().getWidth() - 25, 5,
-							defaultBounds.getWidth(), defaultBounds.getHeight()));
 		}
 
 		@Override

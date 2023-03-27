@@ -35,10 +35,6 @@ import net.minecraft.client.MinecraftClient;
 // 7 months later, I finally reintroduced the component API...
 public abstract class Component extends NanoVGManager {
 
-	@Setter
-	@Getter
-	protected static Theme theme = Theme.DARK;
-
 	protected MinecraftClient mc = MinecraftClient.getInstance();
 	protected ComponentScreen screen;
 	@Getter

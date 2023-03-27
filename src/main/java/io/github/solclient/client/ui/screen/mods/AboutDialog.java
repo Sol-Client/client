@@ -20,8 +20,9 @@ package io.github.solclient.client.ui.screen.mods;
 
 import org.lwjgl.nanovg.*;
 
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
-import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
+import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
@@ -32,7 +33,7 @@ import net.minecraft.util.Identifier;
 public class AboutDialog extends BlockComponent {
 
 	public AboutDialog() {
-		super(theme.bg, 12, 0);
+		super(Theme.bg(), Controller.of(12F), Controller.of(0F));
 
 		add(new LabelComponent("sol_client.mod.screen.about"),
 				new AlignedBoundsController(Alignment.CENTRE, Alignment.START,

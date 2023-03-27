@@ -24,6 +24,7 @@ import org.lwjgl.nanovg.NanoVG;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.MinecraftUtils;
@@ -38,7 +39,7 @@ public class SliderComponent extends Component {
 	private float value;
 	private final Consumer<Float> callback;
 	private boolean selected;
-	private final Controller<Colour> colour = theme.button();
+	private final Controller<Colour> colour = Theme.button();
 
 	public SliderComponent(float min, float max, float step, float value, Consumer<Float> callback) {
 		this.min = min;
@@ -60,7 +61,7 @@ public class SliderComponent extends Component {
 		NanoVG.nvgRoundedRect(nvg, 0, 3, 80, 4, 2);
 		NanoVG.nvgFill(nvg);
 
-		NanoVG.nvgFillColor(nvg, theme.fg.nvg());
+		NanoVG.nvgFillColor(nvg, Theme.getCurrent().fg.nvg());
 
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgCircle(nvg, x, 5, 4);

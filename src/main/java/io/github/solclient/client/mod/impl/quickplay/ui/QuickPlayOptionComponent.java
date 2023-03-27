@@ -22,6 +22,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.mod.impl.quickplay.ui.QuickPlayPalette.QuickPlayPaletteComponent;
+import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
@@ -36,7 +37,7 @@ public class QuickPlayOptionComponent extends ColouredComponent {
 
 	public QuickPlayOptionComponent(QuickPlayPaletteComponent screen, QuickPlayOption option) {
 		super(new AnimatedColourController((component, defaultColour) -> screen.getSelected() == component
-				? (component.isHovered() ? theme.buttonHover : theme.button)
+				? (component.isHovered() ? Theme.getCurrent().buttonHover : Theme.getCurrent().button)
 				: Colour.TRANSPARENT));
 		this.screen = screen;
 		this.option = option;

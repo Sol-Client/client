@@ -20,7 +20,7 @@ package io.github.solclient.client.mixin.mod;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.mixin.client.ClientPlayerInteractionManagerAccessor;
-import io.github.solclient.client.mod.impl.V1_7VisualsMod;
+import io.github.solclient.client.mod.impl.v1_7visuals.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -138,15 +138,15 @@ public abstract class V1_7VisualsModMixins {
 		// edit: i've eaten it up, yum
 		@Redirect(method = "transformCamera", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getEyeHeight()F"))
 		public float smoothSneaking(Entity entity, float tickDelta) {
-			if (!V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking)
+			if (!(V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking))
 				return entity.getEyeHeight();
 
-			return lastEyeHeight + (entity.getEyeHeight() - lastEyeHeight) * tickDelta;
+			return lastEyeHeight + (((Sneaky) entity).get1_7InternalEyeHeight() - lastEyeHeight) * tickDelta;
 		}
 
 		@Inject(method = "tick", at = @At("HEAD"))
 		public void swap(CallbackInfo callback) {
-			lastEyeHeight = client.getCameraEntity().getEyeHeight();
+			lastEyeHeight = ((Sneaky) client.getCameraEntity()).get1_7InternalEyeHeight();
 		}
 
 	}
@@ -249,8 +249,8 @@ public abstract class V1_7VisualsModMixins {
 
 			text.drawWithShadow(String.format("x: %.5f (%d) // c: %d (%d)", x, xFloor, xFloor >> 4, xFloor & 15), 2, 64,
 					0xE0E0E0);
-			text.drawWithShadow(String.format("y: %.3f (feet pos, %.3f eyes pos)", y, y + player.getEyeHeight()), 2, 72,
-					0xE0E0E0);
+			text.drawWithShadow(String.format("y: %.3f (feet pos, %.3f eyes pos)", y,
+					y + ((Sneaky) player).get1_7InternalEyeHeight()), 2, 72, 0xE0E0E0);
 			text.drawWithShadow(String.format("z: %.5f (%d) // c: %d (%d)", z, zFloor, zFloor >> 4, zFloor & 15), 2, 80,
 					0xE0E0E0);
 
@@ -311,6 +311,44 @@ public abstract class V1_7VisualsModMixins {
 		private static boolean active() {
 			return V1_7VisualsMod.enabled && V1_7VisualsMod.instance.debug;
 		}
+
+	}
+
+	@Mixin(Entity.class)
+	public static abstract class EntityMixin implements Sneaky {
+
+		private float internalEyeHeight = Float.NaN;
+
+		private boolean active() {
+			return !world.isClient && V1_7VisualsMod.enabled && V1_7VisualsMod.instance.sneaking && (Object) this == MinecraftClient.getInstance().getCameraEntity();
+		}
+
+		@Override
+		public float get1_7InternalEyeHeight() {
+			if (!active())
+				return getEyeHeight();
+
+			return internalEyeHeight;
+		}
+
+		@Inject(method = "tick", at = @At("HEAD"))
+		public void tick(CallbackInfo callback) {
+			if (!active())
+				return;
+
+			float realEyeHeight = getEyeHeight();
+			// if we're aiming for a lower value, go straight there... for some reason
+			if (realEyeHeight < internalEyeHeight || internalEyeHeight != internalEyeHeight)
+				internalEyeHeight = getEyeHeight();
+			else
+				internalEyeHeight += (realEyeHeight - internalEyeHeight) * 0.6F;
+		}
+
+		@Shadow
+		public abstract float getEyeHeight();
+
+		@Shadow
+		public World world;
 
 	}
 

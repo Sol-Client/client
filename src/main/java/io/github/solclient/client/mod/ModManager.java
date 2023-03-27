@@ -48,6 +48,7 @@ import io.github.solclient.client.mod.impl.quickplay.QuickPlayMod;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 import io.github.solclient.client.mod.impl.toggles.TogglesMod;
 import io.github.solclient.client.mod.impl.tweaks.TweaksMod;
+import io.github.solclient.client.mod.impl.v1_7visuals.V1_7VisualsMod;
 
 public final class ModManager implements Iterable<Mod> {
 

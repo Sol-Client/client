@@ -16,15 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.mixin.client;
+package io.github.solclient.client.mod.impl.v1_7visuals;
 
-import net.minecraft.client.network.ClientPlayerInteractionManager;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+/**
+ * Used to simulate the internal eye height in 1.7 before it's processed by the camera.
+ * This is what gives it the interesting look.
+ */
+public interface Sneaky {
 
-@Mixin(ClientPlayerInteractionManager.class)
-public interface ClientPlayerInteractionManagerAccessor {
+	float get1_7InternalEyeHeight();
 
-    @Accessor("breakingBlock")
-    void setHitting(boolean value);
 }

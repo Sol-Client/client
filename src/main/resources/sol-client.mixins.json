@@ -126,6 +126,7 @@
 		"mod.V1_7VisualsModMixins$HeldItemRendererMixin",
 		"mod.V1_7VisualsModMixins$ItemRendererMixin",
 		"mod.V1_7VisualsModMixins$LayerArmorBaseMixin",
-		"mod.V1_7VisualsModMixins$MinecraftClientMixin"
+		"mod.V1_7VisualsModMixins$MinecraftClientMixin",
+		"mod.V1_7VisualsModMixins$EntityMixin"
 	]
 }

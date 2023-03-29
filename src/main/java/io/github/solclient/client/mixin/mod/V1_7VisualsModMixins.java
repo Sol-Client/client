@@ -26,6 +26,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.DebugHud;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.model.BiPedModel;
@@ -41,6 +42,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LightType;
@@ -182,32 +184,43 @@ public abstract class V1_7VisualsModMixins {
 		private boolean isHittingBlock = false;
 
 		@Inject(method = "doUse", at = @At("HEAD"))
-		public void rightClickMousePre(CallbackInfo ci) {
+		public void punchDuringUsagePart1(CallbackInfo ci) {
 			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine
 					&& MinecraftClient.getInstance().player.abilities.allowModifyWorld
 					&& MinecraftClient.getInstance().player.getStackInHand() != null
-					&& (MinecraftClient.getInstance().player.getStackInHand().getUseAction() != UseAction.NONE
-							|| MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BucketItem
-							|| MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
+					&& MinecraftClient.getInstance().result.type == BlockHitResult.Type.BLOCK &&
+					!(MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
 				isHittingBlock = MinecraftClient.getInstance().interactionManager.isBreakingBlock();
 				MinecraftClient.getInstance().interactionManager.cancelBlockBreaking();
-				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager)
-						.setHitting(false);
+				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager).setHitting(false);
 			}
 		}
 
 		@Inject(method = "doUse", at = @At("RETURN"))
-		public void rightClickMousePost(CallbackInfo ci) {
+		public void punchDuringUsagePart2(CallbackInfo ci) {
 			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine
 					&& !MinecraftClient.getInstance().interactionManager.isBreakingBlock()
 					&& MinecraftClient.getInstance().player.abilities.allowModifyWorld
 					&& MinecraftClient.getInstance().player.getStackInHand() != null
-					&& (MinecraftClient.getInstance().player.getStackInHand().getUseAction() != UseAction.NONE
-							|| MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BucketItem
-							|| MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
+					&& MinecraftClient.getInstance().result.type == BlockHitResult.Type.BLOCK &&
+					!(MinecraftClient.getInstance().player.getStackInHand().getItem() instanceof BlockItem)) {
 				MinecraftClient.getInstance().interactionManager.cancelBlockBreaking();
-				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager)
-						.setHitting(isHittingBlock);
+				((ClientPlayerInteractionManagerAccessor) MinecraftClient.getInstance().interactionManager).setHitting(isHittingBlock);
+			}
+		}
+	}
+
+	@Mixin(ClientPlayerInteractionManager.class)
+	public static class ClientPlayerInteractionManagerMixin {
+		@Shadow
+		private @Final MinecraftClient client;
+
+		@Inject(method = "isBreakingBlock", at = @At("HEAD"), cancellable = true)
+		private void punchingAndUseBlocks(CallbackInfoReturnable<Boolean> cir) {
+			if (V1_7VisualsMod.enabled && V1_7VisualsMod.instance.useAndMine &&
+					client.player.abilities.allowModifyWorld && client.player.getStackInHand() != null &&
+					client.player.getStackInHand().getItem() instanceof BlockItem) {
+				cir.setReturnValue(false);
 			}
 		}
 	}

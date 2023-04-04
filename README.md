@@ -47,10 +47,13 @@ Suggested features are always being considered and often added.
 - Animated chunks (based on Lumien's [Chunk Animator](https://github.com/lumien231/Chunk-Animator))
 - Badlion-compatible timers
 - Resource pack folders
-- Replay Mod (using the actual [Replay Mod](https://github.com/ReplayMod/ReplayMod))
+- Replay Mod (modified from [ReplayMod](https://github.com/ReplayMod/ReplayMod) available on mod loaders :P)
 - Entity Culling (using an outdated version of tr7zw's [Entity Culling](https://github.com/tr7zw/EntityCulling) mod!!, since the owner adopted a more restrictive license) (to be rewritten)
 
 **..and even more!**
+
+## Replay
+Since ReplayMod is open source, we use some very questionable garbage to allow it to run outside of Forge (pending a rewrite)! The reason for many clients not being able to use it is because of the GPL license. This should be obvious, but only report issues upstream if they occur with their unmodified builds!
 
 ## Alternatives
 

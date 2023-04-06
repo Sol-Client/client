@@ -14,14 +14,14 @@ sol_client.perspective.third_person_front=Trzecia osoba Przód
 
 sol_client.easing.linear=Linearny
 sol_client.easing.quad=Quad
-sol_client.easing.cubic=Cubic
+sol_client.easing.cubic=Sześcienny
 sol_client.easing.quart=Quart
 sol_client.easing.quint=Quint
 sol_client.easing.expo=Expo
 sol_client.easing.sine=Sine
 sol_client.easing.circ=Circ
 sol_client.easing.back=Back
-sol_client.easing.bounce=Sprężycty
+sol_client.easing.bounce=Sprężysty
 sol_client.easing.elastic=Elastyczny
 
 sol_client.file.edit=Edytuj Plik...
@@ -55,7 +55,7 @@ sol_client.mod.sol_client.option.modsKey=Klawisz od modułów
 sol_client.mod.sol_client.edit_hud=Edytuj HUD
 sol_client.mod.sol_client.option.editHudKey=Klawidz edytowania HUD
 sol_client.mod.sol_client.option.uiColour=Kolor wiodący
-sol_client.mod.sol_client.option.openAnimation=Animated opening
+sol_client.mod.sol_client.option.openAnimation=Animowane otwarcie
 sol_client.mod.sol_client.option.buttonClicks=Dźwięk przycisków w UI
 sol_client.mod.sol_client.option.smoothScrolling=Animowane przewijanie
 
@@ -65,8 +65,8 @@ sol_client.mod.fps.description=Wyświetl FPSy (klatki na sekunde).
 sol_client.mod.coordinates.name=Kordynaty
 sol_client.mod.coordinates.description=Wyświetl swoje kordynaty.
 
-sol_client.mod.coordinates.option.axisLabelColour=Kolor etykiety osi
-sol_client.mod.coordinates.option.axisValueColour=Wartość koloru osi
+sol_client.mod.coordinates.option.axisLabelColour=Kolor etykiety osi (XYZ)
+sol_client.mod.coordinates.option.axisValueColour=Kolor wartości osi
 sol_client.mod.coordinates.option.cardinalDirection=Pokaż kierunek świata
 sol_client.mod.coordinates.option.cardinalDirectionColour=Kolor kierunków świata
 sol_client.mod.coordinates.option.axisDirection=Pokaż kierunek osi
@@ -130,10 +130,10 @@ sol_client.mod.potion_effects.name=Efekty
 sol_client.mod.potion_effects.description=Wyświetl aktywne efekty.
 
 sol_client.mod.potion_effects.option.alignment=Wyrównanie
-sol_client.mod.potion_effects.option.icon=Ikona
+sol_client.mod.potion_effects.option.icon=Ikona efektu
 sol_client.mod.potion_effects.option.background=Tło
-sol_client.mod.potion_effects.option.title=Etykieta
-sol_client.mod.potion_effects.option.titleColour=Kolor etykiety
+sol_client.mod.potion_effects.option.title=Nazwa efektu
+sol_client.mod.potion_effects.option.titleColour=Kolor nazwy efekty
 sol_client.mod.potion_effects.option.duration=Czas trwania
 sol_client.mod.potion_effects.option.durationColour=Kolor czasu trwania
 sol_client.mod.potion_effects.option.spacing=Odstep
@@ -141,7 +141,7 @@ sol_client.mod.potion_effects.option.spacing=Odstep
 sol_client.mod.armour.name=Wyposażenie
 sol_client.mod.armour.description=Wyświetl wyposażenie z wytrzymałością.
 
-sol_client.mod.armour.option.durability=Tekst wytrzymałości
+sol_client.mod.armour.option.durability=Rodzaj wytrzymałości
 sol_client.mod.armour.option.durability.off=Wyłącz
 sol_client.mod.armour.option.durability.remaining=Ilość
 sol_client.mod.armour.option.durability.percentage=Procent
@@ -164,14 +164,14 @@ sol_client.mod.chat.description=Spresonalizuj czat w grze.
 
 sol_client.mod.chat.peek=Rzut oka na czat
 sol_client.mod.chat.option.preventClose=Nie pozwalaj na automatyczne zamknięcie
-sol_client.mod.chat.option.smooth=Animacja wiadomości
+sol_client.mod.chat.option.smooth=Animuj wiadomości
 sol_client.mod.chat.option.infiniteChat=Nieskończone wiadomości
 sol_client.mod.chat.option.peekKey=Klawisz rzutu oka
 
 sol_client.mod.chat.option.visibility=Widoczność
-sol_client.mod.chat.option.visibility.shown=Widoczny
+sol_client.mod.chat.option.visibility.shown=Wszystko
 sol_client.mod.chat.option.visibility.commands=Tylko komendy
-sol_client.mod.chat.option.visibility.hidden=Ukryty
+sol_client.mod.chat.option.visibility.hidden=Brak
 
 sol_client.mod.chat.option.defaultTextColour=Kolor zwykłego tekstu
 sol_client.mod.chat.option.colours=Kolory

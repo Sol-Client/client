@@ -63,8 +63,6 @@ public final class Client {
 	@Getter
 	private final CommandManager commands = new CommandManager();
 	@Getter
-	private final PseudoResourceManager pseudoResources = new PseudoResourceManager();
-	@Getter
 	private final AddonManager addons = AddonManager.getInstance();
 	@Getter
 	private final OnlineApi onlinePlayers = new OnlineApi();

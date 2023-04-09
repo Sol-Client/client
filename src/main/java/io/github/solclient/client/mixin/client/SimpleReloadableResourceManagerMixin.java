@@ -29,16 +29,9 @@ import io.github.solclient.client.addon.*;
 import io.github.solclient.client.mod.Mod;
 import net.minecraft.client.resource.FallbackResourceManager;
 import net.minecraft.resource.*;
-import net.minecraft.util.Identifier;
 
 @Mixin(ReloadableResourceManagerImpl.class)
 public class SimpleReloadableResourceManagerMixin {
-
-	@Inject(method = "getResource", at = @At("HEAD"), cancellable = true)
-	public void getResource(Identifier location, CallbackInfoReturnable<Resource> callback) {
-		if (Client.INSTANCE.getPseudoResources().get(location) != null)
-			callback.setReturnValue(Client.INSTANCE.getPseudoResources().get(location));
-	}
 
 	@Inject(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManagerImpl;notifyListeners()V", shift = At.Shift.BEFORE))
 	public void injectDomains(List<ResourcePack> packs, CallbackInfo callback) {

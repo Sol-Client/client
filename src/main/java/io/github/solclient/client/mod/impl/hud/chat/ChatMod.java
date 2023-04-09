@@ -170,7 +170,7 @@ public class ChatMod extends SolClientHudMod {
 	public void onFileUpdate(String fieldName) {
 		super.onFileUpdate(fieldName);
 
-		if (fieldName.equals("filteredWordsContent")) {
+		if (fieldName.equals(getTranslationKey("option.filteredWordsContent"))) {
 			filteredWords = new ArrayList<>(Arrays.asList(filteredWordsContent.split("\\r?\\n"))); // https://stackoverflow.com/a/454913
 			filteredWords.removeIf((word) -> word.isEmpty() || word.startsWith("#"));
 		}
@@ -234,7 +234,6 @@ public class ChatMod extends SolClientHudMod {
 		}
 
 		String message = strip(event.message);
-
 		for (String word : filteredWords) {
 			word = strip(word);
 
@@ -247,7 +246,7 @@ public class ChatMod extends SolClientHudMod {
 	}
 
 	private static String strip(String message) {
-		return message.toLowerCase().codePoints().filter(Character::isLetter)
+		return message.toLowerCase().codePoints().filter(point -> Character.isLetter(point) || Character.isWhitespace(point))
 				.mapToObj((codePoint) -> (Character) (char) codePoint)
 				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}

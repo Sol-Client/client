@@ -25,7 +25,7 @@ import io.github.solclient.client.event.impl.TimeEvent;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.*;
 
-public class TimeChangerMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public class TimeChangerMod extends SolClientMod {
 
 	@Expose
 	@Option
@@ -45,16 +45,6 @@ public class TimeChangerMod extends SolClientMod implements PrimaryIntegerSettin
 	@EventHandler
 	public void onTime(TimeEvent event) {
 		event.time = (long) time;
-	}
-
-	@Override
-	public void decrement() {
-		time = Math.max(0, time - 1000);
-	}
-
-	@Override
-	public void increment() {
-		time = Math.min(24000, time + 1000);
 	}
 
 }

@@ -32,7 +32,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.*;
 
-public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public class ItemPhysicsMod extends SolClientMod {
 
 	@Option
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
@@ -98,16 +98,6 @@ public class ItemPhysicsMod extends SolClientMod implements PrimaryIntegerSettin
 		} else {
 			event.result = 0;
 		}
-	}
-
-	@Override
-	public void decrement() {
-		rotationSpeed = Math.max(0, rotationSpeed - 10);
-	}
-
-	@Override
-	public void increment() {
-		rotationSpeed = Math.min(100, rotationSpeed + 10);
 	}
 
 	private int getClumpSize(int size) {

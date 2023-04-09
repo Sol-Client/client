@@ -43,7 +43,7 @@ import net.minecraft.client.util.Window;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
-public class MenuBlurMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public class MenuBlurMod extends SolClientMod {
 
 	private static final Identifier ID = new Identifier("minecraft:shaders/post/menu_blur.json");
 
@@ -143,16 +143,6 @@ public class MenuBlurMod extends SolClientMod implements PrimaryIntegerSettingMo
 	protected void onEnable() {
 		super.onEnable();
 		effect = null;
-	}
-
-	@Override
-	public void decrement() {
-		blur = Math.max(0, blur - 1);
-	}
-
-	@Override
-	public void increment() {
-		blur = Math.min(100, blur + 1);
 	}
 
 	public class MenuBlurShader implements Resource {

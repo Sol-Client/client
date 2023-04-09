@@ -41,7 +41,7 @@ import net.minecraft.util.hit.BlockHitResult.Type;
 import net.minecraft.util.math.*;
 import net.minecraft.world.level.LevelInfo.GameMode;
 
-public class BlockSelectionMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public class BlockSelectionMod extends SolClientMod {
 
 	@Expose
 	@Option
@@ -153,16 +153,6 @@ public class BlockSelectionMod extends SolClientMod implements PrimaryIntegerSet
 			GlStateManager.enableDepthTest();
 
 		MinecraftUtils.resetLineWidth();
-	}
-
-	@Override
-	public void decrement() {
-		outlineWidth = Math.max(1, outlineWidth - 1);
-	}
-
-	@Override
-	public void increment() {
-		outlineWidth = Math.min(10, outlineWidth + 1);
 	}
 
 }

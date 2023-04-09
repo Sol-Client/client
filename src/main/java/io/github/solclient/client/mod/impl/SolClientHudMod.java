@@ -34,7 +34,7 @@ import net.minecraft.client.font.TextRenderer;
  * Represents a mod with only a single HUD.
  */
 @AbstractTranslationKey(SolClientHudMod.TRANSLATION_KEY)
-public abstract class SolClientHudMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public abstract class SolClientHudMod extends SolClientMod {
 
 	public static final String TRANSLATION_KEY = "sol_client.mod.hud";
 
@@ -105,16 +105,6 @@ public abstract class SolClientHudMod extends SolClientMod implements PrimaryInt
 
 	public Position determineDefaultPosition(int width, int height) {
 		return new Position(0, 0);
-	}
-
-	@Override
-	public void decrement() {
-		scale = Math.max(50, scale - 10);
-	}
-
-	@Override
-	public void increment() {
-		scale = Math.min(150, scale + 10);
 	}
 
 	class HudModElement implements HudElement {

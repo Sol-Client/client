@@ -30,7 +30,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class ParticlesMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public class ParticlesMod extends SolClientMod {
 
 	@Expose
 	@Option
@@ -57,16 +57,6 @@ public class ParticlesMod extends SolClientMod implements PrimaryIntegerSettingM
 	@Override
 	public ModCategory getCategory() {
 		return ModCategory.VISUAL;
-	}
-
-	@Override
-	public void decrement() {
-		multiplier = Math.max(1, multiplier - 1);
-	}
-
-	@Override
-	public void increment() {
-		multiplier = Math.min(10, multiplier + 1);
 	}
 
 	@EventHandler

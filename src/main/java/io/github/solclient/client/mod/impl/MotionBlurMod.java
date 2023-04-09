@@ -36,7 +36,7 @@ import net.minecraft.client.resource.ResourceMetadataProvider;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
-public class MotionBlurMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public class MotionBlurMod extends SolClientMod {
 
 	public static final Identifier ID = new Identifier("minecraft:shaders/post/motion_blur.json");
 
@@ -94,16 +94,6 @@ public class MotionBlurMod extends SolClientMod implements PrimaryIntegerSetting
 	protected void onEnable() {
 		super.onEnable();
 		effect = null;
-	}
-
-	@Override
-	public void decrement() {
-		blur = Math.max(0, blur - 0.1F);
-	}
-
-	@Override
-	public void increment() {
-		blur = Math.min(1, blur + 0.1F);
 	}
 
 	public class MotionBlurShader implements Resource {

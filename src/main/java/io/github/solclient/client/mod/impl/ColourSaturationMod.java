@@ -36,7 +36,7 @@ import net.minecraft.client.resource.ResourceMetadataProvider;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
-public class ColourSaturationMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public class ColourSaturationMod extends SolClientMod {
 
 	private static final Identifier ID = new Identifier("minecraft:shaders/post/" + "color_convolve.json");
 
@@ -94,16 +94,6 @@ public class ColourSaturationMod extends SolClientMod implements PrimaryIntegerS
 	protected void onEnable() {
 		super.onEnable();
 		effect = null;
-	}
-
-	@Override
-	public void decrement() {
-		saturation = Math.max(0, saturation - 0.1F);
-	}
-
-	@Override
-	public void increment() {
-		saturation = Math.min(2, saturation + 0.1F);
 	}
 
 	public class SaturationShader implements Resource {

@@ -32,7 +32,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.math.*;
 
 // Based on lumien231's chunk animator.
-public class ChunkAnimatorMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public class ChunkAnimatorMod extends SolClientMod {
 
 	public static ChunkAnimatorMod instance;
 	public static boolean enabled;
@@ -104,16 +104,6 @@ public class ChunkAnimatorMod extends SolClientMod implements PrimaryIntegerSett
 			GlStateManager.translate(0, -chunkY + ease(passedTime, 0, chunkY, getDuration()), 0);
 		} else
 			chunk.skipAnimation();
-	}
-
-	@Override
-	public void decrement() {
-		duration = Math.max(0, duration - 0.5F);
-	}
-
-	@Override
-	public void increment() {
-		duration = Math.min(5, duration + 0.5F);
 	}
 
 	public float ease(float t, float b, float c, float d) {

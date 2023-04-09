@@ -31,7 +31,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.math.MathHelper;
 
-public class ZoomMod extends SolClientMod implements PrimaryIntegerSettingMod {
+public class ZoomMod extends SolClientMod {
 
 	@Option
 	private final KeyBinding key = new KeyBinding(getTranslationKey("key"), Keyboard.KEY_C,
@@ -217,16 +217,6 @@ public class ZoomMod extends SolClientMod implements PrimaryIntegerSettingMod {
 		if (reduceSensitivity) {
 			mc.options.sensitivity = lastSensitivity * currentFactor;
 		}
-	}
-
-	@Override
-	public void decrement() {
-		factor = Math.max(2, factor - 1);
-	}
-
-	@Override
-	public void increment() {
-		factor = Math.min(32, factor + 1);
 	}
 
 }

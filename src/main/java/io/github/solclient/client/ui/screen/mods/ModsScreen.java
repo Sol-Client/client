@@ -109,7 +109,6 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		@Getter
 		private ModsScroll scroll;
 		private Component config;
-		private int noModsScroll;
 		private boolean singleModMode;
 
 		private ModEntry targetDraggingMod;
@@ -175,6 +174,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					});
 
 			switchMod(startingMod, true);
+			scroll.load();
 		}
 
 		// based on start x for mods
@@ -191,35 +191,33 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		}
 
 		public void switchMod(Mod mod, boolean first) {
-			if (mod == null) {
-				scroll.snapTo(noModsScroll);
-				if (this.mod != null || first) {
-					add(0, search, (component, bounds) -> new Rectangle(getBaseX(), 38,
-							getBounds().getWidth() - getBaseX() * 2, bounds.getHeight()));
-					add(scroll, (component, defaultBounds) -> new Rectangle(0, 60, getBounds().getWidth(),
-							getBounds().getHeight() - 60));
-				}
+			if (mod == null && (this.mod != null || first)) {
+				add(0, search, (component, bounds) -> new Rectangle(getBaseX(), 38,
+						getBounds().getWidth() - getBaseX() * 2, bounds.getHeight()));
+				add(scroll, (component, defaultBounds) -> new Rectangle(0, 60, getBounds().getWidth(),
+						getBounds().getHeight() - 60));
+
 				if (!first) {
 					remove(back);
 					remove(config);
-					config = null;
 				}
-			} else {
-				noModsScroll = scroll.getScroll();
-				scroll.snapTo(0);
+
+				config = null;
+			} else if (mod != null && this.mod == null) {
+				config = mod.createConfigComponent();
+				add(config, Controller
+						.of(() -> new Rectangle(0, 45, getBounds().getWidth(), getBounds().getHeight() - 45)));
+
+				if (!singleModMode)
+					add(back, (component, defaultBounds) -> defaultBounds.offset(getBaseX(), getBaseX() + 2));
+
 				if (!first) {
 					remove(search);
 					remove(scroll);
 				}
-				config = mod.createConfigComponent();
-				add(config, Controller
-						.of(() -> new Rectangle(0, 45, getBounds().getWidth(), getBounds().getHeight() - 45)));
-				if (!singleModMode && this.mod == null)
-					add(back, (component, defaultBounds) -> defaultBounds.offset(getBaseX(), getBaseX() + 2));
 			}
 
 			this.mod = mod;
-			scroll.load();
 		}
 
 		@Override

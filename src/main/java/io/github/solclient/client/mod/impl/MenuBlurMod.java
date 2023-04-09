@@ -18,34 +18,28 @@
 
 package io.github.solclient.client.mod.impl;
 
-import java.io.*;
-
-import org.apache.commons.io.IOUtils;
+import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.replaymod.replay.ReplayModReplay;
 
-import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mixin.client.ShaderEffectAccessor;
-import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
 import net.minecraft.client.gl.*;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.resource.ResourceMetadataProvider;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.Window;
-import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
 public class MenuBlurMod extends SolClientMod {
-
-	private static final Identifier ID = new Identifier("minecraft:shaders/post/menu_blur.json");
 
 	@Expose
 	@Option
@@ -76,12 +70,6 @@ public class MenuBlurMod extends SolClientMod {
 		return ModCategory.VISUAL;
 	}
 
-	@Override
-	public void init() {
-		super.init();
-		Client.INSTANCE.getPseudoResources().register(ID, new MenuBlurShader());
-	}
-
 	@EventHandler
 	public void onOpenGui(InitialOpenGuiEvent event) {
 		openTime = System.currentTimeMillis();
@@ -89,11 +77,11 @@ public class MenuBlurMod extends SolClientMod {
 
 	@EventHandler
 	public void onPostProcessing(PostProcessingEvent event) {
-		if (event.type == PostProcessingEvent.Type.UPDATE || (blur != 0 && (mc.currentScreen != null
-				&& !(mc.currentScreen instanceof ChatScreen)
-				&& !(mc.currentScreen.getClass().getName().startsWith(
-						"com.replaymod.lib.de.johni0702.MinecraftClient.gui" + ".container." + "AbstractGuiOverlay$")
-						&& ReplayModReplay.instance.getReplayHandler() != null && mc.world != null)))) {
+		if (event.type == PostProcessingEvent.Type.UPDATE
+				|| (blur != 0 && (mc.currentScreen != null && !(mc.currentScreen instanceof ChatScreen)
+				// includes replay clicking screen
+						&& !(mc.currentScreen.getClass().getName().startsWith(
+								"com.replaymod.lib.de.johni0702.MinecraftClient.gui.container.AbstractGuiOverlay$"))))) {
 			update();
 			event.effects.add(effect);
 		}
@@ -103,34 +91,40 @@ public class MenuBlurMod extends SolClientMod {
 	public void onRenderGuiBackground(RenderGuiBackgroundEvent event) {
 		event.cancelled = true;
 		Window window = new Window(mc);
-		DrawableHelper.fill(0, 0, window.getWidth(), window.getHeight(),
-				MinecraftUtils.lerpColour(0, backgroundColour.getValue(), getProgress()));
+
+		int colour = MinecraftUtils.lerpColour(0, backgroundColour.getValue(), getProgress());
+		if (colour == 0) {
+			// nothing to see, just apply side-effects of method
+			// yes Minecraft code is bad :p
+			GlStateManager.enableTexture();
+			GlStateManager.disableBlend();
+		} else
+			DrawableHelper.fill(0, 0, window.getWidth(), window.getHeight(), colour);
 	}
 
 	public void update() {
 		if (effect == null) {
 			try {
-				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), ID);
-				effect.setupDimensions(this.mc.width, this.mc.height);
+				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(),
+						new Identifier("minecraft:shaders/effect/menu_blur.json"));
+				effect.setupDimensions(mc.width, mc.height);
 			} catch (JsonSyntaxException | IOException error) {
 				logger.error("Could not load menu blur", error);
 			}
 		}
 
-		((ShaderEffectAccessor) effect).getPasses().forEach((shader) -> {
-			GlUniform radius = shader.getProgram().getUniformByName("Radius");
-			GlUniform progress = shader.getProgram().getUniformByName("Progress");
+		((ShaderEffectAccessor) effect).getPasses().forEach(shader -> {
+			GlUniform radius = shader.getProgram().getUniformByName("radius");
+			GlUniform multiplier = shader.getProgram().getUniformByName("radiusMultiplier");
 
-			if (radius != null) {
+			if (radius != null)
 				radius.set(blur);
-			}
 
-			if (progress != null) {
-				if (fadeTime > 0) {
-					progress.set(getProgress());
-				} else {
-					progress.set(1);
-				}
+			if (multiplier != null) {
+				if (fadeTime > 0)
+					multiplier.set(getProgress());
+				else
+					multiplier.set(1);
 			}
 		});
 	}
@@ -143,60 +137,6 @@ public class MenuBlurMod extends SolClientMod {
 	protected void onEnable() {
 		super.onEnable();
 		effect = null;
-	}
-
-	public class MenuBlurShader implements Resource {
-
-		@Override
-		public Identifier getId() {
-			return null;
-		}
-
-		@Override
-		public InputStream getInputStream() {
-			return IOUtils.toInputStream("{\n" + "    \"targets\": [\n" + "        \"swap\"\n" + "    ],\n"
-					+ "    \"passes\": [\n" + "        {\n" + "            \"name\": \"menu_blur\",\n"
-					+ "            \"intarget\": \"minecraft:main\",\n" + "            \"outtarget\": \"swap\",\n"
-					+ "            \"uniforms\": [\n" + "                {\n"
-					+ "                    \"name\": \"BlurDir\",\n" + "                    \"values\": [ 1.0, 0.0 ]\n"
-					+ "                },\n" + "                {\n" + "                    \"name\": \"Radius\",\n"
-					+ "                    \"values\": [ 0.0 ]\n" + "                }\n" + "            ]\n"
-					+ "        },\n" + "        {\n" + "            \"name\": \"menu_blur\",\n"
-					+ "            \"intarget\": \"swap\",\n" + "            \"outtarget\": \"minecraft:main\",\n"
-					+ "            \"uniforms\": [\n" + "                {\n"
-					+ "                    \"name\": \"BlurDir\",\n" + "                    \"values\": [ 0.0, 1.0 ]\n"
-					+ "                },\n" + "                {\n" + "                    \"name\": \"Radius\",\n"
-					+ "                    \"values\": [ 0.0 ]\n" + "                }\n" + "            ]\n"
-					+ "        },\n" + "        {\n" + "            \"name\": \"menu_blur\",\n"
-					+ "            \"intarget\": \"minecraft:main\",\n" + "            \"outtarget\": \"swap\",\n"
-					+ "            \"uniforms\": [\n" + "                {\n"
-					+ "                    \"name\": \"BlurDir\",\n" + "                    \"values\": [ 1.0, 0.0 ]\n"
-					+ "                },\n" + "                {\n" + "                    \"name\": \"Radius\",\n"
-					+ "                    \"values\": [ 0.0 ]\n" + "                }\n" + "            ]\n"
-					+ "        },\n" + "        {\n" + "            \"name\": \"menu_blur\",\n"
-					+ "            \"intarget\": \"swap\",\n" + "            \"outtarget\": \"minecraft:main\",\n"
-					+ "            \"uniforms\": [\n" + "                {\n"
-					+ "                    \"name\": \"BlurDir\",\n" + "                    \"values\": [ 0.0, 1.0 ]\n"
-					+ "                },\n" + "                {\n" + "                    \"name\": \"Radius\",\n"
-					+ "                    \"values\": [ 0.0 ]\n" + "                }\n" + "            ]\n"
-					+ "        }\n" + "    ]\n" + "}");
-		}
-
-		@Override
-		public boolean hasMetadata() {
-			return false;
-		}
-
-		@Override
-		public <T extends ResourceMetadataProvider> T getMetadata(String paramString) {
-			return null;
-		}
-
-		@Override
-		public String getResourcePackName() {
-			return null;
-		}
-
 	}
 
 }

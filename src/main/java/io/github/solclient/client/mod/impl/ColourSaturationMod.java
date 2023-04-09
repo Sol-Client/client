@@ -18,34 +18,27 @@
 
 package io.github.solclient.client.mod.impl;
 
-import java.io.*;
-
-import org.apache.commons.io.IOUtils;
+import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
 import io.github.solclient.client.mixin.client.ShaderEffectAccessor;
-import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gl.*;
-import net.minecraft.client.resource.ResourceMetadataProvider;
-import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
 public class ColourSaturationMod extends SolClientMod {
-
-	private static final Identifier ID = new Identifier("minecraft:shaders/post/" + "color_convolve.json");
 
 	@Expose
 	@Option
 	@Slider(min = 0, max = 2F, step = 0.1F)
 	private float saturation = 1f;
 	private ShaderEffect effect;
-	private float groupSaturation;
+	private float realSaturation;
 
 	@Override
 	public String getId() {
@@ -57,30 +50,24 @@ public class ColourSaturationMod extends SolClientMod {
 		return ModCategory.VISUAL;
 	}
 
-	@Override
-	public void init() {
-		super.init();
-		Client.INSTANCE.getPseudoResources().register(ID, new SaturationShader());
-	}
-
 	public void update() {
 		if (effect == null) {
-			groupSaturation = saturation;
+			realSaturation = -1;
 			try {
-				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), ID);
+				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), new Identifier("minecraft:shaders/post/color_convolve.json"));
 				effect.setupDimensions(mc.width, mc.height);
 			} catch (JsonSyntaxException | IOException error) {
 				logger.error("Could not load saturation shader", error);
 			}
 		}
 
-		if (groupSaturation != saturation) {
-			((ShaderEffectAccessor) effect).getPasses().forEach((shader) -> {
+		if (realSaturation != saturation) {
+			((ShaderEffectAccessor) effect).getPasses().forEach(shader -> {
 				GlUniform saturationUniform = shader.getProgram().getUniformByName("Saturation");
 				if (saturationUniform != null)
 					saturationUniform.set(saturation);
 			});
-			groupSaturation = saturation;
+			realSaturation = saturation;
 		}
 	}
 
@@ -94,47 +81,6 @@ public class ColourSaturationMod extends SolClientMod {
 	protected void onEnable() {
 		super.onEnable();
 		effect = null;
-	}
-
-	public class SaturationShader implements Resource {
-
-		@Override
-		public Identifier getId() {
-			return null;
-		}
-
-		@Override
-		public InputStream getInputStream() {
-			return IOUtils.toInputStream(String.format("{" + "    \"targets\": [" + "        \"swap\","
-					+ "        \"previous\"" + "    ]," + "    \"passes\": [" + "        {"
-					+ "            \"name\": \"color_convolve\"," + "            \"intarget\": \"minecraft:main\","
-					+ "            \"outtarget\": \"swap\"," + "            \"auxtargets\": [" + "                {"
-					+ "                    \"name\": \"PrevSampler\"," + "                    \"id\": \"previous\""
-					+ "                }" + "            ]," + "            \"uniforms\": [" + "                {"
-					+ "                    \"name\": \"Saturation\"," + "                    \"values\": [ %s ]"
-					+ "                }" + "            ]" + "        }," + "        {"
-					+ "            \"name\": \"blit\"," + "            \"intarget\": \"swap\","
-					+ "            \"outtarget\": \"previous\"" + "        }," + "        {"
-					+ "            \"name\": \"blit\"," + "            \"intarget\": \"swap\","
-					+ "            \"outtarget\": \"minecraft:main\"" + "        }" + "    ]" + "}", saturation,
-					saturation, saturation));
-		}
-
-		@Override
-		public boolean hasMetadata() {
-			return false;
-		}
-
-		@Override
-		public <T extends ResourceMetadataProvider> T getMetadata(String paramString) {
-			return null;
-		}
-
-		@Override
-		public String getResourcePackName() {
-			return null;
-		}
-
 	}
 
 }

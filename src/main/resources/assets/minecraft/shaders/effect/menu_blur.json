@@ -1,0 +1,87 @@
+{
+	"targets": [
+		"swap"
+	],
+	"passes": [
+		{
+			"name": "menu_blur",
+			"intarget": "minecraft:main",
+			"outtarget": "swap",
+			"uniforms": [
+				{
+					"name": "direction",
+					"values": [
+						1.0,
+						0.0
+					]
+				},
+				{
+					"name": "radius",
+					"values": [
+						0.0
+					]
+				}
+			]
+		},
+		{
+			"name": "menu_blur",
+			"intarget": "swap",
+			"outtarget": "minecraft:main",
+			"uniforms": [
+				{
+					"name": "direction",
+					"values": [
+						0.0,
+						1.0
+					]
+				},
+				{
+					"name": "radius",
+					"values": [
+						0.0
+					]
+				}
+			]
+		},
+		{
+			"name": "menu_blur",
+			"intarget": "minecraft:main",
+			"outtarget": "swap",
+			"uniforms": [
+				{
+					"name": "direction",
+					"values": [
+						1.0,
+						0.0
+					]
+				},
+				{
+					"name": "radius",
+					"values": [
+						0.0
+					]
+				}
+			]
+		},
+		{
+			"name": "menu_blur",
+			"intarget": "swap",
+			"outtarget": "minecraft:main",
+			"uniforms": [
+				{
+					"name": "direction",
+					"values": [
+						0.0,
+						1.0
+					]
+				},
+				{
+					"name": "radius",
+					"values": [
+						0.0
+					]
+				}
+			]
+		}
+	]
+}

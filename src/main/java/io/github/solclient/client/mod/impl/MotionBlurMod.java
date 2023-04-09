@@ -18,34 +18,27 @@
 
 package io.github.solclient.client.mod.impl;
 
-import java.io.*;
-
-import org.apache.commons.io.IOUtils;
+import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
 import io.github.solclient.client.mixin.client.ShaderEffectAccessor;
-import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gl.*;
-import net.minecraft.client.resource.ResourceMetadataProvider;
-import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 
 public class MotionBlurMod extends SolClientMod {
 
-	public static final Identifier ID = new Identifier("minecraft:shaders/post/motion_blur.json");
-
 	@Expose
 	@Option
 	@Slider(min = 0, max = 0.99F, step = 0.01F)
-	private float blur = 0.5f;
+	private float blur = 0.5F;
+	private float realBlur;
 	private ShaderEffect effect;
-	private float groupBlur;
 
 	@Override
 	public String getId() {
@@ -57,30 +50,25 @@ public class MotionBlurMod extends SolClientMod {
 		return ModCategory.VISUAL;
 	}
 
-	@Override
-	public void init() {
-		super.init();
-		Client.INSTANCE.getPseudoResources().register(ID, new MotionBlurShader());
-	}
-
 	public void update() {
 		if (effect == null) {
-			groupBlur = blur;
+			realBlur = -1;
 			try {
-				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), ID);
+				effect = new ShaderEffect(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(),
+						new Identifier("minecraft:shaders/effect/motion_blur.json"));
 				effect.setupDimensions(mc.width, mc.height);
 			} catch (JsonSyntaxException | IOException error) {
 				logger.error("Could not load motion blur", error);
 			}
 		}
-		if (groupBlur != blur) {
-			((ShaderEffectAccessor) effect).getPasses().forEach((pass) -> {
-				GlUniform blendFactor = pass.getProgram().getUniformByName("BlendFactor");
-				if (blendFactor != null) {
-					blendFactor.set(blur);
-				}
+
+		if (realBlur != blur) {
+			((ShaderEffectAccessor) effect).getPasses().forEach(pass -> {
+				GlUniform percent = pass.getProgram().getUniformByName("percent");
+				if (percent != null)
+					percent.set(blur);
 			});
-			groupBlur = blur;
+			realBlur = blur;
 		}
 	}
 
@@ -94,46 +82,6 @@ public class MotionBlurMod extends SolClientMod {
 	protected void onEnable() {
 		super.onEnable();
 		effect = null;
-	}
-
-	public class MotionBlurShader implements Resource {
-
-		@Override
-		public Identifier getId() {
-			return null;
-		}
-
-		@Override
-		public InputStream getInputStream() {
-			return IOUtils.toInputStream(String.format("{" + "    \"targets\": [" + "        \"swap\","
-					+ "        \"previous\"" + "    ]," + "    \"passes\": [" + "        {"
-					+ "            \"name\": \"motion_blur\"," + "            \"intarget\": \"minecraft:main\","
-					+ "            \"outtarget\": \"swap\"," + "            \"auxtargets\": [" + "                {"
-					+ "                    \"name\": \"PrevSampler\"," + "                    \"id\": \"previous\""
-					+ "                }" + "            ]," + "            \"uniforms\": [" + "                {"
-					+ "                    \"name\": \"BlendFactor\"," + "                    \"values\": [ %s ]"
-					+ "                }" + "            ]" + "        }," + "        {"
-					+ "            \"name\": \"blit\"," + "            \"intarget\": \"swap\","
-					+ "            \"outtarget\": \"previous\"" + "        }," + "        {"
-					+ "            \"name\": \"blit\"," + "            \"intarget\": \"swap\","
-					+ "            \"outtarget\": \"minecraft:main\"" + "        }" + "    ]" + "}", blur, blur, blur));
-		}
-
-		@Override
-		public boolean hasMetadata() {
-			return false;
-		}
-
-		@Override
-		public <T extends ResourceMetadataProvider> T getMetadata(String paramString) {
-			return null;
-		}
-
-		@Override
-		public String getResourcePackName() {
-			return null;
-		}
-
 	}
 
 }

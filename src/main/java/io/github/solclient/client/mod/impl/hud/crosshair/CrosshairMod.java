@@ -95,6 +95,7 @@ public class CrosshairMod extends SolClientHudMod {
 	public List<ModOption<?>> createOptions() {
 		List<ModOption<?>> options = super.createOptions();
 		options.add(2, new CrosshairOption(this));
+		options.add(3, options.remove(1));
 		return options;
 	}
 

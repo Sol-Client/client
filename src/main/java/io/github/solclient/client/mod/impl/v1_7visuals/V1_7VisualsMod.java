@@ -16,18 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.mod.impl;
+package io.github.solclient.client.mod.impl.v1_7visuals;
 
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
-
 import io.github.solclient.client.event.EventHandler;
-import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.event.impl.PreTickEvent;
+import io.github.solclient.client.event.impl.TransformFirstPersonItemEvent;
 import io.github.solclient.client.mixin.client.LivingEntityAccessor;
-import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.impl.SolClientMod;
 import io.github.solclient.client.mod.option.annotation.Option;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.FishingRodItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.MathHelper;
 
@@ -40,25 +44,29 @@ public class V1_7VisualsMod extends SolClientMod {
 	public boolean useAndMine = true;
 	@Expose
 	@Option
-	private boolean particles = true;
+	private final boolean bow = true;
+	@Expose
+	@Option
+	private final boolean rod = true;
+	@Expose
+	@Option
+	private final boolean particles = true;
 	@Expose
 	@Option
 	public boolean blocking = true;
 	@Expose
 	@Option
 	public boolean eatingAndDrinking = true;
-	@Expose
-	@Option
-	private boolean bow = true;
-	@Expose
-	@Option
-	private boolean rod = true;
+
 	@Expose
 	@Option
 	public boolean armourDamage = true;
 	@Expose
 	@Option
 	public boolean sneaking = true;
+	@Expose
+	@Option
+	public boolean debug = true;
 
 	public static V1_7VisualsMod instance;
 	public static boolean enabled;
@@ -98,17 +106,14 @@ public class V1_7VisualsMod extends SolClientMod {
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
-		if (mc.player != null && mc.player.abilities.allowModifyWorld && isEnabled() && useAndMine && mc.result != null
-				&& mc.result.type == BlockHitResult.Type.BLOCK && mc.player != null && mc.options.attackKey.isPressed()
-				&& mc.options.useKey.isPressed() && mc.player.getItemUseTicks() > 0) {
-			if ((!mc.player.handSwinging
-					|| mc.player.handSwingTicks >= ((LivingEntityAccessor) mc.player).getArmSwingAnimationEnd()
-							/ 2
+		if (mc.player != null && isEnabled() && useAndMine && mc.player.abilities.allowModifyWorld &&
+				mc.result != null && mc.result.type == BlockHitResult.Type.BLOCK && mc.options.attackKey.isPressed() &&
+				mc.options.useKey.isPressed() && mc.player.getItemUseTicks() > 0) {
+			if ((!mc.player.handSwinging || mc.player.handSwingTicks >= ((LivingEntityAccessor) mc.player).getArmSwingAnimationEnd() / 2
 					|| mc.player.handSwingTicks < 0)) {
 				mc.player.handSwingTicks = -1;
 				mc.player.handSwinging = true;
 			}
-
 			if (particles) {
 				mc.particleManager.addBlockBreakingParticles(mc.result.getBlockPos(), mc.result.direction);
 			}
@@ -117,10 +122,6 @@ public class V1_7VisualsMod extends SolClientMod {
 
 	@EventHandler
 	public void onItemTransform(TransformFirstPersonItemEvent event) {
-		if (!(bow || rod)) {
-			return;
-		}
-
 		// https://github.com/sp614x/optifine/issues/2098
 		if (mc.player.isUsingItem() && event.itemToRender.getItem() instanceof BowItem) {
 			if (bow)
@@ -128,11 +129,13 @@ public class V1_7VisualsMod extends SolClientMod {
 		} else if ((event.itemToRender.getItem() instanceof FishingRodItem) && rod) {
 			GlStateManager.translate(0.08f, -0.027f, -0.33f);
 			GlStateManager.scale(0.93f, 1.0f, 1.0f);
+		} else if (event.itemToRender.getItem() != null) {
+			GlStateManager.rotate(-1, 0.0f, 1.0f, 0.0f);
+			GlStateManager.translate(-0.027, 0.002, 0.0005);
 		}
 	}
 
-	public static void oldDrinking(ItemStack itemToRender, AbstractClientPlayerEntity clientPlayer,
-			float partialTicks) {
+	public static void oldDrinking(ItemStack itemToRender, AbstractClientPlayerEntity clientPlayer, float partialTicks) {
 		float var14 = clientPlayer.getItemUseTicks() - partialTicks + 1.0F;
 		float var15 = 1.0F - var14 / itemToRender.getMaxUseTime();
 		float var16 = 1.0F - var15;
@@ -150,10 +153,4 @@ public class V1_7VisualsMod extends SolClientMod {
 		GlStateManager.translate(0, -0.0F, 0.06F);
 		GlStateManager.rotate(-4F, 1, 0, 0);
 	}
-
-	public static void oldBlocking() {
-		GlStateManager.scale(0.83F, 0.88F, 0.85F);
-		GlStateManager.translate(-0.3F, 0.1F, 0.0F);
-	}
-
 }

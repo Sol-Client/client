@@ -4,7 +4,7 @@
 
 # Sol Client
 
-An **open source**, non-hacked client for Minecraft 1.8.9 (newer versions coming in the future)
+A nice open source, non-hacked client modification for Minecraft 1.8.9 (newer versions coming in the future)
 
 <a href="https://www.java.com"><img alt="Java" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/built-with/java_vector.svg"></a>
 <a href="https://discord.gg/TSAkhgXNbK"><img alt="Discord Server" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg"></a>

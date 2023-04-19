@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 import org.lwjgl.nanovg.*;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.mod.ModUiStateManager;
 import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.mod.option.impl.ColourOption;
 import io.github.solclient.client.ui.Theme;
@@ -77,7 +77,7 @@ public class ColourPickerDialog extends BlockComponent {
 								defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 		ButtonComponent done = ButtonComponent.done(() -> {
-			LinkedList<Colour> previousColours = Client.INSTANCE.getModUiState().getPreviousColours();
+			LinkedList<Colour> previousColours = ModUiStateManager.INSTANCE.getPreviousColours();
 			if (previousColours.contains(this.colour))
 				previousColours.remove(this.colour);
 			previousColours.addFirst(this.colour);
@@ -272,7 +272,7 @@ public class ColourPickerDialog extends BlockComponent {
 		int index = 0;
 		for (int y = 0; y < 2; y++) {
 			for (int x = 0; x < 5; x++) {
-				Colour colour = Client.INSTANCE.getModUiState().getPreviousColours().get(index);
+				Colour colour = ModUiStateManager.INSTANCE.getPreviousColours().get(index);
 
 				NanoVG.nvgBeginPath(nvg);
 				NanoVG.nvgCircle(nvg, PREVIOUS_X + x * 15 + 5, PREVIOUS_Y + y * 15 + 5, 5);
@@ -339,7 +339,7 @@ public class ColourPickerDialog extends BlockComponent {
 				int x = (int) ((info.relativeMouseX() - PREVIOUS_X) / 15);
 				int y = (int) ((info.relativeMouseY() - PREVIOUS_Y) / 15);
 				int index = x + y * 5;
-				colour = Client.INSTANCE.getModUiState().getPreviousColours().get(index);
+				colour = ModUiStateManager.INSTANCE.getPreviousColours().get(index);
 				fieldChange();
 			}
 		}

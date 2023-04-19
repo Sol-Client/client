@@ -26,13 +26,13 @@ import cc.cosmetica.api.ShoulderBuddies;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.WorldLoadEvent;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class CosmeticaMod extends SolClientMod {
+public class CosmeticaMod extends StandardMod {
 
 	public static CosmeticaMod instance;
 	public static boolean enabled;
@@ -96,16 +96,6 @@ public class CosmeticaMod extends SolClientMod {
 		});
 		thread.setDaemon(true);
 		thread.start();
-	}
-
-	@Override
-	public String getId() {
-		return "cosmetica";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.INTEGRATION;
 	}
 
 	public BakedModel bakeIfAbsent(Model model) {

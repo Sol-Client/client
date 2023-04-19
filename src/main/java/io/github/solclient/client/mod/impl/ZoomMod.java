@@ -31,7 +31,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.math.MathHelper;
 
-public class ZoomMod extends SolClientMod {
+public class ZoomMod extends StandardMod {
 
 	@Option
 	private final KeyBinding key = new KeyBinding(getTranslationKey("key"), Keyboard.KEY_C,
@@ -72,18 +72,8 @@ public class ZoomMod extends SolClientMod {
 	public boolean active;
 
 	@Override
-	public String getId() {
-		return "zoom";
-	}
-
-	@Override
 	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.inspired_by", "EnnuiL");
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.UTILITY;
 	}
 
 	public void start() {
@@ -146,11 +136,6 @@ public class ZoomMod extends SolClientMod {
 			return;
 		}
 		event.fov *= currentFactor;
-	}
-
-	@Override
-	public boolean isEnabledByDefault() {
-		return true;
 	}
 
 	@EventHandler

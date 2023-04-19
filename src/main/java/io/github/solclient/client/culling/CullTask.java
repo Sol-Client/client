@@ -26,7 +26,7 @@ import org.apache.logging.log4j.*;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 import com.logisticscraft.occlusionculling.util.Vec3d;
 
-import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
+import io.github.solclient.client.mod.impl.core.mixins.client.MinecraftClientAccessor;
 import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;

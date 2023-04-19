@@ -20,7 +20,9 @@ package io.github.solclient.wrapper;
 
 import java.io.*;
 import java.net.*;
-import java.util.Enumeration;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.function.Consumer;
 
 import org.apache.commons.io.IOUtils;
 import org.spongepowered.asm.launch.MixinBootstrap;
@@ -214,6 +216,35 @@ public final class ClassWrapper extends URLClassLoader {
 			return data;
 		} catch (Throwable error) {
 			throw new ClassNotFoundException(name, error);
+		}
+	}
+
+	public void walkPackageTree(String packageName, Consumer<String> consumer) throws IOException {
+		List<String> children = getPackageChildren(packageName);
+		for (String child : children) {
+			if (child.endsWith(".class"))
+				consumer.accept(packageName + '.' + child.substring(0, child.lastIndexOf('.')));
+			else
+				walkPackageTree(packageName + '.' + child, consumer);
+		}
+	}
+
+	public List<String> getPackageChildren(String packageName) throws IOException {
+		return list(packageName.replace('.', '/'));
+	}
+
+	public List<String> list(String directory) throws IOException {
+		try (InputStream in = getResourceAsStream(directory)) {
+			if (in == null)
+				throw new IllegalArgumentException(directory);
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+			List<String> result = new ArrayList<>();
+			String line;
+			while ((line = reader.readLine()) != null)
+				result.add(line);
+
+			return result;
 		}
 	}
 

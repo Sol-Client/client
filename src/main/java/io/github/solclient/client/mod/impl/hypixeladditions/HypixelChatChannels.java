@@ -20,7 +20,7 @@ package io.github.solclient.client.mod.impl.hypixeladditions;
 
 import java.util.*;
 
-import io.github.solclient.client.chatextensions.channel.*;
+import io.github.solclient.client.mod.impl.api.chat.channel.*;
 
 public class HypixelChatChannels extends ChatChannelSystem {
 

@@ -26,21 +26,11 @@ import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.data.Colour;
 
-public class HitColourMod extends SolClientMod {
+public class HitColourMod extends StandardMod {
 
 	@Expose
 	@Option
 	private Colour colour = new Colour(255, 0, 0, 76);
-
-	@Override
-	public String getId() {
-		return "hit_colour";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.VISUAL;
-	}
 
 	@EventHandler
 	public void onHitOverlay(HitOverlayEvent event) {

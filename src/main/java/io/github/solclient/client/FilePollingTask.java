@@ -23,6 +23,7 @@ import java.nio.file.*;
 import java.util.*;
 
 import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.impl.TextFileOption;
 
@@ -31,10 +32,10 @@ public class FilePollingTask implements Runnable, Closeable {
 	private Map<String, ModOption<?>> files = new HashMap<>();
 	private WatchKey key;
 
-	public FilePollingTask(ModManager mods) throws IOException {
+	public FilePollingTask(SolClient mods) throws IOException {
 		WatchService service = FileSystems.getDefault().newWatchService();
 
-		key = Client.INSTANCE.getConfigFolder().register(service, StandardWatchEventKinds.ENTRY_MODIFY,
+		key = SolClient.INSTANCE.getConfigFolder().register(service, StandardWatchEventKinds.ENTRY_MODIFY,
 				StandardWatchEventKinds.ENTRY_CREATE);
 
 		for (Mod mod : mods)

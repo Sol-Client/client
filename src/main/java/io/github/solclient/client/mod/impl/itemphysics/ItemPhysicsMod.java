@@ -18,35 +18,22 @@
 
 package io.github.solclient.client.mod.impl.itemphysics;
 
-import java.util.*;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
-import io.github.solclient.client.mixin.EntityAccessor;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.StandardMod;
+import io.github.solclient.client.mod.impl.core.mixins.EntityAccessor;
 import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.*;
 
-public class ItemPhysicsMod extends SolClientMod {
+public class ItemPhysicsMod extends StandardMod {
 
 	@Option
 	@Slider(min = 0, max = 100, step = 1, format = "sol_client.slider.percent")
 	private float rotationSpeed = 100;
-
-	@Override
-	public String getId() {
-		return "item_physics";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.VISUAL;
-	}
 
 	@EventHandler
 	public void onItemEntityRenderEvent(ItemEntityRenderEvent event) {

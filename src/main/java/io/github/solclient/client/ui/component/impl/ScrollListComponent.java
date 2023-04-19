@@ -21,7 +21,7 @@ package io.github.solclient.client.ui.component.impl;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.Controller;
@@ -83,7 +83,7 @@ public class ScrollListComponent extends ListComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
-		if (!SolClientConfig.instance.smoothScrolling) {
+		if (!CoreMod.instance.smoothScrolling) {
 			calculatedY = targetY;
 		} else {
 			calculatedY = (lastAnimatedY + (animatedY - lastAnimatedY) * info.tickDelta());

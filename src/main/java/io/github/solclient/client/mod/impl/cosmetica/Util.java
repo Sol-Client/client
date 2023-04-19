@@ -21,7 +21,7 @@ package io.github.solclient.client.mod.impl.cosmetica;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import cc.cosmetica.api.Model;
-import io.github.solclient.client.mixin.client.*;
+import io.github.solclient.client.mod.impl.core.mixins.client.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.MinecraftClient;

@@ -26,7 +26,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.*;
 
-import io.github.solclient.client.mixin.client.TextureUtilAccessor;
+import io.github.solclient.client.mod.impl.core.mixins.client.TextureUtilAccessor;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.*;

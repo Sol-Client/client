@@ -25,12 +25,14 @@ import java.util.*;
 
 import com.google.gson.*;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.SolClient;
 import io.github.solclient.client.util.WrappingLinkedList;
 import io.github.solclient.client.util.data.Colour;
 import lombok.Getter;
 
 public final class ModUiStateManager {
+
+	public static final ModUiStateManager INSTANCE = new ModUiStateManager();
 
 	@Getter
 	private final List<Mod> pins = new LinkedList<>();
@@ -43,7 +45,7 @@ public final class ModUiStateManager {
 			return;
 
 		pins.clear();
-		Client.INSTANCE.getMods().forEach(Mod::notifyUnpin);
+		SolClient.INSTANCE.forEach(Mod::notifyUnpin);
 
 		try (Reader reader = new InputStreamReader(Files.newInputStream(file), StandardCharsets.UTF_8)) {
 			JsonObject object = new JsonParser().parse(reader).getAsJsonObject();
@@ -86,7 +88,7 @@ public final class ModUiStateManager {
 	}
 
 	private void addPinById(String id) {
-		Client.INSTANCE.getMods().getById(id).ifPresent((mod) -> {
+		SolClient.INSTANCE.getMod(id).ifPresent((mod) -> {
 			pins.add(mod);
 			mod.notifyPin();
 		});

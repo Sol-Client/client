@@ -35,7 +35,7 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.scoreboard.*;
 import net.minecraft.util.Formatting;
 
-public class ScoreboardMod extends SolClientMod {
+public class ScoreboardMod extends StandardMod {
 
 	public static ScoreboardMod instance;
 	public static boolean enabled;
@@ -76,16 +76,6 @@ public class ScoreboardMod extends SolClientMod {
 	@Expose
 	@Option
 	private Colour numbersColour = new Colour(-43691);
-
-	@Override
-	public String getId() {
-		return "scoreboard";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.HUD;
-	}
 
 	@Override
 	public void init() {
@@ -194,11 +184,6 @@ public class ScoreboardMod extends SolClientMod {
 		}
 
 		GlStateManager.popMatrix();
-	}
-
-	@Override
-	public boolean isEnabledByDefault() {
-		return true;
 	}
 
 }

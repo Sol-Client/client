@@ -25,8 +25,7 @@ import com.google.common.util.concurrent.ListenableFutureTask;
 import com.replaymod.core.mixin.MinecraftAccessor;
 import com.replaymod.core.versions.scheduler.Scheduler;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.PreRenderTickEvent;
 import lombok.AllArgsConstructor;
 import net.minecraft.client.MinecraftClient;
@@ -85,7 +84,7 @@ public class SCScheduler implements Scheduler {
 
 	private void runLater(Runnable runnable, final Runnable defer) {
 		if (mc.isOnThread() && inRunLater) {
-			Client.INSTANCE.getEvents().register(new TickListener(defer));
+			EventBus.INSTANCE.register(new TickListener(defer));
 		} else {
 			Queue<FutureTask<?>> tasks = ((MinecraftAccessor) mc).getScheduledTasks();
 
@@ -118,7 +117,7 @@ public class SCScheduler implements Scheduler {
 
 		@EventHandler
 		public void onTick(PreRenderTickEvent event) {
-			Client.INSTANCE.getEvents().unregister(this);
+			EventBus.INSTANCE.unregister(this);
 			defer.run();
 		}
 

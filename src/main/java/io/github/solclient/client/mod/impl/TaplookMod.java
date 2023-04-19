@@ -28,7 +28,7 @@ import io.github.solclient.client.util.Perspective;
 import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.option.KeyBinding;
 
-public class TaplookMod extends SolClientMod {
+public class TaplookMod extends StandardMod {
 
 	@Option
 	private final KeyBinding key = new KeyBinding(getTranslationKey("key"), 0, GlobalConstants.KEY_CATEGORY);
@@ -37,16 +37,6 @@ public class TaplookMod extends SolClientMod {
 	@Expose
 	@Option
 	private Perspective perspective = Perspective.THIRD_PERSON_BACK;
-
-	@Override
-	public String getId() {
-		return "taplook";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.UTILITY;
-	}
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
@@ -70,11 +60,6 @@ public class TaplookMod extends SolClientMod {
 		active = false;
 		mc.options.perspective = previousPerspective;
 		mc.worldRenderer.scheduleTerrainUpdate();
-	}
-
-	@Override
-	public boolean isEnabledByDefault() {
-		return true;
 	}
 
 }

@@ -22,25 +22,14 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.TimeEvent;
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.*;
 
-public class TimeChangerMod extends SolClientMod {
+public final class TimeChangerMod extends StandardMod {
 
 	@Expose
 	@Option
 	@Slider(min = 0, max = 24000, step = 1, showValue = false)
 	private float time = 1000;
-
-	@Override
-	public String getId() {
-		return "time_changer";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.VISUAL;
-	}
 
 	@EventHandler
 	public void onTime(TimeEvent event) {

@@ -40,11 +40,6 @@ public class PingMod extends SmoothCounterHudMod {
 	@Option
 	private PingSource source = PingSource.AUTO;
 
-	@Override
-	public String getId() {
-		return "ping";
-	}
-
 	@EventHandler
 	public void onServerConnect(ServerConnectEvent event) {
 		ping = 0;

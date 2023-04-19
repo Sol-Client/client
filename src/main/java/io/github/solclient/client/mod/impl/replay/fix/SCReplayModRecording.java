@@ -27,7 +27,7 @@ import com.replaymod.recording.handler.*;
 import com.replaymod.recording.mixin.NetworkManagerAccessor;
 import com.replaymod.recording.packet.PacketListener;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.event.EventBus;
 import io.netty.channel.Channel;
 import net.minecraft.network.ClientConnection;
 
@@ -62,7 +62,7 @@ public class SCReplayModRecording implements Module {
 		instance = this;
 		core = mod;
 		core.getSettingsRegistry().register(Setting.class);
-		Client.INSTANCE.getEvents().register(this);
+		EventBus.INSTANCE.register(this);
 	}
 
 	@Override

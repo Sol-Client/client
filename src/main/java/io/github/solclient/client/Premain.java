@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import org.spongepowered.asm.mixin.Mixins;
 
-import io.github.solclient.client.addon.AddonManager;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.util.GlobalConstants;
 import io.github.solclient.wrapper.transformer.AccessWidenerTransformer;
 import me.djtheredstoner.devauth.common.DevAuth;
@@ -33,25 +33,16 @@ import net.minecraft.client.main.Main;
  */
 public final class Premain {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InvalidModException {
 		// TODO this doesn't really work very well
 		System.setProperty("http.agent", GlobalConstants.USER_AGENT);
 
-		Mixins.addConfiguration("sol-client.mixins.json");
-
-		Mixins.addConfiguration("mixins.core.replaymod.json");
-		Mixins.addConfiguration("mixins.recording.replaymod.json");
-		Mixins.addConfiguration("mixins.render.replaymod.json");
-		Mixins.addConfiguration("mixins.render.blend.replaymod.json");
-		Mixins.addConfiguration("mixins.replay.replaymod.json");
 		if (GlobalConstants.optifine)
 			Mixins.addConfiguration("mixins.compat.shaders.replaymod.json");
-		Mixins.addConfiguration("mixins.extras.playeroverview.replaymod.json");
 
 		AccessWidenerTransformer.addWideners("replay-mod.accesswidener");
 
-		// load addons
-		AddonManager.premain(args);
+		SolClient.INSTANCE.loadStandard();
 
 		if (GlobalConstants.DEV) {
 			DevAuth auth = new DevAuth();

@@ -20,7 +20,7 @@ package io.github.solclient.client.mod.impl.hypixeladditions;
 
 import java.util.regex.*;
 
-import io.github.solclient.client.network.Popup;
+import io.github.solclient.client.mod.impl.api.popups.Popup;
 
 public enum HypixelPopupType {
 	// Taken from

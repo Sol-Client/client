@@ -20,10 +20,10 @@ package io.github.solclient.client.ui.screen.mods;
 
 import org.lwjgl.input.Keyboard;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.SolClient;
 import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.ui.*;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
@@ -63,7 +63,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	@Override
 	public void render(int mouseX, int mouseY, float tickDelta) {
 		if (client.world == null) {
-			if (SolClientConfig.instance.fancyMainMenu) {
+			if (CoreMod.instance.fancyMainMenu) {
 				background = false;
 				drawPanorama(mouseX, mouseY, tickDelta);
 			} else
@@ -86,13 +86,13 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	public void removed() {
 		super.removed();
 		animation.close();
-		Client.INSTANCE.save();
+		SolClient.INSTANCE.saveAll();
 		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override
 	public void closeAll() {
-		if (client.world == null && SolClientConfig.instance.fancyMainMenu) {
+		if (client.world == null && CoreMod.instance.fancyMainMenu) {
 			client.setScreen(ActiveMainMenu.getInstance());
 			return;
 		}
@@ -241,7 +241,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					getScroll().getPinned().remove(ghost);
 					getScroll().getPinned().add(modIndex, draggingMod);
 
-					Client.INSTANCE.getModUiState().reorderPin(draggingMod.getMod(), modIndex - 1);
+					ModUiStateManager.INSTANCE.reorderPin(draggingMod.getMod(), modIndex - 1);
 
 					draggingMod = null;
 				} else {
@@ -256,7 +256,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 						modIndex--;
 					}
 
-					int max = Client.INSTANCE.getModUiState().getPins().size();
+					int max = ModUiStateManager.INSTANCE.getPins().size();
 					if (modIndex < 1) {
 						modIndex = 1;
 					} else if (modIndex > max) {
@@ -283,7 +283,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				if (mod == null) {
 					if (!search.getText().isEmpty())
 						return scroll.getSubComponents().get(0).mouseClickedAnywhere(info, 1, true, false);
-				} else if (!(mod instanceof ConfigOnlyMod)) {
+				} else if (!mod.isForcedOn()) {
 					MinecraftUtils.playClickSound(true);
 					mod.setEnabled(!mod.isEnabled());
 					return true;
@@ -302,8 +302,8 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			boolean result = super.keyPressed(info, keyCode, character);
 
 			if (!result) {
-				if (keyCode == SolClientConfig.instance.modsKey.getCode()
-						&& KeyBindingExtension.from(SolClientConfig.instance.modsKey).areModsPressed()) {
+				if (keyCode == CoreMod.instance.modsKey.getCode()
+						&& KeyBindingExtension.from(CoreMod.instance.modsKey).areModsPressed()) {
 					mc.setScreen(null);
 					return true;
 				} else if (mod != null && (keyCode == Keyboard.KEY_BACK

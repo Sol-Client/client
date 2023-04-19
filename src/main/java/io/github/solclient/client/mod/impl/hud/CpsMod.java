@@ -36,11 +36,6 @@ public class CpsMod extends SolClientSimpleHudMod {
 	private Colour separatorColour = new Colour(64, 64, 64);
 
 	@Override
-	public String getId() {
-		return "cps";
-	}
-
-	@Override
 	public void render(Position position, boolean editMode) {
 		super.render(position, editMode);
 		if (rmb) {

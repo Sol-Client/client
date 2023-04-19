@@ -44,6 +44,7 @@ public final class EventBus {
 
 	}
 
+	public static final EventBus INSTANCE = new EventBus();
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private boolean inPost;

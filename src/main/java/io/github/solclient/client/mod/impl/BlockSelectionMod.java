@@ -41,7 +41,7 @@ import net.minecraft.util.hit.BlockHitResult.Type;
 import net.minecraft.util.math.*;
 import net.minecraft.world.level.LevelInfo.GameMode;
 
-public class BlockSelectionMod extends SolClientMod {
+public class BlockSelectionMod extends StandardMod {
 
 	@Expose
 	@Option
@@ -65,16 +65,6 @@ public class BlockSelectionMod extends SolClientMod {
 	@Expose
 	@Option
 	private boolean persistent = true;
-
-	@Override
-	public String getId() {
-		return "block_selection";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.VISUAL;
-	}
 
 	private boolean canRender(BlockHitResult hit) {
 		Entity entity = mc.getCameraEntity();

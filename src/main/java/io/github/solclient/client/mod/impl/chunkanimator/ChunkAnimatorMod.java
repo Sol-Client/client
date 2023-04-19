@@ -23,16 +23,16 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mixin.client.*;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.StandardMod;
+import io.github.solclient.client.mod.impl.core.mixins.client.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.EasingFunction;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.math.*;
 
 // Based on lumien231's chunk animator.
-public class ChunkAnimatorMod extends SolClientMod {
+public class ChunkAnimatorMod extends StandardMod {
 
 	public static ChunkAnimatorMod instance;
 	public static boolean enabled;
@@ -64,18 +64,8 @@ public class ChunkAnimatorMod extends SolClientMod {
 	}
 
 	@Override
-	public String getId() {
-		return "chunk_animator";
-	}
-
-	@Override
 	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.originally_by", "lumien231");
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.VISUAL;
 	}
 
 	public int getDuration() {

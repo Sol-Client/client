@@ -21,7 +21,7 @@ package io.github.solclient.client.ui.screen.mods;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.SolClient;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -54,6 +54,8 @@ public final class ModsScroll extends ScrollListComponent {
 
 		if (screen.getFilter().isEmpty()) {
 			for (ModCategory category : ModCategory.values()) {
+				if (category == ModCategory.HIDDEN)
+					return;
 				if (category.getMods().isEmpty())
 					continue;
 
@@ -65,7 +67,7 @@ public final class ModsScroll extends ScrollListComponent {
 			}
 		} else {
 			String filter = screen.getFilter();
-			List<Mod> filtered = Client.INSTANCE.getMods().stream().filter((mod) -> {
+			List<Mod> filtered = SolClient.INSTANCE.modStream().filter((mod) -> {
 				String credit = mod.getDetail();
 				if (credit == null)
 					credit = "";
@@ -94,15 +96,15 @@ public final class ModsScroll extends ScrollListComponent {
 
 		int scroll = 0;
 
-		if (Client.INSTANCE.getModUiState().getPins().size() == 0) {
+		if (ModUiStateManager.INSTANCE.getPins().size() == 0) {
 			// this is the first one
 			add(0, pinned = new ModCategoryComponent(ModCategory.PINNED, screen));
 			scroll += 13;
 		}
 
-		pinned.add(Client.INSTANCE.getModUiState().getPins().size() + 1, new ModEntry(mod, screen, true));
+		pinned.add(ModUiStateManager.INSTANCE.getPins().size() + 1, new ModEntry(mod, screen, true));
 
-		if (Client.INSTANCE.getModUiState().isExpanded(ModCategory.PINNED))
+		if (ModUiStateManager.INSTANCE.isExpanded(ModCategory.PINNED))
 			scroll += getScrollStep();
 		snapTo(getScroll() + scroll);
 	}
@@ -113,9 +115,9 @@ public final class ModsScroll extends ScrollListComponent {
 		}
 
 		int scroll = 0;
-		int index = Client.INSTANCE.getModUiState().getPins().indexOf(mod);
+		int index = ModUiStateManager.INSTANCE.getPins().indexOf(mod);
 
-		if (Client.INSTANCE.getModUiState().getPins().size() == 1) {
+		if (ModUiStateManager.INSTANCE.getPins().size() == 1) {
 			// this is the last one
 			remove(0);
 			scroll += 13;
@@ -123,7 +125,7 @@ public final class ModsScroll extends ScrollListComponent {
 
 		pinned.remove(index + 1);
 
-		if (Client.INSTANCE.getModUiState().isExpanded(ModCategory.PINNED))
+		if (ModUiStateManager.INSTANCE.isExpanded(ModCategory.PINNED))
 			scroll += getScrollStep();
 		scroll = getScroll() - scroll;
 

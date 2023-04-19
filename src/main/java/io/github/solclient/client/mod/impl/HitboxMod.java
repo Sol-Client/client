@@ -37,7 +37,7 @@ import net.minecraft.client.render.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.*;
 
-public class HitboxMod extends SolClientMod {
+public class HitboxMod extends StandardMod {
 
 	@Option
 	private final KeyBinding toggleHitboxes = new KeyBinding(getTranslationKey("option.toggleHitboxes"), 0,
@@ -82,16 +82,6 @@ public class HitboxMod extends SolClientMod {
 
 		while (toggleHitboxes.isPressed())
 			;
-	}
-
-	@Override
-	public String getId() {
-		return "hitbox";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.VISUAL;
 	}
 
 	@EventHandler
@@ -150,7 +140,7 @@ public class HitboxMod extends SolClientMod {
 	@EventHandler
 	public void onHitboxToggle(HitboxToggleEvent event) {
 		toggled = event.state;
-		Client.INSTANCE.save();
+		SolClient.INSTANCE.saveAll();
 	}
 
 	@EventHandler
@@ -163,13 +153,8 @@ public class HitboxMod extends SolClientMod {
 
 			toggled = !mc.getEntityRenderManager().getRenderHitboxes();
 			mc.getEntityRenderManager().setRenderHitboxes(toggled);
-			Client.INSTANCE.save();
+			SolClient.INSTANCE.saveAll();
 		}
-	}
-
-	@Override
-	public boolean isEnabledByDefault() {
-		return true;
 	}
 
 }

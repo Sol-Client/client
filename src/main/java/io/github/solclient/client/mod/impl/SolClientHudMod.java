@@ -34,7 +34,7 @@ import net.minecraft.client.font.TextRenderer;
  * Represents a mod with only a single HUD.
  */
 @AbstractTranslationKey(SolClientHudMod.TRANSLATION_KEY)
-public abstract class SolClientHudMod extends SolClientMod {
+public abstract class SolClientHudMod extends StandardMod {
 
 	public static final String TRANSLATION_KEY = "sol_client.mod.hud";
 
@@ -48,11 +48,6 @@ public abstract class SolClientHudMod extends SolClientMod {
 	@Expose
 	public float scale = 100;
 	protected TextRenderer font;
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.HUD;
-	}
 
 	@Override
 	protected List<ModOption<?>> createOptions() {

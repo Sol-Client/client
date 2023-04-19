@@ -90,11 +90,6 @@ public class KeystrokesMod extends SolClientHudMod {
 	private Keystroke w, a, s, d, lmb, rmb, space;
 
 	@Override
-	public String getId() {
-		return "keystrokes";
-	}
-
-	@Override
 	public void lateInit() {
 		super.lateInit();
 		w = new Keystroke(this, mc.options.forwardKey, "W", 18, 17, 17);

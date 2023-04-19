@@ -20,7 +20,7 @@ package io.github.solclient.client.ui.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.mixin.client.TitleScreenAccessor;
+import io.github.solclient.client.mod.impl.core.mixins.client.TitleScreenAccessor;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.util.ActiveMainMenu;
 import io.github.solclient.client.util.data.Colour;

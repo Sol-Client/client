@@ -64,11 +64,6 @@ public class CoordinatesMod extends SolClientHudMod {
 	private boolean shadow = true;
 
 	@Override
-	public String getId() {
-		return "coordinates";
-	}
-
-	@Override
 	public Rectangle getBounds(Position position) {
 		return new Rectangle(position.getX(), position.getY(), 82,
 				4 + font.fontHeight + 2 + font.fontHeight + 2 + font.fontHeight + 2);

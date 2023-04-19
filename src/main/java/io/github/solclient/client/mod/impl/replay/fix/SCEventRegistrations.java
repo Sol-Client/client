@@ -22,7 +22,6 @@ import java.util.*;
 
 import com.replaymod.lib.de.johni0702.minecraft.gui.utils.*;
 
-import io.github.solclient.client.Client;
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 
@@ -49,7 +48,7 @@ import io.github.solclient.client.mod.impl.replay.SCReplayMod;
 public class SCEventRegistrations {
 
 	private final List<EventRegistration<?>> registrations = new ArrayList<>();
-	private static final EventBus BUS = Client.INSTANCE.getEvents();
+	private static final EventBus BUS = EventBus.INSTANCE;
 
 	public <T> SCEventRegistrations on(EventRegistration<T> registration) {
 		registrations.add(registration);

@@ -1,0 +1,273 @@
+[
+	// general
+	{
+		"id": "sol_client",
+		"main": "core.CoreMod",
+		"mixins": "@core.mixins",
+		"category": "general",
+		"forcedOn": true
+	},
+	{
+		"id": "chat_api",
+		"main": "api.chat.ChatApiMod",
+		"mixins": "@api.chat.mixins",
+		"category": "hidden",
+		"forcedOn": true
+	},
+	{
+		"id": "commands_api",
+		"main": "api.commands.CommandsApiMod",
+		"category": "hidden",
+		"forcedOn": true
+	},
+	{
+		"id": "packet_api",
+		"main": "packetapi.PacketApiMod",
+		"category": "hidden",
+		"forcedOn": true
+	},
+	{
+		"id": "popups_api",
+		"main": "api.popups.PopupsApiMod",
+		"category": "hidden",
+		"forcedOn": true
+	},
+	{
+		"id": "online_indicators",
+		"main": "onlineindicators.OnlineIndicatorsMod",
+		"category": "hidden",
+		"forcedOn": true
+	},
+	{
+		"id": "tweaks",
+		"main": "tweaks.TweaksMod",
+		"mixins": "@tweaks.mixins",
+		"category": "general",
+		"enabledByDefault": true
+	},
+	// hud
+	{
+		"id": "fps",
+		"main": "hud.FpsMod",
+		"category": "hud"
+	},
+	{
+		"id": "coordinates",
+		"main": "hud.CoordinatesMod",
+		"category": "hud"
+	},
+	{
+		"id": "keystrokes",
+		"main": "hud.keystrokes.KeystrokesMod",
+		"category": "hud"
+	},
+	{
+		"id": "cps",
+		"main": "hud.CpsMod",
+		"category": "hud"
+	},
+	{
+		"id": "ping",
+		"main": "hud.ping.PingMod",
+		"category": "hud"
+	},
+	{
+		"id": "speedometer",
+		"main": "hud.SpeedometerMod",
+		"category": "hud"
+	},
+	{
+		"id": "reach_display",
+		"main": "hud.ReachDisplayMod",
+		"category": "hud"
+	},
+	{
+		"id": "combo_counter",
+		"main": "hud.ComboCounterMod",
+		"category": "hud"
+	},
+	{
+		"id": "clock",
+		"main": "hud.ClockMod",
+		"category": "hud"
+	},
+	{
+		"id": "potion_effects",
+		"main": "hud.PotionEffectsMod",
+		"category": "hud"
+	},
+	{
+		"id": "armour",
+		"main": "hud.armour.ArmourMod",
+		"category": "hud"
+	},
+	{
+		"id": "timers",
+		"main": "hud.timers.TimersMod",
+		"category": "hud"
+	},
+	{
+		"id": "chat",
+		"main": "hud.chat.ChatMod",
+		"mixins": "@hud.chat.mixins",
+		"category": "hud",
+		"enabledByDefault": true
+	},
+	{
+		"id": "tab_list",
+		"main": "hud.tablist.TabListMod",
+		"category": "hud",
+		"enabledByDefault": true
+	},
+	{
+		"id": "crosshair",
+		"main": "hud.crosshair.CrosshairMod",
+		"mixins": "@hud.crosshair.mixins",
+		"category": "hud"
+	},
+	{
+		"id": "scoreboard",
+		"main": "hud.ScoreboardMod",
+		"category": "hud",
+		"enabledByDefault": true
+	},
+	{
+		"id": "boss_bar",
+		"main": "hud.BossBarMod",
+		"category": "hud"
+	},
+	// utility
+	{
+		"id": "replay",
+		"main": "replay.SCReplayMod",
+		"mixins": [
+			"@replay.mixins",
+			"mixins.core.replaymod.json",
+			"mixins.recording.replaymod.json",
+			"mixins.render.replaymod.json",
+			"mixins.render.blend.replaymod.json",
+			"mixins.replay.replaymod.json",
+			"mixins.extras.playeroverview.replaymod.json"
+		],
+		"category": "utility"
+	},
+	{
+		"id": "freelook",
+		"main": "FreelookMod",
+		"category": "utility"
+	},
+	{
+		"id": "taplook",
+		"main": "TaplookMod",
+		"category": "utility"
+	},
+	{
+		"id": "toggle_sprint",
+		"main": "toggles.TogglesMod",
+		"category": "utility"
+	},
+	{
+		"id": "tnt_timer",
+		"main": "tnttimer.TNTTimerMod",
+		"category": "utility"
+	},
+	{
+		"id": "zoom",
+		"main": "ZoomMod",
+		"category": "utility"
+	},
+	{
+		"id": "scrollable_tooltips",
+		"main": "scrollabletooltips.ScrollableTooltipsMod",
+		"mixins": "@scrollabletooltips.mixins",
+		"category": "utility"
+	},
+	{
+		"id": "screenshots",
+		"main": "screenshots.ScreenshotsMod",
+		"mixins": "@screenshots.mixins",
+		"category": "utility"
+	},
+	// visual
+	{
+		"id": "motion_blur",
+		"main": "MotionBlurMod",
+		"category": "visual"
+	},
+	{
+		"id": "menu_blur",
+		"main": "MenuBlurMod",
+		"category": "visual"
+	},
+	{
+		"id": "colour_saturation",
+		"main": "ColourSaturationMod",
+		"category": "visual"
+	},
+	{
+		"id": "chunk_animator",
+		"main": "chunkanimator.ChunkAnimatorMod",
+		"mixins": "@chunkanimator.mixins",
+		"category": "visual"
+	},
+	{
+		"id": "1.7_visuals",
+		"main": "v1_7visuals.V1_7VisualsMod",
+		"mixins": "@v1_7visuals.mixins",
+		"category": "visual"
+	},
+	{
+		"id": "item_physics",
+		"main": "itemphysics.ItemPhysicsMod",
+		"mixins": "@itemphysics.mixins",
+		"category": "visual"
+	},
+	{
+		"id": "particles",
+		"main": "ParticlesMod",
+		"category": "visual"
+	},
+	{
+		"id": "time_changer",
+		"main": "TimeChangerMod",
+		"category": "visual"
+	},
+	{
+		"id": "block_selection",
+		"main": "BlockSelectionMod",
+		"category": "visual"
+	},
+	{
+		"id": "hitbox",
+		"main": "HitboxMod",
+		"category": "visual"
+	},
+	{
+		"id": "hit_colour",
+		"main": "HitColourMod",
+		"category": "visual"
+	},
+	// integration
+	{
+		"id": "cosmetica",
+		"main": "cosmetica.CosmeticaMod",
+		"mixins": "@cosmetica.mixins",
+		"category": "integration"
+	},
+	{
+		"id": "hypixel_util",
+		"main": "hypixeladditions.HypixelAdditionsMod",
+		"mixins": "@hypixeladditions.mixins",
+		"category": "integration"
+	},
+	{
+		"id": "quickplay",
+		"main": "quickplay.QuickPlayMod",
+		"category": "integration"
+	},
+	{
+		"id": "discord_integration",
+		"main": "discord.DiscordIntegrationMod",
+		"category": "integration"
+	}
+]

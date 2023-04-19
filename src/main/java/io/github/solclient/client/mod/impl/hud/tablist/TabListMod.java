@@ -21,11 +21,11 @@ package io.github.solclient.client.mod.impl.hud.tablist;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.data.Colour;
 
-public class TabListMod extends SolClientMod {
+public class TabListMod extends StandardMod {
 
 	public static boolean enabled;
 	public static TabListMod instance;
@@ -53,16 +53,6 @@ public class TabListMod extends SolClientMod {
 	public boolean textShadow = true;
 
 	@Override
-	public String getId() {
-		return "tab_list";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.HUD;
-	}
-
-	@Override
 	public void init() {
 		super.init();
 		instance = this;
@@ -78,11 +68,6 @@ public class TabListMod extends SolClientMod {
 	public void onDisable() {
 		super.onDisable();
 		enabled = false;
-	}
-
-	@Override
-	public boolean isEnabledByDefault() {
-		return true;
 	}
 
 }

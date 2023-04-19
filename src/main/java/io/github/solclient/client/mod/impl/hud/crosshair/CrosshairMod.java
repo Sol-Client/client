@@ -99,11 +99,6 @@ public class CrosshairMod extends SolClientHudMod {
 		return options;
 	}
 
-	@Override
-	public String getId() {
-		return "crosshair";
-	}
-
 	private void bind() {
 		if (!customCrosshair) {
 			mc.getTextureManager().bindTexture(DrawableHelper.GUI_ICONS_TEXTURE);

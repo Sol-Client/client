@@ -26,8 +26,9 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mixin.client.ChatHudAccessor;
 import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.impl.api.chat.ChatApiMod;
+import io.github.solclient.client.mod.impl.core.mixins.client.ChatHudAccessor;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.util.GlobalConstants;
@@ -119,11 +120,6 @@ public class ChatMod extends SolClientHudMod {
 	private SymbolsButton symbolsButton;
 
 	@Override
-	public String getId() {
-		return "chat";
-	}
-
-	@Override
 	public void init() {
 		super.init();
 		instance = this;
@@ -136,7 +132,7 @@ public class ChatMod extends SolClientHudMod {
 		symbolsButton = new SymbolsButton(this);
 
 		if (enabled)
-			Client.INSTANCE.getChatExtensions().registerButton(symbolsButton);
+			ChatApiMod.instance.registerButton(symbolsButton);
 	}
 
 	@Override
@@ -145,7 +141,7 @@ public class ChatMod extends SolClientHudMod {
 		enabled = true;
 
 		if (symbolsButton != null)
-			Client.INSTANCE.getChatExtensions().registerButton(symbolsButton);
+			ChatApiMod.instance.registerButton(symbolsButton);
 
 		if (mc.world != null)
 			mc.inGameHud.getChatHud().reset();
@@ -155,15 +151,10 @@ public class ChatMod extends SolClientHudMod {
 	protected void onDisable() {
 		super.onDisable();
 		enabled = false;
-		Client.INSTANCE.getChatExtensions().unregisterButton(symbolsButton);
+		ChatApiMod.instance.unregisterButton(symbolsButton);
 
 		if (mc.world != null)
 			mc.inGameHud.getChatHud().reset();
-	}
-
-	@Override
-	public boolean isEnabledByDefault() {
-		return true;
 	}
 
 	@Override

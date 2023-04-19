@@ -18,7 +18,7 @@
 
 package io.github.solclient.client.extension;
 
-import io.github.solclient.client.chatextensions.ChatButton;
+import io.github.solclient.client.mod.impl.api.chat.ChatButton;
 import io.github.solclient.client.util.MinecraftUtils;
 
 public interface ChatScreenExtension {

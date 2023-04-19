@@ -22,7 +22,7 @@ import java.io.*;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
+import io.github.solclient.client.mod.impl.core.mixins.client.MinecraftClientAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ResourcePackScreen;

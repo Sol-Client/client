@@ -25,13 +25,13 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
-import io.github.solclient.client.mixin.client.ShaderEffectAccessor;
 import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.impl.core.mixins.client.ShaderEffectAccessor;
 import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gl.*;
 import net.minecraft.util.Identifier;
 
-public class MotionBlurMod extends SolClientMod {
+public class MotionBlurMod extends StandardMod {
 
 	@Expose
 	@Option
@@ -39,16 +39,6 @@ public class MotionBlurMod extends SolClientMod {
 	private float blur = 0.5F;
 	private float realBlur;
 	private ShaderEffect effect;
-
-	@Override
-	public String getId() {
-		return "motion_blur";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.VISUAL;
-	}
 
 	public void update() {
 		if (effect == null) {

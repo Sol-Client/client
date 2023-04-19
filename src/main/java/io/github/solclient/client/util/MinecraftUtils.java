@@ -30,6 +30,7 @@ import java.util.concurrent.*;
 import java.util.function.IntConsumer;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.*;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.GL11;
@@ -39,10 +40,9 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
-import io.github.solclient.client.Client;
 import io.github.solclient.client.extension.KeyBindingExtension;
-import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
-import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.mod.impl.core.CoreMod;
+import io.github.solclient.client.mod.impl.core.mixins.client.MinecraftClientAccessor;
 import io.github.solclient.client.util.data.*;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.MinecraftClient;
@@ -70,6 +70,8 @@ import net.minecraft.util.math.Box;
  */
 @UtilityClass
 public class MinecraftUtils {
+
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	public ModelLoader modelLoader;
 
@@ -219,7 +221,7 @@ public class MinecraftUtils {
 	}
 
 	public void playClickSound(boolean ui) {
-		if (ui && !SolClientConfig.instance.buttonClicks) {
+		if (ui && !CoreMod.instance.buttonClicks) {
 			return;
 		}
 
@@ -412,7 +414,7 @@ public class MinecraftUtils {
 								break;
 							}
 						} catch (IOException | InterruptedException | IllegalStateException error) {
-							Client.LOGGER.error("Could not determine directory handler:", error);
+							LOGGER.error("Could not determine directory handler:", error);
 						}
 					}
 					url = urlDirname(url);
@@ -452,14 +454,14 @@ public class MinecraftUtils {
 				proc.getOutputStream().close();
 				return;
 			} catch (IOException error) {
-				Client.LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:", error);
+				LOGGER.warn("Could not execute " + String.join(" ", command) + " - falling back to AWT:", error);
 			}
 		}
 
 		try {
 			Desktop.getDesktop().browse(URI.create(url));
 		} catch (IOException error) {
-			Client.LOGGER.error("Could not open " + url + " with AWT:", error);
+			LOGGER.error("Could not open " + url + " with AWT:", error);
 
 			// null checks in case a link is opened before MinecraftClient is fully
 			// initialised

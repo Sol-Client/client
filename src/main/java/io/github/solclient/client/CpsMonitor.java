@@ -20,7 +20,7 @@ package io.github.solclient.client;
 
 import java.util.*;
 
-import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.*;
 
 public class CpsMonitor {
@@ -28,7 +28,9 @@ public class CpsMonitor {
 	public static final CpsMonitor LMB = new CpsMonitor(0);
 	public static final CpsMonitor RMB = new CpsMonitor(1);
 
-	public static void forceInit() {
+	public static void init() {
+		EventBus.INSTANCE.register(LMB);
+		EventBus.INSTANCE.register(RMB);
 	}
 
 	private int button;
@@ -36,7 +38,6 @@ public class CpsMonitor {
 
 	public CpsMonitor(int button) {
 		this.button = button;
-		Client.INSTANCE.getEvents().register(this);
 	}
 
 	@EventHandler

@@ -18,10 +18,10 @@
 
 package io.github.solclient.client.mod;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.SolClient;
 import lombok.*;
 import net.minecraft.client.resource.language.I18n;
 
@@ -57,8 +57,10 @@ public enum ModCategory {
 	/**
 	 * User-installed mods.
 	 */
-	ADDONS;
+	INSTALLED,
+	HIDDEN;
 
+	private static final Map<String, ModCategory> BY_NAME = new HashMap<>();
 	private List<Mod> mods;
 
 	public boolean shouldShowName() {
@@ -72,14 +74,31 @@ public enum ModCategory {
 
 	public List<Mod> getMods() {
 		if (this == PINNED)
-			return Client.INSTANCE.getModUiState().getPins();
+			return ModUiStateManager.INSTANCE.getPins();
 
 		if (mods == null) {
-			mods = Client.INSTANCE.getMods().stream().filter((mod) -> mod.getCategory() == this)
+			mods = SolClient.INSTANCE.modStream().filter((mod) -> mod.getCategory() == this)
 					.collect(Collectors.toList());
 		}
 
 		return mods;
+	}
+
+	public static ModCategory getByName(String name) {
+		if (!BY_NAME.containsKey(name))
+			throw new IllegalArgumentException(name);
+
+		return BY_NAME.get(name);
+	}
+
+	static {
+		BY_NAME.put("general", GENERAL);
+		BY_NAME.put("hud", HUD);
+		BY_NAME.put("utility", UTILITY);
+		BY_NAME.put("visual", VISUAL);
+		BY_NAME.put("integration", INTEGRATION);
+		BY_NAME.put("addons", INSTALLED);
+		BY_NAME.put("hidden", HIDDEN);
 	}
 
 }

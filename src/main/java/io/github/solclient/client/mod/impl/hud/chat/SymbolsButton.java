@@ -20,8 +20,8 @@ package io.github.solclient.client.mod.impl.hud.chat;
 
 import org.lwjgl.input.Keyboard;
 
-import io.github.solclient.client.chatextensions.ChatButton;
-import io.github.solclient.client.mixin.client.ChatScreenAccessor;
+import io.github.solclient.client.mod.impl.api.chat.ChatButton;
+import io.github.solclient.client.mod.impl.core.mixins.client.ChatScreenAccessor;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.MinecraftClient;

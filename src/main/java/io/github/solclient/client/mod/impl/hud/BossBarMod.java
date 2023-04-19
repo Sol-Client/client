@@ -53,20 +53,11 @@ public final class BossBarMod extends SolClientHudMod {
 	@Slider(min = 0, max = 15, step = 1, format = "sol_client.slider.pixels")
 	private int offset = 2;
 
-	@Override
-	public String getId() {
-		return "boss_bar";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.HUD;
-	}
-
 	@EventHandler
 	public void onBossBarRender(PreGameOverlayRenderEvent event) {
 		if (event.type != GameOverlayElement.BOSSHEALTH)
 			return;
+
 		event.cancelled = true;
 
 		if (hide)

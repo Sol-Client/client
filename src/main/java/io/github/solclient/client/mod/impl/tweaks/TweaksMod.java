@@ -20,16 +20,15 @@ package io.github.solclient.client.mod.impl.tweaks;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.GammaEvent;
 import io.github.solclient.client.mod.ModCategory;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.mod.option.annotation.Slider;
 import lombok.Getter;
 
-public class TweaksMod extends SolClientMod {
+public class TweaksMod extends StandardMod {
 
 	public static boolean enabled;
 	public static TweaksMod instance;
@@ -90,16 +89,6 @@ public class TweaksMod extends SolClientMod {
 	private final RawInput rawInputManager = new RawInput(this);
 
 	@Override
-	public String getId() {
-		return "tweaks";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.GENERAL;
-	}
-
-	@Override
 	public void init() {
 		super.init();
 		instance = this;
@@ -110,7 +99,7 @@ public class TweaksMod extends SolClientMod {
 		super.onEnable();
 		enabled = true;
 		if (borderlessFullscreen) {
-			Client.INSTANCE.getEvents().register(borderlessFullscreenManager);
+			EventBus.INSTANCE.register(borderlessFullscreenManager);
 
 			if (mc.isFullscreen())
 				borderlessFullscreenManager.update(true);
@@ -124,7 +113,7 @@ public class TweaksMod extends SolClientMod {
 		super.onDisable();
 		enabled = false;
 		if (borderlessFullscreen) {
-			Client.INSTANCE.getEvents().unregister(borderlessFullscreenManager);
+			EventBus.INSTANCE.unregister(borderlessFullscreenManager);
 
 			if (mc.isFullscreen()) {
 				borderlessFullscreenManager.update(false);
@@ -137,21 +126,16 @@ public class TweaksMod extends SolClientMod {
 	}
 
 	@Override
-	public boolean isEnabledByDefault() {
-		return true;
-	}
-
-	@Override
 	public void postOptionChange(String key, Object value) {
 		if (!isEnabled())
 			return;
 
 		if (key.equals("borderlessFullscreen") && mc.isFullscreen()) {
 			if ((boolean) value) {
-				Client.INSTANCE.getEvents().register(borderlessFullscreenManager);
+				EventBus.INSTANCE.register(borderlessFullscreenManager);
 				borderlessFullscreenManager.update(true);
 			} else {
-				Client.INSTANCE.getEvents().unregister(borderlessFullscreenManager);
+				EventBus.INSTANCE.unregister(borderlessFullscreenManager);
 				borderlessFullscreenManager.update(false);
 				mc.toggleFullscreen();
 				mc.toggleFullscreen();

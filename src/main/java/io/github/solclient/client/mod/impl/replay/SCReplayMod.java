@@ -24,12 +24,10 @@ import com.google.gson.annotations.Expose;
 import com.replaymod.core.ReplayMod;
 import com.replaymod.lib.de.johni0702.minecraft.gui.versions.callbacks.OpenGuiScreenCallback;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.hud.*;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.impl.replay.fix.SCReplayModBackend;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
@@ -43,7 +41,7 @@ import net.minecraft.client.world.ClientWorld;
  *
  * Originally by CrushedPixel and johni0702.
  */
-public class SCReplayMod extends SolClientMod {
+public class SCReplayMod extends StandardMod {
 
 	public static boolean enabled;
 	public static Boolean deferedState;
@@ -123,18 +121,8 @@ public class SCReplayMod extends SolClientMod {
 	private SCReplayModBackend backend;
 
 	@Override
-	public String getId() {
-		return "replay";
-	}
-
-	@Override
 	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.modified_from", "CrushedPixel, johni0702");
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.UTILITY;
 	}
 
 	@Override
@@ -144,7 +132,7 @@ public class SCReplayMod extends SolClientMod {
 		backend = new SCReplayModBackend();
 		backend.init();
 
-		Client.INSTANCE.getEvents().register(new ConstantListener());
+		EventBus.INSTANCE.register(new ConstantListener());
 
 		super.init();
 	}
@@ -207,7 +195,7 @@ public class SCReplayMod extends SolClientMod {
 			enabled = deferedState;
 			if (deferedState) {
 				for (Object event : registerOnEnable) {
-					Client.INSTANCE.getEvents().register(event);
+					EventBus.INSTANCE.register(event);
 					unregisterOnDisable.add(event);
 				}
 				registerOnEnable.clear();
@@ -215,7 +203,7 @@ public class SCReplayMod extends SolClientMod {
 				OpenGuiScreenCallback.EVENT.invoker().openGuiScreen(mc.currentScreen);
 			} else {
 				for (Object event : unregisterOnDisable) {
-					Client.INSTANCE.getEvents().unregister(event);
+					EventBus.INSTANCE.unregister(event);
 					registerOnEnable.add(event);
 				}
 				unregisterOnDisable.clear();
@@ -229,7 +217,7 @@ public class SCReplayMod extends SolClientMod {
 			unregisterOnDisable.add(event);
 		} else {
 			registerOnEnable.add(event);
-			Client.INSTANCE.getEvents().unregister(event);
+			EventBus.INSTANCE.unregister(event);
 		}
 	}
 

@@ -22,7 +22,6 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.EntityAttackEvent;
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.particle.ParticleType;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -30,7 +29,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class ParticlesMod extends SolClientMod {
+public class ParticlesMod extends StandardMod {
 
 	@Expose
 	@Option
@@ -48,16 +47,6 @@ public class ParticlesMod extends SolClientMod {
 	@Expose
 	@Option
 	private boolean flames;
-
-	@Override
-	public String getId() {
-		return "particles";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.VISUAL;
-	}
 
 	@EventHandler
 	public void onAttack(EntityAttackEvent event) {

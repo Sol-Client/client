@@ -20,7 +20,7 @@ package io.github.solclient.client.ui.component.impl;
 
 import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.data.Colour;

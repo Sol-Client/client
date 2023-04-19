@@ -24,11 +24,6 @@ import net.minecraft.client.MinecraftClient;
 public class FpsMod extends SmoothCounterHudMod {
 
 	@Override
-	public String getId() {
-		return "fps";
-	}
-
-	@Override
 	public int getIntValue() {
 		return MinecraftClient.getCurrentFps();
 	}

@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.Opcodes;
 
+import io.github.solclient.client.SolClient;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.annotation.*;
@@ -127,7 +128,7 @@ public class FieldOptions {
 				|| /* avoid "it works on my machine" */ file.value().indexOf('\\') != -1)
 			throw new IllegalArgumentException("@TextField value must not contain slashes");
 
-		Path path = owner.getConfigFolder().resolve(file.value());
+		Path path = SolClient.INSTANCE.getConfigFolder().resolve(file.value());
 		return new TextFileOption(owner, name, storage.unsafeCast(), path, file.header(), file.text());
 	}
 

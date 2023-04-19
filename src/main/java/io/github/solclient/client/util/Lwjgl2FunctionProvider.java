@@ -23,7 +23,7 @@ import java.nio.ByteBuffer;
 import org.lwjgl.MemoryUtil;
 import org.lwjgl.system.FunctionProvider;
 
-import io.github.solclient.client.mixin.lwjgl.GLContextAccessor;
+import io.github.solclient.client.mod.impl.core.mixins.lwjgl.GLContextAccessor;
 
 public final class Lwjgl2FunctionProvider implements FunctionProvider {
 

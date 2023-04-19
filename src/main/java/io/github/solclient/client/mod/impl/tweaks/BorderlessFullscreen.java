@@ -25,7 +25,7 @@ import org.lwjgl.opengl.DisplayMode;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.FullscreenToggleEvent;
 import io.github.solclient.client.event.impl.PreRenderTickEvent;
-import io.github.solclient.client.mixin.client.MinecraftClientAccessor;
+import io.github.solclient.client.mod.impl.core.mixins.client.MinecraftClientAccessor;
 import io.github.solclient.client.util.data.Rectangle;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.MinecraftClient;

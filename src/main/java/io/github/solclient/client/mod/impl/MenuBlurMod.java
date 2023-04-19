@@ -27,8 +27,8 @@ import com.replaymod.replay.ReplayModReplay;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mixin.client.ShaderEffectAccessor;
 import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.mod.impl.core.mixins.client.ShaderEffectAccessor;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
@@ -39,7 +39,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.Window;
 import net.minecraft.util.Identifier;
 
-public class MenuBlurMod extends SolClientMod {
+public class MenuBlurMod extends StandardMod {
 
 	@Expose
 	@Option
@@ -56,18 +56,8 @@ public class MenuBlurMod extends SolClientMod {
 	private long openTime;
 
 	@Override
-	public String getId() {
-		return "menu_blur";
-	}
-
-	@Override
 	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.originally_by", "tterrag1098");
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.VISUAL;
 	}
 
 	@EventHandler

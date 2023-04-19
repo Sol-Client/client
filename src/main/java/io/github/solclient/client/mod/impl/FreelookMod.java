@@ -32,7 +32,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class FreelookMod extends SolClientMod {
+public class FreelookMod extends StandardMod {
 
 	@Option
 	private final KeyBinding key = new KeyBinding(getTranslationKey("key"), Keyboard.KEY_V,
@@ -50,16 +50,6 @@ public class FreelookMod extends SolClientMod {
 	@Expose
 	@Option
 	private boolean invertYaw;
-
-	@Override
-	public String getId() {
-		return "freelook";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.UTILITY;
-	}
 
 	@EventHandler
 	public void onTick(PreTickEvent event) {
@@ -123,11 +113,6 @@ public class FreelookMod extends SolClientMod {
 			this.pitch = MathHelper.clamp(this.pitch + (pitch * 0.15F), -90, 90);
 			mc.worldRenderer.scheduleTerrainUpdate();
 		}
-	}
-
-	@Override
-	public boolean isEnabledByDefault() {
-		return true;
 	}
 
 }

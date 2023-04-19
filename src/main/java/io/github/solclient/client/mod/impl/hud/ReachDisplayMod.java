@@ -32,11 +32,6 @@ public class ReachDisplayMod extends SolClientSimpleHudMod {
 	private long hitTime = -1;
 
 	@Override
-	public String getId() {
-		return "reach_display";
-	}
-
-	@Override
 	public String getText(boolean editMode) {
 		if ((System.currentTimeMillis() - hitTime) > 5000) {
 			distance = 0;

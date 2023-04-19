@@ -23,7 +23,7 @@ import java.util.*;
 
 import com.replaymod.core.events.SettingsChangedCallback;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.SolClient;
 import io.github.solclient.client.mod.impl.replay.*;
 
 /*
@@ -264,7 +264,7 @@ public class SCSettingsRegistry {
 	}
 
 	public void save() {
-		Client.INSTANCE.save();
+		SolClient.INSTANCE.saveAll();
 	}
 
 	public interface SettingKey<T> {

@@ -125,7 +125,11 @@ public final class WrapperMixinService implements IMixinService, IClassProvider,
 
 	@Override
 	public InputStream getResourceAsStream(String name) {
-		return ClassWrapper.instance.getResourceAsStream(name);
+		try {
+			return MixinConfigGenerator.generate(name).orElseGet(() -> ClassWrapper.instance.getResourceAsStream(name));
+		} catch (IOException error) {
+			throw new IllegalStateException("Could not generate mixin config", error);
+		}
 	}
 
 	@Override

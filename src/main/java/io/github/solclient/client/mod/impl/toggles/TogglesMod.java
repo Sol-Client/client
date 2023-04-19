@@ -61,16 +61,6 @@ public final class TogglesMod extends SolClientSimpleHudMod {
 	}
 
 	@Override
-	public String getId() {
-		return "toggle_sprint";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.UTILITY;
-	}
-
-	@Override
 	public boolean isVisible() {
 		return hud;
 	}

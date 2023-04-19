@@ -29,7 +29,7 @@ import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.impl.quickplay.database.*;
 import io.github.solclient.client.mod.impl.quickplay.ui.*;
 import io.github.solclient.client.mod.option.annotation.Option;
@@ -38,7 +38,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 
-public class QuickPlayMod extends SolClientMod {
+public class QuickPlayMod extends StandardMod {
 
 	@Option
 	private final KeyBinding menuKey = new KeyBinding(getTranslationKey("key"), Keyboard.KEY_M,
@@ -49,18 +49,8 @@ public class QuickPlayMod extends SolClientMod {
 	private final List<String> recentlyPlayed = new ArrayList<>();
 
 	@Override
-	public String getId() {
-		return "quickplay";
-	}
-
-	@Override
 	public String getDetail() {
 		return I18n.translate("sol_client.mod.screen.originally_by", "robere2");
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.INTEGRATION;
 	}
 
 	public List<QuickPlayOption> getRecentlyPlayed() {
@@ -93,11 +83,6 @@ public class QuickPlayMod extends SolClientMod {
 		}
 	}
 
-	@Override
-	public boolean isEnabledByDefault() {
-		return true;
-	}
-
 	public void playGame(QuickPlayGameMode mode) {
 		mc.player.sendChatMessage(mode.getCommand());
 
@@ -110,7 +95,7 @@ public class QuickPlayMod extends SolClientMod {
 		if (recentlyPlayed.size() > 15)
 			recentlyPlayed.remove(recentlyPlayed.size() - 1);
 
-		Client.INSTANCE.save();
+		SolClient.INSTANCE.saveAll();
 	}
 
 }

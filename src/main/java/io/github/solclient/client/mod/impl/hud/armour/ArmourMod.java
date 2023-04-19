@@ -21,7 +21,6 @@ package io.github.solclient.client.mod.impl.hud.armour;
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.*;
@@ -56,11 +55,6 @@ public class ArmourMod extends SolClientHudMod {
 	@ColourKey(ColourKey.TEXT_COLOUR)
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
 	private Colour textColour = Colour.WHITE;
-
-	@Override
-	public String getId() {
-		return "armour";
-	}
 
 	@Override
 	public Rectangle getBounds(Position position) {

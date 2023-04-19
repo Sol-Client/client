@@ -29,10 +29,12 @@ import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.SolClientMod;
+import io.github.solclient.client.mod.impl.StandardMod;
+import io.github.solclient.client.mod.impl.api.chat.ChatApiMod;
+import io.github.solclient.client.mod.impl.api.commands.CommandsApiMod;
+import io.github.solclient.client.mod.impl.api.popups.*;
 import io.github.solclient.client.mod.impl.hypixeladditions.commands.*;
 import io.github.solclient.client.mod.option.annotation.*;
-import io.github.solclient.client.network.Popup;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import net.hypixel.api.HypixelAPI;
@@ -42,7 +44,7 @@ import net.minecraft.text.ClickEvent.Action;
 import net.minecraft.util.Formatting;
 
 // Many of these options are based on the ideas of Sk1er LLC's mods.
-public class HypixelAdditionsMod extends SolClientMod {
+public class HypixelAdditionsMod extends StandardMod {
 
 	private static boolean enabled;
 	public static HypixelAdditionsMod instance;
@@ -112,16 +114,6 @@ public class HypixelAdditionsMod extends SolClientMod {
 	private HypixelLocationData locationData;
 	private final Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
 
-	@Override
-	public String getId() {
-		return "hypixel_util";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.INTEGRATION;
-	}
-
 	public String getLevelhead(boolean isMainPlayer, String name, UUID id) {
 		if (id.version() != 4 || !(enabled && levelhead)
 				|| (name.contains(Formatting.OBFUSCATED.toString()) && !isMainPlayer)) {
@@ -184,40 +176,35 @@ public class HypixelAdditionsMod extends SolClientMod {
 		return enabled && isHypixel();
 	}
 
-	@Override
-	public boolean isEnabledByDefault() {
-		return true;
-	}
-
 	private void updateState() {
-		if (Client.INSTANCE.getCommands().isRegistered("visithousing")) {
+		if (CommandsApiMod.instance.isRegistered("visithousing")) {
 			if (isEffective()) {
-				Client.INSTANCE.getCommands().register("visithousing", new VisitHousingCommand(this));
+				CommandsApiMod.instance.register("visithousing", new VisitHousingCommand(this));
 			}
 		} else if (!isEffective())
-			Client.INSTANCE.getCommands().unregister("visithousing");
+			CommandsApiMod.instance.unregister("visithousing");
 
-		if (Client.INSTANCE.getCommands().isRegistered("chat")) {
+		if (CommandsApiMod.instance.isRegistered("chat")) {
 			if (isEffective()) {
 				if (mc.player != null) {
 					mc.player.sendChatMessage("/chat a");
 				}
-				Client.INSTANCE.getCommands().register("chat", new ChatChannelCommand(this));
+				CommandsApiMod.instance.register("chat", new ChatChannelCommand(this));
 			}
 		} else {
 			if (!isEffective()) {
-				Client.INSTANCE.getCommands().unregister("chat");
+				CommandsApiMod.instance.unregister("chat");
 			}
 		}
 
-		if (Client.INSTANCE.getChatExtensions().getChannelSystem() == null) {
+		if (ChatApiMod.instance.getChannelSystem() == null) {
 			if (isEffective()) {
-				Client.INSTANCE.getChatExtensions().setChannelSystem(new HypixelChatChannels());
+				ChatApiMod.instance.setChannelSystem(new HypixelChatChannels());
 			}
 		} else {
 			if (!isEffective()
-					&& Client.INSTANCE.getChatExtensions().getChannelSystem() instanceof HypixelChatChannels) {
-				Client.INSTANCE.getChatExtensions().setChannelSystem(null);
+					&& ChatApiMod.instance.getChannelSystem() instanceof HypixelChatChannels) {
+				ChatApiMod.instance.setChannelSystem(null);
 			}
 		}
 
@@ -325,7 +312,7 @@ public class HypixelAdditionsMod extends SolClientMod {
 			for (String line : event.message.split("\\n")) {
 				Popup popup = HypixelPopupType.popupFromMessage(line);
 				if (popup != null) {
-					Client.INSTANCE.getPopups().add(popup);
+					PopupsApiMod.instance.add(popup);
 					return;
 				}
 			}

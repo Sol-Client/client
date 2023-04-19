@@ -23,10 +23,10 @@ import java.util.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.Client;
+import io.github.solclient.client.SolClient;
 import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
@@ -44,13 +44,13 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 	@Override
 	public void render(int relativeMouseX, int relativeMouseY, float tickDelta) {
 		if (client.world == null) {
-			if (SolClientConfig.instance.fancyMainMenu) {
+			if (CoreMod.instance.fancyMainMenu) {
 				background = false;
 				drawPanorama(relativeMouseX, relativeMouseY, tickDelta);
 			} else
 				background = true;
 
-			for (HudElement hud : Client.INSTANCE.getMods().getHuds())
+			for (HudElement hud : SolClient.INSTANCE.getHuds())
 				hud.render(true);
 		}
 
@@ -59,9 +59,9 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 
 	@Override
 	protected void keyPressed(char character, int code) {
-		if (code == 1 || (code == SolClientConfig.instance.editHudKey.getCode()
-				&& KeyBindingExtension.from(SolClientConfig.instance.editHudKey).areModsPressed())) {
-			Client.INSTANCE.save();
+		if (code == 1 || (code == CoreMod.instance.editHudKey.getCode()
+				&& KeyBindingExtension.from(CoreMod.instance.editHudKey).areModsPressed())) {
+			SolClient.INSTANCE.saveAll();
 			client.setScreen(null);
 			return;
 		}
@@ -102,7 +102,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 						(int) info.relativeMouseY() - selectStart.getY());
 
 				// update selection
-				for (HudElement hud : Client.INSTANCE.getMods().getHuds()) {
+				for (HudElement hud : SolClient.INSTANCE.getHuds()) {
 					if (!hud.isVisible())
 						continue;
 
@@ -111,7 +111,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				}
 			}
 
-			for (HudElement hud : Client.INSTANCE.getMods().getHuds()) {
+			for (HudElement hud : SolClient.INSTANCE.getHuds()) {
 				if (!hud.isVisible())
 					continue;
 
@@ -199,7 +199,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 		}
 
 		private static Optional<HudElement> getHud(int x, int y) {
-			for (HudElement hud : Client.INSTANCE.getMods().getHuds()) {
+			for (HudElement hud : SolClient.INSTANCE.getHuds()) {
 				if (!hud.isVisible())
 					continue;
 
@@ -284,7 +284,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 				shift(0, 1);
 				return true;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && keyCode == Keyboard.KEY_A) {
-				selectedHuds.addAll(Client.INSTANCE.getMods().getHuds());
+				selectedHuds.addAll(SolClient.INSTANCE.getHuds());
 				return true;
 			} else if (keyCode == Keyboard.KEY_0) {
 				selectedHuds.forEach((hud) -> hud.setPosition(new Position(0, 0)));

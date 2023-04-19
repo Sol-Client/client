@@ -18,18 +18,21 @@
 
 package io.github.solclient.client.mod;
 
+import java.io.*;
 import java.lang.reflect.Field;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.*;
 
 import org.apache.logging.log4j.*;
 
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.hud.HudElement;
+import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.mod.option.impl.*;
@@ -44,6 +47,9 @@ public abstract class Mod extends Object {
 
 	@Getter
 	private final Logger logger = LogManager.getLogger();
+
+	@Getter
+	private ModInfo info = ModInfo.inject;
 
 	@Getter
 	private List<ModOption<?>> options;
@@ -77,7 +83,7 @@ public abstract class Mod extends Object {
 
 		List<ModOption<?>> options = new ArrayList<>();
 
-		if (!(this instanceof ConfigOnlyMod)) {
+		if (!isForcedOn()) {
 			options.add(new ToggleOption("sol_client.mod.generic.enabled",
 					ModOptionStorage.of(boolean.class, () -> enabled, (value) -> {
 						if (enabled != value)
@@ -203,9 +209,9 @@ public abstract class Mod extends Object {
 	/**
 	 * @return a unique id.
 	 */
-	public abstract String getId();
-
-	public abstract Path getConfigFolder();
+	public final String getId() {
+		return info.getId();
+	}
 
 	/**
 	 * Choose a string to display on the right side of the mod component.
@@ -219,14 +225,22 @@ public abstract class Mod extends Object {
 	/**
 	 * @return a useful category, otherwise general.
 	 */
-	public abstract ModCategory getCategory();
+	public final ModCategory getCategory() {
+		return info.getCategory();
+	}
 
 	/**
 	 * Gets whether the mod should be enabled by default.
 	 *
 	 * @return <code>true</code> to keep the mod on by default.
 	 */
-	public abstract boolean isEnabledByDefault();
+	public final boolean isEnabledByDefault() {
+		return info.isEnabledByDefault() || isForcedOn();
+	}
+
+	public final boolean isForcedOn() {
+		return info.isForcedOn();
+	}
 
 	/**
 	 * Fired before an option is changed.
@@ -253,7 +267,7 @@ public abstract class Mod extends Object {
 	public final void setEnabled(boolean enabled) {
 		if (blocked)
 			return;
-		if (this instanceof ConfigOnlyMod)
+		if (isForcedOn())
 			return;
 
 		if (enabled != this.enabled) {
@@ -271,10 +285,7 @@ public abstract class Mod extends Object {
 	}
 
 	public final boolean isEnabled() {
-		if (this instanceof ConfigOnlyMod)
-			return true;
-
-		return enabled && !blocked;
+		return isForcedOn() || (enabled && !blocked);
 	}
 
 	private void tryEnable() {
@@ -287,11 +298,11 @@ public abstract class Mod extends Object {
 	}
 
 	protected void onEnable() {
-		Client.INSTANCE.getEvents().register(this);
+		EventBus.INSTANCE.register(this);
 	}
 
 	protected void onDisable() {
-		Client.INSTANCE.getEvents().unregister(this);
+		EventBus.INSTANCE.unregister(this);
 	}
 
 	public boolean isBlocked() {
@@ -320,9 +331,9 @@ public abstract class Mod extends Object {
 		this.pinned = pinned;
 
 		if (pinned) {
-			Client.INSTANCE.getModUiState().notifyPin(this);
+			ModUiStateManager.INSTANCE.notifyPin(this);
 		} else {
-			Client.INSTANCE.getModUiState().notifyUnpin(this);
+			ModUiStateManager.INSTANCE.notifyUnpin(this);
 		}
 	}
 

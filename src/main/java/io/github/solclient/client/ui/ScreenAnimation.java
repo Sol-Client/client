@@ -26,7 +26,7 @@ import org.lwjgl.opengl.*;
 import com.mojang.blaze3d.platform.GLX;
 
 import io.github.solclient.client.lib.penner.easing.Sine;
-import io.github.solclient.client.mod.impl.SolClientConfig;
+import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.util.*;
 import net.minecraft.client.MinecraftClient;
 
@@ -39,7 +39,7 @@ public class ScreenAnimation extends NanoVGManager implements Closeable {
 	private final long openTime = System.currentTimeMillis();
 
 	private boolean isActive() {
-		return SolClientConfig.instance.openAnimation && System.currentTimeMillis() - openTime < DURATION
+		return CoreMod.instance.openAnimation && System.currentTimeMillis() - openTime < DURATION
 				&& GLX.supportsFbo();
 	}
 

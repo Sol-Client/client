@@ -125,7 +125,7 @@ public class ModEntry extends ColouredComponent {
 	}
 
 	public boolean isFullyHovered() {
-		return isHovered() && (mod instanceof ConfigOnlyMod || mod.isBlocked() || !settingsButton.isHovered());
+		return isHovered() && (mod.isForcedOn() || mod.isBlocked() || !settingsButton.isHovered());
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class ModEntry extends ColouredComponent {
 		NanoVG.nvgRoundedRect(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), 4);
 		NanoVG.nvgFill(nvg);
 
-		if (!(mod instanceof ConfigOnlyMod)) {
+		if (!mod.isForcedOn()) {
 			// bar on left
 			NanoVG.nvgSave(nvg);
 			NanoVG.nvgIntersectScissor(nvg, 0, 0, 3, getBounds().getHeight());
@@ -184,7 +184,7 @@ public class ModEntry extends ColouredComponent {
 				return true;
 			}
 
-			if (pinnedCategory && Client.INSTANCE.getModUiState().getPins().size() > 1) {
+			if (pinnedCategory && ModUiStateManager.INSTANCE.getPins().size() > 1) {
 				dragStart = new Position((int) info.relativeMouseX(), (int) info.relativeMouseY());
 				return true;
 			}
@@ -225,7 +225,7 @@ public class ModEntry extends ColouredComponent {
 			if (blockedModPage != null) {
 				MinecraftUtils.openUrl(blockedModPage.toString());
 			}
-		} else if (mod instanceof ConfigOnlyMod) {
+		} else if (mod.isForcedOn()) {
 			screen.switchMod(mod);
 		} else {
 			mod.setEnabled(!mod.isEnabled());
@@ -242,7 +242,7 @@ public class ModEntry extends ColouredComponent {
 
 		@Override
 		public void render(ComponentRenderInfo info) {
-			if (!(mod instanceof ConfigOnlyMod) && !mod.isBlocked()) {
+			if (!mod.isForcedOn() && !mod.isBlocked()) {
 				NanoVG.nvgBeginPath(nvg);
 				NanoVG.nvgRoundedRectVarying(nvg, 0, 0, getBounds().getWidth(), getBounds().getHeight(), 0, 3, 3, 0);
 				NanoVG.nvgFillColor(nvg, getColour().nvg());

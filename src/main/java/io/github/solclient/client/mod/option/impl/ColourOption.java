@@ -20,8 +20,8 @@ package io.github.solclient.client.mod.option.impl;
 
 import java.util.Optional;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.SolClient;
+import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.*;
@@ -71,7 +71,7 @@ public class ColourOption extends ModOption<Colour> {
 	}
 
 	public void applyToAll() {
-		for (Mod mod : Client.INSTANCE.getMods()) {
+		for (Mod mod : SolClient.INSTANCE) {
 			for (ColourOption option : mod.getFlatOptions(ColourOption.class)) {
 				if (!option.applyToAllKey.equals(applyToAllKey))
 					continue;

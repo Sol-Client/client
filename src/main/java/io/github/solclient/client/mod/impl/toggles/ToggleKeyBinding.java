@@ -20,8 +20,7 @@ package io.github.solclient.client.mod.impl.toggles;
 
 import com.google.common.base.Supplier;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.event.EventHandler;
+import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.PostTickEvent;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
@@ -40,7 +39,7 @@ public class ToggleKeyBinding extends KeyBinding {
 		super(description, keyCode, category);
 		this.controller = controller;
 
-		Client.INSTANCE.getEvents().register(this);
+		EventBus.INSTANCE.register(this);
 	}
 
 	@EventHandler

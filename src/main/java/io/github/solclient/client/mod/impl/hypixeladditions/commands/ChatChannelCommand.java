@@ -20,8 +20,8 @@ package io.github.solclient.client.mod.impl.hypixeladditions.commands;
 
 import java.util.*;
 
-import io.github.solclient.client.Client;
-import io.github.solclient.client.chatextensions.channel.ChatChannelSystem;
+import io.github.solclient.client.mod.impl.api.chat.ChatApiMod;
+import io.github.solclient.client.mod.impl.api.chat.channel.ChatChannelSystem;
 import io.github.solclient.client.mod.impl.hypixeladditions.*;
 import net.minecraft.command.*;
 import net.minecraft.text.LiteralText;
@@ -35,7 +35,7 @@ public class ChatChannelCommand extends HypixelAdditionsCommand {
 
 	@Override
 	public void execute(CommandSource sender, String[] args) throws CommandException {
-		ChatChannelSystem system = Client.INSTANCE.getChatExtensions().getChannelSystem();
+		ChatChannelSystem system = ChatApiMod.instance.getChannelSystem();
 		if (args.length == 1) {
 			if (args[0].equals("c") || args[0].equals("coop") || args[0].equals("co-op")
 					|| args[0].equals("skyblock_coop") || args[0].equals("skyblock_co-op")) {

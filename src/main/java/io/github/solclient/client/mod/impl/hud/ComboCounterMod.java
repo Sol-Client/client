@@ -31,11 +31,6 @@ public class ComboCounterMod extends SolClientSimpleHudMod {
 	private int possibleTarget;
 
 	@Override
-	public String getId() {
-		return "combo_counter";
-	}
-
-	@Override
 	public void render(Position position, boolean editMode) {
 		super.render(position, editMode);
 		if ((System.currentTimeMillis() - hitTime) > 2000) {

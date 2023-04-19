@@ -64,11 +64,6 @@ public class TimersMod extends SolClientHudMod {
 	private Colour timeColour = new Colour(8355711);
 
 	@Override
-	public String getId() {
-		return "timers";
-	}
-
-	@Override
 	public Rectangle getBounds(Position position) {
 		int y = position.getY();
 		switch (alignment) {

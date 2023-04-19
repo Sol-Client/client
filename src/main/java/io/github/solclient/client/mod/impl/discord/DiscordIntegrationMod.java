@@ -44,7 +44,7 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.world.ClientWorld;
 
-public class DiscordIntegrationMod extends SolClientMod {
+public class DiscordIntegrationMod extends StandardMod {
 
 	public static DiscordIntegrationMod instance;
 
@@ -91,16 +91,6 @@ public class DiscordIntegrationMod extends SolClientMod {
 	private String icon = "";
 
 	private final DiscordVoiceChatHud discordVoiceChatHud = new DiscordVoiceChatHud(this);
-
-	@Override
-	public String getId() {
-		return "discord_integration";
-	}
-
-	@Override
-	public ModCategory getCategory() {
-		return ModCategory.INTEGRATION;
-	}
 
 	@Override
 	public List<HudElement> getHudElements() {

@@ -64,11 +64,6 @@ public class PotionEffectsMod extends SolClientHudMod {
 	private float spacing = 15;
 
 	@Override
-	public String getId() {
-		return "potion_effects";
-	}
-
-	@Override
 	public Rectangle getBounds(Position position) {
 		int y = position.getY();
 

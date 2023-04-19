@@ -20,7 +20,6 @@ package io.github.solclient.client.ui.screen.mods;
 
 import org.lwjgl.nanovg.*;
 
-import io.github.solclient.client.Client;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
@@ -48,7 +47,7 @@ public final class ModCategoryComponent extends ListComponent {
 		for (Mod mod : category.getMods())
 			add(new ModEntry(mod, screen, category == ModCategory.PINNED));
 
-		expand = Client.INSTANCE.getModUiState().isExpanded(category);
+		expand = ModUiStateManager.INSTANCE.isExpanded(category);
 	}
 
 	@Override
@@ -111,7 +110,7 @@ public final class ModCategoryComponent extends ListComponent {
 			MinecraftUtils.playClickSound(true);
 			expand = !expand;
 
-			Client.INSTANCE.getModUiState().setExpanded(category, expand);
+			ModUiStateManager.INSTANCE.setExpanded(category, expand);
 			return true;
 		}
 

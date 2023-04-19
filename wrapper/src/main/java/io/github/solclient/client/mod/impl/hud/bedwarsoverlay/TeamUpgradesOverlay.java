@@ -4,6 +4,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.BedwarsTeamUpgrades;
+import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.TeamUpgrade;
+import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.TrapUpgrade;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 import net.minecraft.client.MinecraftClient;
@@ -54,7 +56,7 @@ public class TeamUpgradesOverlay implements HudElement {
 
     @Override
     public Rectangle getBounds(Position position) {
-        return position.rectangle(60, 20);
+        return position.rectangle(60, 40);
     }
 
     @Override
@@ -65,6 +67,26 @@ public class TeamUpgradesOverlay implements HudElement {
         int x = position.getX() + 1;
         int y = position.getY() + 2;
         GlStateManager.color(1, 1, 1);
+        boolean normalUpgrades = false;
+        if (upgrades != null) {
+            for (TeamUpgrade u : upgrades.upgrades) {
+                if (!u.isPurchased()) {
+                    continue;
+                }
+                if (u instanceof TrapUpgrade) {
+                    continue;
+                }
+                String texture = u.getTexture()[0];
+                mc.getTextureManager().bindTexture(new Identifier("sol_client", "textures/bedwars/" + texture + ".png"));
+                DrawableHelper.drawTexture(x, y, 0, 0, 16, 16, 16, 16);
+                x += 17;
+                normalUpgrades = true;
+            }
+        }
+        x = position.getX() + 1;
+        if (normalUpgrades) {
+            y += 17;
+        }
         for (String texture : (editMode ? trapEdit : upgrades.trap.getTexture())) {
             mc.getTextureManager().bindTexture(new Identifier("sol_client", "textures/bedwars/" + texture + ".png"));
             DrawableHelper.drawTexture(x, y, 0, 0, 16, 16, 16, 16);

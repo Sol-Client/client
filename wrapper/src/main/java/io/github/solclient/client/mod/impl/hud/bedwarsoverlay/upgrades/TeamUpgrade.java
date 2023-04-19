@@ -37,5 +37,6 @@ public abstract class TeamUpgrade {
     public abstract int getPrice(BedwarsMode mode);
 
 
+    public abstract boolean isPurchased();
 }
 

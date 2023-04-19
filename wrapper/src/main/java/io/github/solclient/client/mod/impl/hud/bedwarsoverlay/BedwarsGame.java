@@ -11,7 +11,6 @@ import net.minecraft.scoreboard.ScoreboardPlayerScore;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -19,10 +18,23 @@ import java.util.stream.Collectors;
 
 public class BedwarsGame {
 
+    private static final int DIAMOND_START = 30;
+    private static final int DIAMOND_1 = 30;
+    private static final int DIAMOND_2 = 23;
+    private static final int DIAMOND_3 = 16;
+    private static final int EMERALD_START = 30;
+    private static final int EMERALD_1 = 65;
+    private static final int EMERALD_2 = 50;
+    private static final int EMERALD_3 = 35;
+
+    private int diamondsTimer = DIAMOND_START;
+    private int emeraldsTimer = EMERALD_START;
+
     private BedwarsTeam won = null;
     private int wonTick = -1;
     private int seconds = 0;
     private Text topBarText = new LiteralText("");
+    private Text bottomBarText = new LiteralText("");
 
 
     private BedwarsPlayer me = null;
@@ -85,8 +97,16 @@ public class BedwarsGame {
         return topBarText;
     }
 
+    public Text getBottomBarText() {
+        return bottomBarText;
+    }
+
     private String calculateTopBarText() {
         return getFormattedTime();
+    }
+
+    private String calculateBottomBarText() {
+        return "§bDiamonds - " + diamondsTimer + " §8| " + "§aEmeralds - " + emeraldsTimer;
     }
 
     public String getFormattedTime() {
@@ -133,7 +153,8 @@ public class BedwarsGame {
 
     private String formatBed(BedwarsTeam team, BedwarsPlayer breaker) {
         String playerFormatted = getPlayerFormatted(breaker);
-        return "§6§l§oBED BROKEN §8§l> " + team.getColorSection() + team.getName() + " Bed §7/broken/ " + playerFormatted;
+        return "§6§l§oBED BROKEN §8§l> " + team.getColorSection() + team.getName() + " Bed §7/broken/ " + playerFormatted +
+                (breaker.getStats() == null ? "" : " §6" + breaker.getStats().getBedsBroken());
     }
 
     private String formatDeath(BedwarsPlayer player, @Nullable BedwarsPlayer killer, BedwarsDeathType type, boolean finalDeath) {
@@ -241,6 +262,9 @@ public class BedwarsGame {
 
     private void bedDestroyed(ReceiveChatMessageEvent event, BedwarsTeam team, @Nullable BedwarsPlayer breaker) {
         players.values().stream().filter(b -> b.getTeam() == team).forEach(b -> b.setBed(false));
+        if (breaker != null && breaker.getStats() != null) {
+            breaker.getStats().addBed();
+        }
         event.newMessage = new LiteralText(formatBed(team, breaker));
     }
 
@@ -282,9 +306,60 @@ public class BedwarsGame {
         if (this.seconds % 60 != target) {
             // Update seconds
             while (this.seconds % 60 != target) {
-                this.seconds++;
+                updateClock();
             }
             topBarText = new LiteralText(calculateTopBarText());
+            bottomBarText = new LiteralText(calculateBottomBarText());
+        }
+    }
+
+    private int getDiamondTimerTier(int tier) {
+        if (tier <= 1) {
+            return DIAMOND_1;
+        }
+        if (tier == 2) {
+            return DIAMOND_2;
+        }
+        return DIAMOND_3;
+    }
+
+    private int getEmeraldTier(int tier) {
+        if (tier <= 1) {
+            return EMERALD_1;
+        }
+        if (tier == 2) {
+            return EMERALD_2;
+        }
+        return EMERALD_3;
+    }
+
+    private void updateClock() {
+        // This just straight up doesn't work. I think it's because hypixel doesn't follow strict timings
+        // Also the math on this is just wrong somewhere
+        this.seconds++;
+        int minutes = seconds / 60;
+        int diamondTier = Math.min((minutes + 6) / 12 + 1, 3);
+        int emeraldTier = Math.min(minutes / 12 + 1, 3);
+        diamondsTimer--;
+        emeraldsTimer--;
+        if (seconds % 60 == 0) {
+            if (minutes < 24 && minutes % 6 == 0) {
+                if ((minutes % 12) / 6 == 1) {
+                    // Diamonds
+                    diamondsTimer = 0;
+                } else {
+                    // Emeralds
+                    emeraldsTimer = 0;
+                }
+            }
+        }
+        if (diamondsTimer <= 0) {
+            int secondsTillUpgrade = (((minutes) / 12 + 1)) * 12 * 60 - 6 * 60 - seconds;
+            diamondsTimer = Math.min(getDiamondTimerTier(diamondTier), secondsTillUpgrade);
+        }
+        if (emeraldsTimer <= 0) {
+            int secondsTillUpgrade = ((minutes / 12 + 1)) * 12 * 60 - seconds;
+            emeraldsTimer = Math.min(getEmeraldTier(emeraldTier), secondsTillUpgrade);
         }
     }
 

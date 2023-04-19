@@ -93,4 +93,7 @@ public class BedwarsPlayerStats {
         finalKills++;
     }
 
+    public void addBed() {
+        bedsBroken++;
+    }
 }

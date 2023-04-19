@@ -25,6 +25,11 @@ public class TieredUpgrade extends TeamUpgrade {
     }
 
     @Override
+    public boolean isPurchased() {
+        return level > 0;
+    }
+
+    @Override
     protected void onMatch(TeamUpgrade upgrade, Matcher matcher) {
         level += 1;
     }

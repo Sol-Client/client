@@ -8,7 +8,7 @@ public class BedwarsTeamUpgrades {
     public final TrapUpgrade trap = new TrapUpgrade();
 
     public final TeamUpgrade sharpness = new BinaryUpgrade(
-            "sharp", Pattern.compile("^\\b[A-Za-z0-9_§]{3,16}\\b purchased Sharpened Swords\\s*$"),
+            "sharp", Pattern.compile("^\\b[A-Za-z0-9_§]{3,16}\\b purchased Sharpened Swords"),
             8, 4
     );
 
@@ -37,7 +37,7 @@ public class BedwarsTeamUpgrades {
             new int[]{2, 4}, new int[]{4, 6}
     );
 
-    private final TeamUpgrade[] upgrades = {trap, sharpness, dragonBuff, healPool, protection, maniacMiner, forge};
+    public final TeamUpgrade[] upgrades = {trap, sharpness, dragonBuff, healPool, protection, maniacMiner, forge};
 
     public BedwarsTeamUpgrades() {
 

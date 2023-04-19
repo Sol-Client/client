@@ -232,6 +232,7 @@ public class BedwarsMessages {
             Pattern.compile("^Coins just earned DOUBLE"),
             Pattern.compile("^\\+\\d+ Bed Wars Experience"),
             Pattern.compile("^You have respawned"),
+            Pattern.compile("^If you get disconnected use /rejoin to join back in the game\\.$"),
     };
 
     private static Pattern[] convert(String... input) {

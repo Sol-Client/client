@@ -1,16 +1,12 @@
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades;
 
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.BedwarsMode;
-import lombok.Getter;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.LiteralText;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BinaryUpgrade extends TeamUpgrade {
 
-    @Getter
     private boolean purchased = false;
 
     private final int foursPrice;
@@ -29,6 +25,11 @@ public class BinaryUpgrade extends TeamUpgrade {
     @Override
     public String[] getTexture() {
         return new String[]{name + "_" + (purchased ? "1" : "0")};
+    }
+
+    @Override
+    public boolean isPurchased() {
+        return purchased;
     }
 
     @Override

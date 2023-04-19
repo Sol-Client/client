@@ -23,6 +23,8 @@ public class BedwarsMixins {
 
         @Shadow private Text header;
 
+        @Shadow private Text footer;
+
         @Inject(method = "getPlayerName", at = @At("HEAD"), cancellable = true)
         public void getPlayerName(PlayerListEntry playerEntry, CallbackInfoReturnable<String> cir) {
             if (!BedwarsMod.getInstance().isEnabled()) {
@@ -57,6 +59,15 @@ public class BedwarsMixins {
                 return;
             }
             this.header = BedwarsMod.getInstance().getGame().get().getTopBarText();
+            ci.cancel();
+        }
+
+        @Inject(method = "setFooter", at = @At("HEAD"), cancellable = true)
+        public void changeFooter(Text header, CallbackInfo ci) {
+            if (!BedwarsMod.getInstance().inGame()) {
+                return;
+            }
+            this.footer = BedwarsMod.getInstance().getGame().get().getBottomBarText();
             ci.cancel();
         }
 

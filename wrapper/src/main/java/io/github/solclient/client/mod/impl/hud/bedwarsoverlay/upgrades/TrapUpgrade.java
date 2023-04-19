@@ -53,6 +53,11 @@ public class TrapUpgrade extends TeamUpgrade {
     }
 
     @Override
+    public boolean isPurchased() {
+        return traps.size() > 0;
+    }
+
+    @Override
     public String[] getTexture() {
         if (traps.size() == 0) {
             return new String[]{"trap/empty"};

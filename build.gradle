@@ -43,6 +43,7 @@ dependencies {
 	shade(libs.hypixel.api) { transitive = false }
 	shade libs.discord.game.sdk4j
 	shade libs.java.websocket
+	shade libs.cosmetica.dot.java
 	shade libs.access.widener
 	shade libs.lwjgl.patched
 	shade libs.tiny.remapper

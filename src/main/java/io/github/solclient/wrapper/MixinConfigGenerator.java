@@ -53,7 +53,7 @@ public class MixinConfigGenerator {
 
 		int chop = path.length() + 1;
 		JsonArray mixins = new JsonArray();
-		ClassWrapper.instance.walkPackageTree(path, mixin -> mixins.add(mixin.substring(chop)));
+		ClassWrapper.instance.walkPackageTree(path, mixin -> mixins.add(new JsonPrimitive(mixin.substring(chop))));
 		obj.add("mixins", mixins);
 
 		return Optional.of(new ByteArrayInputStream(obj.toString().getBytes(StandardCharsets.UTF_8)));

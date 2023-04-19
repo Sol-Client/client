@@ -228,7 +228,7 @@ public class DiscordSocket extends WebSocketClient {
 		args.addProperty("client_id", CLIENT_ID);
 
 		JsonArray scopes = new JsonArray();
-		scopes.add("rpc");
+		scopes.add(new JsonPrimitive("rpc"));
 
 		args.add("scopes", scopes);
 		args.addProperty("prompt", "none");

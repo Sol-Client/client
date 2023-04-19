@@ -60,7 +60,6 @@ public final class ClassWrapper extends URLClassLoader {
 			"com.mojang.util",
 			"com.google",
 			"com.logisticscraft.occlusionculling",
-			"cc.cosmetica",
 			"net.hypixel",
 			"org.spongepowered",
 			// important

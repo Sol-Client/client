@@ -479,9 +479,6 @@ sol_client.mod.discord_integration.option.speakingColour=Speaking colour
 
 sol_client.mod.discord_integration.multiplayer=Multiplayer: %s
 
-sol_client.mod.cosmetica.name=Cosmetica
-sol_client.mod.cosmetica.description=Support for cosmetics with Cosmetica's API.
-
 sol_client.mod.screen.title=Modules
 sol_client.mod.screen.search=Type to search
 sol_client.mod.screen.apply_to_all=Apply to All

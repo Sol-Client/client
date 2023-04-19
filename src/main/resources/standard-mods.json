@@ -249,12 +249,6 @@
 	},
 	// integration
 	{
-		"id": "cosmetica",
-		"main": "cosmetica.CosmeticaMod",
-		"mixins": "@cosmetica.mixins",
-		"category": "integration"
-	},
-	{
 		"id": "hypixel_util",
 		"main": "hypixeladditions.HypixelAdditionsMod",
 		"mixins": "@hypixeladditions.mixins",

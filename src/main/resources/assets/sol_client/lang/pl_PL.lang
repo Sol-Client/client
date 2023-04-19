@@ -477,9 +477,6 @@ sol_client.mod.discord_integration.option.speakingColour=Kolor mówienia
 
 sol_client.mod.discord_integration.multiplayer=Tryb wieloosobowy: %s
 
-sol_client.mod.cosmetica.name=Cosmetica
-sol_client.mod.cosmetica.description=Wsparcie dla API Cosmetici.
-
 sol_client.mod.screen.title=Moduły
 sol_client.mod.screen.search=Pisz aby wyszukać
 sol_client.mod.screen.apply_to_all=Zastosuj dla wszystkich

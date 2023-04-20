@@ -53,7 +53,7 @@ public final class BedwarsMod extends StandardMod {
 
     @Override
     public String getDetail() {
-        return I18n.translate("sol_client.mod.screen.by", "DarkKronicle") + " " + I18n.translate("sol_client.mod.screen.textues_by", "Sybillian");
+        return I18n.translate("sol_client.mod.screen.by", "DarkKronicle") + I18n.translate("sol_client.mod.screen.textures_by", "Sybillian");
     }
 
     @Override

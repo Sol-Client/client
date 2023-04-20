@@ -349,6 +349,10 @@ sol_client.mod.hypixel_util.option.autoglMessage=GL message
 sol_client.mod.hypixel_util.option.hidegl=Hide GL messages
 sol_client.mod.hypixel_util.option.levelhead=Show player levels
 
+sol_client.mod.bedwars.name=Bedwars
+sol_client.mod.bedwars.description=Various improvements and hud for bedwars.
+
+
 sol_client.mod.tnt_timer.name=TNT Timer
 sol_client.mod.tnt_timer.description=Display the explosion time of TNT.
 
@@ -487,7 +491,7 @@ sol_client.mod.screen.modified_from=, using code by %s
 sol_client.mod.screen.originally_by=, originally by %s
 sol_client.mod.screen.inspired_by=, inspired by %s
 sol_client.mod.screen.by=, by %s
-sol_client.mod.screen.textures_by=, textures by %s
+sol_client.mod.screen.textures_by=; textures by %s
 
 sol_client.mod.screen.about=About Sol Client
 sol_client.mod.screen.license=Licensed under the GPL v3 license.

@@ -19,9 +19,12 @@
 package io.github.solclient.client.ui;
 
 import java.io.Closeable;
+import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.nanovg.*;
 import org.lwjgl.opengl.*;
+import org.lwjgl.system.MemoryUtil;
 
 import com.mojang.blaze3d.platform.GLX;
 
@@ -70,8 +73,18 @@ public class ScreenAnimation extends NanoVGManager implements Closeable {
 		}
 
 		NanoVGGL2.nvgluBindFramebuffer(nvg, fb);
+
+
 		GL11.glViewport(0, 0, mc.width, mc.height);
+
+		FloatBuffer floaty = BufferUtils.createFloatBuffer(16);
+		GL11.glGetFloat(GL11.GL_COLOR_CLEAR_VALUE, floaty);
+
+		GL11.glClearColor(0, 0, 0, 0);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+		GL11.glClearColor(floaty.get(0), floaty.get(1), floaty.get(2), floaty.get(3));
+
 		MinecraftUtils.withNvg(task, true);
 		mc.getFramebuffer().bind(true);
 

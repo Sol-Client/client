@@ -11,7 +11,7 @@ sol_client.perspective.first_person=Ensimmäinen persoona
 sol_client.perspective.third_person_back=Kolmas persoona takaa
 sol_client.perspective.third_person_front=Kolmas persoona edestä
 
-sol_client.easing.linear=Lineaarinen
+sol_client.easing.linear=Linear
 sol_client.easing.quad=Quad
 sol_client.easing.cubic=Cubic
 sol_client.easing.quart=Quart
@@ -21,7 +21,7 @@ sol_client.easing.sine=Sine
 sol_client.easing.circ=Circ
 sol_client.easing.back=Back
 sol_client.easing.bounce=Bounce
-sol_client.easing.elastic=Elastinen
+sol_client.easing.elastic=Elastic
 
 sol_client.file.edit=Muokkaa tiedostoa...
 
@@ -50,11 +50,8 @@ sol_client.mod.sol_client.option.modsKey=Moduulien näppäin
 sol_client.mod.sol_client.edit_hud=Mukauta HUD
 sol_client.mod.sol_client.option.editHudKey=Vaihda HUD näppäin
 sol_client.mod.sol_client.option.uiColour=Aksentin väri
-sol_client.mod.sol_client.option.smoothUIColours=Pehmeät UI värit
-sol_client.mod.sol_client.option.roundedUI=Pyöreä UI
 sol_client.mod.sol_client.option.buttonClicks=Painikkeen napsautukset
 sol_client.mod.sol_client.option.smoothScrolling=Pehmeä vieritys
-sol_client.mod.sol_client.option.fancyFont=HD fontti
 
 sol_client.mod.fps.name=FPS
 sol_client.mod.fps.description=Näytä FPS (kuvat sekunnissa).
@@ -137,7 +134,7 @@ sol_client.mod.armour.option.hand=Näytä esine
 sol_client.mod.armour.option.horizontal=Vaakasuora
 
 sol_client.mod.timers.name=Ajastimet
-sol_client.mod.timers.description=Näytä ajastimet pelin-sisäisiin tapahtumiin.
+sol_client.mod.timers.description=Näytä ajastimet pelinsisäisiin tapahtumiin.
 
 sol_client.mod.timers.option.alignment=Linjaus
 sol_client.mod.timers.option.icon=Kuvake
@@ -148,9 +145,9 @@ sol_client.mod.chat.name=Chat
 sol_client.mod.chat.description=Mukauta pelinsisäistä chat keskustelua.
 
 sol_client.mod.chat.peek=Chat keskustelun kurkistaminen
-sol_client.mod.chat.option.preventClose=Estä Sulkeminen
-sol_client.mod.chat.option.smooth=Viestin Animaatio
-sol_client.mod.chat.option.infiniteChat=Ääretön Chat Keskustelu
+sol_client.mod.chat.option.preventClose=Estä sulkeminen
+sol_client.mod.chat.option.smooth=Viestin animaatio
+sol_client.mod.chat.option.infiniteChat=Ääretön keskustelu
 sol_client.mod.chat.option.peekKey=Kurkistamisen näppäin
 
 sol_client.mod.chat.option.visibility=Näkyvyys
@@ -187,7 +184,7 @@ sol_client.mod.tab_list.option.textShadow=Tekstin varjo
 sol_client.mod.crosshair.name=Tähtäin
 sol_client.mod.crosshair.description=Mukauta tähtäintä.
 
-sol_client.mod.crosshair.option.thirdPerson=Näytä Kolmannessa Persoonassa
+sol_client.mod.crosshair.option.thirdPerson=Näytä kolmannessa persoonassa
 sol_client.mod.crosshair.option.spectatorAlways=Näytä katsojatilassa
 sol_client.mod.crosshair.option.debug=Näytä viankorjauspeittokuvassa
 sol_client.mod.crosshair.option.blending=Sekoitus
@@ -245,8 +242,6 @@ sol_client.mod.toggle_sprint.default_width=113
 
 sol_client.mod.toggle_sprint.option.hud=HUD
 
-sol_client.mod.toggle_sprint.held=Juokseminen (Pidetty)
-sol_client.mod.toggle_sprint.toggled=Juokseminen (Päällä)
 
 sol_client.mod.zoom.name=Zoomaus
 sol_client.mod.zoom.description=Zoomaa näppäimen painalluksella.
@@ -275,7 +270,7 @@ sol_client.mod.replay.option.recordingIndicatorScale=Tallennusilmaisimen Koko
 sol_client.mod.replay.option.recordingIndicatorTextColour=Tallennusilmaisimen tekstin väri
 sol_client.mod.replay.option.recordingIndicatorTextShadow=Tallennusilmaisimen tekstin varjo
 sol_client.mod.replay.option.automaticRecording=Automaattinen tallennus
-sol_client.mod.replay.option.renameDialog=Uudelleen nimeä Dialogi
+sol_client.mod.replay.option.renameDialog=Uudelleen nimeä dialogi
 sol_client.mod.replay.option.showChat=Näytä chat
 
 sol_client.mod.replay.option.camera=Kamera
@@ -302,7 +297,7 @@ sol_client.mod.hypixel_util.description=Useita parannuksia Hypixelin käyttökok
 
 sol_client.mod.hypixel_util.option.visitHousingCommand=/visithousing
 sol_client.mod.hypixel_util.option.lobbySoundsVolume=Aulan äänenvoimakkuus
-sol_client.mod.hypixel_util.option.housingMusicVolume=Housing Musiikin Äänenvoimakkuus
+sol_client.mod.hypixel_util.option.housingMusicVolume=Housing musiikin äänenvoimakkuus
 sol_client.mod.hypixel_util.option.popupEvents=Popup Tapahtumat
 sol_client.mod.hypixel_util.option.autogg=Auto GG
 sol_client.mod.hypixel_util.option.autoggMessage=GG viesti
@@ -312,7 +307,7 @@ sol_client.mod.hypixel_util.option.autoglMessage=GL Viesti
 sol_client.mod.hypixel_util.option.hidegl=Piilota GL
 sol_client.mod.hypixel_util.option.levelhead=Level Head
 
-sol_client.mod.tnt_timer.name=TNT Ajastin
+sol_client.mod.tnt_timer.name=TNT ajastin
 sol_client.mod.tnt_timer.description=Näytä TNT:n räjähdyksen aika.
 
 sol_client.mod.motion_blur.name=Liikehäivyttäminen
@@ -320,8 +315,8 @@ sol_client.mod.motion_blur.description=Pehmeä Liikehäivyttäminen efekti.
 
 sol_client.mod.motion_blur.option.blur=Sumennus
 
-sol_client.mod.menu_blur.name=Menu Semennus
-sol_client.mod.menu_blur.description=Sumeenna menujen tausta.
+sol_client.mod.menu_blur.name=Valikko sumennus
+sol_client.mod.menu_blur.description=Sumeenna valikkojen tausta.
 
 sol_client.mod.menu_blur.option.blur=Sumennus
 sol_client.mod.menu_blur.option.fadeTime=Häivytysaika
@@ -332,25 +327,25 @@ sol_client.mod.colour_saturation.description=Säädä maailman värikylläisyytt
 
 sol_client.mod.colour_saturation.option.saturation=Kylläisyys
 
-sol_client.mod.chunk_animator.name=Chunk Animaattori
+sol_client.mod.chunk_animator.name=Chunk animaattori
 sol_client.mod.chunk_animator.description=Animoi maailma sen latautuessa.
 
 sol_client.mod.chunk_animator.option.duration=Kesto
 sol_client.mod.chunk_animator.option.animation=Animaatio
 
-sol_client.mod.1.7_visuals.name=1.7 Visuaalit
+sol_client.mod.1.7_visuals.name=1.7 visuaalit
 sol_client.mod.1.7_visuals.description=Tuo takaisin hieman 1.7:n näköä ja tunnetta.
 
 sol_client.mod.1.7_visuals.option.useAndMine=Kaiva kun käytät tavaraa
 sol_client.mod.1.7_visuals.option.particles=Hiukkaset
 sol_client.mod.1.7_visuals.option.blocking=Miekan estäminen
-sol_client.mod.1.7_visuals.option.eatingAndDrinking=Syöminen ja Juominen
+sol_client.mod.1.7_visuals.option.eatingAndDrinking=Syöminen ja juominen
 sol_client.mod.1.7_visuals.option.rod=Onki
 sol_client.mod.1.7_visuals.option.bow=Jousipyssy
 sol_client.mod.1.7_visuals.option.armourDamage=Vahinkovaikutus panssariin
 sol_client.mod.1.7_visuals.option.sneaking=Pehmeä hiivintä
 
-sol_client.mod.item_physics.name=Tavaroiden Fysiikka
+sol_client.mod.item_physics.name=Tavaroiden fysiikka
 sol_client.mod.item_physics.description=Lisää esineisiin pyörivä animaatio.
 
 sol_client.mod.item_physics.option.rotationSpeed=Pyörimisnopeus
@@ -364,7 +359,7 @@ sol_client.mod.particles.option.snow=Lumi
 sol_client.mod.particles.option.slime=Lima
 sol_client.mod.particles.option.flames=Liekit
 
-sol_client.mod.time_changer.name=Ajan Vaihtaja
+sol_client.mod.time_changer.name=Ajan vaihtaja
 sol_client.mod.time_changer.description=Muuta visuaalista aikaa vaikuttamatta pelaamiseen.
 
 sol_client.mod.time_changer.option.time=Aika
@@ -380,15 +375,15 @@ sol_client.mod.block_selection.option.fillColour=Täytön väri
 sol_client.mod.block_selection.option.depth=Syvyys
 sol_client.mod.block_selection.option.persistent=Pysyvä
 
-sol_client.mod.hit_colour.name=Osuman Väri
+sol_client.mod.hit_colour.name=Osuman väri
 sol_client.mod.hit_colour.description=Muuta osuman väriä.
 
 sol_client.mod.hit_colour.option.colour=Väri
 
-sol_client.mod.hitbox.name=Osuma-alue
-sol_client.mod.hitbox.description=Mukauta ja vaihda helposti entiteetin osuma-aluetta.
+sol_client.mod.hitbox.name=Hitbox
+sol_client.mod.hitbox.description=Mukauta ja vaihda helposti entiteetin hitboxia.
 
-sol_client.mod.hitbox.option.toggleHitboxes=Vaihda Hitboxien päälläolo
+sol_client.mod.hitbox.option.toggleHitboxes=Vaihda hitboxien päälläolo
 sol_client.mod.hitbox.option.boundingBox=Näytä rajoitusruutu
 sol_client.mod.hitbox.option.boundingBoxColour=Rajoitusruudun Väri
 sol_client.mod.hitbox.option.eyeHeight=Näytä silmien korkeus
@@ -403,12 +398,12 @@ sol_client.mod.category.utility.name=Hyöty
 sol_client.mod.category.visual.name=Visuaaliset
 sol_client.mod.category.integration.name=Integrointi
 
-sol_client.mod.discord_integration.name=Discord Integrointi
+sol_client.mod.discord_integration.name=Discord integrointi
 sol_client.mod.discord_integration.description=Discordin integrointiominaisuudet, mukaan lukien aktiviteetit ja peittokuva.
 
 sol_client.mod.discord_integration.option.voiceChatHud=Äänipuhelun HUD
 sol_client.mod.discord_integration.option.voiceChatHudScale=Äänipuhelun HUD Koko
-sol_client.mod.discord_integration.option.voiceChatHudAlignment=Äänipuhelun HUD Linjaus
+sol_client.mod.discord_integration.option.voiceChatHudAlignment=Äänipuhelun HUD linjaus
 sol_client.mod.discord_integration.option.usernameColour=Käyttäjätunnuksen väri
 sol_client.mod.discord_integration.option.mutedColour=Mykistetyn väri
 sol_client.mod.discord_integration.option.speakingColour=Puhuvan väri
@@ -428,7 +423,7 @@ sol_client.mod.sol_client.option.remindMeToUpdate=Päivitä ilmoitukset
 sol_client.mod.sol_client.option.openAnimation=Avautumisen animaatio
 sol_client.mod.clock.name=Kello
 sol_client.mod.clock.description=Näytä nykyinen aika.
-sol_client.mod.clock.option.twentyFourHour=24-tunninen formaatti
+sol_client.mod.clock.option.twentyFourHour=24-tunnin formaatti
 sol_client.mod.clock.option.analogue=Analooginen
 sol_client.mod.clock.option.hourHandColour=Tuntiviisarin väri
 sol_client.mod.clock.option.hourMarks=Tuntimerkit
@@ -438,7 +433,7 @@ sol_client.mod.clock.option.secondsHand=Sekunttiviisari
 sol_client.mod.clock.option.secondsHandColour=Sekunttiviisarin väri
 sol_client.mod.crosshair.option.customCrosshair=Mukautettu crosshair
 sol_client.mod.crosshair.option.pixels=Pikselit
-sol_client.mod.tweaks.option.lowerFireBy=Lower Fire By
+sol_client.mod.tweaks.option.lowerFireBy=Alempi tuli (pikseliä alas)
 sol_client.mod.tweaks.option.reconnectButton=Moninpelin uudelleenyhteyspainike
 sol_client.mod.tweaks.reconnect=Uudelleen yhdistä
 sol_client.mod.zoom.option.animationSpeed=Animaation nopeus
@@ -467,7 +462,7 @@ sol_client.mod.discord_integration.multiplayer=Moninpeli: %s
 sol_client.mod.screen.modified_from=, käyttäen %s koodia
 sol_client.mod.screen.originally_by=, alunperin tehnyt %s
 sol_client.mod.screen.inspired_by=, %s inspiroimana
-sol_client.mod.screen.by=, by %s
+sol_client.mod.screen.by=, %s tekemä
 sol_client.mod.screen.about=Tietoja Sol Clientista
 sol_client.mod.screen.license=Lisensoitu GPL v3 -lisenssillä.
 sol_client.mod.screen.default=(Oletus)
@@ -478,3 +473,24 @@ sol_client.hex=Hex
 sol_client.rgb=RGB
 sol_client.alpha=Alpha
 sol_client.previous_colours=Viimeksi käytetty
+sol_client.mod.sol_client.option.dark=Käytä pimeää tilaa
+sol_client.mod.sol_client.option.dark_easter_egg=Käytä pimeeää tilaa :sunglasses:
+sol_client.mod.sol_client.option.broadcastOnline=Näytä kun käytän clienttiä
+sol_client.mod.sol_client.option.onlineIndicator=Näytä verkossa olevat käyttäjät
+sol_client.mod.boss_bar.name=Boss Bar
+sol_client.mod.boss_bar.description=Mukauta boss baria.
+sol_client.mod.boss_bar.option.hide=Piilota
+sol_client.mod.boss_bar.option.text=Näytä teksti
+sol_client.mod.boss_bar.option.bar=Näytä terveyspalkki
+sol_client.mod.boss_bar.option.offset=Offset by...
+sol_client.mod.tweaks.option.disableBlockParticles=Poista palikkahiukkaset käytöstä
+sol_client.mod.tweaks.option.rawInput=Raaka hiiren syöte
+sol_client.mod.toggle_sprint.option.toggleSprint=Toggle sprint
+sol_client.mod.toggle_sprint.option.toggleSneak=Toggle sneak
+sol_client.mod.toggle_sprint.sprint_held=Juokseminen (pidetty)
+sol_client.mod.toggle_sprint.sprint_toggled=Juokseminen (kytketty)
+sol_client.mod.toggle_sprint.sneak_held=Hiipiminen (pidetty)
+sol_client.mod.toggle_sprint.sneak_toggled=Hiipiminen (kytketty)
+sol_client.mod.screenshots.delete=Poista
+sol_client.mod.screenshots.delete_error=Poiston aikana tapahtui virhe: %s. Sinä voit yrittää avata %s sen sijaan.
+sol_client.slider.pixels=%spx

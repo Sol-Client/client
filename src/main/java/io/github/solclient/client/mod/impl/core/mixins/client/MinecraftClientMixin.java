@@ -466,26 +466,10 @@ public abstract class MinecraftClientMixin implements MinecraftClientExtension, 
 
 	// endregion
 
-	// TODO fix this: it kind of breaks multimc
-
-	@Redirect(method = "initializeGame", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;serverAddress:Ljava/lang/String;"))
-	public String joinServer(MinecraftClient instance) {
-		return null;
-	}
-
-	@Redirect(method = "initializeGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;"
+	@Inject(method = "initializeGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;"
 			+ "setScreen(Lnet/minecraft/client/gui/screen/Screen;)V", ordinal = 1))
-	public void display(MinecraftClient instance, Screen screen) {
+	public void display(CallbackInfo callback) {
 		loading = false;
-
-		if (serverAddress != null && serverAddress.startsWith("§sc§")) {
-			ServerList list = new ServerList((MinecraftClient) (Object) this);
-			instance.setScreen(new ConnectScreen(new MultiplayerScreen(screen), (MinecraftClient) (Object) this,
-					list.get(Integer.parseInt(serverAddress.substring(4)))));
-			return;
-		}
-
-		instance.setScreen(screen);
 	}
 
 	@Inject(method = "toggleFullscreen", at = @At("HEAD"), cancellable = true)

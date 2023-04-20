@@ -316,7 +316,7 @@ sol_client.mod.motion_blur.description=Pehmeä Liikehäivyttäminen efekti.
 sol_client.mod.motion_blur.option.blur=Sumennus
 
 sol_client.mod.menu_blur.name=Valikko sumennus
-sol_client.mod.menu_blur.description=Sumeenna menujen tausta.
+sol_client.mod.menu_blur.description=Sumeenna valikkojen tausta.
 
 sol_client.mod.menu_blur.option.blur=Sumennus
 sol_client.mod.menu_blur.option.fadeTime=Häivytysaika

@@ -1,0 +1,439 @@
+sol_client.passthrough=%s
+sol_client.slider.percent=%s%%
+sol_client.slider.factor=%sx
+sol_client.slider.seconds=%ss
+
+sol_client.vertical_alignment.top=Trên
+sol_client.vertical_alignment.middle=Giữa
+sol_client.vertical_alignment.bottom=Cuối
+
+sol_client.perspective.first_person=Góc nhìn thứ nhất
+sol_client.perspective.third_person_back=Góc nhìn thứ 3 phía sau
+sol_client.perspective.third_person_front=Góc nhìn thứ 3 phía trước
+
+sol_client.easing.linear=Linear
+sol_client.easing.quad=Quad
+sol_client.easing.cubic=Cubic
+sol_client.easing.quart=Quart
+sol_client.easing.quint=Quint
+sol_client.easing.expo=Expo
+sol_client.easing.sine=Sine
+sol_client.easing.circ=Circ
+sol_client.easing.back=Back
+sol_client.easing.bounce=Bounce
+sol_client.easing.elastic=Elastic
+
+sol_client.file.edit=Chỉnh sửa tập tin...
+
+sol_client.servers=Danh sách máy chủ
+
+sol_client.key.category=Sol Client
+sol_client.key.accept_request=Chấp nhận yêu cầu
+sol_client.key.dismiss_request=Từ chối yêu cầu
+
+sol_client.mod.generic.option.enabled=Bật
+sol_client.mod.hud.option.scale=Độ lớn
+sol_client.mod.simple_hud.option.background=Nền
+sol_client.mod.simple_hud.option.backgroundColour=Màu nền
+sol_client.mod.simple_hud.option.border=Viền
+sol_client.mod.simple_hud.option.borderColour=Màu viền
+sol_client.mod.simple_hud.option.textColour=Màu chữ
+sol_client.mod.simple_hud.option.shadow=Bóng chữ
+sol_client.mod.smooth_counter_hud.option.smoothNumbers=Hiệu ứng nhảy số
+
+sol_client.mod.sol_client.name=Sol Client
+sol_client.mod.sol_client.description=Các thiết lập chung của Sol Client.
+
+sol_client.mod.sol_client.option.fancyMainMenu=Sử dụng Màn hình chính của Sol
+sol_client.mod.sol_client.option.logoInInventory=Hiện Logo ở giao diện Túi đồ
+sol_client.mod.sol_client.mods=Các mô-đun
+sol_client.mod.sol_client.option.modsKey=Phím mô-đun
+sol_client.mod.sol_client.edit_hud=Chỉnh sửa HUD
+sol_client.mod.sol_client.option.editHudKey=Chỉnh sửa phím tắt HUD
+sol_client.mod.sol_client.option.uiColour=Màu sắc chủ đạo
+sol_client.mod.sol_client.option.smoothUIColours=Làm mượt màu sắc chủ đạo
+sol_client.mod.sol_client.option.roundedUI=Giao diện bo tròn
+sol_client.mod.sol_client.option.buttonClicks=Âm thanh khi nhấn nút
+sol_client.mod.sol_client.option.smoothScrolling=Làm mượt cuộn trang
+sol_client.mod.sol_client.option.fancyFont=Phông chữ HD
+
+sol_client.mod.fps.name=FPS
+sol_client.mod.fps.description=Hiện FPS (Số lượng khung hình mỗi giây).
+
+sol_client.mod.coordinates.name=Toạ độ
+sol_client.mod.coordinates.description=Hiện toạ độ của bạn.
+
+sol_client.mod.coordinates.option.axisLabelColour=Màu tiêu đề của toạ độ
+sol_client.mod.coordinates.option.axisValueColour=Màu giá trị toạ độ
+sol_client.mod.coordinates.option.cardinalDirection=Hướng đang nhìn
+sol_client.mod.coordinates.option.cardinalDirectionColour=Màu hướng đang nhìn
+sol_client.mod.coordinates.option.axisDirection=Hướng thay đổi giá trị
+sol_client.mod.coordinates.option.axisDirectionColour=Màu hướng thay đổi giá trị
+
+sol_client.mod.keystrokes.name=Keystrokes
+sol_client.mod.keystrokes.description=Hiển thị phím đang được ấn.
+
+sol_client.mod.keystrokes.option.movement=Di chuyển
+sol_client.mod.keystrokes.option.mouse=Chuột
+sol_client.mod.keystrokes.option.mouseMovement=Di chuyển chuột
+sol_client.mod.keystrokes.option.showSpace=Dấu cách
+sol_client.mod.keystrokes.option.cps=Hiện CPS cho phím
+sol_client.mod.keystrokes.option.backgroundColourPressed=Màu nền (Khi ấn)
+sol_client.mod.keystrokes.option.borderColourPressed=Màu viền (Khi ấn)
+sol_client.mod.keystrokes.option.textColourPressed=Màu chữ (Khi ấn)
+sol_client.mod.keystrokes.option.smoothColours=Làm mượt màu sắc
+
+sol_client.mod.cps.name=CPS
+sol_client.mod.cps.description=Hiển thị CPS (Số lần click mỗi giây).
+
+sol_client.mod.cps.option.rmb=CPS chuột phải
+sol_client.mod.cps.option.separatorColour=Màu phân cách
+
+sol_client.mod.ping.name=Ping
+sol_client.mod.ping.description=Hiển thị độ trễ của kết nối đến máy chủ.
+
+sol_client.mod.ping.option.source=Nguồn thông tin
+sol_client.mod.ping.option.source.auto=Tự động
+sol_client.mod.ping.option.source.multiplayer_screen=Ở màn hình Chọn máy chủ
+sol_client.mod.ping.option.source.tab_list=Ở Tab
+
+sol_client.mod.speedometer.name=Bộ đếm tốc độ
+sol_client.mod.speedometer.description=Hiển thị tốc độ di chuyển.
+
+sol_client.mod.speedometer.option.graphMode=Chế độ đồ thị
+
+sol_client.mod.reach_display.name=Reach Display
+sol_client.mod.reach_display.description=Hiển thị khoảng cách khi PVP.
+
+sol_client.mod.combo_counter.name=Bộ đếm Combo
+sol_client.mod.combo_counter.description=Hiển thị số lần đánh trúng liên tiếp.
+
+sol_client.mod.combo_counter.no_hits=Chưa đánh trúng
+sol_client.mod.combo_counter.one_hit=1 lần đánh trúng liên tục
+sol_client.mod.combo_counter.n_hits=%s lần đánh trúng liên tục
+
+sol_client.mod.potion_effects.name=Hiệu ứng thuốc
+sol_client.mod.potion_effects.description=Hiển thị hiệu ứng thuốc đang có hiệu lực và thời gian còn lại.
+
+sol_client.mod.potion_effects.option.alignment=Căn lề
+sol_client.mod.potion_effects.option.icon=Biểu tượng
+sol_client.mod.potion_effects.option.background=Nền
+sol_client.mod.potion_effects.option.title=Tên thuốc
+sol_client.mod.potion_effects.option.titleColour=Màu chữ
+sol_client.mod.potion_effects.option.duration=Thời gian còn lại
+sol_client.mod.potion_effects.option.durationColour=Màu thời gian
+sol_client.mod.potion_effects.option.spacing=Khoảng cách giữa các hiệu ứng
+
+sol_client.mod.armour.name=Giáp và công cụ
+sol_client.mod.armour.description=Hiển thị giáp và công cụ cùng với độ bền hiện tại.
+
+sol_client.mod.armour.option.durability=Độ bền
+sol_client.mod.armour.option.durability.remaining=Còn lại
+sol_client.mod.armour.option.durability.percentage=Phần trăm
+sol_client.mod.armour.option.durability.fraction=Phân số
+
+sol_client.mod.armour.option.armour=Hiển thị giáp đang mặc
+sol_client.mod.armour.option.hand=Hiển thị vật phẩm đang cầm trên tay
+
+sol_client.mod.timers.name=Bộ đếm thời gian sự kiện
+sol_client.mod.timers.description=Hiển thị thời gian còn lại của các sự kiện.
+
+sol_client.mod.timers.option.alignment=Căn lề
+sol_client.mod.timers.option.icon=Biểu tượng
+sol_client.mod.timers.option.nameColour=Màu chữ
+sol_client.mod.timers.option.timeColour=Màu thời gian
+
+sol_client.mod.chat.name=Trò chuyện
+sol_client.mod.chat.description=Tuỳ chỉnh khung trò chuyện.
+
+sol_client.mod.chat.peek=Mở trò chuyện nhanh
+sol_client.mod.chat.option.preventClose=Ngăn việc đóng khung trò chuyện tự động
+sol_client.mod.chat.option.smooth=Hiệu ứng chat chạy lên khi có trò chuyện mới
+sol_client.mod.chat.option.infiniteChat=Lịch sử trò chuyện không giới hạn
+sol_client.mod.chat.option.peekKey=Phím tắt đọc trò chuyện nhanh
+
+sol_client.mod.chat.option.visibility=Hiển thị trò chuyện
+sol_client.mod.chat.option.visibility.shown=Mở
+sol_client.mod.chat.option.visibility.commands=Chỉ khi nhập lệnh
+sol_client.mod.chat.option.visibility.hidden=Đóng
+
+sol_client.mod.chat.option.defaultTextColour=Màu chữ mặc định
+sol_client.mod.chat.option.colours=Màu sắc
+sol_client.mod.chat.option.width=Độ rộng
+sol_client.mod.chat.option.closedHeight=Chiều cao chat khi đóng
+sol_client.mod.chat.option.openHeight=Chiều cao chat khi mở
+sol_client.mod.chat.option.links=Liên kết
+sol_client.mod.chat.option.promptLinks=Nhắc nhở khi ấn vào liên kết
+sol_client.mod.chat.option.chatFilter=Bật bộ lọc chat
+sol_client.mod.chat.option.filteredWordsContent=Danh sách các từ bị lọc
+
+sol_client.mod.tab_list.name=Tab List
+sol_client.mod.tab_list.description=Tuỳ chỉnh tab/danh sách người chơi.
+
+sol_client.mod.tab_list.option.hideHeader=Ẩn Header
+sol_client.mod.tab_list.option.hideFooter=Ẩn Footer
+
+sol_client.mod.tab_list.option.pingType=Ping
+sol_client.mod.tab_list.option.pingType.none=Ẩn
+sol_client.mod.tab_list.option.pingType.icon=Biểu tượng
+sol_client.mod.tab_list.option.pingType.numeral=Số
+
+sol_client.mod.tab_list.option.backgroundColour=Màu nền chung
+sol_client.mod.tab_list.option.entryBackgroundColour=Màu nền từng dòng
+sol_client.mod.tab_list.option.hidePlayerHeads=Ẩn biểu tượng đầu người chơi
+sol_client.mod.tab_list.option.textShadow=Bóng đổ chữ
+
+sol_client.mod.crosshair.name=Hồng tâm
+sol_client.mod.crosshair.description=Tuỳ chỉnh hồng tâm.
+
+sol_client.mod.crosshair.option.style=Kiểu hồng tâm.
+sol_client.mod.crosshair.option.style.default=Mặc định
+sol_client.mod.crosshair.option.style.none=Ẩn hoàn toàn
+sol_client.mod.crosshair.option.style.dot=Chấm
+sol_client.mod.crosshair.option.style.plus=Dấu cộng
+sol_client.mod.crosshair.option.style.plus_dot=Dấu cộng chấm
+sol_client.mod.crosshair.option.style.square=Hình vuông
+sol_client.mod.crosshair.option.style.square_dot=Hình vuông chấm
+sol_client.mod.crosshair.option.style.circle=Hình tròn
+sol_client.mod.crosshair.option.style.circle_dot=Hình tròn chấm
+sol_client.mod.crosshair.option.style.four_angled=Gạch chéo
+sol_client.mod.crosshair.option.style.four_angled_dot=Gạch chéo chấm
+sol_client.mod.crosshair.option.style.triangle=Tam giác
+
+sol_client.mod.crosshair.option.thirdPerson=Hiển thị ở góc nhìn thứ 3
+sol_client.mod.crosshair.option.spectatorAlways=Hiển thị ở chế độ Khán giả
+sol_client.mod.crosshair.option.debug=Hiển thị ở Màn hình Gỡ rối
+sol_client.mod.crosshair.option.blending=Hoà trộn màu
+sol_client.mod.crosshair.option.crosshairColour=Màu hồng tâm
+sol_client.mod.crosshair.option.highlightEntities=Đổi màu khi đưa vào thực thể
+sol_client.mod.crosshair.option.entityColour=Màu khi đưa vào thực thể
+
+sol_client.mod.scoreboard.name=Scoreboard
+sol_client.mod.scoreboard.description=Tuỳ chỉnh scoreboard.
+
+sol_client.mod.scoreboard.option.hide=Tắt scoreboard
+sol_client.mod.scoreboard.option.backgroundColourTop=Màu tiêu đề
+sol_client.mod.scoreboard.option.numbers=Hiển thị số ở cuối hàng
+sol_client.mod.scoreboard.option.numbersColour=Màu số
+
+sol_client.mod.tweaks.name=Tinh chỉnh khác
+sol_client.mod.tweaks.description=Các tinh chỉnh khác, bao gồm fullbright.
+
+sol_client.mod.tweaks.option.fullbright=Fullbright
+sol_client.mod.tweaks.option.showOwnTag=Hiển thị tên của chính mình
+sol_client.mod.tweaks.option.arabicNumerals=Sử dụng Số La Mã
+sol_client.mod.tweaks.option.betterTooltips=Chú giải vật phẩm tốt hơn
+sol_client.mod.tweaks.option.minimalViewBobbing=Hạn chế lay động tầm nhìn
+sol_client.mod.tweaks.option.minimalDamageShake=Hạn chế rung màn hình khi nhận sát thương
+sol_client.mod.tweaks.option.damageShakeIntensity=Độ rung màn hình khi nhận sát thương
+sol_client.mod.tweaks.option.confirmDisconnect=Xác nhận khi thoát khỏi máy chủ
+sol_client.mod.tweaks.option.borderlessFullscreen=Toàn màn hình không viền
+sol_client.mod.tweaks.option.betterKeyBindings=Nhận diện phím tắt tốt hơn
+sol_client.mod.tweaks.option.disableHotbarScrolling=Vô hiệu hoá thanh cuộn Hotbar
+
+sol_client.mod.tweaks.confirm_disconnect=Ấn một lần nữa để thoát khỏi máy chủ
+
+sol_client.mod.freelook.name=Freelook
+sol_client.mod.freelook.description=Tự do nhìn xung quanh.
+
+sol_client.mod.freelook.key=Freelook
+sol_client.mod.freelook.option.key=Phím tắt
+
+sol_client.mod.freelook.option.perspective=Hướng nhìn
+sol_client.mod.freelook.option.invertPitch=Đảo ngược hướng dọc của chuột
+sol_client.mod.freelook.option.invertYaw=Đảo ngược hướng ngang của chuột
+
+sol_client.mod.taplook.name=Taplook
+sol_client.mod.taplook.description=Chuyển đổi góc nhìn nhanh bằng phím tắt.
+
+sol_client.mod.taplook.key=Taplook
+sol_client.mod.taplook.option.key=Phím tắt
+sol_client.mod.taplook.option.perspective=Góc nhìn khi ấn
+
+sol_client.mod.toggle_sprint.name=Toggle Sprint
+sol_client.mod.toggle_sprint.description=Khoá phím chạy.
+
+sol_client.mod.toggle_sprint.default_width=113
+
+sol_client.mod.toggle_sprint.option.hud=HUD
+
+sol_client.mod.toggle_sprint.held=Đang chạy (Giữ)
+sol_client.mod.toggle_sprint.toggled=Đang chạy (Khoá phím)
+
+sol_client.mod.zoom.name=Phóng to
+sol_client.mod.zoom.description=Phóng to màn hình
+
+sol_client.mod.zoom.key=Phóng to
+sol_client.mod.zoom.option.key=Phím tắt
+sol_client.mod.zoom.zoom_out=Thu nhỏ
+sol_client.mod.zoom.option.zoomOutKey=Phím tắt thu nhỏ
+sol_client.mod.zoom.zoom_in=Phóng to
+sol_client.mod.zoom.option.zoomInKey=Phím tắt phóng to
+sol_client.mod.zoom.option.cinematic=Camera kịch tính
+sol_client.mod.zoom.option.reduceSensitivity=Giảm tốc độ chuột
+sol_client.mod.zoom.option.scrolling=Thay đổi độ lớn bằng cuộn chuột
+sol_client.mod.zoom.option.smooth=Hiệu ứng thu phóng
+sol_client.mod.zoom.option.factor=Độ lớn thu phóng
+
+sol_client.mod.replay.name=Phát lại
+sol_client.mod.replay.description=Ghi lại diễn biến trò chơi và xem lại khi bạn muốn.
+
+sol_client.mod.replay.option.enableNotifications=Thông báo hoạt động
+sol_client.mod.replay.option.recordSingleplayer=Ghi hình chơi đơn
+sol_client.mod.replay.option.recordServer=Ghi hình chơi nhiều người
+sol_client.mod.replay.option.recordingIndicator=Hiển thị Chỉ báo Ghi hình
+sol_client.mod.replay.option.recordingIndicatorColour=Màu sắc Chỉ báo
+sol_client.mod.replay.option.recordingIndicatorScale=Kích thước Chỉ báo
+sol_client.mod.replay.option.recordingIndicatorTextColour=Màu sắc chữ
+sol_client.mod.replay.option.recordingIndicatorTextShadow=Bóng đổ chữ
+sol_client.mod.replay.option.automaticRecording=Tự động bắt đầu ghi hình
+sol_client.mod.replay.option.renameDialog=Cửa sổ đổi tên bản ghi khi hoàn tất ghi hình
+sol_client.mod.replay.option.showChat=Hiển thị Chat
+
+sol_client.mod.replay.option.camera=Dạng Camera
+sol_client.mod.replay.option.camera.classic=Cổ điển
+sol_client.mod.replay.option.camera.vanilla_ish=Vanilla-ish
+
+sol_client.mod.replay.option.showPathPreview=Hiển thị đường di chuyển của máy quay
+
+sol_client.mod.replay.option.defaultInterpolator=Interpolator mặc định
+sol_client.mod.replay.interpolator.catmull=Catmull-Rom Spline
+sol_client.mod.replay.interpolator.cubic=Cubic Spline
+sol_client.mod.replay.interpolator.linear=Linear
+
+sol_client.mod.replay.option.showServerIPs=Hiển thị địa chỉ máy chủ
+
+sol_client.mod.quickplay.name=Quick Play
+sol_client.mod.quickplay.description=Tự động tham gia game mới bằng phím tắt trên bàn phím.
+
+sol_client.mod.quickplay.key=Quick Play
+sol_client.mod.quickplay.option.menuKey=Phím tắt
+
+sol_client.mod.hypixel_util.name=Hypixel Additions
+sol_client.mod.hypixel_util.description=Các tuỳ chỉnh cải thiện trải nghiệm khi chơi Hypixel.
+
+sol_client.mod.hypixel_util.option.visitHousingCommand=/visithousing
+sol_client.mod.hypixel_util.option.lobbySoundsVolume=Độ lớn âm thanh Lobby
+sol_client.mod.hypixel_util.option.housingMusicVolume=Độ lớn âm nhạc Housing
+sol_client.mod.hypixel_util.option.popupEvents=Popup Events
+sol_client.mod.hypixel_util.option.autogg=Tự động GG
+sol_client.mod.hypixel_util.option.autoggMessage=Tin nhắn GG
+sol_client.mod.hypixel_util.option.hidegg=Ẩn tin nhắn GG
+sol_client.mod.hypixel_util.option.autogl=Tự động GL
+sol_client.mod.hypixel_util.option.autoglMessage=Tin nhắn GL
+sol_client.mod.hypixel_util.option.hidegl=Ẩn tin nhắn GL
+sol_client.mod.hypixel_util.option.levelhead=Level Head
+
+sol_client.mod.tnt_timer.name=Bộ đếm thời gian TNT
+sol_client.mod.tnt_timer.description=Hiển thị thời gian nổ của TNT.
+
+sol_client.mod.motion_blur.name=Làm mờ chuyển động.
+sol_client.mod.motion_blur.description=Hiệu ứng mờ khi màn hình di chuyển.
+
+sol_client.mod.motion_blur.option.blur=Độ mờ
+
+sol_client.mod.menu_blur.name=Nền Menu Mờ
+sol_client.mod.menu_blur.description=Làm mờ nền khi đang mở túi đồ hay giao diện bất kì.
+
+sol_client.mod.menu_blur.option.blur=Độ mờ
+sol_client.mod.menu_blur.option.fadeTime=Thời gian bắt đầu làm mờ
+sol_client.mod.menu_blur.option.backgroundColour=Màu nền
+
+sol_client.mod.colour_saturation.name=Color Saturation
+sol_client.mod.colour_saturation.description=Tuỳ chỉnh độ bão hoà của màu sắc game.
+
+sol_client.mod.colour_saturation.option.saturation=Độ bão hoà
+
+sol_client.mod.chunk_animator.name=Chunk Animator
+sol_client.mod.chunk_animator.description=Hoạt hoạ khi tải thế giới.
+
+sol_client.mod.chunk_animator.option.duration=Tốc độ hoạt hoạ
+sol_client.mod.chunk_animator.option.animation=Hoạt hoạ
+
+sol_client.mod.1.7_visuals.name=Hiệu ứng 1.7
+sol_client.mod.1.7_visuals.description=Mang trở lại hiệu ứng phiên bản 1.7.
+
+sol_client.mod.1.7_visuals.option.useAndMine=Hiệu ứng đập khi dùng vật phẩm
+sol_client.mod.1.7_visuals.option.particles=Hạt hiệu ứng
+sol_client.mod.1.7_visuals.option.blocking=Chặn kiếm
+sol_client.mod.1.7_visuals.option.eatingAndDrinking=Ăn uống
+sol_client.mod.1.7_visuals.option.rod=Cần câu
+sol_client.mod.1.7_visuals.option.bow=Cung tên
+sol_client.mod.1.7_visuals.option.armourDamage=Hiệu ứng sát thương trên giáp
+sol_client.mod.1.7_visuals.option.sneaking=Làm mượt hiệu ứng đi rón rén
+
+sol_client.mod.item_physics.name=Hiệu ứng vật lí vật phẩm
+sol_client.mod.item_physics.description=Hoạt hoạ vật phẩm rơi trên mặt đất.
+
+sol_client.mod.item_physics.option.rotationSpeed=Tốc độ Quay
+
+sol_client.mod.particles.name=Hạt hiệu ứng
+sol_client.mod.particles.description=Tuỳ chỉnh hạt hiệu ứng sát thương.
+
+sol_client.mod.particles.option.multiplier=Số lượng hạt hiệu ứng
+sol_client.mod.particles.option.sharpness=Luôn hiện hiệu ứng Sắc bén
+sol_client.mod.particles.option.snow=Tuyết
+sol_client.mod.particles.option.slime=Chất nhầy
+sol_client.mod.particles.option.flames=Lửa
+
+sol_client.mod.time_changer.name=Thay đổi thời gian
+sol_client.mod.time_changer.description=Thay đổi thời gian thế giới.
+
+sol_client.mod.time_changer.option.time=Thời gian
+
+sol_client.mod.block_selection.name=Hiệu ứng chọn khối
+sol_client.mod.block_selection.description=Tuỳ chỉnh hiệu ứng khối đang chọn.
+
+sol_client.mod.block_selection.option.outline=Viền
+sol_client.mod.block_selection.option.outlineWidth=Độ lớn viền
+sol_client.mod.block_selection.option.outlineColour=Màu viền
+sol_client.mod.block_selection.option.fill=Nền
+sol_client.mod.block_selection.option.fillColour=Màu nền
+sol_client.mod.block_selection.option.depth=Ẩn các mặt bị che
+sol_client.mod.block_selection.option.persistent=Luôn hiển thị ở mọi chế độ
+
+sol_client.mod.hit_colour.name=Hit Color
+sol_client.mod.hit_colour.description=Đổi màu hit.
+
+sol_client.mod.hit_colour.option.colour=Màu
+
+sol_client.mod.hitbox.name=Hitbox
+sol_client.mod.hitbox.description=Tuỳ chỉnh, hiển thị hitbox người chơi.
+
+sol_client.mod.hitbox.option.toggleHitboxes=Hiển thị Hitbox
+sol_client.mod.hitbox.option.boundingBox=Hiển thị viền Hitbox
+sol_client.mod.hitbox.option.boundingBoxColour=Màu sắc viền Hitbox
+sol_client.mod.hitbox.option.eyeHeight=Hiển thị độ cao mắt
+sol_client.mod.hitbox.option.eyeHeightColour=Màu độ cao mắt
+sol_client.mod.hitbox.option.lookVector=Đường chỉ hướng nhìn của người chơi
+sol_client.mod.hitbox.option.lookVectorColour=Màu đường chỉ hướng hình
+sol_client.mod.hitbox.option.lineWidth=Độ lớn đường viền
+
+sol_client.mod.category.general.name=Chung
+sol_client.mod.category.hud.name=Giao diện
+sol_client.mod.category.utility.name=Khác
+sol_client.mod.category.visual.name=Hiển thị
+sol_client.mod.category.integration.name=Tương tác
+
+sol_client.mod.discord_integration.name=Tương tác với Discord
+sol_client.mod.discord_integration.description=Các tính năng liên kết với Discord.
+
+sol_client.mod.discord_integration.option.voiceChatHud=Hiển thị HUD Voice chat
+sol_client.mod.discord_integration.option.voiceChatHudScale=Kích thước HUD
+sol_client.mod.discord_integration.option.voiceChatHudAlignment=Căn lề HUD
+sol_client.mod.discord_integration.option.usernameColour=Màu tên tài khoản mặc định
+sol_client.mod.discord_integration.option.mutedColour=Màu tên tài khoản đã tắt Mic
+sol_client.mod.discord_integration.option.speakingColour=Màu tên tài khoản đang nói
+
+sol_client.mod.screen.title=Các mô-đun
+sol_client.mod.screen.search=Gõ để tìm kiếm
+sol_client.mod.screen.apply_to_all=Áp dụng cho toàn bộ Mod khác
+
+sol_client.hud.edit=Chỉnh sửa HUD
+
+sol_client.packs.apply=Áp dụng
+sol_client.packs.open_folder=Thư mục tài nguyên
+sol_client.packs.folder=Thư mục (%d gói tài nguyên)
+
+sol_client.screenshot.view=Mở ảnh
+sol_client.screenshot.open_folder=Hiển thị trong Thư mục

@@ -1,0 +1,189 @@
+import org.gradle.internal.os.OperatingSystem
+import io.github.solclient.gradle.remapping.ReplayModRemapper
+import io.github.solclient.gradle.dist.DistTask
+
+plugins {
+	id 'maven-publish'
+	alias libs.plugins.quilt.loom
+	alias libs.plugins.lombok
+	alias libs.plugins.shadow
+	alias libs.plugins.licenser
+	alias libs.plugins.blossom
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://maven.fabricmc.net' }
+	maven { url 'https://repo.legacyfabric.net/repository/legacyfabric' }
+	maven { url 'https://repo.hypixel.net/repository/Hypixel' }
+	maven { url 'https://jitpack.io' }
+	maven { url 'https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1' }
+}
+
+tasks.withType(JavaExec).configureEach {
+    System.properties.each { k, v ->
+        if (k.startsWith('run.')) {
+            systemProperty k - 'run.', v
+        }
+    }
+}
+
+configurations {
+	shadeOnly
+	shade
+	implementation.extendsFrom shade
+	shadeOnly.extendsFrom shade
+	exportOnly
+	export
+	implementation.extendsFrom export
+	exportOnly.extendsFrom export
+}
+
+dependencies {
+	minecraft(libs.minecraft) { exclude group: 'org.apache.logging.log4j' }
+	mappings variantOf(libs.yarn) { classifier 'v2' }
+	shade variantOf(libs.intermediary) { classifier 'v2' }
+
+	def occlusionCulling = files('libs/occlusionculling.jar')
+
+	shade(libs.mixin) { transitive = false }
+	shade occlusionCulling
+	shade(libs.hypixel.api) { transitive = false }
+	shade libs.discord.game.sdk4j
+	shade libs.java.websocket
+	shade libs.access.widener
+	shade libs.lwjgl.patched
+	shade libs.tiny.remapper
+	implementation libs.devauth
+
+	implementation libs.asm
+	implementation libs.asm.analysis
+	implementation libs.asm.commons
+	implementation libs.asm.tree
+	implementation libs.asm.util
+
+	annotationProcessor libs.asm
+	annotationProcessor libs.asm.analysis
+	annotationProcessor libs.asm.commons
+	annotationProcessor libs.asm.tree
+	annotationProcessor libs.asm.util
+
+	def remapper = new ReplayModRemapper(project)
+	remapper.prepare()
+	implementation files(remapper.createNamedMapped())
+	shadeOnly files(remapper.createIntermediaryMapped())
+
+	switch (OperatingSystem.current()) {
+		case OperatingSystem.LINUX:
+			def osArch = System.getProperty('os.arch')
+			project.ext.lwjglNatives = osArch.startsWith('arm') || osArch.startsWith('aarch64')
+				? "natives-linux-${osArch.contains('64') || osArch.startsWith('armv8') ? 'arm64' : 'arm32'}"
+				: "natives-linux"
+			break
+		case OperatingSystem.MAC_OS:
+			project.ext.lwjglNatives = System.getProperty('os.arch').startsWith('aarch64') ? 'natives-macos-arm64' : 'natives-macos'
+			break
+		case OperatingSystem.WINDOWS:
+			def osArch = System.getProperty('os.arch')
+			project.ext.lwjglNatives = osArch.contains('64')
+				? "natives-windows${osArch.startsWith('aarch64') ? '-arm64' : ''}"
+				: 'natives-windows-x86'
+			break
+	}
+
+	runtimeOnly(variantOf(libs.lwjgl) {
+		classifier project.ext.lwjglNatives
+	}) {
+		transitive = false
+	}
+	runtimeOnly(variantOf(libs.lwjgl.nanovg) {
+		classifier project.ext.lwjglNatives
+	}) {
+		transitive = false
+	}
+
+	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-windows' }
+	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-linux' }
+	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-macos' }
+	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-macos-arm64' }
+	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-windows' }
+	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-linux' }
+	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos' }
+	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos-arm64' }
+}
+
+loom {
+	setIntermediaryUrl 'https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar'
+	log4jConfigs.setFrom 'log4j2.xml'
+	accessWidenerPath = file("src/main/resources/replay-mod.accesswidener")
+
+	runConfigs.each {
+		it.defaultMainClass 'io.github.solclient.wrapper.Launcher'
+		it.programArgs.add '--accessToken'
+		it.programArgs.add '0'
+		it.programArgs.add '--username'
+		it.programArgs.add 'Player'
+	}
+}
+
+java {
+	group 'io.github.solclient'
+	version file('version.txt').getText('UTF-8')
+
+	sourceCompatibility = 8
+	targetCompatibility = 8
+
+	jar {
+		enabled = false
+		dependsOn shadowJar
+	}
+}
+
+license {
+	rule file('HEADER')
+	include '**/*.java'
+}
+
+blossom {
+	def constants = 'src/main/java/io/github/solclient/util/GlobalConstants.java'
+	replaceToken('%VERSION%', version, constants)
+}
+
+shadowJar {
+	finalizedBy remapJar
+	from('../LICENSE') {
+		rename { "${it}_${name}" }
+	}
+	configurations = [project.configurations.shadeOnly]
+	classifier 'dev'
+	destinationDirectory.set file("$buildDir/devlibs")
+}
+
+tasks.register('dist', DistTask) {
+	dependsOn build
+	input = tasks.remapJar.outputs.files.getAt 0
+	destination = file "$buildDir/dist"
+	libs = configurations.exportOnly
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = 'UTF-8'
+	it.options.release = 8
+}
+
+// Configure the maven publication
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+
+	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+	repositories {
+		// Add repositories to publish to here.
+		// Notice: This block does NOT have the same function as the block in the top level.
+		// The repositories here will be used for publishing your artifact, not for
+		// retrieving dependencies.
+	}
+}

@@ -1,0 +1,429 @@
+sol_client.passthrough=%s
+sol_client.slider.percent=%s%%
+sol_client.slider.factor=%sx
+sol_client.slider.seconds=%s сек
+
+sol_client.vertical_alignment.top=Вверх
+sol_client.vertical_alignment.middle=По центру
+sol_client.vertical_alignment.bottom=Вниз
+
+sol_client.perspective.first_person=От 1-го лица
+sol_client.perspective.third_person_back=От 3-го лица сзади
+sol_client.perspective.third_person_front=От 3-го лица спереди
+
+sol_client.easing.linear=Линейная
+sol_client.easing.quad=Квадратная
+sol_client.easing.cubic=Кубическая
+sol_client.easing.quart=Квартовая
+sol_client.easing.quint=Квинтовая
+sol_client.easing.expo=Экспоненциальная
+sol_client.easing.sine=Синусоидальная
+sol_client.easing.circ=Круговая
+sol_client.easing.back=Задняя
+sol_client.easing.bounce=Прыгучая
+sol_client.easing.elastic=Эластичная
+
+sol_client.file.edit=Редактировать файл
+
+sol_client.servers=Сервера
+
+sol_client.key.category=Sol Client
+sol_client.key.accept_request=Принять запрос
+sol_client.key.dismiss_request=Отклонить запрос
+
+sol_client.mod.generic.option.enabled=Включено
+sol_client.mod.hud.option.scale=Масштаб
+sol_client.mod.simple_hud.option.background=Фон
+sol_client.mod.simple_hud.option.backgroundColour=Цвет фона
+sol_client.mod.simple_hud.option.border=Бордюр
+sol_client.mod.simple_hud.option.borderColour=Цвет бордюра
+sol_client.mod.simple_hud.option.textColour=Цвет текста
+sol_client.mod.simple_hud.option.shadow=Тень текста
+
+sol_client.mod.sol_client.name=Sol Client
+sol_client.mod.sol_client.description=Общие настройки Sol Client.
+
+sol_client.mod.sol_client.option.fancyMainMenu=Красивое главное меню
+sol_client.mod.sol_client.option.logoInInventory=Показывать логотип в инвентаре
+sol_client.mod.sol_client.mods=Модули
+sol_client.mod.sol_client.option.modsKey=Ключ модулей
+sol_client.mod.sol_client.edit_hud=Редактировать интерфейс
+sol_client.mod.sol_client.option.editHudKey=Кнопка интерфейса
+sol_client.mod.sol_client.option.uiColour=Второй цвет
+sol_client.mod.sol_client.option.smoothUIColours=Плавная смена цветов
+sol_client.mod.sol_client.option.roundedUI=Скруглённый интерфейс
+sol_client.mod.sol_client.option.buttonClicks=Щелчки кнопок
+sol_client.mod.sol_client.option.smoothScrolling=Плавная промотка
+sol_client.mod.sol_client.option.fancyFont=Шрифт высокого разрешения
+
+sol_client.mod.fps.name=FPS
+sol_client.mod.fps.description=Отображает FPS (кадры в секунду).
+
+sol_client.mod.coordinates.name=Координаты
+sol_client.mod.coordinates.description=Показывает ваши координаты.
+
+sol_client.mod.coordinates.option.axisLabelColour=Цвет названия оси
+sol_client.mod.coordinates.option.axisValueColour=Цвет значения оси
+sol_client.mod.coordinates.option.cardinalDirection=Общая ориентация
+sol_client.mod.coordinates.option.cardinalDirectionColour=Цвет общей ориентации
+sol_client.mod.coordinates.option.axisDirection=Точное направление
+sol_client.mod.coordinates.option.axisDirectionColour=Цвет точного направления
+
+sol_client.mod.keystrokes.name=Клавиши
+sol_client.mod.keystrokes.description=Отображает в данный момент нажатые клавиши.
+
+sol_client.mod.keystrokes.option.movement=Кнопки движения
+sol_client.mod.keystrokes.option.mouse=Кнопки мыши
+sol_client.mod.keystrokes.option.mouseMovement=Смещение мыши
+sol_client.mod.keystrokes.option.showSpace=Пробел
+sol_client.mod.keystrokes.option.cps=CPS на кнопках
+sol_client.mod.keystrokes.option.backgroundColourPressed=Фон при нажатии
+sol_client.mod.keystrokes.option.borderColourPressed=Бордюр при нажатии
+sol_client.mod.keystrokes.option.textColourPressed=Цвет текста при нажатии
+sol_client.mod.keystrokes.option.smoothColours=Плавная смена цветов
+
+sol_client.mod.cps.name=CPS
+sol_client.mod.cps.description=Отображает ваш CPS (нажатия в секунду).
+
+sol_client.mod.cps.option.rmb=CPS правой кнопки мыши
+sol_client.mod.cps.option.separatorColour=Цвет разделителя
+
+sol_client.mod.ping.name=Пинг
+sol_client.mod.ping.description=Отображает задержку приёмопередачи.
+
+sol_client.mod.speedometer.name=Спидометр
+sol_client.mod.speedometer.description=Отображает вашу скорость.
+
+sol_client.mod.speedometer.option.graphMode=График
+
+sol_client.mod.reach_display.name=Расстояние
+sol_client.mod.reach_display.description=Отображает расстояние при ударе существ.
+
+sol_client.mod.combo_counter.name=Счётчик комбо
+sol_client.mod.combo_counter.description=Показывает количество ударов в ряд.
+sol_client.mod.combo_counter.no_hits=Нет ударов
+sol_client.mod.combo_counter.one_hit=1 удар
+sol_client.mod.combo_counter.n_hits=%s ударов
+
+sol_client.mod.potion_effects.name=Эффекты
+sol_client.mod.potion_effects.description=Показывает активные эффекты с обратным отсчётом.
+
+sol_client.mod.potion_effects.option.alignment=Выравнивание
+sol_client.mod.potion_effects.option.icon=Иконка
+sol_client.mod.potion_effects.option.background=Фон
+sol_client.mod.potion_effects.option.title=Метка
+sol_client.mod.potion_effects.option.titleColour=Цвет названия
+sol_client.mod.potion_effects.option.duration=Время
+sol_client.mod.potion_effects.option.durationColour=Цвет обр. отсчёта
+sol_client.mod.potion_effects.option.spacing=Расстояние
+
+sol_client.mod.armour.name=Броня и инструмент
+sol_client.mod.armour.description=Показывает текущую броню, инструмент и их запас прочности.
+
+sol_client.mod.armour.option.durability=Прочность
+sol_client.mod.armour.option.durability.remaining=Остаток
+sol_client.mod.armour.option.durability.percentage=Проценты
+sol_client.mod.armour.option.durability.fraction=Дробь
+
+sol_client.mod.armour.option.armour=Показывать броню
+sol_client.mod.armour.option.hand=Показывать инструмент
+
+sol_client.mod.timers.name=Таймеры
+sol_client.mod.timers.description=Показывает таймеры для внутриигровых событий.
+
+sol_client.mod.timers.option.alignment=Выравнивание
+sol_client.mod.timers.option.icon=Иконка
+sol_client.mod.timers.option.nameColour=Цвет наименования
+sol_client.mod.timers.option.timeColour=Цвет таймера
+
+sol_client.mod.chat.name=Чат
+sol_client.mod.chat.description=Помогает дополнительно настроить чат.
+
+sol_client.mod.chat.peek=Подсмотр
+sol_client.mod.chat.option.preventClose=Предотвратить скрытие
+sol_client.mod.chat.option.smooth=Анимация сообщений
+sol_client.mod.chat.option.infiniteChat=Бесконечный чат
+sol_client.mod.chat.option.peekKey=Кнопка подсмотра
+
+sol_client.mod.chat.option.visibility=Видимость
+sol_client.mod.chat.option.visibility.shown=Виден
+sol_client.mod.chat.option.visibility.commands=Только команды
+sol_client.mod.chat.option.visibility.hidden=Скрыт
+
+sol_client.mod.chat.option.defaultTextColour=Цвет текста по умолчанию
+sol_client.mod.chat.option.colours=Цвета
+sol_client.mod.chat.option.width=Ширина
+sol_client.mod.chat.option.closedHeight=Высота закрытого чата
+sol_client.mod.chat.option.openHeight=Высота открытого чата
+sol_client.mod.chat.option.links=Ссылки
+sol_client.mod.chat.option.promptLinks=Запрашивать разрешение на открытие ссылок 
+sol_client.mod.chat.option.chatFilter=Фильтр чата
+sol_client.mod.chat.option.filteredWordsContent=Слова для фильтра
+
+sol_client.mod.tab_list.name=Список игроков
+sol_client.mod.tab_list.description=Настраивает список игроков.
+
+sol_client.mod.tab_list.option.hideHeader=Скрыть верх
+sol_client.mod.tab_list.option.hideFooter=Скрыть низ
+
+sol_client.mod.tab_list.option.pingType=Индикатор соединения
+sol_client.mod.tab_list.option.pingType.none=Скрыт
+sol_client.mod.tab_list.option.pingType.icon=Иконка
+sol_client.mod.tab_list.option.pingType.numeral=Цифра
+
+sol_client.mod.tab_list.option.backgroundColour=Цвет фона списка
+sol_client.mod.tab_list.option.entryBackgroundColour=Цвет фона игрока
+sol_client.mod.tab_list.option.hidePlayerHeads=Скрыть головы
+sol_client.mod.tab_list.option.textShadow=Тень текста
+
+sol_client.mod.crosshair.name=Прицел
+sol_client.mod.crosshair.description=Настраивает ваш прицел.
+
+sol_client.mod.crosshair.option.style=Стиль
+sol_client.mod.crosshair.option.style.default=По умолчанию
+sol_client.mod.crosshair.option.style.none=Без прицела
+sol_client.mod.crosshair.option.style.dot=Точка
+sol_client.mod.crosshair.option.style.plus=Плюс
+sol_client.mod.crosshair.option.style.plus_dot=Плюс с точкой
+sol_client.mod.crosshair.option.style.square=Квадрат
+sol_client.mod.crosshair.option.style.square_dot=Квадрат с точкой
+sol_client.mod.crosshair.option.style.circle=Круг
+sol_client.mod.crosshair.option.style.circle_dot=Круг с точкой
+sol_client.mod.crosshair.option.style.four_angled=Ракетный
+sol_client.mod.crosshair.option.style.four_angled_dot=Ракетный с точкой
+sol_client.mod.crosshair.option.style.triangle=Треугольный
+
+sol_client.mod.crosshair.option.thirdPerson=Показывать в режиме от 3-го лица
+sol_client.mod.crosshair.option.spectatorAlways=Показывать в режиме обозревателя
+sol_client.mod.crosshair.option.debug=Показывать в отладочном режиме
+sol_client.mod.crosshair.option.blending=Смешивание
+sol_client.mod.crosshair.option.crosshairColour=Цвет прицела
+sol_client.mod.crosshair.option.highlightEntities=Подсвечивать существа
+sol_client.mod.crosshair.option.entityColour=Цвет существ
+
+sol_client.mod.scoreboard.name=Боковая таблица очков
+sol_client.mod.scoreboard.description=Настраивает боковую таблицу очков.
+
+sol_client.mod.scoreboard.option.backgroundColourTop=Фон верха
+sol_client.mod.scoreboard.option.numbers=Цифры
+sol_client.mod.scoreboard.option.numbersColour=Цвет цифр
+
+sol_client.mod.tweaks.name=Твики
+sol_client.mod.tweaks.description=Различные мелкие улучшения, включающие в себя Fullbright.
+
+sol_client.mod.tweaks.option.fullbright=Fullbright
+sol_client.mod.tweaks.option.showOwnTag=Показывать свой ник
+sol_client.mod.tweaks.option.arabicNumerals=Арабские цифры на чарах
+sol_client.mod.tweaks.option.betterTooltips=Улучшить подсказки
+sol_client.mod.tweaks.option.minimalViewBobbing=Уменьшить покачивание камеры
+sol_client.mod.tweaks.option.minimalDamageShake=Уменьшить качание при уроне
+sol_client.mod.tweaks.option.damageShakeIntensity=Сила качания при уроне
+sol_client.mod.tweaks.option.confirmDisconnect=Спрашивать при отключении
+sol_client.mod.tweaks.option.betterKeyBindings=Улучшенные приивязки клавиш
+sol_client.mod.tweaks.option.disableHotbarScrolling=Отключить колёсико в хотбаре
+sol_client.mod.tweaks.option.borderlessFullscreen=Оконный полный экран
+
+sol_client.mod.tweaks.confirm_disconnect=Нажмите ещё раз для подтверждения
+
+sol_client.mod.freelook.name=Свободный просмотр
+sol_client.mod.freelook.description=Разрешает смотреть вокруг не двигая головой.
+
+sol_client.mod.freelook.key=Свободный просмотр
+sol_client.mod.freelook.option.key=Кнопка
+
+sol_client.mod.freelook.option.perspective=Перспектива
+sol_client.mod.freelook.option.invertPitch=Инверсия мыши по вертикали
+sol_client.mod.freelook.option.invertYaw=Инверсия мыши по горизонтали
+
+sol_client.mod.taplook.name=Быстрая смена перспективы
+sol_client.mod.taplook.description=Изменяет перспективу на время удержания кнопки.
+
+sol_client.mod.taplook.key=Быстрая перспектива
+sol_client.mod.taplook.option.key=Кнопка
+sol_client.mod.taplook.option.perspective=Перспектива
+
+sol_client.mod.toggle_sprint.name=Переключатель бега
+sol_client.mod.toggle_sprint.description=Заставляет кнопку бега работать как переключатель.
+
+sol_client.mod.toggle_sprint.option.hud=HUD
+
+sol_client.mod.toggle_sprint.held=Бег (Зажат)
+sol_client.mod.toggle_sprint.toggled=Бег (Включен)
+
+sol_client.mod.zoom.name=Зум
+sol_client.mod.zoom.description=Приблизить мир при нажатии на клавишу.
+
+sol_client.mod.zoom.key=Приближение
+sol_client.mod.zoom.option.key=Кнопка
+sol_client.mod.zoom.zoom_out=Отдалить
+sol_client.mod.zoom.option.zoomOutKey=Кнопка отдаления
+sol_client.mod.zoom.zoom_in=Приблизить
+sol_client.mod.zoom.option.zoomInKey=Кнопка приближения
+sol_client.mod.zoom.option.cinematic=Кинематографическая камера
+sol_client.mod.zoom.option.reduceSensitivity=Снизить чувствительность
+sol_client.mod.zoom.option.scrolling=Приближение колёсиком
+sol_client.mod.zoom.option.smooth=Плавное приближение
+sol_client.mod.zoom.option.factor=Фактор приближения
+
+sol_client.mod.replay.name=Запись
+sol_client.mod.replay.description=Запись и воспроизведение геймплея.
+
+sol_client.mod.replay.option.enableNotifications=Включить уведомления
+sol_client.mod.replay.option.recordSingleplayer=Запись в одиночной игре
+sol_client.mod.replay.option.recordServer=Запись на сервере
+sol_client.mod.replay.option.recordingIndicator=Индикатор записи
+sol_client.mod.replay.option.recordingIndicatorColour=Цвет индикатора записи
+sol_client.mod.replay.option.recordingIndicatorScale=Масштаб индикатора записи
+sol_client.mod.replay.option.recordingIndicatorTextColour=Цвет текста индикатора
+sol_client.mod.replay.option.recordingIndicatorTextShadow=Тень текста индикатора
+sol_client.mod.replay.option.automaticRecording=Автозапись
+sol_client.mod.replay.option.renameDialog=Диалог переименования
+sol_client.mod.replay.option.showChat=Показывать чат
+
+sol_client.mod.replay.option.camera=Камера
+sol_client.mod.replay.option.camera.classic=Классическая
+sol_client.mod.replay.option.camera.vanilla_ish="Ванильная"
+
+sol_client.mod.replay.option.showPathPreview=Показывать предпросмотр пути
+
+sol_client.mod.replay.option.defaultInterpolator=Режим интерполяции
+sol_client.mod.replay.interpolator.catmull=Сплайн Кэтмуля-Рома
+sol_client.mod.replay.interpolator.cubic=Кубический
+sol_client.mod.replay.interpolator.linear=Линейный
+
+sol_client.mod.replay.option.showServerIPs=Показывать адреса серверов
+
+sol_client.mod.quickplay.name=Быстрый переход
+sol_client.mod.quickplay.description=Быстрый переход в миниигры с клавиатуры.
+
+sol_client.mod.quickplay.key=Быстрый переход
+sol_client.mod.quickplay.option.menuKey=Кнопка
+
+sol_client.mod.hypixel_util.name=Дополнения для Hypixel
+sol_client.mod.hypixel_util.description=Разлиные дополнения для игры на Hypixel.
+
+sol_client.mod.hypixel_util.option.visitHousingCommand=/visithousing
+sol_client.mod.hypixel_util.option.lobbySoundsVolume=Громкость звука в лобби
+sol_client.mod.hypixel_util.option.housingMusicVolume=громкость музыки в Housing
+sol_client.mod.hypixel_util.option.popupEvents=Уведомления событий
+sol_client.mod.hypixel_util.option.autogg=Авто-GG
+sol_client.mod.hypixel_util.option.autoggMessage=Сообщение Авто-GG
+sol_client.mod.hypixel_util.option.hidegg=Скрывать GG
+sol_client.mod.hypixel_util.option.autogl=Авто-GL
+sol_client.mod.hypixel_util.option.autoglMessage=Сообщение Авто-GL
+sol_client.mod.hypixel_util.option.hidegl=Скрывать GL
+sol_client.mod.hypixel_util.option.levelhead=Голова уровня
+
+sol_client.mod.tnt_timer.name=Таймер динамита
+sol_client.mod.tnt_timer.description=Показывает таймер взрыва динамита.
+
+sol_client.mod.motion_blur.name=Размытие движения
+sol_client.mod.motion_blur.description=Включает эффект плавного размытия движения.
+
+sol_client.mod.motion_blur.option.blur=Сила размытия
+
+sol_client.mod.menu_blur.name=Размытие фона меню
+sol_client.mod.menu_blur.description=Размывает фон в меню.
+
+sol_client.mod.menu_blur.option.blur=Сила размытия
+sol_client.mod.menu_blur.option.fadeTime=Время размытия
+sol_client.mod.menu_blur.option.backgroundColour=Цвет фона
+
+sol_client.mod.colour_saturation.name=Резкость
+sol_client.mod.colour_saturation.description=Настраивает резкость цветов в мире.
+
+sol_client.mod.colour_saturation.option.saturation=Резкость
+
+sol_client.mod.chunk_animator.name=Анимация прогрузки
+sol_client.mod.chunk_animator.description=Анимирует мир по мере прогрузки.
+
+sol_client.mod.chunk_animator.option.duration=Время
+sol_client.mod.chunk_animator.option.animation=Анимация
+
+sol_client.mod.1.7_visuals.name=Оформление 1.7
+sol_client.mod.1.7_visuals.description=Частично возвращает ощущения от 1.7
+
+sol_client.mod.1.7_visuals.option.useAndMine=Копание при использовании предмета
+sol_client.mod.1.7_visuals.option.particles=Частицы
+sol_client.mod.1.7_visuals.option.blocking=Блокирование мечом
+sol_client.mod.1.7_visuals.option.eatingAndDrinking=Еда и питьё
+sol_client.mod.1.7_visuals.option.rod=Удочка
+sol_client.mod.1.7_visuals.option.bow=Лук
+sol_client.mod.1.7_visuals.option.armourDamage=Эффект урона по броне
+sol_client.mod.1.7_visuals.option.sneaking=Плавное приседание
+
+sol_client.mod.item_physics.name=Физика предметов
+sol_client.mod.item_physics.description=Добавляет физику падения предметов.
+
+sol_client.mod.item_physics.option.rotationSpeed=Скорость вращения
+
+sol_client.mod.particles.name=Частицы
+sol_client.mod.particles.description=Настраивает и умножает некоторые виды частиц.
+
+sol_client.mod.particles.option.multiplier=Множитель
+sol_client.mod.particles.option.sharpness=Всегда показывать остроту
+sol_client.mod.particles.option.snow=Добавить снег
+sol_client.mod.particles.option.slime=Добавить слаймы
+sol_client.mod.particles.option.flames=Добавить огоньки
+
+sol_client.mod.time_changer.name=Изменение времени
+sol_client.mod.time_changer.description=Изменяет видимое время, не изменяя геймплей.
+
+sol_client.mod.time_changer.option.time=Время
+
+sol_client.mod.block_selection.name=Рамка блоков
+sol_client.mod.block_selection.description=Настраивает рамку выбора блоков.
+
+sol_client.mod.block_selection.option.outline=Обводка
+sol_client.mod.block_selection.option.outlineWidth=Ширина обводки
+sol_client.mod.block_selection.option.outlineColour=Цвет обводки
+sol_client.mod.block_selection.option.fill=Заливка
+sol_client.mod.block_selection.option.fillColour=Цвет заливки
+sol_client.mod.block_selection.option.depth=Глубина
+sol_client.mod.block_selection.option.persistent=Отображается всегда
+
+sol_client.mod.hit_colour.name=Цвет удара
+sol_client.mod.hit_colour.description=Изменяет цвет удара.
+
+sol_client.mod.hit_colour.option.colour=Цвет
+
+sol_client.mod.hitbox.name=Хитбоксы
+sol_client.mod.hitbox.description=Настраивает и включает отображение хитбоксов.
+
+sol_client.mod.hitbox.option.toggleHitboxes=Включить хитбоксы
+sol_client.mod.hitbox.option.boundingBox=Показывать хитбокс
+sol_client.mod.hitbox.option.boundingBoxColour=Цвет хитбокса
+sol_client.mod.hitbox.option.eyeHeight=Показывать высоту глаз
+sol_client.mod.hitbox.option.eyeHeightColour=Цвет высоты глаз
+sol_client.mod.hitbox.option.lookVector=Показывать вектор поворота
+sol_client.mod.hitbox.option.lookVectorColour=Цвет вектора поворота
+sol_client.mod.hitbox.option.lineWidth=Ширина линий
+
+sol_client.mod.category.general.name=Общие
+sol_client.mod.category.hud.name=Интерфейс
+sol_client.mod.category.utility.name=Инструменты
+sol_client.mod.category.visual.name=Вид
+sol_client.mod.category.integration.name=Интеграция
+
+sol_client.mod.discord_integration.name=Интеграция с Discord
+sol_client.mod.discord_integration.description=Добавляет интеграцию с Discord, включающую в себя оверлей и другие функции
+
+sol_client.mod.discord_integration.option.voiceChatHud=Интерфейс голосового чата
+sol_client.mod.discord_integration.option.voiceChatHudScale=Размер интерфейса голосового чата
+sol_client.mod.discord_integration.option.voiceChatHudAlignment=Выравнивание интерфейса голосового чата
+sol_client.mod.discord_integration.option.usernameColour=Цвет имени пользователя
+sol_client.mod.discord_integration.option.mutedColour=Цвет имени заглушенного пользователя
+sol_client.mod.discord_integration.option.speakingColour=Цвет имени говорящего пользователя
+
+sol_client.mod.screen.title=Модули
+sol_client.mod.screen.search=Начните печатать...
+sol_client.mod.screen.apply_to_all=Применить конфигурацию
+
+sol_client.hud.edit=Редактировать интерфейс
+
+sol_client.packs.apply=Применить
+sol_client.packs.open_folder=Папка пакетов
+sol_client.packs.folder=Папка (%d элементов)
+
+sol_client.screenshot.view=Посмотреть
+sol_client.screenshot.open_folder=Показать в папке

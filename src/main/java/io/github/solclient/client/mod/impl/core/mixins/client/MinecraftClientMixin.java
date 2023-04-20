@@ -20,11 +20,11 @@ package io.github.solclient.client.mod.impl.core.mixins.client;
 
 import java.util.ConcurrentModificationException;
 
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.*;
 import org.lwjgl.opengl.Display;
 import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.gen.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -36,7 +36,6 @@ import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.extension.*;
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.impl.api.chat.ChatApiMod;
 import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.mod.impl.tweaks.TweaksMod;
@@ -48,7 +47,6 @@ import lombok.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.*;
 import net.minecraft.client.gui.screen.*;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.*;
 import net.minecraft.client.option.*;
 import net.minecraft.client.particle.ParticleManager;
@@ -57,7 +55,6 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.*;
 
@@ -68,9 +65,8 @@ public abstract class MinecraftClientMixin implements MinecraftClientExtension, 
 	private boolean cancelDebug;
 
 	// security tm
-	@Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Session;getSessionId()Ljava/lang/String;"))
-	public String censorSessionId(Session instance) {
-		return "☃︎";
+	@Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V", ordinal = 1))
+	public void removeSessionId(Logger logger, String sessionIdDebug) {
 	}
 
 	// Mojang has made some questionable decisions with their code.

@@ -176,7 +176,7 @@ public abstract class MinecraftClientMixin implements MinecraftClientExtension, 
 		}
 	}
 
-//	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventDWheel()I"))
+	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventDWheel()I"))
 	public int onScroll() {
 		int dWheel = Mouse.getEventDWheel();
 

@@ -20,7 +20,7 @@ package io.github.solclient.client.mod.impl.hud.keystrokes;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import io.github.solclient.client.CpsMonitor;
+import io.github.solclient.client.mod.impl.core.CpsMonitor;
 import io.github.solclient.client.util.MinecraftUtils;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.MinecraftClient;

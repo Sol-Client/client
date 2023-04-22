@@ -67,18 +67,20 @@ public final class ModsScroll extends ScrollListComponent {
 			}
 		} else {
 			String filter = screen.getFilter();
-			List<Mod> filtered = SolClient.INSTANCE.modStream().filter((mod) -> {
-				String credit = mod.getDetail();
-				if (credit == null)
-					credit = "";
+			List<Mod> filtered = SolClient.INSTANCE.modStream().filter(mod -> mod.getCategory() != ModCategory.HIDDEN)
+					.filter(mod -> {
+						String credit = mod.getDetail();
+						if (credit == null)
+							credit = "";
 
-				return I18n.translate(mod.getName()).toLowerCase().contains(filter.toLowerCase())
-						|| I18n.translate(mod.getDescription()).toLowerCase().contains(filter.toLowerCase())
-						|| I18n.translate(credit).toLowerCase().contains(filter.toLowerCase());
-			}).sorted(Comparator
-					.comparing(
+						return I18n.translate(mod.getName()).toLowerCase().contains(filter.toLowerCase())
+								|| I18n.translate(mod.getDescription()).toLowerCase().contains(filter.toLowerCase())
+								|| I18n.translate(credit).toLowerCase().contains(filter.toLowerCase());
+					})
+					.sorted(Comparator.comparing(
 							(Mod mod) -> I18n.translate(mod.getName()).toLowerCase().startsWith(filter.toLowerCase()))
-					.reversed()).collect(Collectors.toList());
+							.reversed())
+					.collect(Collectors.toList());
 
 			if (filtered.isEmpty())
 				add(new LabelComponent("sol_client.no_results"),

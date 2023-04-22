@@ -22,6 +22,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import com.google.common.reflect.ClassPath;
 import com.google.gson.*;
 
 import lombok.experimental.UtilityClass;
@@ -44,6 +45,7 @@ public class MixinConfigGenerator {
 		JsonObject obj = new JsonObject();
 		obj.addProperty("required", true);
 		obj.addProperty("package", path);
+		obj.addProperty("refmap", "sol-client-wrapper-refmap.json");
 		obj.addProperty("compatibilityLevel", "JAVA_8");
 		obj.addProperty("minVersion", "0.8.5");
 
@@ -53,7 +55,7 @@ public class MixinConfigGenerator {
 
 		int chop = path.length() + 1;
 		JsonArray mixins = new JsonArray();
-		ClassWrapper.instance.walkPackageTree(path, mixin -> mixins.add(new JsonPrimitive(mixin.substring(chop))));
+		JarIndex.getPackageChildren(path).forEach(mixin -> mixins.add(new JsonPrimitive(mixin.substring(chop))));
 		obj.add("mixins", mixins);
 
 		return Optional.of(new ByteArrayInputStream(obj.toString().getBytes(StandardCharsets.UTF_8)));

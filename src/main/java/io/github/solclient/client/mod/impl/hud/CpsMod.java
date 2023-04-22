@@ -20,8 +20,8 @@ package io.github.solclient.client.mod.impl.hud;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.CpsMonitor;
 import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
+import io.github.solclient.client.mod.impl.core.CpsMonitor;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;

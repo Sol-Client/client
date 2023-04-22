@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client;
+package io.github.solclient.client.mod.impl.core;
 
 import java.util.*;
 

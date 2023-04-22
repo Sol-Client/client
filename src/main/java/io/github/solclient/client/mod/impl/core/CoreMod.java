@@ -119,6 +119,7 @@ public class CoreMod extends StandardMod {
 		super.init();
 
 		instance = this;
+		CpsMonitor.init();
 
 		try {
 			NanoVGManager.createContext();

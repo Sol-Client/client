@@ -22,6 +22,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
@@ -34,7 +35,7 @@ public class GameOptionsMixin {
 
 	private static boolean firstLoad = true;
 
-	@Inject(method = "load", at = @At("HEAD"))
+	@Inject(method = "<init>", at = @At("TAIL"))
 	public void setDefaults(CallbackInfo callback) {
 		vbo = true; // Use VBOs by default.
 	}
@@ -86,6 +87,13 @@ public class GameOptionsMixin {
 		if (callback.getReturnValueZ() && !KeyBindingExtension.from(key).areModsPressed())
 			callback.setReturnValue(false);
 	}
+
+	@Inject(method = "shouldUseNativeTransport", at = @At("RETURN"), cancellable = true)
+	public void ilikemovingbetweenplacesbutthishastogoimsorryitsverysadiguessilljusthavetousenonnativetransport(CallbackInfoReturnable<Boolean> callback) {
+		callback.setReturnValue(callback.getReturnValueZ() && SUPER_OLD_BORING_JAVA_VERSION);
+	}
+
+	private static final boolean SUPER_OLD_BORING_JAVA_VERSION = SystemUtils.JAVA_SPECIFICATION_VERSION.startsWith("1.");
 
 	@Shadow
 	public boolean vbo;

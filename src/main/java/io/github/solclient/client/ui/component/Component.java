@@ -197,8 +197,12 @@ public abstract class Component extends NanoVGManager {
 	}
 
 	private void drawDialogOverlay() {
+		Colour colour = overlayColour.get(this, Colour.WHITE);
+		if (colour.getAlpha() == 0)
+			return;
+
 		NanoVG.nvgBeginPath(nvg);
-		NanoVG.nvgFillColor(nvg, overlayColour.get(this, Colour.WHITE).nvg());
+		NanoVG.nvgFillColor(nvg, colour.nvg());
 		NanoVG.nvgRect(nvg, 0, 0, screen.width, screen.height);
 		NanoVG.nvgFill(nvg);
 	}

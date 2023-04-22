@@ -51,18 +51,17 @@ public class LabelComponent extends ColouredComponent {
 	@Override
 	public void render(ComponentRenderInfo info) {
 		NanoVG.nvgFillColor(nvg, getColour().nvg());
-		NanoVG.nvgSave(nvg);
-		NanoVG.nvgScale(nvg, scale, scale);
-		regularFont.renderString(nvg, getText(), 0, 0);
-		NanoVG.nvgRestore(nvg);
+		regularFont.withSize((int) (regularFont.getSize() * scale),
+				() -> regularFont.renderString(nvg, getText(), 0, 0));
 
 		super.render(info);
 	}
 
 	@Override
 	protected Rectangle getDefaultBounds() {
-		return Rectangle.ofDimensions((int) (regularFont.getWidth(nvg, getText()) * scale),
-				(int) ((regularFont.getLineHeight(nvg) + 2) * scale));
+		return regularFont.withSize((int) (regularFont.getSize() * scale),
+				() -> Rectangle.ofDimensions((int) (regularFont.getWidth(nvg, getText()) * scale),
+						(int) ((regularFont.getLineHeight(nvg) + (2 * scale)))));
 	}
 
 	public String getText() {

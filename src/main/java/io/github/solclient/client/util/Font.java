@@ -24,19 +24,41 @@ import java.nio.ByteBuffer;
 import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.system.MemoryUtil;
 
+import com.google.common.base.Supplier;
+
+import lombok.Getter;
+
 public final class Font {
 
 	private final int handle;
 	private final ByteBuffer buffer;
+	@Getter
+	private int size = 8;
 
 	public Font(long ctx, InputStream in) throws IOException {
 		buffer = MinecraftUtils.mallocAndRead(in);
 		handle = NanoVG.nvgCreateFontMem(ctx, "", buffer, 0);
 	}
 
+	public void withSize(int size, Runnable action) {
+		int oldSize = this.size;
+		this.size = size;
+		action.run();
+		this.size = oldSize;
+	}
+
+	// ew
+	@SuppressWarnings("unchecked")
+	public <T> T withSize(int size, Supplier<T> action) {
+		Object[] result = new Object[1];
+		withSize(size, (Runnable) () -> result[0] = action.get());
+		return (T) result[0];
+	}
+
+
 	public void bind(long ctx) {
 		NanoVG.nvgFontFaceId(ctx, handle);
-		NanoVG.nvgFontSize(ctx, 8);
+		NanoVG.nvgFontSize(ctx, size);
 	}
 
 	public void close() {

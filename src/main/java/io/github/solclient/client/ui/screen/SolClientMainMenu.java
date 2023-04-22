@@ -145,7 +145,7 @@ public class SolClientMainMenu extends PanoramaBackgroundScreen {
 					}), (component, defaultBounds) -> new Rectangle(screen.width / 2 - 100, getStartY(screen) + 92,
 							defaultBounds.getWidth(), defaultBounds.getHeight()));
 
-			add(new ButtonComponent((component, defaultText) -> "", Theme.button(), Controller.of(Colour.WHITE))
+			add(new ButtonComponent((component, defaultText) -> "", Theme.button(), Theme.fg())
 					.withIcon("replay_menu").width(20).onClick((info, button) -> {
 						if (button == 0) {
 							MinecraftUtils.playClickSound(true);

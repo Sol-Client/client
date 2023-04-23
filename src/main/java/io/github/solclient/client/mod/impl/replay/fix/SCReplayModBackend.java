@@ -29,6 +29,7 @@ import com.replaymod.replay.events.RenderSpectatorCrosshairCallback;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.util.GlobalConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 
@@ -76,7 +77,7 @@ public class SCReplayModBackend extends SCEventRegistrations {
 	}
 
 	public String getVersion() {
-		return "2.6.9"; // TODO blossom
+		return GlobalConstants.REPLAYMOD_VERSION_STRING + "-sol-client";
 	}
 
 	public String getMinecraftVersion() {

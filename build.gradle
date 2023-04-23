@@ -39,6 +39,9 @@ configurations {
 	exportOnly.extendsFrom export
 }
 
+def remapper = new ReplayModRemapper(project)
+def replayModVersion = remapper.prepare()
+
 dependencies {
 	minecraft(libs.minecraft) { exclude group: 'org.apache.logging.log4j' }
 	mappings variantOf(libs.yarn) { classifier 'v2' }
@@ -68,8 +71,6 @@ dependencies {
 	annotationProcessor libs.asm.tree
 	annotationProcessor libs.asm.util
 
-	def remapper = new ReplayModRemapper(project)
-	remapper.prepare()
 	implementation files(remapper.createNamedMapped())
 	shadeOnly files(remapper.createIntermediaryMapped())
 
@@ -146,7 +147,8 @@ license {
 
 blossom {
 	def constants = 'src/main/java/io/github/solclient/util/GlobalConstants.java'
-	replaceToken('%VERSION%', version, constants)
+	replaceToken('@VERSION@', version, constants)
+	replaceToken('@REPLAYMOD_VERSION@', replayModVersion, constants)
 }
 
 shadowJar {

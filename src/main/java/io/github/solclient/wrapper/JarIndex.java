@@ -31,25 +31,32 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class JarIndex {
 
-	private static final List<String> LISTINGS = new ArrayList<>();
+	private static final List<String> CLASSES = new ArrayList<>();
 
 	static {
 		try {
-			populate(LISTINGS::add);
+			populate(item -> {
+				if (item.endsWith(".class"))
+					CLASSES.add(item);
+			});
 		} catch (IOException | URISyntaxException error) {
 			throw new UnsupportedOperationException("Cannot initialise jar index", error);
 		}
 	}
 
 	private void populate(Consumer<String> consumer) throws IOException, URISyntaxException {
-		URL resource = ClassWrapper.instance.getResource("standard-mods.json");
+		String reference = JarIndex.class.getName();
+		URL resource = ClassWrapper.instance.getResource(reference.replace('.', '/') + ".class");
 		if (resource.getProtocol().equals("file")) {
-			Path path = Paths.get(resource.toURI()).getParent();
-			Files.walk(path).forEach(entry -> {
+			Path path = Paths.get(resource.toURI());
+			Path root = path.getRoot().resolve(path.subpath(0, (int) (path.getNameCount()
+					- reference.toString().chars().filter(character -> character == '.').count() - 1)));
+
+			Files.walk(root).forEach(entry -> {
 				if (Files.isDirectory(entry))
 					return;
 
-				consumer.accept(path.relativize(entry).toString());
+				consumer.accept(root.relativize(entry).toString());
 			});
 		} else {
 			URLConnection connection = resource.openConnection();
@@ -65,7 +72,7 @@ public class JarIndex {
 
 	public List<String> getPackageChildren(String packageName) throws IOException {
 		String target = packageName.replace(".", "/") + '/';
-		return LISTINGS.stream().filter(item -> item.startsWith(target))
+		return CLASSES.stream().filter(item -> item.startsWith(target))
 				.map(item -> item.replace("/", ".").substring(0, item.lastIndexOf('.'))).collect(Collectors.toList());
 	}
 

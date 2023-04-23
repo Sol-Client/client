@@ -116,7 +116,7 @@ public final class ReplayModRemapper {
 		replayModForgeJar = workDir.resolve("replay-mod-forge.jar");
 	}
 
-	public void prepare() throws InterruptedException, ExecutionException, MalformedURLException, IOException {
+	public String prepare() throws InterruptedException, ExecutionException, MalformedURLException, IOException {
 		if (!Files.isDirectory(workDir))
 			Files.createDirectories(workDir);
 		else if (Files.exists(versionFile)) {
@@ -124,12 +124,6 @@ public final class ReplayModRemapper {
 				String currentVersion = new String(in.readAllBytes(), StandardCharsets.US_ASCII);
 				if (!VERSION_COMBINED.equals(currentVersion))
 					clear();
-			}
-		}
-
-		if (!Files.exists(versionFile)) {
-			try (BufferedWriter writer = Files.newBufferedWriter(versionFile)) {
-				writer.write(VERSION_COMBINED);
 			}
 		}
 
@@ -176,6 +170,8 @@ public final class ReplayModRemapper {
 				classParents.put(entry.getKey(), list);
 			}
 		}
+
+		return replayMod.getName();
 	}
 
 	public Path createIntermediaryMapped() throws IOException {

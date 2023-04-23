@@ -32,7 +32,7 @@ public class GlobalConstants {
 	// shhh... fake constant
 	public boolean optifine = Boolean.getBoolean("io.github.solclient.wrapper.optifine");
 	public final boolean NO_LAUNCHER_WARNINGS = Boolean.getBoolean("io.github.solclient.wrapper.no_launcher_warnings");
-	public final String VERSION_STRING = "%VERSION%";
+	public final String VERSION_STRING = "@VERSION@";
 	public final String USER_AGENT = "Sol Client/" + GlobalConstants.VERSION;
 	public final SemVer VERSION = SemVer.parseOrNull(VERSION_STRING);
 	public final String LAUNCHER = System.getProperty("io.github.solclient.client.launcher", "unknown");
@@ -51,6 +51,8 @@ public class GlobalConstants {
 	public final String COPYRIGHT = "© 2023 TheKodeToad and contributors";
 	public final String OPTIFINE_JAR = "OptiFine_1.8.9_HD_U_M5";
 	public final String API = "https://thekodetoad.duckdns.org:8080/v1";
+
+	public final String REPLAYMOD_VERSION_STRING = "@REPLAYMOD_VERSION@";
 
 	// utils
 	public final MethodType MAIN_METHOD = MethodType.methodType(void.class, String[].class);

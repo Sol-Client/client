@@ -26,8 +26,11 @@ import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.BedwarsTe
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.TeamUpgrade;
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.TrapUpgrade;
 import io.github.solclient.client.mod.option.ModOption;
+import io.github.solclient.client.mod.option.ModOptionStorage;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.mod.option.impl.FieldOptions;
+import io.github.solclient.client.mod.option.impl.SliderOption;
+import io.github.solclient.client.mod.option.impl.ToggleOption;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 import net.minecraft.client.MinecraftClient;
@@ -36,8 +39,11 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TeamUpgradesOverlay implements HudElement {
+
+    private final static String TRANSLATION_KEY = "bedwars.teamupgrades";
 
     private BedwarsTeamUpgrades upgrades = null;
     private final BedwarsMod mod;
@@ -45,7 +51,13 @@ public class TeamUpgradesOverlay implements HudElement {
     private final static String[] trapEdit = {"trap/minerfatigue", "trap/itsatrap"};
 
     @Expose
+    private boolean enabled = true;
+
+    @Expose
     private Position position = new Position(100, 100);
+
+    @Expose
+    private float scale = 100;
 
     public TeamUpgradesOverlay(BedwarsMod mod) {
         this.mod = mod;
@@ -62,7 +74,7 @@ public class TeamUpgradesOverlay implements HudElement {
 
     @Override
     public float getScale() {
-        return 1;
+        return scale / 100;
     }
 
     @Override
@@ -77,7 +89,7 @@ public class TeamUpgradesOverlay implements HudElement {
 
     @Override
     public boolean isVisible() {
-        return true;
+        return enabled;
     }
 
     @Override
@@ -87,6 +99,19 @@ public class TeamUpgradesOverlay implements HudElement {
 
     public List<ModOption<?>> createOptions() {
         List<ModOption<?>> options = new ArrayList<>();
+        options.add(new ToggleOption(
+                TRANSLATION_KEY + ".enabled",
+                ModOptionStorage.of(boolean.class, () -> enabled, (value) -> {
+                    if (enabled != value) {
+                        enabled = value;
+                    }
+                })
+        ));
+        options.add(
+                new SliderOption(TRANSLATION_KEY + ".option.scale",
+                        ModOptionStorage.of(Number.class, () -> scale, (value) -> scale = value.floatValue()),
+                        Optional.of("sol_client.slider.percent"), 50, 150, 1
+                ));
         try {
             FieldOptions.visit(mod, this.getClass(), options::add);
         } catch (IllegalAccessException error) {

@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import io.github.solclient.client.culling.Cullable;
 import lombok.*;
 import net.minecraft.entity.Entity;
+import org.spongepowered.asm.mixin.injection.Inject;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements Cullable {

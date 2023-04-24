@@ -29,6 +29,8 @@ import io.github.solclient.client.event.impl.WorldLoadEvent;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.option.ModOption;
+import io.github.solclient.client.mod.option.annotation.AbstractTranslationKey;
+import io.github.solclient.client.mod.option.annotation.Option;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.LiteralText;
@@ -37,6 +39,7 @@ import net.minecraft.text.LiteralText;
 import java.util.*;
 import java.util.regex.Pattern;
 
+@AbstractTranslationKey("sol_client.mod.bedwars")
 public final class BedwarsMod extends StandardMod {
 
     private final static Pattern[] GAME_START = {
@@ -50,6 +53,18 @@ public final class BedwarsMod extends StandardMod {
 
     @Expose
     protected final TeamUpgradesOverlay upgradesOverlay;
+
+    @Expose
+    @Option
+    protected boolean removeAnnoyingMessages = true;
+
+    @Expose
+    @Option
+    protected boolean showChatTime = true;
+
+    @Expose
+    @Option
+    protected boolean overrideMessages = true;
     private int targetTick = -1;
 
     public BedwarsMod() {
@@ -88,7 +103,7 @@ public final class BedwarsMod extends StandardMod {
         if (currentGame != null) {
             currentGame.onChatMessage(rawMessage, event);
             String time = "§7" + currentGame.getFormattedTime() + " ";
-            if (!event.cancelled) {
+            if (!event.cancelled && showChatTime) {
                 // Add time to every message received in game
                 if (event.newMessage != null) {
                     event.newMessage = new LiteralText(time).append(event.newMessage);

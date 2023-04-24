@@ -51,7 +51,7 @@ public class TeamUpgradesOverlay implements HudElement {
     private final static String[] trapEdit = {"trap/minerfatigue", "trap/itsatrap"};
 
     @Expose
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     @Expose
     private Position position = new Position(100, 100);

@@ -154,7 +154,9 @@ public class BedwarsGame {
         if (killer != null) {
             killer.killed(finalDeath);
         }
-        event.newMessage = new LiteralText(formatDeath(player, killer, type, finalDeath));
+        if (mod.overrideMessages) {
+            event.newMessage = new LiteralText(formatDeath(player, killer, type, finalDeath));
+        }
     }
 
     private String formatDisconnect(BedwarsPlayer disconnected) {
@@ -205,7 +207,7 @@ public class BedwarsGame {
 
     public void onChatMessage(String rawMessage, ReceiveChatMessageEvent event) {
         try {
-            if (BedwarsMessages.matched(BedwarsMessages.ANNOYING_MESSAGES, rawMessage).isPresent()) {
+            if (mod.removeAnnoyingMessages && BedwarsMessages.matched(BedwarsMessages.ANNOYING_MESSAGES, rawMessage).isPresent()) {
                 event.cancelled = true;
                 return;
             }
@@ -286,7 +288,9 @@ public class BedwarsGame {
             b.setBed(false);
             b.died();
         });
-        event.newMessage = new LiteralText(formatEliminated(team));
+        if (mod.overrideMessages) {
+            event.newMessage = new LiteralText(formatEliminated(team));
+        }
     }
 
     private void bedDestroyed(ReceiveChatMessageEvent event, BedwarsTeam team, @Nullable BedwarsPlayer breaker) {
@@ -294,18 +298,24 @@ public class BedwarsGame {
         if (breaker != null && breaker.getStats() != null) {
             breaker.getStats().addBed();
         }
-        event.newMessage = new LiteralText(formatBed(team, breaker));
+        if (mod.overrideMessages) {
+            event.newMessage = new LiteralText(formatBed(team, breaker));
+        }
     }
 
     private void disconnected(ReceiveChatMessageEvent event, BedwarsPlayer player) {
         player.disconnected();
-        event.newMessage = new LiteralText(formatDisconnect(player));
+        if (mod.overrideMessages) {
+            event.newMessage = new LiteralText(formatDisconnect(player));
+        }
     }
 
 
     private void reconnected(ReceiveChatMessageEvent event, BedwarsPlayer player) {
         player.reconnected();
-        event.newMessage = new LiteralText(formatDisconnect(player));
+        if (mod.overrideMessages) {
+            event.newMessage = new LiteralText(formatReconnect(player));
+        }
     }
 
     public void onScoreboardRender(ScoreboardRenderEvent event) {

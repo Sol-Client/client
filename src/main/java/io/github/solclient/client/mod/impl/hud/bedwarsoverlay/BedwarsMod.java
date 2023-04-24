@@ -18,13 +18,17 @@
 
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
+import com.google.gson.annotations.Expose;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PreTickEvent;
 import io.github.solclient.client.event.impl.ReceiveChatMessageEvent;
 import io.github.solclient.client.event.impl.ScoreboardRenderEvent;
-import io.github.solclient.client.mod.ModCategory;
+import io.github.solclient.client.event.impl.WorldLoadEvent;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.*;
+import io.github.solclient.client.mod.option.ModOption;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.LiteralText;
@@ -42,13 +46,21 @@ public final class BedwarsMod extends StandardMod {
     };
 
     public static BedwarsMod instance;
-
     protected BedwarsGame currentGame = null;
+
+    @Expose
     protected final TeamUpgradesOverlay upgradesOverlay;
     private int targetTick = -1;
 
     public BedwarsMod() {
         upgradesOverlay = new TeamUpgradesOverlay(this);
+    }
+
+    @Override
+    protected List<ModOption<?>> createOptions() {
+        List<ModOption<?>> options = super.createOptions();
+        options.addAll(upgradesOverlay.createOptions());
+        return options;
     }
 
     @Override
@@ -60,6 +72,13 @@ public final class BedwarsMod extends StandardMod {
     public void init() {
     	super.init();
     	instance = this;
+    }
+
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent event) {
+        if (currentGame != null) {
+            gameEnd();
+        }
     }
 
     @EventHandler
@@ -138,4 +157,8 @@ public final class BedwarsMod extends StandardMod {
         currentGame = null;
     }
 
+    @Override
+    public void registerOtherTypeAdapters(GsonBuilder builder) {
+        builder.registerTypeAdapter(TeamUpgradesOverlay.class, (InstanceCreator<TeamUpgradesOverlay>) (type) -> upgradesOverlay);
+    }
 }

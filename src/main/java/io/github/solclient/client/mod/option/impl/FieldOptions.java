@@ -46,7 +46,7 @@ public class FieldOptions {
 		visit(mod, mod.getClass(), visitor);
 	}
 
-	private void visit(Mod mod, Class<? extends Mod> clazz, Consumer<ModOption<?>> visitor)
+	public void visit(Mod mod, Class<?> clazz, Consumer<ModOption<?>> visitor)
 			throws IllegalAccessException {
 		if (clazz == null)
 			return;

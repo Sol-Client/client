@@ -262,9 +262,18 @@ public class BedwarsGame {
             return;
         }
 
+        mc.inGameHud.getChatHud().addMessage(
+                new LiteralText("§8§m----------[§7Winstreaks§8]----------")
+        );
         for (BedwarsPlayer p : players.values()) {
             if (p.getStats() != null && p.getStats().getWinstreak() > 0) {
-                mc.inGameHud.getChatHud().addMessage(new LiteralText(getPlayerFormatted(p) + " - " + p.getStats().getWinstreak()));
+                boolean winner = p.getTeam().equals(win);
+                int before = p.getStats().getWinstreak();
+                int after = winner ? before + 1 : 0;
+                mc.inGameHud.getChatHud().addMessage(
+                        new LiteralText(
+                                getPlayerFormatted(p) + "§8: §7" + before + " §8→ §" + (winner ? "a" : "c") + after
+                        ));
             }
         }
 

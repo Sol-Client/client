@@ -337,6 +337,10 @@ public abstract class Mod extends Object {
 		}
 	}
 
+    public void registerOtherTypeAdapters(GsonBuilder builder) {
+
+    }
+
 	void notifyUnpin() {
 		pinned = false;
 	}

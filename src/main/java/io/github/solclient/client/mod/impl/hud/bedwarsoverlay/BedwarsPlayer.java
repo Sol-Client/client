@@ -83,7 +83,7 @@ public class BedwarsPlayer {
     }
 
     public boolean isFinalKilled() {
-        return tickAlive < 0 && !bed && !alive;
+        return tickAlive < 0 && !bed && !alive || (!bed && isDisconnected());
     }
 
     public void tick(int currentTick) {

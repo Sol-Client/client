@@ -18,17 +18,24 @@
 
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay;
 
+import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.BedwarsTeamUpgrades;
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.TeamUpgrade;
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.TrapUpgrade;
+import io.github.solclient.client.mod.option.ModOption;
+import io.github.solclient.client.mod.option.annotation.Option;
+import io.github.solclient.client.mod.option.impl.FieldOptions;
 import io.github.solclient.client.util.data.Position;
 import io.github.solclient.client.util.data.Rectangle;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.util.Identifier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeamUpgradesOverlay implements HudElement {
 
@@ -37,6 +44,7 @@ public class TeamUpgradesOverlay implements HudElement {
     private final MinecraftClient mc;
     private final static String[] trapEdit = {"trap/minerfatigue", "trap/itsatrap"};
 
+    @Expose
     private Position position = new Position(100, 100);
 
     public TeamUpgradesOverlay(BedwarsMod mod) {
@@ -75,6 +83,16 @@ public class TeamUpgradesOverlay implements HudElement {
     @Override
     public Rectangle getBounds(Position position) {
         return position.rectangle(60, 40);
+    }
+
+    public List<ModOption<?>> createOptions() {
+        List<ModOption<?>> options = new ArrayList<>();
+        try {
+            FieldOptions.visit(mod, this.getClass(), options::add);
+        } catch (IllegalAccessException error) {
+            throw new AssertionError(error);
+        }
+        return options;
     }
 
     @Override

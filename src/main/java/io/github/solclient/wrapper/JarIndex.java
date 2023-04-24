@@ -56,7 +56,7 @@ public class JarIndex {
 				if (Files.isDirectory(entry))
 					return;
 
-				consumer.accept(root.relativize(entry).toString());
+				consumer.accept(root.relativize(entry).toString().replace("\\", "/"));
 			});
 		} else {
 			URLConnection connection = resource.openConnection();

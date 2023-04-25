@@ -5,10 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.gradle.api.DefaultTask;
-import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.file.RegularFileProperty;
-import org.gradle.api.provider.Property;
-import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
@@ -18,9 +15,6 @@ public abstract class DistTask extends DefaultTask {
 	@InputFile
 	abstract RegularFileProperty getInput();
 
-	@Input
-	abstract Property<Configuration> getLibs();
-
 	@OutputDirectory
 	abstract RegularFileProperty getDestination();
 
@@ -28,9 +22,16 @@ public abstract class DistTask extends DefaultTask {
 	public void dist() throws IOException {
 		Path folder = getDestination().getAsFile().get().toPath();
 		Files.createDirectories(folder);
-		PrismDist.export(this, getInput().getAsFile().get().toPath(),
-				folder.resolve("sol-client-prism-launcher-" + getProject().getVersion() + ".zip"), getProject(),
-				getLibs().get(), getProject().getVersion().toString());
+
+		Path input = getInput().getAsFile().get().toPath();
+		String version = getProject().getVersion().toString();
+
+		PrismDist.export(this, input, folder.resolve("sol-client-prism-launcher-" + getProject().getVersion() + ".zip"),
+				getProject(), version);
+
+		MojankDist.export(this, input,
+				folder.resolve("sol-client-mojang-launcher-" + getProject().getVersion() + ".zip"), getProject(),
+				version);
 	}
 
 }

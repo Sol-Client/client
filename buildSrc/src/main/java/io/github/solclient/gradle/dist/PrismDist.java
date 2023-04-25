@@ -14,12 +14,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.artifacts.Dependency;
 
-import io.github.solclient.gradle.Utils;
 import io.toadlabs.jfgjds.JsonSerializer;
-import io.toadlabs.jfgjds.data.JsonArray;
 
 // TODO multimc dist with advanced features bool or such
 public final class PrismDist {
@@ -27,8 +23,8 @@ public final class PrismDist {
 	private static final String UID = "io.github.solclient.wrapper";
 	private static final String OPTIFINE_UID = "io.github.solclient.wrapper.optiflag";
 
-	public static void export(DistTask task, Path input, Path output, Project project, Configuration libs,
-			String version) throws IOException {
+	public static void export(DistTask task, Path input, Path output, Project project, String version)
+			throws IOException {
 		try (ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(output))) {
 			Writer writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
 
@@ -54,26 +50,6 @@ public final class PrismDist {
 			writer);
 			// @formatter:on
 
-			JsonArray libsArray = new JsonArray();
-			// @formatter:off
-			libsArray.add(
-					obj(
-						"name", "io.github.solclient:wrapper:" + version,
-						"MMC-hint", "local",
-						"MMC-filename", "sol-client-wrapper.jar"
-					)
-			);
-
-			for (Dependency lib : libs.getAllDependencies()) {
-				libsArray.add(
-						obj(
-							"name", Utils.format(lib),
-							"url", Utils.getRepo(lib, project.getRepositories())
-						)
-				);
-			}
-			// @formatter:on
-
 			out.putNextEntry(new ZipEntry("patches/" + UID + ".json"));
 			// @formatter:off
 			JsonSerializer.write(
@@ -82,7 +58,13 @@ public final class PrismDist {
 						"name", "Sol Client",
 						"uid", UID,
 						"version", version,
-						"+libraries", libsArray,
+						"+libraries", arr(
+							obj(
+								"name", "io.github.solclient:wrapper:" + version,
+								"MMC-hint", "local",
+								"MMC-filename", "sol-client-wrapper.jar"
+							)
+						),
 						"mainClass", "io.github.solclient.wrapper.Launcher"
 					),
 			writer);
@@ -110,7 +92,6 @@ public final class PrismDist {
 			try (InputStream wrapperIn = Files.newInputStream(input)) {
 				wrapperIn.transferTo(out);
 			}
-			writer.flush();
 		}
 	}
 

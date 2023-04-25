@@ -25,10 +25,6 @@ configurations {
 	shade
 	implementation.extendsFrom shade
 	shadeOnly.extendsFrom shade
-	exportOnly
-	export
-	implementation.extendsFrom export
-	exportOnly.extendsFrom export
 }
 
 def remapper = new ReplayModRemapper(project)
@@ -157,7 +153,6 @@ tasks.register('dist', DistTask) {
 	dependsOn build
 	input = tasks.remapJar.outputs.files.getAt 0
 	destination = file "$buildDir/dist"
-	libs = configurations.exportOnly
 }
 
 tasks.withType(JavaCompile).configureEach {

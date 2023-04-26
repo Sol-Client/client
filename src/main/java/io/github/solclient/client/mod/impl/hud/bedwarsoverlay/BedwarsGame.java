@@ -23,6 +23,7 @@ import io.github.solclient.client.event.impl.ScoreboardRenderEvent;
 import io.github.solclient.client.mod.impl.hud.bedwarsoverlay.upgrades.BedwarsTeamUpgrades;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardPlayerScore;
@@ -59,8 +60,8 @@ public class BedwarsGame {
 
     private BedwarsPlayer me = null;
 
-    // Use a treemap here for the O(log(n)) time
-    private final Map<String, BedwarsPlayer> players = new TreeMap<>();
+    private final Map<String, BedwarsPlayer> players = new HashMap<>(16);
+    private final Map<UUID, BedwarsPlayer> playersById = new HashMap<>(16);
     private final MinecraftClient mc;
     @Getter
     private boolean started = false;
@@ -75,9 +76,9 @@ public class BedwarsGame {
     }
 
     public void onStart() {
-        debug("Game started");
         mod.upgradesOverlay.onStart(upgrades);
         players.clear();
+        playersById.clear();
         Map<BedwarsTeam, List<PlayerListEntry>> teamPlayers = new HashMap<>();
         for (PlayerListEntry player : mc.player.networkHandler.getPlayerList()) {
             String name = mc.inGameHud.getPlayerListWidget().getPlayerName(player).replaceAll("§.", "");
@@ -108,6 +109,7 @@ public class BedwarsGame {
                     me = p;
                 }
                 players.put(e.getProfile().getName(), p);
+                playersById.put(e.getProfile().getId(), p);
             }
         }
         this.started = true;
@@ -139,6 +141,10 @@ public class BedwarsGame {
             time += second;
         }
         return time;
+    }
+
+    public Optional<BedwarsPlayer> getPlayer(UUID uuid) {
+        return Optional.ofNullable(playersById.getOrDefault(uuid, null));
     }
 
     public Optional<BedwarsPlayer> getPlayer(String name) {
@@ -274,7 +280,7 @@ public class BedwarsGame {
                 int after = winner ? before + 1 : 0;
                 mc.inGameHud.getChatHud().addMessage(
                         new LiteralText(
-                                getPlayerFormatted(p) + "§8: §7" + before + " §8→ §" + (winner ? "a" : "c") + after
+                                getPlayerFormatted(p) + "§8: §7" + before + " §8 -> §" + (winner ? "a" : "c") + after
                         ));
             }
         }
@@ -423,6 +429,26 @@ public class BedwarsGame {
             }
             return Integer.compare(b1.getTeam().ordinal(), b2.getTeam().ordinal());
         }).map(BedwarsPlayer::getProfile).collect(Collectors.toList());
+    }
+
+    public BedwarsPlayer getSelf() {
+        return me;
+    }
+
+    public String getLevelHead(AbstractClientPlayerEntity entity) {
+        BedwarsPlayer player = getPlayer(entity.getUuid()).orElse(null);
+        if (player == null) {
+            return null;
+        }
+        BedwarsPlayerStats stats = player.getStats();
+        if (stats == null) {
+            return null;
+        }
+        if (seconds / 5 % 2 == 0) {
+            return String.format("FKDR %.2f", stats.getFKDR());
+        } else {
+            return String.format("BBLR %.2f", stats.getBBLR());
+        }
     }
 
 }

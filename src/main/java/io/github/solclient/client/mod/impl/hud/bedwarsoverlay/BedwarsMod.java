@@ -33,11 +33,16 @@ import io.github.solclient.client.mod.option.annotation.AbstractTranslationKey;
 import io.github.solclient.client.mod.option.annotation.Option;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.scoreboard.ScoreboardPlayerScore;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.Formatting;
 
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @AbstractTranslationKey("sol_client.mod.bedwars")
 public final class BedwarsMod extends StandardMod {
@@ -49,6 +54,23 @@ public final class BedwarsMod extends StandardMod {
     };
 
     public static BedwarsMod instance;
+
+    @Expose
+    @Option
+    public boolean hardcoreHearts = true;
+
+    @Expose
+    @Option
+    public boolean showHunger = false;
+
+    @Expose
+    @Option
+    public boolean displayArmor = true;
+
+    @Expose
+    @Option
+    public boolean bedwarsLevelHead = true;
+
     protected BedwarsGame currentGame = null;
 
     @Expose
@@ -60,12 +82,17 @@ public final class BedwarsMod extends StandardMod {
 
     @Expose
     @Option
+    private boolean tabRenderLatencyIcon = false;
+
+    @Expose
+    @Option
     protected boolean showChatTime = true;
 
     @Expose
     @Option
     protected boolean overrideMessages = true;
     private int targetTick = -1;
+    private boolean waiting = false;
 
     public BedwarsMod() {
         upgradesOverlay = new TeamUpgradesOverlay(this);
@@ -96,6 +123,13 @@ public final class BedwarsMod extends StandardMod {
         }
     }
 
+    public boolean isWaiting() {
+        if (inGame()) {
+            waiting = false;
+        }
+        return waiting;
+    }
+
     @EventHandler
     public void onMessage(ReceiveChatMessageEvent event) {
         // Remove formatting
@@ -124,6 +158,7 @@ public final class BedwarsMod extends StandardMod {
     @EventHandler
     public void onTick(PreTickEvent event) {
         if (currentGame != null) {
+            waiting = false;
             if (currentGame.isStarted()) {
                 // Trigger setting the header
                 mc.inGameHud.getPlayerListWidget().setHeader(null);
@@ -163,8 +198,23 @@ public final class BedwarsMod extends StandardMod {
     @EventHandler
     public void onScoreboardRender(ScoreboardRenderEvent event) {
         if (inGame()) {
+            waiting = false;
             currentGame.onScoreboardRender(event);
+            return;
         }
+        if (!Formatting.strip(event.objective.getDisplayName()).contains("BED WARS")) {
+            return;
+        }
+        Scoreboard scoreboard = event.objective.getScoreboard();
+        Collection<ScoreboardPlayerScore> scores = scoreboard.getAllPlayerScores(event.objective);
+        List<ScoreboardPlayerScore> filteredScores = scores.stream()
+                                                           .filter(p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#"))
+                                                           .collect(Collectors.toList());
+        waiting = filteredScores.stream().anyMatch(score -> {
+            Team team = scoreboard.getPlayerTeam(score.getPlayerName());
+            String format = Formatting.strip(Team.decorateName(team, score.getPlayerName())).replaceAll("[^A-z0-9 .:]", "");
+            return format.contains("Waiting...") || format.contains("Starting in");
+        });
     }
 
     public void gameEnd() {
@@ -176,4 +226,9 @@ public final class BedwarsMod extends StandardMod {
     public void registerOtherTypeAdapters(GsonBuilder builder) {
         builder.registerTypeAdapter(TeamUpgradesOverlay.class, (InstanceCreator<TeamUpgradesOverlay>) (type) -> upgradesOverlay);
     }
+
+    public boolean blockLatencyIcon() {
+        return !tabRenderLatencyIcon;
+    }
+
 }

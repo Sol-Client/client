@@ -73,6 +73,8 @@ public class PaperDollMod extends SolClientHudMod {
             deltaYaw -= (lastYawOffset + ((yawOffset - lastYawOffset) * delta));
         }
 
+        GlStateManager.enableLighting();
+        GlStateManager.color(1, 1, 1, 1);
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, 500.0F);
@@ -83,6 +85,7 @@ public class PaperDollMod extends SolClientHudMod {
         DiffuseLighting.enableNormally();
         GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(deltaYaw + rotation, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(0.0F, 0.0F, 0.0F);
 
         EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderManager();
         entityRenderDispatcher.setYaw(0);

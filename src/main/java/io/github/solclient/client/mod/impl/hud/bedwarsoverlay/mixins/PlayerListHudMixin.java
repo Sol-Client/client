@@ -19,9 +19,15 @@
 package io.github.solclient.client.mod.impl.hud.bedwarsoverlay.mixins;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.google.gson.JsonObject;
+import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAPICache;
 import io.github.solclient.client.util.data.Colour;
+import net.hypixel.api.reply.PlayerReply;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -42,6 +48,53 @@ public class PlayerListHudMixin {
     @Shadow @Final private MinecraftClient client;
 
     @Inject(
+            method = "render",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/hud/PlayerListHud;renderLatencyIcon(IIILnet/minecraft/client/network/PlayerListEntry;)V"
+            ),
+            locals = LocalCapture.CAPTURE_FAILHARD
+    )
+    public void renderWithoutObjective(
+            int width, Scoreboard scoreboard, ScoreboardObjective playerListScoreboardObjective, CallbackInfo ci,
+            ClientPlayNetworkHandler clientPlayNetworkHandler, List list, int i, int j, int l, int m, int k, boolean bl, int n, int o,
+            int p, int q, int r, List list2, int t, int u, int s, int v, int y, PlayerListEntry playerListEntry2
+    ) {
+        if (!BedwarsMod.instance.isEnabled() || !BedwarsMod.instance.isWaiting()) {
+            return;
+        }
+        Optional<PlayerReply.Player> playerStatsOpt = HypixelAPICache.getInstance().getPlayerFromCache(playerListEntry2.getProfile().getId());
+        if (!playerStatsOpt.isPresent()) {
+            return;
+        }
+        int startX = v + i + 1;
+        int endX = startX + n;
+        JsonObject playerStats = playerStatsOpt.get().getRaw().get("stats").getAsJsonObject();
+        JsonObject stats = BedwarsPlayerStats.getObjectSafe(playerStats, "Bedwars");
+        if (stats == null) {
+            return;
+        }
+        String render = String.format("%.2f", (float) (BedwarsPlayerStats.getAsIntElse(stats, "final_kills_bedwars", 1)) / BedwarsPlayerStats.getAsIntElse(stats, "final_deaths_bedwars", 1));
+        this.client.textRenderer.drawWithShadow(
+                render,
+                (float)(endX - this.client.textRenderer.getStringWidth(render)) + 20,
+                (float) y,
+                -1
+        );
+    }
+
+    @Inject(
+            method = "renderLatencyIcon",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    public void cancelLatencyIcon(int width, int x, int y, PlayerListEntry playerEntry, CallbackInfo ci) {
+        if (BedwarsMod.instance.isEnabled() && BedwarsMod.instance.blockLatencyIcon() && (BedwarsMod.instance.isWaiting() || BedwarsMod.instance.inGame())) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(
             method = "renderScoreboardObjective",
             at = @At(
                     value="INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;drawWithShadow(Ljava/lang/String;FFI)I", ordinal=1
@@ -54,6 +107,7 @@ public class PlayerListHudMixin {
         if (!BedwarsMod.instance.isEnabled()) {
             return;
         }
+
         BedwarsGame game = BedwarsMod.instance.getGame().orElse(null);
         if (game == null) {
             return;
@@ -64,17 +118,18 @@ public class PlayerListHudMixin {
         }
         ci.cancel();
         String render;
-        int color = 16777215;
+        int color;
         if (!bedwarsPlayer.isAlive()) {
             if (bedwarsPlayer.isDisconnected()) {
                 return;
             }
             int tickTillLive = Math.max(0, bedwarsPlayer.getTickAlive() - this.client.inGameHud.getTicks());
             float secondsTillLive = tickTillLive / 20f;
-            render = String.format("%.2f", secondsTillLive) + "s";
+            render = String.format("%.1f", secondsTillLive) + "s";
+            color = new Colour(200, 200, 200).getValue();
         } else {
             int health = objective.getScoreboard().getPlayerScore(player, objective).getScore();
-            color = new Colour(50,205,50).lerp(new Colour(215, 0, 64), 1 - (health / 20f)).getValue();
+            color = new Colour(255,255,255).lerp(new Colour(215, 0, 64), 1 - (health / 20f)).getValue();
             render = String.valueOf(health);
         }
         // Health
@@ -85,6 +140,23 @@ public class PlayerListHudMixin {
                 color
         );
 
+    }
+
+    @ModifyVariable(
+            method = "render",
+            at = @At(
+                    value="STORE"
+            ),
+            ordinal = 7
+    )
+    public int changeWidth(int value) {
+        if (BedwarsMod.instance.isEnabled() && BedwarsMod.instance.blockLatencyIcon() && (BedwarsMod.instance.isWaiting() || BedwarsMod.instance.inGame())) {
+            value -= 9;
+        }
+        if (BedwarsMod.instance.isEnabled() && BedwarsMod.instance.isWaiting()) {
+            value += 20;
+        }
+        return value;
     }
 
     @Inject(method = "getPlayerName", at = @At("HEAD"), cancellable = true)

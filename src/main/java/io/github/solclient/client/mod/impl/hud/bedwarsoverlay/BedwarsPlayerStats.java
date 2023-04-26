@@ -73,7 +73,7 @@ public class BedwarsPlayerStats {
         return  new BedwarsPlayerStats(finalKills, finalDeaths, bedsBroken, deaths, kills, losses, wins, winstreak);
     }
 
-    private static int getAsIntElse(JsonObject obj, String key, int other) {
+    public static int getAsIntElse(JsonObject obj, String key, int other) {
         if (obj.has(key)) {
             try {
                 return obj.get(key).getAsInt();
@@ -84,7 +84,7 @@ public class BedwarsPlayerStats {
         return other;
     }
 
-    private static JsonObject getObjectSafe(JsonObject object, String key) {
+    public static JsonObject getObjectSafe(JsonObject object, String key) {
         if (!object.has(key)) {
             return null;
         }
@@ -114,4 +114,13 @@ public class BedwarsPlayerStats {
     public void addBed() {
         bedsBroken++;
     }
+
+    public float getFKDR() {
+        return (float) finalKills / finalDeaths;
+    }
+
+    public float getBBLR() {
+        return (float) bedsBroken / losses;
+    }
+
 }

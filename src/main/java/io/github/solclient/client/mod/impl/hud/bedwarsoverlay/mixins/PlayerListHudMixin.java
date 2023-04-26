@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import com.google.gson.JsonObject;
 import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAPICache;
+import io.github.solclient.client.mod.impl.hypixeladditions.HypixelAdditionsMod;
 import io.github.solclient.client.util.data.Colour;
 import net.hypixel.api.reply.PlayerReply;
 import net.minecraft.client.MinecraftClient;
@@ -64,17 +65,9 @@ public class PlayerListHudMixin {
             return;
         }
         Optional<PlayerReply.Player> playerStatsOpt = HypixelAPICache.getInstance().getPlayerFromCache(playerListEntry2.getProfile().getId());
-        if (!playerStatsOpt.isPresent()) {
-            return;
-        }
         int startX = v + i + 1;
         int endX = startX + n;
-        JsonObject playerStats = playerStatsOpt.get().getRaw().get("stats").getAsJsonObject();
-        JsonObject stats = BedwarsPlayerStats.getObjectSafe(playerStats, "Bedwars");
-        if (stats == null) {
-            return;
-        }
-        String render = String.format("%.2f", (float) (BedwarsPlayerStats.getAsIntElse(stats, "final_kills_bedwars", 1)) / BedwarsPlayerStats.getAsIntElse(stats, "final_deaths_bedwars", 1));
+        String render = HypixelAdditionsMod.instance.getLevelhead(false, playerListEntry2.getDisplayName().asFormattedString(), playerListEntry2.getProfile().getId());
         this.client.textRenderer.drawWithShadow(
                 render,
                 (float)(endX - this.client.textRenderer.getStringWidth(render)) + 20,

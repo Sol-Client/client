@@ -157,9 +157,8 @@ public class BedwarsPlayer {
         if (stats != null) {
             if (finalKill) {
                 stats.addFinalKill();
-            } else {
-                stats.addKill();
             }
+            stats.addKill();
         }
     }
 }

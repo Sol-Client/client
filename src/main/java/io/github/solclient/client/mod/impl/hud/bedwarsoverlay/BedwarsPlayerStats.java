@@ -40,15 +40,42 @@ public class BedwarsPlayerStats {
     @Getter
     private int kills;
     @Getter
+    private int gameFinalKills;
+    @Getter
+    private int gameFinalDeaths;
+    @Getter
+    private int gameBedsBroken;
+    @Getter
+    private int gameDeaths;
+    @Getter
+    private int gameKills;
+    @Getter
     private final int losses;
     @Getter
     private final int wins;
     @Getter
     private final int winstreak;
+    @Getter
+    private final int stars;
 
 
     public static BedwarsPlayerStats generateFake() {
-        return new BedwarsPlayerStats(0, 0, 0, 0, 0, 0, 0, 0);
+        return new BedwarsPlayerStats(
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1
+        );
     }
 
     @Nullable
@@ -70,7 +97,12 @@ public class BedwarsPlayerStats {
         int losses = getAsIntElse(bedwars, "losses_bedwars", 0);
         int wins = getAsIntElse(bedwars, "wins_bedwars", 0);
         int winstreak = getAsIntElse(bedwars, "winstreak", 0);
-        return  new BedwarsPlayerStats(finalKills, finalDeaths, bedsBroken, deaths, kills, losses, wins, winstreak);
+        JsonObject achievements = getObjectSafe(stats, "achievements");
+        int stars = 1;
+        if (achievements != null) {
+            stars = getAsIntElse(achievements, "bedwars_level", 1);
+        }
+        return  new BedwarsPlayerStats(finalKills, finalDeaths, bedsBroken, deaths, kills, 0, 0, 0, 0, 0, losses, wins, winstreak, stars);
     }
 
     public static int getAsIntElse(JsonObject obj, String key, int other) {
@@ -97,22 +129,27 @@ public class BedwarsPlayerStats {
 
     public void addDeath() {
         deaths++;
+        gameDeaths++;
     }
 
     public void addFinalDeath() {
         finalDeaths++;
+        gameFinalDeaths++;
     }
 
     public void addKill() {
         kills++;
+        gameKills++;
     }
 
     public void addFinalKill() {
         finalKills++;
+        gameFinalKills++;
     }
 
     public void addBed() {
         bedsBroken++;
+        gameBedsBroken++;
     }
 
     public float getFKDR() {

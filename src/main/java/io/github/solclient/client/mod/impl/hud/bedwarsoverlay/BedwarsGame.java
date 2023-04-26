@@ -176,13 +176,38 @@ public class BedwarsGame {
     }
 
     private String formatEliminated(BedwarsTeam team) {
-        return "§6§l§oTEAM ELMINATED §8§l> " + team.getColorSection() + team.getName() + " Team §7/eliminated/ ";
+        StringBuilder message = new StringBuilder(
+                "§6§l§oTEAM ELIMINATED §8§l> " + team.getColorSection() + team.getName() + " Team §7/eliminated/ ");
+        for (BedwarsPlayer p : players.values().stream()
+                                      .filter(b -> b.getTeam() == team)
+                                      .sorted(Comparator.comparingInt(BedwarsPlayer::getNumber))
+                                      .collect(Collectors.toList()))
+        {
+            BedwarsPlayerStats stats = p.getStats();
+            if (stats == null) {
+                continue;
+            }
+            message.append("\n")
+                   .append("§b")
+                   .append(stats.getStars())
+                   .append(" ")
+                   .append(p.getColoredName())
+                   .append("§7 Beds: §f")
+                   .append(stats.getBedsBroken())
+                   .append("§7 Finals: §f")
+                   .append(stats.getFinalKills())
+                   .append("§7 FKDR: §f")
+                   .append(String.format("%.2f", stats.getFKDR()))
+                   .append("§7 BBLR: §f")
+                   .append(String.format("%.2f", stats.getBBLR()));
+        }
+        return message.toString();
     }
 
     private String formatBed(BedwarsTeam team, BedwarsPlayer breaker) {
         String playerFormatted = getPlayerFormatted(breaker);
         return "§6§l§oBED BROKEN §8§l> " + team.getColorSection() + team.getName() + " Bed §7/broken/ " + playerFormatted +
-                (breaker.getStats() == null ? "" : " §6" + breaker.getStats().getBedsBroken());
+                (breaker.getStats() == null || breaker.getTeam() != me.getTeam() ? "" : " §6" + breaker.getStats().getBedsBroken());
     }
 
     private String formatDeath(BedwarsPlayer player, @Nullable BedwarsPlayer killer, BedwarsDeathType type, boolean finalDeath) {
@@ -197,7 +222,7 @@ public class BedwarsGame {
             return playerFormatted + " " + inner;
         }
         String killerFormatted = getPlayerFormatted(killer);
-        if (finalDeath && killer.getStats() != null) {
+        if (finalDeath && killer.getStats() != null && killer.getTeam() == me.getTeam()) {
             killerFormatted += " §6" + killer.getStats().getFinalKills();
         }
         return playerFormatted + " " + inner + " " + killerFormatted;
@@ -444,11 +469,7 @@ public class BedwarsGame {
         if (stats == null) {
             return null;
         }
-        if (seconds / 5 % 2 == 0) {
-            return String.format("FKDR %.2f", stats.getFKDR());
-        } else {
-            return String.format("BBLR %.2f", stats.getBBLR());
-        }
+        return "§7Kills: §f" + stats.getGameKills() + " §7Deaths: §f" + stats.getGameDeaths();
     }
 
 }

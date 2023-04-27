@@ -64,7 +64,6 @@ public class PlayerListHudMixin {
         if (!BedwarsMod.instance.isEnabled() || !BedwarsMod.instance.isWaiting()) {
             return;
         }
-        Optional<PlayerReply.Player> playerStatsOpt = HypixelAPICache.getInstance().getPlayerFromCache(playerListEntry2.getProfile().getId());
         int startX = v + i + 1;
         int endX = startX + n;
         String render = HypixelAdditionsMod.instance.getLevelhead(false, playerListEntry2.getDisplayName().asFormattedString(), playerListEntry2.getProfile().getId());

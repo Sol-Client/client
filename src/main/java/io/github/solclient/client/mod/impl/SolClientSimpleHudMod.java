@@ -67,7 +67,7 @@ public abstract class SolClientSimpleHudMod extends SolClientHudMod {
 			});
 
 	@Override
-	public Rectangle getBounds(Position position) {
+	public Rectangle getBounds(Position position, boolean editMode) {
 		return new Rectangle(position.getX(), position.getY(), getWidth(), 16);
 	}
 
@@ -80,7 +80,7 @@ public abstract class SolClientSimpleHudMod extends SolClientHudMod {
 		String text = getText(editMode);
 		if (text != null) {
 			if (background) {
-				getBounds(position).fill(backgroundColour);
+				getBounds(position, editMode).fill(backgroundColour);
 			} else {
 				if (!text.isEmpty()) {
 					text = "[" + text + "]";
@@ -88,9 +88,9 @@ public abstract class SolClientSimpleHudMod extends SolClientHudMod {
 			}
 
 			if (border) {
-				getBounds(position).stroke(borderColour);
+				getBounds(position, editMode).stroke(borderColour);
 			}
-			font.draw(text, position.getX() + (getBounds(position).getWidth() / 2F) - (font.getStringWidth(text) / 2F),
+			font.draw(text, position.getX() + (getBounds(position, editMode).getWidth() / 2F) - (font.getStringWidth(text) / 2F),
 					position.getY() + 4, textColour.getValue(), shadow);
 		}
 	}

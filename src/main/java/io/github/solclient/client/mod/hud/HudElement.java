@@ -22,9 +22,13 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.replaymod.replay.ReplayModReplay;
 
 import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Window;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a HUD element. May be contained inside a mod.
@@ -35,17 +39,30 @@ public interface HudElement {
 
 	Position getConfiguredPosition();
 
+    default List<ModOption<?>> createOptions() {
+        return new ArrayList<>();
+    }
+
 	default Position getPosition() {
 		Position result = getConfiguredPosition();
 		if (result == null) {
 			Window window = new Window(MinecraftClient.getInstance());
 			Position defaultPosition = determineDefaultPosition(window.getWidth(), window.getHeight());
-			setPosition(defaultPosition);
+			setPosition(defaultPosition, true);
 			result = defaultPosition;
 		}
 
 		return result;
 	}
+
+    default Rectangle updateBounds(boolean editMode) {
+        Window window = new Window(MinecraftClient.getInstance());
+        return updateBounds(editMode, (int) window.getScaledWidth(), (int) window.getScaledHeight());
+    }
+
+    default Rectangle updateBounds(boolean editMode, int scaledWidth, int scaledHeight) {
+        return null;
+    }
 
 	default Position getDividedPosition() {
 		return new Position((int) (getPosition().getX() / getScale()),
@@ -56,18 +73,22 @@ public interface HudElement {
 		return new Position(0, 0);
 	}
 
-	void setPosition(Position position);
+	void setPosition(Position position, boolean editMode);
 
 	boolean isVisible();
 
-	default Rectangle getBounds() {
-		return getBounds(getPosition());
+	default Rectangle getBounds(boolean editMode) {
+		return getBounds(getPosition(), editMode);
 	}
 
-	Rectangle getBounds(Position position);
+    default AnchorPoint getAnchor() {
+        return AnchorPoint.TOP_LEFT;
+    }
 
-	default Rectangle getMultipliedBounds() {
-		Rectangle rectangle = getBounds();
+	Rectangle getBounds(Position position, boolean editMode);
+
+	default Rectangle getMultipliedBounds(boolean editMode) {
+		Rectangle rectangle = getBounds(editMode);
 		if (rectangle == null)
 			return null;
 
@@ -89,11 +110,14 @@ public interface HudElement {
 
 	Mod getMod();
 
-	default boolean isHovered(int x, int y) {
-		Rectangle bounds = getMultipliedBounds();
-		return bounds != null && bounds.contains(x, y);
-	}
-
 	boolean isShownInReplay();
+
+    default void setAnchorPoint(AnchorPoint p) {
+
+    }
+
+    default boolean isDynamic() {
+        return false;
+    }
 
 }

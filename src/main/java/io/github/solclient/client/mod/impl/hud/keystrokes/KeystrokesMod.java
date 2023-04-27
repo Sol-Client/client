@@ -102,7 +102,7 @@ public class KeystrokesMod extends SolClientHudMod {
 	}
 
 	@Override
-	public Rectangle getBounds(Position position) {
+	public Rectangle getBounds(Position position, boolean editMode) {
 		int height = 0;
 
 		if (movement)

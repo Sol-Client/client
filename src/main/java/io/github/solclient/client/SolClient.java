@@ -40,7 +40,7 @@ public final class SolClient implements Iterable<Mod> {
 
 	public static final SolClient INSTANCE = new SolClient();
 
-	private static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger();
 	private static final Gson DEFAULT_GSON = getGson(null);
 
 	private final List<Mod> mods = new ArrayList<>();
@@ -165,11 +165,7 @@ public final class SolClient implements Iterable<Mod> {
 		if (config == null)
 			return;
 
-		try {
-			getGson(mod).fromJson(config, mod.getClass());
-		} catch (Throwable error) {
-			LOGGER.error("Could not configure mod {} on {}", mod.getId(), config, error);
-		}
+        mod.loadConfig(config);
 	}
 
 	/**
@@ -251,10 +247,12 @@ public final class SolClient implements Iterable<Mod> {
 		}
 	}
 
-	private static Gson getGson(Mod mod) {
+	public static Gson getGson(Mod mod) {
 		GsonBuilder builder = new GsonBuilder();
-		if (mod != null)
-			builder.registerTypeAdapter(mod.getClass(), (InstanceCreator<Mod>) (type) -> mod);
+		if (mod != null) {
+            builder.registerTypeAdapter(mod.getClass(), (InstanceCreator<Mod>) (type) -> mod);
+            mod.registerTypeAdapters(builder);
+        }
 
 		return builder.excludeFieldsWithoutExposeAnnotation().create();
 	}

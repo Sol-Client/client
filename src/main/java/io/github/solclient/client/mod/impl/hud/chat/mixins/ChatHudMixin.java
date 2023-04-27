@@ -62,7 +62,7 @@ public class ChatHudMixin {
 	@Redirect(method = "getChatScale", at = @At(value = "FIELD", target = "Lnet/minecraft/client/option/GameOptions;chatScale:F"))
 	public float overrideChatScale(GameOptions instance) {
 		if (ChatMod.enabled)
-			return ChatMod.instance.scale / 100F;
+			return ChatMod.instance.getScale();
 
 		return instance.chatScale;
 	}

@@ -57,7 +57,7 @@ public class ArmourMod extends SolClientHudMod {
 	private Colour textColour = Colour.WHITE;
 
 	@Override
-	public Rectangle getBounds(Position position) {
+	public Rectangle getBounds(Position position, boolean editMode) {
 		if (horizontal) {
 			int width = 1;
 

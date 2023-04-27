@@ -36,9 +36,6 @@ public class PotionEffectsMod extends SolClientHudMod {
 
 	@Expose
 	@Option
-	private VerticalAlignment alignment = VerticalAlignment.MIDDLE;
-	@Expose
-	@Option
 	private boolean icon = true;
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
@@ -64,21 +61,14 @@ public class PotionEffectsMod extends SolClientHudMod {
 	private float spacing = 15;
 
 	@Override
-	public Rectangle getBounds(Position position) {
-		int y = position.getY();
-
-		switch (alignment) {
-			case TOP:
-				break;
-			case MIDDLE:
-				y -= getHeight(2) / 2 * getScale();
-				break;
-			case BOTTOM:
-				y -= getHeight(2) * getScale();
-				break;
-		}
-
-		return new Rectangle(position.getX(), y, getWidth(), getHeight(2) + 12 + (background ? 2 : 0));
+	public Rectangle getBounds(Position position, boolean editMode) {
+        int size;
+        if (editMode || mc.player == null)
+            size = 2;
+        else {
+            size = mc.player.getStatusEffectInstances().size();
+        }
+		return new Rectangle(position.getX(), position.getY(), getWidth(), getHeight(size) + 12 + (background ? 2 : 0));
 	}
 
 	private int getHeight(int size) {
@@ -89,7 +79,12 @@ public class PotionEffectsMod extends SolClientHudMod {
 		return (int) (18 + spacing);
 	}
 
-	@Override
+    @Override
+    public boolean isDynamic() {
+        return true;
+    }
+
+    @Override
 	public void render(Position position, boolean editMode) {
 		int x = position.getX();
 		int y = position.getY();
@@ -100,16 +95,6 @@ public class PotionEffectsMod extends SolClientHudMod {
 		else {
 			GlStateManager.enableBlend();
 			effects = mc.player.getStatusEffectInstances();
-		}
-
-		switch (alignment) {
-			case TOP:
-				break;
-			case MIDDLE:
-				y -= (getHeight(effects.size()) / 2);
-				break;
-			case BOTTOM:
-				y -= getHeight(effects.size());
 		}
 
 		if (!effects.isEmpty()) {
@@ -166,6 +151,7 @@ public class PotionEffectsMod extends SolClientHudMod {
 				y += getEffectHeight();
 			}
 		}
+        GlStateManager.disableBlend();
 	}
 
 	private int getWidth() {

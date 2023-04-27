@@ -49,12 +49,12 @@ public class SpeedometerMod extends SolClientSimpleHudMod {
 	}
 
 	@Override
-	public Rectangle getBounds(Position position) {
+	public Rectangle getBounds(Position position, boolean editMode) {
 		if (!graphMode) {
-			return super.getBounds(position);
+			return super.getBounds(position, editMode);
 		}
 
-		return super.getBounds(position).multiply(1.5F, 1.5F);
+		return super.getBounds(position, editMode).multiply(1.5F, 1.5F);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class SpeedometerMod extends SolClientSimpleHudMod {
 				speeds = new double[SPEED_COUNT];
 			}
 
-			Rectangle bounds = element.getMultipliedBounds();
+			Rectangle bounds = element.getMultipliedBounds(editMode);
 			MinecraftUtils.scissor(bounds);
 			textColour.bind();
 			GL11.glLineWidth(1.5F);
@@ -89,8 +89,8 @@ public class SpeedometerMod extends SolClientSimpleHudMod {
 
 			for (int i = 0; i < SPEED_COUNT; i++) {
 				GL11.glVertex2d(
-						position.getX() + (i * (((getBounds(position).getWidth() + 0.4) / SPEED_COUNT))),
-						position.getY() - 2 + getBounds(position).getHeight() - (speeds[i] * 16));
+						position.getX() + (i * (((getBounds(position, editMode).getWidth() + 0.4) / SPEED_COUNT))),
+						position.getY() - 2 + getBounds(position, editMode).getHeight() - (speeds[i] * 16));
 			}
 
 			GL11.glEnd();

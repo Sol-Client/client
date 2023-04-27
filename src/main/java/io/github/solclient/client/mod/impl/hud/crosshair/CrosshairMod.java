@@ -26,8 +26,10 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.impl.SolClientHudMod;
+import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.option.ModOption;
 import io.github.solclient.client.mod.option.annotation.Option;
+import io.github.solclient.client.mod.option.annotation.Slider;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.DrawableHelper;
@@ -35,12 +37,17 @@ import net.minecraft.client.util.Window;
 import net.minecraft.util.hit.BlockHitResult.Type;
 import net.minecraft.world.level.LevelInfo.GameMode;
 
-public class CrosshairMod extends SolClientHudMod {
+public class CrosshairMod extends StandardMod {
 
 	public static boolean enabled;
 	public static CrosshairMod instance;
 
 	private static final String DEFAULT_CROSSHAIR = "LCCH-9-ECBAgPAfAgQIEAA";
+
+    @Expose
+    @Option(translationKey = SolClientHudMod.TRANSLATION_KEY)
+    @Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
+    private float scale = 100;
 
 	@Expose
 	final PixelMatrix pixels = new PixelMatrix(15, 15);
@@ -90,6 +97,10 @@ public class CrosshairMod extends SolClientHudMod {
 		super.onDisable();
 		enabled = false;
 	}
+
+    public float getScale() {
+        return scale / 100f;
+    }
 
 	@Override
 	public List<ModOption<?>> createOptions() {

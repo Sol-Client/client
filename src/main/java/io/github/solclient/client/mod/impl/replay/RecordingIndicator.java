@@ -87,7 +87,7 @@ public class RecordingIndicator implements HudElement {
 	}
 
 	@Override
-	public void setPosition(Position position) {
+	public void setPosition(Position position, boolean editMode) {
 		mod.recordingIndicatorPosition = position;
 	}
 
@@ -97,7 +97,7 @@ public class RecordingIndicator implements HudElement {
 	}
 
 	@Override
-	public Rectangle getBounds(Position position) {
+	public Rectangle getBounds(Position position, boolean editMode) {
 		return new Rectangle(position.getX() - 2, position.getY() - 2, 75, 20);
 	}
 

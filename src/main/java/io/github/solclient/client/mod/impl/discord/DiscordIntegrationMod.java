@@ -65,9 +65,6 @@ public class DiscordIntegrationMod extends StandardMod {
 	@Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
 	float voiceChatHudScale = 100;
 	@Expose
-	@Option
-	VerticalAlignment voiceChatHudAlignment = VerticalAlignment.TOP;
-	@Expose
 	Position voiceChatHudPosition;
 	@Expose
 	@Option

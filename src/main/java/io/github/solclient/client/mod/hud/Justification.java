@@ -16,16 +16,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.util.data;
+package io.github.solclient.client.mod.hud;
 
-import net.minecraft.client.resource.language.I18n;
 
-public enum VerticalAlignment {
-	TOP, MIDDLE, BOTTOM;
+import net.minecraft.client.MinecraftClient;
 
-	@Override
-	public String toString() {
-		return I18n.translate("sol_client.vertical_alignment." + name().toLowerCase());
-	}
+import java.util.Locale;
+
+public enum Justification {
+
+    LEFT, CENTER, RIGHT;
+
+    public String getDisplayKey() {
+        return "sol_client.justification." + name().toLowerCase(Locale.ROOT);
+    }
+
+    public int getXOffset(String string, int width) {
+        if (this == LEFT) {
+            return 0;
+        }
+        return getXOffset(MinecraftClient.getInstance().textRenderer.getStringWidth(string), width);
+    }
+
+    public int getXOffset(int textWidth, int width) {
+        if (this == LEFT) {
+            return 0;
+        }
+        if (this == RIGHT) {
+            return width - textWidth;
+        }
+        return (width - textWidth) / 2;
+    }
 
 }

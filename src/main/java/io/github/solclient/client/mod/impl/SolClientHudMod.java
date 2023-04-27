@@ -20,15 +20,21 @@ package io.github.solclient.client.mod.impl;
 
 import java.util.*;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.hud.AbstractHudElement;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.annotation.AbstractTranslationKey;
-import io.github.solclient.client.mod.option.impl.SliderOption;
 import io.github.solclient.client.util.data.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.util.Window;
 
 /**
  * Represents a mod with only a single HUD.
@@ -41,21 +47,20 @@ public abstract class SolClientHudMod extends StandardMod {
 	/**
 	 * Represents the single element that this mod contains.
 	 */
-	protected final HudElement element = new HudModElement();
+    @Expose
+	protected final HudModElement element = new HudModElement();
 
-	@Expose
-	private Position position;
-	@Expose
-	public float scale = 100;
 	protected TextRenderer font;
 
-	@Override
+    @Override
+    public void registerTypeAdapters(GsonBuilder builder) {
+        builder.registerTypeAdapter(element.getClass(), (InstanceCreator<HudModElement>) (type) -> element);
+    }
+
+    @Override
 	protected List<ModOption<?>> createOptions() {
 		List<ModOption<?>> options = super.createOptions();
-		options.add(1,
-				new SliderOption(TRANSLATION_KEY + ".option.scale",
-						ModOptionStorage.of(Number.class, () -> scale, (value) -> scale = value.floatValue()),
-						Optional.of("sol_client.slider.percent"), 50, 150, 1));
+        options.addAll(1, element.createOptions());
 		return options;
 	}
 
@@ -65,26 +70,24 @@ public abstract class SolClientHudMod extends StandardMod {
 		this.font = mc.textRenderer;
 	}
 
-	protected float getScale() {
-		return scale / 100;
-	}
+    public boolean isDynamic() {
+        return false;
+    }
 
 	@Override
 	public List<HudElement> getHudElements() {
 		return Arrays.asList(element);
 	}
 
-	public void setPosition(Position position) {
-		element.setPosition(position);
-	}
-
 	public boolean isVisible() {
 		return true;
 	}
 
-	public Rectangle getBounds(Position position) {
-		return null;
-	}
+    public float getScale() {
+        return element.getScale();
+    }
+
+	public abstract Rectangle getBounds(Position position, boolean editMode);
 
 	@Override
 	public void render(boolean editMode) {
@@ -102,7 +105,33 @@ public abstract class SolClientHudMod extends StandardMod {
 		return new Position(0, 0);
 	}
 
-	class HudModElement implements HudElement {
+    @Override
+    public void loadConfig(JsonObject config) {
+        // Migrate old format for positions to this new fancy one
+        JsonObject elementObj = null;
+        if (!config.has("element")) {
+            elementObj = new JsonObject();
+            config.add("element", elementObj);
+        }
+        if (elementObj != null) {
+            JsonElement jsonScale = config.remove("scale");
+            if (jsonScale != null) {
+                elementObj.add("scale", jsonScale);
+            }
+            Window window = new Window(MinecraftClient.getInstance());
+            JsonElement jsonX = config.remove("y");
+            if (jsonX != null) {
+                elementObj.addProperty("x", window.getScaledHeight() > 0 ? jsonX.getAsInt() / window.getScaledWidth() : 0);
+            }
+            JsonElement jsonY = config.remove("y");
+            if (jsonY != null) {
+                elementObj.addProperty("y", window.getScaledHeight() > 0 ? jsonY.getAsInt() / window.getScaledHeight() : 0);
+            }
+        }
+        super.loadConfig(config);
+    }
+
+    protected class HudModElement extends AbstractHudElement {
 
 		@Override
 		public Mod getMod() {
@@ -110,23 +139,8 @@ public abstract class SolClientHudMod extends StandardMod {
 		}
 
 		@Override
-		public Position getConfiguredPosition() {
-			return position;
-		}
-
-		@Override
-		public void setPosition(Position position) {
-			SolClientHudMod.this.position = position;
-		}
-
-		@Override
 		public Position determineDefaultPosition(int width, int height) {
 			return SolClientHudMod.this.determineDefaultPosition(width, height);
-		}
-
-		@Override
-		public float getScale() {
-			return scale / 100F;
 		}
 
 		@Override
@@ -145,10 +159,18 @@ public abstract class SolClientHudMod extends StandardMod {
 		}
 
 		@Override
-		public Rectangle getBounds(Position position) {
-			return SolClientHudMod.this.getBounds(position);
+		public Rectangle getBounds(Position position, boolean editMode) {
+			return SolClientHudMod.this.getBounds(position, editMode);
 		}
 
-	}
+        public void setScale(float scale) {
+            this.scale = scale;
+        }
+
+        @Override
+        public boolean isDynamic() {
+            return SolClientHudMod.this.isDynamic();
+        }
+    }
 
 }

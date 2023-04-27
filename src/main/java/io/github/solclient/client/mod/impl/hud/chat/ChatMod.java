@@ -32,6 +32,7 @@ import io.github.solclient.client.mod.impl.core.mixins.client.ChatHudAccessor;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.util.GlobalConstants;
+import lombok.Getter;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.screen.Screen;
@@ -39,7 +40,12 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 
-public class ChatMod extends SolClientHudMod {
+public class ChatMod extends StandardMod {
+
+    @Expose
+    @Option(translationKey = SolClientHudMod.TRANSLATION_KEY)
+    @Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
+    private float scale = 100;
 
 	private static final float ANIMATION_MULTIPLIER = 0.5F;
 
@@ -124,6 +130,10 @@ public class ChatMod extends SolClientHudMod {
 		super.init();
 		instance = this;
 	}
+
+    public float getScale() {
+        return scale / 100f;
+    }
 
 	@Override
 	public void lateInit() {

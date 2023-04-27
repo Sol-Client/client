@@ -191,11 +191,11 @@ public final class ClockMod extends SolClientSimpleHudMod {
 	}
 
 	@Override
-	public Rectangle getBounds(Position position) {
+	public Rectangle getBounds(Position position, boolean editMode) {
 		if (analogue)
 			return position.rectangle(RADIUS * 2, RADIUS * 2);
 
-		return super.getBounds(position);
+		return super.getBounds(position, editMode);
 	}
 
 }

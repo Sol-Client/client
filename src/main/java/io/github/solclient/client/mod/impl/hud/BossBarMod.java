@@ -23,19 +23,25 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
+import io.github.solclient.client.mod.Mod;
 import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.Colour;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.Window;
 import net.minecraft.entity.boss.BossBar;
 
-public final class BossBarMod extends SolClientHudMod {
+public final class BossBarMod extends StandardMod {
 
 	@Expose
 	@Option
 	private boolean hide;
+    @Expose
+    @Option(translationKey = SolClientHudMod.TRANSLATION_KEY)
+    @Slider(min = 50, max = 150, step = 1, format = "sol_client.slider.percent")
+    private float scale = 100;
 	@Expose
 	@Option
 	private boolean text = true;
@@ -53,7 +59,19 @@ public final class BossBarMod extends SolClientHudMod {
 	@Slider(min = 0, max = 15, step = 1, format = "sol_client.slider.pixels")
 	private int offset = 2;
 
-	@EventHandler
+    private TextRenderer font;
+
+    @Override
+    public void lateInit() {
+        super.lateInit();
+        this.font = mc.textRenderer;
+    }
+
+    public float getScale() {
+        return scale / 100f;
+    }
+
+    @EventHandler
 	public void onBossBarRender(PreGameOverlayRenderEvent event) {
 		if (event.type != GameOverlayElement.BOSSHEALTH)
 			return;

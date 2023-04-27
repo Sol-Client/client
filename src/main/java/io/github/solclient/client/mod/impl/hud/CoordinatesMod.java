@@ -64,7 +64,7 @@ public class CoordinatesMod extends SolClientHudMod {
 	private boolean shadow = true;
 
 	@Override
-	public Rectangle getBounds(Position position) {
+	public Rectangle getBounds(Position position, boolean editMode) {
 		return new Rectangle(position.getX(), position.getY(), 82,
 				4 + font.fontHeight + 2 + font.fontHeight + 2 + font.fontHeight + 2);
 	}
@@ -77,11 +77,11 @@ public class CoordinatesMod extends SolClientHudMod {
 		}
 
 		if (background) {
-			getBounds(position).fill(backgroundColour);
+			getBounds(position, editMode).fill(backgroundColour);
 		}
 
 		if (border) {
-			getBounds(position).stroke(borderColour);
+			getBounds(position, editMode).stroke(borderColour);
 		}
 
 		double x, y, z, yaw;

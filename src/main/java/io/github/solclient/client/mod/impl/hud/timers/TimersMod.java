@@ -27,7 +27,6 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.BukkitMaterial;
@@ -49,9 +48,6 @@ public class TimersMod extends SolClientHudMod {
 
 	@Expose
 	@Option
-	private VerticalAlignment alignment = VerticalAlignment.MIDDLE;
-	@Expose
-	@Option
 	private boolean icon = true;
 	@Expose
 	@Option(translationKey = SolClientSimpleHudMod.TRANSLATION_KEY)
@@ -64,19 +60,11 @@ public class TimersMod extends SolClientHudMod {
 	private Colour timeColour = new Colour(8355711);
 
 	@Override
-	public Rectangle getBounds(Position position) {
+	public Rectangle getBounds(Position position, boolean editMode) {
 		int y = position.getY();
-		switch (alignment) {
-			case TOP:
-				break;
-			case MIDDLE:
-				y -= ((TIMER_HEIGHT * 3) / 2) * getScale();
-				break;
-			case BOTTOM:
-				y -= (TIMER_HEIGHT * 3) * getScale();
-		}
+        int size = editMode ? 3 : timers.size();
 		return new Rectangle(position.getX(), y,
-				22 + font.getStringWidth("Dishwasher") + 4 + font.getStringWidth("00:00"), 19 * 3);
+				22 + font.getStringWidth("Dishwasher") + 4 + font.getStringWidth("00:00"), TIMER_HEIGHT * size);
 	}
 
 	@Override
@@ -93,29 +81,23 @@ public class TimersMod extends SolClientHudMod {
 		}
 		DiffuseLighting.enable();
 		int y = position.getY();
-
-		switch (alignment) {
-			case TOP:
-				break;
-			case MIDDLE:
-				y -= (TIMER_HEIGHT * (timers.size())) / 2;
-				break;
-			case BOTTOM:
-				y -= TIMER_HEIGHT * timers.size();
-		}
-
 		for (Timer timer : timers.values()) {
 			mc.getItemRenderer().renderInGuiWithOverrides(timer.getRenderItem(), position.getX(), y);
 			font.draw(TIME_FORMAT.format(Math.ceil(timer.getTime() / 20F * 1000)),
 					font.draw(timer.getName(), position.getX() + 22, y + 5, nameColour.getValue(), shadow)
 							+ (shadow ? 3 : 4),
 					y + 5, timeColour.getValue(), shadow);
-			y += 19;
+			y += TIMER_HEIGHT;
 		}
 		DiffuseLighting.disable();
 	}
 
-	@EventHandler
+    @Override
+    public boolean isDynamic() {
+        return true;
+    }
+
+    @EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
 		timers.clear();
 	}

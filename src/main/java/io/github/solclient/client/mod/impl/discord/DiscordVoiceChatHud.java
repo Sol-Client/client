@@ -29,7 +29,7 @@ import lombok.Setter;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 
-public class DiscordVoiceChatHud implements HudElement {
+public class DiscordVoiceChatHud extends AbstractHudElement {
 
 	private static final int USER_HEIGHT = 20;
 
@@ -46,22 +46,16 @@ public class DiscordVoiceChatHud implements HudElement {
 		return mod.isEnabled() && mod.voiceChatHud;
 	}
 
-	@Override
-	public Rectangle getBounds(Position position) {
-		int yOffset = 0;
+    @Override
+    public boolean isDynamic() {
+        return true;
+    }
 
-		switch (mod.voiceChatHudAlignment) {
-			case MIDDLE:
-				yOffset = (USER_HEIGHT * 4) / 2;
-				break;
-			case BOTTOM:
-				yOffset = USER_HEIGHT * 4;
-				break;
-			default:
-				break;
-		}
+    @Override
+	public Rectangle getBounds(Position position, boolean editMode) {
+        int size = editMode ? 4 : mod.socket.getVoiceCallUsers().size();
 
-		return position.offset(0, -yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
+		return position.rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 20 * size);
 	}
 
 	@Override
@@ -94,17 +88,6 @@ public class DiscordVoiceChatHud implements HudElement {
 
 		int y = position.getY();
 
-		switch (mod.voiceChatHudAlignment) {
-			case MIDDLE:
-				y -= (USER_HEIGHT * (users.size())) / 2;
-				break;
-			case BOTTOM:
-				y -= USER_HEIGHT * users.size();
-				break;
-			default:
-				break;
-		}
-
 		for (User user : users) {
 			user.bindTexture();
 			DrawableHelper.drawTexture(position.getX(), y, 0, 0, 16, 16, 16, 16);
@@ -136,7 +119,7 @@ public class DiscordVoiceChatHud implements HudElement {
 	}
 
 	@Override
-	public void setPosition(Position position) {
+	public void setPosition(Position position, boolean editMode) {
 		mod.voiceChatHudPosition = position;
 	}
 

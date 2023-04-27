@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
 
+import io.github.solclient.client.SolClient;
 import org.apache.logging.log4j.*;
 
 import com.google.gson.*;
@@ -41,6 +42,8 @@ import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.mods.MoveHudsScreen;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
+
+import static io.github.solclient.client.SolClient.getGson;
 
 @AbstractTranslationKey("sol_client.mod.generic")
 public abstract class Mod extends Object {
@@ -337,6 +340,10 @@ public abstract class Mod extends Object {
 		}
 	}
 
+    public void registerTypeAdapters(GsonBuilder builder) {
+
+    }
+
 	void notifyUnpin() {
 		pinned = false;
 	}
@@ -361,4 +368,11 @@ public abstract class Mod extends Object {
 		}
 	}
 
+    public void loadConfig(JsonObject config) {
+        try {
+            getGson(this).fromJson(config, getClass());
+        } catch (Throwable error) {
+            SolClient.LOGGER.error("Could not configure mod {} on {}", getId(), config, error);
+        }
+    }
 }

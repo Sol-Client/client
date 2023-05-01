@@ -48,7 +48,7 @@ public class SliderOption<N extends Number> extends ModOption<N> {
 
 	@Override
 	public Component createComponent() {
-		Component container = createDefaultComponent(20, true);
+		Component container = createDefaultComponent();
 		container.add(new SliderComponent(min, max, step, getValue().floatValue(), (value) -> {
 			if (getType() == int.class)
 				setValue((N) (Integer) value.intValue());

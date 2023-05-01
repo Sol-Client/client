@@ -42,7 +42,7 @@ public class EnumOption<E extends Enum<?>> extends ModOption<E> {
 
 	@Override
 	public Component createComponent() {
-		Component container = createDefaultComponent(20, true);
+		Component container = createDefaultComponent();
 		int width = getWidth();
 
 		Component label = new LabelComponent((component, defaultText) -> getValue().toString(),

@@ -31,7 +31,6 @@ sol_client.key.category=Sol Client
 sol_client.key.accept_request=Принять запрос
 sol_client.key.dismiss_request=Отклонить запрос
 
-sol_client.mod.generic.option.enabled=Включено
 sol_client.mod.hud.option.scale=Масштаб
 sol_client.mod.simple_hud.option.background=Фон
 sol_client.mod.simple_hud.option.backgroundColour=Цвет фона
@@ -50,11 +49,8 @@ sol_client.mod.sol_client.option.modsKey=Ключ модулей
 sol_client.mod.sol_client.edit_hud=Редактировать интерфейс
 sol_client.mod.sol_client.option.editHudKey=Кнопка интерфейса
 sol_client.mod.sol_client.option.uiColour=Второй цвет
-sol_client.mod.sol_client.option.smoothUIColours=Плавная смена цветов
-sol_client.mod.sol_client.option.roundedUI=Скруглённый интерфейс
 sol_client.mod.sol_client.option.buttonClicks=Щелчки кнопок
 sol_client.mod.sol_client.option.smoothScrolling=Плавная промотка
-sol_client.mod.sol_client.option.fancyFont=Шрифт высокого разрешения
 
 sol_client.mod.fps.name=FPS
 sol_client.mod.fps.description=Отображает FPS (кадры в секунду).
@@ -156,7 +152,7 @@ sol_client.mod.chat.option.width=Ширина
 sol_client.mod.chat.option.closedHeight=Высота закрытого чата
 sol_client.mod.chat.option.openHeight=Высота открытого чата
 sol_client.mod.chat.option.links=Ссылки
-sol_client.mod.chat.option.promptLinks=Запрашивать разрешение на открытие ссылок 
+sol_client.mod.chat.option.promptLinks=Запрашивать разрешение на открытие ссылок
 sol_client.mod.chat.option.chatFilter=Фильтр чата
 sol_client.mod.chat.option.filteredWordsContent=Слова для фильтра
 
@@ -178,20 +174,6 @@ sol_client.mod.tab_list.option.textShadow=Тень текста
 
 sol_client.mod.crosshair.name=Прицел
 sol_client.mod.crosshair.description=Настраивает ваш прицел.
-
-sol_client.mod.crosshair.option.style=Стиль
-sol_client.mod.crosshair.option.style.default=По умолчанию
-sol_client.mod.crosshair.option.style.none=Без прицела
-sol_client.mod.crosshair.option.style.dot=Точка
-sol_client.mod.crosshair.option.style.plus=Плюс
-sol_client.mod.crosshair.option.style.plus_dot=Плюс с точкой
-sol_client.mod.crosshair.option.style.square=Квадрат
-sol_client.mod.crosshair.option.style.square_dot=Квадрат с точкой
-sol_client.mod.crosshair.option.style.circle=Круг
-sol_client.mod.crosshair.option.style.circle_dot=Круг с точкой
-sol_client.mod.crosshair.option.style.four_angled=Ракетный
-sol_client.mod.crosshair.option.style.four_angled_dot=Ракетный с точкой
-sol_client.mod.crosshair.option.style.triangle=Треугольный
 
 sol_client.mod.crosshair.option.thirdPerson=Показывать в режиме от 3-го лица
 sol_client.mod.crosshair.option.spectatorAlways=Показывать в режиме обозревателя
@@ -246,9 +228,6 @@ sol_client.mod.toggle_sprint.name=Переключатель бега
 sol_client.mod.toggle_sprint.description=Заставляет кнопку бега работать как переключатель.
 
 sol_client.mod.toggle_sprint.option.hud=HUD
-
-sol_client.mod.toggle_sprint.held=Бег (Зажат)
-sol_client.mod.toggle_sprint.toggled=Бег (Включен)
 
 sol_client.mod.zoom.name=Зум
 sol_client.mod.zoom.description=Приблизить мир при нажатии на клавишу.
@@ -424,6 +403,3 @@ sol_client.hud.edit=Редактировать интерфейс
 sol_client.packs.apply=Применить
 sol_client.packs.open_folder=Папка пакетов
 sol_client.packs.folder=Папка (%d элементов)
-
-sol_client.screenshot.view=Посмотреть
-sol_client.screenshot.open_folder=Показать в папке

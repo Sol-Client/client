@@ -56,4 +56,8 @@ final class Win32SystemCursors {
 	private static native long nGetDefaultCursorHandle(byte cursor);
 	private static native void nSetCursor(long hwnd, long cursor);
 
+	public static void update() {
+
+	}
+
 }

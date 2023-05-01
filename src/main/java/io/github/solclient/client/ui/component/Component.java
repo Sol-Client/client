@@ -21,7 +21,7 @@ package io.github.solclient.client.ui.component;
 import java.util.*;
 import java.util.function.BiPredicate;
 
-import org.lwjgl.LWJGLException;
+import org.lwjgl.*;
 import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.ui.component.controller.*;
@@ -71,8 +71,9 @@ public abstract class Component extends NanoVGManager {
 	}
 
 	static void applyCursor() throws LWJGLException {
-		if (oldCursor != cursor)
+		if (oldCursor != cursor || LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_WINDOWS)
 			SystemCursors.setCursor(cursor);
+
 		oldCursor = cursor;
 		cursor = 0;
 	}

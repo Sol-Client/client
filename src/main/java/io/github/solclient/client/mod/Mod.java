@@ -129,7 +129,7 @@ public abstract class Mod extends Object {
 	public <T> Iterable<ModOption<T>> getOptions(Class<T> type) {
 		return () -> getOptions().stream().filter((option) -> option.getType() == type)
 				.map((option) -> (ModOption<T>) option).iterator();
-	};
+	}
 
 	/**
 	 * Gets all options filtered to a type.
@@ -141,7 +141,7 @@ public abstract class Mod extends Object {
 	public <T> Iterable<T> getFlatOptions(Class<T> type) {
 		return () -> getOptions().stream().filter((option) -> option.getClass() == type).map((option) -> (T) option)
 				.iterator();
-	};
+	}
 
 	/**
 	 * Creates the configuration component.

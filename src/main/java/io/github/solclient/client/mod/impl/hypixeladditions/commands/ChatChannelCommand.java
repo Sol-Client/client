@@ -37,20 +37,35 @@ public class ChatChannelCommand extends HypixelAdditionsCommand {
 	public void execute(CommandSource sender, String[] args) throws CommandException {
 		ChatChannelSystem system = ChatApiMod.instance.getChannelSystem();
 		if (args.length == 1) {
-			if (args[0].equals("c") || args[0].equals("coop") || args[0].equals("co-op")
-					|| args[0].equals("skyblock_coop") || args[0].equals("skyblock_co-op")) {
-				system.setChannel(HypixelChatChannels.COOP);
-			} else if (args[0].equals("a") || args[0].equals("all")) {
-				system.setChannel(ChatChannelSystem.ALL);
-			} else if (args[0].equals("p") || args[0].equals("party")) {
-				system.setChannel(HypixelChatChannels.PARTY);
-			} else if (args[0].equals("o") || args[0].equals("officer") || args[0].equals("officers")
-					|| args[0].equals("guild_officer") || args[0].equals("guild_officers")) {
-				system.setChannel(HypixelChatChannels.OFFICER);
-			} else if (args[0].equals("g") || args[0].equals("guild")) {
-				system.setChannel(HypixelChatChannels.GUILD);
-			} else {
-				throw new IncorrectUsageException(getUsageTranslationKey(sender));
+			switch (args[0]) {
+				case "c":
+				case "coop":
+				case "co-op":
+				case "skyblock_coop":
+				case "skyblock_co-op":
+					system.setChannel(HypixelChatChannels.COOP);
+					break;
+				case "a":
+				case "all":
+					system.setChannel(ChatChannelSystem.ALL);
+					break;
+				case "p":
+				case "party":
+					system.setChannel(HypixelChatChannels.PARTY);
+					break;
+				case "o":
+				case "officer":
+				case "officers":
+				case "guild_officer":
+				case "guild_officers":
+					system.setChannel(HypixelChatChannels.OFFICER);
+					break;
+				case "g":
+				case "guild":
+					system.setChannel(HypixelChatChannels.GUILD);
+					break;
+				default:
+					throw new IncorrectUsageException(getUsageTranslationKey(sender));
 			}
 		} else if (args.length == 2 && (args[0].equals("2") || args[0].equals("t") || args[0].equals("to"))) {
 			system.setChannel(ChatChannelSystem.getPrivateChannel(args[1]));

@@ -28,6 +28,7 @@ import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.cursors.SystemCursors;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.util.math.MathHelper;
 

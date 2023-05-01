@@ -18,6 +18,8 @@
 
 package io.github.solclient.util;
 
+import org.lwjgl.LWJGLUtil;
+
 import lombok.*;
 
 @Data

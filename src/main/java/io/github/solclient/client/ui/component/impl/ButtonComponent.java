@@ -21,10 +21,11 @@ package io.github.solclient.client.ui.component.impl;
 import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.ui.Theme;
-import io.github.solclient.client.ui.component.ComponentRenderInfo;
+import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.ClickHandler;
 import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.cursors.SystemCursors;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.resource.language.I18n;

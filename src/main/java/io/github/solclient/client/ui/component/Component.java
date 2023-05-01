@@ -21,12 +21,14 @@ package io.github.solclient.client.ui.component;
 import java.util.*;
 import java.util.function.BiPredicate;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.*;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;
 import io.github.solclient.client.util.NanoVGManager;
+import io.github.solclient.client.util.cursors.SystemCursors;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
@@ -34,6 +36,8 @@ import net.minecraft.client.MinecraftClient;
 // 7 months later, I finally reintroduced the component API...
 public abstract class Component extends NanoVGManager {
 
+	private static byte oldCursor;
+	private static byte cursor;
 	protected MinecraftClient mc = MinecraftClient.getInstance();
 	protected ComponentScreen screen;
 	@Getter
@@ -58,6 +62,20 @@ public abstract class Component extends NanoVGManager {
 	private ClickHandler onReleaseAnywhere;
 	private Controller<Boolean> visibilityController;
 	private Rectangle cachedBounds;
+
+	public static void setCursor(byte cursor) {
+		if (Component.cursor != SystemCursors.ARROW)
+			return;
+
+		Component.cursor = cursor;
+	}
+
+	static void applyCursor() throws LWJGLException {
+		if (oldCursor != cursor)
+			SystemCursors.setCursor(cursor);
+		oldCursor = cursor;
+		cursor = 0;
+	}
 
 	public void add(Component component, Controller<Rectangle> position) {
 		subComponents.add(component);
@@ -141,9 +159,7 @@ public abstract class Component extends NanoVGManager {
 			actualInfo = ((ScrollListComponent) this).reverseTranslation(info);
 		}
 
-		hovered = actualInfo.relativeMouseX() > 0 && actualInfo.relativeMouseY() > 0
-				&& actualInfo.relativeMouseX() < getBounds().getWidth()
-				&& actualInfo.relativeMouseY() < getBounds().getHeight();
+		hovered = getRelativeBounds().contains((int) actualInfo.relativeMouseX(), (int) actualInfo.relativeMouseY());
 
 		if (parent != null) {
 			hovered = hovered && (parent.isHovered() || parent.dialog == this);

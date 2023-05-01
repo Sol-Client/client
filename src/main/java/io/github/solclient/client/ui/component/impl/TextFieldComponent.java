@@ -27,6 +27,7 @@ import com.google.common.base.Predicate;
 import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.util.cursors.SystemCursors;
 import io.github.solclient.client.util.data.*;
 import lombok.*;
 import net.minecraft.client.gui.screen.Screen;
@@ -113,6 +114,9 @@ public class TextFieldComponent extends Component {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
+		if (isHovered())
+			setCursor(SystemCursors.IBEAM);
+
 		if (underline) {
 			NanoVG.nvgBeginPath(nvg);
 			NanoVG.nvgFillColor(nvg, Theme.getCurrent().button.nvg());

@@ -18,11 +18,13 @@
 
 package io.github.solclient.client.ui.component;
 
-import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.*;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.*;
 
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.*;
+import io.github.solclient.client.util.cursors.SystemCursors;
 import io.github.solclient.client.util.data.*;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
@@ -31,6 +33,7 @@ import net.minecraft.client.util.Window;
 
 public class ComponentScreen extends Screen {
 
+	private static final Logger LOGGER = LogManager.getLogger();
 	@Getter
 	protected Screen parentScreen;
 	protected Component root;
@@ -83,6 +86,21 @@ public class ComponentScreen extends Screen {
 		} catch (Throwable error) {
 			LogManager.getLogger().error("Error rendering " + this, error);
 			client.setScreen(null);
+		}
+		try {
+			Component.applyCursor();
+		} catch (LWJGLException error) {
+			LOGGER.warn("Couldn't set cursor", error);
+		}
+
+	}
+
+	@Override
+	public void removed() {
+		try {
+			Mouse.setNativeCursor(null);
+		} catch (LWJGLException error) {
+			LOGGER.warn("Couldn't set cursor", error);
 		}
 	}
 

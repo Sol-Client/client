@@ -23,6 +23,7 @@ import org.lwjgl.nanovg.NanoVG;
 import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
+import io.github.solclient.client.util.cursors.SystemCursors;
 import io.github.solclient.client.util.data.*;
 
 public class ColourBoxComponent extends ColouredComponent {
@@ -38,11 +39,13 @@ public class ColourBoxComponent extends ColouredComponent {
 
 	@Override
 	public void render(ComponentRenderInfo info) {
+		if (hovered)
+			setCursor(SystemCursors.POINTING_HAND);
+
 		NanoVG.nvgBeginPath(nvg);
 		NanoVG.nvgFillColor(nvg, getColour().nvg());
 		NanoVG.nvgCircle(nvg, getBounds().getWidth() / 2, getBounds().getHeight() / 2, getBounds().getWidth() / 2);
 		NanoVG.nvgFill(nvg);
-
 
 		if (getColour().needsOutline(Theme.getCurrent().bg)) {
 			NanoVG.nvgStrokeColor(nvg, Theme.getCurrent().fg.nvg());

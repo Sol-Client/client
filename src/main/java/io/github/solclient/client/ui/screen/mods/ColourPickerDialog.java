@@ -30,6 +30,7 @@ import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.cursors.SystemCursors;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
@@ -157,6 +158,9 @@ public class ColourPickerDialog extends BlockComponent {
 		super.render(info);
 
 		NanoVG.nvgStrokeWidth(nvg, 1);
+
+		if (state != null || (inPicker(info) && (inSv(info) || inHue(info) || inOpacity(info))))
+			setCursor(SystemCursors.CROSSHAIR);
 
 		if (state == ModifyingState.SV) {
 			saturation = info.relativeMouseX() - PICKER_X;
@@ -319,15 +323,12 @@ public class ColourPickerDialog extends BlockComponent {
 	@Override
 	public boolean mouseClicked(ComponentRenderInfo info, int button) {
 		if ((button == 0)) {
-			if (state == null && info.relativeMouseX() >= PICKER_X
-					&& info.relativeMouseX() <= PICKER_X + PICKER_WIDTH) {
-				if (info.relativeMouseY() >= PICKER_Y && info.relativeMouseY() <= PICKER_Y + BOX_HEIGHT)
+			if (state == null && inPicker(info)) {
+				if (inSv(info))
 					state = ModifyingState.SV;
-				else if (info.relativeMouseY() >= PICKER_Y + HUE_Y
-						&& info.relativeMouseY() <= PICKER_Y + HUE_Y + SLIDER_HEIGHT)
+				else if (inHue(info))
 					state = ModifyingState.HUE;
-				else if (info.relativeMouseY() >= PICKER_Y + OPACITY_Y
-						&& info.relativeMouseY() <= PICKER_Y + OPACITY_Y + SLIDER_HEIGHT)
+				else if (inOpacity(info))
 					state = ModifyingState.OPACITY;
 			} else if (info.relativeMouseX() >= PREVIOUS_X && info.relativeMouseX() <= PREVIOUS_X + 70
 					&& info.relativeMouseY() >= PREVIOUS_Y && info.relativeMouseY() <= PREVIOUS_Y + 25
@@ -344,6 +345,23 @@ public class ColourPickerDialog extends BlockComponent {
 		}
 
 		return super.mouseClicked(info, button);
+	}
+
+	private boolean inOpacity(ComponentRenderInfo info) {
+		return info.relativeMouseY() >= PICKER_Y + OPACITY_Y
+				&& info.relativeMouseY() <= PICKER_Y + OPACITY_Y + SLIDER_HEIGHT;
+	}
+
+	private boolean inPicker(ComponentRenderInfo info) {
+		return info.relativeMouseX() >= PICKER_X && info.relativeMouseX() <= PICKER_X + PICKER_WIDTH;
+	}
+
+	private boolean inSv(ComponentRenderInfo info) {
+		return info.relativeMouseY() >= PICKER_Y && info.relativeMouseY() <= PICKER_Y + BOX_HEIGHT;
+	}
+
+	private boolean inHue(ComponentRenderInfo info) {
+		return info.relativeMouseY() >= PICKER_Y + HUE_Y && info.relativeMouseY() <= PICKER_Y + HUE_Y + SLIDER_HEIGHT;
 	}
 
 	@Override

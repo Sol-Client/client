@@ -27,6 +27,7 @@ import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.util.*;
+import io.github.solclient.client.util.cursors.SystemCursors;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
@@ -97,6 +98,9 @@ public final class CrosshairEditorDialog extends Component {
 
 		@Override
 		public void render(ComponentRenderInfo info) {
+			if (isHovered())
+				setCursor(SystemCursors.CROSSHAIR);
+
 			for (int y = 0; y < pixels.getHeight(); y++) {
 				for (int x = 0; x < pixels.getWidth(); x++) {
 					Colour colour;

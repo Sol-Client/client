@@ -55,17 +55,13 @@ public class SliderOption<N extends Number> extends ModOption<N> {
 			else
 				setValue((N) value);
 		}), new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
-		valueFormat.ifPresent((format) -> {
-			container.add(
-					new LabelComponent((component, defaultText) -> I18n.translate(format,
-							new DecimalFormat("0.##").format(getValue()))).scaled(0.8F),
-					new AlignedBoundsController(Alignment.END, Alignment.CENTRE, (component, defaultBounds) -> {
-						return new Rectangle(
-								(int) (container.getBounds().getWidth() - NanoVGManager.getRegularFont()
-										.getWidth(NanoVGManager.getNvg(), ((LabelComponent) component).getText()) - 84),
-								defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
-					}));
-		});
+		valueFormat.ifPresent((format) -> container.add(
+				new LabelComponent((component, defaultText) -> I18n.translate(format,
+						new DecimalFormat("0.##").format(getValue()))).scaled(0.8F),
+				new AlignedBoundsController(Alignment.END, Alignment.CENTRE, (component, defaultBounds) -> new Rectangle(
+						(int) (container.getBounds().getWidth() - NanoVGManager.getRegularFont()
+								.getWidth(NanoVGManager.getNvg(), ((LabelComponent) component).getText()) - 84),
+						defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight()))));
 		return container;
 	}
 

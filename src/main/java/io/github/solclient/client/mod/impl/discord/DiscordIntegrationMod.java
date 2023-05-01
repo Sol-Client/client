@@ -30,7 +30,6 @@ import de.jcm.discordgamesdk.CreateParams.Flags;
 import de.jcm.discordgamesdk.activity.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.impl.discord.socket.DiscordSocket;

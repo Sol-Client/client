@@ -18,21 +18,16 @@
 
 package io.github.solclient.client.mod;
 
-import java.io.*;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
 import java.util.*;
 
 import org.apache.logging.log4j.*;
 
-import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.mod.option.impl.*;
@@ -132,16 +127,9 @@ public abstract class Mod extends Object {
 	 * @return the options.
 	 */
 	public <T> Iterable<ModOption<T>> getOptions(Class<T> type) {
-		return new Iterable<ModOption<T>>() {
-
-			@Override
-			public Iterator<ModOption<T>> iterator() {
-				return getOptions().stream().filter((option) -> option.getType() == type)
-						.map((option) -> (ModOption<T>) option).iterator();
-			}
-
-		};
-	};
+		return () -> getOptions().stream().filter((option) -> option.getType() == type)
+				.map((option) -> (ModOption<T>) option).iterator();
+	}
 
 	/**
 	 * Gets all options filtered to a type.
@@ -151,16 +139,9 @@ public abstract class Mod extends Object {
 	 * @return the options.
 	 */
 	public <T> Iterable<T> getFlatOptions(Class<T> type) {
-		return new Iterable<T>() {
-
-			@Override
-			public Iterator<T> iterator() {
-				return getOptions().stream().filter((option) -> option.getClass() == type).map((option) -> (T) option)
-						.iterator();
-			}
-
-		};
-	};
+		return () -> getOptions().stream().filter((option) -> option.getClass() == type).map((option) -> (T) option)
+				.iterator();
+	}
 
 	/**
 	 * Creates the configuration component.

@@ -38,7 +38,6 @@ sol_client.key.accept_request=Aceptar Petición
 sol_client.key.dismiss_request=Descartar Petición
 
 
-sol_client.mod.generic.option.enabled=Activado
 sol_client.mod.hud.option.scale=Escala
 sol_client.mod.simple_hud.option.background=Fondo
 sol_client.mod.simple_hud.option.backgroundColour=Color Del Fondo
@@ -61,11 +60,8 @@ sol_client.mod.sol_client.option.modsKey=Clave De Módulos
 sol_client.mod.sol_client.edit_hud=Editar Monitor
 sol_client.mod.sol_client.option.editHudKey=Tecla De Editar Monitor
 sol_client.mod.sol_client.option.uiColour=Color Acento
-sol_client.mod.sol_client.option.smoothUIColours=Suavizar Colores De Interfaz De Usuario
-sol_client.mod.sol_client.option.roundedUI=Interfaz De Usuario Redondeado
 sol_client.mod.sol_client.option.buttonClicks=Clices De Botón
 sol_client.mod.sol_client.option.smoothScrolling=Desplazamiento suave
-sol_client.mod.sol_client.option.fancyFont=Tipografía de alta definición
 
 
 sol_client.mod.fps.name=FPS
@@ -219,21 +215,6 @@ sol_client.mod.crosshair.name=Punto de mira
 sol_client.mod.crosshair.description=Personalizar el punto de mira.
 
 
-sol_client.mod.crosshair.option.style=Estilo
-sol_client.mod.crosshair.option.style.default=Defecto
-sol_client.mod.crosshair.option.style.none=Nada
-sol_client.mod.crosshair.option.style.dot=Punto
-sol_client.mod.crosshair.option.style.plus=Plus
-sol_client.mod.crosshair.option.style.plus_dot=Punto plus
-sol_client.mod.crosshair.option.style.square=Cuadrado
-sol_client.mod.crosshair.option.style.square_dot=Punto cuadrado
-sol_client.mod.crosshair.option.style.circle=Circulo
-sol_client.mod.crosshair.option.style.circle_dot=Punto circular
-sol_client.mod.crosshair.option.style.four_angled=X
-sol_client.mod.crosshair.option.style.four_angled_dot=X con punto
-sol_client.mod.crosshair.option.style.triangle=Triángulo
-
-
 sol_client.mod.crosshair.option.thirdPerson=Mostrar en tercera persona
 sol_client.mod.crosshair.option.spectatorAlways=Mostrar en modo espectador
 sol_client.mod.crosshair.option.debug=Mostrar en superposición de depuración
@@ -304,10 +285,6 @@ sol_client.mod.toggle_sprint.default_width=113
 sol_client.mod.toggle_sprint.option.hud=HUD
 
 
-sol_client.mod.toggle_sprint.held=Sprinting (Pulsado)
-sol_client.mod.toggle_sprint.toggled=Sprinting (Alternado)
-
-
 sol_client.mod.zoom.name=Zoom
 sol_client.mod.zoom.description=Acercar al pulsar un botón
 
@@ -351,7 +328,7 @@ sol_client.mod.replay.option.showPathPreview=Mostrar la trayectoria de la cámar
 
 
 sol_client.mod.replay.option.defaultInterpolator=Interpolador por defecto
-sol_client.mod.replay.interpolator.catmull=Spline de Catmull-Rom 
+sol_client.mod.replay.interpolator.catmull=Spline de Catmull-Rom
 sol_client.mod.replay.interpolator.cubic=Spline cúbico
 sol_client.mod.replay.interpolator.linear=Lineal
 
@@ -521,7 +498,3 @@ sol_client.hud.edit=Modificar HUD
 sol_client.packs.apply=Applicar
 sol_client.packs.open_folder=Carpeta de paquetes
 sol_client.packs.folder=Carpeta (%d items)
-
-
-sol_client.screenshot.view=Ver
-sol_client.screenshot.open_folder=Monstrar en carpeta

@@ -18,8 +18,6 @@
 
 package io.github.solclient.client.mod.impl;
 
-import java.nio.file.Path;
-
 import org.apache.logging.log4j.Logger;
 
 import io.github.solclient.client.mod.Mod;

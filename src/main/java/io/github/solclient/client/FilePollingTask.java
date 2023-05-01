@@ -23,7 +23,6 @@ import java.nio.file.*;
 import java.util.*;
 
 import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.impl.TextFileOption;
 

@@ -32,7 +32,6 @@ sol_client.key.category=Sol Client
 sol_client.key.accept_request=Anfrage annehmen
 sol_client.key.dismiss_request=Anfrage
 
-sol_client.mod.generic.option.enabled=Aktiviert
 sol_client.mod.hud.option.scale=Größe
 sol_client.mod.simple_hud.option.background=Hintergrund
 sol_client.mod.simple_hud.option.backgroundColour=Hintergrundfarbe
@@ -223,7 +222,7 @@ sol_client.mod.scoreboard.option.numbersColour=Farbe der Zahlen
 sol_client.mod.boss_bar.name=Boss Bar
 sol_client.mod.boss_bar.description=Passe die boss bar an.
 
-sol_client.mod.boss_bar.option.Verstecke von HUD
+sol_client.mod.boss_bar.option.hide=Verstecke von HUD
 sol_client.mod.boss_bar.option.text=Zeige Text
 sol_client.mod.boss_bar.option.bar=Zeige Lebensanzeige
 sol_client.mod.boss_bar.option.offset=Aufgehoben durch...
@@ -273,8 +272,6 @@ sol_client.mod.toggle_sprint.description=Schalte die Sprinttaste um.
 sol_client.mod.toggle_sprint.default_width=113
 
 sol_client.mod.toggle_sprint.option.hud=HUD
-sol_client.mod.toggle_sprint.held=Sprinten (Gehalten)
-sol_client.mod.toggle_sprint.toggled=Sprinten (Umgesch.)
 
 sol_client.mod.toggle_sprint.sprint_held=Sprinting (Gehalten)
 sol_client.mod.toggle_sprint.sprint_toggled=Sprinting (Umgesch.)
@@ -398,12 +395,6 @@ sol_client.mod.particles.option.snow=Schnee
 sol_client.mod.particles.option.slime=Schleim
 sol_client.mod.particles.option.flames=Flammen
 
-sol_client.mod.tooltip_scroll.name=Scrollable Tooltips
-sol_client.mod.tooltip_scroll.description=Verschiebe Tooltips um sie besser lesen zu können.
-
-sol_client.mod.time_changer.name=Zeitwechsler
-sol_client.mod.time_changer.description=Ändere die visuelle Zeit, ohne das Gameplay zu beeinträchtigen.
-
 sol_client.mod.screenshots.name=Bildschirmfotos
 sol_client.mod.screenshots.description=Fügt mehr aktionen für Bildschirmfotos hinzu.
 
@@ -496,7 +487,6 @@ sol_client.packs.apply=Anwenden
 sol_client.packs.open_folder=Pack Ordner
 sol_client.packs.folder=Ordner (%d items)
 
-ol_client.no_results=Keine Ergebnisse :(
 sol_client.more_options=Mehr Einstellungen...
 
 sol_client.preview=Vorschau

@@ -63,10 +63,8 @@ public class ScrollListComponent extends ListComponent {
 				}
 			}
 
-		}, (component, defaultBounds) -> {
-			return new Rectangle(getBounds().getX() + getBounds().getWidth() - 5, getBounds().getY(), 3,
-					(int) (getBounds().getHeight() * scrollPercent));
-		});
+		}, (component, defaultBounds) -> new Rectangle(getBounds().getX() + getBounds().getWidth() - 5, getBounds().getY(), 3,
+				(int) (getBounds().getHeight() * scrollPercent)));
 
 		super.setParent(parent);
 	}

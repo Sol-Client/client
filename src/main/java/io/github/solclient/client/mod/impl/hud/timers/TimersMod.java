@@ -27,7 +27,6 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.BukkitMaterial;
@@ -140,20 +139,25 @@ public class TimersMod extends SolClientHudMod {
 			id = data.get("id").getAsLong();
 		}
 
-		if (type.equals("REMOVE_ALL_TIMERS")) {
-			timers.clear();
-		} else if (type.equals("REMOVE_TIMER")) {
-			timers.remove(id);
-		} else if (type.equals("SYNC_TIMERS")) {
-			timers.get(id).setTime(data.get("time").getAsLong());
-		} else if (type.equals("ADD_TIMER")) {
-			JsonObject item = data.get("item").getAsJsonObject();
-			Timer tickTock = new Timer(data.get("name").getAsString(),
-					new ItemStack(BukkitMaterial.valueOf(item.get("type").getAsString()).getItem(),
-							item.has("amount") ? item.get("amount").getAsInt() : 1));
-			timers.put(id, tickTock);
-			tickTock.setId(id);
-			tickTock.setTime(id);
+		switch (type) {
+			case "REMOVE_ALL_TIMERS":
+				timers.clear();
+				break;
+			case "REMOVE_TIMER":
+				timers.remove(id);
+				break;
+			case "SYNC_TIMERS":
+				timers.get(id).setTime(data.get("time").getAsLong());
+				break;
+			case "ADD_TIMER":
+				JsonObject item = data.get("item").getAsJsonObject();
+				Timer tickTock = new Timer(data.get("name").getAsString(),
+						new ItemStack(BukkitMaterial.valueOf(item.get("type").getAsString()).getItem(),
+								item.has("amount") ? item.get("amount").getAsInt() : 1));
+				timers.put(id, tickTock);
+				tickTock.setId(id);
+				tickTock.setTime(id);
+				break;
 		}
 	}
 

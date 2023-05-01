@@ -105,11 +105,7 @@ public abstract class ModOption<T> {
 	}
 
 	protected Component createDefaultComponent() {
-		return createDefaultComponent(20);
-	}
-
-	protected Component createDefaultComponent(int height) {
-		return createDefaultComponent(height, true);
+		return createDefaultComponent(20, true);
 	}
 
 	protected Component createDefaultComponent(int height, boolean label) {

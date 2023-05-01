@@ -24,7 +24,6 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.Perspective;
 import io.github.solclient.util.GlobalConstants;

@@ -31,7 +31,6 @@ sol_client.key.category=Sol Client
 sol_client.key.accept_request=Chấp nhận yêu cầu
 sol_client.key.dismiss_request=Từ chối yêu cầu
 
-sol_client.mod.generic.option.enabled=Bật
 sol_client.mod.hud.option.scale=Độ lớn
 sol_client.mod.simple_hud.option.background=Nền
 sol_client.mod.simple_hud.option.backgroundColour=Màu nền
@@ -51,11 +50,8 @@ sol_client.mod.sol_client.option.modsKey=Phím mô-đun
 sol_client.mod.sol_client.edit_hud=Chỉnh sửa HUD
 sol_client.mod.sol_client.option.editHudKey=Chỉnh sửa phím tắt HUD
 sol_client.mod.sol_client.option.uiColour=Màu sắc chủ đạo
-sol_client.mod.sol_client.option.smoothUIColours=Làm mượt màu sắc chủ đạo
-sol_client.mod.sol_client.option.roundedUI=Giao diện bo tròn
 sol_client.mod.sol_client.option.buttonClicks=Âm thanh khi nhấn nút
 sol_client.mod.sol_client.option.smoothScrolling=Làm mượt cuộn trang
-sol_client.mod.sol_client.option.fancyFont=Phông chữ HD
 
 sol_client.mod.fps.name=FPS
 sol_client.mod.fps.description=Hiện FPS (Số lượng khung hình mỗi giây).
@@ -186,20 +182,6 @@ sol_client.mod.tab_list.option.textShadow=Bóng đổ chữ
 sol_client.mod.crosshair.name=Hồng tâm
 sol_client.mod.crosshair.description=Tuỳ chỉnh hồng tâm.
 
-sol_client.mod.crosshair.option.style=Kiểu hồng tâm.
-sol_client.mod.crosshair.option.style.default=Mặc định
-sol_client.mod.crosshair.option.style.none=Ẩn hoàn toàn
-sol_client.mod.crosshair.option.style.dot=Chấm
-sol_client.mod.crosshair.option.style.plus=Dấu cộng
-sol_client.mod.crosshair.option.style.plus_dot=Dấu cộng chấm
-sol_client.mod.crosshair.option.style.square=Hình vuông
-sol_client.mod.crosshair.option.style.square_dot=Hình vuông chấm
-sol_client.mod.crosshair.option.style.circle=Hình tròn
-sol_client.mod.crosshair.option.style.circle_dot=Hình tròn chấm
-sol_client.mod.crosshair.option.style.four_angled=Gạch chéo
-sol_client.mod.crosshair.option.style.four_angled_dot=Gạch chéo chấm
-sol_client.mod.crosshair.option.style.triangle=Tam giác
-
 sol_client.mod.crosshair.option.thirdPerson=Hiển thị ở góc nhìn thứ 3
 sol_client.mod.crosshair.option.spectatorAlways=Hiển thị ở chế độ Khán giả
 sol_client.mod.crosshair.option.debug=Hiển thị ở Màn hình Gỡ rối
@@ -256,9 +238,6 @@ sol_client.mod.toggle_sprint.description=Khoá phím chạy.
 sol_client.mod.toggle_sprint.default_width=113
 
 sol_client.mod.toggle_sprint.option.hud=HUD
-
-sol_client.mod.toggle_sprint.held=Đang chạy (Giữ)
-sol_client.mod.toggle_sprint.toggled=Đang chạy (Khoá phím)
 
 sol_client.mod.zoom.name=Phóng to
 sol_client.mod.zoom.description=Phóng to màn hình
@@ -434,6 +413,3 @@ sol_client.hud.edit=Chỉnh sửa HUD
 sol_client.packs.apply=Áp dụng
 sol_client.packs.open_folder=Thư mục tài nguyên
 sol_client.packs.folder=Thư mục (%d gói tài nguyên)
-
-sol_client.screenshot.view=Mở ảnh
-sol_client.screenshot.open_folder=Hiển thị trong Thư mục

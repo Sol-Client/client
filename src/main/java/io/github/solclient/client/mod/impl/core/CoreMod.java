@@ -19,7 +19,6 @@
 package io.github.solclient.client.mod.impl.core;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;

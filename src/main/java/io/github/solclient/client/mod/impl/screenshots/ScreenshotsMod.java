@@ -28,7 +28,6 @@ import org.apache.commons.io.FileUtils;
 import com.google.gson.*;
 
 import io.github.solclient.client.extension.ClickEventExtension;
-import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;

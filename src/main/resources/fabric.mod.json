@@ -1,7 +1,5 @@
 {
-	// #119
-	// this feels stupid
-	// fabric mod json to be concise
+	// here because of #119
 	"id": "sol-client",
 	"accessWidener": "replay-mod.accesswidener"
 }

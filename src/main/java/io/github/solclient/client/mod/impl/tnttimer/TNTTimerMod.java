@@ -21,7 +21,6 @@ package io.github.solclient.client.mod.impl.tnttimer;
 import java.text.DecimalFormat;
 
 import io.github.solclient.client.DetectedServer;
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.util.MinecraftUtils;
 import net.minecraft.entity.TntEntity;

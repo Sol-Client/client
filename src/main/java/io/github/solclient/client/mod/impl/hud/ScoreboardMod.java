@@ -19,6 +19,7 @@
 package io.github.solclient.client.mod.impl.hud;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.*;
 import com.google.gson.annotations.Expose;
@@ -26,7 +27,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ScoreboardRenderEvent;
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;
@@ -105,8 +105,7 @@ public class ScoreboardMod extends StandardMod {
 
 		Scoreboard scoreboard = event.objective.getScoreboard();
 		Collection<ScoreboardPlayerScore> scores = scoreboard.getAllPlayerScores(event.objective);
-		List<ScoreboardPlayerScore> filteredScores = Lists.newArrayList(Iterables.filter(scores,
-				p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#")));
+		List<ScoreboardPlayerScore> filteredScores = Lists.newArrayList(scores.stream().filter(p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#")).collect(Collectors.toList()));
 		Collections.reverse(filteredScores);
 
 		if (filteredScores.size() > 15) {

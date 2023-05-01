@@ -20,8 +20,6 @@ package io.github.solclient.client.mod.impl.packetapi;
 
 import java.nio.charset.StandardCharsets;
 
-import org.apache.logging.log4j.*;
-
 import com.google.gson.*;
 
 import io.github.solclient.client.event.EventHandler;

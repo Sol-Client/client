@@ -31,7 +31,6 @@ sol_client.key.category=Sol Client
 sol_client.key.accept_request=Accepter la requête
 sol_client.key.dismiss_request=Ignorer la demande
 
-sol_client.mod.generic.option.enabled=Activé
 sol_client.mod.hud.option.scale=Échelle
 sol_client.mod.simple_hud.option.background=Arrière plan
 sol_client.mod.simple_hud.option.backgroundColour=Couleur de l'arrière plan
@@ -50,11 +49,8 @@ sol_client.mod.sol_client.option.modsKey=Clé de modules
 sol_client.mod.sol_client.edit_hud=Modifier l'HUD
 sol_client.mod.sol_client.option.editHudKey=Modifier la clé HUD
 sol_client.mod.sol_client.option.uiColour=Couleur d'accentuation
-sol_client.mod.sol_client.option.smoothUIColours=Couleurs lisses de l'interface utilisateur
-sol_client.mod.sol_client.option.roundedUI=Interface utilisateur arrondie
 sol_client.mod.sol_client.option.buttonClicks=Clics sur les boutons
 sol_client.mod.sol_client.option.smoothScrolling=Défilement fluide
-sol_client.mod.sol_client.option.fancyFont=Police HD
 
 sol_client.mod.fps.name=FPS
 sol_client.mod.fps.description=Affichez les FPS (images par seconde).
@@ -180,20 +176,6 @@ sol_client.mod.tab_list.option.textShadow=Ombre de texte
 sol_client.mod.crosshair.name=Réticule
 sol_client.mod.crosshair.description=Personnalisez le réticule.
 
-sol_client.mod.crosshair.option.style=Style
-sol_client.mod.crosshair.option.style.default=Défaut
-sol_client.mod.crosshair.option.style.none=Aucun
-sol_client.mod.crosshair.option.style.dot=Point
-sol_client.mod.crosshair.option.style.plus=Plus
-sol_client.mod.crosshair.option.style.plus_dot=Plus point
-sol_client.mod.crosshair.option.style.square=Carré
-sol_client.mod.crosshair.option.style.square_dot=Point carré
-sol_client.mod.crosshair.option.style.circle=Cercle
-sol_client.mod.crosshair.option.style.circle_dot=Point de cercle
-sol_client.mod.crosshair.option.style.four_angled=4 Coudé
-sol_client.mod.crosshair.option.style.four_angled_dot=4 points inclinés
-sol_client.mod.crosshair.option.style.triangle=Triangle
-
 sol_client.mod.crosshair.option.thirdPerson=Afficher à la troisième personne
 sol_client.mod.crosshair.option.spectatorAlways=Afficher en mode spectateur
 sol_client.mod.crosshair.option.debug=Afficher dans la superposition de débogage
@@ -250,9 +232,6 @@ sol_client.mod.toggle_sprint.description=Basculez la touche de sprint.
 sol_client.mod.toggle_sprint.default_width=113
 
 sol_client.mod.toggle_sprint.option.hud=HUD
-
-sol_client.mod.toggle_sprint.held=Sprint (tenu)
-sol_client.mod.toggle_sprint.toggled=Sprint (basculé)
 
 sol_client.mod.zoom.name=Zoom
 sol_client.mod.zoom.description=Zoom avant en appuyant sur un bouton.
@@ -429,6 +408,3 @@ sol_client.hud.edit=Modifier l'HUD
 sol_client.packs.apply=Appliquer
 sol_client.packs.open_folder=Dossier de pack
 sol_client.packs.folder=Dossier (%d items)
-
-sol_client.screenshot.view=Voir
-sol_client.screenshot.open_folder=Afficher dans le dossier

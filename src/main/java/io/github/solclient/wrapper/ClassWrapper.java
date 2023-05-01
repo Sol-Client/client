@@ -20,10 +20,7 @@ package io.github.solclient.wrapper;
 
 import java.io.*;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.jar.*;
 
 import org.apache.commons.io.IOUtils;
 import org.spongepowered.asm.launch.MixinBootstrap;

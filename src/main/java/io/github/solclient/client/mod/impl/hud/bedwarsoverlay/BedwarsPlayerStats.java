@@ -97,7 +97,7 @@ public class BedwarsPlayerStats {
         int losses = getAsIntElse(bedwars, "losses_bedwars", 0);
         int wins = getAsIntElse(bedwars, "wins_bedwars", 0);
         int winstreak = getAsIntElse(bedwars, "winstreak", 0);
-        JsonObject achievements = getObjectSafe(stats, "achievements");
+        JsonObject achievements = getObjectSafe(player.getRaw().getAsJsonObject(), "achievements");
         int stars = 1;
         if (achievements != null) {
             stars = getAsIntElse(achievements, "bedwars_level", 1);

@@ -66,7 +66,16 @@ public class PlayerListHudMixin {
         }
         int startX = v + i + 1;
         int endX = startX + n;
-        String render = HypixelAdditionsMod.instance.getLevelhead(false, playerListEntry2.getDisplayName().asFormattedString(), playerListEntry2.getProfile().getId());
+        String render;
+        try {
+            render = HypixelAdditionsMod.instance.getLevelhead(
+                    false, playerListEntry2.getProfile().getName(), playerListEntry2.getProfile().getId());
+        } catch (Exception e) {
+            return;
+        }
+        if (render == null) {
+            return;
+        }
         this.client.textRenderer.drawWithShadow(
                 render,
                 (float)(endX - this.client.textRenderer.getStringWidth(render)) + 20,

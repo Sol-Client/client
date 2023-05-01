@@ -98,7 +98,11 @@ public class BedwarsPlayer {
                         stats = BedwarsPlayerStats.generateFake();
                         return;
                     }
-                    stats = BedwarsPlayerStats.fromAPI(player);
+                    try {
+                        stats = BedwarsPlayerStats.fromAPI(player);
+                    } catch (Exception e) {
+                        stats = BedwarsPlayerStats.generateFake();
+                    }
                 });
             }
         }

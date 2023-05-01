@@ -20,7 +20,6 @@ package io.github.solclient.client.mod.impl.hud.tablist;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.data.Colour;

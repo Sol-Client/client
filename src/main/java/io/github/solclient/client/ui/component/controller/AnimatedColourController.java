@@ -18,7 +18,6 @@
 
 package io.github.solclient.client.ui.component.controller;
 
-import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.util.data.Colour;
 import lombok.RequiredArgsConstructor;

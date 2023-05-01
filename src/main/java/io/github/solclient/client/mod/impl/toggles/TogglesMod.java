@@ -22,7 +22,6 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.impl.SolClientSimpleHudMod;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.util.MinecraftUtils;

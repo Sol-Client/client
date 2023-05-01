@@ -23,11 +23,9 @@ import java.io.IOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.replaymod.replay.ReplayModReplay;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.impl.core.mixins.client.ShaderEffectAccessor;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.MinecraftUtils;

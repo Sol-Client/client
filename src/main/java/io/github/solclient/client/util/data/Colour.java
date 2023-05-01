@@ -22,7 +22,6 @@ import java.awt.Color;
 import java.lang.ref.WeakReference;
 
 import org.lwjgl.nanovg.*;
-import org.lwjgl.opengl.GL11;
 
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;

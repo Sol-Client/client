@@ -18,21 +18,16 @@
 
 package io.github.solclient.client.mod;
 
-import java.io.*;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
 import java.util.*;
 
 import org.apache.logging.log4j.*;
 
-import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.hud.HudElement;
-import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.mod.option.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.mod.option.impl.*;

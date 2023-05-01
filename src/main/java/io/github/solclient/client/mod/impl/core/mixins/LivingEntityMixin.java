@@ -19,16 +19,13 @@
 package io.github.solclient.client.mod.impl.core.mixins;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.solclient.client.event.EventBus;
 import io.github.solclient.client.event.impl.ItemPickupEvent;
-import io.github.solclient.client.mod.impl.core.mixins.client.LivingEntityAccessor;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {

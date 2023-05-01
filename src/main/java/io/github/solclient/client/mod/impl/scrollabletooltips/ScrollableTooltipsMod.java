@@ -22,7 +22,6 @@ import org.lwjgl.input.Mouse;
 
 import com.google.gson.annotations.Expose;
 
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gui.screen.Screen;

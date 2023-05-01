@@ -22,7 +22,6 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.*;
 import io.github.solclient.client.event.impl.GammaEvent;
-import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.mod.option.annotation.Slider;

@@ -20,9 +20,7 @@ package io.github.solclient.client.ui.component;
 
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.*;
-import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;

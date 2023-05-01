@@ -23,7 +23,6 @@ import java.util.function.BiPredicate;
 
 import org.lwjgl.nanovg.NanoVG;
 
-import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.controller.*;
 import io.github.solclient.client.ui.component.handler.*;
 import io.github.solclient.client.ui.component.impl.ScrollListComponent;

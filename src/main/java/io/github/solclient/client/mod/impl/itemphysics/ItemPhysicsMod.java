@@ -22,7 +22,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.ItemEntityRenderEvent;
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.impl.core.mixins.EntityAccessor;
 import io.github.solclient.client.mod.option.annotation.*;

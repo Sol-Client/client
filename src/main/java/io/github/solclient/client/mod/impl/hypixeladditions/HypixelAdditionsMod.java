@@ -28,7 +28,6 @@ import com.google.gson.annotations.Expose;
 import io.github.solclient.client.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
-import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.impl.api.chat.ChatApiMod;
 import io.github.solclient.client.mod.impl.api.commands.CommandsApiMod;

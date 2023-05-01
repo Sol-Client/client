@@ -25,7 +25,6 @@ import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.PostProcessingEvent;
-import io.github.solclient.client.mod.ModCategory;
 import io.github.solclient.client.mod.impl.core.mixins.client.ShaderEffectAccessor;
 import io.github.solclient.client.mod.option.annotation.*;
 import net.minecraft.client.gl.*;

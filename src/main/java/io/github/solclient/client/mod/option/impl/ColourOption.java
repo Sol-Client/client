@@ -43,16 +43,14 @@ public class ColourOption extends ModOption<Colour> {
 	public Component createComponent() {
 		Component container = createDefaultComponent();
 
-		ColourBoxComponent colour = new ColourBoxComponent(Controller.of(() -> getValue()));
+		ColourBoxComponent colour = new ColourBoxComponent(Controller.of(this::getValue));
 		container.add(colour, new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
 
 		container.add(new LabelComponent(Controller.of(() -> getValue().toHexString())).scaled(0.8F),
-				new AlignedBoundsController(Alignment.END, Alignment.CENTRE, (component, defaultBounds) -> {
-					return new Rectangle(
-							(int) (container.getBounds().getWidth() - NanoVGManager.getRegularFont()
-									.getWidth(NanoVGManager.getNvg(), ((LabelComponent) component).getText()) - 12),
-							defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight());
-				}));
+				new AlignedBoundsController(Alignment.END, Alignment.CENTRE, (component, defaultBounds) -> new Rectangle(
+						(int) (container.getBounds().getWidth() - NanoVGManager.getRegularFont()
+								.getWidth(NanoVGManager.getNvg(), ((LabelComponent) component).getText()) - 12),
+						defaultBounds.getY(), defaultBounds.getWidth(), defaultBounds.getHeight())));
 
 		colour.onClick((info, button) -> {
 			if (button != 0)

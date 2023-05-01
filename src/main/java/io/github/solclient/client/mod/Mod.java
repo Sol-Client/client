@@ -127,15 +127,8 @@ public abstract class Mod extends Object {
 	 * @return the options.
 	 */
 	public <T> Iterable<ModOption<T>> getOptions(Class<T> type) {
-		return new Iterable<ModOption<T>>() {
-
-			@Override
-			public Iterator<ModOption<T>> iterator() {
-				return getOptions().stream().filter((option) -> option.getType() == type)
-						.map((option) -> (ModOption<T>) option).iterator();
-			}
-
-		};
+		return () -> getOptions().stream().filter((option) -> option.getType() == type)
+				.map((option) -> (ModOption<T>) option).iterator();
 	};
 
 	/**
@@ -146,15 +139,8 @@ public abstract class Mod extends Object {
 	 * @return the options.
 	 */
 	public <T> Iterable<T> getFlatOptions(Class<T> type) {
-		return new Iterable<T>() {
-
-			@Override
-			public Iterator<T> iterator() {
-				return getOptions().stream().filter((option) -> option.getClass() == type).map((option) -> (T) option)
-						.iterator();
-			}
-
-		};
+		return () -> getOptions().stream().filter((option) -> option.getClass() == type).map((option) -> (T) option)
+				.iterator();
 	};
 
 	/**

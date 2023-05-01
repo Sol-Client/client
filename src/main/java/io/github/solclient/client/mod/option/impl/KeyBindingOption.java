@@ -44,7 +44,7 @@ public class KeyBindingOption extends ModOption<KeyBinding> {
 
 	@Override
 	public Component createComponent() {
-		Component container = createDefaultComponent();
+		Component container = createDefaultComponent(20, true);
 
 		boolean[] listening = new boolean[1];
 		ButtonComponent editButton = new ButtonComponent(

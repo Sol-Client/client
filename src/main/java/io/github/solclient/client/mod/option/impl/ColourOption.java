@@ -41,7 +41,7 @@ public class ColourOption extends ModOption<Colour> {
 
 	@Override
 	public Component createComponent() {
-		Component container = createDefaultComponent();
+		Component container = createDefaultComponent(20, true);
 
 		ColourBoxComponent colour = new ColourBoxComponent(Controller.of(() -> getValue()));
 		container.add(colour, new AlignedBoundsController(Alignment.END, Alignment.CENTRE));

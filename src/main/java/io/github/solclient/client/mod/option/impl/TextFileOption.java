@@ -72,7 +72,7 @@ public class TextFileOption extends ModOption<String> {
 
 	@Override
 	public Component createComponent() {
-		Component container = createDefaultComponent();
+		Component container = createDefaultComponent(20, true);
 
 		ButtonComponent editFile = new ButtonComponent((component, defaultText) -> I18n.translate(editText),
 				Theme.button(), Theme.fg()).width(50).height(16);

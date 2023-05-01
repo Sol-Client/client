@@ -37,7 +37,7 @@ public class TextFieldOption extends ModOption<String> {
 
 	@Override
 	public Component createComponent() {
-		Component container = createDefaultComponent();
+		Component container = createDefaultComponent(20, true);
 
 		TextFieldComponent field = new TextFieldComponent(100, false).withPlaceholder(placeholder)
 				.onUpdate((string) -> {

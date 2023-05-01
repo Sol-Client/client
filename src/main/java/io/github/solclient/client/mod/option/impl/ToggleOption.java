@@ -32,7 +32,7 @@ public class ToggleOption extends ModOption<Boolean> {
 
 	@Override
 	public Component createComponent() {
-		Component container = createDefaultComponent();
+		Component container = createDefaultComponent(20, true);
 		container.add(new ToggleComponent(this::getValue, this::setValue), new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
 		return container;
 	}

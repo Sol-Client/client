@@ -104,14 +104,6 @@ public abstract class ModOption<T> {
 		storage.setFrom(option);
 	}
 
-	protected Component createDefaultComponent() {
-		return createDefaultComponent(20);
-	}
-
-	protected Component createDefaultComponent(int height) {
-		return createDefaultComponent(height, true);
-	}
-
 	protected Component createDefaultComponent(int height, boolean label) {
 		Component component = new Component() {
 

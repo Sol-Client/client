@@ -48,7 +48,7 @@ public class CpsMod extends SolClientSimpleHudMod {
 			int x = position.getX() + (53 / 2) - (width / 2);
 			int y = position.getY() + 4;
 
-			x = font.draw(prefix + Integer.toString(CpsMonitor.LMB.getCps()), x, y, textColour.getValue(), shadow);
+			x = font.draw(prefix + CpsMonitor.LMB.getCps(), x, y, textColour.getValue(), shadow);
 
 			x--;
 			if (shadow)

@@ -222,7 +222,7 @@ sol_client.mod.scoreboard.option.numbersColour=Farbe der Zahlen
 sol_client.mod.boss_bar.name=Boss Bar
 sol_client.mod.boss_bar.description=Passe die boss bar an.
 
-sol_client.mod.boss_bar.option.Verstecke von HUD
+sol_client.mod.boss_bar.option.hide=Verstecke von HUD
 sol_client.mod.boss_bar.option.text=Zeige Text
 sol_client.mod.boss_bar.option.bar=Zeige Lebensanzeige
 sol_client.mod.boss_bar.option.offset=Aufgehoben durch...

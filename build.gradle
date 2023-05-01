@@ -117,7 +117,7 @@ loom {
 
 java {
 	group 'io.github.solclient'
-	version file('version.txt').getText('UTF-8')
+	version file('version.txt').getText('UTF-8').split('\n')[0]
 
 	sourceCompatibility = 8
 	targetCompatibility = 8

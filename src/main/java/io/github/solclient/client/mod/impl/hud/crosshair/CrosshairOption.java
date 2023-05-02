@@ -35,7 +35,7 @@ public class CrosshairOption extends ModOption<PixelMatrix> {
 	@Override
 	public Component createComponent() {
 		Component container = createDefaultComponent(190, false);
-		container.add(new CrosshairEditorDialog(this), Controller.none());
+		container.add(new CrosshairEditorComponent(this), Controller.none());
 		return container;
 	}
 

@@ -26,7 +26,7 @@ import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import io.github.solclient.client.util.*;
-import lombok.Getter;
+import lombok.*;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 
 public final class PixelMatrix {
@@ -35,6 +35,8 @@ public final class PixelMatrix {
 	@Expose
 	private final int width, height;
 	@Expose
+	@Getter
+	@Setter
 	private BitSet pixels;
 	private transient NativeImageBackedTexture texture;
 	private transient int nvgImage;

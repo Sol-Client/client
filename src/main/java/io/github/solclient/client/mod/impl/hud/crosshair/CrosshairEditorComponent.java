@@ -18,9 +18,14 @@
 
 package io.github.solclient.client.mod.impl.hud.crosshair;
 
+import java.util.*;
+
 import org.apache.logging.log4j.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.NanoVG;
+
+import com.replaymod.lib.de.johni0702.minecraft.gui.container.GuiScreen;
+import com.replaymod.recording.gui.GuiSavingReplay;
 
 import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.*;
@@ -32,14 +37,16 @@ import io.github.solclient.client.util.data.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
 
-public final class CrosshairEditorDialog extends Component {
+public final class CrosshairEditorComponent extends Component {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final int SCALE = 11;
 
 	private final PixelMatrix pixels;
+	private int historyCursor;
+	private List<BitSet> history = new ArrayList<>();
 
-	public CrosshairEditorDialog(CrosshairOption option) {
+	public CrosshairEditorComponent(CrosshairOption option) {
 		pixels = option.getValue();
 
 		add(new PixelMatrixComponent(), new AlignedBoundsController(Alignment.CENTRE, Alignment.START));
@@ -68,14 +75,19 @@ public final class CrosshairEditorDialog extends Component {
 
 			MinecraftUtils.playClickSound(true);
 			pixels.clear();
+			pushToFront();
+			saveToHistory();
 			return true;
 		}), new AlignedBoundsController(Alignment.CENTRE, Alignment.END,
 				(component, defaultBounds) -> defaultBounds.offset(25, 0)));
+		saveToHistory();
 	}
 
 	private void copy() {
 		try {
 			Screen.setClipboard(LCCH.stringify(pixels));
+			pushToFront();
+			saveToHistory();
 		} catch (Throwable error) {
 			LOGGER.error("Failed to convert to LCCH", error);
 		}
@@ -84,8 +96,36 @@ public final class CrosshairEditorDialog extends Component {
 	private void paste() {
 		try {
 			LCCH.parse(Screen.getClipboard(), pixels);
+			pushToFront();
+			saveToHistory();
 		} catch (Throwable error) {
 			LOGGER.error("Failed to load from LCCH", error);
+		}
+	}
+
+	private void navigateHistory(boolean forwards) {
+		if (forwards)
+			historyCursor--;
+		else
+			historyCursor++;
+
+		if (historyCursor < 0)
+			historyCursor = 0;
+		if (historyCursor >= history.size())
+			historyCursor = history.size() - 1;
+
+		pixels.setPixels((BitSet) history.get(history.size() - 1 - historyCursor).clone());
+	}
+
+	private void saveToHistory() {
+		if (history.isEmpty() || !history.get(history.size() - 1).equals(pixels.getPixels()))
+			history.add((BitSet) pixels.getPixels().clone());
+	}
+
+	private void pushToFront() {
+		if (historyCursor != 0) {
+			history.subList(history.size() - historyCursor, history.size()).clear();
+			historyCursor = 0;
 		}
 	}
 
@@ -156,12 +196,15 @@ public final class CrosshairEditorDialog extends Component {
 
 		@Override
 		public boolean mouseClicked(ComponentRenderInfo info, int button) {
-			if (button == 0)
-				leftMouseDown = true;
-			if (button == 1)
-				rightMouseDown = true;
 			lastGridX = -1;
 			lastGridY = -1;
+			pushToFront();
+
+			if (button == 0)
+				leftMouseDown = true;
+			else if (button == 1)
+				rightMouseDown = true;
+
 			return true;
 		}
 
@@ -169,22 +212,42 @@ public final class CrosshairEditorDialog extends Component {
 		public boolean mouseReleasedAnywhere(ComponentRenderInfo info, int button, boolean inside) {
 			if (button == 0)
 				leftMouseDown = false;
-			if (button == 1)
+			else if (button == 1)
 				rightMouseDown = false;
-			return super.mouseReleasedAnywhere(info, button, inside);
+			else
+				return false; // you have some friends. down there v (they
+								// have the same hobbies and interests, oh
+								// they're also clones. that's cool!)
+			if (leftMouseDown || rightMouseDown)
+				return false;
+
+			saveToHistory();
+			return false;
 		}
 
 		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
 			if (keyCode == Keyboard.KEY_DELETE) {
 				pixels.clear();
+				pushToFront();
+				saveToHistory();
 				return true;
-			} else if (keyCode == Keyboard.KEY_C) {
-				copy();
-				return true;
-			} else if (keyCode == Keyboard.KEY_V) {
-				paste();
-				return true;
+			} else if (Screen.hasControlDown()) {
+				if (keyCode == Keyboard.KEY_C) {
+					copy();
+					return true;
+				} else if (keyCode == Keyboard.KEY_V) {
+					paste();
+					return true;
+				} else if (history != null && history.size() > 1) {
+					if (keyCode == Keyboard.KEY_Z) {
+						navigateHistory(Screen.hasShiftDown());
+						return true;
+					} else if (keyCode == Keyboard.KEY_Y) {
+						navigateHistory(true);
+						return true;
+					}
+				}
 			}
 
 			return super.keyPressed(info, keyCode, character);

@@ -46,10 +46,13 @@ public class TabListMod extends StandardMod {
 	public Colour entryBackgroundColour = new Colour(553648127);
 	@Expose
 	@Option
-	public boolean hidePlayerHeads;
+	public boolean playerHeads = true;
 	@Expose
 	@Option
 	public boolean textShadow = true;
+	@Expose
+	@Option
+	public boolean compactColumns;
 
 	@Override
 	public void init() {

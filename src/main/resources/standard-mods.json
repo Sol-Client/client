@@ -116,6 +116,7 @@
 	{
 		"id": "tab_list",
 		"main": "hud.tablist.TabListMod",
+		"mixins": "@hud.tablist.mixins",
 		"category": "hud",
 		"enabledByDefault": true
 	},

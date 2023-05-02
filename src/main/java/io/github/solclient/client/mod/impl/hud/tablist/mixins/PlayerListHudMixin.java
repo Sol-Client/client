@@ -18,7 +18,7 @@
 
 package io.github.solclient.client.mod.impl.hud.tablist.mixins;
 
-import java.util.UUID;
+import java.util.*;
 
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -29,7 +29,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.solclient.client.mod.impl.hud.tablist.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;
-import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.network.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.ClientConnection;
@@ -39,6 +39,7 @@ import net.minecraft.text.Text;
 public class PlayerListHudMixin {
 
 	// TODO: PLEASE FIX THIS TOAD!!
+	// TODO: PLEASE FIX THIS TOAD!! — 2023-05-02
 //		@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;drawWithShadow(Ljava/lang/String;FFI)I"))
 //		public int overrideShadow(TextRenderer instance, String text, float x, float y, int color) {
 //			if (TabListMod.enabled && !TabListMod.instance.textShadow) {
@@ -48,9 +49,15 @@ public class PlayerListHudMixin {
 //			return instance.drawWithShadow(text, x, y, color);
 //		}
 
+	@ModifyConstant(method = "render", constant = { @Constant(intValue = 5, ordinal = 0),
+			@Constant(intValue = 5, ordinal = 1), @Constant(intValue = 5, ordinal = 2) })
+	private int compactColumns(int padding) {
+		return TabListMod.enabled && TabListMod.instance.compactColumns ? 1 : padding;
+	}
+
 	@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;getPlayerByUuid(Ljava/util/UUID;)Lnet/minecraft/entity/player/PlayerEntity;"))
 	public PlayerEntity overridePlayerHeads(ClientWorld instance, UUID uuid) {
-		if (TabListMod.enabled && TabListMod.instance.hidePlayerHeads)
+		if (TabListMod.enabled && !TabListMod.instance.playerHeads)
 			return null;
 
 		return instance.getPlayerByUuid(uuid);
@@ -67,7 +74,7 @@ public class PlayerListHudMixin {
 	}
 
 	private boolean shouldShowHeads() {
-		return !(TabListMod.enabled && TabListMod.instance.hidePlayerHeads);
+		return !(TabListMod.enabled && TabListMod.instance.playerHeads);
 	}
 
 	@ModifyConstant(method = "render", constant = @Constant(intValue = Integer.MIN_VALUE))

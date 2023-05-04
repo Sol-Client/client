@@ -72,7 +72,7 @@ public class ZoomMod extends StandardMod {
 
 	@Override
 	public String getDetail() {
-		return I18n.translate("sol_client.mod.screen.inspired_by", "EnnuiL");
+		return I18n.translate("sol_client.mod.screen.inspired_by", "Ok Zoomer");
 	}
 
 	public void start() {

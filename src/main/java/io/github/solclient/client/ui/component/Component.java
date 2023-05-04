@@ -79,11 +79,17 @@ public abstract class Component extends NanoVGManager {
 	}
 
 	public void add(Component component, Controller<Rectangle> position) {
+		if (component == this)
+			throw new IllegalArgumentException(component + " (== this)");
+
 		subComponents.add(component);
 		register(component, position);
 	}
 
 	public void add(int index, Component component, Controller<Rectangle> position) {
+		if (component == this)
+			throw new IllegalArgumentException(component + " (== this)");
+
 		subComponents.add(index, component);
 		register(component, position);
 	}

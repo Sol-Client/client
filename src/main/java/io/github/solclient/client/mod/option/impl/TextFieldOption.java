@@ -47,7 +47,7 @@ public class TextFieldOption extends ModOption<String> {
 		field.autoFlush();
 		field.setText(getValue());
 
-		container.add(container, new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
+		container.add(field, new AlignedBoundsController(Alignment.END, Alignment.CENTRE));
 		return container;
 	}
 

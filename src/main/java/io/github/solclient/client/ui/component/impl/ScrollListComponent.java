@@ -100,7 +100,7 @@ public class ScrollListComponent extends ListComponent {
 				jumpTo((int) (targetCompY / (getBounds().getHeight() / (double) getContentHeight())));
 				clamp();
 			} else if (grabStartY != -1) {
-				jumpTo(grabStartY - (info.relativeMouseY() - grabMouseY));
+				jumpTo(grabStartY - (((int) info.relativeMouseY()) - grabMouseY));
 				clamp();
 			}
 		}

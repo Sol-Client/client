@@ -40,7 +40,7 @@ dependencies {
 	shade(libs.mixin) { transitive = false }
 	shade occlusionCulling
 	shade(libs.hypixel.api) { transitive = false }
-	shade libs.discord.game.sdk4j
+	shade libs.discord.ipc
 	shade libs.java.websocket
 	shade libs.access.widener
 	shade libs.lwjgl.patched

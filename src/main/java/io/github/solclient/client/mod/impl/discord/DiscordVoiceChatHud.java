@@ -52,16 +52,16 @@ public class DiscordVoiceChatHud implements HudElement {
 
 		switch (mod.voiceChatHudAlignment) {
 			case MIDDLE:
-				yOffset = (USER_HEIGHT * 4) / 2;
+				yOffset = (USER_HEIGHT * 5) / 2;
 				break;
 			case BOTTOM:
-				yOffset = USER_HEIGHT * 4;
+				yOffset = USER_HEIGHT * 5;
 				break;
 			default:
 				break;
 		}
 
-		return position.offset(0, -yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, 76);
+		return position.offset(0, -yOffset).rectangle(20 + font.getStringWidth("TheKodeToad") + 4, USER_HEIGHT * 5 - 4);
 	}
 
 	@Override
@@ -70,6 +70,10 @@ public class DiscordVoiceChatHud implements HudElement {
 
 		if (editMode) {
 			users = new ArrayList<>();
+
+			User thanks = new User("0");
+			thanks.setName("Thanks:");
+			users.add(thanks);
 
 			User lynith = new User("0");
 			lynith.setName("Lynith");

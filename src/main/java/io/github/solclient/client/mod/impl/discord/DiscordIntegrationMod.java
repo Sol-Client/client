@@ -19,15 +19,15 @@
 package io.github.solclient.client.mod.impl.discord;
 
 import java.io.File;
-import java.time.Instant;
+import java.time.*;
 import java.util.*;
+import java.util.concurrent.*;
 
 import com.google.gson.annotations.Expose;
+import com.jagrosh.discordipc.*;
+import com.jagrosh.discordipc.entities.RichPresence;
 import com.replaymod.replay.ReplayModReplay;
 
-import de.jcm.discordgamesdk.*;
-import de.jcm.discordgamesdk.CreateParams.Flags;
-import de.jcm.discordgamesdk.activity.*;
 import io.github.solclient.client.event.EventHandler;
 import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.hud.*;
@@ -47,10 +47,9 @@ public class DiscordIntegrationMod extends StandardMod {
 
 	public static DiscordIntegrationMod instance;
 
-	private CreateParams params;
-	private Core core;
+	private IPCClient client;
 	protected DiscordSocket socket;
-	private Activity activity;
+	private RichPresence activity;
 	private boolean state;
 
 	@Expose
@@ -98,15 +97,7 @@ public class DiscordIntegrationMod extends StandardMod {
 
 	@Override
 	public void init() {
-		try {
-			Core.init(new File(System.getProperty("io.github.solclient.client.discord_lib",
-					"./discord." + MinecraftUtils.getNativeFileExtension())));
-		} catch (Exception error) {
-			logger.error("Could not load natives", error);
-		}
-
 		instance = this;
-
 		super.init();
 	}
 
@@ -131,8 +122,6 @@ public class DiscordIntegrationMod extends StandardMod {
 		super.onEnable();
 
 		try {
-			params = new CreateParams();
-
 			long id = GlobalConstants.DISCORD_APPLICATION;
 
 			if (!applicationId.isEmpty()) {
@@ -142,13 +131,12 @@ public class DiscordIntegrationMod extends StandardMod {
 				}
 			}
 
-			params.setClientID(id);
-			params.setFlags(Flags.NO_REQUIRE_DISCORD);
-			core = new Core(params);
+			client = new IPCClient(id);
+			client.connect();
 
 			startActivity(mc.world);
 		} catch (Throwable error) {
-			logger.warn("Could not start GameSDK", error);
+			logger.warn("Could not start Discord IPC", error);
 		}
 
 		if (voiceChatHud) {
@@ -175,26 +163,16 @@ public class DiscordIntegrationMod extends StandardMod {
 	}
 
 	@EventHandler
-	public void onTick(PreTickEvent event) {
-		if (core == null) {
-			return;
-		}
-
-		core.runCallbacks();
-	}
-
-	@EventHandler
 	public void onGameQuit(GameQuitEvent event) {
-		if (isEnabled() && core != null) {
+		if (isEnabled() && client != null) {
 			close();
 		}
 	}
 
 	private void close() {
-		if (core != null) {
-			params.close();
-			core.close();
-			core = null;
+		if (client != null) {
+			client.close();
+			client = null;
 		}
 
 		closeSocket();
@@ -202,7 +180,7 @@ public class DiscordIntegrationMod extends StandardMod {
 
 	@EventHandler
 	public void onGuiChange(OpenGuiEvent event) {
-		if (core == null) {
+		if (client == null) {
 			return;
 		}
 
@@ -214,7 +192,7 @@ public class DiscordIntegrationMod extends StandardMod {
 
 	@EventHandler
 	public void onWorldChange(WorldLoadEvent event) {
-		if (core == null) {
+		if (client == null) {
 			return;
 		}
 
@@ -245,19 +223,13 @@ public class DiscordIntegrationMod extends StandardMod {
 	}
 
 	private void setActivity(String text) {
-		if (activity != null) {
-			activity.close();
-		}
+		activity = new RichPresence.Builder()
+				.setState(text)
+				.setLargeImage(!icon.isEmpty() ? icon : "large_logo")
+				.setStartTimestamp(OffsetDateTime.now())
+				.build();
 
-		activity = new Activity();
-		activity.setState(text);
-
-		activity.setType(ActivityType.PLAYING);
-		activity.assets().setLargeImage(icon.isEmpty() ? "large_logo" : icon);
-		activity.timestamps().setStart(Instant.now());
-
-		core.activityManager().updateActivity(activity);
-
+		client.sendRichPresence(activity);
 		state = true;
 	}
 

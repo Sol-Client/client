@@ -4,7 +4,7 @@ mixin = "0.11.4+mixin.0.8.5"
 yarn = "1.8.9+build.456"
 intermediary = "1.8.9"
 hypixel_api = "4.0"
-discord_game_sdk4j = "v0.5.4"
+discord_ipc = "c54186b390"
 java_websocket = "1.5.3"
 lwjgl_patched = "bf1d105853"
 lwjgl = "3.3.1"
@@ -21,7 +21,7 @@ mixin = { module = "net.fabricmc:sponge-mixin", version.ref = "mixin" }
 yarn = { module = "net.legacyfabric:yarn", version.ref = "yarn" }
 intermediary = { module = "net.legacyfabric:intermediary", version.ref = "intermediary" }
 hypixel_api = { module = "net.hypixel:hypixel-api-core", version.ref = "hypixel_api" }
-discord_game_sdk4j = { module = "com.github.JnCrMx:discord-game-sdk4j", version.ref = "discord_game_sdk4j" }
+discord_ipc = { module = "com.github.TheKodeToad:DiscordIPC", version.ref = "discord_ipc" }
 java_websocket = { module = "org.java-websocket:Java-WebSocket", version.ref = "java_websocket" }
 access_widener = { module = "net.fabricmc:access-widener", version.ref = "access_widener" }
 lwjgl_patched = { module = "com.github.Sol-Client:lwjgl-patched", version.ref = "lwjgl_patched" }

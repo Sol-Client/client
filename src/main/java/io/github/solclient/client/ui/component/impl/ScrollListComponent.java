@@ -50,7 +50,7 @@ public class ScrollListComponent extends ListComponent {
 			return;
 		}
 
-		parent.add(scrollbar = new BlockComponent(Theme.buttonSecondary(), Controller.of(1.5F), Controller.of(0F)) {
+		parent.add(scrollbar = new BlockComponent(Controller.of(() -> Theme.getCurrent().buttonSecondary), Controller.of(1.5F), Controller.of(0F)) {
 
 			@Override
 			public void render(ComponentRenderInfo info) {

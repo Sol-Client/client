@@ -2,7 +2,7 @@
 #include <winuser.h>
 #include <jni.h>
 
-JNIEXPORT jlong JNICALL Java_io_toadlabs_lwjgllegacycursors_Win32SystemCursors_nGetDefaultCursorHandle(
+JNIEXPORT jlong JNICALL Java_io_github_solclient_client_util_cursors_Win32SystemCursors_nGetDefaultCursorHandle(
 		JNIEnv *env, jclass unused, jbyte cursor) {
 	switch (cursor) {
 		case 0:
@@ -29,7 +29,7 @@ JNIEXPORT jlong JNICALL Java_io_toadlabs_lwjgllegacycursors_Win32SystemCursors_n
 	}
 }
 
-JNIEXPORT void JNICALL Java_io_toadlabs_lwjgllegacycursors_Win32SystemCursors_nSetCursor(
+JNIEXPORT void JNICALL Java_io_github_solclient_client_util_cursors_Win32SystemCursors_nSetCursor(
 		JNIEnv *env, jclass unused, jlong hwnd, jlong cursor) {
 	SetClassLongPtr((HWND) hwnd, GCLP_HCURSOR, NULL);
 	SetCursor((HCURSOR) cursor);

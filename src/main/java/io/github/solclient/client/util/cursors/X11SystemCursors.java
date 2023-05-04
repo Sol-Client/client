@@ -30,7 +30,6 @@ final class X11SystemCursors {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Long[] CACHE = new Long[SystemCursors.SIZE];
 	private static MethodHandle getDisplayMethod;
-	private static boolean supported = true;
 
 	static {
 		if (Util.foundInputImplementationMethod()) {
@@ -43,16 +42,13 @@ final class X11SystemCursors {
 				Util.loadLibrary("lwjglLegacyCursorsX11");
 			} catch (Throwable error) {
 				LOGGER.error("Could not perform reflection/load natives", error);
-				supported = false;
+				SystemCursors.markUnsupported();
 			}
 		} else
-			supported = false;
+			SystemCursors.markUnsupported();
 	}
 
 	public static void setCursor(byte cursor) throws LWJGLException {
-		if (!supported)
-			return;
-
 		Util.getInputImplementation().setNativeCursor(getDefaultCursorHandle(cursor));
 	}
 

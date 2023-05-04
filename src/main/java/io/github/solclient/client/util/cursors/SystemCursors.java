@@ -18,7 +18,7 @@
 
 package io.github.solclient.client.util.cursors;
 
-import org.lwjgl.LWJGLException;
+import org.apache.logging.log4j.*;
 import org.lwjgl.LWJGLUtil;
 import org.lwjgl.input.Mouse;
 
@@ -35,20 +35,34 @@ public final class SystemCursors {
 	public static final byte ALL_CURSOR = 8;
 	public static final byte NOT_ALLOWED = 9;
 	public static final byte SIZE = size();
+	private static final Logger LOGGER = LogManager.getLogger();
+	private static boolean supported = true;
 
-	public static void setCursor(byte cursor) throws LWJGLException {
-		if (cursor == ARROW) {
-			Mouse.setNativeCursor(null);
+	static void markUnsupported() {
+		supported = false;
+	}
+
+	public static void setCursor(byte cursor) {
+		if (!supported)
 			return;
+
+		try {
+			if (cursor == ARROW) {
+				Mouse.setNativeCursor(null);
+				return;
+			}
+
+			if (cursor < 0 || cursor >= SIZE)
+				throw new IllegalArgumentException(Byte.toString(cursor));
+
+			if (LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_LINUX)
+				X11SystemCursors.setCursor(cursor);
+			else if (LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_WINDOWS)
+				Win32SystemCursors.setCursor(cursor);
+		} catch (Throwable error) {
+			LOGGER.error("Error occured; not trying again", error);
+			markUnsupported();
 		}
-
-		if (cursor < 0 || cursor >= SIZE)
-			throw new IllegalArgumentException(Byte.toString(cursor));
-
-		if (LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_LINUX)
-			X11SystemCursors.setCursor(cursor);
-		else if (LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_WINDOWS)
-			Win32SystemCursors.setCursor(cursor);
 	}
 
 	private static byte size() {

@@ -23,14 +23,12 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 
 import org.apache.logging.log4j.*;
-import org.lwjgl.LWJGLException;
 
 final class Win32SystemCursors {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Long[] CACHE = new Long[SystemCursors.SIZE];
 	private static MethodHandle getHwndMethod;
-	private static boolean supported = true;
 
 	static {
 		if (Util.foundInputImplementationMethod()) {
@@ -43,16 +41,13 @@ final class Win32SystemCursors {
 				Util.loadLibrary("lwjglLegacyCursorsWin32");
 			} catch (Throwable error) {
 				LOGGER.error("Could not perform reflection/load natives", error);
-				supported = false;
+				SystemCursors.markUnsupported();
 			}
 		} else
-			supported = false;
+			SystemCursors.markUnsupported();
 	}
 
-	public static void setCursor(byte cursor) throws LWJGLException {
-		if (!supported)
-			return;
-
+	public static void setCursor(byte cursor) {
 		nSetCursor(getHwnd(), getDefaultCursorHandle(cursor));
 	}
 
@@ -72,6 +67,7 @@ final class Win32SystemCursors {
 	}
 
 	private static native long nGetDefaultCursorHandle(byte cursor);
+
 	private static native void nSetCursor(long hwnd, long cursor);
 
 }

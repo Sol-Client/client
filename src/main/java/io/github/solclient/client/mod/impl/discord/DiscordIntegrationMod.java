@@ -33,7 +33,11 @@ import io.github.solclient.client.event.impl.*;
 import io.github.solclient.client.mod.hud.*;
 import io.github.solclient.client.mod.impl.*;
 import io.github.solclient.client.mod.impl.discord.socket.DiscordSocket;
+import io.github.solclient.client.mod.option.ModOptionStorage;
 import io.github.solclient.client.mod.option.annotation.*;
+import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.ui.component.controller.Controller;
+import io.github.solclient.client.ui.component.impl.*;
 import io.github.solclient.client.ui.screen.SolClientMainMenu;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.data.*;
@@ -87,6 +91,10 @@ public class DiscordIntegrationMod extends StandardMod {
 	@Option
 	@TextField("sol_client.mod.screen.default")
 	private String icon = "";
+	@Expose
+	private String button1Text = "", button1Url = "";
+	@Expose
+	private String button2Text = "", button2Url = "";
 
 	private final DiscordVoiceChatHud discordVoiceChatHud = new DiscordVoiceChatHud(this);
 
@@ -99,6 +107,49 @@ public class DiscordIntegrationMod extends StandardMod {
 	public void init() {
 		instance = this;
 		super.init();
+	}
+
+	@Override
+	public ListComponent createConfigComponent() {
+		ListComponent result = super.createConfigComponent();
+		ListComponent buttons = new ListComponent() {
+
+			@Override
+			protected Rectangle getDefaultBounds() {
+				return Rectangle.ofDimensions(result.getBounds().getWidth(), 50);
+			}
+
+		};
+		Component labelContainer = Component.withBounds((component, defaultBounds) -> Rectangle.ofDimensions(230,
+				component.getSubComponents().get(0).getBounds().getHeight()));
+		labelContainer.add(new LabelComponent(getTranslationKey("buttons")), Controller.none());
+		buttons.add(labelContainer);
+		buttons.add(createButton(ensureField("button1Text"), ensureField("button1Url")));
+		buttons.add(createButton(ensureField("button2Text"), ensureField("button2Url")));
+		result.add(result.getSubComponents().size(), buttons);
+		return result;
+	}
+
+	private Component createButton(ModOptionStorage<String> label, ModOptionStorage<String> url) {
+		Component result = Component.withBounds(Controller.of(Rectangle.ofDimensions(230, 15)));
+
+		TextFieldComponent labelComponent = new TextFieldComponent(110, false).autoFlush()
+				.withPlaceholder(getTranslationKey("label")).onUpdate(value -> {
+					label.set(value);
+					return true;
+				});
+		labelComponent.setText(label.get());
+		result.add(labelComponent, Controller.none());
+
+		TextFieldComponent urlComponent = new TextFieldComponent(110, false).autoFlush()
+				.withPlaceholder(getTranslationKey("url")).onUpdate(value -> {
+					url.set(value);
+					return true;
+				});
+		urlComponent.setText(url.get());
+		result.add(urlComponent, (component, defaultBounds) -> defaultBounds.offset(115, 0));
+
+		return result;
 	}
 
 	@Override
@@ -223,11 +274,17 @@ public class DiscordIntegrationMod extends StandardMod {
 	}
 
 	private void setActivity(String text) {
-		activity = new RichPresence.Builder()
+		// @formatter:off
+		activity = ExtendedRichPresence.builder()
 				.setState(text)
 				.setLargeImage(!icon.isEmpty() ? icon : "large_logo")
 				.setStartTimestamp(OffsetDateTime.now())
+				.setButton1Label(button1Text.isEmpty() ? null : button1Text)
+				.setButton1Url(button1Url.isEmpty() ? null : button1Url)
+				.setButton2Label(button2Text.isEmpty() ? null : button2Text)
+				.setButton2Url(button2Url.isEmpty() ? null : button2Url)
 				.build();
+		// @formatter:on
 
 		client.sendRichPresence(activity);
 		state = true;

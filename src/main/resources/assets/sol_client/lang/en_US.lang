@@ -478,6 +478,10 @@ sol_client.mod.discord_integration.option.usernameColour=Username colour
 sol_client.mod.discord_integration.option.mutedColour=Muted colour
 sol_client.mod.discord_integration.option.speakingColour=Speaking colour
 
+sol_client.mod.discord_integration.buttons=Buttons
+sol_client.mod.discord_integration.label=Label
+sol_client.mod.discord_integration.url=URL
+
 sol_client.mod.discord_integration.multiplayer=Multiplayer: %s
 sol_client.mod.discord_integration.main_menu=Main Menu
 

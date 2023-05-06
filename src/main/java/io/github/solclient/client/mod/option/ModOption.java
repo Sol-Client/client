@@ -109,14 +109,7 @@ public abstract class ModOption<T> {
 	}
 
 	protected Component createDefaultComponent(int height, boolean label) {
-		Component component = new Component() {
-
-			@Override
-			public Rectangle getDefaultBounds() {
-				return Rectangle.ofDimensions(230, height);
-			}
-
-		};
+		Component component = Component.withBounds(Controller.of(Rectangle.ofDimensions(230, height)));
 		if (label)
 			component.add(new LabelComponent(Controller.of(() -> I18n.translate(getName()))),
 					new AlignedBoundsController(Alignment.START, Alignment.CENTRE));

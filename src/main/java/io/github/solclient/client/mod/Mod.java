@@ -94,6 +94,15 @@ public abstract class Mod extends Object {
 		return options;
 	}
 
+	public <T> FieldStorage<T> ensureField(String name) {
+		try {
+			return getField(name);
+		} catch (NoSuchFieldException | IllegalAccessException error) {
+			throw new AssertionError("Required field " + name + " is not available");
+		}
+	}
+
+
 	/**
 	 * Gets a field from the mod. Override this if you want to protect access.
 	 *
@@ -102,18 +111,12 @@ public abstract class Mod extends Object {
 	 * @throws NoSuchFieldException   if the field doesn't exist.
 	 * @throws IllegalAccessException if the access failed.
 	 */
-	public FieldStorage<?> getField(String name) throws NoSuchFieldException, IllegalAccessException {
+	public <T> FieldStorage<T> getField(String name) throws NoSuchFieldException, IllegalAccessException {
 		Field field;
 		try {
 			field = getClass().getDeclaredField(name);
 		} catch (NoSuchFieldException error) {
-			try {
-				field = getClass().getField(name);
-			} catch (NoSuchFieldException | SecurityException e) {
-				throw error;
-			}
-		} catch (SecurityException error) {
-			throw error;
+			field = getClass().getField(name);
 		}
 		field.setAccessible(true);
 		return new FieldStorage<>(this, field);
@@ -148,7 +151,7 @@ public abstract class Mod extends Object {
 	 *
 	 * @return the component.
 	 */
-	public Component createConfigComponent() {
+	public ListComponent createConfigComponent() {
 		ListComponent container = new ScrollListComponent();
 		for (ModOption<?> option : options)
 			container.add(option.createComponent());

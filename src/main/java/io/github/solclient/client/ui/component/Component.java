@@ -63,6 +63,15 @@ public abstract class Component extends NanoVGManager {
 	private Controller<Boolean> visibilityController;
 	private Rectangle cachedBounds;
 
+	public static Component withBounds(Controller<Rectangle> boundController) {
+		return new Component() {
+			@Override
+			protected Rectangle getDefaultBounds() {
+				return boundController.get(this, super.getDefaultBounds());
+			}
+		};
+	}
+
 	public static void setCursor(byte cursor) {
 		if (Component.cursor != SystemCursors.ARROW)
 			return;

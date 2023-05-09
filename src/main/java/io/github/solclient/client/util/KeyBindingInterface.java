@@ -16,18 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.extension;
+package io.github.solclient.client.util;
 
 import org.lwjgl.input.Keyboard;
 
 import io.github.solclient.client.util.data.Modifier;
 import net.minecraft.client.option.KeyBinding;
 
-public interface KeyBindingExtension {
+public interface KeyBindingInterface {
 
-	static KeyBindingExtension from(KeyBinding keybinding) {
-		return (KeyBindingExtension) keybinding;
+	static KeyBindingInterface from(KeyBinding keybinding) {
+		return (KeyBindingInterface) keybinding;
 	}
+
+	int getKeyCode();
+
+	void setKeyCode(int keyCode);
 
 	int getMods();
 

@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import io.github.solclient.client.extension.KeyBindingExtension;
+import io.github.solclient.client.util.KeyBindingInterface;
 import io.github.solclient.client.util.data.Modifier;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -47,7 +47,7 @@ public class ControlsOptionsScreenMixin extends Screen {
 		if (selectedKeyBinding == null)
 			return;
 
-		KeyBindingExtension.from(selectedKeyBinding).setMods(0);
+		KeyBindingInterface.from(selectedKeyBinding).setMods(0);
 	}
 
 	@Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
@@ -66,7 +66,7 @@ public class ControlsOptionsScreenMixin extends Screen {
 				if (shift)
 					mods |= Modifier.SHIFT;
 
-				KeyBindingExtension.from(selectedKeyBinding).setMods(mods);
+				KeyBindingInterface.from(selectedKeyBinding).setMods(mods);
 
 				options.setKeyBindingCode(selectedKeyBinding, keyCode);
 				selectedKeyBinding = null;
@@ -75,7 +75,7 @@ public class ControlsOptionsScreenMixin extends Screen {
 			} else {
 				if (selectedKeyBinding != null)
 					// clear mods - none are held
-					KeyBindingExtension.from(selectedKeyBinding).setMods(0);
+					KeyBindingInterface.from(selectedKeyBinding).setMods(0);
 
 				return;
 			}
@@ -90,7 +90,7 @@ public class ControlsOptionsScreenMixin extends Screen {
 
 		if (selectedKeyBinding != null) {
 			// clear mods - this is a mod key on its own
-			KeyBindingExtension.from(selectedKeyBinding).setMods(0);
+			KeyBindingInterface.from(selectedKeyBinding).setMods(0);
 			options.setKeyBindingCode(selectedKeyBinding, key);
 			selectedKeyBinding = null;
 			time = MinecraftClient.getTime();
@@ -102,7 +102,7 @@ public class ControlsOptionsScreenMixin extends Screen {
 	public void resetWithMods(ButtonWidget instance, boolean enabled) {
 		if (!enabled) {
 			for (KeyBinding binding : options.allKeys) {
-				if (KeyBindingExtension.from(binding).getMods() != 0) {
+				if (KeyBindingInterface.from(binding).getMods() != 0) {
 					enabled = true;
 					break;
 				}
@@ -115,7 +115,7 @@ public class ControlsOptionsScreenMixin extends Screen {
 	@Redirect(method = "buttonClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBinding;setCode(I)V"))
 	public void resetMods(KeyBinding instance, int keyCode) {
 		instance.setCode(keyCode);
-		KeyBindingExtension.from(instance).setMods(0);
+		KeyBindingInterface.from(instance).setMods(0);
 	}
 
 	@Shadow

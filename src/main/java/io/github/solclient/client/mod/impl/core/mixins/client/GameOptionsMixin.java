@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
-import io.github.solclient.client.extension.KeyBindingExtension;
+import io.github.solclient.client.util.KeyBindingInterface;
 import net.minecraft.client.option.*;
 
 @Mixin(GameOptions.class)
@@ -53,7 +53,7 @@ public class GameOptionsMixin {
 	@Redirect(method = "save", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;close()V"))
 	public void injectCustomOptions(PrintWriter writer) {
 		for (KeyBinding keyBinding : allKeys) {
-			int mods = KeyBindingExtension.from(keyBinding).getMods();
+			int mods = KeyBindingInterface.from(keyBinding).getMods();
 			if (mods == 0)
 				continue;
 
@@ -76,7 +76,7 @@ public class GameOptionsMixin {
 			String value = result.substring(result.indexOf(':') + 1);
 			StreamSupport.stream(Arrays.spliterator(allKeys), false)
 					.filter((binding) -> binding.getTranslationKey().equals(key)).findFirst()
-					.ifPresent((binding) -> KeyBindingExtension.from(binding).setMods(Integer.parseInt(value)));
+					.ifPresent((binding) -> KeyBindingInterface.from(binding).setMods(Integer.parseInt(value)));
 		}
 
 		return result;
@@ -84,7 +84,7 @@ public class GameOptionsMixin {
 
 	@Inject(method = "isPressed", at = @At("RETURN"), cancellable = true)
 	private static void requireMods(KeyBinding key, CallbackInfoReturnable<Boolean> callback) {
-		if (callback.getReturnValueZ() && !KeyBindingExtension.from(key).areModsPressed())
+		if (callback.getReturnValueZ() && !KeyBindingInterface.from(key).areModsPressed())
 			callback.setReturnValue(false);
 	}
 

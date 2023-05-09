@@ -38,6 +38,8 @@ import net.minecraft.util.math.MathHelper;
 public class TextFieldComponent extends Component {
 
 	private int width;
+	private final int maxLength;
+	private boolean centred;
 	private String lastText = "";
 	@Getter
 	private String text = "";
@@ -48,26 +50,27 @@ public class TextFieldComponent extends Component {
 	private boolean focused;
 	private int selectionEnd;
 	private boolean enabled = true;
-	private boolean centred;
 	private Predicate<String> onUpdate;
 	private boolean flush;
 	private int ticks;
 	private boolean hasIcon;
 	private boolean underline = true;
 
-	public TextFieldComponent(int width, boolean centred) {
+	public TextFieldComponent(int width, int maxLength, boolean centred) {
 		this.width = width;
+		this.maxLength = maxLength;
 		this.centred = centred;
 	}
 
-	public void setText(String text) {
+	public TextFieldComponent setText(String text) {
 		lastText = text;
 		setTextInternal(text);
+		return this;
 	}
 
 	private void setTextInternal(String text) {
-		if (text.length() > 32) {
-			text = text.substring(0, 32);
+		if (text.length() > maxLength) {
+			text = text.substring(0, maxLength);
 		}
 
 		boolean different = this.text != text;
@@ -150,7 +153,7 @@ public class TextFieldComponent extends Component {
 			NanoVG.nvgShapeAntiAlias(nvg, true);
 		}
 
-		boolean hasPlaceholder = placeholder != null && text.isEmpty() && !focused;
+		boolean hasPlaceholder = placeholder != null && text.isEmpty();
 
 		NanoVG.nvgFillColor(nvg, (hasPlaceholder ? new Colour(0xFF888888) : Theme.getCurrent().fg).nvg());
 		regularFont.renderString(nvg, hasPlaceholder ? I18n.translate(placeholder) : text, textOffset, y);
@@ -362,7 +365,7 @@ public class TextFieldComponent extends Component {
 		String filtered = SharedConstants.stripInvalidChars(text);
 		int start = cursor < selectionEnd ? cursor : selectionEnd;
 		int end = cursor < selectionEnd ? selectionEnd : cursor;
-		int k = 32 - text.length() - (start - end);
+		int k = maxLength - text.length() - (start - end);
 		int l = 0;
 
 		if (this.text.length() > 0) {

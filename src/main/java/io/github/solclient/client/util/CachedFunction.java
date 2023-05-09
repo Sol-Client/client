@@ -20,18 +20,26 @@ package io.github.solclient.client.util;
 
 import com.google.common.base.*;
 
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@RequiredArgsConstructor
-public class DirtyMapper<I, O> {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public class CachedFunction<O> {
 
-	private final Supplier<I> controlValueSupplier;
-	private final Function<I, O> mapper;
-	private I lastControlValue;
+	private final Supplier<Object> controlValueSupplier;
+	private final Function<Object, O> mapper;
+	private Object lastControlValue;
 	private O lastOutput;
 
+	public static <I, O> CachedFunction<O> withComparison(Supplier<I> controlValueSupplier, Function<I, O> mapper) {
+		return new CachedFunction<O>((Supplier) controlValueSupplier, (Function) mapper);
+	}
+
+	public static <O> CachedFunction<O> withHashCode(Object controlValue, Supplier<O> supplier) {
+		return new CachedFunction<>(() -> controlValue.hashCode(), ignored -> supplier.get());
+	}
+
 	public O get() {
-		I controlValue = controlValueSupplier.get();
+		Object controlValue = controlValueSupplier.get();
 
 		if (!controlValue.equals(lastControlValue)) {
 			lastControlValue = controlValue;

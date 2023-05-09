@@ -96,12 +96,23 @@ public abstract class MinecraftClientMixin implements MinecraftClientExtension, 
 	}
 
 	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;next()Z"))
-	public boolean next() {
+	public boolean nextClick() {
 		boolean next = Mouse.next();
 
 		if (next && Mouse.getEventButtonState())
 			if (EventBus.INSTANCE.post(new MouseClickEvent(Mouse.getEventButton())).cancelled)
-				next = next(); // Skip
+				next = nextClick(); // Skip
+
+		return next;
+	}
+
+	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Keyboard;next()Z"))
+	public boolean nextKey() {
+		boolean next = Keyboard.next();
+
+		if (next && Keyboard.getEventKeyState())
+			if (EventBus.INSTANCE.post(new KeyPressEvent(Keyboard.getEventKey())).cancelled)
+				next = nextKey(); // Skip
 
 		return next;
 	}

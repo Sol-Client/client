@@ -190,6 +190,11 @@
 		"category": "utility",
 		"enabledByDefault": true
 	},
+	{
+		"id": "chat_hotkeys",
+		"main": "chathotkeys.ChatHotkeysMod",
+		"category": "utility"
+	},
 	// visual
 	{
 		"id": "motion_blur",

@@ -39,7 +39,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.replaymod.replay.ReplayModReplay;
 import com.replaymod.replay.camera.CameraEntity;
 
-import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.mod.impl.core.mixins.client.MinecraftClientAccessor;
 import io.github.solclient.client.util.data.*;
@@ -683,12 +682,16 @@ public class MinecraftUtils {
 	}
 
 	public boolean isConflicting(KeyBinding keybinding) {
-		if (keybinding.getCode() == 0)
+		return isConflicting(KeyBindingInterface.from(keybinding));
+	}
+
+	public boolean isConflicting(KeyBindingInterface keybinding) {
+		if (keybinding.getKeyCode() == 0)
 			return false;
 
 		for (KeyBinding other : MinecraftClient.getInstance().options.allKeys)
-			if (other != keybinding && other.getCode() == keybinding.getCode()
-					&& KeyBindingExtension.from(other).getMods() == KeyBindingExtension.from(keybinding).getMods())
+			if (other != keybinding && other.getCode() == keybinding.getKeyCode()
+					&& KeyBindingInterface.from(other).getMods() == keybinding.getMods())
 				return true;
 
 		return false;

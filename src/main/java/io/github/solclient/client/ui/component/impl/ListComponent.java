@@ -21,8 +21,16 @@ package io.github.solclient.client.ui.component.impl;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.util.data.*;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class ListComponent extends Component {
+
+	private final Alignment alignment;
+
+	public ListComponent() {
+		this.alignment = Alignment.CENTRE;
+	}
 
 	public void add(Component component) {
 		add(getSubComponents().size(), component);
@@ -30,7 +38,7 @@ public class ListComponent extends Component {
 
 	public void add(int index, Component component) {
 		add(index, component,
-				new AlignedBoundsController(Alignment.CENTRE, Alignment.START, (sizingComponent, defaultBounds) -> {
+				new AlignedBoundsController(alignment, Alignment.START, (sizingComponent, defaultBounds) -> {
 					Component previous = null;
 					Rectangle lastBounds = null;
 

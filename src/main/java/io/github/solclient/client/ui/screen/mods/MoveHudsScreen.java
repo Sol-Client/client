@@ -24,7 +24,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.NanoVG;
 
 import io.github.solclient.client.SolClient;
-import io.github.solclient.client.extension.KeyBindingExtension;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.ui.Theme;
@@ -32,6 +31,7 @@ import io.github.solclient.client.ui.component.*;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
 import io.github.solclient.client.ui.component.impl.ButtonComponent;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
+import io.github.solclient.client.util.KeyBindingInterface;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.util.Window;
 
@@ -60,7 +60,7 @@ public class MoveHudsScreen extends PanoramaBackgroundScreen {
 	@Override
 	protected void keyPressed(char character, int code) {
 		if (code == 1 || (code == CoreMod.instance.editHudKey.getCode()
-				&& KeyBindingExtension.from(CoreMod.instance.editHudKey).areModsPressed())) {
+				&& KeyBindingInterface.from(CoreMod.instance.editHudKey).areModsPressed())) {
 			SolClient.INSTANCE.saveAll();
 			client.setScreen(null);
 			return;

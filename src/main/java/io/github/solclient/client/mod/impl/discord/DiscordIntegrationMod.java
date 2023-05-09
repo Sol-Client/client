@@ -133,7 +133,7 @@ public class DiscordIntegrationMod extends StandardMod {
 	private Component createButton(ModOptionStorage<String> label, ModOptionStorage<String> url) {
 		Component result = Component.withBounds(Controller.of(Rectangle.ofDimensions(230, 15)));
 
-		TextFieldComponent labelComponent = new TextFieldComponent(110, false).autoFlush()
+		TextFieldComponent labelComponent = new TextFieldComponent(110, 32, false).autoFlush()
 				.withPlaceholder(getTranslationKey("label")).onUpdate(value -> {
 					label.set(value);
 					return true;
@@ -141,7 +141,7 @@ public class DiscordIntegrationMod extends StandardMod {
 		labelComponent.setText(label.get());
 		result.add(labelComponent, Controller.none());
 
-		TextFieldComponent urlComponent = new TextFieldComponent(110, false).autoFlush()
+		TextFieldComponent urlComponent = new TextFieldComponent(110, 32, false).autoFlush()
 				.withPlaceholder(getTranslationKey("url")).onUpdate(value -> {
 					url.set(value);
 					return true;

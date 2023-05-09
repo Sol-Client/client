@@ -21,7 +21,7 @@ package io.github.solclient.client.mod.impl;
 import com.google.gson.annotations.Expose;
 
 import io.github.solclient.client.mod.option.annotation.*;
-import io.github.solclient.client.util.DirtyMapper;
+import io.github.solclient.client.util.CachedFunction;
 import io.github.solclient.client.util.data.*;
 import net.minecraft.client.resource.language.I18n;
 
@@ -54,7 +54,7 @@ public abstract class SolClientSimpleHudMod extends SolClientHudMod {
 	@Expose
 	@Option
 	protected boolean shadow = true;
-	private DirtyMapper<String, Integer> langWidth = new DirtyMapper<>(
+	private CachedFunction<Integer> langWidth = CachedFunction.withComparison(
 			() -> mc.getLanguageManager().getLanguage().getCode(), (key) -> {
 				String translationKey = getTranslationKey("default_width");
 				String width = I18n.translate(translationKey);

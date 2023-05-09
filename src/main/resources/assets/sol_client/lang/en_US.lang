@@ -424,6 +424,17 @@ sol_client.mod.screenshots.delete=Delete
 sol_client.mod.screenshots.delete_error=An error occurred during deletion: %s. You can try opening %s instead.
 sol_client.mod.screenshots.deleted=The screenshot was deleted
 
+sol_client.mod.chat_hotkeys.name=Chat Hotkeys
+sol_client.mod.chat_hotkeys.description=Bind commands and messages to keys.
+
+sol_client.mod.chat_hotkeys.option.hotkeys=Hotkeys
+sol_client.mod.chat_hotkeys.option.cooldown=Rate limit
+
+sol_client.mod.chat_hotkeys.clear=Clear
+sol_client.mod.chat_hotkeys.message=Message
+sol_client.mod.chat_hotkeys.empty=Your message ("%s") is empty.
+sol_client.mod.chat_hotkeys.cooldown=You are using hotkeys faster than the configured rate.
+
 sol_client.mod.time_changer.name=Time Changer
 sol_client.mod.time_changer.description=Change the visual time without affecting gameplay.
 

@@ -23,8 +23,7 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
-import io.github.solclient.client.extension.KeyBindingExtension;
-import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.*;
 import net.minecraft.client.gui.screen.options.ControlsListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.KeyBinding;
@@ -36,12 +35,12 @@ public class KeyBindingEntryMixin {
 	@Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/ButtonWidget;message:Ljava/lang/String;", ordinal = 0, shift = Shift.AFTER))
 	public void addModifiersToLabel(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY,
 			boolean isSelected, CallbackInfo callback) {
-		keyBindingButton.message = KeyBindingExtension.from(keyBinding).getPrefix() + keyBindingButton.message;
+		keyBindingButton.message = KeyBindingInterface.from(keyBinding).getPrefix() + keyBindingButton.message;
 	}
 
 	@Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/ButtonWidget;active:Z"))
 	public void resetEnabledWithMods(ButtonWidget instance, boolean modifiedKey) {
-		instance.active = modifiedKey || KeyBindingExtension.from(keyBinding).getMods() != 0;
+		instance.active = modifiedKey || KeyBindingInterface.from(keyBinding).getMods() != 0;
 	}
 
 	// :'(
@@ -60,7 +59,7 @@ public class KeyBindingEntryMixin {
 	@Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;setKeyBindingCode(Lnet/minecraft/client/option/KeyBinding;I)V"))
 	public void reset(int slotIndex, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_,
 			int p_148278_6_, CallbackInfoReturnable<Boolean> callback) {
-		KeyBindingExtension.from(keyBinding).setMods(0);
+		KeyBindingInterface.from(keyBinding).setMods(0);
 	}
 
 	@Shadow

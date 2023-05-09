@@ -107,7 +107,7 @@ public class ColourPickerDialog extends BlockComponent {
 									defaultBounds.getY() - 8, defaultBounds.getWidth(), defaultBounds.getHeight())));
 		}
 
-		hex = new TextFieldComponent(TEXT_WIDTH, true);
+		hex = new TextFieldComponent(TEXT_WIDTH, 8, true);
 		add(hex, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 59));
 		hex.setText(colour.toHexString());
 		hex.onUpdate((text) -> {
@@ -119,22 +119,22 @@ public class ColourPickerDialog extends BlockComponent {
 			return true;
 		});
 
-		r = new TextFieldComponent(24, true);
+		r = new TextFieldComponent(24, 3, true);
 		add(r, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 78));
 		r.setText(Integer.toString(colour.getRed()));
 		r.onUpdate((text) -> setRGBA(0, text));
 
-		g = new TextFieldComponent(24, true);
+		g = new TextFieldComponent(24, 3, true);
 		add(g, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 71, 78));
 		g.setText(Integer.toString(colour.getGreen()));
 		g.onUpdate((text) -> setRGBA(1, text));
 
-		b = new TextFieldComponent(24, true);
+		b = new TextFieldComponent(24, 3, true);
 		add(b, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 97, 78));
 		b.setText(Integer.toString(colour.getBlue()));
 		b.onUpdate((text) -> setRGBA(2, text));
 
-		a = new TextFieldComponent(TEXT_WIDTH, true);
+		a = new TextFieldComponent(TEXT_WIDTH, 3, true);
 		add(a, (component, defaultBounds) -> defaultBounds.offset(PICKER_X + PICKER_WIDTH + 45, 97));
 		a.setText(Integer.toString(colour.getAlpha()));
 		a.onUpdate((text) -> setRGBA(3, text));

@@ -150,8 +150,10 @@ public final class Prelaunch {
 		URL source = extractOptiFineUrl(GlobalConstants.OPTIFINE_JAR);
 		Utils.urlToFile(OPTIFINE_USER_AGENT, source, optifineJar);
 
+		URL optifine = optifineJar.toUri().toURL();
+		URL gameJar = getGameJar().toUri().toURL();
 		try (URLClassLoader loader = new URLClassLoader(
-				new URL[] { optifineJar.toUri().toURL(), GlobalConstants.DEV ? getGameJar().toUri().toURL() : null })) {
+				GlobalConstants.DEV ? new URL[] { optifine, gameJar } : new URL[] { optifine })) {
 			Class<?> patcher = loader.loadClass("optifine.Patcher");
 			MethodHandle main = MethodHandles.lookup().findStatic(patcher, "main", GlobalConstants.MAIN_METHOD);
 			main.invokeExact(

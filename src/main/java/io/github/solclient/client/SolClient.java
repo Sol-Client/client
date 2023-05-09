@@ -32,6 +32,7 @@ import com.google.gson.*;
 import io.github.solclient.client.mod.*;
 import io.github.solclient.client.mod.hud.HudElement;
 import io.github.solclient.client.mod.impl.StandardMod;
+import io.github.solclient.util.Utils;
 import io.github.solclient.wrapper.*;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
@@ -48,7 +49,7 @@ public final class SolClient implements Iterable<Mod> {
 	private final List<HudElement> huds = new ArrayList<>();
 	private List<ModInfo> queue = new ArrayList<>();
 	@Getter
-	private Path configFolder, modsFile;
+	private Path configFolder, modsFile, legacyModsFile;
 
 	public void loadStandard() throws IOException, InvalidModException {
 		LOGGER.info("Loading standard mods...");
@@ -85,6 +86,16 @@ public final class SolClient implements Iterable<Mod> {
 		MinecraftClient mc = MinecraftClient.getInstance();
 		configFolder = mc.runDirectory.toPath().resolve("config/sol-client");
 		modsFile = configFolder.resolve("mods.json");
+		legacyModsFile = mc.runDirectory.toPath().resolve("sol_client_mods.json");
+
+		try {
+			Utils.ensureDirectory(configFolder);
+
+			if (Files.exists(legacyModsFile) && !Files.exists(modsFile))
+				Files.move(legacyModsFile, modsFile);
+		} catch (IOException error) {
+			LOGGER.error("Failed to prepare load", error);
+		}
 
 		LOGGER.info("Loading {} mods...", queue.size());
 

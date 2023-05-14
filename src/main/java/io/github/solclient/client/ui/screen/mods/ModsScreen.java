@@ -202,17 +202,22 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 				}
 
 				config = null;
-			} else if (mod != null && this.mod == null) {
+			} else if (mod != null) {
+				if (config != null)
+					remove(config);
+
 				config = mod.createConfigComponent();
 				add(config, Controller
 						.of(() -> new Rectangle(0, 45, getBounds().getWidth(), getBounds().getHeight() - 45)));
 
-				if (!singleModMode)
-					add(back, (component, defaultBounds) -> defaultBounds.offset(getBaseX(), getBaseX() + 2));
+				if (this.mod == null) {
+					if (!singleModMode)
+						add(back, (component, defaultBounds) -> defaultBounds.offset(getBaseX(), getBaseX() + 2));
 
-				if (!first) {
-					remove(search);
-					remove(scroll);
+					if (!first) {
+						remove(search);
+						remove(scroll);
+					}
 				}
 			}
 

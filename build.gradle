@@ -80,25 +80,17 @@ dependencies {
 			break
 	}
 
-	runtimeOnly(variantOf(libs.lwjgl) {
-		classifier project.ext.lwjglNatives
-	}) {
-		transitive = false
-	}
-	runtimeOnly(variantOf(libs.lwjgl.nanovg) {
-		classifier project.ext.lwjglNatives
-	}) {
-		transitive = false
-	}
+	runtimeOnly(variantOf(libs.lwjgl) { classifier project.ext.lwjglNatives }) { transitive = false }
+	runtimeOnly(variantOf(libs.lwjgl.nanovg) { classifier project.ext.lwjglNatives }) { transitive = false }
 
-	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-windows' }
-	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-linux' }
-	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-macos' }
-	shadeOnly variantOf(libs.lwjgl) { classifier 'natives-macos-arm64' }
-	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-windows' }
-	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-linux' }
-	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos' }
-	shadeOnly variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos-arm64' }
+	shadeOnly(variantOf(libs.lwjgl) { classifier 'natives-windows' }) { transitive = false }
+	shadeOnly(variantOf(libs.lwjgl) { classifier 'natives-linux' }) { transitive = false }
+	shadeOnly(variantOf(libs.lwjgl) { classifier 'natives-macos' }) { transitive = false }
+	shadeOnly(variantOf(libs.lwjgl) { classifier 'natives-macos-arm64' }) { transitive = false }
+	shadeOnly(variantOf(libs.lwjgl.nanovg) { classifier 'natives-windows' }) { transitive = false }
+	shadeOnly(variantOf(libs.lwjgl.nanovg) { classifier 'natives-linux' }) { transitive = false }
+	shadeOnly(variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos' }) { transitive = false }
+	shadeOnly(variantOf(libs.lwjgl.nanovg) { classifier 'natives-macos-arm64' }) { transitive = false }
 }
 
 loom {

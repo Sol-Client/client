@@ -105,7 +105,7 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 					NanoVG.nvgBeginPath(nvg);
 					NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier("sol_client", "textures/gui/snowflake.png"), x, y, size, size, 0);
 					NanoVG.nvgFillPaint(nvg, paint);
-					NanoVG.nvgRect(nvg, 0, 0, width, height);
+					NanoVG.nvgRect(nvg, x, y, size, size);
 					NanoVG.nvgFill(nvg);
 				}
 

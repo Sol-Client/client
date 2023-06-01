@@ -350,12 +350,9 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
 			if (keyCode == keys[keyIndex]) {
-				LogManager.getLogger().info("Konami code: " + keyIndex);
 				keyIndex++;
 				if (keyIndex == keys.length) {
-					// switchMod(VisibleSeasonsMod.instance);
 					mc.setScreen(new SnakeScreen());
-					LogManager.getLogger().info("sucaiis");
 					keyIndex = 0;
 				}
 			} else {

@@ -427,6 +427,12 @@ sol_client.mod.screenshots.deleted=The screenshot was deleted
 sol_client.mod.chat_hotkeys.name=Chat Hotkeys
 sol_client.mod.chat_hotkeys.description=Bind commands and messages to keys.
 
+sol_client.mod.visible_seasons.name=Visible Seasons
+sol_client.mod.visible_seasons.description=Render season decorations in the module menu.
+sol_client.mod.visible_seasons.option.visibleSeasonsOverride=Force season decorations
+sol_client.mod.visible_seasons.option.visibleSeasonsAmount=Amount of decorations
+sol_client.mod.visible_seasons.option.visibleSeasonsLowDetail=Low detail mode
+
 sol_client.mod.chat_hotkeys.option.hotkeys=Hotkeys
 sol_client.mod.chat_hotkeys.option.cooldown=Rate limit
 

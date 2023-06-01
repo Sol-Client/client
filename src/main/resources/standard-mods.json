@@ -255,6 +255,12 @@
 		"main": "HitColourMod",
 		"category": "visual"
 	},
+	{
+		"id": "visible_seasons",
+		"main": "VisibleSeasonsMod",
+		"category": "hidden",
+		"forcedOn": true
+	},
 	// integration
 	{
 		"id": "hypixel_util",

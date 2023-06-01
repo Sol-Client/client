@@ -19,43 +19,31 @@
 package io.github.solclient.client.ui.screen.mods;
 
 import io.github.solclient.client.SolClient;
-import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.mod.impl.VisibleSeasonsMod;
+import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.ui.ScreenAnimation;
-import io.github.solclient.client.ui.Theme;
 import io.github.solclient.client.ui.component.Component;
 import io.github.solclient.client.ui.component.ComponentRenderInfo;
 import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
-import io.github.solclient.client.ui.component.controller.Controller;
 import io.github.solclient.client.ui.component.impl.BlockComponent;
 import io.github.solclient.client.ui.component.impl.LabelComponent;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
 import io.github.solclient.client.util.ActiveMainMenu;
-import io.github.solclient.client.util.MinecraftUtils;
-import io.github.solclient.client.util.NanoVGManager;
 import io.github.solclient.client.util.data.Alignment;
 import io.github.solclient.client.util.data.Colour;
 import io.github.solclient.client.util.data.Rectangle;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Identifier;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.nanovg.NVGPaint;
 import org.lwjgl.nanovg.NanoVG;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public class SnakeScreen extends PanoramaBackgroundScreen {
 
 	protected MinecraftClient mc = MinecraftClient.getInstance();
 	private final ScreenAnimation animation = new ScreenAnimation();
-
-	public static ArrayList<int[]> snowflakes = new ArrayList<>();
-	private final long nvg;
 
 	public SnakeScreen() {
 		super(new Component() {
@@ -64,7 +52,6 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 			}
 		});
 
-		nvg = NanoVGManager.getNvg();
 		background = false;
 	}
 
@@ -76,49 +63,6 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 
 	@Override
 	public void render(int mouseX, int mouseY, float tickDelta) {
-		if ((VisibleSeasonsMod.instance.visibleSeasonsOverride) || LocalDate.now().getMonth() == Month.DECEMBER) {
-			Random random = new Random();
-			int snowflakeAmount = (int) VisibleSeasonsMod.instance.visibleSeasonsAmount;
-			for (int i = 0; i < snowflakeAmount; i++) {
-				if (snowflakes.size() < snowflakeAmount) {
-					int x = random.nextInt(client.width);
-					int y = random.nextInt(client.height);
-					int size = 5 + random.nextInt(6);
-					int speed = 1 + random.nextInt(3);
-
-					snowflakes.add(new int[]{x, y, size, speed});
-				}
-
-				int x = snowflakes.get(i)[0];
-				int y = snowflakes.get(i)[1];
-				int size = snowflakes.get(i)[2];
-				int speed = snowflakes.get(i)[3];
-
-				if (VisibleSeasonsMod.instance.visibleSeasonsLowDetail) {
-					NanoVG.nvgBeginPath(nvg);
-					NanoVG.nvgRect(nvg, x, y, size, size);
-					NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
-					NanoVG.nvgFill(nvg);
-				} else {
-					NanoVG.nvgBeginPath(nvg);
-					NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier("sol_client", "textures/gui/snowflake.png"), x, y, size, size, 0);
-					NanoVG.nvgFillPaint(nvg, paint);
-					NanoVG.nvgRect(nvg, 0, 0, width, height);
-					NanoVG.nvgFill(nvg);
-				}
-
-				// Reset the snowflake if it goes beyond the screen bounds
-				if (snowflakes.get(i)[1] > client.height) {
-					x = random.nextInt(client.width);
-					y = random.nextInt(client.height);
-					size = 5 + random.nextInt(6);
-					speed = 1 + random.nextInt(3);
-				}
-
-				snowflakes.set(i, new int[]{x, y + speed, size, snowflakes.get(i)[3]});
-			}
-		}
-
 		if (client.world == null) {
 			if (CoreMod.instance.fancyMainMenu) {
 				background = false;
@@ -162,15 +106,18 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 		private int foodY = 0;
 
 		private int snakeLength = 1;
-		private final int snakeSize = 5;
-		private List<Integer> snakeX = new ArrayList<>();
-		private List<Integer> snakeY = new ArrayList<>();
+		private final int snakeSize = 10;
+		private final List<Integer> snakeX = new ArrayList<>();
+		private final List<Integer> snakeY = new ArrayList<>();
 		private int snakeDirection = 3;  // 0 = up, 1 = right, 2 = down, 3 = left
 
 		private long lastFrameTime = 0;
+		private final List<Integer> nextMoves = new ArrayList<>();
+
+		private final int screenSize = 500;
 
 		public SnakeComponent() {
-			super(Theme.bg(), Controller.of(12F), Controller.of(0F));
+			super(new Colour(0xFF202020));
 			add(new LabelComponent((component, defaultText) -> String.valueOf(snakeLength - 3)).scaled(1.45F), new AlignedBoundsController(Alignment.CENTRE, Alignment.START));
 
 			resetSnake();
@@ -208,13 +155,18 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 		}
 
 		private void generateFood() {
-			foodX = (int) (Math.random() * 300);
-			foodY = (int) (Math.random() * 300);
+			foodX = (int) (Math.random() * screenSize);
+			foodY = (int) (Math.random() * screenSize);
 			foodX = foodX - (foodX % snakeSize);
 			foodY = foodY - (foodY % snakeSize);
 		}
 
 		private void moveSnake() {
+			if (nextMoves.size() > 0) {
+				changeDirection(nextMoves.get(0));
+				nextMoves.remove(0);
+			}
+
 			for (int i = snakeLength - 1; i > 0; i--) {
 				snakeX.set(i, snakeX.get(i - 1));
 				snakeY.set(i, snakeY.get(i - 1));
@@ -231,7 +183,7 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 			}
 
 			// Check if the new head position is within bounds
-			if (snakeX.get(0) < 0 || snakeX.get(0) >= 300 || snakeY.get(0) < 0 || snakeY.get(0) >= 300) {
+			if (snakeX.get(0) < 0 || snakeX.get(0) >= screenSize || snakeY.get(0) < 0 || snakeY.get(0) >= screenSize) {
 				resetSnake();
 			}
 		}
@@ -242,12 +194,12 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 				if (i == 0) {
 					NanoVG.nvgBeginPath(nvg);
 					NanoVG.nvgRect(nvg, snakeX.get(i), snakeY.get(i), snakeSize, snakeSize);
-					NanoVG.nvgFillColor(nvg, Colour.PURE_RED.nvg());
+					NanoVG.nvgFillColor(nvg, new Colour(0xFF5dd95b).nvg());
 					NanoVG.nvgFill(nvg);
 				} else {
 					NanoVG.nvgBeginPath(nvg);
 					NanoVG.nvgRect(nvg, snakeX.get(i), snakeY.get(i), snakeSize, snakeSize);
-					NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
+					NanoVG.nvgFillColor(nvg, new Colour(0xFF69ff67).nvg());
 					NanoVG.nvgFill(nvg);
 				}
 			}
@@ -256,7 +208,7 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 		private void renderFood() {
 			NanoVG.nvgBeginPath(nvg);
 			NanoVG.nvgRect(nvg, foodX, foodY, snakeSize, snakeSize);
-			NanoVG.nvgFillColor(nvg, Colour.PURE_GREEN.nvg());
+			NanoVG.nvgFillColor(nvg, new Colour(0xFFfe6666).nvg());
 			NanoVG.nvgFill(nvg);
 		}
 
@@ -267,8 +219,8 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 			snakeY.clear();
 
 			for (int i = 0; i < snakeLength; i++) {
-				snakeX.add(150 - (i * snakeSize));
-				snakeY.add(150);
+				snakeX.add((screenSize / 2) - (i * snakeSize));
+				snakeY.add(screenSize / 2);
 			}
 
 			moveSnake();
@@ -294,16 +246,16 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 			}
 
 			if (keyCode == Keyboard.KEY_UP) {
-				changeDirection(0);
+				nextMoves.add(0);
 			}
 			if (keyCode == Keyboard.KEY_RIGHT) {
-				changeDirection(1);
+				nextMoves.add(1);
 			}
 			if (keyCode == Keyboard.KEY_DOWN) {
-				changeDirection(2);
+				nextMoves.add(2);
 			}
 			if (keyCode == Keyboard.KEY_LEFT) {
-				changeDirection(3);
+				nextMoves.add(3);
 			}
 
 			return super.keyPressed(info, keyCode, character);
@@ -311,7 +263,7 @@ public class SnakeScreen extends PanoramaBackgroundScreen {
 
 		@Override
 		public Rectangle getDefaultBounds() {
-			return Rectangle.ofDimensions(300, 300);
+			return Rectangle.ofDimensions(screenSize, screenSize);
 		}
 
 	}

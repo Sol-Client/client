@@ -18,31 +18,30 @@
 
 package io.github.solclient.client.ui.screen.mods;
 
-import io.github.solclient.client.mod.impl.VisibleSeasonsMod;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.LogManager;
-import org.lwjgl.input.Keyboard;
-
 import io.github.solclient.client.SolClient;
-import io.github.solclient.client.mod.*;
+import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.mod.ModUiStateManager;
 import io.github.solclient.client.mod.impl.core.CoreMod;
-import io.github.solclient.client.ui.*;
-import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.*;
-import io.github.solclient.client.ui.component.impl.*;
+import io.github.solclient.client.ui.ScreenAnimation;
+import io.github.solclient.client.ui.Theme;
+import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.ui.component.ComponentRenderInfo;
+import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
+import io.github.solclient.client.ui.component.controller.Controller;
+import io.github.solclient.client.ui.component.impl.BlockComponent;
+import io.github.solclient.client.ui.component.impl.ButtonComponent;
+import io.github.solclient.client.ui.component.impl.LabelComponent;
+import io.github.solclient.client.ui.component.impl.TextFieldComponent;
 import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
-import io.github.solclient.client.util.*;
-import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.ActiveMainMenu;
+import io.github.solclient.client.util.KeyBindingInterface;
+import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.data.Alignment;
+import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
-import org.lwjgl.nanovg.NVGPaint;
-import org.lwjgl.nanovg.NanoVG;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Random;
+import org.lwjgl.input.Keyboard;
 
 
 public class ModsScreen extends PanoramaBackgroundScreen {
@@ -50,9 +49,6 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 	protected MinecraftClient mc = MinecraftClient.getInstance();
 	private final ModsScreenComponent component;
 	private final ScreenAnimation animation = new ScreenAnimation();
-
-	public ArrayList<int[]> snowflakes = new ArrayList<>();
-	private final long nvg;
 
 	public ModsScreen() {
 		this(null);
@@ -65,7 +61,6 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			}
 		});
 
-		nvg = NanoVGManager.getNvg();
 		component = (ModsScreenComponent) root.getSubComponents().get(0);
 		background = false;
 	}
@@ -78,49 +73,6 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 
 	@Override
 	public void render(int mouseX, int mouseY, float tickDelta) {
-		if ((VisibleSeasonsMod.instance.visibleSeasonsOverride) || LocalDate.now().getMonth() == Month.DECEMBER) {
-			Random random = new Random();
-			int snowflakeAmount = (int) VisibleSeasonsMod.instance.visibleSeasonsAmount;
-			for (int i = 0; i < snowflakeAmount; i++) {
-				if (snowflakes.size() < snowflakeAmount) {
-					int x = random.nextInt(client.width);
-					int y = random.nextInt(client.height);
-					int size = 5 + random.nextInt(6);
-					int speed = 1 + random.nextInt(3);
-
-					snowflakes.add(new int[]{x, y, size, speed});
-				}
-
-				int x = snowflakes.get(i)[0];
-				int y = snowflakes.get(i)[1];
-				int size = snowflakes.get(i)[2];
-				int speed = snowflakes.get(i)[3];
-
-				if (VisibleSeasonsMod.instance.visibleSeasonsLowDetail) {
-					NanoVG.nvgBeginPath(nvg);
-					NanoVG.nvgRect(nvg, x, y, size, size);
-					NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
-					NanoVG.nvgFill(nvg);
-				} else {
-					NanoVG.nvgBeginPath(nvg);
-					NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier("sol_client", "textures/gui/snowflake.png"), x, y, size, size, 0);
-					NanoVG.nvgFillPaint(nvg, paint);
-					NanoVG.nvgRect(nvg, x, y, size, size);
-					NanoVG.nvgFill(nvg);
-				}
-
-				// Reset the snowflake if it goes beyond the screen bounds
-				if (snowflakes.get(i)[1] > client.height) {
-					x = random.nextInt(client.width);
-					y = random.nextInt(client.height);
-					size = 5 + random.nextInt(6);
-					speed = 1 + random.nextInt(3);
-				}
-
-				snowflakes.set(i, new int[]{x, y + speed, size, snowflakes.get(i)[3]});
-			}
-		}
-
 		if (client.world == null) {
 			if (CoreMod.instance.fancyMainMenu) {
 				background = false;

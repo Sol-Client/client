@@ -18,18 +18,29 @@
 
 package io.github.solclient.client.ui.component;
 
-import org.apache.logging.log4j.*;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.input.*;
-
+import io.github.solclient.client.mod.impl.VisibleSeasonsMod;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
-import io.github.solclient.client.util.*;
-import io.github.solclient.client.util.cursors.SystemCursors;
-import io.github.solclient.client.util.data.*;
+import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.NanoVGManager;
+import io.github.solclient.client.util.data.Colour;
+import io.github.solclient.client.util.data.Rectangle;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
+import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.nanovg.NVGPaint;
+import org.lwjgl.nanovg.NanoVG;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class ComponentScreen extends Screen {
 
@@ -40,6 +51,9 @@ public class ComponentScreen extends Screen {
 	private Component rootWrapper;
 	protected boolean background = true;
 	private float mouseX, mouseY;
+
+	public ArrayList<int[]> snowflakes = new ArrayList<>();
+	private final long nvg;
 
 	public ComponentScreen(Component root) {
 		this.parentScreen = MinecraftClient.getInstance().currentScreen;
@@ -53,6 +67,8 @@ public class ComponentScreen extends Screen {
 		};
 		rootWrapper.setScreen(this);
 
+		nvg = NanoVGManager.getNvg();
+
 		rootWrapper.add(root, new ParentBoundsController());
 		this.root = root;
 	}
@@ -63,6 +79,48 @@ public class ComponentScreen extends Screen {
 
 	@Override
 	public void render(int mouseX, int mouseY, float tickDelta) {
+		if ((VisibleSeasonsMod.instance.visibleSeasonsOverride) || LocalDate.now().getMonth() == Month.DECEMBER) {
+			Random random = new Random();
+			int snowflakeAmount = (int) VisibleSeasonsMod.instance.visibleSeasonsAmount;
+			for (int i = 0; i < snowflakeAmount; i++) {
+				if (snowflakes.size() < snowflakeAmount) {
+					int x = random.nextInt(client.width);
+					int y = random.nextInt(client.height);
+					int size = 5 + random.nextInt(6);
+					int speed = 1 + random.nextInt(3);
+
+					snowflakes.add(new int[]{x, y, size, speed});
+				}
+
+				int x = snowflakes.get(i)[0];
+				int y = snowflakes.get(i)[1];
+				int size = snowflakes.get(i)[2];
+				int speed = snowflakes.get(i)[3];
+
+				NanoVG.nvgBeginPath(nvg);
+				if (VisibleSeasonsMod.instance.visibleSeasonsLowDetail) {
+					NanoVG.nvgRect(nvg, x, y, size, size);
+					NanoVG.nvgFillColor(nvg, Colour.WHITE.nvg());
+					NanoVG.nvgFill(nvg);
+				} else {
+					NVGPaint paint = MinecraftUtils.nvgMinecraftTexturePaint(nvg, new Identifier("sol_client", "textures/gui/snowflake.png"), x, y, size, size, 0);
+					NanoVG.nvgFillPaint(nvg, paint);
+					NanoVG.nvgFill(nvg);
+				}
+
+				// Reset the snowflake if it goes beyond the screen bounds
+				if (snowflakes.get(i)[1] > client.height) {
+					x = random.nextInt(client.width);
+					y = random.nextInt(client.height);
+					size = 5 + random.nextInt(6);
+					speed = 1 + random.nextInt(3);
+				}
+
+
+				snowflakes.set(i, new int[]{x, y + speed, size, snowflakes.get(i)[3]});
+			}
+		}
+
 		try {
 			Window window = new Window(client);
 

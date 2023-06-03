@@ -18,19 +18,14 @@
 
 package io.github.solclient.client.mod.impl.visibleseasons;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Snowflake {
 	private int x;
 	private int y;
 	private int size;
 	private int speed;
-
-	public Snowflake(int x, int y, int size, int speed) {
-		this.x = x;
-		this.y = y;
-		this.size = size;
-		this.speed = speed;
-	}
 }

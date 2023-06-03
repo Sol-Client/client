@@ -497,6 +497,6 @@ sol_client.slider.pixels=%spx
 
 sol_client.mod.visible_seasons.name=Näkyvät vuodenajat
 sol_client.mod.visible_seasons.description=Näytä vuodenaikaan liittyvät koristeet moduulivalikossa.
-sol_client.mod.visible_seasons.option.visibleSeasonsOverride=Ohita vuodenaika koristeet
+sol_client.mod.visible_seasons.option.forceVisibleSeasons=Pakota vuodenaika koristeet
 sol_client.mod.visible_seasons.option.visibleSeasonsAmount=Koristeiden määrä
 sol_client.mod.visible_seasons.option.visibleSeasonsLowDetail=Alhainen yksityiskohtaisuus

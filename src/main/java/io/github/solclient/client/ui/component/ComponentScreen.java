@@ -18,7 +18,8 @@
 
 package io.github.solclient.client.ui.component;
 
-import io.github.solclient.client.mod.impl.VisibleSeasonsMod;
+import io.github.solclient.client.mod.impl.visibleseasons.Snowflake;
+import io.github.solclient.client.mod.impl.visibleseasons.VisibleSeasonsMod;
 import io.github.solclient.client.ui.component.controller.ParentBoundsController;
 import io.github.solclient.client.util.MinecraftUtils;
 import io.github.solclient.client.util.NanoVGManager;
@@ -79,26 +80,25 @@ public class ComponentScreen extends Screen {
 
 	@Override
 	public void render(int mouseX, int mouseY, float tickDelta) {
-		if (VisibleSeasonsMod.instance.visibleSeasonsOverride || LocalDate.now().getMonth() == Month.DECEMBER) {
+		if (VisibleSeasonsMod.instance.forceVisibleSeasons || LocalDate.now().getMonth() == Month.DECEMBER) {
 			long currentTime = System.currentTimeMillis();
 			if (currentTime - lastFrameTime >= ThreadLocalRandom.current().nextInt(400)) {
 				if (VisibleSeasonsMod.instance.snowflakes.size() < (int) VisibleSeasonsMod.instance.visibleSeasonsAmount) {
 					int snowflakeX = ThreadLocalRandom.current().nextInt(client.width);
 					int snowflakeSize = 5 + ThreadLocalRandom.current().nextInt(6);
 					int snowflakeSpeed = 1 + ThreadLocalRandom.current().nextInt(3);
-					VisibleSeasonsMod.instance.snowflakes.add(new int[]{snowflakeX, 0, snowflakeSize, snowflakeSpeed});
+					VisibleSeasonsMod.instance.snowflakes.add(new Snowflake(snowflakeX, 0, snowflakeSize, snowflakeSpeed));
 					lastFrameTime = currentTime;
 				}
 			}
 
 
-			Iterator<int[]> iterator = VisibleSeasonsMod.instance.snowflakes.iterator();
+			Iterator<Snowflake> iterator = VisibleSeasonsMod.instance.snowflakes.iterator();
 			while (iterator.hasNext()) {
-				int[] snowflake = iterator.next();
-				int x = snowflake[0];
-				int y = snowflake[1];
-				int size = snowflake[2];
-				int speed = snowflake[3];
+				Snowflake snowflake = iterator.next();
+				int x = snowflake.getX();
+				int y = snowflake.getY();
+				int size = snowflake.getSize();
 
 				NanoVG.nvgBeginPath(nvg);
 				if (VisibleSeasonsMod.instance.visibleSeasonsLowDetail) {
@@ -115,7 +115,7 @@ public class ComponentScreen extends Screen {
 				if (y > client.height) {
 					iterator.remove();
 				} else {
-					snowflake[1] = y + speed;
+					snowflake.setY(y + snowflake.getSpeed());
 				}
 			}
 		}

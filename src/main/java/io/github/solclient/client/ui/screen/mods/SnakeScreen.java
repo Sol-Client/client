@@ -19,7 +19,7 @@
 package io.github.solclient.client.ui.screen.mods;
 
 import io.github.solclient.client.SolClient;
-import io.github.solclient.client.mod.impl.VisibleSeasonsMod;
+import io.github.solclient.client.mod.impl.visibleseasons.VisibleSeasonsMod;
 import io.github.solclient.client.mod.impl.core.CoreMod;
 import io.github.solclient.client.ui.ScreenAnimation;
 import io.github.solclient.client.ui.component.Component;

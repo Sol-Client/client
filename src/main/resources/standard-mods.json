@@ -257,7 +257,7 @@
 	},
 	{
 		"id": "visible_seasons",
-		"main": "VisibleSeasonsMod",
+		"main": "visibleseasons.VisibleSeasonsMod",
 		"category": "hidden",
 		"forcedOn": true
 	},

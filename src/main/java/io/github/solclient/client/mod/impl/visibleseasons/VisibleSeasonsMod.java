@@ -16,24 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.solclient.client.mod.impl;
+package io.github.solclient.client.mod.impl.visibleseasons;
 
 import com.google.gson.annotations.Expose;
+import io.github.solclient.client.mod.impl.StandardMod;
 import io.github.solclient.client.mod.option.annotation.Option;
 import io.github.solclient.client.mod.option.annotation.Slider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VisibleSeasonsMod extends StandardMod {
 	public static VisibleSeasonsMod instance;
 	protected final MinecraftClient mc = MinecraftClient.getInstance();
-	public ArrayList<int[]> snowflakes = new ArrayList<>();
+	public List<Snowflake> snowflakes = new ArrayList<>();
 
 	@Expose
 	@Option
-	public boolean visibleSeasonsOverride;
+	public boolean forceVisibleSeasons;
 
 	@Expose
 	@Option

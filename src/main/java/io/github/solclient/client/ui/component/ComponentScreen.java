@@ -39,8 +39,8 @@ import org.lwjgl.nanovg.NanoVG;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.Iterator;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ComponentScreen extends Screen {
 
@@ -52,7 +52,7 @@ public class ComponentScreen extends Screen {
 	protected boolean background = true;
 	private float mouseX, mouseY;
 
-	public ArrayList<int[]> snowflakes = new ArrayList<>();
+	private long lastFrameTime = 0;
 	private final long nvg;
 
 	public ComponentScreen(Component root) {
@@ -79,23 +79,26 @@ public class ComponentScreen extends Screen {
 
 	@Override
 	public void render(int mouseX, int mouseY, float tickDelta) {
-		if ((VisibleSeasonsMod.instance.visibleSeasonsOverride) || LocalDate.now().getMonth() == Month.DECEMBER) {
-			Random random = new Random();
-			int snowflakeAmount = (int) VisibleSeasonsMod.instance.visibleSeasonsAmount;
-			for (int i = 0; i < snowflakeAmount; i++) {
-				if (snowflakes.size() < snowflakeAmount) {
-					int x = random.nextInt(client.width);
-					int y = random.nextInt(client.height);
-					int size = 5 + random.nextInt(6);
-					int speed = 1 + random.nextInt(3);
-
-					snowflakes.add(new int[]{x, y, size, speed});
+		if (VisibleSeasonsMod.instance.visibleSeasonsOverride || LocalDate.now().getMonth() == Month.DECEMBER) {
+			long currentTime = System.currentTimeMillis();
+			if (currentTime - lastFrameTime >= ThreadLocalRandom.current().nextInt(400)) {
+				if (VisibleSeasonsMod.instance.snowflakes.size() < (int) VisibleSeasonsMod.instance.visibleSeasonsAmount) {
+					int snowflakeX = ThreadLocalRandom.current().nextInt(client.width);
+					int snowflakeSize = 5 + ThreadLocalRandom.current().nextInt(6);
+					int snowflakeSpeed = 1 + ThreadLocalRandom.current().nextInt(3);
+					VisibleSeasonsMod.instance.snowflakes.add(new int[]{snowflakeX, 0, snowflakeSize, snowflakeSpeed});
+					lastFrameTime = currentTime;
 				}
+			}
 
-				int x = snowflakes.get(i)[0];
-				int y = snowflakes.get(i)[1];
-				int size = snowflakes.get(i)[2];
-				int speed = snowflakes.get(i)[3];
+
+			Iterator<int[]> iterator = VisibleSeasonsMod.instance.snowflakes.iterator();
+			while (iterator.hasNext()) {
+				int[] snowflake = iterator.next();
+				int x = snowflake[0];
+				int y = snowflake[1];
+				int size = snowflake[2];
+				int speed = snowflake[3];
 
 				NanoVG.nvgBeginPath(nvg);
 				if (VisibleSeasonsMod.instance.visibleSeasonsLowDetail) {
@@ -109,15 +112,11 @@ public class ComponentScreen extends Screen {
 				}
 
 				// Reset the snowflake if it goes beyond the screen bounds
-				if (snowflakes.get(i)[1] > client.height) {
-					x = random.nextInt(client.width);
-					y = random.nextInt(client.height);
-					size = 5 + random.nextInt(6);
-					speed = 1 + random.nextInt(3);
+				if (y > client.height) {
+					iterator.remove();
+				} else {
+					snowflake[1] = y + speed;
 				}
-
-
-				snowflakes.set(i, new int[]{x, y + speed, size, snowflakes.get(i)[3]});
 			}
 		}
 

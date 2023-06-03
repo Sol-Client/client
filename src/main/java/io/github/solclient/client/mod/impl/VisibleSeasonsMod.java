@@ -24,9 +24,12 @@ import io.github.solclient.client.mod.option.annotation.Slider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 
+import java.util.ArrayList;
+
 public class VisibleSeasonsMod extends StandardMod {
 	public static VisibleSeasonsMod instance;
 	protected final MinecraftClient mc = MinecraftClient.getInstance();
+	public ArrayList<int[]> snowflakes = new ArrayList<>();
 
 	@Expose
 	@Option
@@ -34,8 +37,8 @@ public class VisibleSeasonsMod extends StandardMod {
 
 	@Expose
 	@Option
-	@Slider(min = 10, max = 100, step = 5)
-	public float visibleSeasonsAmount = 50;
+	@Slider(min = 1, max = 50, step = 1)
+	public float visibleSeasonsAmount = 25;
 
 	@Expose
 	@Option

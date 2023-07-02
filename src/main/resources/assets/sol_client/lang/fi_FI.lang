@@ -494,3 +494,9 @@ sol_client.mod.toggle_sprint.sneak_toggled=Hiipiminen (kytketty)
 sol_client.mod.screenshots.delete=Poista
 sol_client.mod.screenshots.delete_error=Poiston aikana tapahtui virhe: %s. Sinä voit yrittää avata %s sen sijaan.
 sol_client.slider.pixels=%spx
+
+sol_client.mod.visible_seasons.name=Näkyvät vuodenajat
+sol_client.mod.visible_seasons.description=Näytä vuodenaikaan liittyvät koristeet moduulivalikossa.
+sol_client.mod.visible_seasons.option.forceVisibleSeasons=Pakota vuodenaika koristeet
+sol_client.mod.visible_seasons.option.visibleSeasonsAmount=Koristeiden määrä
+sol_client.mod.visible_seasons.option.visibleSeasonsLowDetail=Alhainen yksityiskohtaisuus

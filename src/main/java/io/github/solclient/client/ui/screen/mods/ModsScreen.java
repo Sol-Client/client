@@ -18,23 +18,35 @@
 
 package io.github.solclient.client.ui.screen.mods;
 
+import io.github.solclient.client.SolClient;
+import io.github.solclient.client.mod.Mod;
+import io.github.solclient.client.mod.ModUiStateManager;
+import io.github.solclient.client.mod.impl.core.CoreMod;
+import io.github.solclient.client.ui.ScreenAnimation;
+import io.github.solclient.client.ui.Theme;
+import io.github.solclient.client.ui.component.Component;
+import io.github.solclient.client.ui.component.ComponentRenderInfo;
+import io.github.solclient.client.ui.component.controller.AlignedBoundsController;
+import io.github.solclient.client.ui.component.controller.Controller;
+import io.github.solclient.client.ui.component.impl.BlockComponent;
+import io.github.solclient.client.ui.component.impl.ButtonComponent;
+import io.github.solclient.client.ui.component.impl.LabelComponent;
+import io.github.solclient.client.ui.component.impl.TextFieldComponent;
+import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
+import io.github.solclient.client.util.ActiveMainMenu;
+import io.github.solclient.client.util.KeyBindingInterface;
+import io.github.solclient.client.util.MinecraftUtils;
+import io.github.solclient.client.util.data.Alignment;
+import io.github.solclient.client.util.data.Rectangle;
+import lombok.Getter;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.resource.language.I18n;
 import org.lwjgl.input.Keyboard;
 
-import io.github.solclient.client.SolClient;
-import io.github.solclient.client.mod.*;
-import io.github.solclient.client.mod.impl.core.CoreMod;
-import io.github.solclient.client.ui.*;
-import io.github.solclient.client.ui.component.*;
-import io.github.solclient.client.ui.component.controller.*;
-import io.github.solclient.client.ui.component.impl.*;
-import io.github.solclient.client.ui.screen.PanoramaBackgroundScreen;
-import io.github.solclient.client.util.*;
-import io.github.solclient.client.util.data.*;
-import lombok.Getter;
-import net.minecraft.client.resource.language.I18n;
 
 public class ModsScreen extends PanoramaBackgroundScreen {
 
+	protected MinecraftClient mc = MinecraftClient.getInstance();
 	private final ModsScreenComponent component;
 	private final ScreenAnimation animation = new ScreenAnimation();
 
@@ -280,8 +292,25 @@ public class ModsScreen extends PanoramaBackgroundScreen {
 			return super.mouseClickedAnywhere(info, button, inside, processed);
 		}
 
+		public static final int[] keys = {
+				Keyboard.KEY_UP, Keyboard.KEY_UP, Keyboard.KEY_DOWN, Keyboard.KEY_DOWN, Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT,
+				Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT, Keyboard.KEY_B, Keyboard.KEY_A
+		};
+
+		private int keyIndex = 0;
+
 		@Override
 		public boolean keyPressed(ComponentRenderInfo info, int keyCode, char character) {
+			if (keyCode == keys[keyIndex]) {
+				keyIndex++;
+				if (keyIndex == keys.length) {
+					mc.setScreen(new SnakeScreen());
+					keyIndex = 0;
+				}
+			} else {
+				keyIndex = 0;
+			}
+
 			if ((screen.getRoot().getDialog() == null
 					&& (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER))) {
 				if (mod == null) {

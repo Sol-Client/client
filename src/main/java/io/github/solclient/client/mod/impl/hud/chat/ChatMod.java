@@ -85,7 +85,7 @@ public class ChatMod extends SolClientHudMod {
 	public boolean colours = true;
 	@Expose
 	@Option
-	@Slider(min = 40, max = 320, step = 1)
+	@Slider(min = 40, max = 500, step = 1)
 	public float width = 320;
 	@Expose
 	@Option
@@ -223,7 +223,7 @@ public class ChatMod extends SolClientHudMod {
 			return;
 		}
 
-		String message = strip(event.message);
+		String message = strip(event.originalMessage);
 		for (String word : filteredWords) {
 			word = strip(word);
 

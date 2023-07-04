@@ -36,7 +36,6 @@ import io.github.solclient.client.mod.impl.hypixeladditions.commands.*;
 import io.github.solclient.client.mod.option.annotation.*;
 import io.github.solclient.client.util.*;
 import io.github.solclient.client.util.data.*;
-import net.hypixel.api.HypixelAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.*;
 import net.minecraft.text.ClickEvent.Action;
@@ -106,10 +105,8 @@ public class HypixelAdditionsMod extends StandardMod {
 	@Expose
 	@Option
 	public boolean levelhead;
-	private final Map<UUID, String> levelCache = new HashMap<>();
 	@Expose
 	private String apiKey;
-	private HypixelAPI api;
 	private HypixelLocationData locationData;
 	private final Pattern locrawTrigger = Pattern.compile("\\{(\".*\":\".*\",)?+\".*\":\".*\"\\}");
 
@@ -119,36 +116,7 @@ public class HypixelAdditionsMod extends StandardMod {
 			return null;
 		}
 
-		if (levelCache.containsKey(id)) {
-			String result = levelCache.get(id);
-			if (result.isEmpty()) {
-				return null;
-			}
-			return result;
-		}
-
-		else if (api != null) {
-			levelCache.put(id, "");
-			api.getPlayerByUuid(id).whenCompleteAsync((response, error) -> {
-				if (!response.isSuccess() || error != null) {
-					return;
-				}
-
-				if (response.getPlayer().exists()) {
-					levelCache.put(id, Integer.toString((int) response.getPlayer().getNetworkLevel()));
-				} else {
-					// At this stage, the player is either nicked, or an NPC, but all NPCs and fake
-					// players I've tested do not get to this stage.
-					levelCache.put(id, Integer.toString(MinecraftUtils.randomInt(180, 280))); // Based on looking at YouTubers'
-																						// Hypixel levels. It won't
-																						// actually be the true level,
-																						// and may not look quite right,
-																						// but it's more plausible than
-																						// a Level 1 god bridger.
-				}
-			});
-		}
-		return null;
+		return HypixelAPICache.getInstance().getLevelHead(id);
 	}
 
 	public boolean isLobby() {
@@ -220,7 +188,7 @@ public class HypixelAdditionsMod extends StandardMod {
 	public void setApiKey(String apiKey) {
 		this.apiKey = apiKey;
 		if (apiKey != null) {
-			api = new HypixelAPI(new ApacheHttpClient(UUID.fromString(apiKey)));
+            HypixelAPICache.getInstance().setAPIKey(apiKey);
 		}
 	}
 
@@ -253,7 +221,7 @@ public class HypixelAdditionsMod extends StandardMod {
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent event) {
 		donegg = donegl = false;
-		levelCache.clear();
+		HypixelAPICache.getInstance().clear();
 
 		if (!isHypixel()) {
 			return;
@@ -269,10 +237,10 @@ public class HypixelAdditionsMod extends StandardMod {
 			return;
 		}
 
-		if (locrawTrigger.matcher(event.message).matches()) {
+		if (locrawTrigger.matcher(event.originalMessage).matches()) {
 			try {
 				event.cancelled = true;
-				locationData = new Gson().fromJson(event.message, HypixelLocationData.class);
+				locationData = new Gson().fromJson(event.originalMessage, HypixelLocationData.class);
 				return;
 			} catch (Throwable error) {
 				logger.warn("Could not detect location", error);
@@ -281,19 +249,19 @@ public class HypixelAdditionsMod extends StandardMod {
 
 		if (hidegg) {
 			for (Pattern pattern : hideggTriggers) {
-				if (pattern.matcher(event.message).matches()) {
+				if (pattern.matcher(event.originalMessage).matches()) {
 					event.cancelled = true;
 					return;
 				}
 			}
 		}
 
-		if (hidegl && hideglTrigger.matcher(event.message).matches()) {
+		if (hidegl && hideglTrigger.matcher(event.originalMessage).matches()) {
 			event.cancelled = true;
 			return;
 		}
 
-		if (hideChannelMessageTrigger.matcher(event.message).matches()) {
+		if (hideChannelMessageTrigger.matcher(event.originalMessage).matches()) {
 			event.cancelled = true;
 			return;
 		}
@@ -302,13 +270,13 @@ public class HypixelAdditionsMod extends StandardMod {
 			return;
 		}
 
-		if (event.actionBar && isHousing() && event.message.startsWith("Now playing:")) {
+		if (event.actionBar && isHousing() && event.originalMessage.startsWith("Now playing:")) {
 			event.cancelled = true;
 			return;
 		}
 
 		if (popupEvents) {
-			for (String line : event.message.split("\\n")) {
+			for (String line : event.originalMessage.split("\\n")) {
 				Popup popup = HypixelPopupType.popupFromMessage(line);
 				if (popup != null) {
 					PopupsApiMod.instance.add(popup);
@@ -319,7 +287,7 @@ public class HypixelAdditionsMod extends StandardMod {
 
 		if (autogg && !donegg) {
 			for (Pattern pattern : autoggTriggers) {
-				if (pattern.matcher(event.message).matches()) {
+				if (pattern.matcher(event.originalMessage).matches()) {
 					donegg = true;
 					mc.player.sendChatMessage("/achat " + autoggMessage);
 					return;
@@ -327,12 +295,12 @@ public class HypixelAdditionsMod extends StandardMod {
 			}
 		}
 
-		if (autogl && !donegl && event.message.equals(autoglTrigger)) {
+		if (autogl && !donegl && event.originalMessage.equals(autoglTrigger)) {
 			ticksUntilAutogl = 20;
 			return;
 		}
 
-		Matcher apiKeyMatcher = apiKeyMessageTrigger.matcher(event.message);
+		Matcher apiKeyMatcher = apiKeyMessageTrigger.matcher(event.originalMessage);
 		if (apiKeyMatcher.matches()) {
 			setApiKey(apiKeyMatcher.group(1));
 		}

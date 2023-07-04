@@ -18,6 +18,7 @@
 
 package io.github.solclient.client.mod.impl.core.mixins.client;
 
+import net.minecraft.text.LiteralText;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -56,16 +57,20 @@ public class ClientPlayNetworkHandlerMixin {
 
 	@Redirect(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V"))
 	public void handleChat(ChatHud instance, Text message) {
-		if (!EventBus.INSTANCE.post(
-				new ReceiveChatMessageEvent(false, Formatting.strip(message.asUnformattedString()), false)).cancelled) {
-			instance.addMessage(message);
+        ReceiveChatMessageEvent event = new ReceiveChatMessageEvent(false, Formatting.strip(message.asUnformattedString()), message, false);
+		if (!EventBus.INSTANCE.post(event).cancelled) {
+            if (event.newMessage != null) {
+                instance.addMessage(event.newMessage);
+            } else {
+                instance.addMessage(message);
+            }
 		}
 	}
 
 	@Redirect(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;setOverlayMessage(Lnet/minecraft/text/Text;Z)V"))
 	public void handleActionBar(InGameHud instance, Text text, boolean tinted) {
 		if (!EventBus.INSTANCE.post(
-				new ReceiveChatMessageEvent(true, Formatting.strip(text.asUnformattedString()), false)).cancelled) {
+				new ReceiveChatMessageEvent(true, Formatting.strip(text.asUnformattedString()), text, false)).cancelled) {
 			instance.setOverlayMessage(text, tinted);
 		}
 	}

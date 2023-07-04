@@ -97,6 +97,11 @@
 		"category": "hud"
 	},
 	{
+		"id": "paperdoll",
+		"main": "hud.PaperDollMod",
+		"category": "hud"
+	},
+	{
 		"id": "armour",
 		"main": "hud.armour.ArmourMod",
 		"category": "hud"
@@ -261,6 +266,12 @@
 		"main": "hypixeladditions.HypixelAdditionsMod",
 		"mixins": "@hypixeladditions.mixins",
 		"category": "integration"
+	},
+	{
+		"id": "bedwars",
+		"main": "hud.bedwarsoverlay.BedwarsMod",
+		"mixins": "@hud.bedwarsoverlay.mixins",
+		"category": "hud"
 	},
 	{
 		"id": "quickplay",

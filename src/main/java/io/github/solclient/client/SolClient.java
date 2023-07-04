@@ -264,8 +264,10 @@ public final class SolClient implements Iterable<Mod> {
 
 	private static Gson getGson(Mod mod) {
 		GsonBuilder builder = new GsonBuilder();
-		if (mod != null)
-			builder.registerTypeAdapter(mod.getClass(), (InstanceCreator<Mod>) (type) -> mod);
+		if (mod != null) {
+            builder.registerTypeAdapter(mod.getClass(), (InstanceCreator<Mod>) (type) -> mod);
+            mod.registerOtherTypeAdapters(builder);
+        }
 
 		return builder.excludeFieldsWithoutExposeAnnotation().create();
 	}

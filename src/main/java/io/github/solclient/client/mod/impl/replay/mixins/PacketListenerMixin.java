@@ -38,8 +38,8 @@ public class PacketListenerMixin {
 		if (packet instanceof ChatMessageS2CPacket) {
 			String messageString = Formatting.strip(((ChatMessageS2CPacket) packet).getMessage().asUnformattedString());
 
-			if (EventBus.INSTANCE.post(new ReceiveChatMessageEvent(
-					((ChatMessageS2CPacket) packet).getType() == 2, messageString, true)).cancelled)
+			if (EventBus.INSTANCE.post(new ReceiveChatMessageEvent(((ChatMessageS2CPacket) packet).getType() == 2,
+					messageString, ((ChatMessageS2CPacket) packet).getMessage(), true)).cancelled)
 				callback.cancel();
 		}
 	}

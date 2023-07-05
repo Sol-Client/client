@@ -496,6 +496,11 @@ sol_client.mod.discord_integration.url=URL
 sol_client.mod.discord_integration.multiplayer=Multiplayer: %s
 sol_client.mod.discord_integration.main_menu=Main Menu
 
+sol_client.mod.paperdoll.name=Paper Doll
+sol_client.mod.paperdoll.description=Renders a small version of you on screen.
+sol_client.mod.paperdoll.option.dynamicRotation=Dynamic Rotation
+sol_client.mod.paperdoll.option.rotation=Rotation Offset
+
 sol_client.mod.screen.title=Modules
 sol_client.mod.screen.search=Type to search
 sol_client.mod.screen.apply_to_all=Apply to All

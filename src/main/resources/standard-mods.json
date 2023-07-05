@@ -97,6 +97,11 @@
 		"category": "hud"
 	},
 	{
+		"id": "paperdoll",
+		"main": "hud.PaperDollMod",
+		"category": "hud"
+	},
+	{
 		"id": "armour",
 		"main": "hud.armour.ArmourMod",
 		"category": "hud"
